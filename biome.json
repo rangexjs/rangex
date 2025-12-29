@@ -1,0 +1,58 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
+	"files": { "includes": ["**", "!**/node_modules", "!**/dist"] },
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"complexity": {
+				"useSimplifiedLogicExpression": "warn"
+			},
+			"correctness": {
+				"noUnusedImports": "warn",
+				"noUnusedPrivateClassMembers": "warn",
+				"noUnusedVariables": "warn"
+			},
+			"style": {
+				"noDefaultExport": "warn",
+				"noNegationElse": "warn",
+				"noParameterProperties": "warn",
+				"useBlockStatements": "warn",
+				"useForOf": "warn",
+				"useShorthandAssign": "warn",
+				"useConsistentArrayType": {
+					"level": "warn",
+					"options": { "syntax": "shorthand" }
+				}
+			},
+			"suspicious": {
+				"noEmptyBlockStatements": "warn",
+				"noEmptyInterface": "off",
+				"noConfusingVoidType": "off"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.d.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["**/vite.config.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		}
+	]
+}
