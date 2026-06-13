@@ -1,0 +1,108 @@
+import { toolbarButtonsName } from "../../../../Constants";
+import type { ToolbarButtonsActionManager } from "../../../../ToolbarButtonsActionManager";
+import type { NodeInsertionButtonsStateManager } from "../../../../ToolbarButtonsStateManager";
+import {
+	createTextFieldController,
+	FormField,
+	InputTextField,
+	TextFieldWrapper,
+} from "../../../InputFields";
+import { FixedPosModal } from "../../_Utilities";
+
+interface NameModalProps {
+	modalId: string;
+	nodeInsertionButtonStateManager: NodeInsertionButtonsStateManager;
+	toolbarButtonsActionManager: ToolbarButtonsActionManager;
+}
+
+export const NameModal = (props: NameModalProps) => {
+	const [firstNameModel, firstNameControls] = createTextFieldController({});
+	const [lastNameModel, lastNameControls] = createTextFieldController({});
+
+	props.nodeInsertionButtonStateManager.subscribe({
+		type: toolbarButtonsName.templateVariable,
+		callback: (state) => {
+			firstNameModel.setValue(state.options.name?.firstName ?? "");
+			lastNameModel.setValue(state.options.name?.lastName ?? "");
+		},
+	});
+
+	const updateInitialValue = (event: ToggleEvent) => {
+		if (event.newState !== "open") {
+			return;
+		}
+
+		const { templateVariable } = props.nodeInsertionButtonStateManager;
+		firstNameModel.setValue(templateVariable.options.name?.firstName ?? "");
+		lastNameModel.setValue(templateVariable.options.name?.lastName ?? "");
+	};
+
+	const updateTemplateVariable = () => {
+		props.toolbarButtonsActionManager.emitNodeInsertionChange({
+			type: toolbarButtonsName.templateVariable,
+			action: "update",
+			options: {
+				name: {
+					firstName: firstNameModel.value(),
+					lastName: lastNameModel.value(),
+				},
+			},
+		});
+	};
+
+	return (
+		<FixedPosModal
+			id={props.modalId}
+			title="Name"
+			on:toggle={updateInitialValue}
+		>
+			<FormField
+				class="mb-2"
+				for={firstNameModel.id}
+				label="First name"
+				showError={firstNameModel.state().showError}
+				errorMessage={firstNameModel.state().message}
+			>
+				<TextFieldWrapper appearance="primary-outline" size="medium">
+					<InputTextField
+						type="text"
+						id={firstNameModel.id}
+						placeholder="John"
+						spellcheck={false}
+						{...firstNameControls}
+					/>
+				</TextFieldWrapper>
+			</FormField>
+
+			<FormField
+				class="mb-4"
+				for={lastNameModel.id}
+				label="Last name"
+				showError={lastNameModel.state().showError}
+				errorMessage={lastNameModel.state().message}
+			>
+				<TextFieldWrapper appearance="primary-outline" size="medium">
+					<InputTextField
+						type="text"
+						id={lastNameModel.id}
+						placeholder="Doe"
+						spellcheck={false}
+						{...lastNameControls}
+					/>
+				</TextFieldWrapper>
+			</FormField>
+
+			<div class="text-right">
+				<button
+					type="button"
+					commandfor={props.modalId}
+					command="close"
+					class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
+					on:click={updateTemplateVariable}
+				>
+					Update
+				</button>
+			</div>
+		</FixedPosModal>
+	);
+};
