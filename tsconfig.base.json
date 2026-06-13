@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"newLine": "lf",
+		"esModuleInterop": true,
+		"module": "esnext",
+		"skipLibCheck": true
+	}
+}

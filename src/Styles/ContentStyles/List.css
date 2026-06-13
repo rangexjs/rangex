@@ -1,0 +1,5 @@
+[data-rx-editor-role="block-nested-context"] {
+	&[data-rx-component-name="list"] {
+		width: 100%;
+	}
+}
