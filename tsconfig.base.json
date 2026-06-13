@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"moduleResolution": "bundler",
+		"module": "esnext",
+		"strict": true,
+		"newLine": "lf",
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"resolveJsonModule": true,
+		"isolatedModules": true
+	}
+}
