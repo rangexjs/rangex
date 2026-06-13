@@ -1,0 +1,5 @@
+[data-rx-component-name="link"] {
+	& a {
+		color: #3e00c0;
+	}
+}

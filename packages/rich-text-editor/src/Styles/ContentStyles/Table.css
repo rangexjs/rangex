@@ -1,0 +1,28 @@
+[data-rx-editor-role="block-nested-context"] {
+	&[data-rx-component-name="table"] {
+		padding: 6px 0px;
+	}
+}
+
+td,
+th {
+	padding: 4px 2px;
+
+	& > [data-rx-editor-role="nested-editable"] {
+		height: 100%;
+	}
+}
+
+thead {
+	td,
+	th {
+		background-color: rgba(127, 127, 127, 0.2);
+	}
+}
+
+tfoot {
+	td,
+	th {
+		background-color: rgba(127, 127, 127, 0.4);
+	}
+}

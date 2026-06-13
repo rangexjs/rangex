@@ -1,0 +1,68 @@
+import {
+	createBeamText,
+	createContentLine,
+	createRootEditable,
+	defineRangeX,
+} from "rich-text-area";
+import { createRichTextEditor } from "../CreateRichTextEditor";
+import storedSnapshot from "../mock_database/Demo.json";
+
+import "../Styles/FontStyles.css";
+
+import { getDefaultContentLineLocalNamesStyles } from "../_Utilities";
+
+// window.$snapshot = (node) => {
+// 	const res = createToEditorNodeSnapshot({ editorNode: node });
+
+// 	console.log(JSON.stringify(res));
+// };
+
+const { RangeX } = defineRangeX({});
+
+export const createDevelopmentView = () => {
+	const maxViewContainer = document.createElement("div");
+
+	Object.assign<CSSStyleDeclaration, Partial<CSSStyleDeclaration>>(
+		maxViewContainer.style,
+		{
+			display: "block flex",
+			flexDirection: "column",
+			gap: "30px",
+			margin: "0 auto",
+			maxWidth: "1200px",
+		},
+	);
+
+	const emptyRootEditable = createRootEditable({
+		display: "block multi-line",
+		contentLineLocalNamesStyle: getDefaultContentLineLocalNamesStyles(),
+		childNodes: [createContentLine({ childNodes: [createBeamText()] })],
+	});
+
+	const emptyRichTextArea = new RangeX({
+		rootEditableFrom: {
+			type: "node",
+			node: emptyRootEditable,
+		},
+	});
+
+	const emptyRichTextEditor = createRichTextEditor({
+		rangeX: emptyRichTextArea,
+	});
+
+	const filledRichTextArea = new RangeX({
+		rootEditableFrom: {
+			type: "snapshot",
+			// @ts-expect-error
+			storedSnapshot,
+		},
+	});
+
+	const filledRichTextEditor = createRichTextEditor({
+		rangeX: filledRichTextArea,
+	});
+
+	maxViewContainer.append(emptyRichTextEditor, filledRichTextEditor);
+
+	return maxViewContainer;
+};

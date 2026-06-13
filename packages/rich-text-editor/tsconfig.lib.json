@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.base.json",
+	"references": [
+		{ "path": "../rich-text-area/tsconfig.lib.json" },
+		{ "path": "../rich-text-editor-ui/tsconfig.lib.json" }
+	],
+	"compilerOptions": {
+		"composite": true,
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+		"customConditions": ["development"]
+	}
+}

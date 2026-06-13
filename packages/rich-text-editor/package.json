@@ -1,0 +1,53 @@
+{
+	"name": "@rangex/rich-text-editor",
+	"version": "0.0.0",
+	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
+	"repository": "git@github.com:rangexjs/rich-text-editor.git",
+	"private": true,
+	"license": "SEE LICENSE IN LICENSE.md",
+	"type": "module",
+	"exports": {
+		".": {
+			"development": {
+				"types": "./development/index.d.ts",
+				"import": "./development/index.js"
+			},
+			"default": {
+				"types": "./dist/index.d.ts",
+				"import": "./dist/index.js"
+			}
+		}
+	},
+	"files": [
+		"dist",
+		"LICENSE.md",
+		"README.md"
+	],
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"test": "vitest",
+		"test:coverage": "vitest --coverage",
+		"biome:check": "biome check ./src",
+		"fix": "biome check ./src --write",
+		"lint": "biome check ./src && tsc -p ./tsconfig.json",
+		"format": "biome format ./src",
+		"format:write": "biome format --write ./src",
+		"pre:check": "biome check ./src && tsc && vitest"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.15",
+		"@happy-dom/global-registrator": "^20.0.11",
+		"@rangex/rich-text-editor-ui": "^0.3.1-alpha.12",
+		"@types/bun": "^1.3.5",
+		"@vitest/coverage-v8": "^4.0.16",
+		"esbuild": "^0.27.2",
+		"typescript": "^6.0.3",
+		"vite": "^7.3.0",
+		"vite-tsconfig-paths": "^6.0.3",
+		"vitest": "^4.0.16"
+	},
+	"dependencies": {
+		"shiki": "^4.0.2"
+	}
+}

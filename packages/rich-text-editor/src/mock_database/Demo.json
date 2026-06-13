@@ -1,0 +1,3701 @@
+{
+	"glyphFormatterInlineTagsOrder": [
+		"strong",
+		"b",
+		"em",
+		"i",
+		"ins",
+		"u",
+		"del",
+		"s",
+		"mark",
+		"sub",
+		"sup",
+		"code",
+		"kbd",
+		"var"
+	],
+	"snapshot": {
+		"type": "root-editable",
+		"uniqueId": "1775062780041-490502701",
+		"customStorage": null,
+		"display": "block multi-line",
+		"allowedComponents": null,
+		"allowedContentLineLocalNames": null,
+		"allowedContentLineStyleAttrNames": null,
+		"allowedGlyphFormatterStyleAttrNames": null,
+		"allowedGlyphFormatterInlineTags": null,
+		"contentLineLocalNamesStyle": {
+			"p": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+					"declarationValue": "1.5"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h1": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.2 } },
+					"declarationValue": "1.2"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h2": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.3 } },
+					"declarationValue": "1.3"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h3": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.35 } },
+					"declarationValue": "1.35"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h4": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.4 } },
+					"declarationValue": "1.4"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h5": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.45 } },
+					"declarationValue": "1.45"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			},
+			"h6": {
+				"lineHeight": {
+					"type": "line-height",
+					"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+					"declarationValue": "1.5"
+				},
+				"paddingBlock": {
+					"type": "padding-block",
+					"values": { "paddingBlock": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"paddingInline": {
+					"type": "padding-inline",
+					"values": { "paddingInline": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				},
+				"textAlign": {
+					"type": "text-align",
+					"values": { "textAlign": "start" },
+					"declarationValue": "start"
+				},
+				"textIndent": {
+					"type": "text-indent",
+					"values": { "textIndent": { "type": "px", "value": 0 } },
+					"declarationValue": "0px"
+				}
+			}
+		},
+		"editState": "true",
+		"styleAttrs": {},
+		"domAttrs": { "spellcheck": "false" },
+		"childNodes": [
+			{
+				"type": "content-line",
+				"uniqueId": "1775063103247-3700324072",
+				"customStorage": null,
+				"localName": "h1",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "one-visual-unit-text",
+						"uniqueId": "1775063912322-779891474",
+						"customStorage": null,
+						"data": "🚀"
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775063912322-3674312919",
+						"customStorage": null,
+						"data": " RangeX — Schema-Driven Rich Text Editing"
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775063698812-2370209006",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775063995670-598854536",
+						"customStorage": null,
+						"data": "RangeX is a rich text editor built on a "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775063995671-295941164",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775063915780-86580782",
+								"customStorage": null,
+								"data": "schema-first architecture"
+							}
+						],
+						"inlineTagsArray": ["b"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775063995670-207741292",
+						"customStorage": null,
+						"data": ". Every node, every edit, and every structural rule is defined and enforced through a central schema — no arbitrary DOM manipulation."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775063925551-3006965538",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "beam-text",
+						"uniqueId": "1775063925550-2160889972",
+						"customStorage": null
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775063928643-821335436",
+				"customStorage": null,
+				"localName": "h2",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "one-visual-unit-text",
+						"uniqueId": "1775064073419-2854351894",
+						"customStorage": null,
+						"data": "🧠"
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064073419-1228086026",
+						"customStorage": null,
+						"data": " How It Works"
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775063935020-3993901267",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775063939476-153543256",
+						"customStorage": null,
+						"data": "RangeX operates on a schema-based document model:"
+					}
+				]
+			},
+			{
+				"type": "block-nested-context-line",
+				"uniqueId": "1775063946604-444270437",
+				"customStorage": null,
+				"styleAttrs": {},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775063946604-2886776114",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775063946604-1879795384",
+								"customStorage": null
+							}
+						]
+					},
+					{
+						"type": "block-nested-context",
+						"uniqueId": "1775063946604-2400164156",
+						"customStorage": null,
+						"componentName": "list",
+						"content": { "type": "list" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": false,
+						"editState": "inherit",
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "list",
+								"uniqueId": "1775063946603-4197732246",
+								"customStorage": null,
+								"localName": "ul",
+								"lineType": "multi-line",
+								"listItemSnapshotProps": {
+									"domAttrs": {},
+									"childNodes": [
+										{
+											"type": "nested-editable",
+											"uniqueId": "1775063946603-4078656014",
+											"customStorage": null,
+											"content": { "type": "list-item" },
+											"display": "block multi-line",
+											"allowedComponents": null,
+											"allowedContentLineLocalNames": null,
+											"allowedContentLineStyleAttrNames": null,
+											"allowedGlyphFormatterStyleAttrNames": null,
+											"allowedGlyphFormatterInlineTags": null,
+											"editState": "inherit",
+											"styleAttrs": {},
+											"domAttrs": {},
+											"childNodes": []
+										}
+									]
+								},
+								"editState": "inherit",
+								"styleAttrs": {},
+								"domAttrs": {},
+								"childNodes": [
+									{
+										"type": "list-item",
+										"uniqueId": "1775063946604-3718865094",
+										"customStorage": null,
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "nested-editable",
+												"uniqueId": "1775063946603-1145928745",
+												"customStorage": null,
+												"content": { "type": "list-item" },
+												"display": "block multi-line",
+												"allowedComponents": null,
+												"allowedContentLineLocalNames": null,
+												"allowedContentLineStyleAttrNames": null,
+												"allowedGlyphFormatterStyleAttrNames": null,
+												"allowedGlyphFormatterInlineTags": null,
+												"editState": "inherit",
+												"styleAttrs": {},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "content-line",
+														"uniqueId": "1775063946602-661537393",
+														"customStorage": null,
+														"localName": "p",
+														"styleAttrs": {},
+														"structuredStyle": {
+															"lineHeight": {
+																"type": "line-height",
+																"values": {
+																	"lineHeight": {
+																		"type": "number",
+																		"value": 1.5
+																	}
+																},
+																"declarationValue": "1.5"
+															},
+															"paddingBlock": {
+																"type": "padding-block",
+																"values": {
+																	"paddingBlock": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"paddingInline": {
+																"type": "padding-inline",
+																"values": {
+																	"paddingInline": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"textAlign": {
+																"type": "text-align",
+																"values": { "textAlign": "start" },
+																"declarationValue": "start"
+															},
+															"textIndent": {
+																"type": "text-indent",
+																"values": {
+																	"textIndent": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															}
+														},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "basic-text",
+																"uniqueId": "1775063981853-1482865658",
+																"customStorage": null,
+																"data": "Every node is validated against a defined structure"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "list-item",
+										"uniqueId": "1775063967520-1950171808",
+										"customStorage": null,
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "nested-editable",
+												"uniqueId": "1775063967520-1807877357",
+												"customStorage": null,
+												"content": { "type": "list-item" },
+												"display": "block multi-line",
+												"allowedComponents": null,
+												"allowedContentLineLocalNames": null,
+												"allowedContentLineStyleAttrNames": null,
+												"allowedGlyphFormatterStyleAttrNames": null,
+												"allowedGlyphFormatterInlineTags": null,
+												"editState": "inherit",
+												"styleAttrs": {},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "content-line",
+														"uniqueId": "1775063967520-4269824164",
+														"customStorage": null,
+														"localName": "p",
+														"styleAttrs": {},
+														"structuredStyle": {
+															"lineHeight": {
+																"type": "line-height",
+																"values": {
+																	"lineHeight": {
+																		"type": "number",
+																		"value": 1.5
+																	}
+																},
+																"declarationValue": "1.5"
+															},
+															"paddingBlock": {
+																"type": "padding-block",
+																"values": {
+																	"paddingBlock": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"paddingInline": {
+																"type": "padding-inline",
+																"values": {
+																	"paddingInline": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"textAlign": {
+																"type": "text-align",
+																"values": { "textAlign": "start" },
+																"declarationValue": "start"
+															},
+															"textIndent": {
+																"type": "text-indent",
+																"values": {
+																	"textIndent": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															}
+														},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "basic-text",
+																"uniqueId": "1775064005193-1020560399",
+																"customStorage": null,
+																"data": "Editing operations are "
+															},
+															{
+																"type": "glyph-formatter",
+																"uniqueId": "1775064005193-123767652",
+																"customStorage": null,
+																"styleAttrs": {},
+																"structuredStyle": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "basic-text",
+																		"uniqueId": "1775063986271-385632338",
+																		"customStorage": null,
+																		"data": "constraint-aware"
+																	}
+																],
+																"inlineTagsArray": ["b"]
+															},
+															{
+																"type": "basic-text",
+																"uniqueId": "1775064005193-2031131347",
+																"customStorage": null,
+																"data": " — invalid states are prevented by design"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"type": "list-item",
+										"uniqueId": "1775064011407-1393360238",
+										"customStorage": null,
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "nested-editable",
+												"uniqueId": "1775064011407-149002952",
+												"customStorage": null,
+												"content": { "type": "list-item" },
+												"display": "block multi-line",
+												"allowedComponents": null,
+												"allowedContentLineLocalNames": null,
+												"allowedContentLineStyleAttrNames": null,
+												"allowedGlyphFormatterStyleAttrNames": null,
+												"allowedGlyphFormatterInlineTags": null,
+												"editState": "inherit",
+												"styleAttrs": {},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "content-line",
+														"uniqueId": "1775064011406-245616876",
+														"customStorage": null,
+														"localName": "p",
+														"styleAttrs": {},
+														"structuredStyle": {
+															"lineHeight": {
+																"type": "line-height",
+																"values": {
+																	"lineHeight": {
+																		"type": "number",
+																		"value": 1.5
+																	}
+																},
+																"declarationValue": "1.5"
+															},
+															"paddingBlock": {
+																"type": "padding-block",
+																"values": {
+																	"paddingBlock": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"paddingInline": {
+																"type": "padding-inline",
+																"values": {
+																	"paddingInline": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"textAlign": {
+																"type": "text-align",
+																"values": { "textAlign": "start" },
+																"declarationValue": "start"
+															},
+															"textIndent": {
+																"type": "text-indent",
+																"values": {
+																	"textIndent": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															}
+														},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "basic-text",
+																"uniqueId": "1775221389250-2295342017",
+																"customStorage": null,
+																"data": "The output is clean JSON — tag names, attributes, styles, and custom props — ready to build your own HTML from"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775063946604-3110130047",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775063946604-3610312797",
+								"customStorage": null
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775221491696-1965569251",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775221566211-3745503967",
+						"customStorage": null,
+						"data": "No surprises — what you define is what you get."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064069090-2888372608",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "beam-text",
+						"uniqueId": "1775064069090-2859400078",
+						"customStorage": null
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064168911-3998311312",
+				"customStorage": null,
+				"localName": "h2",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "one-visual-unit-text",
+						"uniqueId": "1775064169496-2706414230",
+						"customStorage": null,
+						"data": "🧩"
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064169497-3731602891",
+						"customStorage": null,
+						"data": " Real DOM, Enhanced"
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064173195-1503474178",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064196638-4105180575",
+						"customStorage": null,
+						"data": "RangeX works directly with "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775064196639-908294663",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775064182230-648505127",
+								"customStorage": null,
+								"data": "real DOM elements"
+							}
+						],
+						"inlineTagsArray": ["b"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064196638-1428721605",
+						"customStorage": null,
+						"data": " — no virtual abstraction layer."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064182231-775454440",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064206938-739502076",
+						"customStorage": null,
+						"data": "Native elements like "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775064206938-3280936031",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775064182230-3702618520",
+								"customStorage": null,
+								"data": "input"
+							}
+						],
+						"inlineTagsArray": ["code"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064211006-172865383",
+						"customStorage": null,
+						"data": ", "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775064211006-4124250539",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775064206938-2041555711",
+								"customStorage": null,
+								"data": "button"
+							}
+						],
+						"inlineTagsArray": ["code"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064216894-2950459721",
+						"customStorage": null,
+						"data": ", or "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775064216894-218698508",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775064211006-2689976162",
+								"customStorage": null,
+								"data": "details"
+							}
+						],
+						"inlineTagsArray": ["code"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064228242-3285280299",
+						"customStorage": null,
+						"data": " behave exactly as expected. Elements gain editor-aware capabilities through "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775064228243-1808366710",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775064216894-2948218020",
+								"customStorage": null,
+								"data": "enhance(node)"
+							}
+						],
+						"inlineTagsArray": ["code"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775078168896-588127315",
+						"customStorage": null,
+						"data": ", keeping the DOM clean and extensible."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775221785424-2510312679",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775221797098-193838747",
+						"customStorage": null,
+						"data": "The entire API is fully typed — parent/child relationships, allowed siblings, and valid content are all enforced at the "
+					},
+					{
+						"type": "glyph-formatter",
+						"uniqueId": "1775221797098-2687008155",
+						"customStorage": null,
+						"styleAttrs": {},
+						"structuredStyle": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "basic-text",
+								"uniqueId": "1775221785834-1557814637",
+								"customStorage": null,
+								"data": "TypeScript level"
+							}
+						],
+						"inlineTagsArray": ["b"]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775221797098-2804923043",
+						"customStorage": null,
+						"data": ", so structural violations are caught before runtime."
+					}
+				]
+			},
+			{
+				"type": "block-nested-context-line",
+				"uniqueId": "1775078173413-2015426846",
+				"customStorage": null,
+				"styleAttrs": {},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775078173413-1336211898",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775078173413-1117085397",
+								"customStorage": null
+							}
+						]
+					},
+					{
+						"type": "block-nested-context",
+						"uniqueId": "1775078173413-364668498",
+						"customStorage": { "language": "TypeScript" },
+						"componentName": "code-block",
+						"content": { "type": "styled-block" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": false,
+						"editState": "inherit",
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "html-layout",
+								"uniqueId": "1775078173413-217631386",
+								"customStorage": null,
+								"localName": "pre",
+								"styleAttrs": {},
+								"domAttrs": {},
+								"childNodes": [
+									{
+										"type": "html-layout",
+										"uniqueId": "1775078173413-1022205057",
+										"customStorage": null,
+										"localName": "code",
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "nested-editable",
+												"uniqueId": "1775078173413-1420981327",
+												"customStorage": null,
+												"content": { "type": "default" },
+												"display": "block multi-line",
+												"allowedComponents": [],
+												"allowedContentLineLocalNames": [],
+												"allowedContentLineStyleAttrNames": [],
+												"allowedGlyphFormatterStyleAttrNames": [],
+												"allowedGlyphFormatterInlineTags": [],
+												"editState": "inherit",
+												"styleAttrs": {},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "content-line",
+														"uniqueId": "1775078173413-1429090264",
+														"customStorage": null,
+														"localName": "p",
+														"styleAttrs": {},
+														"structuredStyle": {
+															"lineHeight": {
+																"type": "line-height",
+																"values": {
+																	"lineHeight": {
+																		"type": "number",
+																		"value": 1.5
+																	}
+																},
+																"declarationValue": "1.5"
+															},
+															"paddingBlock": {
+																"type": "padding-block",
+																"values": {
+																	"paddingBlock": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"paddingInline": {
+																"type": "padding-inline",
+																"values": {
+																	"paddingInline": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"textAlign": {
+																"type": "text-align",
+																"values": { "textAlign": "start" },
+																"declarationValue": "start"
+															},
+															"textIndent": {
+																"type": "text-indent",
+																"values": {
+																	"textIndent": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															}
+														},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "basic-text",
+																"uniqueId": "1775078174310-243079961",
+																"customStorage": null,
+																"data": "const scope = enhance(node);"
+															}
+														]
+													},
+													{
+														"type": "content-line",
+														"uniqueId": "1775078174311-897655359",
+														"customStorage": null,
+														"localName": "p",
+														"styleAttrs": {},
+														"structuredStyle": {
+															"lineHeight": {
+																"type": "line-height",
+																"values": {
+																	"lineHeight": {
+																		"type": "number",
+																		"value": 1.5
+																	}
+																},
+																"declarationValue": "1.5"
+															},
+															"paddingBlock": {
+																"type": "padding-block",
+																"values": {
+																	"paddingBlock": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"paddingInline": {
+																"type": "padding-inline",
+																"values": {
+																	"paddingInline": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															},
+															"textAlign": {
+																"type": "text-align",
+																"values": { "textAlign": "start" },
+																"declarationValue": "start"
+															},
+															"textIndent": {
+																"type": "text-indent",
+																"values": {
+																	"textIndent": { "type": "px", "value": 0 }
+																},
+																"declarationValue": "0px"
+															}
+														},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "basic-text",
+																"uniqueId": "1775078174311-1154037551",
+																"customStorage": null,
+																"data": "scope.insertNode(child); // schema-validated"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775078173413-3854642779",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775078173413-1625105190",
+								"customStorage": null
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064247823-690995432",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064252278-1325657327",
+						"customStorage": null,
+						"data": "Integration with existing web APIs works out of the box — structural rules are still enforced."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064291516-2389610461",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "beam-text",
+						"uniqueId": "1775064291515-1780623029",
+						"customStorage": null
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064305643-2710386720",
+				"customStorage": null,
+				"localName": "h2",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "one-visual-unit-text",
+						"uniqueId": "1775064295430-2564454067",
+						"customStorage": null,
+						"data": "🧱"
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064295430-2859790461",
+						"customStorage": null,
+						"data": " Composable Components"
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064297961-257219299",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775220323878-3056813044",
+						"customStorage": null,
+						"data": "You define your own inline and block-level elements. The schema enforces the rules."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775220323879-443681615",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775225615901-1260032516",
+						"customStorage": null,
+						"data": "Inline components like mentions "
+					},
+					{
+						"type": "inline-nested-context",
+						"uniqueId": "1775225597944-268516961",
+						"componentName": "mention",
+						"content": { "type": "custom" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": false,
+						"editState": "false",
+						"customStorage": { "userId": "john-doe" },
+						"styleAttrs": {},
+						"domAttrs": { "contenteditable": "false" },
+						"childNodes": [
+							{
+								"type": "nested-editable",
+								"uniqueId": "1775225597944-1030891759",
+								"customStorage": null,
+								"content": { "type": "default" },
+								"display": "inline",
+								"allowedComponents": [],
+								"allowedContentLineLocalNames": null,
+								"allowedContentLineStyleAttrNames": null,
+								"allowedGlyphFormatterStyleAttrNames": null,
+								"allowedGlyphFormatterInlineTags": null,
+								"editState": "inherit",
+								"styleAttrs": {},
+								"domAttrs": {},
+								"childNodes": [
+									{
+										"type": "content-line",
+										"uniqueId": "1775225597944-1430093007",
+										"customStorage": null,
+										"localName": "p",
+										"styleAttrs": {},
+										"structuredStyle": {
+											"lineHeight": {
+												"type": "line-height",
+												"values": {
+													"lineHeight": { "type": "number", "value": 1.5 }
+												},
+												"declarationValue": "1.5"
+											},
+											"paddingBlock": {
+												"type": "padding-block",
+												"values": {
+													"paddingBlock": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											},
+											"paddingInline": {
+												"type": "padding-inline",
+												"values": {
+													"paddingInline": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											},
+											"textAlign": {
+												"type": "text-align",
+												"values": { "textAlign": "start" },
+												"declarationValue": "start"
+											},
+											"textIndent": {
+												"type": "text-indent",
+												"values": {
+													"textIndent": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											}
+										},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "basic-text",
+												"uniqueId": "1775225597944-355862300",
+												"customStorage": null,
+												"data": "@JohnDoe"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775228059095-1720104182",
+						"customStorage": null,
+						"data": ", "
+					},
+					{
+						"type": "inline-nested-context",
+						"uniqueId": "1775228059095-2486641961",
+						"componentName": "template-variable",
+						"content": { "type": "custom" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": true,
+						"editState": "false",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": { "contenteditable": "false" },
+						"childNodes": [
+							{
+								"type": "nested-editable",
+								"uniqueId": "1775228059095-3468657656",
+								"customStorage": null,
+								"content": { "type": "default" },
+								"display": "inline",
+								"allowedComponents": [],
+								"allowedContentLineLocalNames": null,
+								"allowedContentLineStyleAttrNames": null,
+								"allowedGlyphFormatterStyleAttrNames": null,
+								"allowedGlyphFormatterInlineTags": null,
+								"editState": "inherit",
+								"styleAttrs": {},
+								"domAttrs": {},
+								"childNodes": [
+									{
+										"type": "content-line",
+										"uniqueId": "1775228059095-4070435742",
+										"customStorage": null,
+										"localName": "p",
+										"styleAttrs": {},
+										"structuredStyle": {
+											"lineHeight": {
+												"type": "line-height",
+												"values": {
+													"lineHeight": { "type": "number", "value": 1.5 }
+												},
+												"declarationValue": "1.5"
+											},
+											"paddingBlock": {
+												"type": "padding-block",
+												"values": {
+													"paddingBlock": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											},
+											"paddingInline": {
+												"type": "padding-inline",
+												"values": {
+													"paddingInline": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											},
+											"textAlign": {
+												"type": "text-align",
+												"values": { "textAlign": "start" },
+												"declarationValue": "start"
+											},
+											"textIndent": {
+												"type": "text-indent",
+												"values": {
+													"textIndent": { "type": "px", "value": 0 }
+												},
+												"declarationValue": "0px"
+											}
+										},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "basic-text",
+												"uniqueId": "1775228059095-1304082029",
+												"customStorage": null,
+												"data": "{{TemplateVariable}}"
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775228059095-4246886202",
+						"customStorage": null,
+						"data": " and links ("
+					},
+					{
+						"type": "inline-nested-context",
+						"uniqueId": "1775222919958-2096662793",
+						"componentName": "link",
+						"content": { "type": "linked-characters" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": false,
+						"editState": "inherit",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "html-layout",
+								"uniqueId": "1775222919958-4086805752",
+								"customStorage": null,
+								"localName": "a",
+								"styleAttrs": {},
+								"domAttrs": {
+									"href": "https://example.com",
+									"target": "_blank"
+								},
+								"childNodes": [
+									{
+										"type": "nested-editable",
+										"uniqueId": "1775222919958-3325792587",
+										"customStorage": null,
+										"content": {
+											"type": "linked-characters",
+											"unwrap": "if-empty"
+										},
+										"display": "inline",
+										"allowedComponents": [],
+										"allowedContentLineLocalNames": null,
+										"allowedContentLineStyleAttrNames": null,
+										"allowedGlyphFormatterStyleAttrNames": null,
+										"allowedGlyphFormatterInlineTags": null,
+										"editState": "inherit",
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "content-line",
+												"uniqueId": "1775222919958-1069082082",
+												"customStorage": null,
+												"localName": "p",
+												"styleAttrs": {},
+												"structuredStyle": {
+													"lineHeight": {
+														"type": "line-height",
+														"values": {
+															"lineHeight": { "type": "number", "value": 1.5 }
+														},
+														"declarationValue": "1.5"
+													},
+													"paddingBlock": {
+														"type": "padding-block",
+														"values": {
+															"paddingBlock": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"paddingInline": {
+														"type": "padding-inline",
+														"values": {
+															"paddingInline": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"textAlign": {
+														"type": "text-align",
+														"values": { "textAlign": "start" },
+														"declarationValue": "start"
+													},
+													"textIndent": {
+														"type": "text-indent",
+														"values": {
+															"textIndent": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													}
+												},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "basic-text",
+														"uniqueId": "1775222919958-331580669",
+														"customStorage": null,
+														"data": "Example"
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775222919959-104449177",
+						"customStorage": null,
+						"data": ") are schema-defined elements, not special cases. Block-level components like code blocks and blockquotes follow the same pattern."
+					}
+				]
+			},
+			{
+				"type": "block-nested-context-line",
+				"uniqueId": "1775220984333-721090918",
+				"customStorage": null,
+				"styleAttrs": {},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775220984333-2349859281",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775220984333-1984057168",
+								"customStorage": null
+							}
+						]
+					},
+					{
+						"type": "block-nested-context",
+						"uniqueId": "1775220984333-2040675692",
+						"customStorage": null,
+						"componentName": "block-quote",
+						"content": { "type": "styled-block" },
+						"shouldSelectBeforeRemove": false,
+						"shouldSelectOnNavigation": false,
+						"editState": "inherit",
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "html-layout",
+								"uniqueId": "1775220984333-1229148575",
+								"customStorage": null,
+								"localName": "blockquote",
+								"styleAttrs": {},
+								"domAttrs": {},
+								"childNodes": [
+									{
+										"type": "nested-editable",
+										"uniqueId": "1775220984333-4132831246",
+										"customStorage": null,
+										"content": { "type": "default" },
+										"display": "block multi-line",
+										"allowedComponents": null,
+										"allowedContentLineLocalNames": null,
+										"allowedContentLineStyleAttrNames": null,
+										"allowedGlyphFormatterStyleAttrNames": null,
+										"allowedGlyphFormatterInlineTags": null,
+										"editState": "inherit",
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "content-line",
+												"uniqueId": "1775220984332-2881905141",
+												"customStorage": null,
+												"localName": "p",
+												"styleAttrs": {},
+												"structuredStyle": {
+													"lineHeight": {
+														"type": "line-height",
+														"values": {
+															"lineHeight": { "type": "number", "value": 1.5 }
+														},
+														"declarationValue": "1.5"
+													},
+													"paddingBlock": {
+														"type": "padding-block",
+														"values": {
+															"paddingBlock": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"paddingInline": {
+														"type": "padding-inline",
+														"values": {
+															"paddingInline": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"textAlign": {
+														"type": "text-align",
+														"values": { "textAlign": "start" },
+														"declarationValue": "start"
+													},
+													"textIndent": {
+														"type": "text-indent",
+														"values": {
+															"textIndent": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													}
+												},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "basic-text",
+														"uniqueId": "1775220990335-3602853865",
+														"customStorage": null,
+														"data": "Build what you need."
+													}
+												]
+											},
+											{
+												"type": "content-line",
+												"uniqueId": "1775220990334-4078138911",
+												"customStorage": null,
+												"localName": "p",
+												"styleAttrs": {},
+												"structuredStyle": {
+													"lineHeight": {
+														"type": "line-height",
+														"values": {
+															"lineHeight": { "type": "number", "value": 1.5 }
+														},
+														"declarationValue": "1.5"
+													},
+													"paddingBlock": {
+														"type": "padding-block",
+														"values": {
+															"paddingBlock": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"paddingInline": {
+														"type": "padding-inline",
+														"values": {
+															"paddingInline": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													},
+													"textAlign": {
+														"type": "text-align",
+														"values": { "textAlign": "start" },
+														"declarationValue": "start"
+													},
+													"textIndent": {
+														"type": "text-indent",
+														"values": {
+															"textIndent": { "type": "px", "value": 0 }
+														},
+														"declarationValue": "0px"
+													}
+												},
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "basic-text",
+														"uniqueId": "1775220990335-3231853151",
+														"customStorage": null,
+														"data": "RangeX makes sure it stays valid."
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775220984333-795992861",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775220984333-1172051099",
+								"customStorage": null
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775220347549-3080541691",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775220881817-2120395461",
+						"customStorage": null,
+						"data": "Tables & lists are the only exception. They're built into the framework since they have unqiue capabilities."
+					}
+				]
+			},
+			{
+				"type": "block-nested-context-line",
+				"uniqueId": "1775064442498-2051837890",
+				"customStorage": null,
+				"styleAttrs": {},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775064442497-1703117999",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775064442497-2995981925",
+								"customStorage": null
+							}
+						]
+					},
+					{
+						"type": "block-nested-context",
+						"uniqueId": "1775064442497-3527053772",
+						"customStorage": null,
+						"componentName": "table",
+						"content": { "type": "custom" },
+						"shouldSelectBeforeRemove": true,
+						"shouldSelectOnNavigation": true,
+						"editState": "inherit",
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "table",
+								"uniqueId": "1775064442492-516081528",
+								"customStorage": null,
+								"colGroups": [307, 360, 333],
+								"rowGroups": [40, 40, 40, 40],
+								"minColWidth": 40,
+								"minRowHeight": 40,
+								"defaultRowHeight": 40,
+								"tableCellsEditable": "true",
+								"tableCellSnapshotProps": {
+									"domAttrs": {
+										"style": "border-width: 1px; border-style: solid; border-color: grey;"
+									},
+									"childNodes": [
+										{
+											"type": "nested-editable",
+											"uniqueId": "1775064442491-4261497167",
+											"customStorage": null,
+											"content": { "type": "table-cell" },
+											"display": "block multi-line",
+											"allowedComponents": null,
+											"allowedContentLineLocalNames": null,
+											"allowedContentLineStyleAttrNames": null,
+											"allowedGlyphFormatterStyleAttrNames": null,
+											"allowedGlyphFormatterInlineTags": null,
+											"editState": "true",
+											"styleAttrs": {},
+											"domAttrs": {},
+											"childNodes": [
+												{
+													"type": "content-line",
+													"uniqueId": "1775064442491-974040043",
+													"customStorage": null,
+													"localName": "p",
+													"styleAttrs": {},
+													"structuredStyle": {},
+													"domAttrs": {},
+													"childNodes": [
+														{
+															"type": "beam-text",
+															"uniqueId": "1775064442491-2813433742",
+															"customStorage": null
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								"styleAttrs": {},
+								"domAttrs": {
+									"style": "border-width: 1px; border-style: solid; border-color: grey;",
+									"contenteditable": "false"
+								},
+								"childNodes": [
+									{
+										"type": "table-col-group",
+										"uniqueId": "1775064442493-914614264",
+										"customStorage": null,
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "table-col",
+												"uniqueId": "1775064442493-3578243339",
+												"customStorage": null,
+												"styleAttrs": { "width": "30.7%" },
+												"domAttrs": {},
+												"childNodes": []
+											},
+											{
+												"type": "table-col",
+												"uniqueId": "1775064442493-1707314693",
+												"customStorage": null,
+												"styleAttrs": { "width": "36%" },
+												"domAttrs": {},
+												"childNodes": []
+											},
+											{
+												"type": "table-col",
+												"uniqueId": "1775064442493-1789665557",
+												"customStorage": null,
+												"styleAttrs": { "width": "33.3%" },
+												"domAttrs": {},
+												"childNodes": []
+											}
+										]
+									},
+									{
+										"type": "table-section",
+										"uniqueId": "1775064442496-2484953575",
+										"customStorage": null,
+										"localName": "tbody",
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
+											{
+												"type": "table-row",
+												"uniqueId": "1775064442494-1619822849",
+												"customStorage": null,
+												"styleAttrs": { "height": "40px" },
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442494-2177655426",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442493-1610488012",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442493-1258096936",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "start" },
+																				"declarationValue": "start"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064453155-3023047520",
+																				"customStorage": null,
+																				"data": "Feature"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442494-1005729185",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442494-2869044633",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442494-1845190703",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064462193-1151697540",
+																				"customStorage": null,
+																				"data": "Tables"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442494-16556092",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442494-479031055",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442494-959152083",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064464053-616668243",
+																				"customStorage": null,
+																				"data": "Lists"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "table-row",
+												"uniqueId": "1775064442495-2158561503",
+												"customStorage": null,
+												"styleAttrs": { "height": "40px" },
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442494-78402334",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442494-2698763259",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442494-2353998505",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "start" },
+																				"declarationValue": "start"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064515430-124685309",
+																				"customStorage": null,
+																				"data": "Structural validation"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-3533899199",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442494-762157317",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-3926218606",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064486903-1512833577",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-2958105005",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442495-3883724471",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-4238058623",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064474327-1932638765",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "table-row",
+												"uniqueId": "1775064442495-508531513",
+												"customStorage": null,
+												"styleAttrs": { "height": "40px" },
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-1438482249",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442495-2403483322",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-3666403377",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "start" },
+																				"declarationValue": "start"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064518509-3790684383",
+																				"customStorage": null,
+																				"data": "Keyboard navigation"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-1021177302",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442495-2108067999",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-3043525405",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064486625-3001390673",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-3909433512",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442495-1257776551",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-1515948721",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064483209-2203215160",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"type": "table-row",
+												"uniqueId": "1775064442496-643960601",
+												"customStorage": null,
+												"styleAttrs": { "height": "40px" },
+												"domAttrs": {},
+												"childNodes": [
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442495-632336415",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442495-2169239916",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442495-2740541885",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "start" },
+																				"declarationValue": "start"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064522072-2205204131",
+																				"customStorage": null,
+																				"data": "Nested support"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442496-375029120",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442496-189316382",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442496-895182957",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064486083-3791008474",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "table-cell",
+														"uniqueId": "1775064442496-4227846718",
+														"customStorage": null,
+														"localName": "td",
+														"colSpan": 1,
+														"rowSpan": 1,
+														"styleAttrs": {},
+														"domAttrs": {
+															"style": "border-width: 1px; border-style: solid; border-color: grey;",
+															"colspan": "1",
+															"rowspan": "1"
+														},
+														"childNodes": [
+															{
+																"type": "nested-editable",
+																"uniqueId": "1775064442496-935203224",
+																"customStorage": null,
+																"content": { "type": "table-cell" },
+																"display": "block multi-line",
+																"allowedComponents": null,
+																"allowedContentLineLocalNames": null,
+																"allowedContentLineStyleAttrNames": null,
+																"allowedGlyphFormatterStyleAttrNames": null,
+																"allowedGlyphFormatterInlineTags": null,
+																"editState": "true",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "content-line",
+																		"uniqueId": "1775064442496-1402195682",
+																		"customStorage": null,
+																		"localName": "p",
+																		"styleAttrs": {},
+																		"structuredStyle": {
+																			"lineHeight": {
+																				"type": "line-height",
+																				"values": {
+																					"lineHeight": {
+																						"type": "number",
+																						"value": 1.5
+																					}
+																				},
+																				"declarationValue": "1.5"
+																			},
+																			"paddingBlock": {
+																				"type": "padding-block",
+																				"values": {
+																					"paddingBlock": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"paddingInline": {
+																				"type": "padding-inline",
+																				"values": {
+																					"paddingInline": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			},
+																			"textAlign": {
+																				"type": "text-align",
+																				"values": { "textAlign": "center" },
+																				"declarationValue": "center"
+																			},
+																			"textIndent": {
+																				"type": "text-indent",
+																				"values": {
+																					"textIndent": {
+																						"type": "px",
+																						"value": 0
+																					}
+																				},
+																				"declarationValue": "0px"
+																			}
+																		},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "basic-text",
+																				"uniqueId": "1775064485208-2269176149",
+																				"customStorage": null,
+																				"data": "✓"
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "block-nested-context-text-holder",
+						"uniqueId": "1775064442498-3640753750",
+						"customStorage": null,
+						"styleAttrs": {},
+						"domAttrs": {},
+						"childNodes": [
+							{
+								"type": "block-nested-context-text",
+								"uniqueId": "1775064442498-1134462127",
+								"customStorage": null
+							}
+						]
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064526466-1926679164",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064526466-4132747153",
+						"customStorage": null,
+						"data": "Tables support merging/splitting cells, inserting/removing rows and columns, and resizing — all constraint-safe."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064541761-1772271959",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "beam-text",
+						"uniqueId": "1775064541761-1782253119",
+						"customStorage": null
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064550884-3128942491",
+				"customStorage": null,
+				"localName": "h2",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "one-visual-unit-text",
+						"uniqueId": "1775064547716-2505791638",
+						"customStorage": null,
+						"data": "🔭"
+					},
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064547716-2543915974",
+						"customStorage": null,
+						"data": " What's Next"
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064547717-2821162082",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064547716-4099702496",
+						"customStorage": null,
+						"data": "Upcoming focus areas include richer schema definitions, advanced layouts, collaboration support, and developer tooling."
+					}
+				]
+			},
+			{
+				"type": "content-line",
+				"uniqueId": "1775064547717-3359684553",
+				"customStorage": null,
+				"localName": "p",
+				"styleAttrs": {},
+				"structuredStyle": {
+					"lineHeight": {
+						"type": "line-height",
+						"values": { "lineHeight": { "type": "number", "value": 1.5 } },
+						"declarationValue": "1.5"
+					},
+					"paddingBlock": {
+						"type": "padding-block",
+						"values": { "paddingBlock": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"paddingInline": {
+						"type": "padding-inline",
+						"values": { "paddingInline": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					},
+					"textAlign": {
+						"type": "text-align",
+						"values": { "textAlign": "start" },
+						"declarationValue": "start"
+					},
+					"textIndent": {
+						"type": "text-indent",
+						"values": { "textIndent": { "type": "px", "value": 0 } },
+						"declarationValue": "0px"
+					}
+				},
+				"domAttrs": {},
+				"childNodes": [
+					{
+						"type": "basic-text",
+						"uniqueId": "1775064547716-2544425477",
+						"customStorage": null,
+						"data": "Check out our development plan below."
+					}
+				]
+			}
+		]
+	}
+}

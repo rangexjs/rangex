@@ -1,0 +1,37 @@
+@keyframes caret-blinking {
+	0% {
+		opacity: 1;
+	}
+	49% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+caret-anchor {
+	background-color: light-dark(black, white);
+
+	&[data-rx-interactive-blink-state="running"] {
+		animation: 1.1s linear infinite caret-blinking;
+	}
+
+	&[data-rx-interactive-editor-state="idle"] {
+		transition-property: top, left;
+		transition-duration: 100ms;
+		transition-timing-function: ease-out;
+	}
+
+	&[data-rx-interactive-display-type="block"] {
+		width: anchor-size(width);
+		height: 1px;
+	}
+
+	&[data-rx-interactive-display-type="inline"] {
+		width: 1px;
+	}
+}

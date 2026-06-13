@@ -1,0 +1,9 @@
+[data-rx-editor-role="inline-nested-context"] {
+	&:where([data-rx-component-name="template-variable"]) {
+		padding: 2px 4px;
+		border-radius: 3px;
+		background-color: color(from grey srgb r g b / 0.15);
+		font-family: monospace;
+		font-size: 0.9em;
+	}
+}

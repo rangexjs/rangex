@@ -1,0 +1,22 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(git diff*)",
+			"Bash(git diff --*)",
+			"Bash(git log*)",
+			"Bash(git status*)",
+			"Bash(git show*)",
+			"Bash(git blame*)",
+			"Bash(git branch*)",
+			"Bash(git stash list*)",
+			"Bash(bun run lint*)",
+			"Bash(bun run fix*)",
+			"Bash(bun run test*)",
+			"Bash(bun run pre:check*)",
+			"Bash(ls*)",
+			"Bash(cat*)",
+			"Bash(type*)",
+			"Bash(grep*)"
+		]
+	}
+}
