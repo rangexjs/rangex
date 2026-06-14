@@ -17,6 +17,12 @@ import {
 } from "../Components";
 import { configureFindReplace, configureSymbolInsertion } from "../Configs";
 import {
+	configurePreview,
+	configureSettings,
+	configureTemplate,
+	configureView,
+} from "../MenuBar";
+import {
 	getFormatStylesButtonState,
 	getSelectionStylesData,
 } from "../SelectionStyle";
@@ -101,6 +107,11 @@ export const createRichTextEditor = ({
 			});
 		},
 	});
+
+	configureView({ richTextEditorUI, editorAPI });
+	configureTemplate({ richTextEditorUI, editorAPI });
+	configureSettings({ richTextEditorUI, editorAPI });
+	configurePreview({ richTextEditorUI, editorAPI });
 
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
