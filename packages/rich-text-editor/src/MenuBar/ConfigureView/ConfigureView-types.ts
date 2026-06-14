@@ -3,7 +3,6 @@ import type { EditorAPI } from "rich-text-area";
 
 export interface ConfigureThemeParams {
 	richTextEditorUI: RichTextEditorUI;
-	
 }
 
 export interface ConfigureViewParams {
