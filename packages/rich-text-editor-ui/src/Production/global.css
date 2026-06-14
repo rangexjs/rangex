@@ -1,8 +1,19 @@
-@import "tailwindcss" source("./");
+@import "tailwindcss";
 @import "./Styles//Button.css";
 @import "./Styles/TextField.css";
 @import "./Styles/ToggleButton.css";
 @import "./Styles/ToolbarButton.css";
+
+@custom-variant dark {
+	&:where([data-color-scheme="dark"], [data-color-scheme="dark"] *) {
+		@slot;
+	}
+	@media (prefers-color-scheme: dark) {
+		&:where([data-color-scheme="system"], [data-color-scheme="system"] *) {
+			@slot;
+		}
+	}
+}
 
 @layer base {
 	:host {
