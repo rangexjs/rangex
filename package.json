@@ -9,7 +9,8 @@
 	],
 	"scripts": {
 		"dev": "vite dev",
-		"build": "bun run --filter @rangex/rich-text-editor-ui build && bun run --filter @rangex/rich-text-editor build"
+		"build": "bun run --filter @rangex/rich-text-editor-ui build && bun run --filter @rangex/rich-text-editor build",
+		"lint": "bun run --filter @rangex/rich-text-editor-ui lint && bun run --filter @rangex/rich-text-editor lint"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",
