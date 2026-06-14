@@ -8,7 +8,7 @@
 		"directory": "packages/rich-text-editor"
 	},
 	"private": true,
-	"license": "SEE LICENSE IN LICENSE.md",
+	"license": "MIT",
 	"type": "module",
 	"exports": {
 		".": {
