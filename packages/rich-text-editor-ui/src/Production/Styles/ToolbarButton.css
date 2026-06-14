@@ -1,0 +1,47 @@
+.toolbar-button {
+	display: inline flex;
+	align-items: center;
+	gap: 4px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: transparent;
+	border-radius: 4px;
+	background-color: transparent;
+	padding: 4px;
+	user-select: none;
+	transition-property: background-color, border-color, box-shadow, filter;
+	transition-duration: 200ms;
+	color: var(--color-neutral-800);
+
+	&[data-is-checked="true"] {
+		background-color: color(from var(--color-primary-500) srgb r g b / 0.1);
+		color: var(--color-primary-500);
+	}
+
+	&:hover {
+		color: var(--color-neutral-900);
+		border-color: var(--color-neutral-200);
+		background-color: var(--color-neutral-100);
+
+		&[data-is-checked="true"] {
+			color: var(--color-primary-500);
+			border-color: color(from var(--color-primary-500) srgb r g b / 0.3);
+			background-color: color(from var(--color-primary-500) srgb r g b / 0.2);
+		}
+	}
+
+	&:active {
+		border-color: color(
+			from var(--color-primary-500) srgb r g b /
+			0.6
+		) !important;
+		box-shadow: 0px 0px 0px 2px
+			color(from var(--color-primary-500) srgb r g b / 0.2);
+	}
+
+	&:disabled {
+		cursor: default;
+		filter: contrast(0%);
+		pointer-events: none;
+	}
+}

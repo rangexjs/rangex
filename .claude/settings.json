@@ -1,0 +1,48 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(git diff*)",
+			"Bash(git diff --*)",
+			"Bash(git log*)",
+			"Bash(git status*)",
+			"Bash(git show*)",
+			"Bash(git blame*)",
+			"Bash(git branch*)",
+			"Bash(git stash list*)",
+			"Bash(bun run lint*)",
+			"Bash(bun run fix*)",
+			"Bash(bun run test*)",
+			"Bash(bun run pre:check*)",
+			"Bash(ls*)",
+			"Bash(cat*)",
+			"Bash(type*)",
+			"Bash(grep*)"
+		],
+		"deny": [
+			"Bash(git push*)",
+			"Bash(git pull*)",
+			"Bash(git fetch*)",
+			"Bash(git remote*)",
+			"Bash(git commit*)",
+			"Bash(git add*)",
+			"Bash(git stage*)",
+			"Bash(git restore --staged*)",
+			"Bash(git reset*)",
+			"Bash(git rebase*)",
+			"Bash(git merge*)",
+			"Bash(git cherry-pick*)",
+			"Bash(git clean*)",
+			"Bash(git checkout*)",
+			"Bash(git switch*)",
+			"Bash(git rm*)",
+			"Bash(git tag*)",
+			"Bash(npm publish*)",
+			"Bash(bun publish*)",
+			"Bash(npm run npm:publish*)",
+			"Bash(rm *)",
+			"Bash(mv *)",
+			"Bash(curl*)",
+			"Bash(wget*)"
+		]
+	}
+}

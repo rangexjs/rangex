@@ -1,0 +1,15 @@
+{
+	"extends": "./tsconfig.base.json",
+	"references": [
+		{ "path": "../rich-text-area/tsconfig.lib.json" },
+		{ "path": "../rich-text-editor-ui/tsconfig.lib.json" }
+	],
+	"compilerOptions": {
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"customConditions": ["development"]
+	},
+	"include": ["src/**/*", "declaration.d.ts"]
+}

@@ -1,0 +1,104 @@
+.text-field-primary-outline {
+	font-weight: 600;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--color-neutral-400);
+	border-radius: 6px;
+	background-color: var(--color-neutral-50);
+	color: var(--color-neutral-900);
+
+	transition-property: border-color, box-shadow;
+	transition-duration: 200ms;
+
+	&:has([data-invalid="true"]) {
+		border-color: color(from var(--color-red-600) srgb r g b / 0.5);
+	}
+
+	&:hover {
+		border-color: var(--color-neutral-500);
+
+		&:has([data-invalid="true"]) {
+			border-color: color(from var(--color-red-600) srgb r g b / 0.8);
+		}
+	}
+
+	&:focus-within {
+		border-color: var(--color-primary-500);
+		box-shadow: 0px 0px 0px 4px
+			color(from var(--color-primary-500) srgb r g b / 0.2);
+
+		&:has([data-invalid="true"]) {
+			border-color: var(--color-red-600);
+			box-shadow: 0px 0px 0px 4px
+				color(from var(--color-red-600) srgb r g b / 0.2);
+		}
+	}
+
+	& > :is(input, textarea) {
+		outline: none;
+		width: 100%;
+
+		&::placeholder {
+			color: var(--color-neutral-500);
+		}
+	}
+
+	&:has(input:disabled, textarea:disabled) {
+		pointer-events: none;
+		background-color: var(--color-neutral-100);
+		border-color: var(--color-neutral-200);
+	}
+
+	& > :is(input:disabled, textarea:disabled) {
+		color: var(--color-neutral-400);
+	}
+}
+
+.text-field-neutral-filled-underline {
+	font-weight: 600;
+	border-bottom-width: 1px;
+	border-style: solid;
+	border-color: var(--color-neutral-300);
+	background-color: var(--color-neutral-100);
+	color: var(--color-neutral-900);
+
+	transition-property: border-color;
+	transition-duration: 200ms;
+
+	&:has([data-invalid="true"]) {
+		border-color: color(from var(--color-red-600) srgb r g b / 0.5);
+	}
+
+	&:hover {
+		border-color: var(--color-neutral-400);
+
+		&:has([data-invalid="true"]) {
+			border-color: color(from var(--color-red-600) srgb r g b / 0.8);
+		}
+	}
+
+	&:focus-within {
+		border-color: var(--color-primary-500);
+
+		&:has([data-invalid="true"]) {
+			border-color: var(--color-red-600);
+		}
+	}
+
+	& > :is(input, textarea) {
+		outline: none;
+		width: 100%;
+
+		&::placeholder {
+			color: var(--color-neutral-500);
+		}
+	}
+
+	&:has(input:disabled, textarea:disabled) {
+		pointer-events: none;
+	}
+
+	& > :is(input:disabled, textarea:disabled) {
+		color: var(--color-neutral-500);
+	}
+}

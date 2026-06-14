@@ -1,13 +1,15 @@
 {
 	"name": "@rangexjs/rangex-dev",
 	"type": "module",
+	"license": "MIT",
 	"workspaces": [
 		"packages/rich-text-area",
 		"packages/rich-text-editor",
 		"packages/rich-text-editor-ui"
 	],
 	"scripts": {
-		"dev": "vite dev"
+		"dev": "vite dev",
+		"build": "bun run --filter @rangex/rich-text-editor-ui build && bun run --filter @rangex/rich-text-editor build"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",
