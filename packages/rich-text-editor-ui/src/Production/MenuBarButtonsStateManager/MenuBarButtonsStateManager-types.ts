@@ -1,6 +1,7 @@
 import type { menuBarButtonsName } from "../Constants";
 import type {
 	LanguageMenuBarButtonState,
+	PreviewMenuBarButtonState,
 	TemplateMenuBarButtonState,
 	ThemeMenuBarButtonState,
 	VimModeMenuBarButtonState,
@@ -22,11 +23,16 @@ export type UpdateVimModeStateFn = (params: UpdateVimModeStateParams) => void;
 export interface UpdateLanguageStateParams extends LanguageMenuBarButtonState {}
 export type UpdateLanguageStateFn = (params: UpdateLanguageStateParams) => void;
 
+// Preview
+export interface UpdatePreviewStateParams extends PreviewMenuBarButtonState {}
+export type UpdatePreviewStateFn = (params: UpdatePreviewStateParams) => void;
+
 export interface MenuBarButtonsState {
 	theme: Partial<ThemeMenuBarButtonState>;
 	template: Partial<TemplateMenuBarButtonState>;
 	vimMode: Partial<VimModeMenuBarButtonState>;
 	language: Partial<LanguageMenuBarButtonState>;
+	preview: Partial<PreviewMenuBarButtonState>;
 }
 
 export type ListenerMap = {
@@ -34,6 +40,7 @@ export type ListenerMap = {
 	[menuBarButtonsName.template]: UpdateTemplateStateFn;
 	[menuBarButtonsName.vimMode]: UpdateVimModeStateFn;
 	[menuBarButtonsName.language]: UpdateLanguageStateFn;
+	[menuBarButtonsName.preview]: UpdatePreviewStateFn;
 };
 
 export type ListenerOption = {

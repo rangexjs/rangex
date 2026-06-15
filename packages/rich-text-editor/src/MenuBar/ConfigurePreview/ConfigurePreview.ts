@@ -10,11 +10,18 @@ export const configurePreview = ({
 		if (params.type !== "preview-as") {
 			return;
 		}
+
+		const storedSnapshot = editorAPI.createStoredSnapshot();
+		const { snapshotView } = createSnapshotView({ storedSnapshot });
+		const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
+		const host = document.createElement("div");
+		const shadowRoot = host.attachShadow({ mode: "open" });
+		shadowRoot.append(style, rootElement);
+
+		richTextEditorUI.updateMenuBarButtonState({
+			preview: {
+				content: { rendered: host, html: host, json: host, snapshot: host },
+			},
+		});
 	});
-
-	const storedSnapshot = editorAPI.createStoredSnapshot();
-	const { snapshotView } = createSnapshotView({ storedSnapshot });
-	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
-
-	console.log(style, rootElement);
 };
