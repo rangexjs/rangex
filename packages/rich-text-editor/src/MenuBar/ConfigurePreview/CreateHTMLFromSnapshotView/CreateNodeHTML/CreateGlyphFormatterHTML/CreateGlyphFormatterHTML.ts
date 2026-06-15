@@ -50,7 +50,7 @@ export const createGlyphFormatterHTML = ({
 		const childNode = childToDOM(child);
 
 		if (childNode !== null) {
-			el.appendChild(childNode);
+			el.append(childNode);
 		}
 	}
 

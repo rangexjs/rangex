@@ -36,7 +36,7 @@ const elementViewToElement = (elementView: ElementView): Element | null => {
 		const childNode = nodeViewToNode(child);
 
 		if (childNode !== null) {
-			el.appendChild(childNode);
+			el.append(childNode);
 		}
 	}
 
@@ -55,7 +55,7 @@ export const createDetachedContextHTML = ({
 		const childEl = elementViewToElement(child);
 
 		if (childEl !== null) {
-			el.appendChild(childEl);
+			el.append(childEl);
 		}
 	}
 
