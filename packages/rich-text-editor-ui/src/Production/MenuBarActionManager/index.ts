@@ -5,7 +5,7 @@ export type {
 	MenuBarActionState,
 	OnMenuBarFn,
 	OnMenuBarParams,
-	PreviewAsActionState,
+	PreviewActionState,
 	TemplateActionState,
 	ThemeActionState,
 	VimModeActionState,

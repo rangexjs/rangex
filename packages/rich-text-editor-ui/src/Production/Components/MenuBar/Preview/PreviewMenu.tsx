@@ -10,17 +10,12 @@ export const PreviewMenu = () => {
 
 	return (
 		<span>
-			<MenuBarButton
-				onClick={() =>
-					menuBarActionManager.emitMenuBarChange({ type: "preview-as" })
-				}
-				commandfor={dialogId}
-				command="show-modal"
-			>
+			<MenuBarButton commandfor={dialogId} command="show-modal">
 				Preview
 			</MenuBarButton>
 			<PreviewDialog
 				dialogId={dialogId}
+				menuBarActionManager={menuBarActionManager}
 				menuBarButtonsStateManager={menuBarButtonsStateManager}
 			/>
 		</span>
