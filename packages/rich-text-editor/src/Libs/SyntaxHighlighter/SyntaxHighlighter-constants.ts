@@ -1,8 +1,12 @@
 import type { BundledLanguage, BundledTheme } from "shiki";
 
-export const highlighterLangs = ["typescript"] satisfies BundledLanguage[];
+export const highlighterLangs = [
+	"html",
+	"json",
+	"typescript",
+] satisfies BundledLanguage[];
 
 export const highlighterThemes = [
-	"light-plus",
 	"dark-plus",
+	"light-plus",
 ] satisfies BundledTheme[];

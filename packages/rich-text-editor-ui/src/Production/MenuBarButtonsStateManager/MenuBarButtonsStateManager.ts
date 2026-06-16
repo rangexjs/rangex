@@ -2,6 +2,7 @@ import { menuBarButtonsName } from "../Constants";
 import { assertNever } from "../ErrorHandling";
 import type {
 	LanguageMenuBarButtonState,
+	PreviewMenuBarButtonState,
 	TemplateMenuBarButtonState,
 	ThemeMenuBarButtonState,
 	VimModeMenuBarButtonState,
@@ -11,6 +12,7 @@ import type {
 	UpdateLanguageStateFn,
 	UpdateListenerParams,
 	UpdateMenuBarButtonsStateParams,
+	UpdatePreviewStateFn,
 	UpdateTemplateStateFn,
 	UpdateThemeStateFn,
 	UpdateVimModeStateFn,
@@ -21,11 +23,13 @@ export class MenuBarButtonsStateManager {
 	#template: TemplateMenuBarButtonState = { value: "default" };
 	#vimMode: VimModeMenuBarButtonState = { enabled: false };
 	#language: LanguageMenuBarButtonState = { value: "en" };
+	#preview: PreviewMenuBarButtonState = { content: null };
 
 	#themeListeners: Set<UpdateThemeStateFn> = new Set();
 	#templateListeners: Set<UpdateTemplateStateFn> = new Set();
 	#vimModeListeners: Set<UpdateVimModeStateFn> = new Set();
 	#languageListeners: Set<UpdateLanguageStateFn> = new Set();
+	#previewListeners: Set<UpdatePreviewStateFn> = new Set();
 
 	get theme() {
 		return this.#theme;
@@ -41,6 +45,10 @@ export class MenuBarButtonsStateManager {
 
 	get language() {
 		return this.#language;
+	}
+
+	get preview() {
+		return this.#preview;
 	}
 
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
@@ -64,6 +72,11 @@ export class MenuBarButtonsStateManager {
 			return;
 		}
 
+		if (type === menuBarButtonsName.preview) {
+			this.#previewListeners[operation](callback as UpdatePreviewStateFn);
+			return;
+		}
+
 		assertNever(type);
 	}
 
@@ -80,6 +93,7 @@ export class MenuBarButtonsStateManager {
 		template,
 		vimMode,
 		language,
+		preview,
 	}: UpdateMenuBarButtonsStateParams) {
 		if (theme) {
 			this.#theme = { ...this.#theme, ...theme };
@@ -106,6 +120,13 @@ export class MenuBarButtonsStateManager {
 			this.#language = { ...this.#language, ...language };
 			for (const listener of this.#languageListeners) {
 				listener(this.#language);
+			}
+		}
+
+		if (preview) {
+			this.#preview = { ...this.#preview, ...preview };
+			for (const listener of this.#previewListeners) {
+				listener(this.#preview);
 			}
 		}
 	}

@@ -1,24 +1,32 @@
 import { createHighlighter } from "shiki";
+import { assertNever } from "../../../ErrorHandling";
 import {
 	highlighterLangs,
 	highlighterThemes,
 } from "../SyntaxHighlighter-constants";
 import type {
+	HighlightInfo,
 	ThemeBackgrounds,
 	ThemedCodeLine,
 	ThemedCodeLines,
 	TokenColors,
 } from "../SyntaxHighlighter-types";
-import type { WorkerRequest, WorkerResponse } from "./Worker-types";
+import type {
+	HTMLRequest,
+	TokensRequest,
+	WorkerRequest,
+	WorkerResponse,
+} from "./Worker-types";
 
 const highlighterPromise = createHighlighter({
 	langs: highlighterLangs,
 	themes: highlighterThemes,
 });
 
-self.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
-	const { id, lines, lang } = data;
-
+const getTokens = async ({
+	lines,
+	lang,
+}: TokensRequest): Promise<HighlightInfo> => {
 	const highlighter = await highlighterPromise;
 	const code = lines.join("\n");
 
@@ -60,7 +68,39 @@ self.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
 		}
 	}
 
-	const response: WorkerResponse = { id, result: { backgrounds, codeLines } };
+	return { backgrounds, codeLines };
+};
 
-	self.postMessage(response);
+/**
+ * Lets Shiki build the highlighted markup directly. `defaultColor:
+ * "light-dark()"` makes every token's color (and the background) a
+ * `light-dark(...)` value, so the result follows the user's
+ * `data-color-scheme` without any extra stylesheet or class toggling.
+ */
+const getHTML = async ({ code, lang, theme }: HTMLRequest): Promise<string> => {
+	const highlighter = await highlighterPromise;
+
+	return highlighter.codeToHtml(code, {
+		lang,
+		themes: { light: theme.light, dark: theme.dark },
+		defaultColor: "light-dark()",
+	});
+};
+
+self.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
+	if (data.type === "tokens") {
+		const result = await getTokens(data);
+		const response: WorkerResponse = { id: data.id, type: "tokens", result };
+		self.postMessage(response);
+		return;
+	}
+
+	if (data.type === "html") {
+		const result = await getHTML(data);
+		const response: WorkerResponse = { id: data.id, type: "html", result };
+		self.postMessage(response);
+		return;
+	}
+
+	assertNever(data);
 };

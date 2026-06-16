@@ -7,6 +7,11 @@ export type BundledLangKeys = (typeof highlighterLangs)[number];
 
 export type BundledThemeKeys = (typeof highlighterThemes)[number];
 
+export interface DualTheme {
+	light: BundledThemeKeys;
+	dark: BundledThemeKeys;
+}
+
 export interface ThemeBackgrounds extends Record<BundledThemeKeys, string> {}
 
 export type TokenColors = Record<BundledThemeKeys, string>;
@@ -31,3 +36,11 @@ export interface GetHighlightInfoParams {
 }
 
 export type GetHighlightInfoResult = Promise<HighlightInfo>;
+
+export interface GetHighlightedHTMLParams {
+	code: string;
+	lang: BundledLangKeys;
+	theme: DualTheme;
+}
+
+export type GetHighlightedHTMLResult = Promise<string>;

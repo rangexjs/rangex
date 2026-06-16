@@ -21,3 +21,15 @@ export interface VimModeMenuBarButtonState {
 export interface LanguageMenuBarButtonState {
 	value: string; // BCP 47 tag, e.g. "en", "de"
 }
+
+// Preview
+export interface PreviewContent {
+	getRendered: () => Promise<HTMLElement>;
+	getHtml: () => Promise<HTMLElement>;
+	getJson: () => Promise<HTMLElement>;
+	getSnapshot: () => Promise<HTMLElement>;
+}
+
+export interface PreviewMenuBarButtonState {
+	content: PreviewContent | null;
+}

@@ -1,9 +1,10 @@
 import type {
+	GetHighlightedHTMLParams,
+	GetHighlightedHTMLResult,
 	GetHighlightInfoParams,
 	GetHighlightInfoResult,
-	HighlightInfo,
 } from "./SyntaxHighlighter-types";
-import type { WorkerRequest, WorkerResponse } from "./Worker/Worker-types";
+import type { WorkerRequest, WorkerResponse } from "./Worker";
 import WorkerConstructor from "./Worker?worker";
 
 export {
@@ -13,13 +14,13 @@ export {
 
 class SyntaxHighlighter {
 	#worker = new WorkerConstructor();
-	#pendingRequests = new Map<number, (result: HighlightInfo) => void>();
+	#pendingRequests = new Map<number, (response: WorkerResponse) => void>();
 	#nextId = 0;
 
 	constructor() {
 		this.#worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
 			const resolve = this.#pendingRequests.get(data.id);
-			resolve?.(data.result);
+			resolve?.(data);
 			this.#pendingRequests.delete(data.id);
 		};
 	}
@@ -36,9 +37,41 @@ class SyntaxHighlighter {
 	}: GetHighlightInfoParams): GetHighlightInfoResult {
 		return new Promise((resolve) => {
 			const id = this.#nextId++;
-			this.#pendingRequests.set(id, resolve);
 
-			const request: WorkerRequest = { id, lines, lang };
+			this.#pendingRequests.set(id, (response) => {
+				if (response.type !== "tokens") {
+					throw new Error("[SyntaxHighlighter] Expected a tokens response.");
+				}
+
+				resolve(response.result);
+			});
+
+			const request: WorkerRequest = { id, type: "tokens", lines, lang };
+			this.#worker.postMessage(request);
+		});
+	}
+
+	/**
+	 * Tokenize `code` and have Shiki render it straight to highlighted
+	 * markup (see {@link Worker}'s `getHTML`).
+	 */
+	async getHighlightedHTML({
+		code,
+		lang,
+		theme,
+	}: GetHighlightedHTMLParams): GetHighlightedHTMLResult {
+		return new Promise((resolve) => {
+			const id = this.#nextId++;
+
+			this.#pendingRequests.set(id, (response) => {
+				if (response.type !== "html") {
+					throw new Error("[SyntaxHighlighter] Expected an html response.");
+				}
+
+				resolve(response.result);
+			});
+
+			const request: WorkerRequest = { id, type: "html", code, lang, theme };
 			this.#worker.postMessage(request);
 		});
 	}

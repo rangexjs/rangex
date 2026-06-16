@@ -4,16 +4,6 @@ For complete RangeX domain documentation, see [docs/RangeX-LLMs.md](docs/RangeX-
 
 ---
 
-## Review rules
-
-Whenever asked to review any change, always do all six:
-
-1. **Names** — review all function, variable, type, and interface names. If a better name comes to mind, recommend it explicitly.
-2. **Overall correctness** — review the logic end-to-end: does it do what it's supposed to, are there edge cases, off-by-ones, or missed branches?
-3. **Error handling** — are thrown errors appropriate? Should any be removed (trusting internal invariants) or added (at real boundaries)?
-
----
-
 ## Commenting Style
 
 This repository is open-source. Comments are written for end users — developers reading and potentially modifying the source code. Good comments:

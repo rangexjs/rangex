@@ -21,8 +21,8 @@ export interface LanguageActionState {
 	newValue: string;
 }
 
-export interface PreviewAsActionState {
-	type: "preview-as";
+export interface PreviewActionState {
+	type: typeof menuBarButtonsName.preview;
 }
 
 export type MenuBarActionState =
@@ -30,7 +30,7 @@ export type MenuBarActionState =
 	| TemplateActionState
 	| VimModeActionState
 	| LanguageActionState
-	| PreviewAsActionState;
+	| PreviewActionState;
 
 export type OnMenuBarParams = MenuBarActionState;
 export type OnMenuBarFn = (params: OnMenuBarParams) => void;

@@ -3,6 +3,7 @@ export type {
 	MenuBarButtonsState,
 	UpdateLanguageStateParams,
 	UpdateMenuBarButtonsStateParams,
+	UpdatePreviewStateParams,
 	UpdateTemplateStateParams,
 	UpdateThemeStateParams,
 	UpdateVimModeStateParams,

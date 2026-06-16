@@ -1,10 +1,10 @@
 import type { BlockNestedContext } from "rich-text-area";
-import type { BundledLangKeys, BundledThemeKeys } from "../../../Libs";
+import type { BundledLangKeys, DualTheme } from "../../../Libs";
 
 export interface CodeBlockStorage {
 	id: "code-block";
 	lang: BundledLangKeys;
-	theme: { light: BundledThemeKeys; dark: BundledThemeKeys };
+	theme: DualTheme;
 }
 
 export interface CreateCodeBlockStorageParams

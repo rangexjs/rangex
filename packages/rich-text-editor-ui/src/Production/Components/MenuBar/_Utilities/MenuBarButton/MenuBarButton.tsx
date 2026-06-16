@@ -1,9 +1,16 @@
 import type { JSX } from "solid-js";
 
+type Command =
+	| "toggle-popover"
+	| "show-popover"
+	| "hide-popover"
+	| "show-modal"
+	| "close";
+
 interface MenuBarButtonProps {
 	children: JSX.Element;
 	commandfor?: string;
-	command?: "toggle-popover" | "show-popover" | "hide-popover";
+	command?: Command;
 	onClick?: () => void;
 }
 

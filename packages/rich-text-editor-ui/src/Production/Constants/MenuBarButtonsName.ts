@@ -3,6 +3,7 @@ export const menuBarButtonsName = {
 	template: "template",
 	vimMode: "vimMode",
 	language: "language",
+	preview: "preview",
 } as const;
 
 export type MenuBarButtonsName = typeof menuBarButtonsName;

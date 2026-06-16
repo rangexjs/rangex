@@ -1,0 +1,1 @@
+export { createHighlightedCode } from "./CreateHighlightedCode";

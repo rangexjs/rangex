@@ -1,21 +1,23 @@
-import { createSignal } from "solid-js";
+import { createUniqueId } from "solid-js";
 import { useMenuBarManagersContext } from "../../App";
 import { MenuBarButton } from "../_Utilities";
 import { PreviewDialog } from "./PreviewDialog";
 
 export const PreviewMenu = () => {
-	const { menuBarActionManager } = useMenuBarManagersContext();
-	const [isOpen, setIsOpen] = createSignal(false);
-
-	const onOpen = () => {
-		menuBarActionManager.emitMenuBarChange({ type: "preview-as" });
-		setIsOpen(true);
-	};
+	const { menuBarActionManager, menuBarButtonsStateManager } =
+		useMenuBarManagersContext();
+	const dialogId = createUniqueId();
 
 	return (
 		<span>
-			<MenuBarButton onClick={onOpen}>Preview</MenuBarButton>
-			<PreviewDialog open={isOpen} onClose={() => setIsOpen(false)} />
+			<MenuBarButton commandfor={dialogId} command="show-modal">
+				Preview
+			</MenuBarButton>
+			<PreviewDialog
+				dialogId={dialogId}
+				menuBarActionManager={menuBarActionManager}
+				menuBarButtonsStateManager={menuBarButtonsStateManager}
+			/>
 		</span>
 	);
 };
