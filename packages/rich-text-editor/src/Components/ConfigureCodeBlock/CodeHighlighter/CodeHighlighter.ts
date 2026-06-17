@@ -12,7 +12,7 @@ import {
 import { componentsName } from "../../../Constants";
 import { syntaxHighlighter } from "../../../Libs";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
-import { ensureCodeBlockStorage } from "../CodeBlockStorage";
+import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
 import type {
 	ApplyTokenColorsParams,
 	CodeHighlighterConstructorParams,
@@ -222,7 +222,7 @@ const updateCodeBlockColors = async ({
 	cssHighlightManager,
 	blockNestedContext,
 }: UpdateCodeBlockColorsParams) => {
-	const { lang, theme } = ensureCodeBlockStorage({ blockNestedContext });
+	const { lang, theme } = ensureNodeCodeBlockStorage({ blockNestedContext });
 
 	const list = blockNestedContext.$$querySelector(listRoleSelector);
 
@@ -270,7 +270,7 @@ export class CodeHighlighter {
 	}
 
 	update({ blockNestedContext, lang, theme }: CodeHighlighterUpdateParams) {
-		const customStorage = ensureCodeBlockStorage({ blockNestedContext });
+		const customStorage = ensureNodeCodeBlockStorage({ blockNestedContext });
 		customStorage.lang = lang;
 		customStorage.theme = theme;
 

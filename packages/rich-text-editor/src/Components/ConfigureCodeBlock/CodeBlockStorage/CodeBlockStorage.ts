@@ -2,9 +2,26 @@ import type {
 	CodeBlockStorage,
 	CreateCodeBlockStorageParams,
 	CreateCodeBlockStorageResult,
-	EnsureCodeBlockStorageParams,
 	EnsureCodeBlockStorageResult,
+	EnsureNodeCodeBlockStorageParams,
+	EnsureNodeCodeBlockStorageResult,
 } from "./CodeBlockStorage-types";
+
+export const validateCodeBlockStorage = (
+	storage: unknown,
+): storage is CodeBlockStorage => {
+	const isValid =
+		typeof storage === "object" &&
+		storage !== null &&
+		"id" in storage &&
+		storage.id === "code-block";
+
+	if (!isValid) {
+		console.warn("Invalid CodeBlockStorage.", storage);
+	}
+
+	return isValid;
+};
 
 export const createCodeBlockStorage = ({
 	lang,
@@ -13,13 +30,26 @@ export const createCodeBlockStorage = ({
 	return { id: "code-block", lang, theme };
 };
 
-export const ensureCodeBlockStorage = ({
+export const ensureCodeBlockStorage = (
+	storage: unknown,
+): EnsureCodeBlockStorageResult => {
+	if (validateCodeBlockStorage(storage)) {
+		return storage;
+	}
+
+	return createCodeBlockStorage({
+		lang: "typescript",
+		theme: { light: "light-plus", dark: "dark-plus" },
+	});
+};
+
+export const ensureNodeCodeBlockStorage = ({
 	blockNestedContext,
-}: EnsureCodeBlockStorageParams): EnsureCodeBlockStorageResult => {
+}: EnsureNodeCodeBlockStorageParams): EnsureNodeCodeBlockStorageResult => {
 	const { $$customStorage } = blockNestedContext;
 
-	if ("id" in $$customStorage && $$customStorage.id === "code-block") {
-		return $$customStorage as CodeBlockStorage;
+	if (validateCodeBlockStorage($$customStorage)) {
+		return $$customStorage;
 	}
 
 	blockNestedContext.$$customStorage = createCodeBlockStorage({

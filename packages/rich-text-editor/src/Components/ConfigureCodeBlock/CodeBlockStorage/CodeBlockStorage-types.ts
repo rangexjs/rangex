@@ -12,8 +12,10 @@ export interface CreateCodeBlockStorageParams
 
 export interface CreateCodeBlockStorageResult extends CodeBlockStorage {}
 
-export interface EnsureCodeBlockStorageParams {
+export interface EnsureNodeCodeBlockStorageParams {
 	blockNestedContext: BlockNestedContext;
 }
+
+export interface EnsureNodeCodeBlockStorageResult extends CodeBlockStorage {}
 
 export interface EnsureCodeBlockStorageResult extends CodeBlockStorage {}
