@@ -18,14 +18,14 @@ export class CSSHighlightManager {
 	 * if one doesn't exist for the color pair, then registers the range
 	 * in both the CSS Highlight API and the per-editable range map.
 	 */
-	addHighlight({ nestedEditable, theme, range }: AddHighlightParams) {
+	addHighlight({ list, theme, range }: AddHighlightParams) {
 		const { light, dark } = theme;
 
 		if (!(light.startsWith("#") && dark.startsWith("#"))) {
 			return;
 		}
 
-		const entries = this.#codeBlockMap.getOrInsert(nestedEditable, []);
+		const entries = this.#codeBlockMap.getOrInsert(list, []);
 
 		const highlightName = `rangex-${light.slice(1)}-${dark.slice(1)}`;
 
@@ -60,8 +60,8 @@ export class CSSHighlightManager {
 	 * active CSS highlight, clearing its syntax highlighting without
 	 * affecting other code blocks.
 	 */
-	clear({ nestedEditable }: ClearParams) {
-		const entries = this.#codeBlockMap.get(nestedEditable);
+	clear({ list }: ClearParams) {
+		const entries = this.#codeBlockMap.get(list);
 
 		if (!entries) {
 			return;
@@ -71,6 +71,6 @@ export class CSSHighlightManager {
 			highlight.delete(range);
 		}
 
-		this.#codeBlockMap.delete(nestedEditable);
+		this.#codeBlockMap.delete(list);
 	}
 }

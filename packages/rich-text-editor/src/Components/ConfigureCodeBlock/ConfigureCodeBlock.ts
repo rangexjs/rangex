@@ -2,9 +2,12 @@ import {
 	createBlockNestedContext,
 	createBlockNestedContextLine,
 	createBlockNestedContextTextHolder,
+	createDetachedContext,
 	createHTMLLayout,
-	createNestedEditable,
+	createList,
 	editorSelectionChangeEventType,
+	listName,
+	listRoleSelector,
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
@@ -16,26 +19,40 @@ import type {
 	CreateCodeBlockLineParams,
 	CreateCodeBlockLineResult,
 } from "./ConfigureCodeBlock-types";
+import { syncLineNumbers } from "./SyncLineNumbers";
 
 const createCodeBlockComponent = ({
 	// biome-ignore lint/correctness/noUnusedFunctionParameters: UI change required
 	language,
 }: CreateCodeBlockLineParams): CreateCodeBlockLineResult => {
-	const nestedEditable = createNestedEditable({
-		content: { type: "default" },
-		display: "block multi-line",
-		allowedComponents: [],
-		allowedContentLineLocalNames: [],
-		allowedContentLineStyleAttrNames: [],
-		allowedGlyphFormatterInlineTags: [],
-		allowedGlyphFormatterStyleAttrNames: [],
+	const list = createList({
+		localName: "ol",
+		lineType: "single-line",
+		createPreLayout: ({ nestedEditable }) => [
+			createHTMLLayout({
+				localName: "div",
+				childNodes: [
+					createDetachedContext({
+						localName: "span",
+						shadowTree: [document.createTextNode("0")],
+					}),
+					nestedEditable({
+						allowedComponents: [],
+						allowedContentLineLocalNames: [],
+						allowedContentLineStyleAttrNames: [],
+						allowedGlyphFormatterInlineTags: [],
+						allowedGlyphFormatterStyleAttrNames: [],
+					}),
+				],
+			}),
+		],
 	});
 
 	const blockNestedContextLine = createBlockNestedContextLine({
 		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.codeBlock,
-			content: { type: "styled-block" },
+			content: { type: "list" },
 			customStorage: createCodeBlockStorage({
 				lang: "typescript",
 				theme: { light: "light-plus", dark: "dark-plus" },
@@ -46,7 +63,7 @@ const createCodeBlockComponent = ({
 					childNodes: [
 						createHTMLLayout({
 							localName: "code",
-							childNodes: [nestedEditable],
+							childNodes: [list],
 						}),
 					],
 				}),
@@ -85,18 +102,30 @@ export const configureCodeBlock = ({
 
 		const codeBlockLine = createCodeBlockComponent({ language });
 
-		const nestedEditable = codeBlockLine.$$querySelector(
+		const list = codeBlockLine.$$querySelector(listRoleSelector);
+
+		if (list?.$$editorRole !== listName) {
+			throw new Error("List's type is invalid.");
+		}
+
+		blockComponentPlacement.wrapBySelection({
+			blockNestedContextLine: codeBlockLine,
+			target: list,
+		});
+
+		const lastListItem = list.$$children.at(-1);
+
+		if (!lastListItem) {
+			throw new Error("LastListItem can't be undefined.");
+		}
+
+		const nestedEditable = lastListItem.$$querySelector(
 			nestedEditableRoleSelector,
 		);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableName) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
-
-		blockComponentPlacement.wrapBySelection({
-			blockNestedContextLine: codeBlockLine,
-			target: nestedEditable,
-		});
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
@@ -116,4 +145,6 @@ export const configureCodeBlock = ({
 
 	// biome-ignore lint/correctness/noUnusedVariables: UI will be implemented later
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
+
+	syncLineNumbers({ editorAPI });
 };

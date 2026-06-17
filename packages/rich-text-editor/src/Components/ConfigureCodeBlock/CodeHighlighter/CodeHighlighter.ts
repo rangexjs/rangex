@@ -1,11 +1,13 @@
 import {
 	type BlockNestedContext,
 	blockNestedContextName,
+	contentLineName,
+	contentLineRoleSelector,
 	inlineNestedContextAttrName,
 	isContentLineText,
 	isEditorNode,
-	nestedEditableName,
-	nestedEditableRoleSelector,
+	listName,
+	listRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
 import { syntaxHighlighter } from "../../../Libs";
@@ -102,16 +104,30 @@ const watchCodeBlocks = ({
  */
 const getCodeLines = ({
 	editorAPI,
-	nestedEditable,
+	list,
 }: GetCodeLinesParams): GetCodeLinesResult => {
-	const plainText = editorAPI.getPlainText({
-		fromNode: nestedEditable,
-		fromOffset: 0,
-		toNode: nestedEditable,
-		toOffset: nestedEditable.childNodes.length,
+	const codeLines: string[] = [];
+
+	const contentLines = list.$$children.map((li) => {
+		const contentLine = li.$$querySelector(contentLineRoleSelector);
+
+		if (contentLine?.$$editorRole !== contentLineName) {
+			throw new Error("ContentLine's type is invalid.");
+		}
+
+		return contentLine;
 	});
 
-	const codeLines = plainText.split("\n");
+	for (const contentLine of contentLines) {
+		const plainText = editorAPI.getPlainText({
+			fromNode: contentLine,
+			fromOffset: 0,
+			toNode: contentLine,
+			toOffset: contentLine.childNodes.length,
+		});
+
+		codeLines.push(plainText);
+	}
 
 	return codeLines;
 };
@@ -123,17 +139,27 @@ const getCodeLines = ({
  */
 const applyTokenColors = ({
 	editorAPI,
-	nestedEditable,
+	list,
 	cssHighlightManager,
 	codeLines,
 	theme,
 }: ApplyTokenColorsParams) => {
 	try {
-		cssHighlightManager.clear({ nestedEditable });
+		cssHighlightManager.clear({ list });
+
+		const contentLines = list.$$children.map((li) => {
+			const contentLine = li.$$querySelector(contentLineRoleSelector);
+
+			if (contentLine?.$$editorRole !== contentLineName) {
+				throw new Error("ContentLine's type is invalid.");
+			}
+
+			return contentLine;
+		});
 
 		for (let i = 0; i < codeLines.length; i++) {
 			const highlightedLine = codeLines[i];
-			const contentLine = nestedEditable.$$childNodes[i];
+			const contentLine = contentLines[i];
 
 			const { $$firstChild } = contentLine;
 
@@ -168,7 +194,7 @@ const applyTokenColors = ({
 						const darkColor = colors[dark];
 
 						cssHighlightManager.addHighlight({
-							nestedEditable,
+							list,
 							theme: { light: lightColor, dark: darkColor },
 							range,
 						});
@@ -198,15 +224,13 @@ const updateCodeBlockColors = async ({
 }: UpdateCodeBlockColorsParams) => {
 	const { lang, theme } = ensureCodeBlockStorage({ blockNestedContext });
 
-	const nestedEditable = blockNestedContext.$$querySelector(
-		nestedEditableRoleSelector,
-	);
+	const list = blockNestedContext.$$querySelector(listRoleSelector);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
-		throw new Error("NestedEditable's type is invalid.");
+	if (list?.$$editorRole !== listName) {
+		throw new Error("List's type is invalid.");
 	}
 
-	const lines = getCodeLines({ editorAPI, nestedEditable });
+	const lines = getCodeLines({ editorAPI, list });
 
 	const { backgrounds, codeLines } = await syntaxHighlighter.getHighlightInfo({
 		lines,
@@ -220,13 +244,7 @@ const updateCodeBlockColors = async ({
 
 	blockNestedContext.style.background = background;
 
-	applyTokenColors({
-		editorAPI,
-		nestedEditable,
-		cssHighlightManager,
-		codeLines,
-		theme,
-	});
+	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines, theme });
 };
 
 export class CodeHighlighter {

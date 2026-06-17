@@ -1,20 +1,5 @@
 {
-	"glyphFormatterInlineTagsOrder": [
-		"strong",
-		"b",
-		"em",
-		"i",
-		"ins",
-		"u",
-		"del",
-		"s",
-		"mark",
-		"sub",
-		"sup",
-		"code",
-		"kbd",
-		"var"
-	],
+	"version": "0",
 	"snapshot": {
 		"type": "root-editable",
 		"uniqueId": "1775062780041-490502701",
@@ -222,7 +207,7 @@
 		"childNodes": [
 			{
 				"type": "content-line",
-				"uniqueId": "1775063103247-3700324072",
+				"uniqueId": "1781688310484-941861918",
 				"customStorage": null,
 				"localName": "h1",
 				"styleAttrs": {},
@@ -257,13 +242,13 @@
 				"childNodes": [
 					{
 						"type": "one-visual-unit-text",
-						"uniqueId": "1775063912322-779891474",
+						"uniqueId": "1781688308024-2689323206",
 						"customStorage": null,
 						"data": "🚀"
 					},
 					{
 						"type": "basic-text",
-						"uniqueId": "1775063912322-3674312919",
+						"uniqueId": "1781688308024-999719264",
 						"customStorage": null,
 						"data": " RangeX — Schema-Driven Rich Text Editing"
 					}
@@ -329,9 +314,9 @@
 					},
 					{
 						"type": "basic-text",
-						"uniqueId": "1775063995670-207741292",
+						"uniqueId": "1781687989129-3007322034",
 						"customStorage": null,
-						"data": ". Every node, every edit, and every structural rule is defined and enforced through a central schema — no arbitrary DOM manipulation."
+						"data": ". Every node, every edit, and every structural rule is defined and enforced through a central schema — no arbi@trary DOM manipulation."
 					}
 				]
 			},
@@ -1219,40 +1204,46 @@
 			},
 			{
 				"type": "block-nested-context-line",
-				"uniqueId": "1775078173413-2015426846",
+				"uniqueId": "1781688269462-3728213933",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": {},
 				"childNodes": [
 					{
 						"type": "block-nested-context-text-holder",
-						"uniqueId": "1775078173413-1336211898",
+						"uniqueId": "1781688269462-2790586432",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "block-nested-context-text",
-								"uniqueId": "1775078173413-1117085397",
+								"uniqueId": "1781688269462-1383520472",
 								"customStorage": null
 							}
 						]
 					},
 					{
 						"type": "block-nested-context",
-						"uniqueId": "1775078173413-364668498",
-						"customStorage": { "language": "TypeScript" },
+						"uniqueId": "1781688269462-3645237881",
+						"customStorage": {
+							"id": "code-block",
+							"lang": "typescript",
+							"theme": { "light": "light-plus", "dark": "dark-plus" }
+						},
 						"componentName": "code-block",
-						"content": { "type": "styled-block" },
+						"content": { "type": "list" },
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
 						"styleAttrs": {},
-						"domAttrs": {},
+						"domAttrs": {
+							"style": "background: light-dark(rgb(255, 255, 255), rgb(30, 30, 30));"
+						},
 						"childNodes": [
 							{
 								"type": "html-layout",
-								"uniqueId": "1775078173413-217631386",
+								"uniqueId": "1781688269462-3431716640",
 								"customStorage": null,
 								"localName": "pre",
 								"styleAttrs": {},
@@ -1260,132 +1251,526 @@
 								"childNodes": [
 									{
 										"type": "html-layout",
-										"uniqueId": "1775078173413-1022205057",
+										"uniqueId": "1781688269462-1350932935",
 										"customStorage": null,
 										"localName": "code",
 										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "nested-editable",
-												"uniqueId": "1775078173413-1420981327",
+												"type": "list",
+												"uniqueId": "1781688269462-3531348420",
 												"customStorage": null,
-												"content": { "type": "default" },
-												"display": "block multi-line",
-												"allowedComponents": [],
-												"allowedContentLineLocalNames": [],
-												"allowedContentLineStyleAttrNames": [],
-												"allowedGlyphFormatterStyleAttrNames": [],
-												"allowedGlyphFormatterInlineTags": [],
+												"localName": "ol",
+												"lineType": "single-line",
+												"listItemSnapshotProps": {
+													"domAttrs": {},
+													"childNodes": [
+														{
+															"type": "html-layout",
+															"uniqueId": "1781649781070-3971248758",
+															"customStorage": null,
+															"localName": "div",
+															"styleAttrs": {},
+															"domAttrs": {},
+															"childNodes": [
+																{
+																	"type": "detached-context",
+																	"uniqueId": "1781649781069-938553948",
+																	"customStorage": null,
+																	"localName": "span",
+																	"styleAttrs": {},
+																	"domAttrs": { "contenteditable": "false" },
+																	"childNodes": [],
+																	"shadowTreeSnapshot": [
+																		{
+																			"type": "text",
+																			"shadowNodeId": "1781649781070-1939348091",
+																			"data": "0"
+																		}
+																	]
+																},
+																{
+																	"type": "nested-editable",
+																	"uniqueId": "1781649781069-464097824",
+																	"customStorage": null,
+																	"content": { "type": "list-item" },
+																	"display": "block single-line",
+																	"allowedComponents": [],
+																	"allowedContentLineLocalNames": [],
+																	"allowedContentLineStyleAttrNames": [],
+																	"allowedGlyphFormatterStyleAttrNames": [],
+																	"allowedGlyphFormatterInlineTags": [],
+																	"editState": "inherit",
+																	"styleAttrs": {},
+																	"domAttrs": {},
+																	"childNodes": []
+																}
+															]
+														}
+													]
+												},
 												"editState": "inherit",
 												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "content-line",
-														"uniqueId": "1775078173413-1429090264",
+														"type": "list-item",
+														"uniqueId": "1781688269462-362081632",
 														"customStorage": null,
-														"localName": "p",
 														"styleAttrs": {},
-														"structuredStyle": {
-															"lineHeight": {
-																"type": "line-height",
-																"values": {
-																	"lineHeight": {
-																		"type": "number",
-																		"value": 1.5
-																	}
-																},
-																"declarationValue": "1.5"
-															},
-															"paddingBlock": {
-																"type": "padding-block",
-																"values": {
-																	"paddingBlock": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															},
-															"paddingInline": {
-																"type": "padding-inline",
-																"values": {
-																	"paddingInline": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															},
-															"textAlign": {
-																"type": "text-align",
-																"values": { "textAlign": "start" },
-																"declarationValue": "start"
-															},
-															"textIndent": {
-																"type": "text-indent",
-																"values": {
-																	"textIndent": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															}
-														},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
-																"uniqueId": "1775078174310-243079961",
+																"type": "html-layout",
+																"uniqueId": "1781688269462-287478493",
 																"customStorage": null,
-																"data": "const scope = enhance(node);"
+																"localName": "div",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "detached-context",
+																		"uniqueId": "1781688269462-1337096396",
+																		"customStorage": null,
+																		"localName": "span",
+																		"styleAttrs": {},
+																		"domAttrs": { "contenteditable": "false" },
+																		"childNodes": [],
+																		"shadowTreeSnapshot": [
+																			{
+																				"type": "text",
+																				"shadowNodeId": "1781688269471-288097479",
+																				"data": "1"
+																			}
+																		]
+																	},
+																	{
+																		"type": "nested-editable",
+																		"uniqueId": "1781688269462-3969641259",
+																		"customStorage": null,
+																		"content": { "type": "list-item" },
+																		"display": "block single-line",
+																		"allowedComponents": [],
+																		"allowedContentLineLocalNames": [],
+																		"allowedContentLineStyleAttrNames": [],
+																		"allowedGlyphFormatterStyleAttrNames": [],
+																		"allowedGlyphFormatterInlineTags": [],
+																		"editState": "inherit",
+																		"styleAttrs": {},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "content-line",
+																				"uniqueId": "1781688269462-3344703926",
+																				"customStorage": null,
+																				"localName": "p",
+																				"styleAttrs": {},
+																				"structuredStyle": {
+																					"lineHeight": {
+																						"type": "line-height",
+																						"values": {
+																							"lineHeight": {
+																								"type": "number",
+																								"value": 1.5
+																							}
+																						},
+																						"declarationValue": "1.5"
+																					},
+																					"paddingBlock": {
+																						"type": "padding-block",
+																						"values": {
+																							"paddingBlock": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"paddingInline": {
+																						"type": "padding-inline",
+																						"values": {
+																							"paddingInline": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"textAlign": {
+																						"type": "text-align",
+																						"values": { "textAlign": "start" },
+																						"declarationValue": "start"
+																					},
+																					"textIndent": {
+																						"type": "text-indent",
+																						"values": {
+																							"textIndent": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					}
+																				},
+																				"domAttrs": {},
+																				"childNodes": [
+																					{
+																						"type": "basic-text",
+																						"uniqueId": "1781688269462-3029766060",
+																						"customStorage": null,
+																						"data": "const { RangeX } = defineRangeX({});"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
 															}
 														]
 													},
 													{
-														"type": "content-line",
-														"uniqueId": "1775078174311-897655359",
+														"type": "list-item",
+														"uniqueId": "1781688269462-2556823544",
 														"customStorage": null,
-														"localName": "p",
 														"styleAttrs": {},
-														"structuredStyle": {
-															"lineHeight": {
-																"type": "line-height",
-																"values": {
-																	"lineHeight": {
-																		"type": "number",
-																		"value": 1.5
-																	}
-																},
-																"declarationValue": "1.5"
-															},
-															"paddingBlock": {
-																"type": "padding-block",
-																"values": {
-																	"paddingBlock": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															},
-															"paddingInline": {
-																"type": "padding-inline",
-																"values": {
-																	"paddingInline": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															},
-															"textAlign": {
-																"type": "text-align",
-																"values": { "textAlign": "start" },
-																"declarationValue": "start"
-															},
-															"textIndent": {
-																"type": "text-indent",
-																"values": {
-																	"textIndent": { "type": "px", "value": 0 }
-																},
-																"declarationValue": "0px"
-															}
-														},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
-																"uniqueId": "1775078174311-1154037551",
+																"type": "html-layout",
+																"uniqueId": "1781688269462-114247267",
 																"customStorage": null,
-																"data": "scope.insertNode(child); // schema-validated"
+																"localName": "div",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "detached-context",
+																		"uniqueId": "1781688269462-4216079690",
+																		"customStorage": null,
+																		"localName": "span",
+																		"styleAttrs": {},
+																		"domAttrs": { "contenteditable": "false" },
+																		"childNodes": [],
+																		"shadowTreeSnapshot": [
+																			{
+																				"type": "text",
+																				"shadowNodeId": "1781688269471-2133693035",
+																				"data": "2"
+																			}
+																		]
+																	},
+																	{
+																		"type": "nested-editable",
+																		"uniqueId": "1781688269462-4169886376",
+																		"customStorage": null,
+																		"content": { "type": "list-item" },
+																		"display": "block single-line",
+																		"allowedComponents": [],
+																		"allowedContentLineLocalNames": [],
+																		"allowedContentLineStyleAttrNames": [],
+																		"allowedGlyphFormatterStyleAttrNames": [],
+																		"allowedGlyphFormatterInlineTags": [],
+																		"editState": "inherit",
+																		"styleAttrs": {},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "content-line",
+																				"uniqueId": "1781688269462-2325337190",
+																				"customStorage": null,
+																				"localName": "p",
+																				"styleAttrs": {},
+																				"structuredStyle": {
+																					"lineHeight": {
+																						"type": "line-height",
+																						"values": {
+																							"lineHeight": {
+																								"type": "number",
+																								"value": 1.5
+																							}
+																						},
+																						"declarationValue": "1.5"
+																					},
+																					"paddingBlock": {
+																						"type": "padding-block",
+																						"values": {
+																							"paddingBlock": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"paddingInline": {
+																						"type": "padding-inline",
+																						"values": {
+																							"paddingInline": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"textAlign": {
+																						"type": "text-align",
+																						"values": { "textAlign": "start" },
+																						"declarationValue": "start"
+																					},
+																					"textIndent": {
+																						"type": "text-indent",
+																						"values": {
+																							"textIndent": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					}
+																				},
+																				"domAttrs": {},
+																				"childNodes": [
+																					{
+																						"type": "basic-text",
+																						"uniqueId": "1781688269462-3790124796",
+																						"customStorage": null,
+																						"data": "const rangeX = new RangeX();"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "list-item",
+														"uniqueId": "1781688269462-3361668262",
+														"customStorage": null,
+														"styleAttrs": {},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "html-layout",
+																"uniqueId": "1781688269462-1060389947",
+																"customStorage": null,
+																"localName": "div",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "detached-context",
+																		"uniqueId": "1781688269462-699283467",
+																		"customStorage": null,
+																		"localName": "span",
+																		"styleAttrs": {},
+																		"domAttrs": { "contenteditable": "false" },
+																		"childNodes": [],
+																		"shadowTreeSnapshot": [
+																			{
+																				"type": "text",
+																				"shadowNodeId": "1781688269471-1829147612",
+																				"data": "3"
+																			}
+																		]
+																	},
+																	{
+																		"type": "nested-editable",
+																		"uniqueId": "1781688269462-3438566269",
+																		"customStorage": null,
+																		"content": { "type": "list-item" },
+																		"display": "block single-line",
+																		"allowedComponents": [],
+																		"allowedContentLineLocalNames": [],
+																		"allowedContentLineStyleAttrNames": [],
+																		"allowedGlyphFormatterStyleAttrNames": [],
+																		"allowedGlyphFormatterInlineTags": [],
+																		"editState": "inherit",
+																		"styleAttrs": {},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "content-line",
+																				"uniqueId": "1781688269462-4155964028",
+																				"customStorage": null,
+																				"localName": "p",
+																				"styleAttrs": {},
+																				"structuredStyle": {
+																					"lineHeight": {
+																						"type": "line-height",
+																						"values": {
+																							"lineHeight": {
+																								"type": "number",
+																								"value": 1.5
+																							}
+																						},
+																						"declarationValue": "1.5"
+																					},
+																					"paddingBlock": {
+																						"type": "padding-block",
+																						"values": {
+																							"paddingBlock": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"paddingInline": {
+																						"type": "padding-inline",
+																						"values": {
+																							"paddingInline": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"textAlign": {
+																						"type": "text-align",
+																						"values": { "textAlign": "start" },
+																						"declarationValue": "start"
+																					},
+																					"textIndent": {
+																						"type": "text-indent",
+																						"values": {
+																							"textIndent": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					}
+																				},
+																				"domAttrs": {},
+																				"childNodes": [
+																					{
+																						"type": "basic-text",
+																						"uniqueId": "1781688269462-4116836115",
+																						"customStorage": null,
+																						"data": "const { editorAPI } = rangeX;"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													},
+													{
+														"type": "list-item",
+														"uniqueId": "1781688269462-3571965909",
+														"customStorage": null,
+														"styleAttrs": {},
+														"domAttrs": {},
+														"childNodes": [
+															{
+																"type": "html-layout",
+																"uniqueId": "1781688269462-3904677039",
+																"customStorage": null,
+																"localName": "div",
+																"styleAttrs": {},
+																"domAttrs": {},
+																"childNodes": [
+																	{
+																		"type": "detached-context",
+																		"uniqueId": "1781688269462-1013669315",
+																		"customStorage": null,
+																		"localName": "span",
+																		"styleAttrs": {},
+																		"domAttrs": { "contenteditable": "false" },
+																		"childNodes": [],
+																		"shadowTreeSnapshot": [
+																			{
+																				"type": "text",
+																				"shadowNodeId": "1781688269471-4001431342",
+																				"data": "4"
+																			}
+																		]
+																	},
+																	{
+																		"type": "nested-editable",
+																		"uniqueId": "1781688269462-558651646",
+																		"customStorage": null,
+																		"content": { "type": "list-item" },
+																		"display": "block single-line",
+																		"allowedComponents": [],
+																		"allowedContentLineLocalNames": [],
+																		"allowedContentLineStyleAttrNames": [],
+																		"allowedGlyphFormatterStyleAttrNames": [],
+																		"allowedGlyphFormatterInlineTags": [],
+																		"editState": "inherit",
+																		"styleAttrs": {},
+																		"domAttrs": {},
+																		"childNodes": [
+																			{
+																				"type": "content-line",
+																				"uniqueId": "1781688269462-2084785421",
+																				"customStorage": null,
+																				"localName": "p",
+																				"styleAttrs": {},
+																				"structuredStyle": {
+																					"lineHeight": {
+																						"type": "line-height",
+																						"values": {
+																							"lineHeight": {
+																								"type": "number",
+																								"value": 1.5
+																							}
+																						},
+																						"declarationValue": "1.5"
+																					},
+																					"paddingBlock": {
+																						"type": "padding-block",
+																						"values": {
+																							"paddingBlock": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"paddingInline": {
+																						"type": "padding-inline",
+																						"values": {
+																							"paddingInline": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					},
+																					"textAlign": {
+																						"type": "text-align",
+																						"values": { "textAlign": "start" },
+																						"declarationValue": "start"
+																					},
+																					"textIndent": {
+																						"type": "text-indent",
+																						"values": {
+																							"textIndent": {
+																								"type": "px",
+																								"value": 0
+																							}
+																						},
+																						"declarationValue": "0px"
+																					}
+																				},
+																				"domAttrs": {},
+																				"childNodes": [
+																					{
+																						"type": "basic-text",
+																						"uniqueId": "1781688269462-1678759120",
+																						"customStorage": null,
+																						"data": "const richTextEditor = new RichTextEditorUI({ richTextArea: rangeX });"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
 															}
 														]
 													}
@@ -1399,14 +1784,14 @@
 					},
 					{
 						"type": "block-nested-context-text-holder",
-						"uniqueId": "1775078173413-3854642779",
+						"uniqueId": "1781688269462-3497941053",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "block-nested-context-text",
-								"uniqueId": "1775078173413-1625105190",
+								"uniqueId": "1781688269462-3978125981",
 								"customStorage": null
 							}
 						]
@@ -2260,9 +2645,9 @@
 									},
 									{
 										"type": "table-section",
-										"uniqueId": "1775064442496-2484953575",
+										"uniqueId": "1781688019496-883238280",
 										"customStorage": null,
-										"localName": "tbody",
+										"localName": "thead",
 										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
@@ -2275,16 +2660,14 @@
 												"childNodes": [
 													{
 														"type": "table-cell",
-														"uniqueId": "1775064442494-2177655426",
+														"uniqueId": "1781688019494-518514139",
 														"customStorage": null,
-														"localName": "td",
+														"localName": "th",
 														"colSpan": 1,
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2371,16 +2754,14 @@
 													},
 													{
 														"type": "table-cell",
-														"uniqueId": "1775064442494-1005729185",
+														"uniqueId": "1781688019495-1499806692",
 														"customStorage": null,
-														"localName": "td",
+														"localName": "th",
 														"colSpan": 1,
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2467,16 +2848,14 @@
 													},
 													{
 														"type": "table-cell",
-														"uniqueId": "1775064442494-16556092",
+														"uniqueId": "1781688019495-2068118917",
 														"customStorage": null,
-														"localName": "td",
+														"localName": "th",
 														"colSpan": 1,
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2562,7 +2941,17 @@
 														]
 													}
 												]
-											},
+											}
+										]
+									},
+									{
+										"type": "table-section",
+										"uniqueId": "1775064442496-2484953575",
+										"customStorage": null,
+										"localName": "tbody",
+										"styleAttrs": {},
+										"domAttrs": {},
+										"childNodes": [
 											{
 												"type": "table-row",
 												"uniqueId": "1775064442495-2158561503",
@@ -2579,9 +2968,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2675,9 +3062,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2771,9 +3156,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2876,9 +3259,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -2972,9 +3353,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -3068,9 +3447,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -3173,9 +3550,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -3269,9 +3644,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -3365,9 +3738,7 @@
 														"rowSpan": 1,
 														"styleAttrs": {},
 														"domAttrs": {
-															"style": "border-width: 1px; border-style: solid; border-color: grey;",
-															"colspan": "1",
-															"rowspan": "1"
+															"style": "border-width: 1px; border-style: solid; border-color: grey;"
 														},
 														"childNodes": [
 															{
@@ -3697,5 +4068,21 @@
 				]
 			}
 		]
-	}
+	},
+	"glyphFormatterInlineTagsOrder": [
+		"strong",
+		"b",
+		"em",
+		"i",
+		"ins",
+		"u",
+		"del",
+		"s",
+		"mark",
+		"sub",
+		"sup",
+		"code",
+		"kbd",
+		"var"
+	]
 }

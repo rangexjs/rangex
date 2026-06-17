@@ -2,19 +2,36 @@
 	&:where([data-rx-component-name="code-block"]) {
 		overflow-x: auto;
 		width: 100%;
-		background-color: light-dark(#f0f0f0, #1e1e1e);
 		border: 1px solid #8882;
 		border-radius: 6px;
-		padding: 0px 12px;
 		margin-block: 4px;
 		font-family: "Consolas", "Menlo", "Monaco", monospace;
 		font-size: 0.875em;
-		color: light-dark(#2b2b2b, #d4d4d4);
 
-		& code {
-			& pre {
-				margin: 0;
-				white-space: pre-wrap;
+		& pre {
+			margin-block: 0;
+		}
+
+		& ol {
+			display: flex;
+			flex-direction: column;
+			list-style-type: none;
+			margin-block: 0;
+			padding-inline-start: 0;
+
+			& > li > div {
+				display: grid;
+				grid-template-columns: min-content 1fr;
+				gap: 8px;
+
+				& > :first-child {
+					background-color: #8884;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					height: 100%;
+					width: 40px;
+				}
 			}
 		}
 	}
