@@ -1,5 +1,5 @@
 import type { EditorAPI } from "rich-text-area";
 
-export interface SyncLineNumbersParams {
+export interface HandleLineNumbersParams {
 	editorAPI: EditorAPI;
 }

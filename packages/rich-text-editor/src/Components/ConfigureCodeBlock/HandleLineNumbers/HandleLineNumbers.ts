@@ -6,9 +6,9 @@ import {
 	listChildNodesChangeEventType,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
-import type { SyncLineNumbersParams } from "./SyncLineNumbers-types";
+import type { HandleLineNumbersParams } from "./HandleLineNumbers-types";
 
-export const syncLineNumbers = ({ editorAPI }: SyncLineNumbersParams) => {
+export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 	editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
