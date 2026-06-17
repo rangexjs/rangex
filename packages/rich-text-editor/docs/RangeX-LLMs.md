@@ -1012,7 +1012,7 @@ import {
   createGlyphFormatter, createHTMLLayout, createSVGLayout, createMathMLLayout,
   createInlineNestedContext, createBlockNestedContext,
   createBlockNestedContextLine, createBlockNestedContextTextHolder,
-  createList, createTable, createFormattableTexts, createBeamText,
+  createDetachedContext, createList, createTable, createFormattableTexts, createBeamText,
 
 } from "rich-text-area";
 ```
@@ -1249,6 +1249,17 @@ const line = createBlockNestedContextLine({
 
 Column widths are distributed evenly across all columns at creation (each column gets `1000 / cols`, rounded to sum to `1000`).
 
+---
+
+### `createDetachedContext(params)`
+
+Creates a `DetachedContext` — the schema-free escape hatch with its own shadow DOM (see [`DetachedContext` in section 4](#detachedcontext)).
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `localName` | `"div" \| "span"` | No | Defaults to `"div"` |
+| `shadowTree` | `(Element \| Comment \| Text)[]` | No | Initial content appended into `$$shadowRoot` |
+| `domAttrs` | `DOMAttrs` | No | |
 
 ---
 
@@ -1501,7 +1512,6 @@ Unlike the native Selection API, `EditorSelection` uses `from` / `to` boundary p
 | `setBoundaryPoints({ fromNode, fromOffset, toNode, toOffset })` | Sets new boundary points on `LiveBoundaryPoints`. Accepts `ContentFlowNode` (more permissive than `getBoundaryPoints`). Silently ignored if either point is outside this `RootEditable` or invalid. Does not update the native Selection API. |
 | `isValidBoundaryPoints()` | Returns `true` if the current boundary points are within the same editable context. |
 | `collapse({ whereTo: "from" \| "to" })` | Collapses the selection to the `from` or `to` end. |
-| `scrollIntoView()` | Scrolls the viewport so that the `to` boundary point is visible. Not automatic — call it explicitly after programmatic mutations (e.g. `insertNode`, `removeNodesInRange`) when you need the caret scrolled into view. |
 | `syncToNativeSelection()` | Pushes the current `LiveBoundaryPoints` into the native browser Selection API. Anchor maps to the DOM-start boundary point; focus maps to the DOM-end boundary point. Not automatic — call it explicitly when you need the native caret/selection to reflect the current editor state (e.g. after `insertNode`, or `removeNodesInRange`). **Why not automatic:** the user might have focus on an external element (e.g. a URL input in a link popover) and auto-syncing would steal focus from there. |
 
 ### EditorRange
@@ -1588,6 +1598,7 @@ range.isSinglePoint // → boolean
 | `isIntersectsNode({ node })` | `boolean` | Delegates to the native `Range.intersectsNode`. Returns `true` if the range overlaps with the given node at all. |
 | `compareBoundaryPoints({ how, sourceRange })` | `"before" \| "equal" \| "after"` | Compares a boundary point of this range against a boundary point of `sourceRange`. `how` controls which pair is compared: `"startToStart"` \| `"startToEnd"` \| `"endToEnd"` \| `"endToStart"`. Delegates to the native `Range.compareBoundaryPoints`. |
 | `getBoundingClientRect()` | `DOMRect` | Returns the bounding client rect of the range. Delegates to the native `Range.getBoundingClientRect`. |
+| `scrollIntoView(params)` | `void` | Scrolls the viewport so the range is visible. `params` accepts standard `ScrollIntoViewOptions`. For `isSinglePoint` ranges (same line, no `RangeSensitiveNode`), scrolls the start boundary point into view using an internal caret-aware scroll; for all other ranges, scrolls the common ancestor container element. |
 
 #### Typical pattern: EditorSelection → EditorRange
 
@@ -1618,6 +1629,7 @@ They are structurally different objects. `StoredSnapshot` is designed to be JSON
 
 ```ts
 interface StoredSnapshot {
+  version: string;
   snapshot: RootEditableSnapshot;
   glyphFormatterInlineTagsOrder: GlyphFormatterInlineTag[];
 }
@@ -1725,11 +1737,14 @@ A recursive plain-object mirror of the editor tree. Each node in the tree follow
 ```ts
 {
   type: string;               // data-editor-role name (e.g. "content-line", "glyph-formatter")
-  localName: string;          // HTML tag (e.g. "p", "span")
+  namespaceURI: string;       // e.g. "http://www.w3.org/1999/xhtml" (HTML), "http://www.w3.org/2000/svg" (SVG), "http://www.w3.org/1998/Math/MathML" (MathML)
+  localName: string;          // tag name (e.g. "p", "span", "svg", "math")
   attributes: Record<string, string>;
   childNodes: EditorNodeView[];
 }
 ```
+
+Use `document.createElementNS(node.namespaceURI, node.localName)` to recreate any element correctly regardless of namespace.
 
 *Text node:*
 ```ts
@@ -1747,6 +1762,7 @@ A recursive plain-object mirror of the editor tree. Each node in the tree follow
 ```ts
 interface GlyphFormatterInlineTagView {
   type: "glyph-formatter-inline-tag-view";
+  namespaceURI: "http://www.w3.org/1999/xhtml";
   localName: GlyphFormatterInlineTag;   // e.g. "strong", "em"
   childNodes: (GlyphFormatterInlineTagView | BasicTextView | OneVisualUnitTextView)[];
 }
@@ -1780,6 +1796,17 @@ This mirrors what the serialized HTML output would look like (`<strong><em>hello
 **`DetachedContextView` — shadow DOM content**
 
 `DetachedContextView` has `childNodes: NodeView[]` — a generic tree of `{ type: "element" | "text" | "comment", ... }` nodes. This reflects the schema-free shadow DOM content, which has no editor-specific type information.
+
+To render a `DetachedContextView`, call `attachShadow({ mode: "open" })` on the host element and append the materialized `childNodes` into the shadow root — not the element's light DOM:
+
+```ts
+const el = document.createElementNS(node.namespaceURI, node.localName);
+// set attributes...
+const shadowRoot = el.attachShadow({ mode: "open" });
+for (const child of node.childNodes) {
+  shadowRoot.append(materialize(child)); // materialize: NodeView → Node
+}
+```
 
 ---
 
@@ -2072,32 +2099,40 @@ Always returns the same object — `FindReplace` is a singleton per editor insta
 
 `FindReplace` starts inactive. Call `enable()` before it tracks mutations or paints highlights. Call `disable()` to tear everything down.
 
-| Method | Description |
+| Method / Getter | Description |
 |---|---|
 | `enable()` | Activates `FindReplace`: starts observing the scope subtree for mutations and immediately syncs highlights for any active pattern. Idempotent — calling it twice is a no-op. |
 | `disable()` | Deactivates `FindReplace`: disconnects the mutation observer and clears all highlights. Idempotent. |
+| `get isEnabled` | `true` if `FindReplace` is currently active, `false` otherwise. |
 
 ---
 
-### Pattern
+### Criteria
 
-The search pattern is a `{ source: string; flags: string }` pair — the same fields as `new RegExp(source, flags)`.
+The search criteria combine the regex pattern and the non-editable flag into a single object.
 
 ```ts
 interface FindReplaceRegExpPattern {
   source: string;
   flags: string;
 }
+
+interface FindReplaceCriteria {
+  pattern: FindReplaceRegExpPattern;
+  nonEditableIncluded: boolean;
+}
 ```
 
 | Method | Description |
 |---|---|
-| `getPattern()` | Returns a copy of the current pattern as `{ source: string; flags: string }`. |
-| `setPattern(value)` | Sets a new pattern. Clears all existing highlights and re-scans the entire scope immediately. If `FindReplace` is disabled, the pattern is stored but no scan occurs. |
+| `getCriteria()` | Returns a copy of the current criteria as `FindReplaceCriteria`. |
+| `setCriteria(value)` | Accepts a `Partial<FindReplaceCriteria>` — pass only the fields that changed. Clears all existing highlights and re-scans exactly once (if enabled), regardless of how many fields were updated. If `FindReplace` is disabled, the new values are stored but no scan occurs. |
 
-An empty `source` (`""`) is treated as "no pattern" — `FindReplace` will not scan and will not paint any highlights.
+An empty `pattern.source` (`""`) is treated as "no pattern" — `FindReplace` will not scan and will not paint any highlights.
 
-**Invalid regex:** `setPattern` always validates the pattern by constructing a `RegExp` from `source` and `flags` before storing anything. A syntactically invalid pattern or flag set throws a `SyntaxError` and leaves the current pattern unchanged.
+**Invalid regex:** `setCriteria` validates `pattern` by constructing a `RegExp` from `source` and `flags` before storing anything. A syntactically invalid pattern or flag set throws a `SyntaxError` and leaves all criteria unchanged.
+
+**Non-editable content:** by default `FindReplace` only scans `ContentLine`s whose edit state is editable. Set `nonEditableIncluded: true` to include read-only `ContentLine`s in the search as well.
 
 **Surrogate pairs / multi-code-point glyphs:** each surrogate pair or multi-code-point glyph lives in its own `OneVisualUnitText` node and is exposed to the regex as a single atomic string (e.g. `"😊"`). The regex must match the full glyph string to produce a hit; a pattern targeting only half a surrogate pair will not produce a match. If the regex cannot locate a match boundary (e.g. the pattern partially references a surrogate pair), that match is silently skipped with a console warning.
 
@@ -2120,11 +2155,10 @@ Matches are indexed in DOM order starting at `0`. Navigation wraps around at bot
 
 | Method / Getter | Description |
 |---|---|
-| `get currentIndex` | The index of the currently highlighted match (the "active" match). Always `0` when `totalCount` is `0`. |
-| `get totalCount` | Total number of matches across the entire scope. |
-| `stepBack()` | Moves `currentIndex` to the previous match, wrapping from `0` to `totalCount - 1`. Updates highlights synchronously. |
-| `stepForward()` | Moves `currentIndex` to the next match, wrapping from `totalCount - 1` to `0`. Updates highlights synchronously. |
-| `stepTo({ index })` | Moves `currentIndex` to the given index, clamped to `[0, totalCount - 1]`. Updates highlights synchronously. |
+| `get currentIndex` | The index of the currently highlighted match (the "active" match). Always `0` when there are no matches. |
+| `stepBack()` | Moves `currentIndex` to the previous match, wrapping from `0` to `matchedRanges.length - 1`. Updates highlights synchronously. |
+| `stepForward()` | Moves `currentIndex` to the next match, wrapping from `matchedRanges.length - 1` to `0`. Updates highlights synchronously. |
+| `stepTo({ index })` | Moves `currentIndex` to the given index, clamped to `[0, matchedRanges.length - 1]`. Updates highlights synchronously. |
 
 ---
 
@@ -2143,13 +2177,13 @@ interface FindReplaceMatchedRange {
 }
 ```
 
-| Method | Description |
+| Getter | Description |
 |---|---|
-| `getMatches()` | Returns a `FindReplaceMatchedRange[]` in DOM order — one entry per match. Each entry includes the native `Range` (usable for layout, scrolling, or positioning anchored UI), the `FormattableText` boundary points, and the match's position within the scanned segment text. The array is a snapshot — it does not update as the DOM changes. |
+| `get matchedRanges` | Returns a `FindReplaceMatchedRange[]` in DOM order — one entry per match. Each entry includes the native `Range` (useful for identifying which CSS Highlight range was clicked), the `FormattableText` boundary points (use these with `EditorRange` for scrolling), and the match's position within the scanned segment text. The array is a snapshot — it does not update as the DOM changes. |
 
 **`segmentText`, `matchStart`, `matchEnd`:** the scanner processes each `ContentLine` as one or more segments, split at `InlineNestedContext` boundaries (text cannot be matched across an inline component). `segmentText` is the full plain-text string of the segment, and `matchStart`/`matchEnd` are the match's character offsets within it.
 
-**Forcing an immediate read:** by default, mutations are delivered to `FindReplace` asynchronously (via `MutationObserver`). If you need to call `getMatches()` synchronously after a DOM mutation and get up-to-date results, call `forceRescan()` first.
+**Forcing an immediate read:** by default, mutations are delivered to `FindReplace` asynchronously (via `MutationObserver`). If you need to read `matchedRanges` synchronously after a DOM mutation and get up-to-date results, call `forceRescan()` first.
 
 ---
 
@@ -2159,7 +2193,31 @@ interface FindReplaceMatchedRange {
 forceRescan(): void
 ```
 
-Flushes any queued `MutationObserver` records and immediately re-scans the affected `ContentLine`s. Use this before calling `getMatches()` when you need the match list to reflect DOM mutations that occurred in the same synchronous tick. No-op if `FindReplace` is disabled.
+Flushes any queued `MutationObserver` records and immediately re-scans the affected `ContentLine`s. Use this before reading `matchedRanges` when you need the match list to reflect DOM mutations that occurred in the same synchronous tick. No-op if `FindReplace` is disabled.
+
+---
+
+### Replace
+
+```ts
+replace(params: {
+  content: FilledContentLineChild[];
+  retainedComponents?: string[];
+}): void
+
+replaceAll(params: {
+  content: FilledContentLineChild[];
+  retainedComponents?: string[];
+}): void
+```
+
+`replace` replaces the currently active match (at `currentIndex`) with `content`, then advances `currentIndex` to the next match after the insertion point. If there is no next match, `currentIndex` resets to `0`. No-op if `FindReplace` is disabled or there are no matches.
+
+`replaceAll` resets `currentIndex` to `0` and calls `replace` once for each match that existed at the time `replaceAll` was called. No-op if `FindReplace` is disabled.
+
+`content` is a `FilledContentLineChild[]` — the same node types that can appear as direct children of a `ContentLine`. The nodes are cloned before insertion; the originals are not consumed.
+
+`retainedComponents` is an optional list of component names (`InlineNestedContext.$$componentName`). When a match fully covers the content of a component whose name is in this list, the component shell is preserved and only its inner content is replaced. Without this option, a full-content replacement removes the component wrapper entirely and inserts the replacement as plain content. Defaults to `[]` (no components retained).
 
 ---
 
@@ -2175,17 +2233,17 @@ onMatchesChange(callback: () => void): () => void
 | Listener | Fires when |
 |---|---|
 | `onIndexChange` | `currentIndex` changes — from navigation (`stepBack`, `stepForward`, `stepTo`) or from a mutation that caused the active match to be clamped. |
-| `onMatchesChange` | The match set changes — new `ContentLine`s were scanned (after `setPattern`, `setScopeElement`, or a DOM mutation). Does NOT fire on navigation-only changes. |
+| `onMatchesChange` | The match set changes — new `ContentLine`s were scanned (after `setCriteria`, `setScopeElement`, or a DOM mutation). Does NOT fire on navigation-only changes. |
 
 Both return an unsubscribe function:
 
 ```ts
 const unsubscribeIndex = findReplace.onIndexChange(() => {
-  console.log("current:", findReplace.currentIndex, "of", findReplace.totalCount);
+  console.log("current:", findReplace.currentIndex, "of", findReplace.matchedRanges.length);
 });
 
 const unsubscribeMatches = findReplace.onMatchesChange(() => {
-  const matches = findReplace.getMatches();
+  const matches = findReplace.matchedRanges;
   // matches is up-to-date at this point
 });
 
@@ -2202,11 +2260,12 @@ unsubscribeMatches();
 const findReplace = rangeX.editorAPI.getFindReplace();
 
 findReplace.enable();
-findReplace.setPattern({ source: "hello", flags: "gi" });
+findReplace.setCriteria({ pattern: { source: "hello", flags: "gi" } });
 
 findReplace.onMatchesChange(() => {
-  console.log("total matches:", findReplace.totalCount);
-  console.log("matches:", findReplace.getMatches());
+  const matches = findReplace.matchedRanges;
+  console.log("total matches:", matches.length);
+  console.log("matches:", matches);
 });
 
 findReplace.onIndexChange(() => {
@@ -2876,6 +2935,7 @@ Creates a serializable snapshot of the current editor content for **persistence*
 
 ```ts
 interface StoredSnapshot {
+  version: string;                                     // RangeX major version at snapshot time
   snapshot: RootEditableSnapshot;                      // full tree snapshot
   glyphFormatterInlineTagsOrder: GlyphFormatterInlineTag[]; // serialization order
 }
