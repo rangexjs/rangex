@@ -64,7 +64,7 @@ const OptionDropdown = <Option extends string>(
 				command="toggle-popover"
 				class="flex w-full items-center justify-between gap-2 rounded-md border border-neutral-200 px-2 py-1 font-medium text-neutral-800 text-xs transition-colors hover:bg-neutral-50 active:border-neutral-300"
 				classList={{
-					"[&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-0": true,
+					"[&:has(~:popover-open)]:mb-px [&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-0": true,
 				}}
 			>
 				<span class="truncate">{props.value}</span>
@@ -149,12 +149,12 @@ export const CodeBlockPopover = () => {
 		<div
 			ref={(el) => controller.setPopover(el)}
 			popover="manual"
-			class="items-center gap-1 rounded-md border border-neutral-300 bg-white/40 p-0.5 shadow-xs backdrop-blur-xs open:flex"
+			class="items-center gap-1 rounded-md border border-neutral-200 bg-white/40 p-0.5 shadow-xs backdrop-blur-xs open:flex"
 			on:beforetoggle={onBeforeToggle}
 		>
 			<button
 				type="button"
-				class="flex size-7 items-center justify-center rounded text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950"
+				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950"
 				title="Copy"
 				on:click={onCopyClick}
 			>
@@ -165,10 +165,10 @@ export const CodeBlockPopover = () => {
 				type="button"
 				commandfor={optionsPopoverId}
 				command="toggle-popover"
-				class="flex size-7 items-center justify-center rounded text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950"
+				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950"
 				title="Options"
 			>
-				<Icon name="Gear" class="size-4" />
+				<Icon name="DotsThreeHorizontal" class="size-4" />
 			</button>
 
 			<div
