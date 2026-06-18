@@ -3,6 +3,7 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
+	CodeBlockPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -19,6 +20,7 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
+	CodeBlockPopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
@@ -44,6 +46,7 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
+	codeBlockPopoverController: CodeBlockPopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
@@ -105,6 +108,7 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
+		codeBlockPopoverController: props.codeBlockPopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
@@ -128,6 +132,7 @@ export const App = (props: AppProps) => {
 				<PopoverControllersContext.Provider
 					value={popoverControllersContextValue}
 				>
+					<CodeBlockPopover />
 					<LinkPopover />
 					<MentionPopover />
 					<TableQuickActionsPopover />

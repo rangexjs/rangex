@@ -37,6 +37,8 @@ export type CodeBlockLanguage =
 	| "Bash"
 	| "Markdown";
 
+export type CodeBlockTheme = "dark-plus" | "light-plus";
+
 export interface CodeBlockToolbarButtonState {
 	disabled: boolean;
 }

@@ -7,12 +7,15 @@ export type {
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
 export type {
+	CodeBlockPopover,
+	CodeBlockPopoverState,
 	LinkPopover,
 	LinkPopoverState,
 	MentionPopover,
 	MentionPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
+	UpdateCodeBlockPopoverStateParams,
 } from "./PopoverControllers";
 export { RichTextEditorUI } from "./RichTextEditorUI";
 export type {
@@ -24,6 +27,7 @@ export type {
 	BoldToolbarButtonState,
 	CheckboxListToolbarButtonState,
 	CodeBlockLanguage,
+	CodeBlockTheme,
 	CodeBlockToolbarButtonState,
 	CodeToolbarButtonState,
 	ColorToolbarButtonState,

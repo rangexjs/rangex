@@ -11,6 +11,7 @@ import {
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
 import {
+	CodeBlockPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -49,6 +50,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
 	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
+	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#linkPopoverController = new LinkPopoverController();
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
@@ -104,6 +106,7 @@ export class RichTextEditorUI extends HTMLElement {
 						this.#nonCategorizedOperationButtonsStateManager
 					}
 					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
+					codeBlockPopoverController={this.#codeBlockPopoverController}
 					linkPopoverController={this.#linkPopoverController}
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
@@ -201,6 +204,10 @@ export class RichTextEditorUI extends HTMLElement {
 				callback,
 			});
 		};
+	}
+
+	get codeBlockPopover() {
+		return this.#codeBlockPopoverController.publicAPI;
 	}
 
 	get linkPopover() {
