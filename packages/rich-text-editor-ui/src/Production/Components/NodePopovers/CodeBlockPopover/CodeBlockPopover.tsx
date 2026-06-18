@@ -149,7 +149,7 @@ export const CodeBlockPopover = () => {
 		<div
 			ref={(el) => controller.setPopover(el)}
 			popover="manual"
-			class="items-center gap-1 rounded-md border border-neutral-300 bg-white/50 p-0.5 shadow-xs open:flex"
+			class="items-center gap-1 rounded-md border border-neutral-300 bg-white/40 p-0.5 shadow-xs backdrop-blur-xs open:flex"
 			on:beforetoggle={onBeforeToggle}
 		>
 			<button
