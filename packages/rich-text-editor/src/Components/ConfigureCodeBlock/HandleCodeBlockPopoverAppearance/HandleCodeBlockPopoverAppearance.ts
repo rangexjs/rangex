@@ -5,7 +5,7 @@ import {
 	isEditorNode,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
-import { toUILanguage } from "../_Utilities";
+import { toUILanguage, toUITheme } from "../_Utilities";
 import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPopoverAppearance-types";
 
@@ -56,8 +56,8 @@ export const handleCodeBlockPopoverAppearance = ({
 		});
 		codeBlockPopover.updateState({
 			language: toUILanguage(lang),
-			lightTheme: theme.light,
-			darkTheme: theme.dark,
+			lightTheme: toUITheme(theme.light),
+			darkTheme: toUITheme(theme.dark),
 		});
 		popover.style.cssText = "";
 		popover.style.inset = "auto";

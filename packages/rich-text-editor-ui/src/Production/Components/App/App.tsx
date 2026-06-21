@@ -38,6 +38,7 @@ import {
 
 export interface EditorOptions {
 	codeBlockLanguages: CodeBlockLanguage[];
+	codeBlockThemes: string[];
 	fontFamilyOptions: FontFamilyOption[];
 }
 
@@ -63,10 +64,10 @@ export interface PopoverControllers {
 }
 
 export interface AppProps
-	extends EditorOptions,
-		MenuBarManagers,
+	extends MenuBarManagers,
 		ToolbarButtonManagers,
 		PopoverControllers {
+	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
 	richTextArea: HTMLElement;
 }
@@ -136,10 +137,7 @@ export const App = (props: AppProps) => {
 			props.tableQuickActionsPopoverController,
 	};
 
-	const editorOptionsContextValue = {
-		codeBlockLanguages: props.codeBlockLanguages,
-		fontFamilyOptions: props.fontFamilyOptions,
-	};
+	const editorOptionsContextValue: EditorOptions = props.options;
 
 	return (
 		<EditorOptionsContext.Provider value={editorOptionsContextValue}>

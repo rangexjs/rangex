@@ -10,14 +10,11 @@ import type {
 	UpdateLanguageFn,
 	UpdateLightThemeFn,
 } from "../../../PopoverControllers";
-import type { CodeBlockTheme } from "../../../ToolbarButtonProps";
 import {
 	useEditorOptionsContext,
 	usePopoverControllersContext,
 } from "../../App";
 import { Icon } from "../../Icon";
-
-const codeBlockThemes: CodeBlockTheme[] = ["dark-plus", "light-plus"];
 
 interface OptionDropdownProps<Option extends string> {
 	label: string;
@@ -74,7 +71,7 @@ const OptionDropdown = <Option extends string>(
 };
 
 export const CodeBlockPopover = () => {
-	const { codeBlockLanguages } = useEditorOptionsContext();
+	const { codeBlockLanguages, codeBlockThemes } = useEditorOptionsContext();
 	const { codeBlockPopoverController: controller } =
 		usePopoverControllersContext();
 

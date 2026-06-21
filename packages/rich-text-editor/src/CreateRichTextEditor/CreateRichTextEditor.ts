@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { toolbarButtons } from "../_Utilities";
 import { codeBlockLanguages } from "../_Utilities/CodeBlockLanguages";
+import { codeBlockThemes } from "../_Utilities/CodeBlockThemes";
 import { fontFamilyOptions } from "../_Utilities/FontFamilyOptions";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
@@ -39,6 +40,7 @@ export const createRichTextEditor = ({
 		toolbarButtons,
 		options: {
 			codeBlockLanguages,
+			codeBlockThemes,
 			fontFamilyOptions,
 		},
 	});

@@ -7,6 +7,7 @@ import type {
 
 export interface RichTextEditorUIOptions {
 	codeBlockLanguages?: CodeBlockLanguage[];
+	codeBlockThemes?: string[];
 	fontFamilyOptions?: FontFamilyOption[];
 }
 

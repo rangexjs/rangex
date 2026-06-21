@@ -4,7 +4,7 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
-import { toHighlighterLang } from "../_Utilities";
+import { toHighlighterLang, toHighlighterTheme } from "../_Utilities";
 import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopoverState-types";
 
@@ -25,12 +25,16 @@ export const handleCodeBlockPopoverState = ({
 		if (!internals.currentCodeBlock) {
 			return;
 		}
+		const lang = toHighlighterLang(language);
+		if (!lang) {
+			return;
+		}
 		const storage = ensureNodeCodeBlockStorage({
 			blockNestedContext: internals.currentCodeBlock,
 		});
 		codeHighlighter.update({
 			blockNestedContext: internals.currentCodeBlock,
-			lang: toHighlighterLang(language),
+			lang,
 			theme: storage.theme,
 		});
 		codeBlockPopover.updateState({ language });
@@ -40,19 +44,8 @@ export const handleCodeBlockPopoverState = ({
 		if (!internals.currentCodeBlock) {
 			return;
 		}
-		const storage = ensureNodeCodeBlockStorage({
-			blockNestedContext: internals.currentCodeBlock,
-		});
-		codeHighlighter.update({
-			blockNestedContext: internals.currentCodeBlock,
-			lang: storage.lang,
-			theme: { ...storage.theme, light: lightTheme },
-		});
-		codeBlockPopover.updateState({ lightTheme });
-	});
-
-	codeBlockPopover.onDarkThemeChange((darkTheme) => {
-		if (!internals.currentCodeBlock) {
+		const highlighterLightTheme = toHighlighterTheme(lightTheme);
+		if (!highlighterLightTheme) {
 			return;
 		}
 		const storage = ensureNodeCodeBlockStorage({
@@ -61,7 +54,26 @@ export const handleCodeBlockPopoverState = ({
 		codeHighlighter.update({
 			blockNestedContext: internals.currentCodeBlock,
 			lang: storage.lang,
-			theme: { ...storage.theme, dark: darkTheme },
+			theme: { ...storage.theme, light: highlighterLightTheme },
+		});
+		codeBlockPopover.updateState({ lightTheme });
+	});
+
+	codeBlockPopover.onDarkThemeChange((darkTheme) => {
+		if (!internals.currentCodeBlock) {
+			return;
+		}
+		const highlighterDarkTheme = toHighlighterTheme(darkTheme);
+		if (!highlighterDarkTheme) {
+			return;
+		}
+		const storage = ensureNodeCodeBlockStorage({
+			blockNestedContext: internals.currentCodeBlock,
+		});
+		codeHighlighter.update({
+			blockNestedContext: internals.currentCodeBlock,
+			lang: storage.lang,
+			theme: { ...storage.theme, dark: highlighterDarkTheme },
 		});
 		codeBlockPopover.updateState({ darkTheme });
 	});
