@@ -232,17 +232,22 @@ const updateCodeBlockColors = async ({
 
 	const lines = getCodeLines({ editorAPI, list });
 
-	const { backgrounds, codeLines } = await syntaxHighlighter.getHighlightInfo({
-		lines,
-		lang,
-	});
+	const { backgrounds, foregrounds, codeLines } =
+		await syntaxHighlighter.getHighlightInfo({
+			lines,
+			lang,
+		});
 
 	const bgLight = backgrounds[theme.light];
 	const bgDark = backgrounds[theme.dark];
+	const fgLight = foregrounds[theme.light];
+	const fgDark = foregrounds[theme.dark];
 
-	const background = `light-dark(${bgLight}, ${bgDark})`;
-
-	blockNestedContext.style.background = background;
+	blockNestedContext.style.background = `light-dark(${bgLight}, ${bgDark})`;
+	blockNestedContext.style.setProperty(
+		"--rx-line-number-color",
+		`light-dark(${fgLight}, ${fgDark})`,
+	);
 
 	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines, theme });
 };

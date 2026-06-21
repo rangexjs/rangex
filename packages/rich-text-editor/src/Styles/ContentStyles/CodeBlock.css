@@ -34,6 +34,11 @@
 					min-width: 40px;
 					background-color: #8882;
 					font-size: 10px;
+					color: var(--rx-line-number-color, inherit);
+
+					&::selection {
+						background: transparent;
+					}
 				}
 			}
 		}

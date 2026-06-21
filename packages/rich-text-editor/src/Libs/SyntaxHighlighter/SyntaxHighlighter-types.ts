@@ -14,6 +14,8 @@ export interface DualTheme {
 
 export interface ThemeBackgrounds extends Record<BundledThemeKeys, string> {}
 
+export interface ThemeForegrounds extends Record<BundledThemeKeys, string> {}
+
 export type TokenColors = Record<BundledThemeKeys, string>;
 
 interface ThemedChars {
@@ -27,6 +29,7 @@ export type ThemedCodeLines = ThemedCodeLine[];
 
 export interface HighlightInfo {
 	backgrounds: ThemeBackgrounds;
+	foregrounds: ThemeForegrounds;
 	codeLines: ThemedCodeLines;
 }
 
