@@ -10,35 +10,12 @@ import type {
 	UpdateLanguageFn,
 	UpdateLightThemeFn,
 } from "../../../PopoverControllers";
-import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
-} from "../../../ToolbarButtonProps";
-import { usePopoverControllersContext } from "../../App";
+import type { CodeBlockTheme } from "../../../ToolbarButtonProps";
+import {
+	useEditorOptionsContext,
+	usePopoverControllersContext,
+} from "../../App";
 import { Icon } from "../../Icon";
-
-const codeBlockLanguages: CodeBlockLanguage[] = [
-	"JavaScript",
-	"TypeScript",
-	"HTML",
-	"CSS",
-	"React",
-	"Python",
-	"Java",
-	"C",
-	"C++",
-	"C#",
-	"Rust",
-	"Go",
-	"Kotlin",
-	"PHP",
-	"Ruby",
-	"Swift",
-	"Dart",
-	"SQL",
-	"Bash",
-	"Markdown",
-];
 
 const codeBlockThemes: CodeBlockTheme[] = ["dark-plus", "light-plus"];
 
@@ -97,6 +74,7 @@ const OptionDropdown = <Option extends string>(
 };
 
 export const CodeBlockPopover = () => {
+	const { codeBlockLanguages } = useEditorOptionsContext();
 	const { codeBlockPopoverController: controller } =
 		usePopoverControllersContext();
 

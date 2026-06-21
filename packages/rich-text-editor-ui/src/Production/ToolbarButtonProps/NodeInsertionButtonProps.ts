@@ -15,27 +15,7 @@ export interface CheckboxListToolbarButtonState {
 }
 
 // CodeBlock
-export type CodeBlockLanguage =
-	| "JavaScript"
-	| "TypeScript"
-	| "HTML"
-	| "CSS"
-	| "React"
-	| "Python"
-	| "Java"
-	| "C"
-	| "C++"
-	| "C#"
-	| "Rust"
-	| "Go"
-	| "Kotlin"
-	| "PHP"
-	| "Ruby"
-	| "Swift"
-	| "Dart"
-	| "SQL"
-	| "Bash"
-	| "Markdown";
+export type CodeBlockLanguage = string;
 
 export type CodeBlockTheme = "dark-plus" | "light-plus";
 

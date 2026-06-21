@@ -9,6 +9,10 @@ import type {
 	TableQuickActionsPopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
+import type {
+	CodeBlockLanguage,
+	FontFamilyOption,
+} from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
 	FormatStylesButtonsStateManager,
@@ -26,10 +30,16 @@ import {
 	TableQuickActionsPopover,
 } from "../NodePopovers";
 import {
+	EditorOptionsContext,
 	MenuBarManagersContext,
 	PopoverControllersContext,
 	ToolbarButtonManagersContext,
 } from "./Context";
+
+export interface EditorOptions {
+	codeBlockLanguages: CodeBlockLanguage[];
+	fontFamilyOptions: FontFamilyOption[];
+}
 
 export interface MenuBarManagers {
 	menuBarActionManager: MenuBarActionManager;
@@ -53,12 +63,23 @@ export interface PopoverControllers {
 }
 
 export interface AppProps
-	extends MenuBarManagers,
+	extends EditorOptions,
+		MenuBarManagers,
 		ToolbarButtonManagers,
 		PopoverControllers {
 	toolbarButtons: ToolbarButtons;
 	richTextArea: HTMLElement;
 }
+
+export const useEditorOptionsContext = () => {
+	const value = useContext(EditorOptionsContext);
+
+	if (!value) {
+		throw new Error("Value can't be undefined.");
+	}
+
+	return value;
+};
 
 export const useMenuBarManagersContext = () => {
 	const value = useContext(MenuBarManagersContext);
@@ -115,29 +136,36 @@ export const App = (props: AppProps) => {
 			props.tableQuickActionsPopoverController,
 	};
 
+	const editorOptionsContextValue = {
+		codeBlockLanguages: props.codeBlockLanguages,
+		fontFamilyOptions: props.fontFamilyOptions,
+	};
+
 	return (
-		<EditorContainer
-			menuBarButtonsStateManager={props.menuBarButtonsStateManager}
-		>
-			<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
-				<MenuBar />
-			</MenuBarManagersContext.Provider>
-			<ToolbarButtonManagersContext.Provider
-				value={toolbarButtonManagersContextValue}
+		<EditorOptionsContext.Provider value={editorOptionsContextValue}>
+			<EditorContainer
+				menuBarButtonsStateManager={props.menuBarButtonsStateManager}
 			>
-				<EditorToolbar toolbarButtons={props.toolbarButtons} />
-			</ToolbarButtonManagersContext.Provider>
-			<div>{props.richTextArea}</div>
-			<div>
-				<PopoverControllersContext.Provider
-					value={popoverControllersContextValue}
+				<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
+					<MenuBar />
+				</MenuBarManagersContext.Provider>
+				<ToolbarButtonManagersContext.Provider
+					value={toolbarButtonManagersContextValue}
 				>
-					<CodeBlockPopover />
-					<LinkPopover />
-					<MentionPopover />
-					<TableQuickActionsPopover />
-				</PopoverControllersContext.Provider>
-			</div>
-		</EditorContainer>
+					<EditorToolbar toolbarButtons={props.toolbarButtons} />
+				</ToolbarButtonManagersContext.Provider>
+				<div>{props.richTextArea}</div>
+				<div>
+					<PopoverControllersContext.Provider
+						value={popoverControllersContextValue}
+					>
+						<CodeBlockPopover />
+						<LinkPopover />
+						<MentionPopover />
+						<TableQuickActionsPopover />
+					</PopoverControllersContext.Provider>
+				</div>
+			</EditorContainer>
+		</EditorOptionsContext.Provider>
 	);
 };

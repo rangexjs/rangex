@@ -38,22 +38,12 @@ export interface ColorToolbarButtonState {
 	values: ColorValues;
 }
 
-export type FontFamilyValue =
-	| "Inter"
-	| "Roboto"
-	| "Open Sans"
-	| "Lato"
-	| "Poppins"
-	| "Montserrat"
-	| "Source Sans 3"
-	| "Playfair Display"
-	| "Merriweather"
-	| "Georgia"
-	| "Times New Roman"
-	| "Arial"
-	| "Helvetica"
-	| "Courier New"
-	| "Monospace";
+export type FontFamilyValue = string;
+
+export interface FontFamilyOption {
+	value: string;
+	group: "sans-serif" | "serif" | "monospace";
+}
 
 // FontFamily
 export type FontFamilyValues = Set<FontFamilyValue>;

@@ -4,7 +4,10 @@ import type {
 	FontFamilyValue,
 	FontFamilyValues,
 } from "../../../ToolbarButtonProps";
-import { useToolbarButtonManagersContext } from "../../App";
+import {
+	useEditorOptionsContext,
+	useToolbarButtonManagersContext,
+} from "../../App";
 import { Icon } from "../../Icon";
 import {
 	createTextFieldController,
@@ -12,49 +15,6 @@ import {
 	TextFieldWrapper,
 } from "../../InputFields";
 import { Dropdown, type DropdownList } from "../_Utilities";
-
-export const fontFamilyValues: FontFamilyValue[] = [
-	"Inter",
-	"Roboto",
-	"Open Sans",
-	"Lato",
-	"Poppins",
-	"Montserrat",
-	"Source Sans 3",
-	"Playfair Display",
-	"Merriweather",
-	"Georgia",
-	"Times New Roman",
-	"Arial",
-	"Helvetica",
-	"Courier New",
-	"Monospace",
-];
-
-interface FontFamilyInfo {
-	value: FontFamilyValue;
-	group: "sans-serif" | "serif" | "monospace";
-}
-
-const fontFamilyInfo: FontFamilyInfo[] = [
-	{ value: "Inter", group: "sans-serif" },
-	{ value: "Roboto", group: "sans-serif" },
-	{ value: "Open Sans", group: "sans-serif" },
-	{ value: "Lato", group: "sans-serif" },
-	{ value: "Poppins", group: "sans-serif" },
-	{ value: "Montserrat", group: "sans-serif" },
-	{ value: "Source Sans 3", group: "sans-serif" },
-
-	{ value: "Playfair Display", group: "serif" },
-	{ value: "Merriweather", group: "serif" },
-	{ value: "Georgia", group: "serif" },
-	{ value: "Times New Roman", group: "serif" },
-	{ value: "Arial", group: "sans-serif" },
-	{ value: "Helvetica", group: "sans-serif" },
-
-	{ value: "Courier New", group: "monospace" },
-	{ value: "Monospace", group: "monospace" },
-];
 
 const getInputValueFromActiveValues = (
 	fontFamily: FontFamilyValues,
@@ -78,6 +38,9 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontFamilyToolbarButton = () => {
+	const { fontFamilyOptions } = useEditorOptionsContext();
+	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
+
 	const {
 		formatStylesButtonsStateManager,
 		toolbarButtonDefaultValues,
@@ -178,13 +141,13 @@ export const FontFamilyToolbarButton = () => {
 
 	const list = createMemo<DropdownList>(() => {
 		const getText = (value: FontFamilyValue) => {
-			const info = fontFamilyInfo.find((info) => info.value === value);
+			const option = fontFamilyOptions.find((o) => o.value === value);
 
-			if (!info) {
-				throw new Error("Info can't be undefined.");
+			if (!option) {
+				throw new Error("Option can't be undefined.");
 			}
 
-			return `${info.value} (${info.group})`;
+			return `${option.value} (${option.group})`;
 		};
 
 		return fontFamilyValues.map((fontFamilyItem) => {

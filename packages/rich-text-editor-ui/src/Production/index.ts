@@ -17,7 +17,10 @@ export type {
 	TableQuickActionsPopoverState,
 	UpdateCodeBlockPopoverStateParams,
 } from "./PopoverControllers";
-export { RichTextEditorUI } from "./RichTextEditorUI";
+export {
+	RichTextEditorUI,
+	type RichTextEditorUIOptions,
+} from "./RichTextEditorUI";
 export type {
 	AnchorToolbarButtonState,
 	BackgroundColorToolbarButtonState,
@@ -38,6 +41,7 @@ export type {
 	CustomComponentToolbarButtonState,
 	FindReplaceSearchResult,
 	FindReplaceToolbarButtonState,
+	FontFamilyOption,
 	FontFamilyToolbarButtonState,
 	FontFamilyValue,
 	FontFamilyValues,

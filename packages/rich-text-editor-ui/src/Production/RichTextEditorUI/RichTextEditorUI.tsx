@@ -60,8 +60,11 @@ export class RichTextEditorUI extends HTMLElement {
 		toolbarButtons,
 		richTextArea,
 		defaultStyleValues,
+		options = {},
 	}: RichTextEditorUIConstructorParams) {
 		super();
+
+		const { codeBlockLanguages = [], fontFamilyOptions = [] } = options;
 
 		const style = document.createElement("style");
 		style.textContent = inlineTailwind;
@@ -90,6 +93,8 @@ export class RichTextEditorUI extends HTMLElement {
 				<App
 					toolbarButtons={this.#toolbarButtons}
 					richTextArea={this.#richTextArea}
+					codeBlockLanguages={codeBlockLanguages}
+					fontFamilyOptions={fontFamilyOptions}
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
 					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}
