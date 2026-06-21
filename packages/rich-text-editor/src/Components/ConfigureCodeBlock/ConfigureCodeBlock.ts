@@ -1,7 +1,11 @@
 import { CodeHighlighter } from "./CodeHighlighter";
-import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
+import type {
+	CodeBlockInternals,
+	ConfigureCodeBlockParams,
+} from "./ConfigureCodeBlock-types";
 import { handleCodeBlockInsertion } from "./HandleCodeBlockInsertion";
 import { handleCodeBlockPopoverAppearance } from "./HandleCodeBlockPopoverAppearance";
+import { handleCodeBlockPopoverState } from "./HandleCodeBlockPopoverState";
 import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButtonState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
@@ -10,6 +14,10 @@ export const configureCodeBlock = ({
 	editorAPI,
 	blockComponentPlacement,
 }: ConfigureCodeBlockParams) => {
+	const internals: CodeBlockInternals = { currentCodeBlock: null };
+
+	const codeHighlighter = new CodeHighlighter({ editorAPI });
+
 	handleCodeBlockToolbarButtonState({
 		richTextEditorUI,
 		editorAPI,
@@ -24,8 +32,16 @@ export const configureCodeBlock = ({
 
 	handleLineNumbers({ editorAPI });
 
-	handleCodeBlockPopoverAppearance({ richTextEditorUI, editorAPI });
+	handleCodeBlockPopoverState({
+		richTextEditorUI,
+		editorAPI,
+		codeHighlighter,
+		internals,
+	});
 
-	// biome-ignore lint/correctness/noUnusedVariables: UI will be implemented later
-	const codeHighlighter = new CodeHighlighter({ editorAPI });
+	handleCodeBlockPopoverAppearance({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
 };

@@ -1,9 +1,12 @@
 import {
+	type BlockNestedContext,
 	blockNestedContextName,
 	type EditorElement,
 	isEditorNode,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { toUILanguage } from "../_Utilities";
+import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPopoverAppearance-types";
 
 const isCodeBlock = (element: EditorElement) =>
@@ -18,6 +21,7 @@ const isCodeBlock = (element: EditorElement) =>
 export const handleCodeBlockPopoverAppearance = ({
 	richTextEditorUI,
 	editorAPI,
+	internals,
 }: HandleCodeBlockPopoverAppearanceParams) => {
 	const { codeBlockPopover } = richTextEditorUI;
 	const { popover } = codeBlockPopover;
@@ -35,18 +39,40 @@ export const handleCodeBlockPopoverAppearance = ({
 		clearTimeout(hideTimeoutId);
 	};
 
+	const onToggle = (event: ToggleEvent) => {
+		if (event.newState === "closed") {
+			internals.currentCodeBlock = null;
+		}
+	};
+
 	popover.addEventListener("pointerenter", cancelHide);
 	popover.addEventListener("pointerleave", scheduleHide);
+	popover.addEventListener("toggle", onToggle);
 
-	const showPopover = (codeBlock: HTMLElement) => {
+	const showPopover = (codeBlock: BlockNestedContext) => {
 		cancelHide();
-		popover.hidePopover();
+		const { lang, theme } = ensureNodeCodeBlockStorage({
+			blockNestedContext: codeBlock,
+		});
+		codeBlockPopover.updateState({
+			language: toUILanguage(lang),
+			lightTheme: theme.light,
+			darkTheme: theme.dark,
+		});
 		popover.style.cssText = "";
 		popover.style.inset = "auto";
 		popover.style.margin = "4px";
 		popover.style.positionArea = "top right";
 		popover.style.top = "100%";
 		popover.style.right = "100%";
+
+		if (internals.currentCodeBlock === codeBlock) {
+			return;
+		}
+
+		internals.currentCodeBlock = codeBlock;
+
+		popover.hidePopover();
 		popover.showPopover({ source: codeBlock });
 	};
 
