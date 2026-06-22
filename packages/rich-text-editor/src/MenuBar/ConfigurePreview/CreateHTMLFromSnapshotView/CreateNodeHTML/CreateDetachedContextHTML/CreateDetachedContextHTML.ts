@@ -51,11 +51,13 @@ export const createDetachedContextHTML = ({
 
 	setAttributes({ element: el, attributes });
 
-	for (const child of detachedContextView.childNodes) {
-		const childEl = elementViewToElement(child);
+	const shadowRoot = el.attachShadow({ mode: "open" });
 
-		if (childEl !== null) {
-			el.append(childEl);
+	for (const child of detachedContextView.childNodes) {
+		const childNode = nodeViewToNode(child);
+
+		if (childNode !== null) {
+			shadowRoot.append(childNode);
 		}
 	}
 

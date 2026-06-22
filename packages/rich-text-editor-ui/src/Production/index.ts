@@ -7,14 +7,20 @@ export type {
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
 export type {
+	CodeBlockPopover,
+	CodeBlockPopoverState,
 	LinkPopover,
 	LinkPopoverState,
 	MentionPopover,
 	MentionPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
+	UpdateCodeBlockPopoverStateParams,
 } from "./PopoverControllers";
-export { RichTextEditorUI } from "./RichTextEditorUI";
+export {
+	RichTextEditorUI,
+	type RichTextEditorUIOptions,
+} from "./RichTextEditorUI";
 export type {
 	AnchorToolbarButtonState,
 	BackgroundColorToolbarButtonState,
@@ -24,6 +30,7 @@ export type {
 	BoldToolbarButtonState,
 	CheckboxListToolbarButtonState,
 	CodeBlockLanguage,
+	CodeBlockTheme,
 	CodeBlockToolbarButtonState,
 	CodeToolbarButtonState,
 	ColorToolbarButtonState,
@@ -34,6 +41,7 @@ export type {
 	CustomComponentToolbarButtonState,
 	FindReplaceSearchResult,
 	FindReplaceToolbarButtonState,
+	FontFamilyOption,
 	FontFamilyToolbarButtonState,
 	FontFamilyValue,
 	FontFamilyValues,

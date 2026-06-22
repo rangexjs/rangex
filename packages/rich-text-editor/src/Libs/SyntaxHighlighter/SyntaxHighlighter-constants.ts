@@ -1,12 +1,40 @@
 import type { BundledLanguage, BundledTheme } from "shiki";
 
 export const highlighterLangs = [
+	"bash",
+	"c",
+	"cpp",
+	"csharp",
+	"css",
+	"dart",
+	"go",
 	"html",
+	"java",
+	"javascript",
 	"json",
+	"kotlin",
+	"markdown",
+	"php",
+	"python",
+	"ruby",
+	"rust",
+	"sql",
+	"swift",
+	"tsx",
 	"typescript",
 ] satisfies BundledLanguage[];
 
 export const highlighterThemes = [
+	"catppuccin-mocha",
 	"dark-plus",
+	"dracula",
+	"github-dark",
+	"github-light",
 	"light-plus",
+	"monokai",
+	"nord",
+	"one-dark-pro",
+	"solarized-dark",
+	"solarized-light",
+	"tokyo-night",
 ] satisfies BundledTheme[];

@@ -1,7 +1,7 @@
 import type {
 	BlockNestedContext,
 	EditorAPI,
-	NestedEditable,
+	List,
 	RootEditable,
 } from "rich-text-area";
 import type {
@@ -24,14 +24,14 @@ export interface WatchCodeBlocksParams {
 
 export interface GetCodeLinesParams {
 	editorAPI: EditorAPI;
-	nestedEditable: NestedEditable;
+	list: List;
 }
 
 export type GetCodeLinesResult = string[];
 
 export interface ApplyTokenColorsParams {
 	editorAPI: EditorAPI;
-	nestedEditable: NestedEditable;
+	list: List;
 	cssHighlightManager: CSSHighlightManager;
 	codeLines: ThemedCodeLines;
 	theme: { light: BundledThemeKeys; dark: BundledThemeKeys };

@@ -212,16 +212,16 @@ export const TableQuickActionsPopover = () => {
 		controller,
 	});
 
-	const onToggle = (e: ToggleEvent) => {
-		if (e.newState !== "closed") {
-			return;
-		}
-
+	const onBeforeToggle = () => {
 		if (!subMenu) {
 			throw new Error("SubMenu can't be undefined.");
 		}
 
-		subMenu.hidePopover();
+		const isOpen = subMenu.matches(":popover-open");
+
+		if (isOpen) {
+			subMenu.hidePopover();
+		}
 	};
 
 	return (
@@ -229,7 +229,7 @@ export const TableQuickActionsPopover = () => {
 			ref={(el) => controller.setPopover(el)}
 			popover="manual"
 			class="overflow-hidden bg-transparent"
-			on:toggle={onToggle}
+			on:beforetoggle={onBeforeToggle}
 		>
 			<div class="group size-3 leading-0 transition-all hover:size-5 [&:has(+_[popover]:popover-open)]:size-5">
 				<button

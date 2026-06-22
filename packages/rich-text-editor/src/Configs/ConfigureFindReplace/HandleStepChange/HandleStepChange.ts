@@ -1,3 +1,4 @@
+import { scrollMatchedRangeIntoView } from "../_Utilities";
 import type { HandleStepChangeParams } from "./HandleStepChange-types";
 
 /** Steps forward or backward through matches in response to navigation actions. */
@@ -14,6 +15,10 @@ export const handleStepChange = ({
 
 		const { action } = params;
 
+		if (action !== "previous" && action !== "next") {
+			return;
+		}
+
 		if (action === "previous") {
 			findReplace.stepBack();
 		}
@@ -21,5 +26,7 @@ export const handleStepChange = ({
 		if (action === "next") {
 			findReplace.stepForward();
 		}
+
+		scrollMatchedRangeIntoView({ findReplace });
 	});
 };

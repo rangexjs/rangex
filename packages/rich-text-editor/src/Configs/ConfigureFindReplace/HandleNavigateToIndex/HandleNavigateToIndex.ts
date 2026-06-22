@@ -1,4 +1,4 @@
-import { EditorRange } from "rich-text-area";
+import { scrollMatchedRangeIntoView } from "../_Utilities";
 import type { HandleNavigateToIndexParams } from "./HandleNavigateToIndex-types";
 
 /** Navigates to a specific match index and scrolls it into view. */
@@ -21,24 +21,6 @@ export const handleNavigateToIndex = ({
 
 		findReplace.stepTo({ index: navigateTo });
 
-		const { matchedRanges } = findReplace;
-
-		const matchedRange = matchedRanges.at(navigateTo);
-
-		if (!matchedRange) {
-			console.warn(`MatchedRange wasn't found at index ${navigateTo}.`);
-			return;
-		}
-
-		const { fromText, fromOffset, toText, toOffset } = matchedRange;
-
-		const range = new EditorRange({
-			fromNode: fromText,
-			fromOffset,
-			toNode: toText,
-			toOffset,
-		});
-
-		range.scrollIntoView({ block: "nearest", behavior: "smooth" });
+		scrollMatchedRangeIntoView({ findReplace });
 	});
 };

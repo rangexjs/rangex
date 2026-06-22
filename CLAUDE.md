@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project overview
+
+RangeX is a rich text editor engine that manages all editor logic: text manipulation, formatting, and embedded components (mentions, links, code blocks, tables, etc.). It is designed to be fully customizable — developers can build any editor-like product on top of it (blog/CMS, chat, forums, real-time collaboration, etc.).
+
+**Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read `packages/rich-text-editor/docs/RangeX-LLMs.md` — it is the authoritative reference for everything the engine exposes. Do not guess engine behavior from usage patterns when this file is available.
+
+**Engine types** are in `packages/rich-text-area/dist/index.d.ts` (all types re-exported from a single entry point). This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
+
+This repo (`rangex-dev`) serves three purposes:
+1. **Zero-config editor** — `@rangex/rich-text-editor` + `@rangex/rich-text-editor-ui` provide a ready-to-use editor built on the engine with no setup required
+2. **Demo** — showcases the engine's capabilities (formatting, components, etc.) so developers can evaluate RangeX before building on it
+3. **Reference implementation** — shows developers how to wire the engine to build a custom editor
+
+The engine itself (`rich-text-area`) is closed-source. Most editor features live in this repo, layered on top of it.
+
 ## Repository structure
 
 This is a monorepo (Bun workspaces) for the RangeX rich text editor project:

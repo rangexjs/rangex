@@ -12,6 +12,8 @@ export * from "./Check";
 export * from "./Code";
 export * from "./CodeBlock";
 export * from "./CopySimple";
+export * from "./DotsSixVertical";
+export * from "./DotsThreeHorizontal";
 export * from "./FindReplace";
 export * from "./Gear";
 export * from "./Image";

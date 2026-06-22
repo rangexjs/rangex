@@ -31,6 +31,7 @@ import { getStyleSheetTexts } from "../../../Styles";
 import type {
 	CreateHTMLFromSnapshotViewParams,
 	CreateHTMLFromSnapshotViewResult,
+	PendingTasks,
 	ToDOMResult,
 } from "./CreateHTMLFromSnapshotView-types";
 import {
@@ -64,6 +65,8 @@ import {
 export const createHTMLFromSnapshotView = ({
 	snapshotView,
 }: CreateHTMLFromSnapshotViewParams): CreateHTMLFromSnapshotViewResult => {
+	const pendingTasks: PendingTasks = [];
+
 	const toDOM = (node: EditorNodeView): ToDOMResult => {
 		// Text leaf nodes — no children to process
 		if (node.type === beamTextName) {
@@ -141,6 +144,7 @@ export const createHTMLFromSnapshotView = ({
 			return createBlockNestedContextHTML({
 				blockNestedContextView: node,
 				childNodes,
+				pendingTasks,
 			});
 		}
 
@@ -202,5 +206,7 @@ export const createHTMLFromSnapshotView = ({
 	const style = document.createElement("style");
 	style.textContent = snapshotView.styles + contentStyleSheetText;
 
-	return { style, rootElement };
+	const settled = Promise.allSettled(pendingTasks).then(() => undefined);
+
+	return { style, rootElement, settled };
 };

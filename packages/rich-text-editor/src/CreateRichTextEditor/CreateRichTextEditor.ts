@@ -5,6 +5,9 @@ import {
 	snapshotIndexChangeEventType,
 } from "rich-text-area";
 import { toolbarButtons } from "../_Utilities";
+import { codeBlockLanguages } from "../_Utilities/CodeBlockLanguages";
+import { codeBlockThemes } from "../_Utilities/CodeBlockThemes";
+import { fontFamilyOptions } from "../_Utilities/FontFamilyOptions";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
 	configureBlockQuote,
@@ -35,6 +38,11 @@ export const createRichTextEditor = ({
 	const richTextEditorUI = new RichTextEditorUI({
 		richTextArea: rangeX,
 		toolbarButtons,
+		options: {
+			codeBlockLanguages,
+			codeBlockThemes,
+			fontFamilyOptions,
+		},
 	});
 
 	const { editorAPI } = rangeX;

@@ -50,11 +50,14 @@ const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
 const createPreviewContent = ({ editorAPI }: CreatePreviewContentParams) => {
 	const storedSnapshot = editorAPI.createStoredSnapshot();
 	const { snapshotView } = createSnapshotView({ storedSnapshot });
-	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
+	const { style, rootElement, settled } = createHTMLFromSnapshotView({
+		snapshotView,
+	});
 
 	return {
-		getRendered: () => Promise.resolve(createRendered({ style, rootElement })),
-		getHtml: () => createHTML({ style, rootElement }),
+		getRendered: () =>
+			Promise.resolve(createRendered({ style, rootElement, settled })),
+		getHtml: () => createHTML({ style, rootElement, settled }),
 		getJson: () => createJSON({ snapshotView }),
 		getSnapshot: () => createSnapshot({ storedSnapshot }),
 	};

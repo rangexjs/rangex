@@ -3,11 +3,16 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
+	CodeBlockPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
+import type {
+	CodeBlockLanguage,
+	FontFamilyOption,
+} from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
 	FormatStylesButtonsStateManager,
@@ -19,15 +24,23 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
+	CodeBlockPopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
 } from "../NodePopovers";
 import {
+	EditorOptionsContext,
 	MenuBarManagersContext,
 	PopoverControllersContext,
 	ToolbarButtonManagersContext,
 } from "./Context";
+
+export interface EditorOptions {
+	codeBlockLanguages: CodeBlockLanguage[];
+	codeBlockThemes: string[];
+	fontFamilyOptions: FontFamilyOption[];
+}
 
 export interface MenuBarManagers {
 	menuBarActionManager: MenuBarActionManager;
@@ -44,6 +57,7 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
+	codeBlockPopoverController: CodeBlockPopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
@@ -53,9 +67,20 @@ export interface AppProps
 	extends MenuBarManagers,
 		ToolbarButtonManagers,
 		PopoverControllers {
+	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
 	richTextArea: HTMLElement;
 }
+
+export const useEditorOptionsContext = () => {
+	const value = useContext(EditorOptionsContext);
+
+	if (!value) {
+		throw new Error("Value can't be undefined.");
+	}
+
+	return value;
+};
 
 export const useMenuBarManagersContext = () => {
 	const value = useContext(MenuBarManagersContext);
@@ -105,34 +130,40 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
+		codeBlockPopoverController: props.codeBlockPopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
 	};
 
+	const editorOptionsContextValue: EditorOptions = props.options;
+
 	return (
-		<EditorContainer
-			menuBarButtonsStateManager={props.menuBarButtonsStateManager}
-		>
-			<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
-				<MenuBar />
-			</MenuBarManagersContext.Provider>
-			<ToolbarButtonManagersContext.Provider
-				value={toolbarButtonManagersContextValue}
+		<EditorOptionsContext.Provider value={editorOptionsContextValue}>
+			<EditorContainer
+				menuBarButtonsStateManager={props.menuBarButtonsStateManager}
 			>
-				<EditorToolbar toolbarButtons={props.toolbarButtons} />
-			</ToolbarButtonManagersContext.Provider>
-			<div>{props.richTextArea}</div>
-			<div>
-				<PopoverControllersContext.Provider
-					value={popoverControllersContextValue}
+				<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
+					<MenuBar />
+				</MenuBarManagersContext.Provider>
+				<ToolbarButtonManagersContext.Provider
+					value={toolbarButtonManagersContextValue}
 				>
-					<LinkPopover />
-					<MentionPopover />
-					<TableQuickActionsPopover />
-				</PopoverControllersContext.Provider>
-			</div>
-		</EditorContainer>
+					<EditorToolbar toolbarButtons={props.toolbarButtons} />
+				</ToolbarButtonManagersContext.Provider>
+				<div>{props.richTextArea}</div>
+				<div>
+					<PopoverControllersContext.Provider
+						value={popoverControllersContextValue}
+					>
+						<CodeBlockPopover />
+						<LinkPopover />
+						<MentionPopover />
+						<TableQuickActionsPopover />
+					</PopoverControllersContext.Provider>
+				</div>
+			</EditorContainer>
+		</EditorOptionsContext.Provider>
 	);
 };

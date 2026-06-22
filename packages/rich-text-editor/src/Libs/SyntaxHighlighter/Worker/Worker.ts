@@ -9,6 +9,7 @@ import type {
 	ThemeBackgrounds,
 	ThemedCodeLine,
 	ThemedCodeLines,
+	ThemeForegrounds,
 	TokenColors,
 } from "../SyntaxHighlighter-types";
 import type {
@@ -46,6 +47,17 @@ const getTokens = async ({
 		{} as ThemeBackgrounds,
 	);
 
+	const foregrounds = highlighterThemes.reduce<ThemeForegrounds>(
+		(variants, theme) => {
+			const { fg } = highlighter.getTheme(theme);
+
+			variants[theme] = fg;
+
+			return variants;
+		},
+		{} as ThemeForegrounds,
+	);
+
 	const codeLines: ThemedCodeLines = [];
 
 	for (const tokenLine of tokens) {
@@ -68,7 +80,7 @@ const getTokens = async ({
 		}
 	}
 
-	return { backgrounds, codeLines };
+	return { backgrounds, foregrounds, codeLines };
 };
 
 /**

@@ -2,6 +2,8 @@ import type { SnapshotView } from "rich-text-area";
 
 export type DOMChildNode = HTMLElement | SVGElement | MathMLElement | Text;
 
+export type PendingTasks = Promise<void>[];
+
 export type ToDOMResult = DOMChildNode | null;
 
 export interface CreateHTMLFromSnapshotViewParams {
@@ -11,4 +13,5 @@ export interface CreateHTMLFromSnapshotViewParams {
 export interface CreateHTMLFromSnapshotViewResult {
 	style: HTMLStyleElement;
 	rootElement: HTMLElement;
+	settled: Promise<void>;
 }

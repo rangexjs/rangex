@@ -1,15 +1,10 @@
-import type {
-	CodeBlockLanguage,
-	RichTextEditorUI,
-} from "@rangex/rich-text-editor-ui";
-import type { BlockNestedContextLine, EditorAPI } from "rich-text-area";
+import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
+import type { BlockNestedContext, EditorAPI } from "rich-text-area";
 import type { BlockComponentPlacement } from "../../BlockComponentPlacement";
 
-export interface CreateCodeBlockLineParams {
-	language: CodeBlockLanguage;
+export interface CodeBlockInternals {
+	currentCodeBlock: BlockNestedContext | null;
 }
-
-export interface CreateCodeBlockLineResult extends BlockNestedContextLine {}
 
 export interface ConfigureCodeBlockParams {
 	richTextEditorUI: RichTextEditorUI;
