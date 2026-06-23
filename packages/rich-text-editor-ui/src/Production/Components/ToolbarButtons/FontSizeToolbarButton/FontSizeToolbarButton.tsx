@@ -207,7 +207,7 @@ export const FontSizeToolbarButton = () => {
 							type="button"
 							popovertarget={popoverId}
 							popovertargetaction="toggle"
-							class="absolute -top-1 -left-1 rounded-xs p-1 transition-colors hover:bg-neutral-200"
+							class="absolute -top-1 -left-1 rounded-xs p-1 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							disabled={disabled()}
 						>
 							<Icon name="CaretDown" class="size-2" />
