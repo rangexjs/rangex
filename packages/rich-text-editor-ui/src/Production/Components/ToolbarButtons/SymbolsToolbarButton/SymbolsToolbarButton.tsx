@@ -49,7 +49,7 @@ export const SymbolsToolbarButton = () => {
 				id={popoverId}
 				popover="auto"
 				on:toggle={onPopoverToggle}
-				class="mt-1 max-h-52 rounded-md border border-neutral-100 p-1 shadow-md [position-area:bottom_center] [scrollbar-width:thin]"
+				class="mt-1 max-h-52 rounded-md border border-neutral-100 bg-white p-1 shadow-md [position-area:bottom_center] [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-900"
 			>
 				<div>
 					<div class="inline-grid grid-cols-[repeat(8,min-content)] gap-1">
@@ -57,7 +57,7 @@ export const SymbolsToolbarButton = () => {
 							{(emoji) => (
 								<button
 									type="button"
-									class="rounded-xs border border-transparent text-lg transition-colors hover:bg-neutral-100 active:border-neutral-200"
+									class="rounded-xs border border-transparent text-lg transition-colors hover:bg-neutral-100 active:border-neutral-200 dark:active:border-neutral-700 dark:hover:bg-neutral-800"
 									popovertarget={popoverId}
 									popovertargetaction="hide"
 									on:click={() => onEmojiClick(emoji)}

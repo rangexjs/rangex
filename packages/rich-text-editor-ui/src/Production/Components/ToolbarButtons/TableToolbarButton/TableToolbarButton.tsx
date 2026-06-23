@@ -126,7 +126,7 @@ export const TableToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="auto"
-				class="absolute top-[anchor(bottom)] mt-1 rounded-sm bg-white p-1 shadow-md [justify-self:anchor-center]"
+				class="absolute top-[anchor(bottom)] mt-1 rounded-sm bg-white p-1 shadow-md [justify-self:anchor-center] dark:bg-neutral-900"
 				on:toggle={onPopoverToggle}
 			>
 				<div
@@ -156,7 +156,8 @@ export const TableToolbarButton = () => {
 											<span
 												class="pointer-events-none inline-block h-full w-full rounded-xs border transition-colors"
 												classList={{
-													"border-neutral-300": !cell().isActive,
+													"border-neutral-300 dark:border-neutral-600":
+														!cell().isActive,
 													"border-primary-500 bg-primary-500/20":
 														cell().isActive,
 												}}
@@ -168,7 +169,7 @@ export const TableToolbarButton = () => {
 						)}
 					</Index>
 				</div>
-				<div class="flex justify-center gap-2 font-mono font-semibold text-xs">
+				<div class="flex justify-center gap-2 font-mono font-semibold text-neutral-700 text-xs dark:text-neutral-300">
 					<span>Col: {selectedCellPos().col}</span>
 					<span>Row: {selectedCellPos().row}</span>
 				</div>
