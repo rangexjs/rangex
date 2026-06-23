@@ -67,6 +67,7 @@ export class RichTextEditorUI extends HTMLElement {
 		const {
 			codeBlockLanguages = [],
 			codeBlockThemes = [],
+			customComponentNames = [],
 			fontFamilyOptions = [],
 		} = options;
 
@@ -97,7 +98,12 @@ export class RichTextEditorUI extends HTMLElement {
 				<App
 					toolbarButtons={this.#toolbarButtons}
 					richTextArea={this.#richTextArea}
-					options={{ codeBlockLanguages, codeBlockThemes, fontFamilyOptions }}
+					options={{
+						codeBlockLanguages,
+						codeBlockThemes,
+						customComponentNames,
+						fontFamilyOptions,
+					}}
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
 					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}

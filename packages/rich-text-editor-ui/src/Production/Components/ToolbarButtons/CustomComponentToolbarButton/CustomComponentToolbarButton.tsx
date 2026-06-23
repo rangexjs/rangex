@@ -1,17 +1,15 @@
 import { createSignal, createUniqueId } from "solid-js";
 import { toolbarButtonsName } from "../../../Constants";
-import type { CustomComponentName } from "../../../ToolbarButtonProps";
-import { useToolbarButtonManagersContext } from "../../App";
+import {
+	useEditorOptionsContext,
+	useToolbarButtonManagersContext,
+} from "../../App";
 import { Icon } from "../../Icon";
 import { Dropdown, type DropdownList, ToolbarButton } from "../_Utilities";
 
-export const customComponentNames: CustomComponentName[] = [
-	"Carousel",
-	"Collapsible",
-	"Page Break",
-];
-
 export const CustomComponentToolbarButton = () => {
+	const { customComponentNames } = useEditorOptionsContext();
+
 	const { toolbarButtonsActionManager, nodeInsertionButtonsStateManager } =
 		useToolbarButtonManagersContext();
 

@@ -1,3 +1,4 @@
+export * from "./EditorOptions";
 export * from "./GetCSSText";
 export * from "./GetDefaultContentLineLocalNamesStyles";
 export * from "./IsScopedEditableEmpty";

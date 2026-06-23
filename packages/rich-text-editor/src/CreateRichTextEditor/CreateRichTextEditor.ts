@@ -4,10 +4,13 @@ import {
 	selectionStylesChangeEventType,
 	snapshotIndexChangeEventType,
 } from "rich-text-area";
-import { toolbarButtons } from "../_Utilities";
-import { codeBlockLanguages } from "../_Utilities/CodeBlockLanguages";
-import { codeBlockThemes } from "../_Utilities/CodeBlockThemes";
-import { fontFamilyOptions } from "../_Utilities/FontFamilyOptions";
+import {
+	codeBlockLanguages,
+	codeBlockThemes,
+	customComponentNames,
+	fontFamilyOptions,
+	toolbarButtons,
+} from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
 	configureBlockQuote,
@@ -41,6 +44,7 @@ export const createRichTextEditor = ({
 		options: {
 			codeBlockLanguages,
 			codeBlockThemes,
+			customComponentNames,
 			fontFamilyOptions,
 		},
 	});

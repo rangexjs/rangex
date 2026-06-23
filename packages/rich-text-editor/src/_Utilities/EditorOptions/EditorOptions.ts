@@ -1,4 +1,53 @@
-import type { FontFamilyOption } from "@rangex/rich-text-editor-ui";
+import type {
+	CodeBlockLanguage,
+	CustomComponentName,
+	FontFamilyOption,
+} from "@rangex/rich-text-editor-ui";
+
+export const codeBlockLanguages: CodeBlockLanguage[] = [
+	"TypeScript",
+	"JavaScript",
+	"React",
+	"CSS",
+	"Python",
+	"Java",
+	"C",
+	"C++",
+	"C#",
+	"Rust",
+	"Go",
+	"Kotlin",
+	"PHP",
+	"Ruby",
+	"Swift",
+	"Dart",
+	"SQL",
+	"Bash",
+	"Markdown",
+	"HTML",
+	"JSON",
+];
+
+export const codeBlockThemes: string[] = [
+	"Catppuccin Mocha",
+	"Dark+",
+	"Dracula",
+	"GitHub Dark",
+	"GitHub Light",
+	"Light+",
+	"Monokai",
+	"Nord",
+	"One Dark Pro",
+	"Solarized Dark",
+	"Solarized Light",
+	"Tokyo Night",
+];
+
+export const customComponentNames: CustomComponentName[] = [
+	"Carousel",
+	"Collapsible",
+	"Page Break",
+];
 
 // Loaded via FontStyles.css
 const loadedFonts: FontFamilyOption[] = [

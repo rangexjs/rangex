@@ -11,6 +11,8 @@ import type {
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
 	CodeBlockLanguage,
+	CodeBlockTheme,
+	CustomComponentName,
 	FontFamilyOption,
 } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
@@ -38,7 +40,8 @@ import {
 
 export interface EditorOptions {
 	codeBlockLanguages: CodeBlockLanguage[];
-	codeBlockThemes: string[];
+	codeBlockThemes: CodeBlockTheme[];
+	customComponentNames: CustomComponentName[];
 	fontFamilyOptions: FontFamilyOption[];
 }
 
