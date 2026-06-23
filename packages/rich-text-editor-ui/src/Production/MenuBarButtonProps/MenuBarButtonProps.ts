@@ -1,5 +1,5 @@
 // Theme
-export type ThemeValue = "light" | "dark" | "system" | "inherit";
+export type ThemeValue = "light" | "dark" | "system";
 
 export interface ThemeMenuBarButtonState {
 	value: ThemeValue;

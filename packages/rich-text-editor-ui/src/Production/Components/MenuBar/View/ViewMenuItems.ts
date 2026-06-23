@@ -48,16 +48,6 @@ export function createViewMenuItems({
 							newValue: "system",
 						}),
 				},
-				{
-					type: "button",
-					label: "Host page",
-					checked: () => theme().value === "inherit",
-					onClick: () =>
-						menuBarActionManager.emitMenuBarChange({
-							type: menuBarButtonsName.theme,
-							newValue: "inherit",
-						}),
-				},
 			],
 		},
 	];

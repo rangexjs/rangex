@@ -30,7 +30,6 @@ export const EditorContainer = (props: EditorContainerProps) => {
 		light: "light",
 		dark: "dark",
 		system: "light dark",
-		inherit: undefined,
 	} as const;
 
 	const colorScheme = () => colorSchemeMap[theme().value];
