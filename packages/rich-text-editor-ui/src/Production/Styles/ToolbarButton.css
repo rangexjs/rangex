@@ -11,7 +11,7 @@
 	user-select: none;
 	transition-property: background-color, border-color, box-shadow, filter;
 	transition-duration: 200ms;
-	color: var(--color-neutral-800);
+	color: light-dark(var(--color-neutral-800), var(--color-neutral-200));
 
 	&[data-is-checked="true"] {
 		background-color: color(from var(--color-primary-500) srgb r g b / 0.1);
@@ -19,9 +19,9 @@
 	}
 
 	&:hover {
-		color: var(--color-neutral-900);
-		border-color: var(--color-neutral-200);
-		background-color: var(--color-neutral-100);
+		color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+		border-color: light-dark(var(--color-neutral-200), var(--color-neutral-700));
+		background-color: light-dark(var(--color-neutral-100), var(--color-neutral-800));
 
 		&[data-is-checked="true"] {
 			color: var(--color-primary-500);
