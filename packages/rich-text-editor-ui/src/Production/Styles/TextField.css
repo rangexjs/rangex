@@ -4,7 +4,10 @@
 	border-style: solid;
 	border-color: light-dark(var(--color-neutral-400), var(--color-neutral-600));
 	border-radius: 6px;
-	background-color: light-dark(var(--color-neutral-50), var(--color-neutral-800));
+	background-color: light-dark(
+		var(--color-neutral-50),
+		var(--color-neutral-800)
+	);
 	color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 
 	transition-property: border-color, box-shadow;
@@ -15,7 +18,10 @@
 	}
 
 	&:hover {
-		border-color: light-dark(var(--color-neutral-500), var(--color-neutral-500));
+		border-color: light-dark(
+			var(--color-neutral-500),
+			var(--color-neutral-500)
+		);
 
 		&:has([data-invalid="true"]) {
 			border-color: color(from var(--color-red-600) srgb r g b / 0.8);
@@ -45,8 +51,14 @@
 
 	&:has(input:disabled, textarea:disabled) {
 		pointer-events: none;
-		background-color: light-dark(var(--color-neutral-100), var(--color-neutral-900));
-		border-color: light-dark(var(--color-neutral-200), var(--color-neutral-700));
+		background-color: light-dark(
+			var(--color-neutral-100),
+			var(--color-neutral-900)
+		);
+		border-color: light-dark(
+			var(--color-neutral-200),
+			var(--color-neutral-700)
+		);
 	}
 
 	& > :is(input:disabled, textarea:disabled) {
@@ -59,7 +71,10 @@
 	border-bottom-width: 1px;
 	border-style: solid;
 	border-color: light-dark(var(--color-neutral-300), var(--color-neutral-600));
-	background-color: light-dark(var(--color-neutral-100), var(--color-neutral-800));
+	background-color: light-dark(
+		var(--color-neutral-100),
+		var(--color-neutral-800)
+	);
 	color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 
 	transition-property: border-color;
@@ -70,7 +85,10 @@
 	}
 
 	&:hover {
-		border-color: light-dark(var(--color-neutral-400), var(--color-neutral-500));
+		border-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-500)
+		);
 
 		&:has([data-invalid="true"]) {
 			border-color: color(from var(--color-red-600) srgb r g b / 0.8);

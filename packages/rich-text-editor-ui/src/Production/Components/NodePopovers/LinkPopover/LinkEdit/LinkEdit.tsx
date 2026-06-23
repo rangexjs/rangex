@@ -199,7 +199,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 
 			<div class="mb-4 space-y-2">
 				<div class="flex justify-between">
-					<span class="font-medium text-neutral-600 text-sm">
+					<span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
 						Open in New Tab
 					</span>
 					<ToggleButton checked={isNewTab()} on:click={onNewTabChange} />

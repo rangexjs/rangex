@@ -38,7 +38,7 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 				href={serializeURL(url())}
 				target="_blank"
 				rel="noopener"
-				class="self-center truncate font-semibold text-blue-600 text-sm"
+				class="self-center truncate font-semibold text-blue-600 text-sm dark:text-blue-400"
 			>
 				{url()}
 			</a>

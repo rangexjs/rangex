@@ -19,7 +19,9 @@ export const FixedPosModal = (props: FixedPosModalProps) => {
 			on:close={props.onClose}
 		>
 			<div class="mb-2 flex items-center justify-between">
-				<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">{props.title}</h2>
+				<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+					{props.title}
+				</h2>
 				<button
 					type="button"
 					commandfor={props.id}
