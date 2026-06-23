@@ -39,7 +39,6 @@
 			"Bash(npm publish*)",
 			"Bash(bun publish*)",
 			"Bash(npm run npm:publish*)",
-			"Bash(rm *)",
 			"Bash(mv *)",
 			"Bash(curl*)",
 			"Bash(wget*)"
