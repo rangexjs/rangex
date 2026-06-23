@@ -88,7 +88,7 @@ export interface EditorToolbarProps {
 
 export const EditorToolbar = (props: EditorToolbarProps) => {
 	return (
-		<div class="flex flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:bg-neutral-950">
+		<div class="flex flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950">
 			<For each={props.toolbarButtons}>
 				{(row) => (
 					<div class="flex flex-wrap gap-1.5">

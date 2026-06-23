@@ -37,7 +37,7 @@ export const EditorContainer = (props: EditorContainerProps) => {
 
 	return (
 		<div
-			class="overflow-clip rounded-xl border border-neutral-200 bg-white dark:bg-neutral-950"
+			class="overflow-clip rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
 			data-color-scheme={theme().value}
 			style={{ "color-scheme": colorScheme() }}
 		>
