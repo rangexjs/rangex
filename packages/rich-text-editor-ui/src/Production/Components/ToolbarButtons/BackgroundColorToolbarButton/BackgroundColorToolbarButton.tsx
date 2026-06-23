@@ -131,7 +131,7 @@ export const BackgroundColorToolbarButton = () => {
 				ref={popover}
 				popover="auto"
 				on:toggle={onPopoverToggle}
-				class="mt-1 overflow-x-clip rounded-md border border-neutral-200 p-2 shadow-md [position-area:center_bottom]"
+				class="mt-1 overflow-x-clip rounded-md border border-neutral-200 bg-white p-2 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>
 				<ColorPanel
 					lightHsl={lightHsl}

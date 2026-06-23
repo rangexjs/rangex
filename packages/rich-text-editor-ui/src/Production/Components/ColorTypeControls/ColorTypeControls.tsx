@@ -59,7 +59,7 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 			<div
 				id={popoverId}
 				popover="auto"
-				class="mt-1 w-[anchor-size(width)] rounded-md border border-neutral-200 p-1 shadow-md [position-area:span-right_bottom]"
+				class="mt-1 w-[anchor-size(width)] rounded-md border border-neutral-200 bg-white p-1 shadow-md [position-area:span-right_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>
 				<ul class="space-y-0.5">
 					<For each={colorFormats}>
@@ -69,7 +69,7 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 									type="button"
 									commandfor={popoverId}
 									command="hide-popover"
-									class="w-full rounded-xs border border-transparent px-2 py-1 text-start font-semibold text-neutral-700 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200"
+									class="w-full rounded-xs border border-transparent px-2 py-1 text-start font-semibold text-neutral-700 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 dark:text-neutral-200 dark:active:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
 									classList={{ hidden: item === props.colorFormat() }}
 									on:click={() => props.setColorFormat(item)}
 								>
@@ -335,7 +335,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 			/>
 
 			<div
-				class="inline-flex rounded-sm border border-neutral-300 bg-neutral-100 font-semibold text-neutral-600 text-sm"
+				class="inline-flex rounded-sm border border-neutral-300 bg-neutral-100 font-semibold text-neutral-600 text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"
 				classList={{ [props.colorContainerClass ?? ""]: true }}
 			>
 				<div class="w-full">
@@ -357,7 +357,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 						class="flex h-full"
 						classList={{ hidden: colorType() !== "RGB" }}
 					>
-						<div class="content-center border-neutral-300 border-r">
+						<div class="content-center border-neutral-300 border-r dark:border-neutral-600">
 							<InputTextField
 								type="text"
 								class="w-full text-center outline-none"
@@ -369,7 +369,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 							/>
 						</div>
 
-						<div class="h-full content-center border-neutral-300 border-r">
+						<div class="h-full content-center border-neutral-300 border-r dark:border-neutral-600">
 							<InputTextField
 								type="text"
 								class="w-full text-center outline-none"
@@ -398,7 +398,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 						class="flex h-full"
 						classList={{ hidden: colorType() !== "HSL" }}
 					>
-						<div class="content-center border-neutral-300 border-r">
+						<div class="content-center border-neutral-300 border-r dark:border-neutral-600">
 							<InputTextField
 								type="text"
 								class="w-full text-center outline-none"
@@ -410,7 +410,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 							/>
 						</div>
 
-						<div class="h-full content-center border-neutral-300 border-r">
+						<div class="h-full content-center border-neutral-300 border-r dark:border-neutral-600">
 							<InputTextField
 								type="text"
 								class="w-full text-center outline-none"
@@ -436,7 +436,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 					</div>
 				</div>
 
-				<div class="inline-flex items-center border-neutral-300 border-l px-1">
+				<div class="inline-flex items-center border-neutral-300 border-l px-1 dark:border-neutral-600">
 					<InputTextField
 						type="text"
 						class="w-8 text-center outline-none"
