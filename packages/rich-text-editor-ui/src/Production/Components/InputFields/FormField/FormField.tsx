@@ -29,14 +29,14 @@ export const FormField = (props: FormFieldProps) => {
 		<div class={`grid content-start gap-0 ${props.class}`} style={props.style}>
 			<label
 				for={props.for}
-				class={`ml-0.5 justify-self-start font-semibold text-neutral-800 text-xs`}
+				class={`ml-0.5 justify-self-start font-semibold text-neutral-800 text-xs dark:text-neutral-200`}
 				classList={{ "mb-2": !!props.label, [props.labelClass ?? ""]: true }}
 			>
 				{props.label}
 			</label>
 			{props.children}
 			<div
-				class={`ml-0.5 font-semibold text-neutral-700 text-xs`}
+				class={`ml-0.5 font-semibold text-neutral-700 text-xs dark:text-neutral-300`}
 				classList={{
 					"mt-1": isInfoContainerVisible(),
 					[props.infoClass ?? ""]: true,
