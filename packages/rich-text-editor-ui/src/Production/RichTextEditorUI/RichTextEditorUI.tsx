@@ -12,6 +12,7 @@ import {
 } from "../MenuBarButtonsStateManager";
 import {
 	CodeBlockPopoverController,
+	EmojiPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -51,6 +52,7 @@ export class RichTextEditorUI extends HTMLElement {
 		new NonCategorizedOperationButtonsStateManager();
 	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
+	#emojiPopoverController = new EmojiPopoverController();
 	#linkPopoverController = new LinkPopoverController();
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
@@ -121,6 +123,7 @@ export class RichTextEditorUI extends HTMLElement {
 					}
 					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
+					emojiPopoverController={this.#emojiPopoverController}
 					linkPopoverController={this.#linkPopoverController}
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
@@ -222,6 +225,10 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get codeBlockPopover() {
 		return this.#codeBlockPopoverController.publicAPI;
+	}
+
+	get emojiPopover() {
+		return this.#emojiPopoverController.publicAPI;
 	}
 
 	get linkPopover() {

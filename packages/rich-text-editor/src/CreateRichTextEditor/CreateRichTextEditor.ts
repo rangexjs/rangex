@@ -15,6 +15,7 @@ import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
 	configureBlockQuote,
 	configureCodeBlock,
+	configureEmoji,
 	configureLink,
 	configureList,
 	configureMention,
@@ -133,6 +134,7 @@ export const createRichTextEditor = ({
 	configureTable({ richTextEditorUI, editorAPI, blockComponentPlacement });
 
 	configureLink({ richTextEditorUI, editorAPI });
+	configureEmoji({ richTextEditorUI, editorAPI });
 	configureMention({ richTextEditorUI, editorAPI });
 	configureTemplateVariable({ richTextEditorUI, editorAPI });
 
