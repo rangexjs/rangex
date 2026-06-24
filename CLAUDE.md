@@ -64,6 +64,10 @@ bun run lint           # biome check + tsc (no emit)
 bun run fix            # auto-fix biome issues
 ```
 
+**After any code change:** always run `bun run lint` from the repo root and fix all errors before finishing.
+
+**After touching exported types in `rich-text-editor-ui`:** run `npm run build` inside `packages/rich-text-editor-ui/` first (to rebuild the dist types), then run `bun run lint`. The `rich-text-editor` package resolves the UI package through its built dist, so type changes are not visible to the linter until the package is rebuilt.
+
 ## Architecture
 
 ### How the packages connect
