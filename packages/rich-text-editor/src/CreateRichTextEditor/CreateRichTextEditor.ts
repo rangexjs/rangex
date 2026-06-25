@@ -1,10 +1,5 @@
 import { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
 import {
-	// createSnapshotView,
-	selectionStylesChangeEventType,
-	snapshotIndexChangeEventType,
-} from "rich-text-area";
-import {
 	codeBlockLanguages,
 	codeBlockThemes,
 	customComponentNames,
@@ -22,18 +17,20 @@ import {
 	configureTable,
 	configureTemplateVariable,
 } from "../Components";
-import { configureFindReplace, configureSymbolInsertion } from "../Configs";
+import {
+	configureCustomStyles,
+	configureFindReplace,
+	configureFormatStyles,
+	configureHistoryNavigation,
+	configureNonCategorized,
+	configureSymbolInsertion,
+} from "../Configs";
 import {
 	configurePreview,
 	configureSettings,
 	configureTemplate,
 	configureView,
 } from "../MenuBar";
-import {
-	getFormatStylesButtonState,
-	getSelectionStylesData,
-} from "../SelectionStyle";
-import { getStyleSheetTexts } from "../Styles";
 import type { CreateRichTextEditorParams } from "./CreateRichTextEditor-types";
 
 export const createRichTextEditor = ({
@@ -52,74 +49,11 @@ export const createRichTextEditor = ({
 
 	const { editorAPI } = rangeX;
 
-	const { contentStyleSheetText, interactiveStyleSheetText } =
-		getStyleSheetTexts();
+	configureCustomStyles({ editorAPI });
 
-	editorAPI.replaceCustomStyles(
-		contentStyleSheetText + interactiveStyleSheetText,
-	);
-
-	editorAPI.subscribeEditorEvent({
-		type: selectionStylesChangeEventType,
-		callback: ({ selectionFormatStyles }) => {
-			const formatStylesButtonState = getFormatStylesButtonState({
-				selectionFormatStyles,
-			});
-
-			richTextEditorUI.updateFormatStylesButtonState(formatStylesButtonState);
-		},
-	});
-
-	richTextEditorUI.onFormatStyles((formatStylesActionState) => {
-		const selectionStylesData = getSelectionStylesData({
-			formatStylesActionState,
-			whenMixed: "apply",
-		});
-
-		editorAPI.updateSelectionStyles(selectionStylesData);
-
-		editorAPI.focus();
-	});
-
-	richTextEditorUI.onNonCategorizedOperation((props) => {
-		const { type } = props;
-
-		if (type === "text-area-readability") {
-			const { newState } = props;
-
-			editorAPI.setIsTextAreaEditable(!newState);
-
-			const checked = !editorAPI.getIsTextAreaEditable();
-
-			richTextEditorUI.updateNonCategorizedButtonState({
-				textAreaReadability: { checked },
-			});
-		}
-	});
-
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
-	richTextEditorUI.onHistoryNavigation(({ type }) => {
-		if (type === "history-back") {
-			snapshotTimeline.stepBack();
-		}
-
-		if (type === "history-forward") {
-			snapshotTimeline.stepForward();
-		}
-
-		editorAPI.focus();
-	});
-
-	editorAPI.subscribeEditorEvent({
-		type: snapshotIndexChangeEventType,
-		callback: () => {
-			richTextEditorUI.updateHistoryNavigationButtonState({
-				historyBack: { disabled: !snapshotTimeline.canStepBack },
-				historyForward: { disabled: !snapshotTimeline.canStepForward },
-			});
-		},
-	});
+	configureFormatStyles({ richTextEditorUI, editorAPI });
+	configureNonCategorized({ richTextEditorUI, editorAPI });
+	configureHistoryNavigation({ richTextEditorUI, editorAPI });
 
 	configureView({ richTextEditorUI, editorAPI });
 	configureTemplate({ richTextEditorUI, editorAPI });
