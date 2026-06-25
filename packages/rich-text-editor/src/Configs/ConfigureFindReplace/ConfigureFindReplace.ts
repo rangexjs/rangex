@@ -11,15 +11,28 @@ export const configureFindReplace = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureFindReplaceParams) => {
-	handleFindReplaceActivation({ richTextEditorUI, editorAPI });
+	const activationCleanup = handleFindReplaceActivation({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const searchChangeCleanup = handleSearchChange({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const resultsSyncCleanup = handleResultsSync({ richTextEditorUI, editorAPI });
+	const stepChangeCleanup = handleStepChange({ richTextEditorUI, editorAPI });
+	const replacementCleanup = handleReplacement({ richTextEditorUI, editorAPI });
+	const navigateToIndexCleanup = handleNavigateToIndex({
+		richTextEditorUI,
+		editorAPI,
+	});
 
-	handleSearchChange({ richTextEditorUI, editorAPI });
-
-	handleResultsSync({ richTextEditorUI, editorAPI });
-
-	handleStepChange({ richTextEditorUI, editorAPI });
-
-	handleReplacement({ richTextEditorUI, editorAPI });
-
-	handleNavigateToIndex({ richTextEditorUI, editorAPI });
+	return () => {
+		activationCleanup();
+		searchChangeCleanup();
+		resultsSyncCleanup();
+		stepChangeCleanup();
+		replacementCleanup();
+		navigateToIndexCleanup();
+	};
 };

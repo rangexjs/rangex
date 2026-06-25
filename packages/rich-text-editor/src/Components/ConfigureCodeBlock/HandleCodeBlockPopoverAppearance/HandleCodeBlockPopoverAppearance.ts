@@ -45,9 +45,12 @@ export const handleCodeBlockPopoverAppearance = ({
 		}
 	};
 
-	popover.addEventListener("pointerenter", cancelHide);
-	popover.addEventListener("pointerleave", scheduleHide);
-	popover.addEventListener("toggle", onToggle);
+	const controller = new AbortController();
+	const { signal } = controller;
+
+	popover.addEventListener("pointerenter", cancelHide, { signal });
+	popover.addEventListener("pointerleave", scheduleHide, { signal });
+	popover.addEventListener("toggle", onToggle, { signal });
 
 	const showPopover = (codeBlock: BlockNestedContext) => {
 		cancelHide();
@@ -76,7 +79,7 @@ export const handleCodeBlockPopoverAppearance = ({
 		popover.showPopover({ source: codeBlock });
 	};
 
-	editorAPI.registerDOMEvent({
+	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
 		when: ({ element }) => isCodeBlock(element),
 		eventListener: {
 			type: "pointerenter",
@@ -96,11 +99,17 @@ export const handleCodeBlockPopoverAppearance = ({
 		},
 	});
 
-	editorAPI.registerDOMEvent({
+	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
 		when: ({ element }) => isCodeBlock(element),
 		eventListener: {
 			type: "pointerleave",
 			listener: scheduleHide,
 		},
 	});
+
+	return () => {
+		controller.abort();
+		unsubscribePointerEnter();
+		unsubscribePointerLeave();
+	};
 };

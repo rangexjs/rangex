@@ -18,7 +18,7 @@ const restoreFocusOnEscape = ({
 }: RestoreFocusOnEscapeParams) => {
 	const { popover } = emojiPopover;
 
-	document.addEventListener("keydown", (event) => {
+	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
@@ -30,7 +30,11 @@ const restoreFocusOnEscape = ({
 		popover.hidePopover();
 
 		editorAPI.focus();
-	});
+	};
+
+	document.addEventListener("keydown", listener);
+
+	return () => document.removeEventListener("keydown", listener);
 };
 
 /**
@@ -42,7 +46,7 @@ const closeOnSelectionChange = ({
 }: CloseOnSelectionChangeParams) => {
 	const { popover } = emojiPopover;
 
-	editorAPI.subscribeEditorEvent({
+	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			if (!popover.matches(":popover-open")) {
@@ -63,7 +67,7 @@ const closeOnEditorBlur = ({
 }: CloseOnEditorBlurParams) => {
 	const { popover } = emojiPopover;
 
-	editorAPI.subscribeEditorEvent({
+	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
 		callback: () => {
 			if (!popover.matches(":popover-open")) {
@@ -94,7 +98,16 @@ export const handlePopoverClose = ({
 }: HandlePopoverCloseParams) => {
 	const { emojiPopover } = richTextEditorUI;
 
-	closeOnSelectionChange({ emojiPopover, editorAPI });
-	closeOnEditorBlur({ emojiPopover, editorAPI });
-	restoreFocusOnEscape({ emojiPopover, editorAPI });
+	const unsubscribeSelectionChange = closeOnSelectionChange({
+		emojiPopover,
+		editorAPI,
+	});
+	const unsubscribeEditorBlur = closeOnEditorBlur({ emojiPopover, editorAPI });
+	const unsubscribeEscape = restoreFocusOnEscape({ emojiPopover, editorAPI });
+
+	return () => {
+		unsubscribeSelectionChange();
+		unsubscribeEditorBlur();
+		unsubscribeEscape();
+	};
 };

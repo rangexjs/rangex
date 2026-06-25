@@ -18,30 +18,38 @@ export const configureCodeBlock = ({
 
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
 
-	handleCodeBlockToolbarButtonState({
+	const toolbarButtonStateCleanup = handleCodeBlockToolbarButtonState({
 		richTextEditorUI,
 		editorAPI,
 		blockComponentPlacement,
 	});
 
-	handleCodeBlockInsertion({
+	const insertionCleanup = handleCodeBlockInsertion({
 		richTextEditorUI,
 		editorAPI,
 		blockComponentPlacement,
 	});
 
-	handleLineNumbers({ editorAPI });
+	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
-	handleCodeBlockPopoverState({
+	const popoverStateCleanup = handleCodeBlockPopoverState({
 		richTextEditorUI,
 		editorAPI,
 		codeHighlighter,
 		internals,
 	});
 
-	handleCodeBlockPopoverAppearance({
+	const popoverAppearanceCleanup = handleCodeBlockPopoverAppearance({
 		richTextEditorUI,
 		editorAPI,
 		internals,
 	});
+
+	return () => {
+		toolbarButtonStateCleanup();
+		insertionCleanup();
+		lineNumbersCleanup();
+		popoverStateCleanup();
+		popoverAppearanceCleanup();
+	};
 };

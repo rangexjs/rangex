@@ -8,7 +8,7 @@ export const handleFindReplaceActivation = ({
 }: HandleFindReplaceActivationParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	richTextEditorUI.onNonCategorizedOperation((params) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((params) => {
 		if (params.type !== "find-replace") {
 			return;
 		}
@@ -42,4 +42,8 @@ export const handleFindReplaceActivation = ({
 			findReplace.disable();
 		}
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

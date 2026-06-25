@@ -77,7 +77,7 @@ export const handleCodeBlockInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleCodeBlockInsertionParams) => {
-	richTextEditorUI.onNodeInsertion((params) => {
+	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
 		if (params.type !== "code-block") {
 			return;
 		}
@@ -126,4 +126,8 @@ export const handleCodeBlockInsertion = ({
 
 		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

@@ -8,7 +8,7 @@ export const handleSearchChange = ({
 }: HandleSearchChangeParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	richTextEditorUI.onNonCategorizedOperation((params) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((params) => {
 		if (params.type !== "find-replace") {
 			return;
 		}
@@ -38,4 +38,8 @@ export const handleSearchChange = ({
 			nonEditableIncluded: includeNonEditableContent,
 		});
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

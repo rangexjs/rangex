@@ -1,5 +1,5 @@
 import type { RangeX } from "rich-text-area";
 
-export interface CreateRichTextEditorParams {
+export interface RichTextEditorParams {
 	rangeX: RangeX;
 }

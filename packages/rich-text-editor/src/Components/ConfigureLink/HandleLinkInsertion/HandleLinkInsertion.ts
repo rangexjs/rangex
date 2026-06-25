@@ -264,5 +264,9 @@ export const handleLinkInsertion = ({
 		assertNever(linkInsertMode);
 	};
 
-	linkPopover.onInsert(callback);
+	const unsubscribe = linkPopover.onInsert(callback);
+
+	return () => {
+		unsubscribe();
+	};
 };

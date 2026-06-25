@@ -9,7 +9,7 @@ import { componentsName } from "../../../Constants";
 import type { HandleLineNumbersParams } from "./HandleLineNumbers-types";
 
 export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
 			for (const list of lists) {
@@ -45,4 +45,8 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 			}
 		},
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

@@ -72,24 +72,30 @@ export const handleTableQuickActionsButtonVisibility = ({
 	popover.style.positionArea = "center";
 	popover.style.left = "100%";
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeSelection = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			syncPopoverVisibility({ popover, editorAPI });
 		},
 	});
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeTableSelection = editorAPI.subscribeEditorEvent({
 		type: tableSelectionChangeEventType,
 		callback: () => {
 			syncPopoverVisibility({ popover, editorAPI });
 		},
 	});
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeTableStructure = editorAPI.subscribeEditorEvent({
 		type: tableStructureChangeEventType,
 		callback: () => {
 			syncPopoverVisibility({ popover, editorAPI });
 		},
 	});
+
+	return () => {
+		unsubscribeSelection();
+		unsubscribeTableSelection();
+		unsubscribeTableStructure();
+	};
 };

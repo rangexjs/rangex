@@ -82,7 +82,7 @@ export const handleMentionInsertion = ({
 
 	const selection = editorAPI.getEditorSelection();
 
-	mentionPopover.onSelect(({ id, name }) => {
+	const unsubscribe = mentionPopover.onSelect(({ id, name }) => {
 		const { queryFound } = removeMentionQueryText({ editorAPI });
 
 		if (!queryFound) {
@@ -105,4 +105,8 @@ export const handleMentionInsertion = ({
 
 		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

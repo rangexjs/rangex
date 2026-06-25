@@ -8,7 +8,7 @@ export const handleStepChange = ({
 }: HandleStepChangeParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	richTextEditorUI.onNonCategorizedOperation((params) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((params) => {
 		if (params.type !== "find-replace") {
 			return;
 		}
@@ -29,4 +29,8 @@ export const handleStepChange = ({
 
 		scrollMatchedRangeIntoView({ findReplace });
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

@@ -4,8 +4,8 @@ import {
 	createRootEditable,
 	defineRangeX,
 } from "rich-text-area";
-import { createRichTextEditor } from "../CreateRichTextEditor";
 import storedSnapshot from "../mock_database/Demo.json";
+import { RichTextEditor } from "../RichTextEditor";
 
 import "../Styles/FontStyles.css";
 
@@ -46,7 +46,7 @@ export const createDevelopmentView = () => {
 		},
 	});
 
-	const emptyRichTextEditor = createRichTextEditor({
+	const emptyRichTextEditor = new RichTextEditor({
 		rangeX: emptyRichTextArea,
 	});
 
@@ -58,7 +58,7 @@ export const createDevelopmentView = () => {
 		},
 	});
 
-	const filledRichTextEditor = createRichTextEditor({
+	const filledRichTextEditor = new RichTextEditor({
 		rangeX: filledRichTextArea,
 	});
 

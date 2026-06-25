@@ -9,7 +9,7 @@ export const handleLinkToolbarButtonState = ({
 	richTextEditorUI,
 	editorAPI,
 }: HandleLinkToolbarButtonStateParams) => {
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const mode = getLinkInsertionMode({ editorAPI });
@@ -19,4 +19,8 @@ export const handleLinkToolbarButtonState = ({
 			});
 		},
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

@@ -17,7 +17,7 @@ const closeOnSelectionChange = ({
 }: CloseOnSelectionChangeParams) => {
 	const { popover } = linkPopover;
 
-	editorAPI.subscribeEditorEvent({
+	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			if (!popover.matches(":popover-open")) {
@@ -64,7 +64,7 @@ const handleLinkPopoverCancel = ({
 }: HandleLinkPopoverCancelParams) => {
 	const { popover } = linkPopover;
 
-	linkPopover.onCancel(() => {
+	return linkPopover.onCancel(() => {
 		if (internals.currentLink) {
 			return;
 		}
@@ -82,13 +82,17 @@ const restoreFocusOnEscape = ({
 }: RestoreFocusOnEscapeParams) => {
 	const { popover } = linkPopover;
 
-	popover.addEventListener("keydown", (event) => {
+	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
 
 		editorAPI.focus();
-	});
+	};
+
+	popover.addEventListener("keydown", listener);
+
+	return () => popover.removeEventListener("keydown", listener);
 };
 
 /**
@@ -102,14 +106,18 @@ const onPopoverClose = ({
 	const { popover } = linkPopover;
 	const selection = editorAPI.getEditorSelection();
 
-	popover.addEventListener("toggle", (event) => {
+	const listener = (event: ToggleEvent) => {
 		if (event.newState === "open") {
 			return;
 		}
 
 		selection.highlight = false;
 		internals.currentLink = null;
-	});
+	};
+
+	popover.addEventListener("toggle", listener);
+
+	return () => popover.removeEventListener("toggle", listener);
 };
 
 /**
@@ -122,11 +130,23 @@ export const handleLinkPopoverClose = ({
 }: HandleLinkPopoverCloseParams) => {
 	const { linkPopover } = richTextEditorUI;
 
-	closeOnSelectionChange({ linkPopover, editorAPI, internals });
+	const unsubscribeSelectionChange = closeOnSelectionChange({
+		linkPopover,
+		editorAPI,
+		internals,
+	});
+	const unsubscribeCancel = handleLinkPopoverCancel({ linkPopover, internals });
+	const unsubscribeEscape = restoreFocusOnEscape({ linkPopover, editorAPI });
+	const unsubscribeToggle = onPopoverClose({
+		linkPopover,
+		editorAPI,
+		internals,
+	});
 
-	handleLinkPopoverCancel({ linkPopover, internals });
-
-	restoreFocusOnEscape({ linkPopover, editorAPI });
-
-	onPopoverClose({ linkPopover, editorAPI, internals });
+	return () => {
+		unsubscribeSelectionChange();
+		unsubscribeCancel();
+		unsubscribeEscape();
+		unsubscribeToggle();
+	};
 };
