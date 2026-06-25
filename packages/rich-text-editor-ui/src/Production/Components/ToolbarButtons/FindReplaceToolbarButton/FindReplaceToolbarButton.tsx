@@ -328,7 +328,7 @@ export const FindReplaceToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="manual"
-				class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 p-2 shadow-md"
+				class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 				on:toggle={onPopoverToggle}
 				on:beforetoggle={setPopoverInitialPosition}
 			>
@@ -336,7 +336,9 @@ export const FindReplaceToolbarButton = () => {
 					class="mb-2 flex cursor-grab items-center justify-between"
 					on:pointerdown={movePopover}
 				>
-					<h2 class="font-bold text-neutral-700 text-sm">Find & Replace</h2>
+					<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+						Find & Replace
+					</h2>
 					<button
 						type="button"
 						commandfor={popoverId}
@@ -344,12 +346,12 @@ export const FindReplaceToolbarButton = () => {
 							e.stopPropagation();
 						}}
 						command="hide-popover"
-						class="p-1 text-neutral-700 hover:text-neutral-900"
+						class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
 					>
 						<Icon name="X" class="size-3" />
 					</button>
 				</div>
-				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300" />
+				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
 				<div>
 					<div
 						class="mb-3 space-y-2"
@@ -406,7 +408,7 @@ export const FindReplaceToolbarButton = () => {
 									/>
 								}
 							>
-								<span class="font-semibold text-neutral-600 text-xs">
+								<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
 									{displayIndex()} of {totalResults()}
 								</span>
 							</Show>
@@ -453,7 +455,7 @@ export const FindReplaceToolbarButton = () => {
 										{(item) => (
 											<label class="inline-flex cursor-pointer items-center gap-2">
 												<Checkbox {...item().controls} />
-												<span class="font-medium text-neutral-600 text-sm">
+												<span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
 													{item().text}
 												</span>
 											</label>

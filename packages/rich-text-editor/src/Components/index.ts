@@ -1,5 +1,6 @@
 export * from "./ConfigureBlockQuote";
 export * from "./ConfigureCodeBlock";
+export * from "./ConfigureEmoji";
 export * from "./ConfigureLink";
 export * from "./ConfigureList";
 export * from "./ConfigureMention";

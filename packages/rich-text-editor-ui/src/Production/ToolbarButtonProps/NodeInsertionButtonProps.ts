@@ -24,7 +24,7 @@ export interface CodeBlockToolbarButtonState {
 }
 
 // CustomComponent
-export type CustomComponentName = "Carousel" | "Collapsible" | "Page Break";
+export type CustomComponentName = string;
 
 export interface CustomComponentToolbarButtonState {
 	disabled: boolean;

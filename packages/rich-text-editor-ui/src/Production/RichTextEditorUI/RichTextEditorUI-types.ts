@@ -2,12 +2,15 @@ import type { ToolbarButtons } from "../CommonTypes";
 import type { DefaultStyleValues } from "../ToolbarButtonDefaultValues";
 import type {
 	CodeBlockLanguage,
+	CodeBlockTheme,
+	CustomComponentName,
 	FontFamilyOption,
 } from "../ToolbarButtonProps";
 
 export interface RichTextEditorUIOptions {
 	codeBlockLanguages?: CodeBlockLanguage[];
-	codeBlockThemes?: string[];
+	codeBlockThemes?: CodeBlockTheme[];
+	customComponentNames?: CustomComponentName[];
 	fontFamilyOptions?: FontFamilyOption[];
 }
 

@@ -22,7 +22,7 @@ const MentionItem = (props: MentionItemProps) => {
 		<li>
 			<button
 				type="button"
-				class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200"
+				class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200 dark:active:bg-neutral-700 dark:focus:bg-neutral-800 dark:hover:bg-neutral-800"
 				commandfor={props.popoverId}
 				command="hide-popover"
 				on:click={props.onSelect}
@@ -33,10 +33,10 @@ const MentionItem = (props: MentionItemProps) => {
 					class="size-7 shrink-0 rounded-full object-cover"
 				/>
 				<div class="min-w-0 flex-1">
-					<div class="truncate font-semibold text-neutral-800 text-sm">
+					<div class="truncate font-semibold text-neutral-800 text-sm dark:text-neutral-100">
 						{props.item.name}
 					</div>
-					<div class="truncate text-neutral-500 text-xs">
+					<div class="truncate text-neutral-500 text-xs dark:text-neutral-400">
 						@{props.item.username}
 					</div>
 				</div>
@@ -149,7 +149,7 @@ export const MentionPopover = () => {
 			}}
 			id={popoverId}
 			popover="manual"
-			class="max-h-[min(100%,360px)] min-w-48 max-w-64 rounded-lg border border-neutral-300 bg-white shadow-md [scrollbar-width:thin]"
+			class="max-h-[min(100%,360px)] min-w-48 max-w-64 rounded-lg border border-neutral-300 bg-white shadow-md [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={filteredItems()}>

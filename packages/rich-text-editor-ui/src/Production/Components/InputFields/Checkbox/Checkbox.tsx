@@ -142,7 +142,7 @@ export const Checkbox = (props: CheckboxProps) => {
 					setTextFieldHandler();
 				}}
 				checked={checked()}
-				class="size-4.5 cursor-pointer appearance-none rounded-sm border border-neutral-400 bg-neutral-100 ring-primary-500/20 transition-all checked:border-primary-500 checked:bg-primary-500/65 focus:ring-3 data-[invalid=true]:border-red-600 data-[invalid=true]:ring-red-600/20"
+				class="size-4.5 cursor-pointer appearance-none rounded-sm border border-neutral-400 bg-neutral-100 ring-primary-500/20 transition-all checked:border-primary-500 checked:bg-primary-500/65 focus:ring-3 data-[invalid=true]:border-red-600 data-[invalid=true]:ring-red-600/20 dark:border-neutral-500 dark:bg-neutral-800"
 				classList={{
 					[inputProps.class ?? ""]: true,
 				}}

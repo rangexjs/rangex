@@ -40,9 +40,10 @@ const ActionTrigger = (props: ActionTriggerProps) => {
 				command="hide-popover"
 				class="w-full whitespace-nowrap rounded-sm border border-transparent p-1 text-start font-semibold text-neutral-700 text-sm transition-colors"
 				classList={{
-					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800":
+					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 dark:text-neutral-200 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100":
 						!props.checked(),
-					"active:border-neutral-400 active:text-neutral-900": !props.checked(),
+					"active:border-neutral-400 active:text-neutral-900 dark:active:border-neutral-500 dark:active:text-white":
+						!props.checked(),
 					"disabled:text-neutral-400": true,
 					"bg-primary-500/10 text-primary-400": props.checked(),
 					"hover:bg-primary-500/15": props.checked(),
@@ -66,9 +67,9 @@ const ActionTrigger = (props: ActionTriggerProps) => {
 				<div
 					id={popoverId}
 					popover="auto"
-					class="mt-1.5 w-max max-w-60 overflow-visible rounded-sm border border-neutral-200 p-1 text-neutral-800 text-xs shadow-xs [position-area:center_bottom]"
+					class="mt-1.5 w-max max-w-60 overflow-visible rounded-sm border border-neutral-200 bg-white p-1 text-neutral-800 text-xs shadow-xs [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
 				>
-					<span class="absolute -top-1 left-1/2 inline-block size-2 -translate-x-1/2 rotate-45 border-neutral-200 border-t border-l bg-white" />
+					<span class="absolute -top-1 left-1/2 inline-block size-2 -translate-x-1/2 rotate-45 border-neutral-200 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-800" />
 					{props.info()}
 				</div>
 			</Show>
@@ -89,16 +90,16 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
 				type="button"
 				commandfor={popoverId}
 				command="toggle-popover"
-				class="flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm border border-transparent p-1 font-semibold text-neutral-700 text-sm transition-colors"
+				class="flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm border border-transparent p-1 font-semibold text-neutral-700 text-sm transition-colors dark:text-neutral-200"
 				classList={{
-					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800": true,
-					"active:border-neutral-400 active:text-neutral-900": true,
+					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100": true,
+					"active:border-neutral-400 active:text-neutral-900 dark:active:border-neutral-500 dark:active:text-white": true,
 				}}
 			>
 				<span>{props.label}</span>
 				<Icon
 					name="CaretRight"
-					class="size-2 shrink-0 text-neutral-700 hover:text-neutral-800 active:text-neutral-900"
+					class="size-2 shrink-0 text-neutral-700 hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-200 dark:active:text-white dark:hover:text-neutral-100"
 				/>
 			</button>
 			<Menu
@@ -123,7 +124,7 @@ const Menu = (props: MenuProps) => {
 			ref={props.ref}
 			id={props.popoverId}
 			popover="auto"
-			class="flex-col gap-0.5 rounded-lg border border-neutral-300 p-1 shadow-sm [position-area:right_center] [&:popover-open]:flex"
+			class="flex-col gap-0.5 rounded-lg border border-neutral-300 bg-white p-1 shadow-sm [position-area:right_center] dark:border-neutral-700 dark:bg-neutral-900 [&:popover-open]:flex"
 		>
 			<For each={props.items}>
 				{(item) => {

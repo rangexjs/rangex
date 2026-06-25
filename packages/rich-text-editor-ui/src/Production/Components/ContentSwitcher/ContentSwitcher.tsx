@@ -28,14 +28,14 @@ export const ContentSwitch = <Id extends string>(
 
 	return (
 		<div
-			class="flex border border-neutral-200 bg-neutral-100"
+			class="flex border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
 			classList={{ [props.class ?? ""]: true }}
 			style={{ "anchor-scope": contentSwitcherAnchor }}
 		>
 			<For each={props.controls}>
 				{(item) => (
 					<button
-						class="w-full disabled:bg-neutral-100 disabled:text-neutral-400"
+						class="w-full disabled:bg-neutral-100 disabled:text-neutral-400 dark:disabled:bg-neutral-800"
 						type="button"
 						disabled={props.disabled}
 						on:click={() => props.onChange(item.id)}
@@ -44,6 +44,7 @@ export const ContentSwitch = <Id extends string>(
 							[props.commonButtonClass ?? ""]: true,
 							[item.class ?? ""]: true,
 							"text-primary-500": props.id === item.id,
+							"dark:text-neutral-300": props.id !== item.id,
 							[props.activeButtonClass ?? ""]: props.id === item.id,
 						}}
 						style={{

@@ -37,7 +37,7 @@ const ColorPalette = (props: ColorPaletteProps) => {
 					return (
 						<button
 							type="button"
-							class="inline-block aspect-square scale-100 border-white outline-primary-500 transition-transform hover:z-10 hover:scale-110 hover:border-2 hover:outline-2"
+							class="inline-block aspect-square scale-100 border-white outline-primary-500 transition-transform hover:z-10 hover:scale-110 hover:border-2 hover:outline-2 dark:border-neutral-900"
 							style={{
 								"background-color": backgroundColor,
 							}}
@@ -51,6 +51,8 @@ const ColorPalette = (props: ColorPaletteProps) => {
 };
 
 export type ColorMode = "light" | "dark" | "common";
+
+const swatchAnchor = "--swatch-anchor";
 
 interface ColorThemeButtonProps {
 	theme: Extract<ColorMode, "light" | "dark">;
@@ -79,11 +81,19 @@ const ColorThemeButton = (props: ColorThemeButtonProps) => {
 			on:click={() => onThemeButtonClick()}
 		>
 			<span>{text}</span>
-			<span class="relative inline-block size-6 overflow-clip rounded-sm">
-				<TransparentBackground width="100%" height="100%" squareSize={6} />
+			<span style={{ "anchor-scope": swatchAnchor }}>
+				<TransparentBackground
+					width="100%"
+					height="100%"
+					squareSize={6}
+					class="size-5.5 rounded-sm"
+					style={{ "anchor-name": swatchAnchor }}
+				/>
 				<span
-					class="absolute inset-0"
+					class="absolute size-6 rounded-sm"
 					style={{
+						"position-anchor": swatchAnchor,
+						"position-area": "center",
 						"background-color": ColorFormat.hsl(props.themeHsl()).color(),
 					}}
 				/>
@@ -297,8 +307,8 @@ export const ColorPanel = (props: ColorPanelProps) => {
 			</div>
 
 			<div class="mt-2" classList={{ hidden: !props.activeColors.length }}>
-				<div class="mb-2 h-0.5 rounded-sm bg-neutral-300" />
-				<div class="mb-1 font-medium text-neutral-600 text-sm [text-box:trim-start_cap_alphabetic]">
+				<div class="mb-2 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
+				<div class="mb-1 font-medium text-neutral-600 text-sm [text-box:trim-start_cap_alphabetic] dark:text-neutral-300">
 					Active colors
 				</div>
 				<div

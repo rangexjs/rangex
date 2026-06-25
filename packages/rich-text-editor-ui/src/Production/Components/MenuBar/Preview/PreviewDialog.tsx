@@ -93,29 +93,31 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 			id={props.dialogId}
 			closedby="any"
 			on:toggle={handleToggle}
-			class="inset-0 m-auto h-[min(100%,800px)] w-full max-w-7xl flex-col rounded-lg border border-neutral-300 bg-white p-2 shadow-md open:flex"
+			class="inset-0 m-auto h-[min(100%,800px)] w-full max-w-7xl flex-col rounded-lg border border-neutral-300 bg-white p-2 shadow-md open:flex dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<div>
 				<div class="mb-2 flex items-center justify-between">
-					<h2 class="font-bold text-neutral-700 text-sm">Preview</h2>
+					<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+						Preview
+					</h2>
 					<button
 						type="button"
 						commandfor={props.dialogId}
 						command="close"
-						class="p-1 text-neutral-700 hover:text-neutral-900"
+						class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
 					>
 						<Icon name="X" class="size-3" />
 					</button>
 				</div>
-				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300" />
+				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
 				<div
-					class="mb-3 border-neutral-300 border-b"
+					class="mb-3 border-neutral-300 border-b dark:border-neutral-700"
 					style={{
 						"anchor-scope": tabAnchorName,
 					}}
 				>
 					<span
-						class="absolute top-[anchor(top)] left-[anchor(left)] h-[calc(anchor-size(height)+1px)] w-[anchor-size(width)] border border-t-neutral-300 border-r-neutral-300 border-b-white border-l-neutral-300 transition-[left,width] duration-200"
+						class="absolute top-[anchor(top)] left-[anchor(left)] h-[calc(anchor-size(height)+1px)] w-[anchor-size(width)] border border-t-neutral-300 border-r-neutral-300 border-b-white border-l-neutral-300 transition-[left,width] duration-200 dark:border-t-neutral-700 dark:border-r-neutral-700 dark:border-b-neutral-900 dark:border-l-neutral-700"
 						style={{ "position-anchor": tabAnchorName }}
 					/>
 					<For each={tabs}>
@@ -123,7 +125,7 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 							<button
 								type="button"
 								onClick={() => handleTabChange(tab.value)}
-								class="px-2 py-1.5 font-semibold text-neutral-600 text-sm transition-colors hover:text-neutral-800 active:text-neutral-950"
+								class="px-2 py-1.5 font-semibold text-neutral-600 text-sm transition-colors hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:text-neutral-100"
 								style={{
 									"anchor-name":
 										activeTab() === tab.value ? tabAnchorName : undefined,
@@ -135,7 +137,7 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 					</For>
 				</div>
 			</div>
-			<div class="grow overflow-auto rounded-sm border border-neutral-300 text-sm">
+			<div class="grow overflow-auto rounded-sm border border-neutral-300 text-sm dark:border-neutral-700">
 				<For each={tabs}>
 					{(tab) => (
 						<div

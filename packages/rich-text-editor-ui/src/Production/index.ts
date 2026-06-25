@@ -9,6 +9,8 @@ export type {
 export type {
 	CodeBlockPopover,
 	CodeBlockPopoverState,
+	EmojiPopover,
+	EmojiPopoverState,
 	LinkPopover,
 	LinkPopoverState,
 	MentionPopover,

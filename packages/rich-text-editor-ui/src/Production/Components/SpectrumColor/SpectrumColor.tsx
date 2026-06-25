@@ -141,6 +141,8 @@ const panelAnchor = "--panel-anchor";
 
 const thumbSize = 18;
 
+const transparentBgAnchor = "--transparent-bg-anchor";
+
 export const SpectrumColor = (props: SpectrumColorProps) => {
 	const [isInternalUpdate, setIsInternalUpdate] = createSignal(false);
 	const [scopedHsl, setScopedHsl] = createSignal(props.hsl);
@@ -387,11 +389,22 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 			</div>
 			<div class="px-2 py-4">
 				<div class="flex gap-6">
-					<span class="relative size-12 overflow-clip rounded-full">
-						<TransparentBackground width="100%" height="100%" squareSize={10} />
+					<span style={{ "anchor-scope": transparentBgAnchor }}>
+						<TransparentBackground
+							width="100%"
+							height="100%"
+							squareSize={10}
+							class="size-12 rounded-full"
+							style={{ "anchor-name": transparentBgAnchor }}
+						/>
 						<span
-							class="absolute inset-0"
-							style={{ "background-color": hslColor() }}
+							// Setting it size-12 causes "px bug" due to rounded-full (visible in dark-mode)
+							class="absolute size-12.5 rounded-full"
+							style={{
+								"position-anchor": transparentBgAnchor,
+								"position-area": "center",
+								"background-color": hslColor(),
+							}}
 						/>
 					</span>
 					<div class="flex grow flex-col justify-between">

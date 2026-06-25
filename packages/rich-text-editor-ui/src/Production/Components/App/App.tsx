@@ -4,6 +4,7 @@ import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
 	CodeBlockPopoverController,
+	EmojiPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -11,6 +12,8 @@ import type {
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
 	CodeBlockLanguage,
+	CodeBlockTheme,
+	CustomComponentName,
 	FontFamilyOption,
 } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
@@ -25,6 +28,7 @@ import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
 	CodeBlockPopover,
+	EmojiPopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
@@ -38,7 +42,8 @@ import {
 
 export interface EditorOptions {
 	codeBlockLanguages: CodeBlockLanguage[];
-	codeBlockThemes: string[];
+	codeBlockThemes: CodeBlockTheme[];
+	customComponentNames: CustomComponentName[];
 	fontFamilyOptions: FontFamilyOption[];
 }
 
@@ -58,6 +63,7 @@ export interface ToolbarButtonManagers {
 
 export interface PopoverControllers {
 	codeBlockPopoverController: CodeBlockPopoverController;
+	emojiPopoverController: EmojiPopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
@@ -131,6 +137,7 @@ export const App = (props: AppProps) => {
 
 	const popoverControllersContextValue: PopoverControllers = {
 		codeBlockPopoverController: props.codeBlockPopoverController,
+		emojiPopoverController: props.emojiPopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
@@ -158,6 +165,7 @@ export const App = (props: AppProps) => {
 						value={popoverControllersContextValue}
 					>
 						<CodeBlockPopover />
+						<EmojiPopover />
 						<LinkPopover />
 						<MentionPopover />
 						<TableQuickActionsPopover />

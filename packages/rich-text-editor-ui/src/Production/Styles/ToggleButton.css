@@ -4,9 +4,12 @@
 	height: 16px;
 	border-width: 1px;
 	border-style: solid;
-	border-color: var(--color-neutral-400);
+	border-color: light-dark(var(--color-neutral-400), var(--color-neutral-600));
 	border-radius: 8px;
-	background-color: color(from var(--color-neutral-400) srgb r b g / 0.4);
+	background-color: light-dark(
+		color(from var(--color-neutral-400) srgb r b g / 0.4),
+		color(from var(--color-neutral-600) srgb r g b / 0.4)
+	);
 	transition: background-color, border;
 	transition-duration: 200ms;
 	transition-timing-function: ease-in-out;
@@ -16,7 +19,10 @@
 		display: inline-block;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--color-neutral-400);
+		border-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-600)
+		);
 		border-radius: 100%;
 		background-color: light-dark(white, var(--color-neutral-200));
 		box-shadow: 0px 0px 8px 0px #0002;

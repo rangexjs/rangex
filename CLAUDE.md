@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project status
+
+RangeX is currently in **alpha**. APIs, types, and engine behavior are subject to breaking changes. Avoid over-engineering for stability or backwards compatibility — prefer clear, direct implementations that can be changed quickly as the project evolves.
+
 ## Project overview
 
 RangeX is a rich text editor engine that manages all editor logic: text manipulation, formatting, and embedded components (mentions, links, code blocks, tables, etc.). It is designed to be fully customizable — developers can build any editor-like product on top of it (blog/CMS, chat, forums, real-time collaboration, etc.).
@@ -63,6 +67,10 @@ bun run test:coverage               # with coverage
 bun run lint           # biome check + tsc (no emit)
 bun run fix            # auto-fix biome issues
 ```
+
+**After any code change:** always run `bun run lint` from the repo root and fix all errors before finishing.
+
+**After touching exported types in `rich-text-editor-ui`:** run `npm run build` inside `packages/rich-text-editor-ui/` first (to rebuild the dist types), then run `bun run lint`. The `rich-text-editor` package resolves the UI package through its built dist, so type changes are not visible to the linter until the package is rebuilt.
 
 ## Architecture
 
