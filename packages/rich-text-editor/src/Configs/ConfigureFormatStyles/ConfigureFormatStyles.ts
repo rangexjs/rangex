@@ -1,40 +1,23 @@
-import { selectionStylesChangeEventType } from "rich-text-area";
-import {
-	getFormatStylesButtonState,
-	getSelectionStylesData,
-} from "../../SelectionStyle";
 import type { ConfigureFormatStylesParams } from "./ConfigureFormatStyles-types";
+import { handleFormatStylesButtonState } from "./HandleFormatStylesButtonState";
+import { handleFormatStylesChange } from "./HandleFormatStylesChange";
 
 export const configureFormatStyles = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureFormatStylesParams) => {
-	const unsubscribeSelectionStyles = editorAPI.subscribeEditorEvent({
-		type: selectionStylesChangeEventType,
-		callback: ({ selectionFormatStyles }) => {
-			const formatStylesButtonState = getFormatStylesButtonState({
-				selectionFormatStyles,
-			});
-
-			richTextEditorUI.updateFormatStylesButtonState(formatStylesButtonState);
-		},
+	const buttonStateCleanup = handleFormatStylesButtonState({
+		richTextEditorUI,
+		editorAPI,
 	});
 
-	const unsubscribeFormatStyles = richTextEditorUI.onFormatStyles(
-		(formatStylesActionState) => {
-			const selectionStylesData = getSelectionStylesData({
-				formatStylesActionState,
-				whenMixed: "apply",
-			});
-
-			editorAPI.updateSelectionStyles(selectionStylesData);
-
-			editorAPI.focus();
-		},
-	);
+	const formatStylesChangeCleanup = handleFormatStylesChange({
+		richTextEditorUI,
+		editorAPI,
+	});
 
 	return () => {
-		unsubscribeSelectionStyles();
-		unsubscribeFormatStyles();
+		buttonStateCleanup();
+		formatStylesChangeCleanup();
 	};
 };

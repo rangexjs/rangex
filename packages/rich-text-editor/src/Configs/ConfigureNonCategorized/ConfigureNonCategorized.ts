@@ -1,26 +1,16 @@
 import type { ConfigureNonCategorizedParams } from "./ConfigureNonCategorized-types";
+import { handleNonCategorizedOperation } from "./HandleNonCategorizedOperation";
 
 export const configureNonCategorized = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureNonCategorizedParams) => {
-	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((props) => {
-		const { type } = props;
-
-		if (type === "text-area-readability") {
-			const { newState } = props;
-
-			editorAPI.setIsTextAreaEditable(!newState);
-
-			const checked = !editorAPI.getIsTextAreaEditable();
-
-			richTextEditorUI.updateNonCategorizedButtonState({
-				textAreaReadability: { checked },
-			});
-		}
+	const nonCategorizedOperationCleanup = handleNonCategorizedOperation({
+		richTextEditorUI,
+		editorAPI,
 	});
 
 	return () => {
-		unsubscribe();
+		nonCategorizedOperationCleanup();
 	};
 };

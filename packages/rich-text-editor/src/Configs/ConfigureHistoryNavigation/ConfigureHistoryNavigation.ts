@@ -1,38 +1,23 @@
-import { snapshotIndexChangeEventType } from "rich-text-area";
 import type { ConfigureHistoryNavigationParams } from "./ConfigureHistoryNavigation-types";
+import { handleHistoryNavigation } from "./HandleHistoryNavigation";
+import { handleHistoryNavigationButtonState } from "./HandleHistoryNavigationButtonState";
 
 export const configureHistoryNavigation = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureHistoryNavigationParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const historyNavigationCleanup = handleHistoryNavigation({
+		richTextEditorUI,
+		editorAPI,
+	});
 
-	const unsubscribeHistoryNavigation = richTextEditorUI.onHistoryNavigation(
-		({ type }) => {
-			if (type === "history-back") {
-				snapshotTimeline.stepBack();
-			}
-
-			if (type === "history-forward") {
-				snapshotTimeline.stepForward();
-			}
-
-			editorAPI.focus();
-		},
-	);
-
-	const unsubscribeSnapshotIndex = editorAPI.subscribeEditorEvent({
-		type: snapshotIndexChangeEventType,
-		callback: () => {
-			richTextEditorUI.updateHistoryNavigationButtonState({
-				historyBack: { disabled: !snapshotTimeline.canStepBack },
-				historyForward: { disabled: !snapshotTimeline.canStepForward },
-			});
-		},
+	const buttonStateCleanup = handleHistoryNavigationButtonState({
+		richTextEditorUI,
+		editorAPI,
 	});
 
 	return () => {
-		unsubscribeHistoryNavigation();
-		unsubscribeSnapshotIndex();
+		historyNavigationCleanup();
+		buttonStateCleanup();
 	};
 };
