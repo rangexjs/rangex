@@ -89,13 +89,8 @@ export const getEmojiAutoComplete = ({
 			return null;
 		}
 
-		// Opening colon not yet reached
-		if (data[0] !== ":") {
-			continue;
-		}
-
-		// data.length === 1 means we're still at the closing colon itself
-		if (data.length === 1) {
+		// Opening colon not yet reached, or still at the closing colon itself (length 1)
+		if (data[0] !== ":" || data.length === 1) {
 			continue;
 		}
 
