@@ -8,7 +8,7 @@ export const handleResultsSync = ({
 }: HandleResultsSyncParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	findReplace.onIndexChange(() => {
+	const unsubscribeIndexChange = findReplace.onIndexChange(() => {
 		const { currentIndex } = findReplace;
 
 		richTextEditorUI.updateNonCategorizedButtonState({
@@ -16,7 +16,7 @@ export const handleResultsSync = ({
 		});
 	});
 
-	findReplace.onMatchesChange(() => {
+	const unsubscribeMatchesChange = findReplace.onMatchesChange(() => {
 		const { currentIndex, matchedRanges } = findReplace;
 		const totalResults = matchedRanges.length;
 
@@ -30,4 +30,9 @@ export const handleResultsSync = ({
 			findReplace: { currentIndex, totalResults, results },
 		});
 	});
+
+	return () => {
+		unsubscribeIndexChange();
+		unsubscribeMatchesChange();
+	};
 };

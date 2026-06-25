@@ -29,5 +29,9 @@ export const handleLinkUnwrap = ({
 		editorAPI.focus();
 	};
 
-	linkPopover.onRemove(callback);
+	const unsubscribe = linkPopover.onRemove(callback);
+
+	return () => {
+		unsubscribe();
+	};
 };

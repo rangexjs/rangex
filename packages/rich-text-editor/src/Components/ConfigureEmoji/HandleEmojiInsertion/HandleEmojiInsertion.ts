@@ -48,7 +48,7 @@ export const handleEmojiInsertion = ({
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	emojiPopover.onSelect(({ emoji }) => {
+	const unsubscribe = emojiPopover.onSelect(({ emoji }) => {
 		const { queryFound } = removeEmojiQueryText({ editorAPI });
 
 		if (!queryFound) {
@@ -75,4 +75,8 @@ export const handleEmojiInsertion = ({
 
 		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

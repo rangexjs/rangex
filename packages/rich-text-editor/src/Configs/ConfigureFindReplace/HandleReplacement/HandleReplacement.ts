@@ -11,7 +11,7 @@ export const handleReplacement = ({
 
 	const retainedComponents = [componentsName.link];
 
-	richTextEditorUI.onNonCategorizedOperation((params) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((params) => {
 		if (params.type !== "find-replace") {
 			return;
 		}
@@ -30,4 +30,8 @@ export const handleReplacement = ({
 			findReplace.replaceAll({ content, retainedComponents });
 		}
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

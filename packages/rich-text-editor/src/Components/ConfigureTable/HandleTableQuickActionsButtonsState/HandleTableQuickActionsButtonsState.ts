@@ -323,7 +323,7 @@ export const handleTableQuickActionsButtonsState = ({
 	richTextEditorUI,
 	editorAPI,
 }: HandleTableQuickActionsButtonsStateParams) => {
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeSelection = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const tableCell = getCommonTableCellFromSelection({ editorAPI });
@@ -351,7 +351,7 @@ export const handleTableQuickActionsButtonsState = ({
 		},
 	});
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeTableSelection = editorAPI.subscribeEditorEvent({
 		type: tableSelectionChangeEventType,
 		callback: ({ tables }) => {
 			for (const table of tables) {
@@ -370,7 +370,7 @@ export const handleTableQuickActionsButtonsState = ({
 		},
 	});
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribeTableStructure = editorAPI.subscribeEditorEvent({
 		type: tableStructureChangeEventType,
 		callback: ({ tables }) => {
 			for (const table of tables) {
@@ -388,4 +388,10 @@ export const handleTableQuickActionsButtonsState = ({
 			}
 		},
 	});
+
+	return () => {
+		unsubscribeSelection();
+		unsubscribeTableSelection();
+		unsubscribeTableStructure();
+	};
 };

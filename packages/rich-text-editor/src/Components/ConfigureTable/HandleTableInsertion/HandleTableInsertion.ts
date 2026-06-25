@@ -55,7 +55,7 @@ export const handleTableInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleTableInsertionParams) => {
-	richTextEditorUI.onNodeInsertion((params) => {
+	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
 		if (params.type !== "table") {
 			return;
 		}
@@ -84,4 +84,8 @@ export const handleTableInsertion = ({
 
 		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

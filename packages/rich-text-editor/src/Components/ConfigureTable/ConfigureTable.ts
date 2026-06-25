@@ -10,21 +10,34 @@ export const configureTable = ({
 	editorAPI,
 	blockComponentPlacement,
 }: ConfigureTableParams) => {
-	handleTableToolbarButtonState({
+	const toolbarButtonStateCleanup = handleTableToolbarButtonState({
+		richTextEditorUI,
+		editorAPI,
+		blockComponentPlacement,
+	});
+	const quickActionsVisibilityCleanup = handleTableQuickActionsButtonVisibility(
+		{
+			richTextEditorUI,
+			editorAPI,
+		},
+	);
+	const quickActionsStateCleanup = handleTableQuickActionsButtonsState({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const quickActionsInteractionCleanup =
+		handleTableQuickActionsButtonsInteraction({ richTextEditorUI, editorAPI });
+	const tableInsertionCleanup = handleTableInsertion({
 		richTextEditorUI,
 		editorAPI,
 		blockComponentPlacement,
 	});
 
-	handleTableQuickActionsButtonVisibility({ richTextEditorUI, editorAPI });
-
-	handleTableQuickActionsButtonsState({ richTextEditorUI, editorAPI });
-
-	handleTableQuickActionsButtonsInteraction({ richTextEditorUI, editorAPI });
-
-	handleTableInsertion({
-		richTextEditorUI,
-		editorAPI,
-		blockComponentPlacement,
-	});
+	return () => {
+		toolbarButtonStateCleanup();
+		quickActionsVisibilityCleanup();
+		quickActionsStateCleanup();
+		quickActionsInteractionCleanup();
+		tableInsertionCleanup();
+	};
 };

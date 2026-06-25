@@ -9,7 +9,7 @@ export const configureSymbolInsertion = ({
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	richTextEditorUI.onNodeInsertion((params) => {
+	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
 		if (params.type !== "symbols") {
 			return;
 		}
@@ -41,4 +41,8 @@ export const configureSymbolInsertion = ({
 
 		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

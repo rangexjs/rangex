@@ -73,5 +73,9 @@ export const handleLinkModification = ({
 		editorAPI.focus();
 	};
 
-	linkPopover.onModify(callback);
+	const unsubscribe = linkPopover.onModify(callback);
+
+	return () => {
+		unsubscribe();
+	};
 };

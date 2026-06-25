@@ -21,64 +21,70 @@ export const handleCodeBlockPopoverState = ({
 }: HandleCodeBlockPopoverStateParams) => {
 	const { codeBlockPopover } = richTextEditorUI;
 
-	codeBlockPopover.onLanguageChange((language) => {
-		if (!internals.currentCodeBlock) {
-			return;
-		}
-		const lang = toHighlighterLang(language);
-		if (!lang) {
-			return;
-		}
-		const storage = ensureNodeCodeBlockStorage({
-			blockNestedContext: internals.currentCodeBlock,
-		});
-		codeHighlighter.update({
-			blockNestedContext: internals.currentCodeBlock,
-			lang,
-			theme: storage.theme,
-		});
-		codeBlockPopover.updateState({ language });
-	});
+	const unsubscribeLanguageChange = codeBlockPopover.onLanguageChange(
+		(language) => {
+			if (!internals.currentCodeBlock) {
+				return;
+			}
+			const lang = toHighlighterLang(language);
+			if (!lang) {
+				return;
+			}
+			const storage = ensureNodeCodeBlockStorage({
+				blockNestedContext: internals.currentCodeBlock,
+			});
+			codeHighlighter.update({
+				blockNestedContext: internals.currentCodeBlock,
+				lang,
+				theme: storage.theme,
+			});
+			codeBlockPopover.updateState({ language });
+		},
+	);
 
-	codeBlockPopover.onLightThemeChange((lightTheme) => {
-		if (!internals.currentCodeBlock) {
-			return;
-		}
-		const highlighterLightTheme = toHighlighterTheme(lightTheme);
-		if (!highlighterLightTheme) {
-			return;
-		}
-		const storage = ensureNodeCodeBlockStorage({
-			blockNestedContext: internals.currentCodeBlock,
-		});
-		codeHighlighter.update({
-			blockNestedContext: internals.currentCodeBlock,
-			lang: storage.lang,
-			theme: { ...storage.theme, light: highlighterLightTheme },
-		});
-		codeBlockPopover.updateState({ lightTheme });
-	});
+	const unsubscribeLightThemeChange = codeBlockPopover.onLightThemeChange(
+		(lightTheme) => {
+			if (!internals.currentCodeBlock) {
+				return;
+			}
+			const highlighterLightTheme = toHighlighterTheme(lightTheme);
+			if (!highlighterLightTheme) {
+				return;
+			}
+			const storage = ensureNodeCodeBlockStorage({
+				blockNestedContext: internals.currentCodeBlock,
+			});
+			codeHighlighter.update({
+				blockNestedContext: internals.currentCodeBlock,
+				lang: storage.lang,
+				theme: { ...storage.theme, light: highlighterLightTheme },
+			});
+			codeBlockPopover.updateState({ lightTheme });
+		},
+	);
 
-	codeBlockPopover.onDarkThemeChange((darkTheme) => {
-		if (!internals.currentCodeBlock) {
-			return;
-		}
-		const highlighterDarkTheme = toHighlighterTheme(darkTheme);
-		if (!highlighterDarkTheme) {
-			return;
-		}
-		const storage = ensureNodeCodeBlockStorage({
-			blockNestedContext: internals.currentCodeBlock,
-		});
-		codeHighlighter.update({
-			blockNestedContext: internals.currentCodeBlock,
-			lang: storage.lang,
-			theme: { ...storage.theme, dark: highlighterDarkTheme },
-		});
-		codeBlockPopover.updateState({ darkTheme });
-	});
+	const unsubscribeDarkThemeChange = codeBlockPopover.onDarkThemeChange(
+		(darkTheme) => {
+			if (!internals.currentCodeBlock) {
+				return;
+			}
+			const highlighterDarkTheme = toHighlighterTheme(darkTheme);
+			if (!highlighterDarkTheme) {
+				return;
+			}
+			const storage = ensureNodeCodeBlockStorage({
+				blockNestedContext: internals.currentCodeBlock,
+			});
+			codeHighlighter.update({
+				blockNestedContext: internals.currentCodeBlock,
+				lang: storage.lang,
+				theme: { ...storage.theme, dark: highlighterDarkTheme },
+			});
+			codeBlockPopover.updateState({ darkTheme });
+		},
+	);
 
-	codeBlockPopover.onCopy(() => {
+	const unsubscribeCopy = codeBlockPopover.onCopy(() => {
 		if (!internals.currentCodeBlock) {
 			return;
 		}
@@ -110,4 +116,11 @@ export const handleCodeBlockPopoverState = ({
 
 		navigator.clipboard.writeText(lines.join("\n"));
 	});
+
+	return () => {
+		unsubscribeLanguageChange();
+		unsubscribeLightThemeChange();
+		unsubscribeDarkThemeChange();
+		unsubscribeCopy();
+	};
 };

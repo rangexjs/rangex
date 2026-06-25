@@ -4,7 +4,7 @@ export const configureNonCategorized = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureNonCategorizedParams) => {
-	return richTextEditorUI.onNonCategorizedOperation((props) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((props) => {
 		const { type } = props;
 
 		if (type === "text-area-readability") {
@@ -19,4 +19,8 @@ export const configureNonCategorized = ({
 			});
 		}
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

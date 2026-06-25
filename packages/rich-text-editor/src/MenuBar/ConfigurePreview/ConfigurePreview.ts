@@ -67,7 +67,7 @@ export const configurePreview = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigurePreviewParams) => {
-	richTextEditorUI.onMenuBar((params) => {
+	const unsubscribe = richTextEditorUI.onMenuBar((params) => {
 		if (params.type !== "preview") {
 			return;
 		}
@@ -76,4 +76,8 @@ export const configurePreview = ({
 
 		richTextEditorUI.updateMenuBarButtonState({ preview: { content } });
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

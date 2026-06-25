@@ -45,7 +45,7 @@ export const handleLinkClick = ({
 }: HandleLinkClickParams) => {
 	const { linkPopover } = richTextEditorUI;
 
-	editorAPI.registerDOMEvent({
+	const unsubscribe = editorAPI.registerDOMEvent({
 		eventListener: {
 			type: "click",
 			listener(event) {
@@ -78,4 +78,8 @@ export const handleLinkClick = ({
 			return matched;
 		},
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

@@ -7,7 +7,7 @@ export const handleCodeBlockToolbarButtonState = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleCodeBlockToolbarButtonStateParams) => {
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const canWrap = blockComponentPlacement.canWrapBySelection({
@@ -19,4 +19,8 @@ export const handleCodeBlockToolbarButtonState = ({
 			});
 		},
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

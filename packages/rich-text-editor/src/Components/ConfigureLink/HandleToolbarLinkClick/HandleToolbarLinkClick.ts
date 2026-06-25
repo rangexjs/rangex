@@ -138,11 +138,15 @@ export const handleToolbarLinkClick = ({
 }: HandleToolbarLinkClickParams) => {
 	const { linkPopover } = richTextEditorUI;
 
-	richTextEditorUI.onNodeInsertion((params) => {
+	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
 		if (params.type !== "anchor") {
 			return;
 		}
 
 		openLinkPopover({ linkPopover, editorAPI });
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

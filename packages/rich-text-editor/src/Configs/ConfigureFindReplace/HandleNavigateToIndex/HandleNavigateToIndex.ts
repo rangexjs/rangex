@@ -8,7 +8,7 @@ export const handleNavigateToIndex = ({
 }: HandleNavigateToIndexParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	richTextEditorUI.onNonCategorizedOperation((params) => {
+	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((params) => {
 		if (params.type !== "find-replace") {
 			return;
 		}
@@ -23,4 +23,8 @@ export const handleNavigateToIndex = ({
 
 		scrollMatchedRangeIntoView({ findReplace });
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

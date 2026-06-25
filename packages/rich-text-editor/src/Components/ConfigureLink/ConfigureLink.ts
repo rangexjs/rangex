@@ -13,17 +13,47 @@ export const configureLink = ({
 }: ConfigureLinkParams) => {
 	const internals: LinkInternals = { currentLink: null };
 
-	handleLinkToolbarButtonState({ richTextEditorUI, editorAPI });
+	const toolbarButtonStateCleanup = handleLinkToolbarButtonState({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const toolbarLinkClickCleanup = handleToolbarLinkClick({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const linkClickCleanup = handleLinkClick({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
+	const linkInsertionCleanup = handleLinkInsertion({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
+	const linkModificationCleanup = handleLinkModification({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
+	const linkUnwrapCleanup = handleLinkUnwrap({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
+	const linkPopoverCloseCleanup = handleLinkPopoverClose({
+		richTextEditorUI,
+		editorAPI,
+		internals,
+	});
 
-	handleToolbarLinkClick({ richTextEditorUI, editorAPI });
-
-	handleLinkClick({ richTextEditorUI, editorAPI, internals });
-
-	handleLinkInsertion({ richTextEditorUI, editorAPI, internals });
-
-	handleLinkModification({ richTextEditorUI, editorAPI, internals });
-
-	handleLinkUnwrap({ richTextEditorUI, editorAPI, internals });
-
-	handleLinkPopoverClose({ richTextEditorUI, editorAPI, internals });
+	return () => {
+		toolbarButtonStateCleanup();
+		toolbarLinkClickCleanup();
+		linkClickCleanup();
+		linkInsertionCleanup();
+		linkModificationCleanup();
+		linkUnwrapCleanup();
+		linkPopoverCloseCleanup();
+	};
 };

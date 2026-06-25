@@ -83,8 +83,12 @@ export const handleEmojiAutoComplete = ({
 		editorAPI.focus();
 	};
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback,
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

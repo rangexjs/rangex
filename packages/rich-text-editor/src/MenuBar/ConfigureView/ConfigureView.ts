@@ -4,7 +4,7 @@ import type {
 } from "./ConfigureView-types";
 
 const configureTheme = ({ richTextEditorUI }: ConfigureThemeParams) => {
-	richTextEditorUI.onMenuBar((params) => {
+	return richTextEditorUI.onMenuBar((params) => {
 		if (params.type !== "theme") {
 			return;
 		}
@@ -20,5 +20,9 @@ export const configureView = ({
 	// biome-ignore lint/correctness/noUnusedFunctionParameters: Unused, but keep it for consistency
 	editorAPI,
 }: ConfigureViewParams) => {
-	configureTheme({ richTextEditorUI });
+	const cleanup = configureTheme({ richTextEditorUI });
+
+	return () => {
+		cleanup();
+	};
 };

@@ -8,15 +8,32 @@ export const configureEmoji = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureEmojiParams) => {
-	handleEmojiInsertion({ richTextEditorUI, editorAPI });
+	const emojiInsertionCleanup = handleEmojiInsertion({
+		richTextEditorUI,
+		editorAPI,
+	});
 
 	// Subscription order matters — all three listen to editorSelectionChangeEventType:
 	// 1. close   — hides the popover before anything else re-evaluates
 	// 2. autoComplete — inserts emoji for a completed :<name>: shortcode
 	// 3. appearance  — shows the popover for a partial :query
-	handlePopoverClose({ richTextEditorUI, editorAPI });
+	const popoverCloseCleanup = handlePopoverClose({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const emojiAutoCompleteCleanup = handleEmojiAutoComplete({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const popoverAppearanceCleanup = handlePopoverAppearance({
+		richTextEditorUI,
+		editorAPI,
+	});
 
-	handleEmojiAutoComplete({ richTextEditorUI, editorAPI });
-
-	handlePopoverAppearance({ richTextEditorUI, editorAPI });
+	return () => {
+		emojiInsertionCleanup();
+		popoverCloseCleanup();
+		emojiAutoCompleteCleanup();
+		popoverAppearanceCleanup();
+	};
 };

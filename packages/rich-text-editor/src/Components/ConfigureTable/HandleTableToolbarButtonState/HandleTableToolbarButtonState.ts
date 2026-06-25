@@ -10,7 +10,7 @@ export const handleTableToolbarButtonState = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleTableToolbarButtonStateParams) => {
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
@@ -22,4 +22,8 @@ export const handleTableToolbarButtonState = ({
 			});
 		},
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

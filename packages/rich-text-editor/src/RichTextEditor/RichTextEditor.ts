@@ -80,48 +80,80 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(nonCategorizedCleanup);
 		this.#cleanups.add(historyNavigationCleanup);
 
-		configureView({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
+		const viewCleanup = configureView({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+		const previewCleanup = configurePreview({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+
+		this.#cleanups.add(viewCleanup);
+		this.#cleanups.add(previewCleanup);
+
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-		configurePreview({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 
-		configureBlockQuote({
+		const blockQuoteCleanup = configureBlockQuote({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
 		});
-		configureCodeBlock({
+		const codeBlockCleanup = configureCodeBlock({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
 		});
-		configureList({
+		const listCleanup = configureList({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
 		});
-		configureTable({
+		const tableCleanup = configureTable({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
-		});
-
-		configureLink({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-		configureEmoji({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-		configureMention({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-		configureTemplateVariable({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
 		});
 
-		configureFindReplace({
+		this.#cleanups.add(blockQuoteCleanup);
+		this.#cleanups.add(codeBlockCleanup);
+		this.#cleanups.add(listCleanup);
+		this.#cleanups.add(tableCleanup);
+
+		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 		});
-		configureSymbolInsertion({
+		const emojiCleanup = configureEmoji({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 		});
+		const mentionCleanup = configureMention({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+		const templateVariableCleanup = configureTemplateVariable({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+
+		this.#cleanups.add(linkCleanup);
+		this.#cleanups.add(emojiCleanup);
+		this.#cleanups.add(mentionCleanup);
+		this.#cleanups.add(templateVariableCleanup);
+
+		const findReplaceCleanup = configureFindReplace({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+		const symbolInsertionCleanup = configureSymbolInsertion({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+		});
+
+		this.#cleanups.add(findReplaceCleanup);
+		this.#cleanups.add(symbolInsertionCleanup);
 
 		// ---------- CODE BELOW IS TEMPORARY ----------
 

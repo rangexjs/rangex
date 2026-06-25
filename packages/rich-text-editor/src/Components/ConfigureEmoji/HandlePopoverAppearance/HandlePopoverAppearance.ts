@@ -61,8 +61,12 @@ export const handlePopoverAppearance = ({
 		popover.showPopover();
 	};
 
-	editorAPI.subscribeEditorEvent({
+	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: editorSelectionChangeCallback,
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

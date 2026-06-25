@@ -42,7 +42,7 @@ export const configureTemplateVariable = ({
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureTemplateVariableParams) => {
-	richTextEditorUI.onNodeInsertion((params) => {
+	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
 		// Temporary till we implement the blocking features
 		if (params.type !== "template-variable") {
 			return;
@@ -64,4 +64,8 @@ export const configureTemplateVariable = ({
 			});
 		}
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

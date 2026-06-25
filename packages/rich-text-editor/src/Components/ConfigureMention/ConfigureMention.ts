@@ -10,11 +10,25 @@ export const configureMention = ({
 }: ConfigureMentionParams) => {
 	loadMentionItems({ richTextEditorUI });
 
-	handleMentionInsertion({ richTextEditorUI, editorAPI });
+	const mentionInsertionCleanup = handleMentionInsertion({
+		richTextEditorUI,
+		editorAPI,
+	});
 
 	// handlePopoverClose must be subscribed before handlePopoverAppearance — both listen to
 	// editorSelectionChangeEventType, and close must fire first to hide before appearance re-evaluates.
-	handlePopoverClose({ richTextEditorUI, editorAPI });
+	const popoverCloseCleanup = handlePopoverClose({
+		richTextEditorUI,
+		editorAPI,
+	});
+	const popoverAppearanceCleanup = handlePopoverAppearance({
+		richTextEditorUI,
+		editorAPI,
+	});
 
-	handlePopoverAppearance({ richTextEditorUI, editorAPI });
+	return () => {
+		mentionInsertionCleanup();
+		popoverCloseCleanup();
+		popoverAppearanceCleanup();
+	};
 };
