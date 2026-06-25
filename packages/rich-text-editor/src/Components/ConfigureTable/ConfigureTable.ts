@@ -15,18 +15,22 @@ export const configureTable = ({
 		editorAPI,
 		blockComponentPlacement,
 	});
+
 	const quickActionsVisibilityCleanup = handleTableQuickActionsButtonVisibility(
 		{
 			richTextEditorUI,
 			editorAPI,
 		},
 	);
+
 	const quickActionsStateCleanup = handleTableQuickActionsButtonsState({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const quickActionsInteractionCleanup =
 		handleTableQuickActionsButtonsInteraction({ richTextEditorUI, editorAPI });
+
 	const tableInsertionCleanup = handleTableInsertion({
 		richTextEditorUI,
 		editorAPI,

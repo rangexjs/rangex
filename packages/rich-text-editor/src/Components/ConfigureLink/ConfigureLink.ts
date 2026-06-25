@@ -17,30 +17,36 @@ export const configureLink = ({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const toolbarLinkClickCleanup = handleToolbarLinkClick({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const linkClickCleanup = handleLinkClick({
 		richTextEditorUI,
 		editorAPI,
 		internals,
 	});
+
 	const linkInsertionCleanup = handleLinkInsertion({
 		richTextEditorUI,
 		editorAPI,
 		internals,
 	});
+
 	const linkModificationCleanup = handleLinkModification({
 		richTextEditorUI,
 		editorAPI,
 		internals,
 	});
+
 	const linkUnwrapCleanup = handleLinkUnwrap({
 		richTextEditorUI,
 		editorAPI,
 		internals,
 	});
+
 	const linkPopoverCloseCleanup = handleLinkPopoverClose({
 		richTextEditorUI,
 		editorAPI,

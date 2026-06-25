@@ -12,6 +12,7 @@ export const configureBlockQuote = ({
 		editorAPI,
 		blockComponentPlacement,
 	});
+
 	const insertionCleanup = handleBlockQuoteInsertion({
 		richTextEditorUI,
 		editorAPI,

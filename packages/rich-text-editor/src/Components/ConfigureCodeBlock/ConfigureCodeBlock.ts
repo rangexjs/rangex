@@ -23,18 +23,22 @@ export const configureCodeBlock = ({
 		editorAPI,
 		blockComponentPlacement,
 	});
+
 	const insertionCleanup = handleCodeBlockInsertion({
 		richTextEditorUI,
 		editorAPI,
 		blockComponentPlacement,
 	});
+
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
+
 	const popoverStateCleanup = handleCodeBlockPopoverState({
 		richTextEditorUI,
 		editorAPI,
 		codeHighlighter,
 		internals,
 	});
+
 	const popoverAppearanceCleanup = handleCodeBlockPopoverAppearance({
 		richTextEditorUI,
 		editorAPI,

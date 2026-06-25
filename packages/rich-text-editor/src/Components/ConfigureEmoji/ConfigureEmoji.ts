@@ -21,10 +21,12 @@ export const configureEmoji = ({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const emojiAutoCompleteCleanup = handleEmojiAutoComplete({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const popoverAppearanceCleanup = handlePopoverAppearance({
 		richTextEditorUI,
 		editorAPI,

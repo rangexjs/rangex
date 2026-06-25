@@ -21,6 +21,7 @@ export const configureMention = ({
 		richTextEditorUI,
 		editorAPI,
 	});
+
 	const popoverAppearanceCleanup = handlePopoverAppearance({
 		richTextEditorUI,
 		editorAPI,
