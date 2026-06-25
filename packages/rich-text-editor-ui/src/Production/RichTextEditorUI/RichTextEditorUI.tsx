@@ -41,6 +41,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#shadowRoot;
 	#toolbarButtons;
 	#richTextArea;
+	#dispose;
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
 	#toolbarButtonsActionManager = new ToolbarButtonsActionManager();
@@ -95,7 +96,7 @@ export class RichTextEditorUI extends HTMLElement {
 		this.#toolbarButtons = toolbarButtons;
 		this.#richTextArea = richTextArea;
 
-		render(
+		this.#dispose = render(
 			() => (
 				<App
 					toolbarButtons={this.#toolbarButtons}
@@ -241,6 +242,10 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get tableQuickActionsPopover() {
 		return this.#tableQuickActionsPopoverController.publicAPI;
+	}
+
+	dispose() {
+		this.#dispose();
 	}
 }
 
