@@ -2112,7 +2112,7 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": true,
 						"editState": "false",
-						"customStorage": null,
+						"customStorage": { "id": "template-variable", "type": "email" },
 						"styleAttrs": {},
 						"domAttrs": { "contenteditable": "false" },
 						"childNodes": [
@@ -2178,7 +2178,7 @@
 												"type": "basic-text",
 												"uniqueId": "1775228059095-1304082029",
 												"customStorage": null,
-												"data": "{{TemplateVariable}}"
+												"data": "{{Email}}"
 											}
 										]
 									}
