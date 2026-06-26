@@ -8,6 +8,7 @@ import type {
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
+	TemplateVariablePopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
@@ -32,6 +33,7 @@ import {
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
+	TemplateVariablePopover,
 } from "../NodePopovers";
 import {
 	EditorOptionsContext,
@@ -67,6 +69,7 @@ export interface PopoverControllers {
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
+	templateVariablePopoverController: TemplateVariablePopoverController;
 }
 
 export interface AppProps
@@ -142,6 +145,7 @@ export const App = (props: AppProps) => {
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
+		templateVariablePopoverController: props.templateVariablePopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -169,6 +173,7 @@ export const App = (props: AppProps) => {
 						<LinkPopover />
 						<MentionPopover />
 						<TableQuickActionsPopover />
+						<TemplateVariablePopover />
 					</PopoverControllersContext.Provider>
 				</div>
 			</EditorContainer>

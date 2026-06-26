@@ -16,6 +16,7 @@ import {
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
+	TemplateVariablePopoverController,
 } from "../PopoverControllers";
 import { ToolbarButtonDefaultValues } from "../ToolbarButtonDefaultValues";
 import {
@@ -58,6 +59,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
+	#templateVariablePopoverController = new TemplateVariablePopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -129,6 +131,9 @@ export class RichTextEditorUI extends HTMLElement {
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
 						this.#tableQuickActionsPopoverController
+					}
+					templateVariablePopoverController={
+						this.#templateVariablePopoverController
 					}
 				/>
 			),
@@ -242,6 +247,10 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get tableQuickActionsPopover() {
 		return this.#tableQuickActionsPopoverController.publicAPI;
+	}
+
+	get templateVariablePopover() {
+		return this.#templateVariablePopoverController.publicAPI;
 	}
 
 	dispose() {

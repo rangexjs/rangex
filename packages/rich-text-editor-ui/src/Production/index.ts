@@ -17,6 +17,8 @@ export type {
 	MentionPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
+	TemplateVariablePopover,
+	TemplateVariablePopoverState,
 	UpdateCodeBlockPopoverStateParams,
 } from "./PopoverControllers";
 export {

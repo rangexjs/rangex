@@ -3,3 +3,4 @@ export * from "./EmojiPopover";
 export * from "./LinkPopover";
 export * from "./MentionPopover";
 export * from "./TableQuickActionsPopover";
+export * from "./TemplateVariablePopover";
