@@ -1,3 +1,4 @@
+import { codeBlockId } from "../../../Constants";
 import type {
 	CodeBlockStorage,
 	CreateCodeBlockStorageParams,
@@ -14,7 +15,7 @@ export const validateCodeBlockStorage = (
 		typeof storage === "object" &&
 		storage !== null &&
 		"id" in storage &&
-		storage.id === "code-block";
+		storage.id === codeBlockId;
 
 	if (!isValid) {
 		console.warn("Invalid CodeBlockStorage.", storage);
@@ -27,7 +28,7 @@ export const createCodeBlockStorage = ({
 	lang,
 	theme,
 }: CreateCodeBlockStorageParams): CreateCodeBlockStorageResult => {
-	return { id: "code-block", lang, theme };
+	return { id: codeBlockId, lang, theme };
 };
 
 export const ensureCodeBlockStorage = (

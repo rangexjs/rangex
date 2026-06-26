@@ -1,5 +1,6 @@
 import type { TemplateVariableKind } from "@rangex/rich-text-editor-ui";
 import type { RootEditableStorage } from "../../../_Utilities";
+import type { TemplateVariableId } from "../../../Constants";
 import type { templateVariableKeys } from "./TemplateVariableStorage";
 
 type TemplateVariableValue = string | null;
@@ -14,7 +15,7 @@ export type TemplateVariableStore = {
 // Stored on each InlineNestedContext node via $$customStorage.
 // Identifies which variable type the node represents so update passes know which display text to render.
 export interface TemplateVariableNodeData {
-	id: "template-variable";
+	id: TemplateVariableId;
 	type: TemplateVariableKind;
 }
 

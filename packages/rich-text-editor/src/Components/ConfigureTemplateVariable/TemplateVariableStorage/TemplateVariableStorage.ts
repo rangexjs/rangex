@@ -1,3 +1,4 @@
+import { templateVariableId } from "../../../Constants";
 import type {
 	CreateTemplateVariableNodeDataParams,
 	CreateTemplateVariableNodeDataResult,
@@ -17,7 +18,7 @@ export const validateTemplateVariableNodeData = (
 		typeof data === "object" &&
 		data !== null &&
 		"id" in data &&
-		data.id === "template-variable";
+		data.id === templateVariableId;
 
 	if (!isValid) {
 		console.warn(
@@ -35,7 +36,7 @@ export const validateTemplateVariableNodeData = (
 export const createTemplateVariableNodeData = ({
 	type,
 }: CreateTemplateVariableNodeDataParams): CreateTemplateVariableNodeDataResult => {
-	return { id: "template-variable", type };
+	return { id: templateVariableId, type };
 };
 
 export const templateVariableKeys = [
