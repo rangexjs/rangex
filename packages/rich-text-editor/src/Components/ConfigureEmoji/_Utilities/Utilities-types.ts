@@ -13,17 +13,3 @@ export interface EmojiQuery {
 }
 
 export type GetEmojiQueryResult = EmojiQuery | null;
-
-export interface GetEmojiAutoCompleteParams {
-	editorAPI: EditorAPI;
-	fromText: EditorText;
-	fromOffset: number;
-}
-
-export interface EmojiAutoComplete {
-	name: string;
-	toText: EditorText;
-	toOffset: number;
-}
-
-export type GetEmojiAutoCompleteResult = EmojiAutoComplete | null;
