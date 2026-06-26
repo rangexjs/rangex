@@ -267,7 +267,7 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 
 - **`$$display`** *(readonly)* — `"block multi-line" | "block single-line"`. Set at construction time, not changeable after.
 
-- **`$$customStorage`** *(get/set)* — `any`. Free-form slot for consumer use. Store anything — metadata, component state, references, etc.
+- **`$$customStorage`** *(get/set)* — `any`. Free-form slot for consumer use. Must be JSON-serializable (string, number, boolean, null, plain objects, or arrays).
 
 - **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset.
 
@@ -438,7 +438,7 @@ The inline component primitive. Used to build any inline component — mentions,
 
 - **`$$componentName`** *(readonly)* — the string identifier for this component type. Must match an entry in the owning `ScopedEditable`'s `$$allowedComponents` list, or the component will be unwrapped by the schema.
 - **`$$content`** *(readonly)* — the content type of this component.
-- **`$$customStorage`** *(get/set)* — free-form slot for consumer use.
+- **`$$customStorage`** *(get/set)* — JSON-serializable slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — when `true`, the component is selected as a unit before being removed (e.g. on backspace/delete), giving the user visual feedback before deletion.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — when `true`, navigating the caret into the component selects it as a whole unit rather than entering it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `InlineNestedContext` itself is editable (`$isEditStateEditable`) **and** every direct `NestedEditable` child is also editable. Both conditions must hold.
@@ -485,7 +485,7 @@ The block component primitive. Used to build any block-level component — codeb
 
 - **`$$componentName`** *(readonly)* — string identifier for this component type.
 - **`$$content`** *(readonly)* — the content type.
-- **`$$customStorage`** *(get/set)* — free-form slot for consumer use.
+- **`$$customStorage`** *(get/set)* — JSON-serializable slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — select the component as a unit before removal.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — select as a unit when the caret navigates into it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `BlockNestedContext` itself and all direct `NestedEditable` children are editable.
@@ -1050,7 +1050,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | `display` | `"block multi-line" \| "block single-line"` | Yes | Structural display mode |
 | `editState` | `"true" \| "false"` | Yes | Whether the editor is initially editable |
 | `contentLineLocalNamesStyle` | `ContentLineLocalNamesStyle` | Yes | Default `structuredStyle` per `ContentLine` tag (`p`, `h1`…`h6`). Pass empty objects for no default styles. |
-| `customStorage` | `any` | No | Arbitrary consumer data stored on the node, readable via `$$customStorage` |
+| `customStorage` | `any` | No | JSON-serializable consumer data stored on the node, readable via `$$customStorage` |
 | `allowedComponents` | `string[] \| null` | No | See Common parameters |
 | `allowedContentLineLocalNames` | `ContentLineLocalName[] \| null` | No | See Common parameters |
 | `allowedContentLineStyleAttrNames` | `ContentLineStyleAttrName[] \| null` | No | See Common parameters |
@@ -1088,7 +1088,7 @@ Creates a `NestedEditable` — the editable content area inside a `NestedContext
 | `content` | `NestedEditableContent` | Yes | Semantic role: `{ type: "default" }` \| `{ type: "linked-characters"; unwrap: "if-modified" \| "if-empty" }` \| `{ type: "list-item" }` \| `{ type: "table-cell" }` |
 | `display` | `ScopedEditableDisplay` | Yes | `"block multi-line"`, `"block single-line"`, or `"inline"` |
 | `editState` | `"true" \| "false" \| "inherit"` | Yes | `"inherit"` = adopts parent editability |
-| `customStorage` | `any` | No | Arbitrary consumer data |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `allowedComponents` … | (same as createRootEditable) | No | |
 | `domAttrs` | `DOMAttrs` | No | |
 | `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | |
@@ -1164,7 +1164,7 @@ Creates an `InlineNestedContext` — an inline component inside a `ContentLine` 
 | `componentName` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
 | `content` | `InlineNestedContextContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | Yes | |
-| `customStorage` | `any` | No | Arbitrary consumer data |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | If `true`, the component is selected before deletion (gives consumer a chance to intercept) |
 | `shouldSelectOnNavigation` | `boolean` | No | If `true`, navigating onto the component selects it as a unit |
 | `domAttrs` | `DOMAttrs` | No | |
@@ -1181,7 +1181,7 @@ Creates a `BlockNestedContext` — a block-level component container (e.g. codeb
 | `componentName` | `string` | Yes | Component type identifier |
 | `content` | `BlockNestedContextContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | Yes | |
-| `customStorage` | `any` | No | |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | |
 | `shouldSelectOnNavigation` | `boolean` | No | |
 | `domAttrs` | `DOMAttrs` | No | |
@@ -1696,13 +1696,16 @@ interface TableSelectionSnapshot {
 ```ts
 const timeline = editorAPI.getSnapshotTimeline();
 
-timeline.editorSnapshots  // EditorSnapshot[] — all snapshots in the timeline (copy)
+timeline.editorSnapshots  // Array<() => EditorSnapshot> — one callback per snapshot in the timeline
 timeline.currentIndex     // number — which snapshot is currently active
 ```
 
-`editorSnapshots` returns a copy of the internal array — mutating it has no effect. `currentIndex` is the index of the snapshot the editor is currently at. After `stepBack()` it decrements; after `stepForward()` it increments.
+`editorSnapshots` returns an array of callbacks — calling one returns a deep clone of that snapshot. This means only the snapshot you actually read is cloned, so the cost is paid on demand. `currentIndex` is the index of the snapshot the editor is currently at. After `stepBack()` it decrements; after `stepForward()` it increments.
 
-`EditorSnapshot` objects are deep-frozen — they cannot be mutated after being pushed to the timeline.
+```ts
+const getSnapshot = timeline.editorSnapshots[timeline.currentIndex];
+const snapshot = getSnapshot(); // EditorSnapshot — a fresh, mutable deep clone
+```
 
 ---
 
@@ -1949,7 +1952,7 @@ callback: () => void
 
 ```ts
 const unregister = editorAPI.registerDOMEvent({
-  when: ({ element }) => isBlockNestedContext(element),  // fires only on BlockNestedContext nodes
+  when: ({ element }) => isNestedContext(element),  // fires only on NestedContext nodes (inline or block)
   eventListener: {
     type: "click",
     listener: (event) => {
@@ -1980,6 +1983,52 @@ When the editor is in read-only mode (`setIsTextAreaEditable(false)`), all inter
 
 ---
 
+### Event interception — `registerEventInterceptor`
+
+`registerEventInterceptor` lets a consumer intercept a specific event **before the engine processes it**. If the interceptor returns `true`, the engine skips its own handling for that event and calls `event.preventDefault()` on the browser event. It returns an unregister function.
+
+```ts
+const unregister = editorAPI.registerEventInterceptor({
+  type: "keydown",
+  interceptor: (event) => {
+    // event is a KeyboardEvent
+    if (event.code === "Tab") {
+      return true; // cancel engine handling — consumer handles Tab externally
+    }
+    return false; // let the engine process normally
+  },
+});
+
+unregister(); // removes the interceptor
+```
+
+The interceptable event types are:
+
+| `type`        | Native event      | Typical engine action cancelled                    |
+|---------------|-------------------|----------------------------------------------------|
+| `"keydown"`   | `KeyboardEvent`   | New line, deletion, directional keys, history nav  |
+| `"beforeinput"` | `InputEvent`    | Printable character insertion, deletion            |
+| `"paste"`     | `ClipboardEvent`  | Paste handling                                     |
+| `"copy"`      | `ClipboardEvent`  | Copy handling                                      |
+| `"cut"`       | `ClipboardEvent`  | Cut handling                                       |
+
+#### Interceptor return value
+
+- Return `true` — cancel engine handling. The engine calls `event.preventDefault()` and returns without executing its normal logic.
+- Return `false` — let the engine proceed normally.
+
+#### Multiple interceptors
+
+All registered interceptors for a given event type always run. If **any** interceptor returns `true`, the engine is cancelled — there is no short-circuit. This ensures every interceptor has the opportunity to observe the event regardless of what others decide.
+
+#### Difference from `registerDOMEvent`
+
+`registerDOMEvent` is observation-only — the engine always processes the event. `registerEventInterceptor` is the only way to prevent the engine's built-in handling of the event.
+
+Events like (`dragstart`, `dragover`, `drop`, etc.) are not interceptable — only the types listed above.
+
+---
+
 ## 11. SnapshotTimeline
 
 `SnapshotTimeline` is the undo/redo system. Each `RangeX` instance has exactly one timeline. Consumers access it via `editorAPI.getSnapshotTimeline()`, which returns a `SnapshotTimeline`.
@@ -1993,13 +2042,17 @@ const timeline = editorAPI.getSnapshotTimeline();
 ### Reading timeline state
 
 ```ts
-timeline.editorSnapshots   // EditorSnapshot[] — copy of all snapshots in the timeline
+timeline.editorSnapshots   // Array<() => EditorSnapshot> — one callback per snapshot in the timeline
 timeline.currentIndex      // number — index of the currently active snapshot
 timeline.canStepBack       // boolean — whether undo is possible
 timeline.canStepForward    // boolean — whether redo is possible
 ```
 
-`editorSnapshots` returns a shallow copy of the internal array — mutating it has no effect on the timeline. `currentIndex` is `0` at the oldest snapshot (the initial state captured on construction). After each `stepBack()` it decrements; after each `stepForward()` it increments.
+`editorSnapshots` returns an array of callbacks. Call one to get a deep clone of that snapshot — only the snapshot you read is cloned. `currentIndex` is `0` at the oldest snapshot (the initial state captured on construction). After each `stepBack()` it decrements; after each `stepForward()` it increments.
+
+```ts
+const snapshot = timeline.editorSnapshots[timeline.currentIndex](); // EditorSnapshot
+```
 
 ---
 
@@ -2965,3 +3018,5 @@ const rangeX = new RangeX({
 **`subscribeEditorEvent(params)`** — subscribe to editor lifecycle events (`"editor-selection-change"`, `"selection-styles-change"`, etc.). See [section 10 — Events](#10-events) for the full event type reference, payloads, and dispatch order.
 
 **`registerDOMEvent(params)`** — register DOM event listeners on `EditorElement`s via a centralized `when` predicate. See [section 10 — Events](#10-events) for the full specification, the reason to prefer this over `.addEventListener`, and read-only mode behavior.
+
+**`registerEventInterceptor(params)`** — intercept events (`"keydown"`, `"beforeinput"`, `"paste"`, `"copy"`, `"cut"`) before the engine processes them. Return `true` from the interceptor to cancel engine handling. See [section 10 — Events](#10-events) for the full specification and the difference from `registerDOMEvent`.
