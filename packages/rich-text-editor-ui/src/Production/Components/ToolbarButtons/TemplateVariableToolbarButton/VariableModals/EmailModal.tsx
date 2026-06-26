@@ -25,7 +25,7 @@ export const EmailModal = (props: EmailModalProps) => {
 	props.nodeInsertionButtonStateManager.subscribe({
 		type: toolbarButtonsName.templateVariable,
 		callback: (state) => {
-			emailModel.setValue(state.options.name?.lastName ?? "");
+			emailModel.setValue(state.options.email ?? "");
 		},
 	});
 

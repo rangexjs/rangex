@@ -55,7 +55,7 @@ export const DateModal = (props: DateModalProps) => {
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
 			options: {
-				email: dateModel.value(),
+				date: dateModel.value(),
 			},
 		});
 	};

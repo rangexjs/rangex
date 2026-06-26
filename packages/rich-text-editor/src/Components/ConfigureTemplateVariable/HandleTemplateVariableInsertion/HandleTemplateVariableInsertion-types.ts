@@ -1,8 +1,12 @@
-import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
+import type {
+	RichTextEditorUI,
+	TemplateVariableKind,
+} from "@rangex/rich-text-editor-ui";
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
 
 export interface CreateTemplateVariableComponentParams {
-	data: unknown;
+	type: TemplateVariableKind;
+	displayText: string;
 }
 
 export interface CreateTemplateVariableComponentResult

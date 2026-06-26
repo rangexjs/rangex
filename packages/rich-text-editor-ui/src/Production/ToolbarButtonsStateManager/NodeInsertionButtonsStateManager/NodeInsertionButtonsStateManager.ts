@@ -43,7 +43,7 @@ export class NodeInsertionButtonsStateManager {
 	#table: TableToolbarButtonState = { disabled: true };
 	#templateVariable: TemplateVariableToolbarButtonState = {
 		disabled: true,
-		options: { name: null, email: null, date: null },
+		options: { firstName: null, lastName: null, email: null, date: null },
 	};
 	#unorderedList: UnorderedListToolbarButtonState = { disabled: true };
 

@@ -59,10 +59,10 @@ export type TemplateVariableKind =
 	| "date";
 
 export interface TemplateVariableOptions {
-	name: { firstName: string; lastName: string } | null;
+	firstName: string | null;
+	lastName: string | null;
 	email: string | null;
-	// ISO Format YYYY-MM-DD
-	date: `${number}-${number}-${number}` | null;
+	date: string | null;
 }
 
 export interface TemplateVariableToolbarButtonState {

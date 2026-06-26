@@ -22,8 +22,8 @@ export const NameModal = (props: NameModalProps) => {
 	props.nodeInsertionButtonStateManager.subscribe({
 		type: toolbarButtonsName.templateVariable,
 		callback: (state) => {
-			firstNameModel.setValue(state.options.name?.firstName ?? "");
-			lastNameModel.setValue(state.options.name?.lastName ?? "");
+			firstNameModel.setValue(state.options.firstName ?? "");
+			lastNameModel.setValue(state.options.lastName ?? "");
 		},
 	});
 
@@ -33,8 +33,8 @@ export const NameModal = (props: NameModalProps) => {
 		}
 
 		const { templateVariable } = props.nodeInsertionButtonStateManager;
-		firstNameModel.setValue(templateVariable.options.name?.firstName ?? "");
-		lastNameModel.setValue(templateVariable.options.name?.lastName ?? "");
+		firstNameModel.setValue(templateVariable.options.firstName ?? "");
+		lastNameModel.setValue(templateVariable.options.lastName ?? "");
 	};
 
 	const updateTemplateVariable = () => {
@@ -42,10 +42,8 @@ export const NameModal = (props: NameModalProps) => {
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
 			options: {
-				name: {
-					firstName: firstNameModel.value(),
-					lastName: lastNameModel.value(),
-				},
+				firstName: firstNameModel.value(),
+				lastName: lastNameModel.value(),
 			},
 		});
 	};

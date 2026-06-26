@@ -4,7 +4,13 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
+import { ensureRootEditableStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
+import { resolveTemplateVariableDisplayText } from "../_Utilities";
+import {
+	createTemplateVariableNodeData,
+	ensureTemplateVariableStorage,
+} from "../TemplateVariableStorage";
 import type {
 	CreateTemplateVariableComponentParams,
 	CreateTemplateVariableComponentResult,
@@ -12,30 +18,27 @@ import type {
 } from "./HandleTemplateVariableInsertion-types";
 
 const createTemplateVariableComponent = ({
-	// biome-ignore lint/correctness/noUnusedFunctionParameters: Implement later
-	data,
+	type,
+	displayText,
 }: CreateTemplateVariableComponentParams): CreateTemplateVariableComponentResult => {
-	const inlineNestedContext = createInlineNestedContext({
+	return createInlineNestedContext({
 		componentName: componentsName.templateVariable,
 		content: { type: "custom" },
 		editState: "false",
 		shouldSelectOnNavigation: true,
+		customStorage: createTemplateVariableNodeData({ type }),
 		childNodes: [
 			createNestedEditable({
 				content: { type: "default" },
 				display: "inline",
 				childNodes: [
 					createContentLine({
-						childNodes: [
-							...createFormattableTexts({ data: "{{TemplateVariable}}" }),
-						],
+						childNodes: [...createFormattableTexts({ data: displayText })],
 					}),
 				],
 			}),
 		],
 	});
-
-	return inlineNestedContext;
 };
 
 export const handleTemplateVariableInsertion = ({
@@ -43,26 +46,40 @@ export const handleTemplateVariableInsertion = ({
 	editorAPI,
 }: HandleTemplateVariableInsertionParams) => {
 	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
-		// Temporary till we implement the blocking features
-		if (params.type !== "template-variable") {
+		if (params.type !== "template-variable" || params.action !== "insertion") {
 			return;
 		}
 
-		// Temporary till we implement the blocking features
-		if (params.action === "insertion" && params.kind === "first-name") {
-			const templateVariable = createTemplateVariableComponent({ data: "" });
+		const { kind } = params;
+		const { rootEditable } = editorAPI;
 
-			const selection = editorAPI.getEditorSelection();
+		const rootEditableStorage = ensureRootEditableStorage({ rootEditable });
+		const storage = ensureTemplateVariableStorage({ rootEditableStorage });
+		const displayText = resolveTemplateVariableDisplayText({
+			type: kind,
+			storage,
+		});
 
-			const { fromText, fromOffset } = selection.getBoundaryPoints();
+		const templateVariable = createTemplateVariableComponent({
+			type: kind,
+			displayText,
+		});
 
-			editorAPI.insertNode({
-				fromNode: fromText,
-				fromOffset,
-				lines: [createContentLine({ childNodes: [templateVariable] })],
-				breakBeforeInsert: false,
-			});
-		}
+		const selection = editorAPI.getEditorSelection();
+		const { fromText, fromOffset } = selection.getBoundaryPoints();
+
+		editorAPI.insertNode({
+			fromNode: fromText,
+			fromOffset,
+			lines: [createContentLine({ childNodes: [templateVariable] })],
+			breakBeforeInsert: false,
+		});
+
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+		snapshotTimeline.registerSnapshotBoundary();
+
+		editorAPI.focus();
 	});
 
 	return () => {

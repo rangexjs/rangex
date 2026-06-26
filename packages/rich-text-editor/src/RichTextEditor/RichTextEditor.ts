@@ -165,27 +165,6 @@ export class RichTextEditor extends HTMLElement {
 
 		// 	console.log(res);
 		// };
-
-		this.#richTextEditorUI.updateNodeInsertionButtonState({
-			table: { disabled: false },
-			orderedList: { disabled: false },
-			checkboxList: { disabled: false },
-			unorderedList: { disabled: false },
-			codeBlock: { disabled: false },
-			blockQuote: { disabled: false },
-			image: { disabled: false },
-			customComponent: { disabled: false },
-			symbols: { disabled: false },
-			anchor: { checked: false, disabled: false },
-			templateVariable: {
-				disabled: false,
-				options: {
-					name: { firstName: "John", lastName: "Doe" },
-					email: null,
-					date: "2024-02-10",
-				},
-			},
-		});
 	}
 
 	destroy() {
