@@ -1,4 +1,5 @@
 import type { ConfigureTodoListParams } from "./ConfigureTodoList-types";
+import { handleTodoListCheckboxState } from "./HandleTodoListCheckboxState";
 import { handleTodoListInsertion } from "./HandleTodoListInsertion";
 import { handleTodoListToolbarButtonState } from "./HandleTodoListToolbarButtonState";
 
@@ -19,8 +20,11 @@ export const configureTodoList = ({
 		blockComponentPlacement,
 	});
 
+	const checkboxStateCleanup = handleTodoListCheckboxState({ editorAPI });
+
 	return () => {
 		toolbarButtonStateCleanup();
 		insertionCleanup();
+		checkboxStateCleanup();
 	};
 };

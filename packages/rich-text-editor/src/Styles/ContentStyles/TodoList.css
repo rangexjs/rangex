@@ -14,7 +14,7 @@
 				grid-template-columns: min-content 1fr;
 				gap: 8px;
 
-				& > input[type="checkbox"] {
+				& > [data-name="todo-checkbox"] {
 					appearance: none;
 					cursor: pointer;
 					width: 16px;
@@ -52,7 +52,7 @@
 					}
 				}
 
-				&:has(> input[type="checkbox"]:checked) {
+				&:has(> [data-name="todo-checkbox"]:checked) {
 					& [data-rx-editor-role="content-line"] {
 						text-decoration: line-through;
 						opacity: 0.5;

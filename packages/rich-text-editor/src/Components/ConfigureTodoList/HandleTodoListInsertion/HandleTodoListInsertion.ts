@@ -9,7 +9,11 @@ import {
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import {
+	componentsName,
+	elementNameAttr,
+	todoCheckboxElementName,
+} from "../../../Constants";
 import type {
 	CreateTodoListLineResult,
 	HandleTodoListInsertionParams,
@@ -22,7 +26,10 @@ const createTodoListLine = (): CreateTodoListLineResult => {
 		createPreLayout: ({ nestedEditable }) => [
 			createHTMLLayout({
 				localName: "input",
-				domAttrs: { type: "checkbox" },
+				domAttrs: {
+					type: "checkbox",
+					[elementNameAttr]: todoCheckboxElementName,
+				},
 			}),
 			nestedEditable({}),
 		],
