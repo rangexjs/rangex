@@ -1048,7 +1048,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `display` | `"block multi-line" \| "block single-line"` | Yes | Structural display mode |
-| `editState` | `"true" \| "false"` | Yes | Whether the editor is initially editable |
+| `editState` | `"true" \| "false"` | No | Defaults to `"true"` |
 | `contentLineLocalNamesStyle` | `ContentLineLocalNamesStyle` | Yes | Default `structuredStyle` per `ContentLine` tag (`p`, `h1`…`h6`). Pass empty objects for no default styles. |
 | `customStorage` | `any` | No | JSON-serializable consumer data stored on the node, readable via `$$customStorage` |
 | `allowedComponents` | `string[] \| null` | No | See Common parameters |
@@ -1060,7 +1060,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | Initial child nodes |
 
 ```ts
-const root = createRootEditable({
+const rootEditable = createRootEditable({
   display: "block multi-line",
   editState: "true",
   contentLineLocalNamesStyle: {
@@ -1087,7 +1087,7 @@ Creates a `NestedEditable` — the editable content area inside a `NestedContext
 |---|---|---|---|
 | `content` | `NestedEditableContent` | Yes | Semantic role: `{ type: "default" }` \| `{ type: "linked-characters"; unwrap: "if-modified" \| "if-empty" }` \| `{ type: "list-item" }` \| `{ type: "table-cell" }` |
 | `display` | `ScopedEditableDisplay` | Yes | `"block multi-line"`, `"block single-line"`, or `"inline"` |
-| `editState` | `"true" \| "false" \| "inherit"` | Yes | `"inherit"` = adopts parent editability |
+| `editState` | `"true" \| "false" \| "inherit"` | No | Defaults to `"inherit"`. `"inherit"` = adopts parent editability |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `allowedComponents` … | (same as createRootEditable) | No | |
 | `domAttrs` | `DOMAttrs` | No | |
@@ -1163,7 +1163,7 @@ Creates an `InlineNestedContext` — an inline component inside a `ContentLine` 
 |---|---|---|---|
 | `componentName` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
 | `content` | `InlineNestedContextContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
-| `editState` | `"false" \| "inherit"` | Yes | |
+| `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | If `true`, the component is selected before deletion (gives consumer a chance to intercept) |
 | `shouldSelectOnNavigation` | `boolean` | No | If `true`, navigating onto the component selects it as a unit |
@@ -1180,7 +1180,7 @@ Creates a `BlockNestedContext` — a block-level component container (e.g. codeb
 |---|---|---|---|
 | `componentName` | `string` | Yes | Component type identifier |
 | `content` | `BlockNestedContextContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
-| `editState` | `"false" \| "inherit"` | Yes | |
+| `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | |
 | `shouldSelectOnNavigation` | `boolean` | No | |
