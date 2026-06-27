@@ -1,16 +1,16 @@
-import blockQuote from "../BlockQuote.css?inline";
-import codeBlock from "../CodeBlock.css?inline";
-import collapsible from "../Collapsible.css?inline";
 import colors from "../Colors.css?inline";
-import contentLine from "../ContentLine.css?inline";
+import blockQuote from "../Components/BlockQuote.css?inline";
+import codeBlock from "../Components/CodeBlock.css?inline";
+import collapsible from "../Components/Collapsible.css?inline";
+import link from "../Components/Link.css?inline";
+import list from "../Components/List.css?inline";
+import mention from "../Components/Mention.css?inline";
+import table from "../Components/Table.css?inline";
+import templateVariable from "../Components/TemplateVariable.css?inline";
+import todoList from "../Components/TodoList.css?inline";
+import contentLine from "../EditorElements/ContentLine.css?inline";
+import glyphFormatter from "../EditorElements/GlyphFormatter.css?inline";
 import globalContentStyles from "../GlobalContentStyles.css?inline";
-import glyphFormatter from "../GlyphFormatter.css?inline";
-import link from "../Link.css?inline";
-import list from "../List.css?inline";
-import mention from "../Mention.css?inline";
-import table from "../Table.css?inline";
-import templateVariable from "../TemplateVariable.css?inline";
-import todoList from "../TodoList.css?inline";
 
 export const getContentStyles = () => {
 	const styles =
