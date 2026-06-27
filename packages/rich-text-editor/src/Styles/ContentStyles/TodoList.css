@@ -21,7 +21,8 @@
 					height: 16px;
 					margin: 0;
 					margin-top: 6px;
-					border: 1px solid light-dark(#d0d0d0, #555);
+					border: 1px solid
+						light-dark(var(--color-neutral-300), var(--color-neutral-600));
 					border-radius: 4px;
 					display: grid;
 					place-items: center;
@@ -39,15 +40,18 @@
 					}
 
 					&:hover:not(:checked) {
-						border-color: light-dark(#aaa, #888);
+						border-color: light-dark(
+							var(--color-neutral-400),
+							var(--color-neutral-500)
+						);
 					}
 
 					&:checked {
-						background-color: var(--primary-500);
-						border-color: var(--primary-500);
+						background-color: var(--color-primary-500);
+						border-color: var(--color-primary-500);
 
 						&::before {
-							color: white;
+							color: var(--color-white);
 						}
 					}
 				}

@@ -2,7 +2,8 @@
 	&:where([data-rx-component-name="code-block"]) {
 		overflow-x: auto;
 		width: 100%;
-		border: 1px solid #8882;
+		border: 1px solid
+			light-dark(var(--color-neutral-200), var(--color-neutral-700));
 		border-radius: 6px;
 		margin-block: 4px;
 		font-family: "Consolas", "Menlo", "Monaco", monospace;
@@ -32,7 +33,10 @@
 					align-items: center;
 					justify-content: center;
 					min-width: 40px;
-					background-color: #8882;
+					background-color: light-dark(
+						var(--color-neutral-100),
+						var(--color-neutral-800)
+					);
 					font-size: 10px;
 					color: var(--rx-line-number-color, inherit);
 

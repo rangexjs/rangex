@@ -6,13 +6,14 @@
 			margin: 0;
 			margin-block: 6px;
 			padding: 10px 14px;
-			border-left: 3px solid light-dark(#d0d0d0, #4a4a4a);
+			border-left: 3px solid
+				light-dark(var(--color-neutral-300), var(--color-neutral-600));
 			border-radius: 0 6px 6px 0;
 			background-color: light-dark(
-				rgba(0, 0, 0, 0.03),
-				rgba(255, 255, 255, 0.04)
+				color(from var(--color-black) srgb r g b / 0.03),
+				color(from var(--color-white) srgb r g b / 0.04)
 			);
-			color: light-dark(#555, #aaa);
+			color: light-dark(var(--color-neutral-600), var(--color-neutral-400));
 			font-style: italic;
 		}
 	}

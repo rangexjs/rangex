@@ -16,13 +16,19 @@ th {
 thead {
 	td,
 	th {
-		background-color: rgba(127, 127, 127, 0.2);
+		background-color: light-dark(
+			var(--color-neutral-100),
+			var(--color-neutral-900)
+		);
 	}
 }
 
 tfoot {
 	td,
 	th {
-		background-color: rgba(127, 127, 127, 0.4);
+		background-color: light-dark(
+			var(--color-neutral-200),
+			var(--color-neutral-800)
+		);
 	}
 }

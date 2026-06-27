@@ -1,6 +1,7 @@
 import blockQuote from "../BlockQuote.css?inline";
 import codeBlock from "../CodeBlock.css?inline";
 import collapsible from "../Collapsible.css?inline";
+import colors from "../Colors.css?inline";
 import contentLine from "../ContentLine.css?inline";
 import globalContentStyles from "../GlobalContentStyles.css?inline";
 import glyphFormatter from "../GlyphFormatter.css?inline";
@@ -13,6 +14,7 @@ import todoList from "../TodoList.css?inline";
 
 export const getContentStyles = () => {
 	const styles =
+		colors +
 		globalContentStyles +
 		contentLine +
 		blockQuote +

@@ -1,5 +1,5 @@
 [data-rx-component-name="link"] {
 	& a {
-		color: #3e00c0;
+		color: light-dark(var(--color-violet-700), var(--color-violet-400));
 	}
 }

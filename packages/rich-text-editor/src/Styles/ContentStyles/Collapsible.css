@@ -1,7 +1,11 @@
 details {
-	border: 1px solid rgb(201, 201, 201);
+	border: 1px solid
+		light-dark(var(--color-neutral-300), var(--color-neutral-600));
 	border-radius: 16px;
-	background-color: rgba(201, 201, 201, 0.068);
+	background-color: light-dark(
+		color(from var(--color-neutral-300) srgb r g b / 0.07),
+		color(from var(--color-neutral-700) srgb r g b / 0.07)
+	);
 	margin-block: 4px;
 
 	&::details-content {
@@ -51,7 +55,7 @@ details {
 			display: inline-flex;
 			align-items: center;
 			padding-left: 8px;
-			color: var(--primary-500);
+			color: var(--color-primary-500);
 		}
 	}
 }
