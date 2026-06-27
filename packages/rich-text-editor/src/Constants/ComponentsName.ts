@@ -8,5 +8,6 @@ export const componentsName = {
 	mention: "mention",
 	table: "table",
 	templateVariable: "template-variable",
+	todoList: "todo-list",
 	video: "video",
 } as const;

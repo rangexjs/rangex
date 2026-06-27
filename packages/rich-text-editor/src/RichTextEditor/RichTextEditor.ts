@@ -16,6 +16,7 @@ import {
 	configureMention,
 	configureTable,
 	configureTemplateVariable,
+	configureTodoList,
 } from "../Components";
 import {
 	configureCustomStyles,
@@ -110,6 +111,11 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
+		const todoListCleanup = configureTodoList({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockComponentPlacement,
+		});
 		const tableCleanup = configureTable({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
@@ -119,6 +125,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
 		this.#cleanups.add(listCleanup);
+		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
 
 		const linkCleanup = configureLink({

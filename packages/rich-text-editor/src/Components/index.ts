@@ -6,3 +6,4 @@ export * from "./ConfigureList";
 export * from "./ConfigureMention";
 export * from "./ConfigureTable";
 export * from "./ConfigureTemplateVariable";
+export * from "./ConfigureTodoList";

@@ -9,6 +9,7 @@ import list from "../List.css?inline";
 import mention from "../Mention.css?inline";
 import table from "../Table.css?inline";
 import templateVariable from "../TemplateVariable.css?inline";
+import todoList from "../TodoList.css?inline";
 
 export const getContentStyles = () => {
 	const styles =
@@ -19,6 +20,7 @@ export const getContentStyles = () => {
 		collapsible +
 		link +
 		list +
+		todoList +
 		mention +
 		table +
 		templateVariable +
