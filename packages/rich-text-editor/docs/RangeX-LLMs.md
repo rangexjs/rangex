@@ -242,6 +242,7 @@ Every EditorNode exposes the following traversal properties. All types are narro
 | `$$editorRole` | The `data-editor-role` string of this node |
 | `$$rootEditable` | The `RootEditable` this node belongs to |
 | `$$isContentEditable` | Whether the node is currently editable in the DOM |
+| `$$customStorage` *(get/set)* | `any`. Free-form slot for consumer use. Must be JSON-serializable (string, number, boolean, null, plain objects, or arrays). |
 
 ### RootEditable
 
@@ -266,8 +267,6 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 **Public API:**
 
 - **`$$display`** *(readonly)* — `"block multi-line" | "block single-line"`. Set at construction time, not changeable after.
-
-- **`$$customStorage`** *(get/set)* — `any`. Free-form slot for consumer use. Must be JSON-serializable (string, number, boolean, null, plain objects, or arrays).
 
 - **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset.
 
@@ -438,7 +437,6 @@ The inline component primitive. Used to build any inline component — mentions,
 
 - **`$$componentName`** *(readonly)* — the string identifier for this component type. Must match an entry in the owning `ScopedEditable`'s `$$allowedComponents` list, or the component will be unwrapped by the schema.
 - **`$$content`** *(readonly)* — the content type of this component.
-- **`$$customStorage`** *(get/set)* — JSON-serializable slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — when `true`, the component is selected as a unit before being removed (e.g. on backspace/delete), giving the user visual feedback before deletion.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — when `true`, navigating the caret into the component selects it as a whole unit rather than entering it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `InlineNestedContext` itself is editable (`$isEditStateEditable`) **and** every direct `NestedEditable` child is also editable. Both conditions must hold.
@@ -485,7 +483,6 @@ The block component primitive. Used to build any block-level component — codeb
 
 - **`$$componentName`** *(readonly)* — string identifier for this component type.
 - **`$$content`** *(readonly)* — the content type.
-- **`$$customStorage`** *(get/set)* — JSON-serializable slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — select the component as a unit before removal.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — select as a unit when the caret navigates into it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `BlockNestedContext` itself and all direct `NestedEditable` children are editable.
@@ -1740,6 +1737,7 @@ A recursive plain-object mirror of the editor tree. Each node in the tree follow
 ```ts
 {
   type: string;               // data-editor-role name (e.g. "content-line", "glyph-formatter")
+  customStorage: any;         // value from $$customStorage on the live node
   namespaceURI: string;       // e.g. "http://www.w3.org/1999/xhtml" (HTML), "http://www.w3.org/2000/svg" (SVG), "http://www.w3.org/1998/Math/MathML" (MathML)
   localName: string;          // tag name (e.g. "p", "span", "svg", "math")
   attributes: Record<string, string>;
