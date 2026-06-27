@@ -11,6 +11,7 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { toHighlighterLang } from "../_Utilities";
 import { createCodeBlockStorage } from "../CodeBlockStorage";
 import type {
 	CreateCodeBlockLineParams,
@@ -19,7 +20,6 @@ import type {
 } from "./HandleCodeBlockInsertion-types";
 
 const createCodeBlockComponent = ({
-	// biome-ignore lint/correctness/noUnusedFunctionParameters: UI change required
 	language,
 }: CreateCodeBlockLineParams): CreateCodeBlockLineResult => {
 	const list = createList({
@@ -51,7 +51,7 @@ const createCodeBlockComponent = ({
 			componentName: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({
-				lang: "typescript",
+				lang: toHighlighterLang(language) ?? "typescript",
 				theme: { light: "light-plus", dark: "dark-plus" },
 			}),
 			childNodes: [
