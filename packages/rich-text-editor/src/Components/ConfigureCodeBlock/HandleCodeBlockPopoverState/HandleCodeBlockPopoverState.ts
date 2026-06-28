@@ -5,7 +5,10 @@ import {
 	listRoleSelector,
 } from "rich-text-area";
 import { toHighlighterLang, toHighlighterTheme } from "../_Utilities";
-import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
+import {
+	codeBlockStorageFallbacks,
+	ensureNodeCodeBlockStorage,
+} from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopoverState-types";
 
 /**
@@ -32,6 +35,7 @@ export const handleCodeBlockPopoverState = ({
 			}
 			const storage = ensureNodeCodeBlockStorage({
 				blockNestedContext: internals.currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
 				blockNestedContext: internals.currentCodeBlock,
@@ -53,6 +57,7 @@ export const handleCodeBlockPopoverState = ({
 			}
 			const storage = ensureNodeCodeBlockStorage({
 				blockNestedContext: internals.currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
 				blockNestedContext: internals.currentCodeBlock,
@@ -74,6 +79,7 @@ export const handleCodeBlockPopoverState = ({
 			}
 			const storage = ensureNodeCodeBlockStorage({
 				blockNestedContext: internals.currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
 				blockNestedContext: internals.currentCodeBlock,

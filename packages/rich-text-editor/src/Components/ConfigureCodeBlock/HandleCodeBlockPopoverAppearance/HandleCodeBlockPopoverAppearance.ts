@@ -6,7 +6,10 @@ import {
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
 import { toUILanguage, toUITheme } from "../_Utilities";
-import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
+import {
+	codeBlockStorageFallbacks,
+	ensureNodeCodeBlockStorage,
+} from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPopoverAppearance-types";
 
 const isCodeBlock = (element: EditorElement) =>
@@ -56,6 +59,7 @@ export const handleCodeBlockPopoverAppearance = ({
 		cancelHide();
 		const { lang, theme } = ensureNodeCodeBlockStorage({
 			blockNestedContext: codeBlock,
+			fallbacks: codeBlockStorageFallbacks,
 		});
 		codeBlockPopover.updateState({
 			language: toUILanguage(lang),
