@@ -8,6 +8,7 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { createBlockQuoteStorage } from "../BlockQuoteStorage";
 import type {
 	CreateBlockQuoteLineResult,
 	HandleBlockQuoteInsertionParams,
@@ -24,6 +25,7 @@ const createBlockQuoteLine = (): CreateBlockQuoteLineResult => {
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.blockQuote,
 			content: { type: "styled-block" },
+			customStorage: createBlockQuoteStorage(),
 			childNodes: [
 				createHTMLLayout({
 					localName: "blockquote",

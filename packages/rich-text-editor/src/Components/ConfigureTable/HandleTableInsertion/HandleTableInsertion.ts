@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { getCSSText } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
+import { createTableStorage } from "../TableStorage";
 import type {
 	CreateTableComponentParams,
 	CreateTableComponentResult,
@@ -40,6 +41,7 @@ const createTableComponent = ({
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.table,
 			content: { type: "custom" },
+			customStorage: createTableStorage(),
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
 			childNodes: [table],
