@@ -1,6 +1,6 @@
 import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI, RootEditable } from "rich-text-area";
-import type { TemplateVariableStore } from "../TemplateVariableStorage";
+import type { TemplateVariableRootStorage } from "../TemplateVariableStorage";
 
 export interface HandleTemplateVariableUpdateParams {
 	richTextEditorUI: RichTextEditorUI;
@@ -9,5 +9,5 @@ export interface HandleTemplateVariableUpdateParams {
 
 export interface UpdateAllTemplateVariableNodesParams {
 	rootEditable: RootEditable;
-	storage: TemplateVariableStore;
+	storage: TemplateVariableRootStorage;
 }

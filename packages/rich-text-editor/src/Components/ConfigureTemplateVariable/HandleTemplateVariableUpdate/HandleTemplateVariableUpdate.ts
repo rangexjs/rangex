@@ -7,15 +7,15 @@ import {
 	inlineNestedContextRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { ensureRootEditableStorage } from "../../../_Utilities";
+import { ensureRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import {
 	resolveTemplateVariableDisplayText,
 	storageToOptions,
 } from "../_Utilities";
 import {
-	ensureTemplateVariableStorage,
-	validateTemplateVariableNodeData,
+	ensureTemplateVariableRootStorage,
+	validateTemplateVariableStorage,
 } from "../TemplateVariableStorage";
 import type {
 	HandleTemplateVariableUpdateParams,
@@ -40,7 +40,7 @@ const updateAllTemplateVariableNodes = ({
 		}
 
 		const nodeStorage = node.$$customStorage;
-		if (!validateTemplateVariableNodeData(nodeStorage)) {
+		if (!validateTemplateVariableStorage(nodeStorage)) {
 			continue;
 		}
 
@@ -81,8 +81,8 @@ export const handleTemplateVariableUpdate = ({
 		const { options: partialOptions } = params;
 		const { rootEditable } = editorAPI;
 
-		const rootEditableStorage = ensureRootEditableStorage({ rootEditable });
-		const storage = ensureTemplateVariableStorage({ rootEditableStorage });
+		const rootStorage = ensureRootStorage({ rootEditable });
+		const storage = ensureTemplateVariableRootStorage({ rootStorage });
 
 		if (partialOptions.firstName !== undefined) {
 			storage.firstName = partialOptions.firstName;

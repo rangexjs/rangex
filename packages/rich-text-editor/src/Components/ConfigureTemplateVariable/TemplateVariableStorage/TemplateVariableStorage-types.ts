@@ -1,34 +1,61 @@
 import type { TemplateVariableKind } from "@rangex/rich-text-editor-ui";
-import type { RootEditableStorage } from "../../../_Utilities";
-import type { TemplateVariableId } from "../../../Constants";
-import type { templateVariableKeys } from "./TemplateVariableStorage";
+import type { InlineNestedContext } from "rich-text-area";
+import type { RootStorage } from "../../../_Utilities";
+import type {
+	TemplateVariableId,
+	TemplateVariableRootId,
+} from "../../../Constants";
+import type {
+	templateVariableKeys,
+	templateVariableRootStorageVersion,
+	templateVariableStorageVersion,
+} from "./TemplateVariableStorage";
 
 type TemplateVariableValue = string | null;
 
 export type TemplateVariableKeys = (typeof templateVariableKeys)[number];
 
-// Shared store on RootEditable — single source of truth for all variable values.
-export type TemplateVariableStore = {
+type TemplateVariableValues = {
 	[K in TemplateVariableKeys]: TemplateVariableValue;
 };
 
-// Stored on each InlineNestedContext node via $$customStorage.
-// Identifies which variable type the node represents so update passes know which display text to render.
-export interface TemplateVariableNodeData {
+export interface TemplateVariableStorage {
 	id: TemplateVariableId;
+	version: typeof templateVariableStorageVersion;
 	type: TemplateVariableKind;
 }
 
-export interface CreateTemplateVariableNodeDataParams {
+export interface CreateTemplateVariableStorageParams {
 	type: TemplateVariableKind;
 }
 
-export interface CreateTemplateVariableNodeDataResult
-	extends TemplateVariableNodeData {}
+export interface CreateTemplateVariableStorageResult
+	extends TemplateVariableStorage {}
 
-export interface EnsureTemplateVariableStorageParams {
-	rootEditableStorage: RootEditableStorage;
+export interface TemplateVariableStorageFallbacks {
+	type: TemplateVariableKind;
 }
 
-export interface EnsureTemplateVariableStorageResult
-	extends TemplateVariableStore {}
+export interface EnsureNodeTemplateVariableStorageParams {
+	inlineNestedContext: InlineNestedContext;
+	fallbacks: TemplateVariableStorageFallbacks;
+}
+
+export interface EnsureNodeTemplateVariableStorageResult
+	extends TemplateVariableStorage {}
+
+// Shared store on RootEditable — single source of truth for all variable values.
+export interface TemplateVariableRootStorage extends TemplateVariableValues {
+	id: TemplateVariableRootId;
+	version: typeof templateVariableRootStorageVersion;
+}
+
+export interface CreateTemplateVariableRootStorageResult
+	extends TemplateVariableRootStorage {}
+
+export interface EnsureTemplateVariableRootStorageParams {
+	rootStorage: RootStorage;
+}
+
+export interface EnsureTemplateVariableRootStorageResult
+	extends TemplateVariableRootStorage {}

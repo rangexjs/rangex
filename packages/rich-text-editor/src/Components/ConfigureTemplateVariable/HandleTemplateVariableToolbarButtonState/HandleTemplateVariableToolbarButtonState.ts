@@ -1,15 +1,17 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { ensureRootEditableStorage } from "../../../_Utilities";
+import { ensureRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import { getClosestScopedEditable } from "../../../NodeQuery";
 import { storageToOptions } from "../_Utilities";
-import { ensureTemplateVariableStorage } from "../TemplateVariableStorage";
+import { ensureTemplateVariableRootStorage } from "../TemplateVariableStorage";
 import type { HandleTemplateVariableToolbarButtonStateParams } from "./HandleTemplateVariableToolbarButtonState-types";
 
 export const handleTemplateVariableToolbarButtonState = ({
 	richTextEditorUI,
 	editorAPI,
 }: HandleTemplateVariableToolbarButtonStateParams) => {
+	const { rootEditable } = editorAPI;
+
 	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
@@ -27,10 +29,8 @@ export const handleTemplateVariableToolbarButtonState = ({
 				$$allowedComponents === null ||
 				$$allowedComponents.includes(componentsName.templateVariable);
 
-			const rootEditableStorage = ensureRootEditableStorage({
-				rootEditable: editorAPI.rootEditable,
-			});
-			const storage = ensureTemplateVariableStorage({ rootEditableStorage });
+			const rootStorage = ensureRootStorage({ rootEditable });
+			const storage = ensureTemplateVariableRootStorage({ rootStorage });
 
 			richTextEditorUI.updateNodeInsertionButtonState({
 				templateVariable: {

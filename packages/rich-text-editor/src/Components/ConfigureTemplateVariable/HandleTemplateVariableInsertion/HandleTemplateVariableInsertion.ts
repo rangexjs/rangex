@@ -4,12 +4,12 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
-import { ensureRootEditableStorage } from "../../../_Utilities";
+import { ensureRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import { resolveTemplateVariableDisplayText } from "../_Utilities";
 import {
-	createTemplateVariableNodeData,
-	ensureTemplateVariableStorage,
+	createTemplateVariableStorage,
+	ensureTemplateVariableRootStorage,
 } from "../TemplateVariableStorage";
 import type {
 	CreateTemplateVariableComponentParams,
@@ -26,7 +26,7 @@ const createTemplateVariableComponent = ({
 		content: { type: "custom" },
 		editState: "false",
 		shouldSelectOnNavigation: true,
-		customStorage: createTemplateVariableNodeData({ type }),
+		customStorage: createTemplateVariableStorage({ type }),
 		childNodes: [
 			createNestedEditable({
 				content: { type: "default" },
@@ -53,8 +53,8 @@ export const handleTemplateVariableInsertion = ({
 		const { kind } = params;
 		const { rootEditable } = editorAPI;
 
-		const rootEditableStorage = ensureRootEditableStorage({ rootEditable });
-		const storage = ensureTemplateVariableStorage({ rootEditableStorage });
+		const rootStorage = ensureRootStorage({ rootEditable });
+		const storage = ensureTemplateVariableRootStorage({ rootStorage });
 		const displayText = resolveTemplateVariableDisplayText({
 			type: kind,
 			storage,

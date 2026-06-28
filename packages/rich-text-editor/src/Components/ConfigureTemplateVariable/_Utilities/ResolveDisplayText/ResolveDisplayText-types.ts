@@ -1,7 +1,7 @@
 import type { TemplateVariableKind } from "@rangex/rich-text-editor-ui";
-import type { TemplateVariableStore } from "../../TemplateVariableStorage";
+import type { TemplateVariableRootStorage } from "../../TemplateVariableStorage";
 
 export interface ResolveTemplateVariableDisplayTextParams {
 	type: TemplateVariableKind;
-	storage: TemplateVariableStore;
+	storage: TemplateVariableRootStorage;
 }

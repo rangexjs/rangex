@@ -2112,7 +2112,11 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": true,
 						"editState": "false",
-						"customStorage": { "id": "template-variable", "type": "email" },
+						"customStorage": {
+							"id": "template-variable",
+							"version": 1,
+							"type": "email"
+						},
 						"styleAttrs": {},
 						"domAttrs": { "contenteditable": "false" },
 						"childNodes": [
