@@ -10,6 +10,7 @@ import {
 import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
 import { getLinkInsertionMode, getPopoverStateFromLink } from "../_Utilities";
+import { createLinkStorage } from "../LinkStorage";
 import type {
 	AnchorPopoverToLinkParams,
 	CreateLinkComponentParams,
@@ -29,6 +30,7 @@ const createLinkComponent = ({
 	const inlineNestedContext = createInlineNestedContext({
 		componentName: componentsName.link,
 		content: { type: "linked-characters" },
+		customStorage: createLinkStorage(),
 		childNodes: [
 			createHTMLLayout({
 				localName: "a",
