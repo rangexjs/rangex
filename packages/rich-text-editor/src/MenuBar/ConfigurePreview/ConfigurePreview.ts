@@ -4,10 +4,13 @@ import { createHighlightedCode, createHost, formatHTML } from "./_Utilities";
 import type {
 	ConfigurePreviewParams,
 	CreateHTMLParams,
+	CreateHTMLTextParams,
 	CreateJSONParams,
+	CreateJSONTextParams,
 	CreatePreviewContentParams,
 	CreateRenderedParams,
 	CreateSnapshotParams,
+	CreateSnapshotTextParams,
 } from "./ConfigurePreview-types";
 import { createHTMLFromSnapshotView } from "./CreateHTMLFromSnapshotView";
 
@@ -42,6 +45,18 @@ const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
 	return createHost({ children: [pre] });
 };
 
+const createHTMLText = ({ style, rootElement }: CreateHTMLTextParams) => {
+	const styleCode = formatHTML({ element: style });
+
+	return `${rootElement.outerHTML}\n\n${styleCode}`;
+};
+
+const createJSONText = ({ snapshotView }: CreateJSONTextParams) =>
+	JSON.stringify(snapshotView);
+
+const createSnapshotText = ({ storedSnapshot }: CreateSnapshotTextParams) =>
+	JSON.stringify(storedSnapshot);
+
 /**
  * Snapshotting + building the DOM tree is cheap; syntax-highlighting each
  * tab is not. Returning factories instead of built content means the UI
@@ -57,9 +72,12 @@ const createPreviewContent = ({ editorAPI }: CreatePreviewContentParams) => {
 	return {
 		getRendered: () =>
 			Promise.resolve(createRendered({ style, rootElement, settled })),
-		getHtml: () => createHTML({ style, rootElement, settled }),
-		getJson: () => createJSON({ snapshotView }),
+		getHTML: () => createHTML({ style, rootElement, settled }),
+		getJSON: () => createJSON({ snapshotView }),
 		getSnapshot: () => createSnapshot({ storedSnapshot }),
+		getHTMLText: () => createHTMLText({ style, rootElement }),
+		getJSONText: () => createJSONText({ snapshotView }),
+		getSnapshotText: () => createSnapshotText({ storedSnapshot }),
 	};
 };
 

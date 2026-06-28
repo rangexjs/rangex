@@ -15,6 +15,19 @@ export interface CreateSnapshotParams {
 	storedSnapshot: StoredSnapshot;
 }
 
+export interface CreateHTMLTextParams {
+	style: HTMLStyleElement;
+	rootElement: HTMLElement;
+}
+
+export interface CreateJSONTextParams {
+	snapshotView: SnapshotView;
+}
+
+export interface CreateSnapshotTextParams {
+	storedSnapshot: StoredSnapshot;
+}
+
 export interface CreatePreviewContentParams {
 	editorAPI: EditorAPI;
 }
