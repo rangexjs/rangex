@@ -25,4 +25,3 @@ export interface EnsureNodeMentionStorageParams {
 }
 
 export interface EnsureNodeMentionStorageResult extends MentionStorage {}
-
