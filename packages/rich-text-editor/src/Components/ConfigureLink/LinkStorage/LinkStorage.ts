@@ -1,6 +1,8 @@
 import { linkId } from "../../../Constants";
 import type {
 	CreateLinkStorageResult,
+	EnsureLinkStorageParams,
+	EnsureLinkStorageResult,
 	EnsureNodeLinkStorageParams,
 	EnsureNodeLinkStorageResult,
 	LinkStorage,
@@ -28,8 +30,19 @@ export const validateLinkStorage = (
 	return isValid;
 };
 
-export const createLinkStorage = (): CreateLinkStorageResult => {
-	return { id: linkId, version: linkStorageVersion };
+export const createLinkStorage = (): CreateLinkStorageResult => ({
+	id: linkId,
+	version: linkStorageVersion,
+});
+
+export const ensureLinkStorage = ({
+	storage,
+}: EnsureLinkStorageParams): EnsureLinkStorageResult => {
+	if (validateLinkStorage(storage)) {
+		return storage;
+	}
+
+	return createLinkStorage();
 };
 
 export const ensureNodeLinkStorage = ({
@@ -37,11 +50,7 @@ export const ensureNodeLinkStorage = ({
 }: EnsureNodeLinkStorageParams): EnsureNodeLinkStorageResult => {
 	const { $$customStorage } = inlineNestedContext;
 
-	if (validateLinkStorage($$customStorage)) {
-		return $$customStorage;
-	}
-
-	const storage = createLinkStorage();
+	const storage = ensureLinkStorage({ storage: $$customStorage });
 	inlineNestedContext.$$customStorage = storage;
 
 	return storage;

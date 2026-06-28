@@ -19,6 +19,13 @@ export interface MentionStorageFallbacks {
 	userId: string;
 }
 
+export interface EnsureMentionStorageParams {
+	storage: unknown;
+	fallbacks: MentionStorageFallbacks;
+}
+
+export interface EnsureMentionStorageResult extends MentionStorage {}
+
 export interface EnsureNodeMentionStorageParams {
 	inlineNestedContext: InlineNestedContext;
 	fallbacks: MentionStorageFallbacks;

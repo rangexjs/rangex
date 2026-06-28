@@ -36,6 +36,14 @@ export interface TemplateVariableStorageFallbacks {
 	type: TemplateVariableKind;
 }
 
+export interface EnsureTemplateVariableStorageParams {
+	storage: unknown;
+	fallbacks: TemplateVariableStorageFallbacks;
+}
+
+export interface EnsureTemplateVariableStorageResult
+	extends TemplateVariableStorage {}
+
 export interface EnsureNodeTemplateVariableStorageParams {
 	inlineNestedContext: InlineNestedContext;
 	fallbacks: TemplateVariableStorageFallbacks;

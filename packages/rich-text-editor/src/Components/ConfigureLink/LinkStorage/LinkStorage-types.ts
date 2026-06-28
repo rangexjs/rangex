@@ -9,6 +9,12 @@ export interface LinkStorage {
 
 export interface CreateLinkStorageResult extends LinkStorage {}
 
+export interface EnsureLinkStorageParams {
+	storage: unknown;
+}
+
+export interface EnsureLinkStorageResult extends LinkStorage {}
+
 export interface EnsureNodeLinkStorageParams {
 	inlineNestedContext: InlineNestedContext;
 }

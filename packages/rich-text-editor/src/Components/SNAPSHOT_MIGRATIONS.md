@@ -36,7 +36,8 @@ Each `*Storage` module exports functions for creating, validating, and reading s
 - `is*Storage(storage: unknown)` — pure type guard. Checks that `id` and `version` both match the current schema. No side effects. Use when iterating nodes to check identity without implying the node should be valid.
 - `validate*Storage(storage: unknown)` — calls `is*`, warns via `console.warn` if invalid. Use when the storage is expected to be valid and a failure indicates a bug.
 - `create*Storage(params)` — constructs a new storage object at the current version.
-- `ensureNode*Storage({ node, fallbacks })` — reads `$$customStorage` from a live DOM node. Returns it as-is if valid. If invalid, self-heals by writing a new storage using the provided fallbacks and returning it.
+- `ensure*Storage({ storage, fallbacks })` — takes a raw `unknown` value (e.g. from a snapshot node's `customStorage` field). Returns it as-is if valid via `validate*`. If invalid, creates and returns a fresh storage using the provided fallbacks. Use in snapshot/`EditorElementView` contexts where only the raw value is available, not a live DOM node.
+- `ensureNode*Storage({ node, fallbacks })` — reads `$$customStorage` from a live DOM node. Delegates to `ensure*Storage` and writes the result back to the node. Use in live editor contexts (event handlers, highlighters, etc.).
 
 Components with more complex storage needs (e.g. data shared across all nodes of a component, stored on `RootEditable`) will export additional functions alongside these.
 

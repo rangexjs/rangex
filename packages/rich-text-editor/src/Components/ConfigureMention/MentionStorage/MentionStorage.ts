@@ -2,6 +2,8 @@ import { mentionId } from "../../../Constants";
 import type {
 	CreateMentionStorageParams,
 	CreateMentionStorageResult,
+	EnsureMentionStorageParams,
+	EnsureMentionStorageResult,
 	EnsureNodeMentionStorageParams,
 	EnsureNodeMentionStorageResult,
 	MentionStorage,
@@ -35,17 +37,24 @@ export const createMentionStorage = ({
 	return { id: mentionId, version: mentionStorageVersion, userId };
 };
 
+export const ensureMentionStorage = ({
+	storage,
+	fallbacks,
+}: EnsureMentionStorageParams): EnsureMentionStorageResult => {
+	if (validateMentionStorage(storage)) {
+		return storage;
+	}
+
+	return createMentionStorage(fallbacks);
+};
+
 export const ensureNodeMentionStorage = ({
 	inlineNestedContext,
 	fallbacks,
 }: EnsureNodeMentionStorageParams): EnsureNodeMentionStorageResult => {
 	const { $$customStorage } = inlineNestedContext;
 
-	if (validateMentionStorage($$customStorage)) {
-		return $$customStorage;
-	}
-
-	const storage = createMentionStorage({ userId: fallbacks.userId });
+	const storage = ensureMentionStorage({ storage: $$customStorage, fallbacks });
 	inlineNestedContext.$$customStorage = storage;
 
 	return storage;

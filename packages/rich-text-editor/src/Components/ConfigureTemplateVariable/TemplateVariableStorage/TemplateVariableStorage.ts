@@ -7,6 +7,8 @@ import type {
 	EnsureNodeTemplateVariableStorageResult,
 	EnsureTemplateVariableRootStorageParams,
 	EnsureTemplateVariableRootStorageResult,
+	EnsureTemplateVariableStorageParams,
+	EnsureTemplateVariableStorageResult,
 	TemplateVariableRootStorage,
 	TemplateVariableStorage,
 } from "./TemplateVariableStorage-types";
@@ -56,17 +58,27 @@ export const createTemplateVariableStorage = ({
 	};
 };
 
+export const ensureTemplateVariableStorage = ({
+	storage,
+	fallbacks,
+}: EnsureTemplateVariableStorageParams): EnsureTemplateVariableStorageResult => {
+	if (validateTemplateVariableStorage(storage)) {
+		return storage;
+	}
+
+	return createTemplateVariableStorage(fallbacks);
+};
+
 export const ensureNodeTemplateVariableStorage = ({
 	inlineNestedContext,
 	fallbacks,
 }: EnsureNodeTemplateVariableStorageParams): EnsureNodeTemplateVariableStorageResult => {
 	const { $$customStorage } = inlineNestedContext;
 
-	if (validateTemplateVariableStorage($$customStorage)) {
-		return $$customStorage;
-	}
-
-	const storage = createTemplateVariableStorage({ type: fallbacks.type });
+	const storage = ensureTemplateVariableStorage({
+		storage: $$customStorage,
+		fallbacks,
+	});
 	inlineNestedContext.$$customStorage = storage;
 
 	return storage;
