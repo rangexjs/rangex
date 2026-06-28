@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { ensureRootStorage } from "../../../_Utilities";
+import { ensureNodeRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import { getClosestScopedEditable } from "../../../NodeQuery";
 import { storageToOptions } from "../_Utilities";
@@ -29,7 +29,7 @@ export const handleTemplateVariableToolbarButtonState = ({
 				$$allowedComponents === null ||
 				$$allowedComponents.includes(componentsName.templateVariable);
 
-			const rootStorage = ensureRootStorage({ rootEditable });
+			const rootStorage = ensureNodeRootStorage({ rootEditable });
 			const storage = ensureTemplateVariableRootStorage({ rootStorage });
 
 			richTextEditorUI.updateNodeInsertionButtonState({

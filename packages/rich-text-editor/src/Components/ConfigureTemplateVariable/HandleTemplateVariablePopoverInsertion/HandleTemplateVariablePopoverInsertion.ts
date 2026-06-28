@@ -4,7 +4,7 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
-import { ensureRootStorage } from "../../../_Utilities";
+import { ensureNodeRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import {
 	getTemplateVariableQuery,
@@ -87,6 +87,7 @@ export const handleTemplateVariablePopoverInsertion = ({
 	editorAPI,
 }: HandleTemplateVariablePopoverInsertionParams) => {
 	const { templateVariablePopover } = richTextEditorUI;
+	const { rootEditable } = editorAPI;
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -102,9 +103,7 @@ export const handleTemplateVariablePopoverInsertion = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const rootStorage = ensureRootStorage({
-			rootEditable: editorAPI.rootEditable,
-		});
+		const rootStorage = ensureNodeRootStorage({ rootEditable });
 		const storage = ensureTemplateVariableRootStorage({ rootStorage });
 		const displayText = resolveTemplateVariableDisplayText({
 			type: kind,

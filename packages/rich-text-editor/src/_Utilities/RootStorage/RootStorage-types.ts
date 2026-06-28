@@ -11,7 +11,13 @@ export interface RootStorage {
 export interface CreateRootStorageResult extends RootStorage {}
 
 export interface EnsureRootStorageParams {
-	rootEditable: RootEditable;
+	storage: unknown;
 }
 
 export interface EnsureRootStorageResult extends RootStorage {}
+
+export interface EnsureNodeRootStorageParams {
+	rootEditable: RootEditable;
+}
+
+export interface EnsureNodeRootStorageResult extends RootStorage {}

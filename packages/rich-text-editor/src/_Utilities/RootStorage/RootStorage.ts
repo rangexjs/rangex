@@ -1,6 +1,8 @@
 import { rootId } from "../../Constants";
 import type {
 	CreateRootStorageResult,
+	EnsureNodeRootStorageParams,
+	EnsureNodeRootStorageResult,
 	EnsureRootStorageParams,
 	EnsureRootStorageResult,
 	RootStorage,
@@ -35,15 +37,21 @@ export const createRootStorage = (): CreateRootStorageResult => ({
 });
 
 export const ensureRootStorage = ({
-	rootEditable,
+	storage,
 }: EnsureRootStorageParams): EnsureRootStorageResult => {
-	const { $$customStorage } = rootEditable;
-
-	if (validateRootStorage($$customStorage)) {
-		return $$customStorage;
+	if (validateRootStorage(storage)) {
+		return storage;
 	}
 
-	const storage = createRootStorage();
+	return createRootStorage();
+};
+
+export const ensureNodeRootStorage = ({
+	rootEditable,
+}: EnsureNodeRootStorageParams): EnsureNodeRootStorageResult => {
+	const { $$customStorage } = rootEditable;
+
+	const storage = ensureRootStorage({ storage: $$customStorage });
 	rootEditable.$$customStorage = storage;
 
 	return storage;
