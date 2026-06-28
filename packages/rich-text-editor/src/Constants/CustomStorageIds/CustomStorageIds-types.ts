@@ -5,7 +5,7 @@ import type {
 	rootId,
 	templateVariableId,
 	templateVariableRootId,
-	todoListCheckboxId,
+	todoCheckboxId,
 } from "./CustomStorageIds";
 
 export type CodeBlockId = typeof codeBlockId;
@@ -14,4 +14,4 @@ export type MentionId = typeof mentionId;
 export type RootId = typeof rootId;
 export type TemplateVariableId = typeof templateVariableId;
 export type TemplateVariableRootId = typeof templateVariableRootId;
-export type TodoListCheckboxId = typeof todoListCheckboxId;
+export type TodoCheckboxId = typeof todoCheckboxId;

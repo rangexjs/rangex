@@ -1,6 +1,7 @@
 import {
 	blockNestedContextName,
 	blockNestedContextRoleSelector,
+	htmlLayoutName,
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
@@ -8,12 +9,11 @@ import {
 	componentsName,
 	createElementNameSelector,
 	todoCheckboxElementName,
-	todoListCheckboxId,
 } from "../../../Constants";
 import {
-	type CheckboxStorage,
-	validateCheckboxStorage,
-} from "../CheckboxStorage";
+	ensureNodeTodoCheckboxStorage,
+	todoCheckboxStorageFallbacks,
+} from "../TodoCheckboxStorage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 const todoCheckboxSelector = createElementNameSelector(todoCheckboxElementName);
@@ -44,12 +44,14 @@ export const handleTodoListCheckboxState = ({
 						throw new Error("TodoCheckbox wasn't found.");
 					}
 
-					if (!validateCheckboxStorage(todoCheckbox.$$customStorage)) {
-						todoCheckbox.$$customStorage = {
-							id: todoListCheckboxId,
-							checked: false,
-						} satisfies CheckboxStorage;
+					if (todoCheckbox.$$editorRole !== htmlLayoutName) {
+						throw new Error("TodoCheckbox's type is invalid.");
 					}
+
+					ensureNodeTodoCheckboxStorage({
+						htmlLayout: todoCheckbox,
+						fallbacks: todoCheckboxStorageFallbacks,
+					});
 				}
 			}
 		},
@@ -70,10 +72,15 @@ export const handleTodoListCheckboxState = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				currentTarget.$$customStorage = {
-					...currentTarget.$$customStorage,
-					checked: currentTarget.checked,
-				} satisfies CheckboxStorage;
+				if (currentTarget.$$editorRole !== htmlLayoutName) {
+					throw new Error("CurrentTarget's type is invalid.");
+				}
+
+				const storage = ensureNodeTodoCheckboxStorage({
+					htmlLayout: currentTarget,
+					fallbacks: todoCheckboxStorageFallbacks,
+				});
+				storage.checked = currentTarget.checked;
 			},
 		},
 	});

@@ -4,4 +4,4 @@ export const mentionId = "mention" as const;
 export const rootId = "root" as const;
 export const templateVariableId = "template-variable" as const;
 export const templateVariableRootId = "template-variable-root" as const;
-export const todoListCheckboxId = "todo-list-checkbox" as const;
+export const todoCheckboxId = "todo-checkbox" as const;

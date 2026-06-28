@@ -1,4 +1,4 @@
-import { validateCheckboxStorage } from "../../../../../../Components/ConfigureTodoList";
+import { validateTodoCheckboxStorage } from "../../../../../../Components/ConfigureTodoList";
 import type { ApplyTodoCheckboxOutputParams } from "./TodoCheckbox-types";
 
 export const applyTodoCheckboxOutput = ({
@@ -7,8 +7,8 @@ export const applyTodoCheckboxOutput = ({
 }: ApplyTodoCheckboxOutputParams): void => {
 	const storage = view.customStorage;
 
-	if (!validateCheckboxStorage(storage)) {
-		throw new Error("Expected CheckboxStorage on todo checkbox element.");
+	if (!validateTodoCheckboxStorage(storage)) {
+		throw new Error("Expected TodoCheckboxStorage on todo checkbox element.");
 	}
 
 	if (!(el instanceof HTMLInputElement)) {
