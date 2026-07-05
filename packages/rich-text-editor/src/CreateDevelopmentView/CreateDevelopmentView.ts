@@ -36,7 +36,9 @@ export const createDevelopmentView = () => {
 	const emptyRootEditable = createRootEditable({
 		display: "block multi-line",
 		contentLineLocalNamesStyle: getDefaultContentLineLocalNamesStyles(),
-		childNodes: [createContentLine({ childNodes: [createBeamText()] })],
+		childNodes: [
+			createContentLine({ localName: "p", childNodes: [createBeamText()] }),
+		],
 	});
 
 	const emptyRichTextArea = new RangeX({

@@ -33,6 +33,7 @@ const createTemplateVariableComponent = ({
 				display: "inline",
 				childNodes: [
 					createContentLine({
+						localName: "span",
 						childNodes: [...createFormattableTexts({ data: displayText })],
 					}),
 				],
@@ -71,7 +72,9 @@ export const handleTemplateVariableInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createContentLine({ childNodes: [templateVariable] })],
+			lines: [
+				createContentLine({ localName: "p", childNodes: [templateVariable] }),
+			],
 			breakBeforeInsert: false,
 		});
 

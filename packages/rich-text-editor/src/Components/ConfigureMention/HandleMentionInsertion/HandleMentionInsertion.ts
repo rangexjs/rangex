@@ -60,6 +60,7 @@ const createMentionComponent = ({
 				display: "inline",
 				childNodes: [
 					createContentLine({
+						localName: "span",
 						childNodes: [...createFormattableTexts({ data })],
 					}),
 				],
@@ -100,7 +101,7 @@ export const handleMentionInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createContentLine({ childNodes: [mention] })],
+			lines: [createContentLine({ localName: "p", childNodes: [mention] })],
 			breakBeforeInsert: false,
 		});
 

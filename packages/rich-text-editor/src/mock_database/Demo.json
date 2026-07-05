@@ -2047,7 +2047,7 @@
 										"type": "content-line",
 										"uniqueId": "1775225597944-1430093007",
 										"customStorage": null,
-										"localName": "p",
+										"localName": "span",
 										"styleAttrs": {},
 										"structuredStyle": {
 											"lineHeight": {
@@ -2139,7 +2139,7 @@
 										"type": "content-line",
 										"uniqueId": "1775228059095-4070435742",
 										"customStorage": null,
-										"localName": "p",
+										"localName": "span",
 										"styleAttrs": {},
 										"structuredStyle": {
 											"lineHeight": {
@@ -2241,7 +2241,7 @@
 												"type": "content-line",
 												"uniqueId": "1775222919958-1069082082",
 												"customStorage": null,
-												"localName": "p",
+												"localName": "span",
 												"styleAttrs": {},
 												"structuredStyle": {
 													"lineHeight": {

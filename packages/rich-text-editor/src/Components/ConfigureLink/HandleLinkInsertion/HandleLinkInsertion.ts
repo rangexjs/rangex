@@ -42,6 +42,7 @@ const createLinkComponent = ({
 						display: "inline",
 						childNodes: [
 							createContentLine({
+								localName: "span",
 								childNodes: [...createFormattableTexts({ data: text })],
 							}),
 						],
@@ -110,7 +111,7 @@ const insertAtCaret = ({
 	editorAPI.insertNode({
 		fromNode: fromText,
 		fromOffset,
-		lines: [createContentLine({ childNodes: [link] })],
+		lines: [createContentLine({ localName: "p", childNodes: [link] })],
 		breakBeforeInsert: false,
 	});
 
@@ -189,7 +190,7 @@ const wrapWithLink = ({
 		editorAPI.insertNode({
 			fromNode: updatedBoundaryPoints.fromText,
 			fromOffset: updatedBoundaryPoints.fromOffset,
-			lines: [createContentLine({ childNodes: [link] })],
+			lines: [createContentLine({ localName: "p", childNodes: [link] })],
 			breakBeforeInsert: false,
 		});
 	}

@@ -77,6 +77,7 @@ export const handleEmojiAutoComplete = ({
 				fromOffset: newFromOffset,
 				lines: [
 					createContentLine({
+						localName: "p",
 						childNodes: [...createFormattableTexts({ data: match.emoji })],
 					}),
 				],

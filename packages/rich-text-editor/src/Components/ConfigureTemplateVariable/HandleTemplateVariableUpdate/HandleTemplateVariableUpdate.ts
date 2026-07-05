@@ -63,6 +63,7 @@ const updateAllTemplateVariableNodes = ({
 
 		contentLine.$$replaceWith(
 			createContentLine({
+				localName: "span",
 				childNodes: [...createFormattableTexts({ data: displayText })],
 			}),
 		);

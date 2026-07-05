@@ -65,6 +65,7 @@ export const handleEmojiInsertion = ({
 			fromOffset,
 			lines: [
 				createContentLine({
+					localName: "p",
 					childNodes: [...createFormattableTexts({ data: emoji })],
 				}),
 			],
