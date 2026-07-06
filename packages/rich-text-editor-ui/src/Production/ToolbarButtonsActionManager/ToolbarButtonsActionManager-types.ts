@@ -8,6 +8,7 @@ import type {
 	CodeBlockLanguage,
 	ColorValue,
 	CustomComponentName,
+	FindReplacePattern,
 	FontFamilyValue,
 	FontSizeValue,
 	IndentationValue,
@@ -164,11 +165,8 @@ export interface FindReplaceActionState
 	extends GetButtonType<typeof toolbarButtonsName.findReplace> {
 	action: FindReplaceActionType;
 	navigateTo: number;
-	findText: string;
+	pattern: FindReplacePattern;
 	replaceText: string;
-	matchCase: boolean;
-	wholeWord: boolean;
-	useRegex: boolean;
 	includeNonEditableContent: boolean;
 }
 

@@ -1,7 +1,11 @@
-import type {
-	BuildFindReplacePatternParams,
-	BuildFindReplacePatternResult,
-} from "./BuildFindReplacePattern-types";
+import type { FindReplacePattern } from "../../../ToolbarButtonProps";
+
+interface BuildFindReplacePatternParams {
+	findText: string;
+	matchCase: boolean;
+	useRegex: boolean;
+	wholeWord: boolean;
+}
 
 /** Builds a RegExp pattern from find options: handles escaping, word boundaries, and case. */
 export const buildFindReplacePattern = ({
@@ -9,7 +13,7 @@ export const buildFindReplacePattern = ({
 	matchCase,
 	useRegex,
 	wholeWord,
-}: BuildFindReplacePatternParams): BuildFindReplacePatternResult => {
+}: BuildFindReplacePatternParams): FindReplacePattern => {
 	const escaped = useRegex ? findText : RegExp.escape(findText);
 	const source = wholeWord ? String.raw`\b${escaped}\b` : escaped;
 	const flags = matchCase ? "v" : "iv";

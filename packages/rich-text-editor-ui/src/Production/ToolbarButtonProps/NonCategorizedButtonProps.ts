@@ -1,4 +1,9 @@
 // FindReplace
+export interface FindReplacePattern {
+	source: string;
+	flags: string;
+}
+
 export interface FindReplaceSearchResult {
 	segmentText: string;
 	matchStart: number;
