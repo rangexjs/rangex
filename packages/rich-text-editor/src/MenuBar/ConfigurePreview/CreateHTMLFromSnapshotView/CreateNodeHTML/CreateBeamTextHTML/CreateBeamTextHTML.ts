@@ -3,8 +3,8 @@ import type {
 	CreateBeamTextHTMLResult,
 } from "./CreateBeamTextHTML-types";
 
-export const createBeamTextHTML = (
-	_params: CreateBeamTextHTMLParams,
-): CreateBeamTextHTMLResult => {
-	return null;
+export const createBeamTextHTML = ({
+	beamTextView,
+}: CreateBeamTextHTMLParams): CreateBeamTextHTMLResult => {
+	return document.createTextNode(beamTextView.data);
 };

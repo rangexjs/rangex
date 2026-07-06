@@ -4,4 +4,4 @@ export interface CreateBeamTextHTMLParams {
 	beamTextView: BeamTextView;
 }
 
-export type CreateBeamTextHTMLResult = null;
+export type CreateBeamTextHTMLResult = Text;
