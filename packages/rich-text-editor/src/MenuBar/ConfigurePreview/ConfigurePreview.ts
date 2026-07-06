@@ -46,9 +46,12 @@ const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
 };
 
 const createHTMLText = ({ style, rootElement }: CreateHTMLTextParams) => {
+	const root = document.createElement("div");
+	root.append(rootElement);
+	const htmlCode = root.getHTML({ serializableShadowRoots: true });
 	const styleCode = formatHTML({ element: style });
 
-	return `${rootElement.outerHTML}\n\n${styleCode}`;
+	return `${htmlCode}\n\n${styleCode}`;
 };
 
 const createJSONText = ({ snapshotView }: CreateJSONTextParams) =>
