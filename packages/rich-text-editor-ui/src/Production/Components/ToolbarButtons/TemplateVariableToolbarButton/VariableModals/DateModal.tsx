@@ -61,6 +61,20 @@ export const DateModal = (props: DateModalProps) => {
 		});
 	};
 
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
+	};
+
 	return (
 		<FixedPosModal
 			id={props.modalId}
@@ -81,12 +95,14 @@ export const DateModal = (props: DateModalProps) => {
 						placeholder="2012-05-22"
 						spellcheck={false}
 						{...dateControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

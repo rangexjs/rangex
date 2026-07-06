@@ -56,6 +56,20 @@ export const EmailModal = (props: EmailModalProps) => {
 		});
 	};
 
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
+	};
+
 	return (
 		<FixedPosModal
 			id={props.modalId}
@@ -76,12 +90,14 @@ export const EmailModal = (props: EmailModalProps) => {
 						placeholder="name@mail.com"
 						spellcheck={false}
 						{...emailControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

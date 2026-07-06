@@ -49,6 +49,20 @@ export const NameModal = (props: NameModalProps) => {
 		});
 	};
 
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
+	};
+
 	return (
 		<FixedPosModal
 			id={props.modalId}
@@ -69,6 +83,7 @@ export const NameModal = (props: NameModalProps) => {
 						placeholder="John"
 						spellcheck={false}
 						{...firstNameControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
@@ -87,12 +102,14 @@ export const NameModal = (props: NameModalProps) => {
 						placeholder="Doe"
 						spellcheck={false}
 						{...lastNameControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

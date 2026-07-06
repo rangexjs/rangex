@@ -107,6 +107,20 @@ export const ImageToolbarButton = () => {
 		urlModel.setValue("");
 	};
 
+	let insertButtonRef: HTMLButtonElement | undefined;
+
+	const handleUrlKeyDown = (event: KeyboardEvent) => {
+		if (!insertButtonRef) {
+			throw new Error("InsertButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		insertButtonRef.click();
+	};
+
 	return (
 		<span>
 			<ToolbarButton
@@ -141,11 +155,13 @@ export const ImageToolbarButton = () => {
 							placeholder="https://example.com/image.png"
 							spellcheck={false}
 							{...urlControls}
+							on:keydown={handleUrlKeyDown}
 						/>
 					</TextFieldWrapper>
 				</FormField>
 				<div class="text-right">
 					<button
+						ref={insertButtonRef}
 						type="button"
 						commandfor={imgURLModalId}
 						command="close"
