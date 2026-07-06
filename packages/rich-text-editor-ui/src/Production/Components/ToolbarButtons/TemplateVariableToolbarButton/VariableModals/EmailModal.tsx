@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface EmailModalProps {
 	modalId: string;
@@ -46,12 +47,12 @@ export const EmailModal = (props: EmailModalProps) => {
 			return;
 		}
 
+		const email = normalizeTemplateVariableValue(emailModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				email: emailModel.value(),
-			},
+			options: { email },
 		});
 	};
 

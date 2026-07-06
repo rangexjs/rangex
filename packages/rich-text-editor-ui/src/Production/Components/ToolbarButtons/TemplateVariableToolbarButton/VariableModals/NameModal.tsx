@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface NameModalProps {
 	modalId: string;
@@ -38,13 +39,13 @@ export const NameModal = (props: NameModalProps) => {
 	};
 
 	const updateTemplateVariable = () => {
+		const firstName = normalizeTemplateVariableValue(firstNameModel.value());
+		const lastName = normalizeTemplateVariableValue(lastNameModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				firstName: firstNameModel.value(),
-				lastName: lastNameModel.value(),
-			},
+			options: { firstName, lastName },
 		});
 	};
 

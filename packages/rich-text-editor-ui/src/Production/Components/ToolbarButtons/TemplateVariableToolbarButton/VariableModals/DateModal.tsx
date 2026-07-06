@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface DateModalProps {
 	modalId: string;
@@ -51,12 +52,12 @@ export const DateModal = (props: DateModalProps) => {
 			return;
 		}
 
+		const date = normalizeTemplateVariableValue(dateModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				date: dateModel.value(),
-			},
+			options: { date },
 		});
 	};
 
