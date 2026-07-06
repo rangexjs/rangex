@@ -7,6 +7,7 @@ import type {
 export class CSSHighlightManager {
 	#cssStyleSheet = new CSSStyleSheet();
 	#codeBlockMap: CodeBlockMap = new WeakMap();
+	#registeredHighlightNames = new Set<string>();
 
 	get cssStyleSheet() {
 		return this.#cssStyleSheet;
@@ -29,10 +30,13 @@ export class CSSHighlightManager {
 
 		const highlightName = `rangex-${light.slice(1)}-${dark.slice(1)}`;
 
-		if (!CSS.highlights.has(highlightName)) {
+		// CSS.highlights is page-global, but this stylesheet is only adopted into
+		// this instance's shadow root, so rule insertion must be tracked locally.
+		if (!this.#registeredHighlightNames.has(highlightName)) {
 			this.#cssStyleSheet.insertRule(
 				`::highlight(${highlightName}) { color: light-dark(${light}, ${dark}); }`,
 			);
+			this.#registeredHighlightNames.add(highlightName);
 		}
 
 		// Use getOrInsert once it has full support
