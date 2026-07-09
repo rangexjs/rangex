@@ -25,6 +25,7 @@ const EmojiItem = (props: EmojiItemProps) => {
 				class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200 dark:active:bg-neutral-700 dark:focus:bg-neutral-800 dark:hover:bg-neutral-800"
 				commandfor={props.popoverId}
 				command="hide-popover"
+				on:pointerdown={(event) => event.preventDefault()}
 				on:click={props.onSelect}
 			>
 				<span class="shrink-0 text-lg leading-none">{props.item.emoji}</span>

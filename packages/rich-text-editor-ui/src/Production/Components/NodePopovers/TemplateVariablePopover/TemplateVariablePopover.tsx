@@ -25,6 +25,7 @@ const TemplateVariableItem = (props: TemplateVariableItemProps) => {
 				class="flex w-full items-center rounded-sm px-2 py-1.5 text-left font-mono text-sm hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200 dark:active:bg-neutral-700 dark:focus:bg-neutral-800 dark:hover:bg-neutral-800"
 				commandfor={props.popoverId}
 				command="hide-popover"
+				on:pointerdown={(event) => event.preventDefault()}
 				on:click={props.onSelect}
 			>
 				{props.item.label}
