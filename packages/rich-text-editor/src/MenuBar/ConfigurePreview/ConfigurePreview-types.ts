@@ -1,11 +1,13 @@
 import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI, SnapshotView, StoredSnapshot } from "rich-text-area";
-import type { CreateHTMLFromSnapshotViewResult } from "./CreateHTMLFromSnapshotView";
 
-export interface CreateRenderedParams
-	extends CreateHTMLFromSnapshotViewResult {}
+export interface CreateRenderedParams {
+	snapshotView: SnapshotView;
+}
 
-export interface CreateHTMLParams extends CreateHTMLFromSnapshotViewResult {}
+export interface CreateHTMLParams {
+	snapshotView: SnapshotView;
+}
 
 export interface CreateJSONParams {
 	snapshotView: SnapshotView;
@@ -16,8 +18,7 @@ export interface CreateSnapshotParams {
 }
 
 export interface CreateHTMLTextParams {
-	style: HTMLStyleElement;
-	rootElement: HTMLElement;
+	snapshotView: SnapshotView;
 }
 
 export interface CreateJSONTextParams {
