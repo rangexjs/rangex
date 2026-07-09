@@ -1,3 +1,4 @@
+export * from "./BlockResizePopoverController";
 export * from "./CodeBlockPopoverController";
 export * from "./EmojiPopoverController";
 export * from "./LinkPopoverController";

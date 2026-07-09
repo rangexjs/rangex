@@ -11,6 +11,7 @@ import {
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
 import {
+	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
 	LinkPopoverController,
@@ -53,6 +54,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
 	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
+	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
 	#linkPopoverController = new LinkPopoverController();
@@ -125,6 +127,7 @@ export class RichTextEditorUI extends HTMLElement {
 						this.#nonCategorizedOperationButtonsStateManager
 					}
 					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
+					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
 					linkPopoverController={this.#linkPopoverController}
@@ -227,6 +230,10 @@ export class RichTextEditorUI extends HTMLElement {
 				callback,
 			});
 		};
+	}
+
+	get blockResizePopover() {
+		return this.#blockResizePopoverController.publicAPI;
 	}
 
 	get codeBlockPopover() {

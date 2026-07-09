@@ -3,6 +3,7 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
+	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
 	LinkPopoverController,
@@ -28,6 +29,7 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
+	BlockResizePopover,
 	CodeBlockPopover,
 	EmojiPopover,
 	LinkPopover,
@@ -64,6 +66,7 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
+	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
 	emojiPopoverController: EmojiPopoverController;
 	linkPopoverController: LinkPopoverController;
@@ -139,6 +142,7 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
+		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
 		linkPopoverController: props.linkPopoverController,
@@ -168,6 +172,7 @@ export const App = (props: AppProps) => {
 					<PopoverControllersContext.Provider
 						value={popoverControllersContextValue}
 					>
+						<BlockResizePopover />
 						<CodeBlockPopover />
 						<EmojiPopover />
 						<LinkPopover />

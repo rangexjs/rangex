@@ -7,10 +7,12 @@ import {
 	toolbarButtons,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
+import { createBlockResize } from "../BlockResize";
 import {
 	configureBlockQuote,
 	configureCodeBlock,
 	configureEmoji,
+	configureImage,
 	configureLink,
 	configureList,
 	configureMention,
@@ -61,6 +63,12 @@ export class RichTextEditor extends HTMLElement {
 		const blockComponentPlacement = createBlockComponentPlacement({
 			editorAPI,
 		});
+		const blockResize = createBlockResize({
+			editorAPI,
+			richTextEditorUI: this.#richTextEditorUI,
+		});
+
+		this.#cleanups.add(blockResize.cleanup);
 
 		configureCustomStyles({ editorAPI });
 
@@ -121,12 +129,19 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
+		const imageCleanup = configureImage({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockComponentPlacement,
+			blockResize,
+		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
 		this.#cleanups.add(listCleanup);
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
+		this.#cleanups.add(imageCleanup);
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,

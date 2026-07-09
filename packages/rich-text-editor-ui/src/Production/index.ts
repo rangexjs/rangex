@@ -7,6 +7,7 @@ export type {
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
 export type {
+	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,
 	EmojiPopover,

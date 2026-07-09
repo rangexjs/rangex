@@ -1,3 +1,4 @@
+export * from "./BlockResizePopover";
 export * from "./CodeBlockPopover";
 export * from "./EmojiPopover";
 export * from "./LinkPopover";
