@@ -1,9 +1,29 @@
-import type { HandleNonCategorizedOperationParams } from "./HandleNonCategorizedOperation-types";
+import type {
+	HandleNonCategorizedOperationParams,
+	SetupInitialStatesParams,
+} from "./HandleNonCategorizedOperation-types";
+
+const setupInitialStates = ({
+	richTextEditorUI,
+	editorAPI,
+}: SetupInitialStatesParams) => {
+	const isTextAreaEditable = editorAPI.getIsTextAreaEditable();
+
+	richTextEditorUI.updateNodeInsertionButtonState({
+		symbols: { disabled: !isTextAreaEditable },
+	});
+
+	richTextEditorUI.updateNonCategorizedButtonState({
+		textAreaReadability: { checked: !isTextAreaEditable },
+	});
+};
 
 export const handleNonCategorizedOperation = ({
 	richTextEditorUI,
 	editorAPI,
 }: HandleNonCategorizedOperationParams) => {
+	setupInitialStates({ richTextEditorUI, editorAPI });
+
 	const unsubscribe = richTextEditorUI.onNonCategorizedOperation((props) => {
 		const { type } = props;
 
@@ -12,10 +32,14 @@ export const handleNonCategorizedOperation = ({
 
 			editorAPI.setIsTextAreaEditable(!newState);
 
-			const checked = !editorAPI.getIsTextAreaEditable();
+			const textAreaReadonly = !editorAPI.getIsTextAreaEditable();
+
+			richTextEditorUI.updateNodeInsertionButtonState({
+				symbols: { disabled: textAreaReadonly },
+			});
 
 			richTextEditorUI.updateNonCategorizedButtonState({
-				textAreaReadability: { checked },
+				textAreaReadability: { checked: textAreaReadonly },
 			});
 		}
 	});
