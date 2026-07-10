@@ -7,14 +7,17 @@ export interface BlockResizeInternals {
 	resizableComponentNames: Set<ComponentName>;
 }
 
-export interface RegisterResizableComponentParams {
+export interface RegisterComponentParams {
+	componentName: ComponentName;
+}
+
+export interface UnregisterComponentParams {
 	componentName: ComponentName;
 }
 
 export interface BlockResize {
-	registerResizableComponent: (
-		params: RegisterResizableComponentParams,
-	) => void;
+	registerComponent: (params: RegisterComponentParams) => void;
+	unregisterComponent: (params: UnregisterComponentParams) => void;
 	cleanup: () => void;
 }
 

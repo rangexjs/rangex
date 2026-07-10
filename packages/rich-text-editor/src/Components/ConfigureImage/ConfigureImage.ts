@@ -9,7 +9,7 @@ export const configureImage = ({
 	blockComponentPlacement,
 	blockResize,
 }: ConfigureImageParams) => {
-	blockResize.registerResizableComponent({
+	blockResize.registerComponent({
 		componentName: componentsName.image,
 	});
 
@@ -26,6 +26,7 @@ export const configureImage = ({
 	});
 
 	return () => {
+		blockResize.unregisterComponent({ componentName: componentsName.image });
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 	};

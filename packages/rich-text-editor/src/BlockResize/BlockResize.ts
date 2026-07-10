@@ -3,7 +3,6 @@ import type {
 	BlockResizeInternals,
 	CreateBlockResizeParams,
 	CreateBlockResizeResult,
-	RegisterResizableComponentParams,
 } from "./BlockResize-types";
 import { handleBlockResizeAppearance } from "./HandleBlockResizeAppearance";
 import { handleBlockResizeInteraction } from "./HandleBlockResizeInteraction";
@@ -30,10 +29,12 @@ export const createBlockResize = ({
 	});
 
 	const blockResize: BlockResize = {
-		registerResizableComponent({
-			componentName,
-		}: RegisterResizableComponentParams) {
+		registerComponent({ componentName }) {
 			internals.resizableComponentNames.add(componentName);
+		},
+
+		unregisterComponent({ componentName }) {
+			internals.resizableComponentNames.delete(componentName);
 		},
 
 		cleanup() {
