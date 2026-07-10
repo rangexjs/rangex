@@ -2,13 +2,23 @@ import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
 import type { BlockNestedContext, EditorAPI } from "rich-text-area";
 import type { ComponentName } from "../Constants";
 
+export interface BlockResizeRegistration {
+	handleX: number;
+}
+
+export type BlockResizeRegistrationMap = Map<
+	ComponentName,
+	BlockResizeRegistration
+>;
+
 export interface BlockResizeInternals {
 	currentBlock: BlockNestedContext | null;
-	resizableComponentNames: Set<ComponentName>;
+	registrations: BlockResizeRegistrationMap;
 }
 
 export interface RegisterComponentParams {
 	componentName: ComponentName;
+	handleX: number;
 }
 
 export interface UnregisterComponentParams {

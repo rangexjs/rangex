@@ -13,6 +13,7 @@ export const configureImage = ({
 }: ConfigureImageParams) => {
 	blockResize.registerComponent({
 		componentName: componentsName.image,
+		handleX: 16,
 	});
 
 	const toolbarButtonStateCleanup = handleImageToolbarButtonState({
