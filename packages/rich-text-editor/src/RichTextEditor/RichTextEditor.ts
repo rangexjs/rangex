@@ -7,6 +7,7 @@ import {
 	toolbarButtons,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
+import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
 import { createBlockResize } from "../BlockResize";
 import {
 	configureBlockQuote,
@@ -67,8 +68,12 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			richTextEditorUI: this.#richTextEditorUI,
 		});
+		const blockPopoverAppearanceHandler = createBlockPopoverAppearanceHandler({
+			editorAPI,
+		});
 
 		this.#cleanups.add(blockResize.cleanup);
+		this.#cleanups.add(blockPopoverAppearanceHandler.cleanup);
 
 		configureCustomStyles({ editorAPI });
 
@@ -113,6 +118,7 @@ export class RichTextEditor extends HTMLElement {
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
+			blockPopoverAppearanceHandler,
 		});
 		const listCleanup = configureList({
 			richTextEditorUI: this.#richTextEditorUI,
@@ -134,6 +140,7 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 			blockResize,
+			blockPopoverAppearanceHandler,
 		});
 
 		this.#cleanups.add(blockQuoteCleanup);

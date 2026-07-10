@@ -14,6 +14,7 @@ import {
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
+	ImagePopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -57,6 +58,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
+	#imagePopoverController = new ImagePopoverController();
 	#linkPopoverController = new LinkPopoverController();
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
@@ -130,6 +132,7 @@ export class RichTextEditorUI extends HTMLElement {
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
+					imagePopoverController={this.#imagePopoverController}
 					linkPopoverController={this.#linkPopoverController}
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
@@ -242,6 +245,10 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get emojiPopover() {
 		return this.#emojiPopoverController.publicAPI;
+	}
+
+	get imagePopover() {
+		return this.#imagePopoverController.publicAPI;
 	}
 
 	get linkPopover() {

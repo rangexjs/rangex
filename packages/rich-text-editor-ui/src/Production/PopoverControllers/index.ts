@@ -1,6 +1,7 @@
 export * from "./BlockResizePopoverController";
 export * from "./CodeBlockPopoverController";
 export * from "./EmojiPopoverController";
+export * from "./ImagePopoverController";
 export * from "./LinkPopoverController";
 export * from "./MentionPopoverController";
 export * from "./TableQuickActionsPopoverController";

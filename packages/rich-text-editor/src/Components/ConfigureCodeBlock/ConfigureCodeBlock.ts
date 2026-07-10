@@ -1,8 +1,5 @@
 import { CodeHighlighter } from "./CodeHighlighter";
-import type {
-	CodeBlockInternals,
-	ConfigureCodeBlockParams,
-} from "./ConfigureCodeBlock-types";
+import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
 import { handleCodeBlockInsertion } from "./HandleCodeBlockInsertion";
 import { handleCodeBlockPopoverAppearance } from "./HandleCodeBlockPopoverAppearance";
 import { handleCodeBlockPopoverState } from "./HandleCodeBlockPopoverState";
@@ -13,9 +10,8 @@ export const configureCodeBlock = ({
 	richTextEditorUI,
 	editorAPI,
 	blockComponentPlacement,
+	blockPopoverAppearanceHandler,
 }: ConfigureCodeBlockParams) => {
-	const internals: CodeBlockInternals = { currentCodeBlock: null };
-
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
 
 	const toolbarButtonStateCleanup = handleCodeBlockToolbarButtonState({
@@ -36,13 +32,12 @@ export const configureCodeBlock = ({
 		richTextEditorUI,
 		editorAPI,
 		codeHighlighter,
-		internals,
+		blockPopoverAppearanceHandler,
 	});
 
 	const popoverAppearanceCleanup = handleCodeBlockPopoverAppearance({
 		richTextEditorUI,
-		editorAPI,
-		internals,
+		blockPopoverAppearanceHandler,
 	});
 
 	return () => {

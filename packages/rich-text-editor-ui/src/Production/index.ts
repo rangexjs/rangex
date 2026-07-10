@@ -12,6 +12,7 @@ export type {
 	CodeBlockPopoverState,
 	EmojiPopover,
 	EmojiPopoverState,
+	ImagePopover,
 	LinkPopover,
 	LinkPopoverState,
 	MentionPopover,
