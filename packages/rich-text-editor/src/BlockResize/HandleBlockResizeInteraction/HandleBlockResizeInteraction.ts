@@ -1,41 +1,11 @@
-import { blockAlignAttr } from "../../Constants";
+import { getBlockAlign } from "../../Components/_Utilities";
 import type {
 	CalcFlexBasisParams,
 	CalcFlexBasisResult,
-	GetBlockAlignParams,
 	HandleBlockResizeInteractionParams,
 } from "./HandleBlockResizeInteraction-types";
 
 const MIN_CONTAINER_WIDTH = 300;
-
-const getBlockAlign = ({ blockNestedContext }: GetBlockAlignParams) => {
-	const { $$parentElement } = blockNestedContext;
-
-	if (!$$parentElement) {
-		throw new Error("ParentElement not supposed to be null.");
-	}
-
-	const value = $$parentElement.getAttribute(blockAlignAttr.name);
-
-	if (value === null) {
-		console.warn(
-			"BlockNestedContextLine has missing attribute.",
-			blockAlignAttr.name,
-		);
-
-		return "center";
-	}
-
-	const values = Object.values(blockAlignAttr.value);
-
-	// biome-ignore lint/suspicious/noExplicitAny: TS Limitation
-	if (!values.includes(value as any)) {
-		console.warn("Attribute's value is invalid.");
-		return "center";
-	}
-
-	return value;
-};
 
 const calcFlexBasis = ({
 	blockNestedContext,
@@ -43,7 +13,13 @@ const calcFlexBasis = ({
 	handleSide,
 	dragStartWidth,
 }: CalcFlexBasisParams): CalcFlexBasisResult => {
-	const align = getBlockAlign({ blockNestedContext });
+	const { $$parentElement } = blockNestedContext;
+
+	if (!$$parentElement) {
+		throw new Error("ParentElement not supposed to be null.");
+	}
+
+	const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
 
 	const isSameCorner =
 		(align === "left" && handleSide === "left") ||

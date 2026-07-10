@@ -107,7 +107,7 @@ export const CodeBlockPopover = () => {
 
 	const onBeforeToggle = () => {
 		if (!optionsPopover) {
-			return;
+			throw new Error("OptionsPopover shouldn't be undefined.");
 		}
 
 		if (optionsPopover.matches(":popover-open")) {

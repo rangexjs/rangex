@@ -1,9 +1,10 @@
 import { componentsName } from "../../../Constants";
+import { getBlockAlign } from "../../_Utilities";
 import type { HandleImagePopoverAppearanceParams } from "./HandleImagePopoverAppearance-types";
 
 /**
- * Registers the image popover with the shared {@link BlockPopoverAppearanceHandler}.
- * Content is a placeholder for now — no per-block state to push yet, so no `onShow`.
+ * Registers the image popover with the shared {@link BlockPopoverAppearanceHandler},
+ * pushing the block's current alignment into the popover just before it appears.
  */
 export const handleImagePopoverAppearance = ({
 	richTextEditorUI,
@@ -19,6 +20,17 @@ export const handleImagePopoverAppearance = ({
 			positionArea: "top right",
 			top: "100%",
 			right: "100%",
+		},
+		onShow({ blockNestedContext }) {
+			const { $$parentElement } = blockNestedContext;
+
+			if (!$$parentElement) {
+				throw new Error("ParentElement not supposed to be null.");
+			}
+
+			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+
+			imagePopover.updateState({ align });
 		},
 	});
 

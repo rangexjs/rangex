@@ -2,10 +2,6 @@ import type { RichTextEditorUI } from "@rangex/rich-text-editor-ui";
 import type { BlockNestedContext, EditorAPI } from "rich-text-area";
 import type { BlockResizeInternals } from "../BlockResize-types";
 
-export interface GetBlockAlignParams {
-	blockNestedContext: BlockNestedContext;
-}
-
 export interface CalcFlexBasisParams {
 	blockNestedContext: BlockNestedContext;
 	deltaPx: number;

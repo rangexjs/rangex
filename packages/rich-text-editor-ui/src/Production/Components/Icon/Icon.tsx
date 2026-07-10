@@ -1,6 +1,9 @@
 import { splitProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
+	AlignCenter,
+	AlignLeft,
+	AlignRight,
 	ArrowBendUpLeft,
 	ArrowBendUpRight,
 	ArrowLeft,
@@ -57,6 +60,9 @@ import {
 } from "../SVGs";
 
 const icons = {
+	AlignCenter,
+	AlignLeft,
+	AlignRight,
 	ArrowBendUpLeft,
 	ArrowBendUpRight,
 	ArrowLeft,

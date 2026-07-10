@@ -1,4 +1,7 @@
 export type * from "./_Utilities";
+export * from "./AlignCenter";
+export * from "./AlignLeft";
+export * from "./AlignRight";
 export * from "./ArrowBendUpLeft";
 export * from "./ArrowBendUpRight";
 export * from "./ArrowLeft";
