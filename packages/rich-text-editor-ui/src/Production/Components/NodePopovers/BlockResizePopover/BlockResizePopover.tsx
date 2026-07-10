@@ -79,7 +79,7 @@ const Handle = (props: HandleProps) => {
 	return (
 		<div
 			ref={handle}
-			class="pointer-events-auto absolute top-1/2 h-8 w-1.5 -translate-y-1/2 cursor-ew-resize rounded-full bg-primary-500"
+			class="pointer-events-auto absolute top-1/2 h-12 w-2 -translate-y-1/2 cursor-ew-resize rounded-full border-2 border-neutral-700 border-solid bg-neutral-200/70 dark:border-neutral-200 dark:bg-neutral-700/70"
 			classList={{
 				"-translate-x-1/2": props.side === "left",
 				"translate-x-1/2": props.side === "right",
