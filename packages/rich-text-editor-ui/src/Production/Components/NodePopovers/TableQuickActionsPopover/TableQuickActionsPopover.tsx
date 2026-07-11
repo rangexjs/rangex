@@ -38,18 +38,8 @@ const ActionTrigger = (props: ActionTriggerProps) => {
 				type="button"
 				commandfor={props.mainPopoverId}
 				command="hide-popover"
-				class="w-full whitespace-nowrap rounded-sm border border-transparent p-1 text-start font-semibold text-neutral-700 text-sm transition-colors"
-				classList={{
-					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 dark:text-neutral-200 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100":
-						!props.checked(),
-					"active:border-neutral-400 active:text-neutral-900 dark:active:border-neutral-500 dark:active:text-white":
-						!props.checked(),
-					"disabled:text-neutral-400": true,
-					"bg-primary-500/10 text-primary-400": props.checked(),
-					"hover:bg-primary-500/15": props.checked(),
-					"text-primary-500 active:border-primary-500/30": props.checked(),
-					"pointer-events-none": props.disabled(),
-				}}
+				class="btn-menu-item w-full whitespace-nowrap rounded-sm p-1 text-start font-semibold text-sm"
+				data-is-checked={props.checked()}
 				on:click={props.onClick}
 				disabled={props.disabled()}
 			>
@@ -90,11 +80,7 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
 				type="button"
 				commandfor={popoverId}
 				command="toggle-popover"
-				class="flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm border border-transparent p-1 font-semibold text-neutral-700 text-sm transition-colors dark:text-neutral-200"
-				classList={{
-					"hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100": true,
-					"active:border-neutral-400 active:text-neutral-900 dark:active:border-neutral-500 dark:active:text-white": true,
-				}}
+				class="btn-menu-item flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm p-1 font-semibold text-sm"
 			>
 				<span>{props.label}</span>
 				<Icon

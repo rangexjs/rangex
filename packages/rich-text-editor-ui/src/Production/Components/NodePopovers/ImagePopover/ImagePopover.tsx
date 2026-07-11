@@ -213,7 +213,7 @@ export const ImagePopover = () => {
 					type="button"
 					commandfor={swapPopoverId}
 					command="toggle-popover"
-					class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Swap"
 				>
 					<Icon name="Swap" class="size-4" />
@@ -231,7 +231,7 @@ export const ImagePopover = () => {
 					<div hidden={swapView() !== "list"}>
 						<button
 							type="button"
-							class="w-full rounded px-2 py-1.5 text-left font-medium text-neutral-700 text-xs transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+							class="btn-menu-item w-full rounded px-2 py-1.5 text-left font-medium text-xs"
 							on:click={() => {
 								if (!swapFileInput) {
 									throw new Error("SwapFileInput can't be undefined.");
@@ -244,7 +244,7 @@ export const ImagePopover = () => {
 						</button>
 						<button
 							type="button"
-							class="w-full rounded px-2 py-1.5 text-left font-medium text-neutral-700 text-xs transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+							class="btn-menu-item w-full rounded px-2 py-1.5 text-left font-medium text-xs"
 							on:click={() => setSwapView("url")}
 						>
 							Upload via URL
@@ -297,7 +297,7 @@ export const ImagePopover = () => {
 
 			<button
 				type="button"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
 				title="Delete"
 				on:click={() => controller.emitDelete()}
 			>
@@ -309,7 +309,7 @@ export const ImagePopover = () => {
 					type="button"
 					commandfor={optionsPopoverId}
 					command="toggle-popover"
-					class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Options"
 				>
 					<Icon name="DotsThreeHorizontal" class="size-4" />

@@ -80,7 +80,7 @@ export const CodeBlockPopover = () => {
 		>
 			<button
 				type="button"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
 				title="Copy"
 				on:click={onCopyClick}
 			>
@@ -91,7 +91,7 @@ export const CodeBlockPopover = () => {
 				type="button"
 				commandfor={optionsPopoverId}
 				command="toggle-popover"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
 				title="Options"
 			>
 				<Icon name="DotsThreeHorizontal" class="size-4" />
