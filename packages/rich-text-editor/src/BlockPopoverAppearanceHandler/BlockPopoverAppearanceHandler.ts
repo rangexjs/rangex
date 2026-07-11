@@ -26,6 +26,11 @@ const isRegisteredBlockNestedContext = (
  * the popover just before it appears — the popover's content stays entirely owned by
  * the registering component. A short delay before hiding tolerates moving the pointer
  * from the block onto the popover itself.
+ *
+ * Hiding is gated on two independent signals — `pointerOver` and `focusWithin` — so
+ * typing into a field inside the popover (e.g. alt text) keeps it open even while the
+ * pointer rests elsewhere. Relocating to a *different* registered block on `pointerenter`
+ * is never gated by either signal — hovering a new block always takes over immediately.
  */
 export const createBlockPopoverAppearanceHandler = ({
 	editorAPI,
@@ -33,6 +38,10 @@ export const createBlockPopoverAppearanceHandler = ({
 	const registrations = new Map<ComponentName, BlockPopoverRegistration>();
 
 	const scheduleHide = (registration: BlockPopoverRegistration) => {
+		if (registration.pointerOver || registration.focusWithin) {
+			return;
+		}
+
 		clearTimeout(registration.hideTimeoutId);
 		registration.hideTimeoutId = setTimeout(() => {
 			registration.popover.hidePopover();
@@ -47,9 +56,8 @@ export const createBlockPopoverAppearanceHandler = ({
 		registration: BlockPopoverRegistration,
 		blockNestedContext: BlockNestedContext,
 	) => {
+		registration.pointerOver = true;
 		cancelHide(registration);
-
-		registration.onShow?.({ blockNestedContext });
 
 		registration.popover.style.cssText = "";
 		registration.popover.style.inset = "auto";
@@ -58,6 +66,12 @@ export const createBlockPopoverAppearanceHandler = ({
 		if (registration.currentBlock === blockNestedContext) {
 			return;
 		}
+
+		// Only push fresh state when the block actually changes — not on every
+		// re-entry into the block that's already showing, which would stomp any
+		// in-progress, uncommitted edit inside the popover (e.g. a half-typed
+		// alt text draft) with the last-saved value.
+		registration.onShow?.({ blockNestedContext });
 
 		registration.currentBlock = blockNestedContext;
 
@@ -118,6 +132,7 @@ export const createBlockPopoverAppearanceHandler = ({
 					return;
 				}
 
+				registration.pointerOver = false;
 				scheduleHide(registration);
 			},
 		},
@@ -135,16 +150,51 @@ export const createBlockPopoverAppearanceHandler = ({
 				currentBlock: null,
 				hideTimeoutId: NaN,
 				abortController,
+				pointerOver: false,
+				focusWithin: false,
 			};
 
 			registrations.set(componentName, registration);
 
-			popover.addEventListener("pointerenter", () => cancelHide(registration), {
-				signal,
-			});
+			popover.addEventListener(
+				"pointerenter",
+				() => {
+					registration.pointerOver = true;
+					cancelHide(registration);
+				},
+				{ signal },
+			);
 			popover.addEventListener(
 				"pointerleave",
-				() => scheduleHide(registration),
+				() => {
+					registration.pointerOver = false;
+					scheduleHide(registration);
+				},
+				{ signal },
+			);
+			popover.addEventListener(
+				"focusin",
+				() => {
+					registration.focusWithin = true;
+					cancelHide(registration);
+				},
+				{ signal },
+			);
+			popover.addEventListener(
+				"focusout",
+				(event) => {
+					const { relatedTarget } = event;
+
+					if (
+						relatedTarget instanceof Node &&
+						popover.contains(relatedTarget)
+					) {
+						return;
+					}
+
+					registration.focusWithin = false;
+					scheduleHide(registration);
+				},
 				{ signal },
 			);
 			popover.addEventListener(
@@ -152,6 +202,8 @@ export const createBlockPopoverAppearanceHandler = ({
 				(event) => {
 					if (event.newState === "closed") {
 						registration.currentBlock = null;
+						registration.pointerOver = false;
+						registration.focusWithin = false;
 					}
 				},
 				{ signal },

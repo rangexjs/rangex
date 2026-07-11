@@ -1,38 +1,196 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
-import type { UpdateAlignFn } from "../../../PopoverControllers";
+import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import type {
+	ImageAspectRatioValue,
+	ImageCaptionPosition,
+	ImageObjectFitValue,
+	UpdateAlignFn,
+	UpdateAltTextFn,
+	UpdateAspectRatioFn,
+	UpdateCaptionFn,
+	UpdateObjectFitFn,
+} from "../../../PopoverControllers";
 import { usePopoverControllersContext } from "../../App";
+import {
+	ContentSwitch,
+	type ContentSwitcherControls,
+} from "../../ContentSwitcher";
 import { Icon } from "../../Icon";
-import { BlockAlign } from "../_Utilities";
+import {
+	createTextFieldController,
+	FormField,
+	InputTextField,
+	TextFieldWrapper,
+} from "../../InputFields";
+import { ToggleButton } from "../../ToggleButton";
+import {
+	BlockAlign,
+	OptionDropdown,
+	type OptionDropdownOption,
+} from "../_Utilities";
 
-/**
- * Swap, edit, and delete are visual only for now — real actions will be wired up
- * once the rest of the image popover's feature set is decided.
- */
+const objectFitOptions: OptionDropdownOption<ImageObjectFitValue>[] = [
+	{ label: "Cover", value: "cover" },
+	{ label: "Contain", value: "contain" },
+	{ label: "Fill", value: "fill" },
+];
+
+const aspectRatioOptions: OptionDropdownOption<ImageAspectRatioValue>[] = [
+	{ label: "Auto", value: "auto" },
+	{ label: "1:1", value: "1-1" },
+	{ label: "4:3", value: "4-3" },
+	{ label: "16:9", value: "16-9" },
+];
+
+const captionPositionControls: ContentSwitcherControls<ImageCaptionPosition> = [
+	{ id: "above", node: "Above" },
+	{ id: "below", node: "Below" },
+];
+
+type SwapView = "list" | "url";
+
 export const ImagePopover = () => {
 	const { imagePopoverController: controller } = usePopoverControllersContext();
 
 	const [align, setAlign] = createSignal(controller.align);
+	const [objectFit, setObjectFit] = createSignal(controller.objectFit);
+	const [aspectRatio, setAspectRatio] = createSignal(controller.aspectRatio);
+	const [caption, setCaption] = createSignal(controller.caption);
+
+	const [altModel, altControls] = createTextFieldController({
+		defaultValue: controller.altText,
+	});
+
+	const [committedAltText, setCommittedAltText] = createSignal(
+		controller.altText,
+	);
+
+	const isAltTextDirty = () => altModel.value() !== committedAltText();
 
 	let blockAlignPopover: HTMLDivElement | undefined;
+	let swapPopover: HTMLDivElement | undefined;
+	let optionsPopover: HTMLDivElement | undefined;
 
 	onMount(() => {
 		const onAlign: UpdateAlignFn = (value) => setAlign(value);
+		const onObjectFit: UpdateObjectFitFn = (value) => setObjectFit(value);
+		const onAspectRatio: UpdateAspectRatioFn = (value) => setAspectRatio(value);
+		const onCaption: UpdateCaptionFn = (value) => setCaption(value);
+		const onAltText: UpdateAltTextFn = (value) => {
+			altModel.setValue(value);
+			setCommittedAltText(value);
+		};
 
 		controller.subscribe({ type: "align", callback: onAlign });
+		controller.subscribe({ type: "objectFit", callback: onObjectFit });
+		controller.subscribe({ type: "aspectRatio", callback: onAspectRatio });
+		controller.subscribe({ type: "caption", callback: onCaption });
+		controller.subscribe({ type: "altText", callback: onAltText });
 
 		onCleanup(() => {
 			controller.unsubscribe({ type: "align", callback: onAlign });
+			controller.unsubscribe({ type: "objectFit", callback: onObjectFit });
+			controller.unsubscribe({ type: "aspectRatio", callback: onAspectRatio });
+			controller.unsubscribe({ type: "caption", callback: onCaption });
+			controller.unsubscribe({ type: "altText", callback: onAltText });
 		});
 	});
 
 	const onBeforeToggle = () => {
-		if (!blockAlignPopover) {
-			throw new Error("BlockAlignPopover shouldn't be undefined.");
+		const nestedPopovers = [blockAlignPopover, swapPopover, optionsPopover];
+
+		for (const nestedPopover of nestedPopovers) {
+			if (!nestedPopover) {
+				throw new Error("Nested popover shouldn't be undefined.");
+			}
+
+			if (nestedPopover.matches(":popover-open")) {
+				nestedPopover.hidePopover();
+			}
+		}
+	};
+
+	const swapPopoverId = createUniqueId();
+
+	const [swapView, setSwapView] = createSignal<SwapView>("list");
+
+	const [swapUrlModel, swapUrlControls] = createTextFieldController({
+		error: { required: { value: true, message: "Field can't be empty." } },
+	});
+
+	let swapFileInput: HTMLInputElement | undefined;
+
+	onMount(() => {
+		if (!swapFileInput) {
+			throw new Error("SwapFileInput can't be undefined.");
 		}
 
-		if (blockAlignPopover.matches(":popover-open")) {
-			blockAlignPopover.hidePopover();
+		swapFileInput.addEventListener("change", () => {
+			const { files } = swapFileInput;
+
+			if (!files?.length) {
+				return;
+			}
+
+			controller.emitSwap({ source: "file-upload", files });
+
+			if (!swapPopover) {
+				throw new Error("SwapPopover shouldn't be undefined.");
+			}
+
+			swapPopover.hidePopover();
+		});
+	});
+
+	const onSwapToggle = (event: ToggleEvent) => {
+		if (event.newState !== "closed") {
+			return;
 		}
+
+		setSwapView("list");
+		swapUrlModel.reset();
+		swapUrlModel.setValue("");
+
+		if (swapFileInput) {
+			swapFileInput.value = "";
+		}
+	};
+
+	const onSwapUrlApply = () => {
+		swapUrlModel.validate();
+
+		if (swapUrlModel.checkValidity().hasError) {
+			return;
+		}
+
+		controller.emitSwap({ source: "url", url: swapUrlModel.value() });
+
+		if (!swapPopover) {
+			throw new Error("SwapPopover shouldn't be undefined.");
+		}
+
+		swapPopover.hidePopover();
+	};
+
+	const onSwapUrlKeyDown = (event: KeyboardEvent) => {
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		onSwapUrlApply();
+	};
+
+	const optionsPopoverId = createUniqueId();
+
+	const onAltTextCommit = () => {
+		controller.emitAltTextChange(altModel.value());
+	};
+
+	const onAltTextKeyDown = (event: KeyboardEvent) => {
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		onAltTextCommit();
 	};
 
 	return (
@@ -50,29 +208,191 @@ export const ImagePopover = () => {
 				}}
 			/>
 
-			<button
-				type="button"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
-				title="Swap"
-			>
-				<Icon name="Swap" class="size-4" />
-			</button>
+			<span>
+				<button
+					type="button"
+					commandfor={swapPopoverId}
+					command="toggle-popover"
+					class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+					title="Swap"
+				>
+					<Icon name="Swap" class="size-4" />
+				</button>
 
-			<button
-				type="button"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
-				title="Edit"
-			>
-				<Icon name="NotePencil" class="size-4" />
-			</button>
+				<div
+					ref={(el) => {
+						swapPopover = el;
+					}}
+					id={swapPopoverId}
+					popover="auto"
+					class="w-52 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
+					on:toggle={onSwapToggle}
+				>
+					<div hidden={swapView() !== "list"}>
+						<button
+							type="button"
+							class="w-full rounded px-2 py-1.5 text-left font-medium text-neutral-700 text-xs transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+							on:click={() => {
+								if (!swapFileInput) {
+									throw new Error("SwapFileInput can't be undefined.");
+								}
+
+								swapFileInput.click();
+							}}
+						>
+							Upload from device
+						</button>
+						<button
+							type="button"
+							class="w-full rounded px-2 py-1.5 text-left font-medium text-neutral-700 text-xs transition-colors hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+							on:click={() => setSwapView("url")}
+						>
+							Upload via URL
+						</button>
+					</div>
+
+					<div class="p-1" hidden={swapView() !== "url"}>
+						<FormField
+							class="mb-2"
+							for={swapUrlModel.id}
+							label="URL"
+							showError={swapUrlModel.state().showError}
+							errorMessage={swapUrlModel.state().message}
+						>
+							<TextFieldWrapper
+								appearance="neutral-filled-underline"
+								size="small"
+							>
+								<InputTextField
+									type="text"
+									id={swapUrlModel.id}
+									placeholder="https://example.com/image.png"
+									spellcheck={false}
+									{...swapUrlControls}
+									on:keydown={onSwapUrlKeyDown}
+								/>
+							</TextFieldWrapper>
+						</FormField>
+						<div class="flex justify-end gap-2">
+							<button
+								type="button"
+								class="btn-neutral-solid rounded-sm px-3 py-1 font-medium text-xs"
+								on:click={() => setSwapView("list")}
+							>
+								Cancel
+							</button>
+							<button
+								type="button"
+								class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-xs"
+								on:click={onSwapUrlApply}
+							>
+								Apply
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<input ref={swapFileInput} type="file" class="hidden" />
+			</span>
 
 			<button
 				type="button"
 				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
 				title="Delete"
+				on:click={() => controller.emitDelete()}
 			>
 				<Icon name="Trash" class="size-4" />
 			</button>
+
+			<span>
+				<button
+					type="button"
+					commandfor={optionsPopoverId}
+					command="toggle-popover"
+					class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+					title="Options"
+				>
+					<Icon name="DotsThreeHorizontal" class="size-4" />
+				</button>
+
+				<div
+					ref={(el) => {
+						optionsPopover = el;
+					}}
+					id={optionsPopoverId}
+					popover="auto"
+					class="w-44 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
+				>
+					<OptionDropdown
+						label="Object fit"
+						value={objectFit()}
+						options={objectFitOptions}
+						onSelect={(value) => controller.emitObjectFitChange(value)}
+					/>
+
+					<OptionDropdown
+						label="Aspect ratio"
+						value={aspectRatio()}
+						options={aspectRatioOptions}
+						onSelect={(value) => controller.emitAspectRatioChange(value)}
+					/>
+
+					<div class="flex items-center justify-between">
+						<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+							Caption
+						</span>
+						<ToggleButton
+							checked={caption().enabled}
+							on:click={() =>
+								controller.emitCaptionEnabledChange(!caption().enabled)
+							}
+						/>
+					</div>
+
+					<div hidden={!caption().enabled}>
+						<ContentSwitch
+							id={caption().position}
+							controls={captionPositionControls}
+							onChange={(value) => controller.emitCaptionPositionChange(value)}
+							class="rounded-sm"
+							commonButtonClass="rounded-sm py-1.5 text-xs font-medium"
+							activeBoxShrink={-1}
+							activeBoxClass="rounded-sm shadow border border-primary-500/40"
+						/>
+					</div>
+
+					<div class="flex flex-col gap-1">
+						<div class="flex items-center justify-between">
+							<label
+								for={altModel.id}
+								class="font-semibold text-neutral-800 text-xs dark:text-neutral-200"
+							>
+								Alt text
+							</label>
+							<span
+								class="text-neutral-500 text-xs dark:text-neutral-400"
+								hidden={!isAltTextDirty()}
+							>
+								Enter to save
+							</span>
+						</div>
+						<TextFieldWrapper
+							appearance="neutral-filled-underline"
+							size="small"
+						>
+							<InputTextField
+								type="text"
+								id={altModel.id}
+								placeholder="Describe the image"
+								spellcheck={false}
+								{...altControls}
+								on:blur={onAltTextCommit}
+								on:keydown={onAltTextKeyDown}
+							/>
+						</TextFieldWrapper>
+					</div>
+				</div>
+			</span>
 		</div>
 	);
 };

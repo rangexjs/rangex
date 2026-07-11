@@ -4,6 +4,7 @@ import type { BlockComponentPlacement } from "../../../BlockComponentPlacement";
 
 export interface CreateImageComponentParams {
 	src: string;
+	alt: string;
 }
 
 export interface CreateImageComponentResult extends BlockNestedContextLine {}
@@ -18,12 +19,14 @@ export interface InsertImageFromURLParams {
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
 	url: string;
+	alt: string;
 }
 
 export interface InsertImagesFromFilesParams {
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
 	files: FileList;
+	alt: string;
 }
 
 export interface HandleImageInsertionParams {

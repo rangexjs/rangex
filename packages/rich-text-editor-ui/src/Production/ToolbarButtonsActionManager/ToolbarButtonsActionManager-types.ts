@@ -89,11 +89,13 @@ export interface CustomComponentActionState
 export interface ImageFileUpload {
 	insertionType: "file-upload";
 	files: FileList;
+	alt: string;
 }
 
 export interface ImageURL {
 	insertionType: "url";
 	url: string;
+	alt: string;
 }
 
 export type ImageActionState = GetButtonType<typeof toolbarButtonsName.image> &

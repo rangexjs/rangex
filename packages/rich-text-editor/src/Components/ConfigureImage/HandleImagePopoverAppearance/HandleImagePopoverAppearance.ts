@@ -1,5 +1,13 @@
 import { componentsName } from "../../../Constants";
 import { getBlockAlign } from "../../_Utilities";
+import {
+	getImageAlt,
+	getImageAspectRatio,
+	getImageCaption,
+	getImageFigure,
+	getImageImg,
+	getImageObjectFit,
+} from "../_Utilities";
 import type { HandleImagePopoverAppearanceParams } from "./HandleImagePopoverAppearance-types";
 
 /**
@@ -30,7 +38,21 @@ export const handleImagePopoverAppearance = ({
 
 			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
 
-			imagePopover.updateState({ align });
+			const figure = getImageFigure({ blockNestedContext });
+			const img = getImageImg({ figure });
+
+			const objectFit = getImageObjectFit({ img });
+			const aspectRatio = getImageAspectRatio({ img });
+			const caption = getImageCaption({ figure });
+			const altText = getImageAlt({ img });
+
+			imagePopover.updateState({
+				align,
+				objectFit,
+				aspectRatio,
+				caption,
+				altText,
+			});
 		},
 	});
 

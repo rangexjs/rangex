@@ -1,6 +1,11 @@
-import { createSignal, createUniqueId, onMount } from "solid-js";
+import { createMemo, createSignal, createUniqueId, onMount } from "solid-js";
 import { toolbarButtonsName } from "../../../Constants";
+import { assertNever } from "../../../ErrorHandling";
 import { useToolbarButtonManagersContext } from "../../App";
+import {
+	ContentSwitch,
+	type ContentSwitcherControls,
+} from "../../ContentSwitcher";
 import { Icon } from "../../Icon";
 import {
 	createTextFieldController,
@@ -8,12 +13,14 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../InputFields";
-import {
-	Dropdown,
-	type DropdownList,
-	FixedPosModal,
-	ToolbarButton,
-} from "../_Utilities";
+import { FixedPosModal, ToolbarButton } from "../_Utilities";
+
+type ImageSourceTab = "upload" | "url";
+
+const sourceTabControls: ContentSwitcherControls<ImageSourceTab> = [
+	{ id: "upload", node: "Upload" },
+	{ id: "url", node: "URL" },
+];
 
 export const ImageToolbarButton = () => {
 	const { toolbarButtonsActionManager, nodeInsertionButtonsStateManager } =
@@ -21,7 +28,6 @@ export const ImageToolbarButton = () => {
 
 	const { image } = nodeInsertionButtonsStateManager;
 
-	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(image.disabled);
 
 	nodeInsertionButtonsStateManager.subscribe({
@@ -31,13 +37,11 @@ export const ImageToolbarButton = () => {
 		},
 	});
 
-	const imgURLModalId = createUniqueId();
-	const popoverId = createUniqueId();
+	const modalId = createUniqueId();
 
-	const onPopoverToggle = (event: ToggleEvent) => {
-		const { newState } = event;
-		setChecked(newState === "open");
-	};
+	const [sourceTab, setSourceTab] = createSignal<ImageSourceTab>("upload");
+	const [files, setFiles] = createSignal<FileList | null>(null);
+	const fileName = createMemo(() => files()?.item(0)?.name ?? null);
 
 	let fileInput: HTMLInputElement | undefined;
 
@@ -47,69 +51,74 @@ export const ImageToolbarButton = () => {
 		}
 
 		fileInput.addEventListener("change", () => {
-			const { files } = fileInput;
-
-			if (!files) {
-				throw new Error("Files can't be null.");
-			}
-
-			toolbarButtonsActionManager.emitNodeInsertionChange({
-				type: toolbarButtonsName.image,
-				insertionType: "file-upload",
-				files,
-			});
+			setFiles(fileInput.files);
 		});
 	});
-
-	const list: DropdownList = [
-		{
-			text: "Upload from device",
-			button: {
-				"on:click": () => {
-					if (!fileInput) {
-						throw new Error("FileInput can't be undefined.");
-					}
-
-					fileInput.click();
-				},
-			},
-		},
-		{
-			text: "Upload via URL",
-			button: {
-				commandfor: imgURLModalId,
-				command: "show-modal",
-			},
-		},
-	];
 
 	const [urlModel, urlControls] = createTextFieldController({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
-	const insertImgURL = (event: MouseEvent) => {
-		urlModel.validate();
+	const [altModel, altControls] = createTextFieldController({});
 
-		if (urlModel.state().hasError) {
-			event.preventDefault();
+	const onModalClose = () => {
+		if (!fileInput) {
+			throw new Error("FileInput can't be undefined.");
+		}
+
+		urlModel.reset();
+		urlModel.setValue("");
+		altModel.reset();
+		altModel.setValue("");
+		setSourceTab("upload");
+		setFiles(null);
+		fileInput.value = "";
+	};
+
+	const onInsertClick = (event: MouseEvent) => {
+		const alt = altModel.value();
+		const tab = sourceTab();
+
+		if (tab === "url") {
+			urlModel.validate();
+
+			if (urlModel.checkValidity().hasError) {
+				event.preventDefault();
+				return;
+			}
+
+			toolbarButtonsActionManager.emitNodeInsertionChange({
+				type: toolbarButtonsName.image,
+				insertionType: "url",
+				url: urlModel.value(),
+				alt,
+			});
 			return;
 		}
 
-		toolbarButtonsActionManager.emitNodeInsertionChange({
-			type: toolbarButtonsName.image,
-			insertionType: "url",
-			url: urlModel.value(),
-		});
-	};
+		if (tab === "upload") {
+			const selectedFiles = files();
 
-	const onImgModalClose = () => {
-		urlModel.reset();
-		urlModel.setValue("");
+			if (!selectedFiles?.length) {
+				event.preventDefault();
+				return;
+			}
+
+			toolbarButtonsActionManager.emitNodeInsertionChange({
+				type: toolbarButtonsName.image,
+				insertionType: "file-upload",
+				files: selectedFiles,
+				alt,
+			});
+			return;
+		}
+
+		assertNever(tab);
 	};
 
 	let insertButtonRef: HTMLButtonElement | undefined;
 
-	const handleUrlKeyDown = (event: KeyboardEvent) => {
+	const handleKeyDown = (event: KeyboardEvent) => {
 		if (!insertButtonRef) {
 			throw new Error("InsertButtonRef can't be undefined.");
 		}
@@ -124,49 +133,83 @@ export const ImageToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
 				disabled={disabled()}
-				hasChevron={true}
-				commandfor={popoverId}
-				command="toggle-popover"
+				commandfor={modalId}
+				command="show-modal"
 			>
 				<Icon name="Image" class="size-4" />
 			</ToolbarButton>
 
-			<Dropdown
-				id={popoverId}
-				list={list}
-				onToggle={onPopoverToggle}
-				class="[position-area:bottom_center]"
-			/>
-			<input ref={fileInput} type="file" class="hidden" />
-			<FixedPosModal id={imgURLModalId} onClose={onImgModalClose} title="Image">
-				<FormField
-					class="mb-4"
-					for={urlModel.id}
-					label="URL"
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
-				>
+			<FixedPosModal id={modalId} onClose={onModalClose} title="Image">
+				<input ref={fileInput} type="file" class="hidden" />
+
+				<ContentSwitch
+					id={sourceTab()}
+					controls={sourceTabControls}
+					onChange={setSourceTab}
+					class="mb-3 rounded-sm"
+					commonButtonClass="py-1.5 text-xs font-medium"
+					activeBoxShrink={-1}
+					activeBoxClass="rounded-sm shadow border border-primary-500/40"
+				/>
+
+				<div class="mb-4" hidden={sourceTab() !== "upload"}>
+					<button
+						type="button"
+						class="btn-neutral-solid w-full rounded-sm px-3 py-1.5 text-left font-medium text-sm"
+						on:click={() => {
+							if (!fileInput) {
+								throw new Error("FileInput can't be undefined.");
+							}
+
+							fileInput.click();
+						}}
+					>
+						{fileName() ?? "Choose file…"}
+					</button>
+				</div>
+
+				<div class="mb-4" hidden={sourceTab() !== "url"}>
+					<FormField
+						for={urlModel.id}
+						label="URL"
+						showError={urlModel.state().showError}
+						errorMessage={urlModel.state().message}
+					>
+						<TextFieldWrapper appearance="primary-outline" size="medium">
+							<InputTextField
+								type="text"
+								id={urlModel.id}
+								placeholder="https://example.com/image.png"
+								spellcheck={false}
+								{...urlControls}
+								on:keydown={handleKeyDown}
+							/>
+						</TextFieldWrapper>
+					</FormField>
+				</div>
+
+				<FormField class="mb-4" for={altModel.id} label="Alt text">
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
-							placeholder="https://example.com/image.png"
+							id={altModel.id}
+							placeholder="Describe the image"
 							spellcheck={false}
-							{...urlControls}
-							on:keydown={handleUrlKeyDown}
+							{...altControls}
+							on:keydown={handleKeyDown}
 						/>
 					</TextFieldWrapper>
 				</FormField>
+
 				<div class="text-right">
 					<button
 						ref={insertButtonRef}
 						type="button"
-						commandfor={imgURLModalId}
+						commandfor={modalId}
 						command="close"
 						class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
-						on:click={insertImgURL}
+						on:click={onInsertClick}
 					>
 						Insert
 					</button>

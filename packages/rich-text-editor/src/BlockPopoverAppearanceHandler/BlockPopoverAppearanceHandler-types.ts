@@ -16,6 +16,8 @@ export interface BlockPopoverRegistration {
 	currentBlock: CurrentBlock;
 	hideTimeoutId: number;
 	abortController: AbortController;
+	pointerOver: boolean;
+	focusWithin: boolean;
 }
 
 export interface RegisterComponentParams {

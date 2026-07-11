@@ -20,8 +20,8 @@ import type {
 export class CodeBlockPopoverController {
 	#popover: HTMLDivElement | null = null;
 	#language: CodeBlockLanguage = "TypeScript";
-	#lightTheme: CodeBlockTheme = "light-plus";
-	#darkTheme: CodeBlockTheme = "dark-plus";
+	#lightTheme: CodeBlockTheme = "Light+";
+	#darkTheme: CodeBlockTheme = "Dark+";
 
 	#languageListeners: Set<UpdateLanguageFn> = new Set();
 	#lightThemeListeners: Set<UpdateLightThemeFn> = new Set();

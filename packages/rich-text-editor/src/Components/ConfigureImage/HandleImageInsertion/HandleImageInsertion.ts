@@ -6,8 +6,14 @@ import {
 	createContentLine,
 	createHTMLLayout,
 } from "rich-text-area";
-import { blockAlignAttr, componentsName } from "../../../Constants";
+import {
+	blockAlignAttr,
+	componentsName,
+	imageAspectRatioAttr,
+	imageObjectFitAttr,
+} from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
+import { readFileAsDataURL } from "../_Utilities";
 import type {
 	CreateImageComponentParams,
 	CreateImageComponentResult,
@@ -19,6 +25,7 @@ import type {
 
 const createImageComponent = ({
 	src,
+	alt,
 }: CreateImageComponentParams): CreateImageComponentResult => {
 	const blockNestedContextLine = createBlockNestedContextLine({
 		domAttrs: {
@@ -32,11 +39,18 @@ const createImageComponent = ({
 			shouldSelectBeforeRemove: true,
 			childNodes: [
 				createHTMLLayout({
-					localName: "img",
-					domAttrs: {
-						src,
-						alt: "",
-					},
+					localName: "figure",
+					childNodes: [
+						createHTMLLayout({
+							localName: "img",
+							domAttrs: {
+								src,
+								alt,
+								[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
+								[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
+							},
+						}),
+					],
 				}),
 			],
 		}),
@@ -44,27 +58,6 @@ const createImageComponent = ({
 	});
 
 	return blockNestedContextLine;
-};
-
-const readFileAsDataURL = (file: File): Promise<string> => {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-
-		reader.onload = () => {
-			if (typeof reader.result !== "string") {
-				reject(new Error("FileReader result must be a string."));
-				return;
-			}
-
-			resolve(reader.result);
-		};
-
-		reader.onerror = () => {
-			reject(reader.error ?? new Error("Failed to read file."));
-		};
-
-		reader.readAsDataURL(file);
-	});
 };
 
 /**
@@ -110,8 +103,9 @@ const insertImageFromURL = ({
 	editorAPI,
 	blockComponentPlacement,
 	url,
+	alt,
 }: InsertImageFromURLParams) => {
-	const imageLine = createImageComponent({ src: url });
+	const imageLine = createImageComponent({ src: url, alt });
 
 	insertImages({
 		editorAPI,
@@ -124,13 +118,14 @@ const insertImagesFromFiles = async ({
 	editorAPI,
 	blockComponentPlacement,
 	files,
+	alt,
 }: InsertImagesFromFilesParams) => {
 	const dataURLs = await Promise.all(Array.from(files, readFileAsDataURL));
 
 	const imageLines: CreateImageComponentResult[] = [];
 
 	for (const dataURL of dataURLs) {
-		imageLines.push(createImageComponent({ src: dataURL }));
+		imageLines.push(createImageComponent({ src: dataURL, alt }));
 	}
 
 	insertImages({ editorAPI, blockComponentPlacement, imageLines });
@@ -151,6 +146,7 @@ export const handleImageInsertion = ({
 				editorAPI,
 				blockComponentPlacement,
 				url: params.url,
+				alt: params.alt,
 			});
 			return;
 		}
@@ -160,6 +156,7 @@ export const handleImageInsertion = ({
 				editorAPI,
 				blockComponentPlacement,
 				files: params.files,
+				alt: params.alt,
 			});
 			return;
 		}
