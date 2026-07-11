@@ -328,7 +328,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
 							return (
 								<button
 									type="button"
-									class="inline-block aspect-square scale-100 border-white outline-primary-500 transition-transform hover:z-10 hover:scale-110 hover:border-2 hover:outline-2"
+									class="inline-block aspect-square scale-100 border-white outline-primary-500 transition-transform hover:z-10 hover:scale-110 hover:border-2 hover:outline-2 dark:border-neutral-900"
 									style={{ "background-color": backgroundColor }}
 									on:click={() => {
 										onColorChange(hsl);

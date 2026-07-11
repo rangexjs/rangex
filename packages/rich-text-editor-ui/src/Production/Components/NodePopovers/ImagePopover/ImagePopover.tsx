@@ -365,7 +365,7 @@ export const ImagePopover = () => {
 						<div class="flex items-center justify-between">
 							<label
 								for={altModel.id}
-								class="font-semibold text-neutral-800 text-xs dark:text-neutral-200"
+								class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
 							>
 								Alt text
 							</label>
