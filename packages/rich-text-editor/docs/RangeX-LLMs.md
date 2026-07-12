@@ -268,11 +268,11 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 
 - **`$$display`** *(readonly)* — `"block multi-line" | "block single-line"`. Set at construction time, not changeable after.
 
-- **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset.
+- **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a block `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset. `"span"` ContentLines (inline context) are not covered by this mapping and carry no default styles.
 
 - **`$$allowedComponents`** *(get/set)* — `string[] | null`. Whitelist of allowed component names (the string identifier of an `InlineNestedContext` or `BlockNestedContext`). When a component is not in the list, inserting it causes it to be **unwrapped** by the schema — the component element is removed and only its text content is kept. `null` = all components allowed.
 
-- **`$$allowedContentLineLocalNames`** *(get/set)* — `ContentLineLocalName[] | null`. Restricts which `ContentLine` types (`"p"`, `"h1"`–`"h6"`) are valid in this editable. Violations are schema-enforced. `null` = all allowed.
+- **`$$allowedContentLineLocalNames`** *(get/set)* — `BlockContentLineLocalName[] | null`. Restricts which block `ContentLine` localNames (`"p"`, `"h1"`–`"h6"`) are valid in this editable. Violations are schema-enforced. `null` = all allowed. `"span"` ContentLines in inline NestedEditables are never subject to this constraint.
 
 - **`$$allowedContentLineStyleAttrNames`** *(get/set)* — `ContentLineStyleAttrName[] | null`. Restricts which CSS style attributes may be set on `ContentLine`s. `null` = all allowed.
 
@@ -341,7 +341,13 @@ type ContentLineChild   =
   | InlineNestedContextText
 ```
 
-The main content container. Every paragraph, heading, or single-line of text lives in a `ContentLine`. Its `localName` (`"p"`, `"h1"`–`"h6"`) maps directly to the HTML tag used in the DOM and in serialized output.
+The main content container. Every paragraph, heading, or single-line of text lives in a `ContentLine`. Its `localName` maps directly to the HTML tag used in the DOM and in serialized output.
+
+**`localName` is constrained by its parent `ScopedEditable`'s `$display`:**
+- Block context (`"block multi-line"` or `"block single-line"`) → `BlockContentLineLocalName`: `"p"` | `"h1"`–`"h6"`
+- Inline context (`"inline"`) → must be `"span"`
+
+`ContentLineLocalName = BlockContentLineLocalName | "span"`.
 
 **Empty vs non-empty rule:**
 - An empty `ContentLine` must contain exactly one `BeamText` — the sentinel that prevents the line from collapsing and gives `LiveBoundaryPoints` a valid node to point to.
@@ -355,7 +361,7 @@ These are the only CSS properties settable on a `ContentLine` via the API. Appli
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$localName`** *(readonly)* — the HTML tag name (`"p"`, `"h1"`–`"h6"`).
+- **`$$localName`** *(readonly)* — `ContentLineLocalName`: `"p"` | `"h1"`–`"h6"` for block ContentLines, `"span"` for inline ContentLines.
 - **`$$display`** *(readonly)* — `"block"` or `"inline"`.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockNestedContextLine` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
@@ -1029,7 +1035,7 @@ These parameters appear on most factories:
   - `"inline"` — inline-level, must have exactly one inline `ContentLine`
 - **`editState`** — see per-factory
 - **`allowedComponents?: string[] | null`** — restricts which `componentName`s can be inserted. `null` (default) = no restriction. `[]` = nothing allowed.
-- **`allowedContentLineLocalNames?: ContentLineLocalName[] | null`** — restricts which `ContentLine` tag names (`"p"`, `"h1"`…`"h6"`) are allowed.
+- **`allowedContentLineLocalNames?: BlockContentLineLocalName[] | null`** — restricts which block `ContentLine` tag names (`"p"`, `"h1"`…`"h6"`) are allowed. Does not apply to inline `"span"` ContentLines.
 - **`allowedContentLineStyleAttrNames?: ContentLineStyleAttrName[] | null`** — restricts which line CSS properties can be set.
 - **`allowedGlyphFormatterStyleAttrNames?: GlyphFormatterStyleAttrName[] | null`** — restricts which text CSS properties can be set.
 - **`allowedGlyphFormatterInlineTags?: GlyphFormatterInlineTag[] | null`** — restricts which inline tags (`"b"`, `"i"`, etc.) can be applied.
@@ -1049,7 +1055,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | `contentLineLocalNamesStyle` | `ContentLineLocalNamesStyle` | Yes | Default `structuredStyle` per `ContentLine` tag (`p`, `h1`…`h6`). Pass empty objects for no default styles. |
 | `customStorage` | `any` | No | JSON-serializable consumer data stored on the node, readable via `$$customStorage` |
 | `allowedComponents` | `string[] \| null` | No | See Common parameters |
-| `allowedContentLineLocalNames` | `ContentLineLocalName[] \| null` | No | See Common parameters |
+| `allowedContentLineLocalNames` | `BlockContentLineLocalName[] \| null` | No | See Common parameters |
 | `allowedContentLineStyleAttrNames` | `ContentLineStyleAttrName[] \| null` | No | See Common parameters |
 | `allowedGlyphFormatterStyleAttrNames` | `GlyphFormatterStyleAttrName[] \| null` | No | See Common parameters |
 | `allowedGlyphFormatterInlineTags` | `GlyphFormatterInlineTag[] \| null` | No | See Common parameters |
@@ -1098,14 +1104,17 @@ Creates a `ContentLine`. An empty `ContentLine` must always have a `BeamText` ch
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `localName` | `ContentLineLocalName` | No | `"p"` (default) \| `"h1"`…`"h6"` |
+| `localName` | `ContentLineLocalName` | Yes | `"p"` \| `"h1"`…`"h6"` for block contexts; `"span"` for inline contexts |
 | `structuredStyle` | `Partial<ContentLineStructuredStyle>` | No | Initial CSS values. Valid properties: `lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent` |
 | `domAttrs` | `DOMAttrs` | No | |
 | `childNodes` | `ContentLineChild[]` | No | `BeamText \| GlyphFormatter \| BasicText \| OneVisualUnitText \| InlineNestedContext \| InlineNestedContextText` |
 
 ```ts
-// empty line
-createContentLine({ childNodes: [createBeamText({})] })
+// empty block line (inside ScopedEditable with display: "block multi-line" or "block single-line")
+createContentLine({ localName: "p", childNodes: [createBeamText({})] })
+
+// empty inline line (inside NestedEditable with display: "inline")
+createContentLine({ localName: "span", childNodes: [createBeamText({})] })
 
 // line with text
 createContentLine({
@@ -1381,7 +1390,7 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 **Post-mutation normalization** — after each mutation pipeline completes, the engine runs a normalization pass that silently corrects `$$allowed*` violations. No error is thrown; disallowed content is adjusted automatically:
 
 - `$$allowedComponents` — a `NestedContext` whose `$$componentName` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
-- `$$allowedContentLineLocalNames` — a `ContentLine` with a `localName` not in the list has its tag changed to `p`
+- `$$allowedContentLineLocalNames` — a block `ContentLine` with a `localName` not in the list has its tag changed to `"p"`. Inline `"span"` ContentLines are not subject to this normalization.
 - `$$allowedContentLineStyleAttrNames` — style attributes on a `ContentLine` not in the list are removed
 - `$$allowedGlyphFormatterStyleAttrNames` — style attributes on a `GlyphFormatter` not in the list are removed
 - `$$allowedGlyphFormatterInlineTags` — inline tags on a `GlyphFormatter` not in the list are removed
@@ -1395,11 +1404,11 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 
 `RootEditable` and `NestedEditable` each have a `$display` property that constrains their children:
 
-| `$display` | Allowed children |
-|---|---|
-| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockNestedContextLine`) |
-| `"block single-line"` | Exactly one `ContentLine` (block layout) |
-| `"inline"` | Exactly one `ContentLine` (inline layout) |
+| `$display` | Allowed children | Required `ContentLine.localName` |
+|---|---|---|
+| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockNestedContextLine`) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
+| `"block single-line"` | Exactly one `ContentLine` (block layout) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
+| `"inline"` | Exactly one `ContentLine` (inline layout) | `"span"` |
 
 ### Content types
 
@@ -2009,6 +2018,12 @@ The interceptable event types are:
 | `"paste"`     | `ClipboardEvent`  | Paste handling                                     |
 | `"copy"`      | `ClipboardEvent`  | Copy handling                                      |
 | `"cut"`       | `ClipboardEvent`  | Cut handling                                       |
+| `"dragstart"` | `DragEvent`       | Initializing the drag payload for an internal content drag |
+| `"dragenter"` | `DragEvent`       | Drag-and-drop tracking state initialization        |
+| `"dragover"`  | `DragEvent`       | Drop indicator (caret/line) positioning            |
+| `"dragleave"` | `DragEvent`       | Hiding drop indicators                             |
+| `"drop"`      | `DragEvent`       | Content insertion/reordering from an internal drag |
+| `"dragend"`   | `DragEvent`       | Drag-and-drop tracking state cleanup               |
 
 #### Interceptor return value
 
@@ -2022,8 +2037,6 @@ All registered interceptors for a given event type always run. If **any** interc
 #### Difference from `registerDOMEvent`
 
 `registerDOMEvent` is observation-only — the engine always processes the event. `registerEventInterceptor` is the only way to prevent the engine's built-in handling of the event.
-
-Events like (`dragstart`, `dragover`, `drop`, etc.) are not interceptable — only the types listed above.
 
 ---
 
@@ -2373,7 +2386,7 @@ editorAPI.updateSelectionStyles({
 
 All three parameters are optional and can be combined freely in a single call. Setting a style property to `null` clears it (removes the style from the node). Omitting a property leaves it unchanged.
 
-**`localName`** changes the HTML tag of every `ContentLine` in the selection (`h1`, `h2`, … `h6`, `p`). Omit to leave line tags unchanged.
+**`localName`** (`BlockContentLineLocalName`: `"p"` | `"h1"`–`"h6"`) changes the HTML tag of every block `ContentLine` in the selection. Omit to leave line tags unchanged.
 
 **`styles`** applies `StructuredStyleValue`s to `ContentLine`s and `GlyphFormatter`s in the selection. The 5 ContentLine properties (`lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent`) target the line elements; the 8 GlyphFormatter properties target the text elements. Both can appear in the same `styles` object.
 
@@ -2459,7 +2472,7 @@ interface SelectionFormatStyles extends RangeFormat {
 ```ts
 interface RangeFormat {
   contentLineLocalNames: {
-    values: ContentLineLocalName[];
+    values: BlockContentLineLocalName[];
     permission: PermissionOption;
   };
   contentLineStructuredStyle: {
@@ -2499,7 +2512,7 @@ interface RangeFormat {
 - `"not-allowed"` — the format is restricted by a `ScopedEditable`'s `$allowed*` props
 - `"mixed"` — some `ScopedEditable` ancestors allow it and others don't
 
-`contentLineLocalNames.values` is an array of all distinct local names found in the selection (e.g., `["p"]` if all lines are paragraphs, `["p", "h1"]` if the selection spans mixed line types).
+`contentLineLocalNames.values` is an array of all distinct `BlockContentLineLocalName`s found in the selection (e.g., `["p"]` if all lines are paragraphs, `["p", "h1"]` if the selection spans mixed line types). Inline `"span"` ContentLines are never formattable and never appear in this array.
 
 ---
 
@@ -3017,4 +3030,4 @@ const rangeX = new RangeX({
 
 **`registerDOMEvent(params)`** — register DOM event listeners on `EditorElement`s via a centralized `when` predicate. See [section 10 — Events](#10-events) for the full specification, the reason to prefer this over `.addEventListener`, and read-only mode behavior.
 
-**`registerEventInterceptor(params)`** — intercept events (`"keydown"`, `"beforeinput"`, `"paste"`, `"copy"`, `"cut"`) before the engine processes them. Return `true` from the interceptor to cancel engine handling. See [section 10 — Events](#10-events) for the full specification and the difference from `registerDOMEvent`.
+**`registerEventInterceptor(params)`** — intercept events (`"keydown"`, `"beforeinput"`, `"paste"`, `"copy"`, `"cut"`, `"dragstart"`, `"dragenter"`, `"dragover"`, `"dragleave"`, `"drop"`, `"dragend"`) before the engine processes them. Return `true` from the interceptor to cancel engine handling. See [section 10 — Events](#10-events) for the full specification and the difference from `registerDOMEvent`.
