@@ -1,5 +1,9 @@
 import { createDetachedContext, createHTMLLayout } from "rich-text-area";
-import { dataPartName, imagePart } from "../../../../Constants";
+import {
+	dataPartName,
+	imageDragActiveAttr,
+	imagePart,
+} from "../../../../Constants";
 import { fileImage } from "../../../../SVGs";
 import { createUploadSVG } from "../../../_Utilities";
 import type { CreateImageDropzoneResult } from "./CreateImageDropzone-types";
@@ -40,7 +44,10 @@ const createDropzoneContent = (): Element => {
 export const createImageDropzone = (): CreateImageDropzoneResult => {
 	return createHTMLLayout({
 		localName: "div",
-		domAttrs: { [dataPartName]: imagePart.dropzone.name },
+		domAttrs: {
+			[dataPartName]: imagePart.dropzone.name,
+			[imageDragActiveAttr.name]: imageDragActiveAttr.value.false,
+		},
 		childNodes: [
 			createDetachedContext({
 				localName: "div",

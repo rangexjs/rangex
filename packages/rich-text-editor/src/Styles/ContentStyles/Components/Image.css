@@ -54,6 +54,9 @@
 			font-size: 14px;
 			line-height: 1.4;
 			text-align: center;
+			transition:
+				border-color 300ms ease,
+				background-color 300ms ease;
 
 			&:hover {
 				border-color: light-dark(
@@ -64,6 +67,18 @@
 					var(--color-neutral-50),
 					var(--color-neutral-800)
 				);
+			}
+
+			&:active {
+				border-color: light-dark(
+					var(--color-neutral-500),
+					var(--color-neutral-400)
+				);
+			}
+
+			&[data-drag-active="true"] {
+				border-color: var(--color-primary-500);
+				background-color: color(from var(--color-primary-500) srgb r g b / 0.3);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 import { htmlLayoutName, isEditorNode } from "rich-text-area";
-import { imagePart } from "../../../Constants";
+import { imageDragActiveAttr, imagePart } from "../../../Constants";
 import { applyImageSrc, readFileAsDataURL } from "../_Utilities";
 import type {
 	HandleImageDropParams,
@@ -10,10 +10,37 @@ const isImageDropzone = ({ element }: IsImageDropzoneParams) =>
 	element.matches(imagePart.dropzone.attr);
 
 /**
- * Registers dragover/drop listeners directly on empty image dropzones, letting a user
- * fill an empty image by dragging a file onto it.
+ * Registers drag/drop listeners directly on empty image dropzones, letting a user fill
+ * an empty image by dragging a file onto it. `data-drag-active` is toggled on enter/leave
+ * so the dropzone can be styled while a file is being dragged over it.
  */
 export const handleImageDrop = ({ editorAPI }: HandleImageDropParams) => {
+	const unsubscribeDragEnter = editorAPI.registerDOMEvent({
+		when: isImageDropzone,
+		eventListener: {
+			type: "dragenter",
+			listener(event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const { currentTarget } = event;
+
+				if (!(currentTarget && isEditorNode(currentTarget))) {
+					throw new Error("CurrentTarget must be an EditorNode.");
+				}
+
+				if (currentTarget.$$editorRole !== htmlLayoutName) {
+					throw new Error("CurrentTarget's type is invalid.");
+				}
+
+				currentTarget.setAttribute(
+					imageDragActiveAttr.name,
+					imageDragActiveAttr.value.true,
+				);
+			},
+		},
+	});
+
 	const unsubscribeDragOver = editorAPI.registerDOMEvent({
 		when: isImageDropzone,
 		eventListener: {
@@ -25,6 +52,32 @@ export const handleImageDrop = ({ editorAPI }: HandleImageDropParams) => {
 				if (event.dataTransfer) {
 					event.dataTransfer.dropEffect = "copy";
 				}
+			},
+		},
+	});
+
+	const unsubscribeDragLeave = editorAPI.registerDOMEvent({
+		when: isImageDropzone,
+		eventListener: {
+			type: "dragleave",
+			listener(event) {
+				event.preventDefault();
+				event.stopPropagation();
+
+				const { currentTarget } = event;
+
+				if (!(currentTarget && isEditorNode(currentTarget))) {
+					throw new Error("CurrentTarget must be an EditorNode.");
+				}
+
+				if (currentTarget.$$editorRole !== htmlLayoutName) {
+					throw new Error("CurrentTarget's type is invalid.");
+				}
+
+				currentTarget.setAttribute(
+					imageDragActiveAttr.name,
+					imageDragActiveAttr.value.false,
+				);
 			},
 		},
 	});
@@ -46,6 +99,11 @@ export const handleImageDrop = ({ editorAPI }: HandleImageDropParams) => {
 				if (currentTarget.$$editorRole !== htmlLayoutName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
+
+				currentTarget.setAttribute(
+					imageDragActiveAttr.name,
+					imageDragActiveAttr.value.false,
+				);
 
 				const [file] = dataTransfer?.files ?? [];
 
@@ -71,7 +129,9 @@ export const handleImageDrop = ({ editorAPI }: HandleImageDropParams) => {
 	});
 
 	return () => {
+		unsubscribeDragEnter();
 		unsubscribeDragOver();
+		unsubscribeDragLeave();
 		unsubscribeDrop();
 	};
 };
