@@ -11,6 +11,7 @@ export const toolbarButtons: ToolbarButtons = [
 			"code-block",
 			"block-quote",
 			"image",
+			"video",
 			"custom-component",
 			"symbols",
 			"anchor",

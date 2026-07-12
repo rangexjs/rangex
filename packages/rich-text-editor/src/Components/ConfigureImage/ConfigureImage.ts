@@ -11,6 +11,12 @@ import { handleImagePopoverAppearance } from "./HandleImagePopoverAppearance";
 import { handleImageSwap } from "./HandleImageSwap";
 import { handleImageToolbarButtonState } from "./HandleImageToolbarButtonState";
 
+// TODO: file uploads are inlined as base64 data URLs (see readFileAsDataURL in
+// ConfigureImage/_Utilities) instead of going through any upload endpoint or blob storage.
+// This embeds the full image bytes directly in the document and in every snapshot/undo
+// boundary. It works for now but isn't viable long term — needs a pluggable upload
+// mechanism (consumer-supplied endpoint/blob storage) eventually. configureVideo currently
+// mirrors this same approach, where the problem is much more pronounced.
 export const configureImage = ({
 	richTextEditorUI,
 	editorAPI,

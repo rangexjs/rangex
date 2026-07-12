@@ -12,6 +12,7 @@ import type {
 	TableToolbarButtonState,
 	TemplateVariableToolbarButtonState,
 	UnorderedListToolbarButtonState,
+	VideoToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
@@ -29,6 +30,7 @@ import type {
 	UpdateTableStateFn,
 	UpdateTemplateVariableStateFn,
 	UpdateUnorderedListStateFn,
+	UpdateVideoStateFn,
 } from "./NodeInsertionButtonsStateManager-types";
 
 export class NodeInsertionButtonsStateManager {
@@ -46,6 +48,7 @@ export class NodeInsertionButtonsStateManager {
 		options: { firstName: null, lastName: null, email: null, date: null },
 	};
 	#unorderedList: UnorderedListToolbarButtonState = { disabled: true };
+	#video: VideoToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
 	#blockQuoteListeners: Set<UpdateBlockQuoteStateFn> = new Set();
@@ -58,6 +61,7 @@ export class NodeInsertionButtonsStateManager {
 	#tableListeners: Set<UpdateTableStateFn> = new Set();
 	#templateVariableListeners: Set<UpdateTemplateVariableStateFn> = new Set();
 	#unorderedListListeners: Set<UpdateUnorderedListStateFn> = new Set();
+	#videoListeners: Set<UpdateVideoStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
@@ -102,6 +106,10 @@ export class NodeInsertionButtonsStateManager {
 
 	get unorderedList() {
 		return this.#unorderedList;
+	}
+
+	get video() {
+		return this.#video;
 	}
 
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
@@ -160,6 +168,11 @@ export class NodeInsertionButtonsStateManager {
 			return;
 		}
 
+		if (type === toolbarButtonsName.video) {
+			this.#videoListeners[operation](callback);
+			return;
+		}
+
 		if (type === "statechange") {
 			this.#stateChangeListeners[operation](callback);
 			return;
@@ -188,6 +201,7 @@ export class NodeInsertionButtonsStateManager {
 		table,
 		templateVariable,
 		unorderedList,
+		video,
 	}: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
@@ -277,6 +291,14 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#unorderedListListeners) {
 				listener(this.#unorderedList);
+			}
+		}
+
+		if (video) {
+			this.#video = { ...this.#video, ...video };
+
+			for (const listener of this.#videoListeners) {
+				listener(this.#video);
 			}
 		}
 

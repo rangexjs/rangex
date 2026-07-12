@@ -9,6 +9,7 @@ import mention from "../Components/Mention.css?inline";
 import table from "../Components/Table.css?inline";
 import templateVariable from "../Components/TemplateVariable.css?inline";
 import todoList from "../Components/TodoList.css?inline";
+import video from "../Components/Video.css?inline";
 import blockNestedContextLine from "../EditorElements/BlockNestedContextLine.css?inline";
 import contentLine from "../EditorElements/ContentLine.css?inline";
 import glyphFormatter from "../EditorElements/GlyphFormatter.css?inline";
@@ -30,6 +31,7 @@ export const getContentStyles = () => {
 		mention +
 		table +
 		templateVariable +
+		video +
 		glyphFormatter;
 
 	return styles;

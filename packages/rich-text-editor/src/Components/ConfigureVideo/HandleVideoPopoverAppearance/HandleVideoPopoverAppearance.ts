@@ -1,0 +1,70 @@
+import { componentsName } from "../../../Constants";
+import { getBlockAlign } from "../../_Utilities";
+import {
+	getVideoAspectRatio,
+	getVideoCaption,
+	getVideoElement,
+	getVideoFigure,
+	getVideoObjectFit,
+	getVideoPlayback,
+	getVideoPoster,
+	getVideoTitle,
+} from "../_Utilities";
+import type { HandleVideoPopoverAppearanceParams } from "./HandleVideoPopoverAppearance-types";
+
+/**
+ * Registers the video popover with the shared {@link BlockPopoverAppearanceHandler},
+ * pushing the block's current alignment into the popover just before it appears.
+ */
+export const handleVideoPopoverAppearance = ({
+	richTextEditorUI,
+	blockPopoverAppearanceHandler,
+}: HandleVideoPopoverAppearanceParams) => {
+	const { videoPopover } = richTextEditorUI;
+
+	blockPopoverAppearanceHandler.registerComponent({
+		componentName: componentsName.video,
+		popover: videoPopover.popover,
+		position: {
+			margin: "4px",
+			positionArea: "top right",
+			top: "100%",
+			right: "100%",
+		},
+		onShow({ blockNestedContext }) {
+			const { $$parentElement } = blockNestedContext;
+
+			if (!$$parentElement) {
+				throw new Error("ParentElement not supposed to be null.");
+			}
+
+			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+
+			const figure = getVideoFigure({ blockNestedContext });
+			const video = getVideoElement({ figure });
+
+			const objectFit = getVideoObjectFit({ video });
+			const aspectRatio = getVideoAspectRatio({ video });
+			const caption = getVideoCaption({ figure });
+			const playback = getVideoPlayback({ video });
+			const poster = getVideoPoster({ video });
+			const title = getVideoTitle({ video });
+
+			videoPopover.updateState({
+				align,
+				objectFit,
+				aspectRatio,
+				caption,
+				playback,
+				poster,
+				title,
+			});
+		},
+	});
+
+	return () => {
+		blockPopoverAppearanceHandler.unregisterComponent({
+			componentName: componentsName.video,
+		});
+	};
+};

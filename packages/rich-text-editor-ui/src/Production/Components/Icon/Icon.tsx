@@ -55,6 +55,7 @@ import {
 	Trash,
 	TSlash,
 	Underline,
+	Video,
 	WarningCircle,
 	X,
 } from "../SVGs";
@@ -113,6 +114,7 @@ const icons = {
 	Trash,
 	TSlash,
 	Underline,
+	Video,
 	WarningCircle,
 	X,
 } as const;

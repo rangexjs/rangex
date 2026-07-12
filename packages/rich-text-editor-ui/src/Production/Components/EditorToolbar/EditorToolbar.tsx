@@ -36,6 +36,7 @@ import {
 	TextAreaReadabilityToolbarButton,
 	UnderlineToolbarButton,
 	UnorderedListToolbarButton,
+	VideoToolbarButton,
 } from "../ToolbarButtons";
 
 interface ToolbarButtonProps {
@@ -77,6 +78,7 @@ const ToolbarButton = ({ name }: ToolbarButtonProps) => {
 		[toolbarButtonsName.textAreaReadability]: TextAreaReadabilityToolbarButton,
 		[toolbarButtonsName.underline]: UnderlineToolbarButton,
 		[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
+		[toolbarButtonsName.video]: VideoToolbarButton,
 	} as const;
 
 	return <Dynamic component={ToolbarButtonComponentMap[name]} />;

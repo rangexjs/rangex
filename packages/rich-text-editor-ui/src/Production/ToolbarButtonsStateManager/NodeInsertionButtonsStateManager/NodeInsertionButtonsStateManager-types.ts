@@ -11,6 +11,7 @@ import type {
 	TableToolbarButtonState,
 	TemplateVariableToolbarButtonState,
 	UnorderedListToolbarButtonState,
+	VideoToolbarButtonState,
 } from "../../ToolbarButtonProps";
 
 // Anchor
@@ -89,6 +90,11 @@ export type UpdateUnorderedListStateFn = (
 	params: UpdateUnorderedListStateParams,
 ) => void;
 
+// Video
+export interface UpdateVideoStateParams extends VideoToolbarButtonState {}
+
+export type UpdateVideoStateFn = (params: UpdateVideoStateParams) => void;
+
 export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
 	blockQuote: Partial<BlockQuoteToolbarButtonState>;
@@ -101,6 +107,7 @@ export interface NodeInsertionButtonsState {
 	table: Partial<TableToolbarButtonState>;
 	templateVariable: Partial<TemplateVariableToolbarButtonState>;
 	unorderedList: Partial<UnorderedListToolbarButtonState>;
+	video: Partial<VideoToolbarButtonState>;
 }
 
 export type StateChangeFn = () => void;
@@ -117,6 +124,7 @@ export type ListenerMap = {
 	[toolbarButtonsName.table]: UpdateTableStateFn;
 	[toolbarButtonsName.templateVariable]: UpdateTemplateVariableStateFn;
 	[toolbarButtonsName.unorderedList]: UpdateUnorderedListStateFn;
+	[toolbarButtonsName.video]: UpdateVideoStateFn;
 	statechange: () => void;
 };
 

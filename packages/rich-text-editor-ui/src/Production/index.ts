@@ -22,6 +22,7 @@ export type {
 	TemplateVariablePopover,
 	TemplateVariablePopoverState,
 	UpdateCodeBlockPopoverStateParams,
+	VideoPopover,
 } from "./PopoverControllers";
 export {
 	RichTextEditorUI,
@@ -92,6 +93,7 @@ export type {
 	ToggleButtonPressed,
 	UnderlineToolbarButtonState,
 	UnorderedListToolbarButtonState,
+	VideoToolbarButtonState,
 } from "./ToolbarButtonProps";
 export type {
 	FormatStylesActionState,

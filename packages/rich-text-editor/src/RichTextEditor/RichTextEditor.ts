@@ -20,6 +20,7 @@ import {
 	configureTable,
 	configureTemplateVariable,
 	configureTodoList,
+	configureVideo,
 } from "../Components";
 import {
 	configureCustomStyles,
@@ -142,6 +143,13 @@ export class RichTextEditor extends HTMLElement {
 			blockResize,
 			blockPopoverAppearanceHandler,
 		});
+		const videoCleanup = configureVideo({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockComponentPlacement,
+			blockResize,
+			blockPopoverAppearanceHandler,
+		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
@@ -149,6 +157,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
 		this.#cleanups.add(imageCleanup);
+		this.#cleanups.add(videoCleanup);
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,

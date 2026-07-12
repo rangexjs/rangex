@@ -133,6 +133,21 @@ export type TemplateVariableActionState = GetButtonType<
 export interface UnorderedListActionState
 	extends GetButtonType<typeof toolbarButtonsName.unorderedList> {}
 
+export interface VideoFileUpload {
+	insertionType: "file-upload";
+	files: FileList;
+	title: string;
+}
+
+export interface VideoURL {
+	insertionType: "url";
+	url: string;
+	title: string;
+}
+
+export type VideoActionState = GetButtonType<typeof toolbarButtonsName.video> &
+	(VideoFileUpload | VideoURL);
+
 export type NodeInsertionActionState =
 	| AnchorActionState
 	| BlockQuoteActionState
@@ -144,7 +159,8 @@ export type NodeInsertionActionState =
 	| SymbolsActionState
 	| TableActionState
 	| TemplateVariableActionState
-	| UnorderedListActionState;
+	| UnorderedListActionState
+	| VideoActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

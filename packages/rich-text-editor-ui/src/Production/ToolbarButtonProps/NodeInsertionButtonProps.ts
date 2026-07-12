@@ -74,3 +74,8 @@ export interface TemplateVariableToolbarButtonState {
 export interface UnorderedListToolbarButtonState {
 	disabled: boolean;
 }
+
+// Video
+export interface VideoToolbarButtonState {
+	disabled: boolean;
+}

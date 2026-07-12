@@ -52,5 +52,6 @@ export * from "./TextAlignRight";
 export * from "./Trash";
 export * from "./TSlash";
 export * from "./Underline";
+export * from "./Video";
 export * from "./WarningCircle";
 export * from "./X";

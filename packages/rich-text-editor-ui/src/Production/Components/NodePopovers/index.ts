@@ -6,3 +6,4 @@ export * from "./LinkPopover";
 export * from "./MentionPopover";
 export * from "./TableQuickActionsPopover";
 export * from "./TemplateVariablePopover";
+export * from "./VideoPopover";
