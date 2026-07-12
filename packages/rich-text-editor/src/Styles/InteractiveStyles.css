@@ -61,8 +61,7 @@
 
 	&:where(
 			[data-rx-component-name="image"][data-rx-interactive-spanning-boundary-selection="true"]
-		)
-		> img {
+		) {
 		box-shadow: 0 0 0 3px
 			light-dark(var(--color-primary-400), var(--color-primary-300));
 		transition: 200ms;
