@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import {
 	getVideoElement,
 	getVideoFigure,
@@ -13,15 +12,13 @@ import type { HandleVideoAspectRatioStateParams } from "./HandleVideoAspectRatio
 export const handleVideoAspectRatioState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoAspectRatioStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeAspectRatioChange = videoPopover.onAspectRatioChange(
 		(aspectRatio) => {
-			const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-				componentName: componentsName.video,
-			});
+			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
 				return;

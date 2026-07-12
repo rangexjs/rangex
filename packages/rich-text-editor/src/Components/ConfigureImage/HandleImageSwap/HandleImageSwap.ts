@@ -1,41 +1,30 @@
-import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
-import { getImageFigure, getImageImg, readFileAsDataURL } from "../_Utilities";
+import { applyImageSrc, readFileAsDataURL } from "../_Utilities";
 import type { HandleImageSwapParams } from "./HandleImageSwap-types";
 
 /**
- * Wires the popover's Swap control to the engine. Only the `img`'s `src` changes —
- * object-fit, aspect ratio, and caption are left untouched.
+ * Wires the shared swap popover's Update action to the engine. Fills the empty
+ * placeholder on first use, or just updates `src` on an already-filled image — both
+ * driven by `internals.currentImageFigure`, set whenever the popover was opened
+ * (dropzone click or the edit popover's Swap button).
  */
 export const handleImageSwap = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	internals,
 }: HandleImageSwapParams) => {
-	const { imagePopover } = richTextEditorUI;
+	const { imageSwapPopover } = richTextEditorUI;
 
-	const unsubscribeSwap = imagePopover.onSwap((params) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.image,
-		});
+	const unsubscribeSwap = imageSwapPopover.onSwap((params) => {
+		const { currentImageFigure } = internals;
 
-		if (!currentBlock) {
+		if (!currentImageFigure) {
+			console.warn("Figure should have been assigned.");
 			return;
 		}
 
-		const figure = getImageFigure({ blockNestedContext: currentBlock });
-		const img = getImageImg({ figure });
-
-		const applySrc = (src: string) => {
-			img.setAttribute("src", src);
-
-			const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
-			snapshotTimeline.registerSnapshotBoundary();
-		};
-
 		if (params.source === "url") {
-			applySrc(params.url);
+			applyImageSrc({ figure: currentImageFigure, src: params.url, editorAPI });
 			return;
 		}
 
@@ -46,7 +35,9 @@ export const handleImageSwap = ({
 				return;
 			}
 
-			readFileAsDataURL(file).then(applySrc);
+			readFileAsDataURL(file).then((src) => {
+				applyImageSrc({ figure: currentImageFigure, src, editorAPI });
+			});
 			return;
 		}
 

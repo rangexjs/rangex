@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import { getVideoElement, getVideoFigure, setVideoTitle } from "../_Utilities";
 import type { HandleVideoTitleStateParams } from "./HandleVideoTitleState-types";
 
@@ -9,14 +8,12 @@ import type { HandleVideoTitleStateParams } from "./HandleVideoTitleState-types"
 export const handleVideoTitleState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoTitleStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeTitleChange = videoPopover.onTitleChange((title) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

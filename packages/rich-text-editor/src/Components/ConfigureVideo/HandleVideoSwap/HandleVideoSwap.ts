@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
 import {
 	getVideoElement,
@@ -14,14 +13,12 @@ import type { HandleVideoSwapParams } from "./HandleVideoSwap-types";
 export const handleVideoSwap = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoSwapParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeSwap = videoPopover.onSwap((params) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

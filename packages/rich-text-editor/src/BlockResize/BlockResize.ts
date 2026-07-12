@@ -13,7 +13,7 @@ export const createBlockResize = ({
 }: CreateBlockResizeParams): CreateBlockResizeResult => {
 	const internals: BlockResizeInternals = {
 		currentBlock: null,
-		registrations: new Map(),
+		registrations: new Set(),
 	};
 
 	const appearanceCleanup = handleBlockResizeAppearance({
@@ -29,12 +29,14 @@ export const createBlockResize = ({
 	});
 
 	const blockResize: BlockResize = {
-		registerComponent({ componentName, handleX }) {
-			internals.registrations.set(componentName, { handleX });
-		},
+		registerComponent({ handleX, canShow }) {
+			const registration = { handleX, canShow };
 
-		unregisterComponent({ componentName }) {
-			internals.registrations.delete(componentName);
+			internals.registrations.add(registration);
+
+			return () => {
+				internals.registrations.delete(registration);
+			};
 		},
 
 		cleanup() {

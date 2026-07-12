@@ -25,9 +25,11 @@ export const configureVideo = ({
 	blockResize,
 	blockPopoverAppearanceHandler,
 }: ConfigureVideoParams) => {
-	blockResize.registerComponent({
-		componentName: componentsName.video,
+	const blockResizeCleanup = blockResize.registerComponent({
 		handleX: 16,
+		canShow({ blockNestedContext }) {
+			return blockNestedContext.$$componentName === componentsName.video;
+		},
 	});
 
 	const toolbarButtonStateCleanup = handleVideoToolbarButtonState({
@@ -42,67 +44,68 @@ export const configureVideo = ({
 		blockComponentPlacement,
 	});
 
-	const popoverAppearanceCleanup = handleVideoPopoverAppearance({
-		richTextEditorUI,
-		blockPopoverAppearanceHandler,
-	});
+	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
+		handleVideoPopoverAppearance({
+			richTextEditorUI,
+			blockPopoverAppearanceHandler,
+		});
 
 	const alignStateCleanup = handleVideoAlignState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const objectFitStateCleanup = handleVideoObjectFitState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const aspectRatioStateCleanup = handleVideoAspectRatioState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const captionStateCleanup = handleVideoCaptionState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const titleStateCleanup = handleVideoTitleState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const playbackStateCleanup = handleVideoPlaybackState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const posterStateCleanup = handleVideoPosterState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const swapCleanup = handleVideoSwap({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const deleteCleanup = handleVideoDelete({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	return () => {
-		blockResize.unregisterComponent({ componentName: componentsName.video });
+		blockResizeCleanup();
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 		popoverAppearanceCleanup();

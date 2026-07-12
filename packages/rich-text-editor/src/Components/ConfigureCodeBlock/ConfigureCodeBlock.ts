@@ -28,16 +28,17 @@ export const configureCodeBlock = ({
 
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
+	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
+		handleCodeBlockPopoverAppearance({
+			richTextEditorUI,
+			blockPopoverAppearanceHandler,
+		});
+
 	const popoverStateCleanup = handleCodeBlockPopoverState({
 		richTextEditorUI,
 		editorAPI,
 		codeHighlighter,
-		blockPopoverAppearanceHandler,
-	});
-
-	const popoverAppearanceCleanup = handleCodeBlockPopoverAppearance({
-		richTextEditorUI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	return () => {

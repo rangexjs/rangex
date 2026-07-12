@@ -4,7 +4,6 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
 import { toHighlighterLang, toHighlighterTheme } from "../_Utilities";
 import {
 	codeBlockStorageFallbacks,
@@ -20,19 +19,14 @@ import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopover
 export const handleCodeBlockPopoverState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 	codeHighlighter,
 }: HandleCodeBlockPopoverStateParams) => {
 	const { codeBlockPopover } = richTextEditorUI;
 
-	const getCurrentCodeBlock = () =>
-		blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.codeBlock,
-		});
-
 	const unsubscribeLanguageChange = codeBlockPopover.onLanguageChange(
 		(language) => {
-			const currentCodeBlock = getCurrentCodeBlock();
+			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
 				return;
 			}
@@ -55,7 +49,7 @@ export const handleCodeBlockPopoverState = ({
 
 	const unsubscribeLightThemeChange = codeBlockPopover.onLightThemeChange(
 		(lightTheme) => {
-			const currentCodeBlock = getCurrentCodeBlock();
+			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
 				return;
 			}
@@ -78,7 +72,7 @@ export const handleCodeBlockPopoverState = ({
 
 	const unsubscribeDarkThemeChange = codeBlockPopover.onDarkThemeChange(
 		(darkTheme) => {
-			const currentCodeBlock = getCurrentCodeBlock();
+			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
 				return;
 			}
@@ -100,7 +94,7 @@ export const handleCodeBlockPopoverState = ({
 	);
 
 	const unsubscribeCopy = codeBlockPopover.onCopy(() => {
-		const currentCodeBlock = getCurrentCodeBlock();
+		const currentCodeBlock = getCurrentBlock();
 		if (!currentCodeBlock) {
 			return;
 		}

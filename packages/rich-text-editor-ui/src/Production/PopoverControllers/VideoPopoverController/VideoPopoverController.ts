@@ -1,12 +1,10 @@
 import { assertNever } from "../../ErrorHandling";
 import type {
 	BlockAlignValue,
-	EmitSwapParams,
 	OnAlignChangeFn,
 	OnDeleteFn,
-	OnSwapFn,
 	UpdateAlignFn,
-} from "../ImagePopoverController";
+} from "../ImageEditPopoverController";
 import type {
 	OnPlaybackChangeFn,
 	OnPosterChangeFn,
@@ -15,6 +13,7 @@ import type {
 	OnVideoCaptionEnabledChangeFn,
 	OnVideoCaptionPositionChangeFn,
 	OnVideoObjectFitChangeFn,
+	OnVideoSwapFn,
 	UpdatePlaybackFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
@@ -25,6 +24,7 @@ import type {
 	VideoAspectRatioValue,
 	VideoCaptionPosition,
 	VideoCaptionState,
+	VideoEmitSwapParams,
 	VideoListenerOption,
 	VideoObjectFitValue,
 	VideoPlaybackState,
@@ -65,7 +65,7 @@ export class VideoPopoverController {
 	#onPlaybackChangeListeners: Set<OnPlaybackChangeFn> = new Set();
 	#onPosterChangeListeners: Set<OnPosterChangeFn> = new Set();
 	#onTitleChangeListeners: Set<OnTitleChangeFn> = new Set();
-	#onSwapListeners: Set<OnSwapFn> = new Set();
+	#onSwapListeners: Set<OnVideoSwapFn> = new Set();
 	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 
 	get align() {
@@ -191,7 +191,7 @@ export class VideoPopoverController {
 		}
 	}
 
-	emitSwap(params: EmitSwapParams) {
+	emitSwap(params: VideoEmitSwapParams) {
 		for (const listener of this.#onSwapListeners) {
 			listener(params);
 		}

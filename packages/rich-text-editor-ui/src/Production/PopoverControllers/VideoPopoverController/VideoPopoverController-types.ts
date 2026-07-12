@@ -2,9 +2,24 @@ import type {
 	BlockAlignValue,
 	OnAlignChangeFn,
 	OnDeleteFn,
-	OnSwapFn,
 	UpdateAlignFn,
-} from "../ImagePopoverController";
+} from "../ImageEditPopoverController";
+
+export interface VideoEmitSwapURLParams {
+	source: "url";
+	url: string;
+}
+
+export interface VideoEmitSwapFileUploadParams {
+	source: "file-upload";
+	files: FileList;
+}
+
+export type VideoEmitSwapParams =
+	| VideoEmitSwapURLParams
+	| VideoEmitSwapFileUploadParams;
+
+export type OnVideoSwapFn = (params: VideoEmitSwapParams) => void;
 
 export type VideoObjectFitValue = "cover" | "contain" | "fill";
 export type VideoAspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
@@ -79,6 +94,6 @@ export interface VideoPopover {
 	onPlaybackChange(callback: OnPlaybackChangeFn): () => void;
 	onPosterChange(callback: OnPosterChangeFn): () => void;
 	onTitleChange(callback: OnTitleChangeFn): () => void;
-	onSwap(callback: OnSwapFn): () => void;
+	onSwap(callback: OnVideoSwapFn): () => void;
 	onDelete(callback: OnDeleteFn): () => void;
 }

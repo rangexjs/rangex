@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import {
 	getImageCaption,
 	getImageFigure,
@@ -15,15 +14,13 @@ import type { HandleImageCaptionStateParams } from "./HandleImageCaptionState-ty
 export const handleImageCaptionState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleImageCaptionStateParams) => {
-	const { imagePopover } = richTextEditorUI;
+	const { imageEditPopover } = richTextEditorUI;
 
-	const unsubscribeCaptionEnabledChange = imagePopover.onCaptionEnabledChange(
-		(enabled) => {
-			const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-				componentName: componentsName.image,
-			});
+	const unsubscribeCaptionEnabledChange =
+		imageEditPopover.onCaptionEnabledChange((enabled) => {
+			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
 				return;
@@ -32,19 +29,16 @@ export const handleImageCaptionState = ({
 			const figure = getImageFigure({ blockNestedContext: currentBlock });
 
 			setImageCaptionEnabled({ figure, enabled });
-			imagePopover.updateState({ caption: getImageCaption({ figure }) });
+			imageEditPopover.updateState({ caption: getImageCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		});
 
-	const unsubscribeCaptionPositionChange = imagePopover.onCaptionPositionChange(
-		(position) => {
-			const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-				componentName: componentsName.image,
-			});
+	const unsubscribeCaptionPositionChange =
+		imageEditPopover.onCaptionPositionChange((position) => {
+			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
 				return;
@@ -53,13 +47,12 @@ export const handleImageCaptionState = ({
 			const figure = getImageFigure({ blockNestedContext: currentBlock });
 
 			setImageCaptionPosition({ figure, position });
-			imagePopover.updateState({ caption: getImageCaption({ figure }) });
+			imageEditPopover.updateState({ caption: getImageCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		});
 
 	return () => {
 		unsubscribeCaptionEnabledChange();

@@ -4,6 +4,7 @@
 		"includes": ["**", "!**/node_modules", "!**/dist"]
 	},
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"html": { "formatter": { "enabled": true } },
 	"linter": {
 		"enabled": true,
 		"rules": {

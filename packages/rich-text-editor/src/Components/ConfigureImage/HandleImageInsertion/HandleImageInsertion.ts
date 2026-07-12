@@ -6,27 +6,19 @@ import {
 	createContentLine,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	imageAspectRatioAttr,
-	imageObjectFitAttr,
-} from "../../../Constants";
-import { assertNever } from "../../../ErrorHandling";
-import { readFileAsDataURL } from "../_Utilities";
+import { blockAlignAttr, componentsName } from "../../../Constants";
+import { createImageDropzone } from "../_Utilities";
 import type {
-	CreateImageComponentParams,
 	CreateImageComponentResult,
 	HandleImageInsertionParams,
-	InsertImageFromURLParams,
-	InsertImagesFromFilesParams,
-	InsertImagesParams,
 } from "./HandleImageInsertion-types";
 
-const createImageComponent = ({
-	src,
-	alt,
-}: CreateImageComponentParams): CreateImageComponentResult => {
+/**
+ * Images are inserted empty — an unfilled dropzone placeholder, not a populated `img`.
+ * The real `img` is created later, once a source is provided through the dropzone's
+ * popover or a file drop.
+ */
+const createImageComponent = (): CreateImageComponentResult => {
 	const blockNestedContextLine = createBlockNestedContextLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
@@ -35,22 +27,13 @@ const createImageComponent = ({
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.image,
 			content: { type: "custom" },
+			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
 			childNodes: [
 				createHTMLLayout({
 					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "img",
-							domAttrs: {
-								src,
-								alt,
-								[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
-								[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
-							},
-						}),
-					],
+					childNodes: [createImageDropzone()],
 				}),
 			],
 		}),
@@ -58,77 +41,6 @@ const createImageComponent = ({
 	});
 
 	return blockNestedContextLine;
-};
-
-/**
- * Images have no editable content of their own, so a trailing empty paragraph
- * is inserted right after them.
- */
-const insertImages = ({
-	editorAPI,
-	blockComponentPlacement,
-	imageLines,
-}: InsertImagesParams) => {
-	if (!imageLines.length) {
-		return;
-	}
-
-	const trailingLine = createContentLine({
-		localName: "p",
-		childNodes: [createBeamText()],
-	});
-
-	blockComponentPlacement.insertBySelection({
-		lines: [...imageLines, trailingLine],
-		shouldReplaceContentLineIfEmpty: true,
-	});
-
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
-	snapshotTimeline.registerSnapshotBoundary();
-
-	const selection = editorAPI.getEditorSelection();
-
-	selection.setBoundaryPoints({
-		fromNode: trailingLine,
-		fromOffset: 0,
-		toNode: trailingLine,
-		toOffset: 0,
-	});
-
-	editorAPI.focus();
-};
-
-const insertImageFromURL = ({
-	editorAPI,
-	blockComponentPlacement,
-	url,
-	alt,
-}: InsertImageFromURLParams) => {
-	const imageLine = createImageComponent({ src: url, alt });
-
-	insertImages({
-		editorAPI,
-		blockComponentPlacement,
-		imageLines: [imageLine],
-	});
-};
-
-const insertImagesFromFiles = async ({
-	editorAPI,
-	blockComponentPlacement,
-	files,
-	alt,
-}: InsertImagesFromFilesParams) => {
-	const dataURLs = await Promise.all(Array.from(files, readFileAsDataURL));
-
-	const imageLines: CreateImageComponentResult[] = [];
-
-	for (const dataURL of dataURLs) {
-		imageLines.push(createImageComponent({ src: dataURL, alt }));
-	}
-
-	insertImages({ editorAPI, blockComponentPlacement, imageLines });
 };
 
 export const handleImageInsertion = ({
@@ -141,27 +53,32 @@ export const handleImageInsertion = ({
 			return;
 		}
 
-		if (params.insertionType === "url") {
-			insertImageFromURL({
-				editorAPI,
-				blockComponentPlacement,
-				url: params.url,
-				alt: params.alt,
-			});
-			return;
-		}
+		const imageLine = createImageComponent();
 
-		if (params.insertionType === "file-upload") {
-			insertImagesFromFiles({
-				editorAPI,
-				blockComponentPlacement,
-				files: params.files,
-				alt: params.alt,
-			});
-			return;
-		}
+		const trailingLine = createContentLine({
+			localName: "p",
+			childNodes: [createBeamText()],
+		});
 
-		assertNever(params);
+		blockComponentPlacement.insertBySelection({
+			lines: [imageLine, trailingLine],
+			shouldReplaceContentLineIfEmpty: true,
+		});
+
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+		snapshotTimeline.registerSnapshotBoundary();
+
+		const selection = editorAPI.getEditorSelection();
+
+		selection.setBoundaryPoints({
+			fromNode: trailingLine,
+			fromOffset: 0,
+			toNode: trailingLine,
+			toOffset: 0,
+		});
+
+		editorAPI.focus();
 	});
 
 	return () => {

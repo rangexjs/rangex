@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import {
 	getVideoElement,
 	getVideoFigure,
@@ -16,14 +15,12 @@ import type { HandleVideoPlaybackStateParams } from "./HandleVideoPlaybackState-
 export const handleVideoPlaybackState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoPlaybackStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribePlaybackChange = videoPopover.onPlaybackChange((patch) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

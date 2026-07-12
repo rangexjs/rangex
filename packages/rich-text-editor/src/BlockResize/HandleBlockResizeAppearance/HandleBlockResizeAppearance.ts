@@ -1,19 +1,23 @@
 import {
 	type BlockNestedContext,
 	blockNestedContextName,
-	type EditorElement,
 	isEditorNode,
 } from "rich-text-area";
-import type { ComponentName } from "../../Constants";
-import type { BlockResizeRegistrationMap } from "../BlockResize-types";
+import type { BlockResizeRegistrationSet } from "../BlockResize-types";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";
 
-const isResizableBlockNestedContext = (
-	element: EditorElement,
-	registrations: BlockResizeRegistrationMap,
-) =>
-	element.$$editorRole === blockNestedContextName &&
-	registrations.has(element.$$componentName as ComponentName);
+const findRegistration = (
+	blockNestedContext: BlockNestedContext,
+	registrations: BlockResizeRegistrationSet,
+) => {
+	for (const registration of registrations) {
+		if (registration.canShow({ blockNestedContext })) {
+			return registration;
+		}
+	}
+
+	return null;
+};
 
 /**
  * Shows/hides the block resize handles on pointer hover, mirroring the code block popover's
@@ -55,15 +59,16 @@ export const handleBlockResizeAppearance = ({
 	popover.addEventListener("toggle", onToggle, { signal });
 
 	const showPopover = (blockNestedContext: BlockNestedContext) => {
-		cancelHide();
-
-		const registration = internals.registrations.get(
-			blockNestedContext.$$componentName as ComponentName,
+		const registration = findRegistration(
+			blockNestedContext,
+			internals.registrations,
 		);
 
 		if (!registration) {
-			throw new Error("ComponentName is not registered.");
+			return;
 		}
+
+		cancelHide();
 
 		blockResizePopover.updateHandleX(registration.handleX);
 
@@ -78,8 +83,7 @@ export const handleBlockResizeAppearance = ({
 	};
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) =>
-			isResizableBlockNestedContext(element, internals.registrations),
+		when: ({ element }) => element.$$editorRole === blockNestedContextName,
 		eventListener: {
 			type: "pointerenter",
 			listener(event) {
@@ -99,8 +103,7 @@ export const handleBlockResizeAppearance = ({
 	});
 
 	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) =>
-			isResizableBlockNestedContext(element, internals.registrations),
+		when: ({ element }) => element.$$editorRole === blockNestedContextName,
 		eventListener: {
 			type: "pointerleave",
 			listener: scheduleHide,

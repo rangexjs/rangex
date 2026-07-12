@@ -1,14 +1,20 @@
 import { componentsName } from "../../Constants";
-import type { ConfigureImageParams } from "./ConfigureImage-types";
+import { getImageFigure, isImageEmpty } from "./_Utilities";
+import type {
+	ConfigureImageParams,
+	ImageInternals,
+} from "./ConfigureImage-types";
 import { handleImageAlignState } from "./HandleImageAlignState";
-import { handleImageAltTextState } from "./HandleImageAltTextState";
-import { handleImageAspectRatioState } from "./HandleImageAspectRatioState";
+import { handleImageAttrState } from "./HandleImageAttrState";
 import { handleImageCaptionState } from "./HandleImageCaptionState";
 import { handleImageDelete } from "./HandleImageDelete";
+import { handleImageDrop } from "./HandleImageDrop";
+import { handleImageDropzoneClick } from "./HandleImageDropzoneClick";
+import { handleImageEditPopoverAppearance } from "./HandleImageEditPopoverAppearance";
 import { handleImageInsertion } from "./HandleImageInsertion";
-import { handleImageObjectFitState } from "./HandleImageObjectFitState";
-import { handleImagePopoverAppearance } from "./HandleImagePopoverAppearance";
 import { handleImageSwap } from "./HandleImageSwap";
+import { handleImageSwapButtonOpen } from "./HandleImageSwapButtonOpen";
+import { handleImageSwapPopoverClose } from "./HandleImageSwapPopoverClose";
 import { handleImageToolbarButtonState } from "./HandleImageToolbarButtonState";
 
 // TODO: file uploads are inlined as base64 data URLs (see readFileAsDataURL in
@@ -24,9 +30,19 @@ export const configureImage = ({
 	blockResize,
 	blockPopoverAppearanceHandler,
 }: ConfigureImageParams) => {
-	blockResize.registerComponent({
-		componentName: componentsName.image,
+	const internals: ImageInternals = { currentImageFigure: null };
+
+	const blockResizeCleanup = blockResize.registerComponent({
 		handleX: 16,
+		canShow({ blockNestedContext }) {
+			if (blockNestedContext.$$componentName !== componentsName.image) {
+				return false;
+			}
+
+			const figure = getImageFigure({ blockNestedContext });
+
+			return !isImageEmpty({ figure });
+		},
 	});
 
 	const toolbarButtonStateCleanup = handleImageToolbarButtonState({
@@ -41,64 +57,74 @@ export const configureImage = ({
 		blockComponentPlacement,
 	});
 
-	const popoverAppearanceCleanup = handleImagePopoverAppearance({
-		richTextEditorUI,
-		blockPopoverAppearanceHandler,
-	});
+	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
+		handleImageEditPopoverAppearance({
+			richTextEditorUI,
+			blockPopoverAppearanceHandler,
+		});
 
 	const alignStateCleanup = handleImageAlignState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
-	const objectFitStateCleanup = handleImageObjectFitState({
+	const attrStateCleanup = handleImageAttrState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
-	});
-
-	const aspectRatioStateCleanup = handleImageAspectRatioState({
-		richTextEditorUI,
-		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	const captionStateCleanup = handleImageCaptionState({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
-	const altTextStateCleanup = handleImageAltTextState({
+	const dropzoneClickCleanup = handleImageDropzoneClick({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		internals,
+	});
+
+	const dropCleanup = handleImageDrop({ editorAPI });
+
+	const swapButtonOpenCleanup = handleImageSwapButtonOpen({
+		richTextEditorUI,
+		getCurrentBlock,
+		internals,
 	});
 
 	const swapCleanup = handleImageSwap({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		internals,
+	});
+
+	const swapPopoverCloseCleanup = handleImageSwapPopoverClose({
+		richTextEditorUI,
+		internals,
 	});
 
 	const deleteCleanup = handleImageDelete({
 		richTextEditorUI,
 		editorAPI,
-		blockPopoverAppearanceHandler,
+		getCurrentBlock,
 	});
 
 	return () => {
-		blockResize.unregisterComponent({ componentName: componentsName.image });
+		blockResizeCleanup();
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 		popoverAppearanceCleanup();
 		alignStateCleanup();
-		objectFitStateCleanup();
-		aspectRatioStateCleanup();
+		attrStateCleanup();
 		captionStateCleanup();
-		altTextStateCleanup();
+		dropzoneClickCleanup();
+		dropCleanup();
+		swapButtonOpenCleanup();
 		swapCleanup();
+		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

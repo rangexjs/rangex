@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import type { HandleVideoDeleteParams } from "./HandleVideoDelete-types";
 
 /**
@@ -8,14 +7,12 @@ import type { HandleVideoDeleteParams } from "./HandleVideoDelete-types";
 export const handleVideoDelete = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoDeleteParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeDelete = videoPopover.onDelete(() => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

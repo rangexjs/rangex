@@ -6,7 +6,8 @@ import type {
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
-	ImagePopoverController,
+	ImageEditPopoverController,
+	ImageSwapPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -34,7 +35,8 @@ import {
 	BlockResizePopover,
 	CodeBlockPopover,
 	EmojiPopover,
-	ImagePopover,
+	ImageEditPopover,
+	ImageSwapPopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
@@ -73,7 +75,8 @@ export interface PopoverControllers {
 	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
 	emojiPopoverController: EmojiPopoverController;
-	imagePopoverController: ImagePopoverController;
+	imageEditPopoverController: ImageEditPopoverController;
+	imageSwapPopoverController: ImageSwapPopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
@@ -151,7 +154,8 @@ export const App = (props: AppProps) => {
 		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
-		imagePopoverController: props.imagePopoverController,
+		imageEditPopoverController: props.imageEditPopoverController,
+		imageSwapPopoverController: props.imageSwapPopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
@@ -183,7 +187,8 @@ export const App = (props: AppProps) => {
 						<BlockResizePopover />
 						<CodeBlockPopover />
 						<EmojiPopover />
-						<ImagePopover />
+						<ImageEditPopover />
+						<ImageSwapPopover />
 						<LinkPopover />
 						<MentionPopover />
 						<TableQuickActionsPopover />

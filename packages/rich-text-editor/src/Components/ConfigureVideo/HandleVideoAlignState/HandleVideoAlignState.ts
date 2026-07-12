@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import { setBlockAlign } from "../../_Utilities";
 import type { HandleVideoAlignStateParams } from "./HandleVideoAlignState-types";
 
@@ -9,14 +8,12 @@ import type { HandleVideoAlignStateParams } from "./HandleVideoAlignState-types"
 export const handleVideoAlignState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoAlignStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeAlignChange = videoPopover.onAlignChange((align) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

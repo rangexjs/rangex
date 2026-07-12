@@ -11,3 +11,9 @@ export interface GetImageImgParams {
 }
 
 export type GetImageImgResult = HTMLLayout;
+
+export interface GetImageDropzoneParams {
+	figure: HTMLLayout;
+}
+
+export type GetImageDropzoneResult = HTMLLayout | null;

@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import { getVideoElement, getVideoFigure, setVideoPoster } from "../_Utilities";
 import type { HandleVideoPosterStateParams } from "./HandleVideoPosterState-types";
 
@@ -9,14 +8,12 @@ import type { HandleVideoPosterStateParams } from "./HandleVideoPosterState-type
 export const handleVideoPosterState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoPosterStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribePosterChange = videoPopover.onPosterChange((poster) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.video,
-		});
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;

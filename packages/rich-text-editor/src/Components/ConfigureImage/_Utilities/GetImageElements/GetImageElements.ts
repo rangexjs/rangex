@@ -1,5 +1,8 @@
 import { htmlLayoutName } from "rich-text-area";
+import { imagePart } from "../../../../Constants";
 import type {
+	GetImageDropzoneParams,
+	GetImageDropzoneResult,
 	GetImageFigureParams,
 	GetImageFigureResult,
 	GetImageImgParams,
@@ -32,4 +35,23 @@ export const getImageImg = ({
 	}
 
 	throw new Error("Figure must contain an img.");
+};
+
+/**
+ * Returns the empty-state dropzone placeholder, or `null` once the image has a source
+ * and the figure holds a real `img` instead.
+ */
+export const getImageDropzone = ({
+	figure,
+}: GetImageDropzoneParams): GetImageDropzoneResult => {
+	for (const child of figure.$$children) {
+		if (
+			child.$$editorRole === htmlLayoutName &&
+			child.matches(imagePart.dropzone.attr)
+		) {
+			return child;
+		}
+	}
+
+	return null;
 };

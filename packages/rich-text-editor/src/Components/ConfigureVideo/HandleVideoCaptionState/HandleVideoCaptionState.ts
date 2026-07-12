@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import {
 	getVideoCaption,
 	getVideoFigure,
@@ -15,15 +14,13 @@ import type { HandleVideoCaptionStateParams } from "./HandleVideoCaptionState-ty
 export const handleVideoCaptionState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleVideoCaptionStateParams) => {
 	const { videoPopover } = richTextEditorUI;
 
 	const unsubscribeCaptionEnabledChange = videoPopover.onCaptionEnabledChange(
 		(enabled) => {
-			const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-				componentName: componentsName.video,
-			});
+			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
 				return;
@@ -42,9 +39,7 @@ export const handleVideoCaptionState = ({
 
 	const unsubscribeCaptionPositionChange = videoPopover.onCaptionPositionChange(
 		(position) => {
-			const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-				componentName: componentsName.video,
-			});
+			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
 				return;

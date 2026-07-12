@@ -9,6 +9,7 @@ import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPo
 /**
  * Registers the code block popover with the shared {@link BlockPopoverAppearanceHandler},
  * pushing the block's current language/theme into the popover just before it appears.
+ * Returns the registration's `getCurrentBlock`, threaded to {@link handleCodeBlockPopoverState}.
  */
 export const handleCodeBlockPopoverAppearance = ({
 	richTextEditorUI,
@@ -16,14 +17,16 @@ export const handleCodeBlockPopoverAppearance = ({
 }: HandleCodeBlockPopoverAppearanceParams) => {
 	const { codeBlockPopover } = richTextEditorUI;
 
-	blockPopoverAppearanceHandler.registerComponent({
-		componentName: componentsName.codeBlock,
+	return blockPopoverAppearanceHandler.registerComponent({
 		popover: codeBlockPopover.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
 			top: "100%",
 			right: "100%",
+		},
+		canShow({ blockNestedContext }) {
+			return blockNestedContext.$$componentName === componentsName.codeBlock;
 		},
 		onShow({ blockNestedContext }) {
 			const { lang, theme } = ensureNodeCodeBlockStorage({
@@ -38,10 +41,4 @@ export const handleCodeBlockPopoverAppearance = ({
 			});
 		},
 	});
-
-	return () => {
-		blockPopoverAppearanceHandler.unregisterComponent({
-			componentName: componentsName.codeBlock,
-		});
-	};
 };

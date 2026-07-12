@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import { setBlockAlign } from "../../_Utilities";
 import type { HandleImageAlignStateParams } from "./HandleImageAlignState-types";
 
@@ -9,14 +8,12 @@ import type { HandleImageAlignStateParams } from "./HandleImageAlignState-types"
 export const handleImageAlignState = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleImageAlignStateParams) => {
-	const { imagePopover } = richTextEditorUI;
+	const { imageEditPopover } = richTextEditorUI;
 
-	const unsubscribeAlignChange = imagePopover.onAlignChange((align) => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.image,
-		});
+	const unsubscribeAlignChange = imageEditPopover.onAlignChange((align) => {
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;
@@ -29,7 +26,7 @@ export const handleImageAlignState = ({
 		}
 
 		setBlockAlign({ blockNestedContextLine: $$parentElement, align });
-		imagePopover.updateState({ align });
+		imageEditPopover.updateState({ align });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

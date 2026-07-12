@@ -14,7 +14,8 @@ import {
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
-	ImagePopoverController,
+	ImageEditPopoverController,
+	ImageSwapPopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
@@ -59,7 +60,8 @@ export class RichTextEditorUI extends HTMLElement {
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
-	#imagePopoverController = new ImagePopoverController();
+	#imageEditPopoverController = new ImageEditPopoverController();
+	#imageSwapPopoverController = new ImageSwapPopoverController();
 	#linkPopoverController = new LinkPopoverController();
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
@@ -134,7 +136,8 @@ export class RichTextEditorUI extends HTMLElement {
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
-					imagePopoverController={this.#imagePopoverController}
+					imageEditPopoverController={this.#imageEditPopoverController}
+					imageSwapPopoverController={this.#imageSwapPopoverController}
 					linkPopoverController={this.#linkPopoverController}
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
@@ -250,8 +253,12 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#emojiPopoverController.publicAPI;
 	}
 
-	get imagePopover() {
-		return this.#imagePopoverController.publicAPI;
+	get imageEditPopover() {
+		return this.#imageEditPopoverController.publicAPI;
+	}
+
+	get imageSwapPopover() {
+		return this.#imageSwapPopoverController.publicAPI;
 	}
 
 	get linkPopover() {

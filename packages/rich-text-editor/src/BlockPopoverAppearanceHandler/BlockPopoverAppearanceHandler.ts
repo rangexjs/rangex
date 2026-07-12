@@ -1,10 +1,8 @@
 import {
 	type BlockNestedContext,
 	blockNestedContextName,
-	type EditorElement,
 	isEditorNode,
 } from "rich-text-area";
-import type { ComponentName } from "../Constants";
 import type {
 	BlockPopoverAppearanceHandler,
 	BlockPopoverRegistration,
@@ -12,20 +10,14 @@ import type {
 	CreateBlockPopoverAppearanceHandlerResult,
 } from "./BlockPopoverAppearanceHandler-types";
 
-const isRegisteredBlockNestedContext = (
-	element: EditorElement,
-	registrations: Map<ComponentName, BlockPopoverRegistration>,
-) =>
-	element.$$editorRole === blockNestedContextName &&
-	registrations.has(element.$$componentName as ComponentName);
-
 /**
  * Centralizes the hover-driven show/hide mechanics shared by every block-level popover
  * (code block options, image options, etc). Each component registers its own popover
- * element, corner position, and an optional `onShow` hook to push per-block state into
- * the popover just before it appears — the popover's content stays entirely owned by
- * the registering component. A short delay before hiding tolerates moving the pointer
- * from the block onto the popover itself.
+ * element, corner position, and two hooks: `canShow` decides whether this registration
+ * owns a given hovered block and whether its popover should appear, and the optional
+ * `onShow` pushes that block's current state into the popover just before it appears —
+ * the popover's content stays entirely owned by the registering component. A short delay
+ * before hiding tolerates moving the pointer from the block onto the popover itself.
  *
  * Hiding is gated on two independent signals — `pointerOver` and `focusWithin` — so
  * typing into a field inside the popover (e.g. alt text) keeps it open even while the
@@ -35,7 +27,27 @@ const isRegisteredBlockNestedContext = (
 export const createBlockPopoverAppearanceHandler = ({
 	editorAPI,
 }: CreateBlockPopoverAppearanceHandlerParams): CreateBlockPopoverAppearanceHandlerResult => {
-	const registrations = new Map<ComponentName, BlockPopoverRegistration>();
+	const registrations = new Set<BlockPopoverRegistration>();
+
+	const findRegistration = (blockNestedContext: BlockNestedContext) => {
+		for (const registration of registrations) {
+			if (registration.canShow({ blockNestedContext })) {
+				return registration;
+			}
+		}
+
+		return null;
+	};
+
+	const findCurrentRegistration = (blockNestedContext: BlockNestedContext) => {
+		for (const registration of registrations) {
+			if (registration.currentBlock === blockNestedContext) {
+				return registration;
+			}
+		}
+
+		return null;
+	};
 
 	const scheduleHide = (registration: BlockPopoverRegistration) => {
 		if (registration.pointerOver || registration.focusWithin) {
@@ -80,8 +92,7 @@ export const createBlockPopoverAppearanceHandler = ({
 	};
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) =>
-			isRegisteredBlockNestedContext(element, registrations),
+		when: ({ element }) => element.$$editorRole === blockNestedContextName,
 		eventListener: {
 			type: "pointerenter",
 			listener(event) {
@@ -95,9 +106,7 @@ export const createBlockPopoverAppearanceHandler = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				const registration = registrations.get(
-					currentTarget.$$componentName as ComponentName,
-				);
+				const registration = findRegistration(currentTarget);
 
 				if (!registration) {
 					return;
@@ -109,8 +118,7 @@ export const createBlockPopoverAppearanceHandler = ({
 	});
 
 	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) =>
-			isRegisteredBlockNestedContext(element, registrations),
+		when: ({ element }) => element.$$editorRole === blockNestedContextName,
 		eventListener: {
 			type: "pointerleave",
 			listener(event) {
@@ -124,9 +132,7 @@ export const createBlockPopoverAppearanceHandler = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				const registration = registrations.get(
-					currentTarget.$$componentName as ComponentName,
-				);
+				const registration = findCurrentRegistration(currentTarget);
 
 				if (!registration) {
 					return;
@@ -139,13 +145,14 @@ export const createBlockPopoverAppearanceHandler = ({
 	});
 
 	const blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler = {
-		registerComponent({ componentName, popover, position, onShow }) {
+		registerComponent({ popover, position, canShow, onShow }) {
 			const abortController = new AbortController();
 			const { signal } = abortController;
 
 			const registration: BlockPopoverRegistration = {
 				popover,
 				position,
+				canShow,
 				onShow,
 				currentBlock: null,
 				hideTimeoutId: NaN,
@@ -154,7 +161,7 @@ export const createBlockPopoverAppearanceHandler = ({
 				focusWithin: false,
 			};
 
-			registrations.set(componentName, registration);
+			registrations.add(registration);
 
 			popover.addEventListener(
 				"pointerenter",
@@ -208,35 +215,22 @@ export const createBlockPopoverAppearanceHandler = ({
 				},
 				{ signal },
 			);
-		},
 
-		unregisterComponent({ componentName }) {
-			const registration = registrations.get(componentName);
-
-			if (!registration) {
-				return;
-			}
-
-			registration.abortController.abort();
-			clearTimeout(registration.hideTimeoutId);
-			registrations.delete(componentName);
-		},
-
-		getCurrentBlock({ componentName }) {
-			const registration = registrations.get(componentName);
-
-			if (!registration) {
-				throw new Error("ComponentName is not registered.");
-			}
-
-			return registration.currentBlock;
+			return {
+				getCurrentBlock: () => registration.currentBlock,
+				cleanup: () => {
+					registration.abortController.abort();
+					clearTimeout(registration.hideTimeoutId);
+					registrations.delete(registration);
+				},
+			};
 		},
 
 		cleanup() {
 			unsubscribePointerEnter();
 			unsubscribePointerLeave();
 
-			for (const registration of registrations.values()) {
+			for (const registration of registrations) {
 				registration.abortController.abort();
 				clearTimeout(registration.hideTimeoutId);
 			}

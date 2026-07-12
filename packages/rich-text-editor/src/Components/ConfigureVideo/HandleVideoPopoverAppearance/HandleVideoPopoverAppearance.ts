@@ -14,7 +14,9 @@ import type { HandleVideoPopoverAppearanceParams } from "./HandleVideoPopoverApp
 
 /**
  * Registers the video popover with the shared {@link BlockPopoverAppearanceHandler},
- * pushing the block's current alignment into the popover just before it appears.
+ * pushing the block's current alignment into the popover just before it appears. Returns
+ * the registration's `getCurrentBlock`, threaded to every other video handler that needs
+ * to know which video block the popover is currently open over.
  */
 export const handleVideoPopoverAppearance = ({
 	richTextEditorUI,
@@ -22,14 +24,16 @@ export const handleVideoPopoverAppearance = ({
 }: HandleVideoPopoverAppearanceParams) => {
 	const { videoPopover } = richTextEditorUI;
 
-	blockPopoverAppearanceHandler.registerComponent({
-		componentName: componentsName.video,
+	return blockPopoverAppearanceHandler.registerComponent({
 		popover: videoPopover.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
 			top: "100%",
 			right: "100%",
+		},
+		canShow({ blockNestedContext }) {
+			return blockNestedContext.$$componentName === componentsName.video;
 		},
 		onShow({ blockNestedContext }) {
 			const { $$parentElement } = blockNestedContext;
@@ -61,10 +65,4 @@ export const handleVideoPopoverAppearance = ({
 			});
 		},
 	});
-
-	return () => {
-		blockPopoverAppearanceHandler.unregisterComponent({
-			componentName: componentsName.video,
-		});
-	};
 };

@@ -86,20 +86,8 @@ export interface CustomComponentActionState
 	name: CustomComponentName;
 }
 
-export interface ImageFileUpload {
-	insertionType: "file-upload";
-	files: FileList;
-	alt: string;
-}
-
-export interface ImageURL {
-	insertionType: "url";
-	url: string;
-	alt: string;
-}
-
-export type ImageActionState = GetButtonType<typeof toolbarButtonsName.image> &
-	(ImageFileUpload | ImageURL);
+export interface ImageActionState
+	extends GetButtonType<typeof toolbarButtonsName.image> {}
 
 export interface OrderedListActionState
 	extends GetButtonType<typeof toolbarButtonsName.orderedList> {}

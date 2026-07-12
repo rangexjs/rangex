@@ -1,4 +1,3 @@
-import { componentsName } from "../../../Constants";
 import type { HandleImageDeleteParams } from "./HandleImageDelete-types";
 
 /**
@@ -8,14 +7,12 @@ import type { HandleImageDeleteParams } from "./HandleImageDelete-types";
 export const handleImageDelete = ({
 	richTextEditorUI,
 	editorAPI,
-	blockPopoverAppearanceHandler,
+	getCurrentBlock,
 }: HandleImageDeleteParams) => {
-	const { imagePopover } = richTextEditorUI;
+	const { imageEditPopover } = richTextEditorUI;
 
-	const unsubscribeDelete = imagePopover.onDelete(() => {
-		const currentBlock = blockPopoverAppearanceHandler.getCurrentBlock({
-			componentName: componentsName.image,
-		});
+	const unsubscribeDelete = imageEditPopover.onDelete(() => {
+		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
 			return;
