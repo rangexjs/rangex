@@ -133,6 +133,7 @@ const { RangeX } = defineRangeX({});
 ```ts
 const rangeX = new RangeX({
 	rootEditableFrom: { type: "node", node: rootEditable },
+	shadowRootOptions: { mode: "open", serializable: true },
 	isTextAreaEditable: true,  // default — omit if not needed
 	isTextAnimation: false,    // default — omit if not needed
 });
@@ -146,6 +147,10 @@ Controls how the editor's content is initialized. Two shapes:
 
 - **`{ type: "node", node: RootEditable }`** — fresh start. You construct a `RootEditable` (see [Creating nodes](#5-creating-nodes)) and pass it in.
 - **`{ type: "snapshot", storedSnapshot: StoredSnapshot }`** — restore previously persisted content. Pass a `StoredSnapshot` retrieved from storage (see [Undo/redo & snapshots](#12-undoredo--snapshots)).
+
+### `shadowRootOptions`
+
+`ShadowRootInit` (the same options object native `Element.attachShadow()` accepts: `mode`, `delegatesFocus`, `slotAssignment`, `serializable`, `clonable`). Required — there is no default, so callers must always state their own `mode` explicitly. 
 
 ### `isTextAreaEditable`
 
@@ -548,7 +553,7 @@ Consumers never interact with this node directly. It is created and managed enti
 
 ### DetachedContext
 
-- **HTML element:** `div` or `span` (configurable via `localName`, default `"div"`)
+- **HTML element:** `div`, `span`, or `slot` (configurable via `localName`, default `"div"`)
 - **`data-editor-role`:** `detached-context`
 - **Category:** standalone (part of `EditorElement`, excluded from `ContentFlowNode`)
 
@@ -564,7 +569,7 @@ No EditorNodes, no `LiveBoundaryPoints`, no editor interaction logic applies ins
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$localName`** *(readonly)* — `"div"` or `"span"`.
+- **`$$localName`** *(readonly)* — `"div"`, `"span"`, or `"slot"`.
 - **`$$shadowRoot`** *(readonly)* — the `ShadowRoot` where consumer DOM content lives. Manipulate this directly with standard DOM APIs.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `NestedEditable | LayoutUnit | DetachedContext` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
@@ -1263,7 +1268,7 @@ Creates a `DetachedContext` — the schema-free escape hatch with its own shadow
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `localName` | `"div" \| "span"` | No | Defaults to `"div"` |
+| `localName` | `"div" \| "span" \| "slot"` | No | Defaults to `"div"` |
 | `shadowTree` | `(Element \| Comment \| Text)[]` | No | Initial content appended into `$$shadowRoot` |
 | `domAttrs` | `DOMAttrs` | No | |
 
@@ -1664,6 +1669,7 @@ const rangeX = new RangeX({
     type: "snapshot",
     storedSnapshot: JSON.parse(savedJson),
   },
+  shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
 
@@ -3017,6 +3023,7 @@ const rangeX = new RangeX({
     type: "snapshot",
     storedSnapshot,
   },
+  shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
 
