@@ -179,22 +179,24 @@ export const App = (props: AppProps) => {
 				>
 					<EditorToolbar toolbarButtons={props.toolbarButtons} />
 				</ToolbarButtonManagersContext.Provider>
-				<div>{props.richTextArea}</div>
-				<div>
-					<PopoverControllersContext.Provider
-						value={popoverControllersContextValue}
-					>
-						<BlockResizePopover />
-						<CodeBlockPopover />
-						<EmojiPopover />
-						<ImageEditPopover />
-						<ImageSwapPopover />
-						<LinkPopover />
-						<MentionPopover />
-						<TableQuickActionsPopover />
-						<TemplateVariablePopover />
-						<VideoPopover />
-					</PopoverControllersContext.Provider>
+				<div class="relative max-h-300 overflow-y-auto">
+					<div>{props.richTextArea}</div>
+					<div>
+						<PopoverControllersContext.Provider
+							value={popoverControllersContextValue}
+						>
+							<BlockResizePopover />
+							<CodeBlockPopover />
+							<EmojiPopover />
+							<ImageEditPopover />
+							<ImageSwapPopover />
+							<LinkPopover />
+							<MentionPopover />
+							<TableQuickActionsPopover />
+							<TemplateVariablePopover />
+							<VideoPopover />
+						</PopoverControllersContext.Provider>
+					</div>
 				</div>
 			</EditorContainer>
 		</EditorOptionsContext.Provider>

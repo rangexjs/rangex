@@ -2,11 +2,6 @@
 	interpolate-size: allow-keywords;
 }
 
-rich-text-area-view {
-	max-height: 1200px;
-	overflow-y: auto;
-}
-
 [data-rx-editor-role="root-editable"] {
 	padding: 16px 20px;
 	font-family: "Inter", sans-serif;
