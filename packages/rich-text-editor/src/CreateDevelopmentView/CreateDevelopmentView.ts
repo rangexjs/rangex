@@ -46,6 +46,7 @@ export const createDevelopmentView = () => {
 			type: "node",
 			node: emptyRootEditable,
 		},
+		shadowRootOptions: { mode: "open", serializable: true },
 	});
 
 	const emptyRichTextEditor = new RichTextEditor({
@@ -58,6 +59,7 @@ export const createDevelopmentView = () => {
 			// @ts-expect-error
 			storedSnapshot,
 		},
+		shadowRootOptions: { mode: "open", serializable: true },
 	});
 
 	const filledRichTextEditor = new RichTextEditor({
