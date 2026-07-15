@@ -12,8 +12,3 @@ export const imageAspectRatioAttr = {
 	name: "data-aspect-ratio",
 	value: { auto: "auto", "1-1": "1-1", "4-3": "4-3", "16-9": "16-9" },
 } as const;
-
-export const imageDragActiveAttr = {
-	name: "data-drag-active",
-	value: { true: "true", false: "false" },
-} as const;

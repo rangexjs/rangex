@@ -7,6 +7,12 @@ export type {
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
 export type {
+	MediaResolveDetail,
+	MediaResolveType,
+	MediaSource,
+	UploadState,
+} from "./NodeSlotControllers";
+export type {
 	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,
@@ -58,7 +64,6 @@ export type {
 	FontSizeValues,
 	HistoryBackToolbarButtonState,
 	HistoryForwardToolbarButtonState,
-	ImageToolbarButtonState,
 	IndentationToolbarButtonState,
 	IndentationValue,
 	IndentationValues,
@@ -75,6 +80,7 @@ export type {
 	LineSpacingToolbarButtonState,
 	LineSpacingValue,
 	LineSpacingValues,
+	MediaToolbarButtonState,
 	OrderedListToolbarButtonState,
 	StrikethroughToolbarButtonState,
 	StructuredFontSizePx,

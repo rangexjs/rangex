@@ -3,6 +3,7 @@ import { createMemo, For, type JSX } from "solid-js";
 interface Control<Id extends string> {
 	id: Id;
 	class?: string;
+	"aria-label"?: string;
 	node: JSX.Element;
 }
 
@@ -40,6 +41,7 @@ export const ContentSwitch = <Id extends string>(
 						disabled={props.disabled}
 						on:click={() => props.onChange(item.id)}
 						aria-current={props.id === item.id}
+						aria-label={item["aria-label"]}
 						classList={{
 							[props.commonButtonClass ?? ""]: true,
 							[item.class ?? ""]: true,

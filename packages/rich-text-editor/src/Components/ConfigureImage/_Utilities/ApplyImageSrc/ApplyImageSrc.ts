@@ -1,39 +1,19 @@
-import { createHTMLLayout } from "rich-text-area";
-import {
-	imageAspectRatioAttr,
-	imageObjectFitAttr,
-} from "../../../../Constants";
-import { getImageDropzone, getImageImg } from "../GetImageElements";
+import { getImageImg } from "../GetImageElements";
 import type { ApplyImageSrcParams } from "./ApplyImageSrc-types";
 
 /**
- * Fills the empty placeholder on first use (replacing the dropzone with a real `img`), or
- * just updates `src` on an already-filled image. Shared by every trigger that can provide
- * a source — the swap popover's Update action and a direct file drop onto the dropzone.
+ * Updates `src` on an image that already has one — used by the swap popover's Update
+ * action. Images are never inserted empty (that's `media`'s job before it resolves), so
+ * there's no placeholder-filling case to handle here.
  */
 export const applyImageSrc = ({
 	figure,
 	src,
 	editorAPI,
 }: ApplyImageSrcParams) => {
-	const dropzone = getImageDropzone({ figure });
+	const img = getImageImg({ figure });
 
-	if (dropzone) {
-		const img = createHTMLLayout({
-			localName: "img",
-			domAttrs: {
-				src,
-				alt: "",
-				[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
-				[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
-			},
-		});
-
-		dropzone.$$replaceWith(img);
-	} else {
-		const img = getImageImg({ figure });
-		img.setAttribute("src", src);
-	}
+	img.setAttribute("src", src);
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

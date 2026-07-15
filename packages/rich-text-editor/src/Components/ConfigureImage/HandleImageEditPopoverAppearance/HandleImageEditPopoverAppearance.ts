@@ -7,7 +7,6 @@ import {
 	getImageFigure,
 	getImageImg,
 	getImageObjectFit,
-	isImageEmpty,
 } from "../_Utilities";
 import type { HandleImageEditPopoverAppearanceParams } from "./HandleImageEditPopoverAppearance-types";
 
@@ -32,20 +31,7 @@ export const handleImageEditPopoverAppearance = ({
 			right: "100%",
 		},
 		canShow({ blockNestedContext }) {
-			if (blockNestedContext.$$componentName !== componentsName.image) {
-				return false;
-			}
-
-			// Empty images have no editable state to show — keep the popover closed.
-			// Also strips any flex-basis left over from a resize.
-			const figure = getImageFigure({ blockNestedContext });
-
-			if (isImageEmpty({ figure })) {
-				blockNestedContext.style.removeProperty("flex-basis");
-				return false;
-			}
-
-			return true;
+			return blockNestedContext.$$componentName === componentsName.image;
 		},
 		onShow({ blockNestedContext }) {
 			const { $$parentElement } = blockNestedContext;

@@ -2,6 +2,7 @@ export const componentsName = {
 	blockQuote: "block-quote",
 	codeBlock: "code-block",
 	collapsible: "collapsible",
+	emptyMedia: "empty-media",
 	image: "image",
 	link: "link",
 	list: "list",
@@ -22,7 +23,3 @@ export const createPart = <Name extends string>(name: Name) => {
 
 	return part;
 };
-
-export const imagePart = {
-	dropzone: createPart("dropzone"),
-} as const;

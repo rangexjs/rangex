@@ -47,6 +47,11 @@ export const createDetachedContextHTML = ({
 	detachedContextView,
 }: CreateDetachedContextHTMLParams): CreateDetachedContextHTMLResult => {
 	const { namespaceURI, localName, attributes } = detachedContextView;
+
+	if (localName === "slot") {
+		return null;
+	}
+
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });

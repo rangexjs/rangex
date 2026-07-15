@@ -86,8 +86,8 @@ export interface CustomComponentActionState
 	name: CustomComponentName;
 }
 
-export interface ImageActionState
-	extends GetButtonType<typeof toolbarButtonsName.image> {}
+export interface MediaActionState
+	extends GetButtonType<typeof toolbarButtonsName.media> {}
 
 export interface OrderedListActionState
 	extends GetButtonType<typeof toolbarButtonsName.orderedList> {}
@@ -142,7 +142,7 @@ export type NodeInsertionActionState =
 	| CheckboxListActionState
 	| CodeBlockActionState
 	| CustomComponentActionState
-	| ImageActionState
+	| MediaActionState
 	| OrderedListActionState
 	| SymbolsActionState
 	| TableActionState

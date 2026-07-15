@@ -1,25 +1,19 @@
 import {
-	createBeamText,
 	createBlockNestedContext,
 	createBlockNestedContextLine,
 	createBlockNestedContextTextHolder,
-	createContentLine,
 	createHTMLLayout,
 } from "rich-text-area";
-import { blockAlignAttr, componentsName } from "../../../Constants";
-import { createImageDropzone } from "../_Utilities";
-import type {
-	CreateImageComponentResult,
-	HandleImageInsertionParams,
-} from "./HandleImageInsertion-types";
+import {
+	blockAlignAttr,
+	componentsName,
+	imageAspectRatioAttr,
+	imageObjectFitAttr,
+} from "../../../Constants";
+import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
 
-/**
- * Images are inserted empty — an unfilled dropzone placeholder, not a populated `img`.
- * The real `img` is created later, once a source is provided through the dropzone's
- * popover or a file drop.
- */
-const createImageComponent = (): CreateImageComponentResult => {
-	const blockNestedContextLine = createBlockNestedContextLine({
+const createImageLine = ({ src }: { src: string }) => {
+	return createBlockNestedContextLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
@@ -33,55 +27,49 @@ const createImageComponent = (): CreateImageComponentResult => {
 			childNodes: [
 				createHTMLLayout({
 					localName: "figure",
-					childNodes: [createImageDropzone()],
+					childNodes: [
+						createHTMLLayout({
+							localName: "img",
+							domAttrs: {
+								src,
+								alt: "",
+								[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
+								[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
+							},
+						}),
+					],
 				}),
 			],
 		}),
 		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
 	});
-
-	return blockNestedContextLine;
 };
 
+/**
+ * `BlockNestedContext.$$componentName` is read-only and there's no way to swap a component
+ * in place — the replacement has to happen at the `BlockNestedContextLine` level, which does
+ * support `$$replaceWith`. So a resolved `media` block becomes a brand new `image` line
+ * entirely, not a mutation of the existing one.
+ */
 export const handleImageInsertion = ({
-	richTextEditorUI,
 	editorAPI,
-	blockComponentPlacement,
+	onMediaResolve,
 }: HandleImageInsertionParams) => {
-	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
-		if (params.type !== "image") {
+	return onMediaResolve(({ blockNestedContext, type, src }) => {
+		if (type !== "image") {
 			return;
 		}
 
-		const imageLine = createImageComponent();
+		const { $$parentElement: blockNestedContextLine } = blockNestedContext;
 
-		const trailingLine = createContentLine({
-			localName: "p",
-			childNodes: [createBeamText()],
-		});
+		if (!blockNestedContextLine) {
+			throw new Error("ParentElement not supposed to be null.");
+		}
 
-		blockComponentPlacement.insertBySelection({
-			lines: [imageLine, trailingLine],
-			shouldReplaceContentLineIfEmpty: true,
-		});
+		blockNestedContextLine.$$replaceWith(createImageLine({ src }));
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 		snapshotTimeline.registerSnapshotBoundary();
-
-		const selection = editorAPI.getEditorSelection();
-
-		selection.setBoundaryPoints({
-			fromNode: trailingLine,
-			fromOffset: 0,
-			toNode: trailingLine,
-			toOffset: 0,
-		});
-
-		editorAPI.focus();
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

@@ -30,8 +30,8 @@ export interface CustomComponentToolbarButtonState {
 	disabled: boolean;
 }
 
-// Image
-export interface ImageToolbarButtonState {
+// Media
+export interface MediaToolbarButtonState {
 	disabled: boolean;
 }
 

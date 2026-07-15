@@ -13,6 +13,7 @@ import {
 	configureBlockQuote,
 	configureCodeBlock,
 	configureEmoji,
+	configureEmptyMedia,
 	configureImage,
 	configureLink,
 	configureList,
@@ -136,12 +137,18 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
-		const imageCleanup = configureImage({
+		const { cleanup: emptyMediaCleanup, onMediaResolve } = configureEmptyMedia({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
+		});
+
+		const imageCleanup = configureImage({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
 			blockResize,
 			blockPopoverAppearanceHandler,
+			onMediaResolve,
 		});
 		const videoCleanup = configureVideo({
 			richTextEditorUI: this.#richTextEditorUI,
@@ -156,6 +163,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(listCleanup);
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
+		this.#cleanups.add(emptyMediaCleanup);
 		this.#cleanups.add(imageCleanup);
 		this.#cleanups.add(videoCleanup);
 

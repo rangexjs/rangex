@@ -1,6 +1,7 @@
 export * from "./ConfigureBlockQuote";
 export * from "./ConfigureCodeBlock";
 export * from "./ConfigureEmoji";
+export * from "./ConfigureEmptyMedia";
 export * from "./ConfigureImage";
 export * from "./ConfigureLink";
 export * from "./ConfigureList";

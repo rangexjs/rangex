@@ -10,6 +10,7 @@ import {
 	MenuBarButtonsStateManager,
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
+import { EmptyMediaSlotController } from "../NodeSlotControllers";
 import {
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
@@ -60,6 +61,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
+	#emptyMediaSlotController = new EmptyMediaSlotController();
 	#imageEditPopoverController = new ImageEditPopoverController();
 	#imageSwapPopoverController = new ImageSwapPopoverController();
 	#linkPopoverController = new LinkPopoverController();
@@ -251,6 +253,10 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get emojiPopover() {
 		return this.#emojiPopoverController.publicAPI;
+	}
+
+	get emptyMediaSlot() {
+		return this.#emptyMediaSlotController.publicAPI;
 	}
 
 	get imageEditPopover() {
