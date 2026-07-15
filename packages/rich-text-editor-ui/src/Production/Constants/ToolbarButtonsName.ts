@@ -32,7 +32,6 @@ export const toolbarButtonsName = {
 	textAlign: "text-align",
 	underline: "underline",
 	unorderedList: "unordered-list",
-	video: "video",
 } as const;
 
 export type ToolbarButtonsName = typeof toolbarButtonsName;

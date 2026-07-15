@@ -100,7 +100,6 @@ export type {
 	ToggleButtonPressed,
 	UnderlineToolbarButtonState,
 	UnorderedListToolbarButtonState,
-	VideoToolbarButtonState,
 } from "./ToolbarButtonProps";
 export type {
 	FormatStylesActionState,

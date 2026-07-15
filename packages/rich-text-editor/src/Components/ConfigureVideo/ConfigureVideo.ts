@@ -11,19 +11,18 @@ import { handleVideoPopoverAppearance } from "./HandleVideoPopoverAppearance";
 import { handleVideoPosterState } from "./HandleVideoPosterState";
 import { handleVideoSwap } from "./HandleVideoSwap";
 import { handleVideoTitleState } from "./HandleVideoTitleState";
-import { handleVideoToolbarButtonState } from "./HandleVideoToolbarButtonState";
 
-// TODO: file uploads are inlined as base64 data URLs (same as configureImage — see
-// ReadFileAsDataURL in both features' _Utilities). That doesn't scale to real-world video
-// file sizes: every uploaded video gets embedded directly in the document, and duplicated
-// into every snapshot/undo boundary. This needs a pluggable upload mechanism (consumer-supplied
-// endpoint/blob storage) before it's viable long term.
+// TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
+// ConfigureEmptyMedia/_Utilities) instead of going through any upload endpoint or blob
+// storage. This embeds the full file bytes directly in the document and in every
+// snapshot/undo boundary. It works for now but isn't viable long term — needs a pluggable
+// upload mechanism (consumer-supplied endpoint/blob storage) eventually.
 export const configureVideo = ({
 	richTextEditorUI,
 	editorAPI,
-	blockComponentPlacement,
 	blockResize,
 	blockPopoverAppearanceHandler,
+	onMediaResolve,
 }: ConfigureVideoParams) => {
 	const blockResizeCleanup = blockResize.registerComponent({
 		handleX: 16,
@@ -32,16 +31,9 @@ export const configureVideo = ({
 		},
 	});
 
-	const toolbarButtonStateCleanup = handleVideoToolbarButtonState({
-		richTextEditorUI,
-		editorAPI,
-		blockComponentPlacement,
-	});
-
 	const insertionCleanup = handleVideoInsertion({
-		richTextEditorUI,
 		editorAPI,
-		blockComponentPlacement,
+		onMediaResolve,
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
@@ -106,7 +98,6 @@ export const configureVideo = ({
 
 	return () => {
 		blockResizeCleanup();
-		toolbarButtonStateCleanup();
 		insertionCleanup();
 		popoverAppearanceCleanup();
 		alignStateCleanup();

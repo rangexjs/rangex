@@ -153,9 +153,9 @@ export class RichTextEditor extends HTMLElement {
 		const videoCleanup = configureVideo({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
-			blockComponentPlacement,
 			blockResize,
 			blockPopoverAppearanceHandler,
+			onMediaResolve,
 		});
 
 		this.#cleanups.add(blockQuoteCleanup);

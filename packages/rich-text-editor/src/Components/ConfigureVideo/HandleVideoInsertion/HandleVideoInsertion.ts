@@ -1,9 +1,7 @@
 import {
-	createBeamText,
 	createBlockNestedContext,
 	createBlockNestedContextLine,
 	createBlockNestedContextTextHolder,
-	createContentLine,
 	createHTMLLayout,
 } from "rich-text-area";
 import {
@@ -12,22 +10,10 @@ import {
 	imageAspectRatioAttr,
 	imageObjectFitAttr,
 } from "../../../Constants";
-import { assertNever } from "../../../ErrorHandling";
-import { readFileAsDataURL } from "../_Utilities";
-import type {
-	CreateVideoComponentParams,
-	CreateVideoComponentResult,
-	HandleVideoInsertionParams,
-	InsertVideoFromURLParams,
-	InsertVideosFromFilesParams,
-	InsertVideosParams,
-} from "./HandleVideoInsertion-types";
+import type { HandleVideoInsertionParams } from "./HandleVideoInsertion-types";
 
-const createVideoComponent = ({
-	src,
-	title,
-}: CreateVideoComponentParams): CreateVideoComponentResult => {
-	const blockNestedContextLine = createBlockNestedContextLine({
+const createVideoLine = ({ src }: { src: string }) => {
+	return createBlockNestedContextLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
@@ -35,6 +21,7 @@ const createVideoComponent = ({
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.video,
 			content: { type: "custom" },
+			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
 			childNodes: [
@@ -45,7 +32,6 @@ const createVideoComponent = ({
 							localName: "video",
 							domAttrs: {
 								src,
-								"aria-label": title,
 								controls: "",
 								[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
 								[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
@@ -57,115 +43,33 @@ const createVideoComponent = ({
 		}),
 		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
 	});
-
-	return blockNestedContextLine;
 };
 
 /**
- * Videos have no editable content of their own, so a trailing empty paragraph
- * is inserted right after them.
+ * `BlockNestedContext.$$componentName` is read-only and there's no way to swap a component
+ * in place — the replacement has to happen at the `BlockNestedContextLine` level, which does
+ * support `$$replaceWith`. So a resolved `media` block becomes a brand new `video` line
+ * entirely, not a mutation of the existing one.
  */
-const insertVideos = ({
-	editorAPI,
-	blockComponentPlacement,
-	videoLines,
-}: InsertVideosParams) => {
-	if (!videoLines.length) {
-		return;
-	}
-
-	const trailingLine = createContentLine({
-		localName: "p",
-		childNodes: [createBeamText()],
-	});
-
-	blockComponentPlacement.insertBySelection({
-		lines: [...videoLines, trailingLine],
-		shouldReplaceContentLineIfEmpty: true,
-	});
-
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
-	snapshotTimeline.registerSnapshotBoundary();
-
-	const selection = editorAPI.getEditorSelection();
-
-	selection.setBoundaryPoints({
-		fromNode: trailingLine,
-		fromOffset: 0,
-		toNode: trailingLine,
-		toOffset: 0,
-	});
-
-	editorAPI.focus();
-};
-
-const insertVideoFromURL = ({
-	editorAPI,
-	blockComponentPlacement,
-	url,
-	title,
-}: InsertVideoFromURLParams) => {
-	const videoLine = createVideoComponent({ src: url, title });
-
-	insertVideos({
-		editorAPI,
-		blockComponentPlacement,
-		videoLines: [videoLine],
-	});
-};
-
-const insertVideosFromFiles = async ({
-	editorAPI,
-	blockComponentPlacement,
-	files,
-	title,
-}: InsertVideosFromFilesParams) => {
-	const dataURLs = await Promise.all(Array.from(files, readFileAsDataURL));
-
-	const videoLines: CreateVideoComponentResult[] = [];
-
-	for (const dataURL of dataURLs) {
-		videoLines.push(createVideoComponent({ src: dataURL, title }));
-	}
-
-	insertVideos({ editorAPI, blockComponentPlacement, videoLines });
-};
-
 export const handleVideoInsertion = ({
-	richTextEditorUI,
 	editorAPI,
-	blockComponentPlacement,
+	onMediaResolve,
 }: HandleVideoInsertionParams) => {
-	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
-		if (params.type !== "video") {
+	return onMediaResolve(({ blockNestedContext, type, src }) => {
+		if (type !== "video") {
 			return;
 		}
 
-		if (params.insertionType === "url") {
-			insertVideoFromURL({
-				editorAPI,
-				blockComponentPlacement,
-				url: params.url,
-				title: params.title,
-			});
-			return;
+		const { $$parentElement: blockNestedContextLine } = blockNestedContext;
+
+		if (!blockNestedContextLine) {
+			throw new Error("ParentElement not supposed to be null.");
 		}
 
-		if (params.insertionType === "file-upload") {
-			insertVideosFromFiles({
-				editorAPI,
-				blockComponentPlacement,
-				files: params.files,
-				title: params.title,
-			});
-			return;
-		}
+		blockNestedContextLine.$$replaceWith(createVideoLine({ src }));
 
-		assertNever(params);
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+		snapshotTimeline.registerSnapshotBoundary();
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

@@ -31,4 +31,3 @@ export * from "./TextAlignToolbarButton";
 export * from "./TextAreaReadabilityToolbarButton";
 export * from "./UnderlineToolbarButton";
 export * from "./UnorderedListToolbarButton";
-export * from "./VideoToolbarButton";
