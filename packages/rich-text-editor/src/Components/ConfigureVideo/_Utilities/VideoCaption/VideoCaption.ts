@@ -86,6 +86,7 @@ export const setVideoCaptionEnabled = ({
 	const nestedEditable = createNestedEditable({
 		content: { type: "default" },
 		display: "block single-line",
+		editState: "true",
 		childNodes: [
 			createContentLine({
 				localName: "p",
