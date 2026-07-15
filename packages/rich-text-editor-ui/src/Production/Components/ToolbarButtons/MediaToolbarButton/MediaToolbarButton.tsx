@@ -28,7 +28,7 @@ export const MediaToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton disabled={disabled()} onClick={onClick}>
-				<Icon name="Image" class="size-4" />
+				<Icon name="FileArrowUp" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);
