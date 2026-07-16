@@ -1,11 +1,11 @@
-import { imageObjectFitAttr } from "../../../../Constants";
+import { objectFitAttr } from "../../../../Constants";
 import type {
 	GetVideoObjectFitParams,
 	GetVideoObjectFitResult,
 	SetVideoObjectFitParams,
 } from "./VideoObjectFit-types";
 
-const objectFitValues: string[] = Object.values(imageObjectFitAttr.value);
+const objectFitValues: string[] = Object.values(objectFitAttr.value);
 
 const isVideoObjectFitValue = (
 	value: string,
@@ -18,12 +18,12 @@ const isVideoObjectFitValue = (
 export const getVideoObjectFit = ({
 	video,
 }: GetVideoObjectFitParams): GetVideoObjectFitResult => {
-	const value = video.getAttribute(imageObjectFitAttr.name);
+	const value = video.getAttribute(objectFitAttr.name);
 
 	if (value === null || !isVideoObjectFitValue(value)) {
 		console.warn(
 			"Video has a missing or invalid attribute.",
-			imageObjectFitAttr.name,
+			objectFitAttr.name,
 		);
 
 		return "cover";
@@ -36,8 +36,5 @@ export const setVideoObjectFit = ({
 	video,
 	objectFit,
 }: SetVideoObjectFitParams) => {
-	video.setAttribute(
-		imageObjectFitAttr.name,
-		imageObjectFitAttr.value[objectFit],
-	);
+	video.setAttribute(objectFitAttr.name, objectFitAttr.value[objectFit]);
 };

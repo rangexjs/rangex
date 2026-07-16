@@ -1,11 +1,11 @@
-import { imageObjectFitAttr } from "../../../../Constants";
+import { objectFitAttr } from "../../../../Constants";
 import type {
 	GetImageObjectFitParams,
 	GetImageObjectFitResult,
 	SetImageObjectFitParams,
 } from "./ImageObjectFit-types";
 
-const objectFitValues: string[] = Object.values(imageObjectFitAttr.value);
+const objectFitValues: string[] = Object.values(objectFitAttr.value);
 
 const isImageObjectFitValue = (
 	value: string,
@@ -18,13 +18,10 @@ const isImageObjectFitValue = (
 export const getImageObjectFit = ({
 	img,
 }: GetImageObjectFitParams): GetImageObjectFitResult => {
-	const value = img.getAttribute(imageObjectFitAttr.name);
+	const value = img.getAttribute(objectFitAttr.name);
 
 	if (value === null || !isImageObjectFitValue(value)) {
-		console.warn(
-			"Img has a missing or invalid attribute.",
-			imageObjectFitAttr.name,
-		);
+		console.warn("Img has a missing or invalid attribute.", objectFitAttr.name);
 
 		return "cover";
 	}
@@ -36,8 +33,5 @@ export const setImageObjectFit = ({
 	img,
 	objectFit,
 }: SetImageObjectFitParams) => {
-	img.setAttribute(
-		imageObjectFitAttr.name,
-		imageObjectFitAttr.value[objectFit],
-	);
+	img.setAttribute(objectFitAttr.name, objectFitAttr.value[objectFit]);
 };

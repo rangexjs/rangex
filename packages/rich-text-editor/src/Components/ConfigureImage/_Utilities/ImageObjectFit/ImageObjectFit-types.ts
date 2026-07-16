@@ -1,7 +1,7 @@
 import type { HTMLLayout } from "rich-text-area";
-import type { imageObjectFitAttr } from "../../../../Constants";
+import type { objectFitAttr } from "../../../../Constants";
 
-export type ImageObjectFitValue = keyof typeof imageObjectFitAttr.value;
+export type ImageObjectFitValue = keyof typeof objectFitAttr.value;
 
 export interface GetImageObjectFitParams {
 	img: HTMLLayout;

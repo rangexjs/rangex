@@ -1,4 +1,4 @@
-import { imageAspectRatioAttr } from "../../../../Constants";
+import { aspectRatioAttr } from "../../../../Constants";
 import type {
 	GetVideoAspectRatioParams,
 	GetVideoAspectRatioResult,
@@ -6,7 +6,7 @@ import type {
 	VideoAspectRatioValue,
 } from "./VideoAspectRatio-types";
 
-const aspectRatioValues: string[] = Object.values(imageAspectRatioAttr.value);
+const aspectRatioValues: string[] = Object.values(aspectRatioAttr.value);
 
 const isVideoAspectRatioValue = (
 	value: string,
@@ -19,12 +19,12 @@ const isVideoAspectRatioValue = (
 export const getVideoAspectRatio = ({
 	video,
 }: GetVideoAspectRatioParams): GetVideoAspectRatioResult => {
-	const value = video.getAttribute(imageAspectRatioAttr.name);
+	const value = video.getAttribute(aspectRatioAttr.name);
 
 	if (value === null || !isVideoAspectRatioValue(value)) {
 		console.warn(
 			"Video has a missing or invalid attribute.",
-			imageAspectRatioAttr.name,
+			aspectRatioAttr.name,
 		);
 
 		return "auto";
@@ -37,8 +37,5 @@ export const setVideoAspectRatio = ({
 	video,
 	aspectRatio,
 }: SetVideoAspectRatioParams) => {
-	video.setAttribute(
-		imageAspectRatioAttr.name,
-		imageAspectRatioAttr.value[aspectRatio],
-	);
+	video.setAttribute(aspectRatioAttr.name, aspectRatioAttr.value[aspectRatio]);
 };

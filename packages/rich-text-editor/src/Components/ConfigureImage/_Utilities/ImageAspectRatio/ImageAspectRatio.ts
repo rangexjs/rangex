@@ -1,4 +1,4 @@
-import { imageAspectRatioAttr } from "../../../../Constants";
+import { aspectRatioAttr } from "../../../../Constants";
 import type {
 	GetImageAspectRatioParams,
 	GetImageAspectRatioResult,
@@ -6,7 +6,7 @@ import type {
 	SetImageAspectRatioParams,
 } from "./ImageAspectRatio-types";
 
-const aspectRatioValues: string[] = Object.values(imageAspectRatioAttr.value);
+const aspectRatioValues: string[] = Object.values(aspectRatioAttr.value);
 
 const isImageAspectRatioValue = (
 	value: string,
@@ -19,12 +19,12 @@ const isImageAspectRatioValue = (
 export const getImageAspectRatio = ({
 	img,
 }: GetImageAspectRatioParams): GetImageAspectRatioResult => {
-	const value = img.getAttribute(imageAspectRatioAttr.name);
+	const value = img.getAttribute(aspectRatioAttr.name);
 
 	if (value === null || !isImageAspectRatioValue(value)) {
 		console.warn(
 			"Img has a missing or invalid attribute.",
-			imageAspectRatioAttr.name,
+			aspectRatioAttr.name,
 		);
 
 		return "auto";
@@ -37,8 +37,5 @@ export const setImageAspectRatio = ({
 	img,
 	aspectRatio,
 }: SetImageAspectRatioParams) => {
-	img.setAttribute(
-		imageAspectRatioAttr.name,
-		imageAspectRatioAttr.value[aspectRatio],
-	);
+	img.setAttribute(aspectRatioAttr.name, aspectRatioAttr.value[aspectRatio]);
 };

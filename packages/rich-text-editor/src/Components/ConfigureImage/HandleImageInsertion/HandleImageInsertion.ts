@@ -5,10 +5,10 @@ import {
 	createHTMLLayout,
 } from "rich-text-area";
 import {
+	aspectRatioAttr,
 	blockAlignAttr,
 	componentsName,
-	imageAspectRatioAttr,
-	imageObjectFitAttr,
+	objectFitAttr,
 } from "../../../Constants";
 import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
 
@@ -33,8 +33,8 @@ const createImageLine = ({ src }: { src: string }) => {
 							domAttrs: {
 								src,
 								alt: "",
-								[imageObjectFitAttr.name]: imageObjectFitAttr.value.cover,
-								[imageAspectRatioAttr.name]: imageAspectRatioAttr.value.auto,
+								[objectFitAttr.name]: objectFitAttr.value.cover,
+								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
 							},
 						}),
 					],

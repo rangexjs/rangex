@@ -1,7 +1,7 @@
 import type { HTMLLayout } from "rich-text-area";
-import type { imageAspectRatioAttr } from "../../../../Constants";
+import type { aspectRatioAttr } from "../../../../Constants";
 
-export type VideoAspectRatioValue = keyof typeof imageAspectRatioAttr.value;
+export type VideoAspectRatioValue = keyof typeof aspectRatioAttr.value;
 
 export interface GetVideoAspectRatioParams {
 	video: HTMLLayout;
