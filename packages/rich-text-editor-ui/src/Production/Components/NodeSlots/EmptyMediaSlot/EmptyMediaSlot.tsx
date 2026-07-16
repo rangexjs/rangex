@@ -69,6 +69,9 @@ const detectDroppedFileType = (
 	return null;
 };
 
+const isFileDrag = (event: DragEvent) =>
+	!!event.dataTransfer?.types.includes("Files");
+
 /**
  * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
  * ContentSwitcher between an Upload tab (file picker) and one URL tab per media type. Never
@@ -78,6 +81,9 @@ const detectDroppedFileType = (
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const [activeTab, setActiveTab] = createSignal<MediaTab>("upload");
 	const [dragActive, setDragActive] = createSignal(false);
+	// dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
+	// needed to tell "left a child" apart from "left the dropzone entirely".
+	let dragDepth = 0;
 
 	const [urlModel, urlControls] = createTextFieldController({
 		error: { required: { value: true, message: "Field can't be empty." } },
@@ -139,11 +145,20 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	};
 
 	const onDragEnter = (event: DragEvent) => {
+		if (!isFileDrag(event)) {
+			return;
+		}
+
 		event.preventDefault();
+		dragDepth += 1;
 		setDragActive(true);
 	};
 
 	const onDragOver = (event: DragEvent) => {
+		if (!isFileDrag(event)) {
+			return;
+		}
+
 		event.preventDefault();
 
 		if (event.dataTransfer) {
@@ -152,12 +167,22 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	};
 
 	const onDragLeave = (event: DragEvent) => {
+		if (!isFileDrag(event)) {
+			return;
+		}
+
 		event.preventDefault();
-		setDragActive(false);
+		dragDepth -= 1;
+
+		if (dragDepth <= 0) {
+			dragDepth = 0;
+			setDragActive(false);
+		}
 	};
 
 	const onDrop = (event: DragEvent) => {
 		event.preventDefault();
+		dragDepth = 0;
 		setDragActive(false);
 
 		const [file] = event.dataTransfer?.files ?? [];

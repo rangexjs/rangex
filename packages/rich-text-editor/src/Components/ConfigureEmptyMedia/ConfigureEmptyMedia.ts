@@ -2,6 +2,7 @@ import type {
 	ConfigureEmptyMediaParams,
 	ConfigureEmptyMediaResult,
 } from "./ConfigureEmptyMedia-types";
+import { handleEmptyMediaDragOverride } from "./HandleEmptyMediaDragOverride";
 import { handleEmptyMediaInsertion } from "./HandleEmptyMediaInsertion";
 import { handleEmptyMediaToolbarButtonState } from "./HandleEmptyMediaToolbarButtonState";
 import { watchEmptyMedia } from "./WatchEmptyMedia";
@@ -11,6 +12,8 @@ export const configureEmptyMedia = ({
 	editorAPI,
 	blockComponentPlacement,
 }: ConfigureEmptyMediaParams): ConfigureEmptyMediaResult => {
+	const dragOverrideCleanup = handleEmptyMediaDragOverride({ editorAPI });
+
 	const toolbarButtonStateCleanup = handleEmptyMediaToolbarButtonState({
 		richTextEditorUI,
 		editorAPI,
@@ -30,6 +33,7 @@ export const configureEmptyMedia = ({
 
 	return {
 		cleanup: () => {
+			dragOverrideCleanup();
 			toolbarButtonStateCleanup();
 			insertionCleanup();
 			watchCleanup();
