@@ -127,7 +127,7 @@ export const VideoSwapPopover = () => {
 			<div class="mb-3" hidden={sourceTab() !== "upload"}>
 				<button
 					type="button"
-					class="btn-neutral-solid w-full rounded-sm px-3 py-1.5 text-left font-medium text-sm"
+					class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left font-medium text-sm"
 					on:click={() => {
 						if (!fileInput) {
 							throw new Error("FileInput can't be undefined.");
@@ -143,7 +143,6 @@ export const VideoSwapPopover = () => {
 			<div class="mb-3" hidden={sourceTab() !== "url"}>
 				<FormField
 					for={urlModel.id}
-					label="URL"
 					showError={urlModel.state().showError}
 					errorMessage={urlModel.state().message}
 				>
@@ -151,6 +150,7 @@ export const VideoSwapPopover = () => {
 						<InputTextField
 							type="text"
 							id={urlModel.id}
+							aria-label="URL"
 							placeholder="https://example.com/video.mp4"
 							spellcheck={false}
 							{...urlControls}

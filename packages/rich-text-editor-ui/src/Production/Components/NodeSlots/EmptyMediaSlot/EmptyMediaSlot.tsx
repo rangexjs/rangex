@@ -1,4 +1,4 @@
-import { createSignal, Show } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import type {
 	MediaResolveType,
 	UploadState,
@@ -89,6 +89,9 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
+	const [uploadFile, setUploadFile] = createSignal<File | null>(null);
+	const uploadFileName = createMemo(() => uploadFile()?.name ?? null);
+
 	let fileInput: HTMLInputElement | undefined;
 
 	const onTabChange = (tab: MediaTab) => {
@@ -117,13 +120,26 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		props.onResolve({ type, insertionType: "file", file });
+		setUploadFile(file);
 	};
 
-	const onUrlApply = () => {
-		const type = activeTab();
+	const onApply = () => {
+		const tab = activeTab();
 
-		if (type === "upload") {
+		if (tab === "upload") {
+			const file = uploadFile();
+
+			if (!file) {
+				return;
+			}
+
+			const type = detectDroppedFileType(file);
+
+			if (!type) {
+				return;
+			}
+
+			props.onResolve({ type, insertionType: "file", file });
 			return;
 		}
 
@@ -133,7 +149,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		props.onResolve({ type, insertionType: "url", url: urlModel.value() });
+		props.onResolve({ type: tab, insertionType: "url", url: urlModel.value() });
 	};
 
 	const onUrlKeyDown = (event: KeyboardEvent) => {
@@ -141,7 +157,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		onUrlApply();
+		onApply();
 	};
 
 	const onDragEnter = (event: DragEvent) => {
@@ -265,10 +281,10 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				<div classList={{ hidden: activeTab() !== "upload" }}>
 					<button
 						type="button"
-						class="btn-neutral-solid w-full rounded-sm px-3 py-1.5 text-left font-medium text-sm"
+						class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left font-medium text-sm"
 						onClick={() => fileInput?.click()}
 					>
-						Choose file…
+						{uploadFileName() ?? "Choose file…"}
 					</button>
 					<input
 						ref={fileInput}
@@ -279,38 +295,36 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 					/>
 				</div>
 
-				<Show when={activeTab() !== "upload"}>
-					<div class="flex flex-col gap-2">
-						<FormField
-							for={urlModel.id}
-							label="URL"
-							showError={urlModel.state().showError}
-							errorMessage={urlModel.state().message}
-						>
-							<TextFieldWrapper appearance="primary-outline" size="medium">
-								<InputTextField
-									type="text"
-									id={urlModel.id}
-									placeholder={
-										urlPlaceholderByType[activeTab() as MediaResolveType]
-									}
-									spellcheck={false}
-									{...urlControls}
-									on:keydown={onUrlKeyDown}
-								/>
-							</TextFieldWrapper>
-						</FormField>
-						<div class="text-right">
-							<button
-								type="button"
-								class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
-								onClick={onUrlApply}
-							>
-								Apply
-							</button>
-						</div>
-					</div>
-				</Show>
+				<FormField
+					for={urlModel.id}
+					class={activeTab() === "upload" ? "hidden" : ""}
+					showError={urlModel.state().showError}
+					errorMessage={urlModel.state().message}
+				>
+					<TextFieldWrapper appearance="primary-outline" size="medium">
+						<InputTextField
+							type="text"
+							id={urlModel.id}
+							aria-label="URL"
+							placeholder={
+								urlPlaceholderByType[activeTab() as MediaResolveType]
+							}
+							spellcheck={false}
+							{...urlControls}
+							on:keydown={onUrlKeyDown}
+						/>
+					</TextFieldWrapper>
+				</FormField>
+
+				<div class="text-right">
+					<button
+						type="button"
+						class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
+						onClick={onApply}
+					>
+						Apply
+					</button>
+				</div>
 			</div>
 
 			<UploadingIndicator uploadState={props.uploadState} />
