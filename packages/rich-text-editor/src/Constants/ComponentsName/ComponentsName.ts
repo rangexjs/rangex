@@ -1,4 +1,5 @@
 export const componentsName = {
+	audio: "audio",
 	blockQuote: "block-quote",
 	codeBlock: "code-block",
 	collapsible: "collapsible",

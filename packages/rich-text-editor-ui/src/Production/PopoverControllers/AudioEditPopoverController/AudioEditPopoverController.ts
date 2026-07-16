@@ -1,0 +1,285 @@
+import { assertNever } from "../../ErrorHandling";
+import type {
+	BlockAlignValue,
+	OnAlignChangeFn,
+	OnDeleteFn,
+	UpdateAlignFn,
+} from "../ImageEditPopoverController";
+import type {
+	AudioAttrChange,
+	AudioCaptionPosition,
+	AudioCaptionState,
+	AudioEditListenerOption,
+	AudioEditPopover,
+	AudioEditUpdateListenerParams,
+	OnAudioAttrChangeFn,
+	OnAudioCaptionEnabledChangeFn,
+	OnAudioCaptionPositionChangeFn,
+	OnAudioSwapPopoverOpenFn,
+	UpdateAudioAutoplayFn,
+	UpdateAudioCaptionFn,
+	UpdateAudioControlsFn,
+	UpdateAudioEditPopoverStateParams,
+	UpdateAudioLoopFn,
+	UpdateAudioMutedFn,
+	UpdateAudioTitleFn,
+} from "./AudioEditPopoverController-types";
+
+export class AudioEditPopoverController {
+	#popover: HTMLDivElement | null = null;
+	#align: BlockAlignValue = "center";
+	#caption: AudioCaptionState = { enabled: false, position: "below" };
+	#title = "";
+	#controls = true;
+	#autoplay = false;
+	#loop = false;
+	#muted = false;
+
+	#alignListeners: Set<UpdateAlignFn> = new Set();
+	#captionListeners: Set<UpdateAudioCaptionFn> = new Set();
+	#titleListeners: Set<UpdateAudioTitleFn> = new Set();
+	#controlsListeners: Set<UpdateAudioControlsFn> = new Set();
+	#autoplayListeners: Set<UpdateAudioAutoplayFn> = new Set();
+	#loopListeners: Set<UpdateAudioLoopFn> = new Set();
+	#mutedListeners: Set<UpdateAudioMutedFn> = new Set();
+
+	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnAudioCaptionEnabledChangeFn> =
+		new Set();
+	#onCaptionPositionChangeListeners: Set<OnAudioCaptionPositionChangeFn> =
+		new Set();
+	#onAudioAttrChangeListeners: Set<OnAudioAttrChangeFn> = new Set();
+	#onSwapPopoverOpenListeners: Set<OnAudioSwapPopoverOpenFn> = new Set();
+	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+
+	get align() {
+		return this.#align;
+	}
+
+	get caption() {
+		return this.#caption;
+	}
+
+	get title() {
+		return this.#title;
+	}
+
+	get controls() {
+		return this.#controls;
+	}
+
+	get autoplay() {
+		return this.#autoplay;
+	}
+
+	get loop() {
+		return this.#loop;
+	}
+
+	get muted() {
+		return this.#muted;
+	}
+
+	#updateListener({
+		type,
+		callback,
+		operation,
+	}: AudioEditUpdateListenerParams) {
+		if (type === "align") {
+			this.#alignListeners[operation](callback);
+			return;
+		}
+
+		if (type === "caption") {
+			this.#captionListeners[operation](callback);
+			return;
+		}
+
+		if (type === "title") {
+			this.#titleListeners[operation](callback);
+			return;
+		}
+
+		if (type === "controls") {
+			this.#controlsListeners[operation](callback);
+			return;
+		}
+
+		if (type === "autoplay") {
+			this.#autoplayListeners[operation](callback);
+			return;
+		}
+
+		if (type === "loop") {
+			this.#loopListeners[operation](callback);
+			return;
+		}
+
+		if (type === "muted") {
+			this.#mutedListeners[operation](callback);
+			return;
+		}
+
+		assertNever(type);
+	}
+
+	subscribe(params: AudioEditListenerOption) {
+		this.#updateListener({ ...params, operation: "add" });
+	}
+
+	unsubscribe(params: AudioEditListenerOption) {
+		this.#updateListener({ ...params, operation: "delete" });
+	}
+
+	emitAlignChange(align: BlockAlignValue) {
+		for (const listener of this.#onAlignChangeListeners) {
+			listener(align);
+		}
+	}
+
+	emitCaptionEnabledChange(enabled: boolean) {
+		for (const listener of this.#onCaptionEnabledChangeListeners) {
+			listener(enabled);
+		}
+	}
+
+	emitCaptionPositionChange(position: AudioCaptionPosition) {
+		for (const listener of this.#onCaptionPositionChangeListeners) {
+			listener(position);
+		}
+	}
+
+	emitAudioAttrChange(params: AudioAttrChange) {
+		for (const listener of this.#onAudioAttrChangeListeners) {
+			listener(params);
+		}
+	}
+
+	emitSwapPopoverOpen() {
+		for (const listener of this.#onSwapPopoverOpenListeners) {
+			listener();
+		}
+	}
+
+	emitDelete() {
+		for (const listener of this.#onDeleteListeners) {
+			listener();
+		}
+	}
+
+	updateState({
+		align,
+		caption,
+		title,
+		controls,
+		autoplay,
+		loop,
+		muted,
+	}: UpdateAudioEditPopoverStateParams) {
+		if (align) {
+			this.#align = align;
+
+			for (const listener of this.#alignListeners) {
+				listener(this.#align);
+			}
+		}
+
+		if (caption) {
+			this.#caption = caption;
+
+			for (const listener of this.#captionListeners) {
+				listener(this.#caption);
+			}
+		}
+
+		if (title !== undefined) {
+			this.#title = title;
+
+			for (const listener of this.#titleListeners) {
+				listener(this.#title);
+			}
+		}
+
+		if (controls !== undefined) {
+			this.#controls = controls;
+
+			for (const listener of this.#controlsListeners) {
+				listener(this.#controls);
+			}
+		}
+
+		if (autoplay !== undefined) {
+			this.#autoplay = autoplay;
+
+			for (const listener of this.#autoplayListeners) {
+				listener(this.#autoplay);
+			}
+		}
+
+		if (loop !== undefined) {
+			this.#loop = loop;
+
+			for (const listener of this.#loopListeners) {
+				listener(this.#loop);
+			}
+		}
+
+		if (muted !== undefined) {
+			this.#muted = muted;
+
+			for (const listener of this.#mutedListeners) {
+				listener(this.#muted);
+			}
+		}
+	}
+
+	setPopover(element: HTMLDivElement) {
+		this.#popover = element;
+	}
+
+	get publicAPI(): AudioEditPopover {
+		const controller = this;
+
+		return {
+			get popover() {
+				if (!controller.#popover) {
+					throw new Error("PopoverNode shouldn't be null.");
+				}
+
+				return controller.#popover;
+			},
+
+			updateState: (params) => this.updateState(params),
+
+			onAlignChange: (callback) => {
+				this.#onAlignChangeListeners.add(callback);
+				return () => this.#onAlignChangeListeners.delete(callback);
+			},
+
+			onCaptionEnabledChange: (callback) => {
+				this.#onCaptionEnabledChangeListeners.add(callback);
+				return () => this.#onCaptionEnabledChangeListeners.delete(callback);
+			},
+
+			onCaptionPositionChange: (callback) => {
+				this.#onCaptionPositionChangeListeners.add(callback);
+				return () => this.#onCaptionPositionChangeListeners.delete(callback);
+			},
+
+			onAudioAttrChange: (callback) => {
+				this.#onAudioAttrChangeListeners.add(callback);
+				return () => this.#onAudioAttrChangeListeners.delete(callback);
+			},
+
+			onSwapPopoverOpen: (callback) => {
+				this.#onSwapPopoverOpenListeners.add(callback);
+				return () => this.#onSwapPopoverOpenListeners.delete(callback);
+			},
+
+			onDelete: (callback) => {
+				this.#onDeleteListeners.add(callback);
+				return () => this.#onDeleteListeners.delete(callback);
+			},
+		};
+	}
+}

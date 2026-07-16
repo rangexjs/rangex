@@ -10,6 +10,7 @@ import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
 import { createBlockResize } from "../BlockResize";
 import {
+	configureAudio,
 	configureBlockQuote,
 	configureCodeBlock,
 	configureEmoji,
@@ -157,6 +158,13 @@ export class RichTextEditor extends HTMLElement {
 			blockPopoverAppearanceHandler,
 			onMediaResolve,
 		});
+		const audioCleanup = configureAudio({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
@@ -166,6 +174,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(emptyMediaCleanup);
 		this.#cleanups.add(imageCleanup);
 		this.#cleanups.add(videoCleanup);
+		this.#cleanups.add(audioCleanup);
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,

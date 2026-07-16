@@ -12,6 +12,8 @@ import {
 } from "../MenuBarButtonsStateManager";
 import { EmptyMediaSlotController } from "../NodeSlotControllers";
 import {
+	AudioEditPopoverController,
+	AudioSwapPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
@@ -59,6 +61,8 @@ export class RichTextEditorUI extends HTMLElement {
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
 	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
+	#audioEditPopoverController = new AudioEditPopoverController();
+	#audioSwapPopoverController = new AudioSwapPopoverController();
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
@@ -137,6 +141,8 @@ export class RichTextEditorUI extends HTMLElement {
 						this.#nonCategorizedOperationButtonsStateManager
 					}
 					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
+					audioEditPopoverController={this.#audioEditPopoverController}
+					audioSwapPopoverController={this.#audioSwapPopoverController}
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
@@ -244,6 +250,14 @@ export class RichTextEditorUI extends HTMLElement {
 				callback,
 			});
 		};
+	}
+
+	get audioEditPopover() {
+		return this.#audioEditPopoverController.publicAPI;
+	}
+
+	get audioSwapPopover() {
+		return this.#audioSwapPopoverController.publicAPI;
 	}
 
 	get blockResizePopover() {

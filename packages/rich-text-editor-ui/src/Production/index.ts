@@ -13,6 +13,8 @@ export type {
 	UploadState,
 } from "./NodeSlotControllers";
 export type {
+	AudioEditPopover,
+	AudioSwapPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,

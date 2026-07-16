@@ -3,6 +3,8 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
+	AudioEditPopoverController,
+	AudioSwapPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
 	EmojiPopoverController,
@@ -33,6 +35,8 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
+	AudioEditPopover,
+	AudioSwapPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
 	EmojiPopover,
@@ -74,6 +78,8 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
+	audioEditPopoverController: AudioEditPopoverController;
+	audioSwapPopoverController: AudioSwapPopoverController;
 	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
 	emojiPopoverController: EmojiPopoverController;
@@ -154,6 +160,8 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
+		audioEditPopoverController: props.audioEditPopoverController,
+		audioSwapPopoverController: props.audioSwapPopoverController,
 		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
@@ -189,6 +197,8 @@ export const App = (props: AppProps) => {
 						<PopoverControllersContext.Provider
 							value={popoverControllersContextValue}
 						>
+							<AudioEditPopover />
+							<AudioSwapPopover />
 							<BlockResizePopover />
 							<CodeBlockPopover />
 							<EmojiPopover />

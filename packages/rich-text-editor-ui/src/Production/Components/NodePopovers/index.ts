@@ -1,3 +1,5 @@
+export * from "./AudioEditPopover";
+export * from "./AudioSwapPopover";
 export * from "./BlockResizePopover";
 export * from "./CodeBlockPopover";
 export * from "./EmojiPopover";
