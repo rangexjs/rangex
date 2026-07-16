@@ -6,15 +6,14 @@ import type {
 	UpdateAlignFn,
 } from "../ImageEditPopoverController";
 import type {
-	OnPlaybackChangeFn,
-	OnPosterChangeFn,
-	OnTitleChangeFn,
-	OnVideoAspectRatioChangeFn,
+	OnVideoAttrChangeFn,
 	OnVideoCaptionEnabledChangeFn,
 	OnVideoCaptionPositionChangeFn,
-	OnVideoObjectFitChangeFn,
 	OnVideoSwapPopoverOpenFn,
-	UpdatePlaybackFn,
+	UpdateAutoplayFn,
+	UpdateControlsFn,
+	UpdateLoopFn,
+	UpdateMutedFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
 	UpdateVideoAspectRatioFn,
@@ -22,13 +21,13 @@ import type {
 	UpdateVideoEditPopoverStateParams,
 	UpdateVideoObjectFitFn,
 	VideoAspectRatioValue,
+	VideoAttrChange,
 	VideoCaptionPosition,
 	VideoCaptionState,
 	VideoEditListenerOption,
 	VideoEditPopover,
 	VideoEditUpdateListenerParams,
 	VideoObjectFitValue,
-	VideoPlaybackState,
 } from "./VideoEditPopoverController-types";
 
 export class VideoEditPopoverController {
@@ -37,33 +36,30 @@ export class VideoEditPopoverController {
 	#objectFit: VideoObjectFitValue = "cover";
 	#aspectRatio: VideoAspectRatioValue = "auto";
 	#caption: VideoCaptionState = { enabled: false, position: "below" };
-	#playback: VideoPlaybackState = {
-		controls: true,
-		autoplay: false,
-		loop: false,
-		muted: false,
-	};
 	#poster = "";
 	#title = "";
+	#controls = true;
+	#autoplay = false;
+	#loop = false;
+	#muted = false;
 
 	#alignListeners: Set<UpdateAlignFn> = new Set();
 	#objectFitListeners: Set<UpdateVideoObjectFitFn> = new Set();
 	#aspectRatioListeners: Set<UpdateVideoAspectRatioFn> = new Set();
 	#captionListeners: Set<UpdateVideoCaptionFn> = new Set();
-	#playbackListeners: Set<UpdatePlaybackFn> = new Set();
 	#posterListeners: Set<UpdatePosterFn> = new Set();
 	#titleListeners: Set<UpdateTitleFn> = new Set();
+	#controlsListeners: Set<UpdateControlsFn> = new Set();
+	#autoplayListeners: Set<UpdateAutoplayFn> = new Set();
+	#loopListeners: Set<UpdateLoopFn> = new Set();
+	#mutedListeners: Set<UpdateMutedFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
-	#onObjectFitChangeListeners: Set<OnVideoObjectFitChangeFn> = new Set();
-	#onAspectRatioChangeListeners: Set<OnVideoAspectRatioChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnVideoCaptionEnabledChangeFn> =
 		new Set();
 	#onCaptionPositionChangeListeners: Set<OnVideoCaptionPositionChangeFn> =
 		new Set();
-	#onPlaybackChangeListeners: Set<OnPlaybackChangeFn> = new Set();
-	#onPosterChangeListeners: Set<OnPosterChangeFn> = new Set();
-	#onTitleChangeListeners: Set<OnTitleChangeFn> = new Set();
+	#onVideoAttrChangeListeners: Set<OnVideoAttrChangeFn> = new Set();
 	#onSwapPopoverOpenListeners: Set<OnVideoSwapPopoverOpenFn> = new Set();
 	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 
@@ -83,16 +79,28 @@ export class VideoEditPopoverController {
 		return this.#caption;
 	}
 
-	get playback() {
-		return this.#playback;
-	}
-
 	get poster() {
 		return this.#poster;
 	}
 
 	get title() {
 		return this.#title;
+	}
+
+	get controls() {
+		return this.#controls;
+	}
+
+	get autoplay() {
+		return this.#autoplay;
+	}
+
+	get loop() {
+		return this.#loop;
+	}
+
+	get muted() {
+		return this.#muted;
 	}
 
 	#updateListener({
@@ -120,11 +128,6 @@ export class VideoEditPopoverController {
 			return;
 		}
 
-		if (type === "playback") {
-			this.#playbackListeners[operation](callback);
-			return;
-		}
-
 		if (type === "poster") {
 			this.#posterListeners[operation](callback);
 			return;
@@ -132,6 +135,26 @@ export class VideoEditPopoverController {
 
 		if (type === "title") {
 			this.#titleListeners[operation](callback);
+			return;
+		}
+
+		if (type === "controls") {
+			this.#controlsListeners[operation](callback);
+			return;
+		}
+
+		if (type === "autoplay") {
+			this.#autoplayListeners[operation](callback);
+			return;
+		}
+
+		if (type === "loop") {
+			this.#loopListeners[operation](callback);
+			return;
+		}
+
+		if (type === "muted") {
+			this.#mutedListeners[operation](callback);
 			return;
 		}
 
@@ -152,18 +175,6 @@ export class VideoEditPopoverController {
 		}
 	}
 
-	emitObjectFitChange(objectFit: VideoObjectFitValue) {
-		for (const listener of this.#onObjectFitChangeListeners) {
-			listener(objectFit);
-		}
-	}
-
-	emitAspectRatioChange(aspectRatio: VideoAspectRatioValue) {
-		for (const listener of this.#onAspectRatioChangeListeners) {
-			listener(aspectRatio);
-		}
-	}
-
 	emitCaptionEnabledChange(enabled: boolean) {
 		for (const listener of this.#onCaptionEnabledChangeListeners) {
 			listener(enabled);
@@ -176,21 +187,9 @@ export class VideoEditPopoverController {
 		}
 	}
 
-	emitPlaybackChange(playback: Partial<VideoPlaybackState>) {
-		for (const listener of this.#onPlaybackChangeListeners) {
-			listener(playback);
-		}
-	}
-
-	emitPosterChange(poster: string) {
-		for (const listener of this.#onPosterChangeListeners) {
-			listener(poster);
-		}
-	}
-
-	emitTitleChange(title: string) {
-		for (const listener of this.#onTitleChangeListeners) {
-			listener(title);
+	emitVideoAttrChange(params: VideoAttrChange) {
+		for (const listener of this.#onVideoAttrChangeListeners) {
+			listener(params);
 		}
 	}
 
@@ -211,9 +210,12 @@ export class VideoEditPopoverController {
 		objectFit,
 		aspectRatio,
 		caption,
-		playback,
 		poster,
 		title,
+		controls,
+		autoplay,
+		loop,
+		muted,
 	}: UpdateVideoEditPopoverStateParams) {
 		if (align) {
 			this.#align = align;
@@ -247,14 +249,6 @@ export class VideoEditPopoverController {
 			}
 		}
 
-		if (playback) {
-			this.#playback = playback;
-
-			for (const listener of this.#playbackListeners) {
-				listener(this.#playback);
-			}
-		}
-
 		if (poster !== undefined) {
 			this.#poster = poster;
 
@@ -268,6 +262,38 @@ export class VideoEditPopoverController {
 
 			for (const listener of this.#titleListeners) {
 				listener(this.#title);
+			}
+		}
+
+		if (controls !== undefined) {
+			this.#controls = controls;
+
+			for (const listener of this.#controlsListeners) {
+				listener(this.#controls);
+			}
+		}
+
+		if (autoplay !== undefined) {
+			this.#autoplay = autoplay;
+
+			for (const listener of this.#autoplayListeners) {
+				listener(this.#autoplay);
+			}
+		}
+
+		if (loop !== undefined) {
+			this.#loop = loop;
+
+			for (const listener of this.#loopListeners) {
+				listener(this.#loop);
+			}
+		}
+
+		if (muted !== undefined) {
+			this.#muted = muted;
+
+			for (const listener of this.#mutedListeners) {
+				listener(this.#muted);
 			}
 		}
 	}
@@ -295,16 +321,6 @@ export class VideoEditPopoverController {
 				return () => this.#onAlignChangeListeners.delete(callback);
 			},
 
-			onObjectFitChange: (callback) => {
-				this.#onObjectFitChangeListeners.add(callback);
-				return () => this.#onObjectFitChangeListeners.delete(callback);
-			},
-
-			onAspectRatioChange: (callback) => {
-				this.#onAspectRatioChangeListeners.add(callback);
-				return () => this.#onAspectRatioChangeListeners.delete(callback);
-			},
-
 			onCaptionEnabledChange: (callback) => {
 				this.#onCaptionEnabledChangeListeners.add(callback);
 				return () => this.#onCaptionEnabledChangeListeners.delete(callback);
@@ -315,19 +331,9 @@ export class VideoEditPopoverController {
 				return () => this.#onCaptionPositionChangeListeners.delete(callback);
 			},
 
-			onPlaybackChange: (callback) => {
-				this.#onPlaybackChangeListeners.add(callback);
-				return () => this.#onPlaybackChangeListeners.delete(callback);
-			},
-
-			onPosterChange: (callback) => {
-				this.#onPosterChangeListeners.add(callback);
-				return () => this.#onPosterChangeListeners.delete(callback);
-			},
-
-			onTitleChange: (callback) => {
-				this.#onTitleChangeListeners.add(callback);
-				return () => this.#onTitleChangeListeners.delete(callback);
+			onVideoAttrChange: (callback) => {
+				this.#onVideoAttrChangeListeners.add(callback);
+				return () => this.#onVideoAttrChangeListeners.delete(callback);
 			},
 
 			onSwapPopoverOpen: (callback) => {

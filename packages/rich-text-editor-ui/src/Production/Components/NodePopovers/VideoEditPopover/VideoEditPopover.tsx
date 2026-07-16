@@ -1,7 +1,10 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
 	UpdateAlignFn,
-	UpdatePlaybackFn,
+	UpdateAutoplayFn,
+	UpdateControlsFn,
+	UpdateLoopFn,
+	UpdateMutedFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
 	UpdateVideoAspectRatioFn,
@@ -55,7 +58,10 @@ export const VideoEditPopover = () => {
 	const [objectFit, setObjectFit] = createSignal(controller.objectFit);
 	const [aspectRatio, setAspectRatio] = createSignal(controller.aspectRatio);
 	const [caption, setCaption] = createSignal(controller.caption);
-	const [playback, setPlayback] = createSignal(controller.playback);
+	const [controls, setControls] = createSignal(controller.controls);
+	const [autoplay, setAutoplay] = createSignal(controller.autoplay);
+	const [loop, setLoop] = createSignal(controller.loop);
+	const [muted, setMuted] = createSignal(controller.muted);
 
 	const [posterModel, posterControls] = createTextFieldController({
 		defaultValue: controller.poster,
@@ -82,7 +88,10 @@ export const VideoEditPopover = () => {
 		const onAspectRatio: UpdateVideoAspectRatioFn = (value) =>
 			setAspectRatio(value);
 		const onCaption: UpdateVideoCaptionFn = (value) => setCaption(value);
-		const onPlayback: UpdatePlaybackFn = (value) => setPlayback(value);
+		const onControls: UpdateControlsFn = (value) => setControls(value);
+		const onAutoplay: UpdateAutoplayFn = (value) => setAutoplay(value);
+		const onLoop: UpdateLoopFn = (value) => setLoop(value);
+		const onMuted: UpdateMutedFn = (value) => setMuted(value);
 		const onPoster: UpdatePosterFn = (value) => {
 			posterModel.setValue(value);
 			setCommittedPoster(value);
@@ -96,7 +105,10 @@ export const VideoEditPopover = () => {
 		controller.subscribe({ type: "objectFit", callback: onObjectFit });
 		controller.subscribe({ type: "aspectRatio", callback: onAspectRatio });
 		controller.subscribe({ type: "caption", callback: onCaption });
-		controller.subscribe({ type: "playback", callback: onPlayback });
+		controller.subscribe({ type: "controls", callback: onControls });
+		controller.subscribe({ type: "autoplay", callback: onAutoplay });
+		controller.subscribe({ type: "loop", callback: onLoop });
+		controller.subscribe({ type: "muted", callback: onMuted });
 		controller.subscribe({ type: "poster", callback: onPoster });
 		controller.subscribe({ type: "title", callback: onTitle });
 
@@ -105,7 +117,10 @@ export const VideoEditPopover = () => {
 			controller.unsubscribe({ type: "objectFit", callback: onObjectFit });
 			controller.unsubscribe({ type: "aspectRatio", callback: onAspectRatio });
 			controller.unsubscribe({ type: "caption", callback: onCaption });
-			controller.unsubscribe({ type: "playback", callback: onPlayback });
+			controller.unsubscribe({ type: "controls", callback: onControls });
+			controller.unsubscribe({ type: "autoplay", callback: onAutoplay });
+			controller.unsubscribe({ type: "loop", callback: onLoop });
+			controller.unsubscribe({ type: "muted", callback: onMuted });
 			controller.unsubscribe({ type: "poster", callback: onPoster });
 			controller.unsubscribe({ type: "title", callback: onTitle });
 		});
@@ -128,7 +143,7 @@ export const VideoEditPopover = () => {
 	const optionsPopoverId = createUniqueId();
 
 	const onPosterCommit = () => {
-		controller.emitPosterChange(posterModel.value());
+		controller.emitVideoAttrChange({ poster: posterModel.value() });
 	};
 
 	const onPosterKeyDown = (event: KeyboardEvent) => {
@@ -140,7 +155,7 @@ export const VideoEditPopover = () => {
 	};
 
 	const onTitleCommit = () => {
-		controller.emitTitleChange(titleModel.value());
+		controller.emitVideoAttrChange({ title: titleModel.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
@@ -152,11 +167,9 @@ export const VideoEditPopover = () => {
 	};
 
 	const onAutoplayToggle = () => {
-		const next = !playback().autoplay;
-
-		controller.emitPlaybackChange(
-			next ? { autoplay: true, muted: true } : { autoplay: false },
-		);
+		const nextAutoplay = !autoplay();
+		const muted = nextAutoplay ? true : undefined;
+		controller.emitVideoAttrChange({ autoplay: nextAutoplay, muted });
 	};
 
 	return (
@@ -215,14 +228,18 @@ export const VideoEditPopover = () => {
 						label="Object fit"
 						value={objectFit()}
 						options={objectFitOptions}
-						onSelect={(value) => controller.emitObjectFitChange(value)}
+						onSelect={(value) =>
+							controller.emitVideoAttrChange({ objectFit: value })
+						}
 					/>
 
 					<OptionDropdown
 						label="Aspect ratio"
 						value={aspectRatio()}
 						options={aspectRatioOptions}
-						onSelect={(value) => controller.emitAspectRatioChange(value)}
+						onSelect={(value) =>
+							controller.emitVideoAttrChange({ aspectRatio: value })
+						}
 					/>
 
 					<div class="flex items-center justify-between">
@@ -230,11 +247,9 @@ export const VideoEditPopover = () => {
 							Controls
 						</span>
 						<ToggleButton
-							checked={playback().controls}
+							checked={controls()}
 							on:click={() =>
-								controller.emitPlaybackChange({
-									controls: !playback().controls,
-								})
+								controller.emitVideoAttrChange({ controls: !controls() })
 							}
 						/>
 					</div>
@@ -243,10 +258,7 @@ export const VideoEditPopover = () => {
 						<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 							Autoplay
 						</span>
-						<ToggleButton
-							checked={playback().autoplay}
-							on:click={onAutoplayToggle}
-						/>
+						<ToggleButton checked={autoplay()} on:click={onAutoplayToggle} />
 					</div>
 
 					<div class="flex items-center justify-between">
@@ -254,10 +266,8 @@ export const VideoEditPopover = () => {
 							Loop
 						</span>
 						<ToggleButton
-							checked={playback().loop}
-							on:click={() =>
-								controller.emitPlaybackChange({ loop: !playback().loop })
-							}
+							checked={loop()}
+							on:click={() => controller.emitVideoAttrChange({ loop: !loop() })}
 						/>
 					</div>
 
@@ -266,13 +276,13 @@ export const VideoEditPopover = () => {
 							Muted
 						</span>
 						<ToggleButton
-							checked={playback().muted}
+							checked={muted()}
 							on:click={() => {
-								if (playback().autoplay) {
+								if (autoplay()) {
 									return;
 								}
 
-								controller.emitPlaybackChange({ muted: !playback().muted });
+								controller.emitVideoAttrChange({ muted: !muted() });
 							}}
 						/>
 					</div>

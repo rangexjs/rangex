@@ -1,5 +1,5 @@
 import { assertNever } from "../../../ErrorHandling";
-import { getVideoElement, readFileAsDataURL } from "../_Utilities";
+import { applyVideoSrc, readFileAsDataURL } from "../_Utilities";
 import type { HandleVideoSwapParams } from "./HandleVideoSwap-types";
 
 /**
@@ -21,18 +21,12 @@ export const handleVideoSwap = ({
 			return;
 		}
 
-		const video = getVideoElement({ figure: currentVideoFigure });
-
-		const applySrc = (src: string) => {
-			video.setAttribute("src", src);
-
-			const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
-			snapshotTimeline.registerSnapshotBoundary();
-		};
-
 		if (params.source === "url") {
-			applySrc(params.url);
+			applyVideoSrc({
+				figure: currentVideoFigure,
+				src: params.url,
+				editorAPI,
+			});
 			return;
 		}
 
@@ -43,7 +37,9 @@ export const handleVideoSwap = ({
 				return;
 			}
 
-			readFileAsDataURL(file).then(applySrc);
+			readFileAsDataURL(file).then((src) => {
+				applyVideoSrc({ figure: currentVideoFigure, src, editorAPI });
+			});
 			return;
 		}
 

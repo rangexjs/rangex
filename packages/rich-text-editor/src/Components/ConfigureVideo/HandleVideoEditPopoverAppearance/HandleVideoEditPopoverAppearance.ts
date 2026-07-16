@@ -2,11 +2,14 @@ import { componentsName } from "../../../Constants";
 import { getBlockAlign } from "../../_Utilities";
 import {
 	getVideoAspectRatio,
+	getVideoAutoplay,
 	getVideoCaption,
+	getVideoControls,
 	getVideoElement,
 	getVideoFigure,
+	getVideoLoop,
+	getVideoMuted,
 	getVideoObjectFit,
-	getVideoPlayback,
 	getVideoPoster,
 	getVideoTitle,
 } from "../_Utilities";
@@ -50,18 +53,24 @@ export const handleVideoEditPopoverAppearance = ({
 			const objectFit = getVideoObjectFit({ video });
 			const aspectRatio = getVideoAspectRatio({ video });
 			const caption = getVideoCaption({ figure });
-			const playback = getVideoPlayback({ video });
 			const poster = getVideoPoster({ video });
 			const title = getVideoTitle({ video });
+			const controls = getVideoControls({ video });
+			const autoplay = getVideoAutoplay({ video });
+			const loop = getVideoLoop({ video });
+			const muted = getVideoMuted({ video });
 
 			videoEditPopover.updateState({
 				align,
 				objectFit,
 				aspectRatio,
 				caption,
-				playback,
 				poster,
 				title,
+				controls,
+				autoplay,
+				loop,
+				muted,
 			});
 		},
 	});
