@@ -1,3 +1,4 @@
+export * from "./ConfigureAudio";
 export * from "./ConfigureBlockQuote";
 export * from "./ConfigureCodeBlock";
 export * from "./ConfigureEmoji";
