@@ -166,6 +166,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		}
 
 		event.preventDefault();
+		event.stopPropagation();
 		dragDepth += 1;
 		setDragActive(true);
 	};
@@ -176,6 +177,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		}
 
 		event.preventDefault();
+		event.stopPropagation();
 
 		if (event.dataTransfer) {
 			event.dataTransfer.dropEffect = "copy";
@@ -188,6 +190,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		}
 
 		event.preventDefault();
+		event.stopPropagation();
 		dragDepth -= 1;
 
 		if (dragDepth <= 0) {
@@ -197,7 +200,12 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	};
 
 	const onDrop = (event: DragEvent) => {
+		if (!isFileDrag(event)) {
+			return;
+		}
+
 		event.preventDefault();
+		event.stopPropagation();
 		dragDepth = 0;
 		setDragActive(false);
 
@@ -214,6 +222,10 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		}
 
 		props.onResolve({ type, insertionType: "file", file });
+	};
+
+	const stopEditorPropagation = (event: Event) => {
+		event.stopPropagation();
 	};
 
 	const mediaTabControls: ContentSwitcherControls<MediaTab> = [
@@ -255,6 +267,11 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			on:dragover={onDragOver}
 			on:dragleave={onDragLeave}
 			on:drop={onDrop}
+			on:keydown={stopEditorPropagation}
+			on:beforeinput={stopEditorPropagation}
+			on:paste={stopEditorPropagation}
+			on:copy={stopEditorPropagation}
+			on:cut={stopEditorPropagation}
 		>
 			<div
 				classList={{
