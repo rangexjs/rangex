@@ -13,26 +13,25 @@ import type {
 	OnVideoCaptionEnabledChangeFn,
 	OnVideoCaptionPositionChangeFn,
 	OnVideoObjectFitChangeFn,
-	OnVideoSwapFn,
+	OnVideoSwapPopoverOpenFn,
 	UpdatePlaybackFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
 	UpdateVideoAspectRatioFn,
 	UpdateVideoCaptionFn,
+	UpdateVideoEditPopoverStateParams,
 	UpdateVideoObjectFitFn,
-	UpdateVideoPopoverStateParams,
 	VideoAspectRatioValue,
 	VideoCaptionPosition,
 	VideoCaptionState,
-	VideoEmitSwapParams,
-	VideoListenerOption,
+	VideoEditListenerOption,
+	VideoEditPopover,
+	VideoEditUpdateListenerParams,
 	VideoObjectFitValue,
 	VideoPlaybackState,
-	VideoPopover,
-	VideoUpdateListenerParams,
-} from "./VideoPopoverController-types";
+} from "./VideoEditPopoverController-types";
 
-export class VideoPopoverController {
+export class VideoEditPopoverController {
 	#popover: HTMLDivElement | null = null;
 	#align: BlockAlignValue = "center";
 	#objectFit: VideoObjectFitValue = "cover";
@@ -65,7 +64,7 @@ export class VideoPopoverController {
 	#onPlaybackChangeListeners: Set<OnPlaybackChangeFn> = new Set();
 	#onPosterChangeListeners: Set<OnPosterChangeFn> = new Set();
 	#onTitleChangeListeners: Set<OnTitleChangeFn> = new Set();
-	#onSwapListeners: Set<OnVideoSwapFn> = new Set();
+	#onSwapPopoverOpenListeners: Set<OnVideoSwapPopoverOpenFn> = new Set();
 	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 
 	get align() {
@@ -96,7 +95,11 @@ export class VideoPopoverController {
 		return this.#title;
 	}
 
-	#updateListener({ type, callback, operation }: VideoUpdateListenerParams) {
+	#updateListener({
+		type,
+		callback,
+		operation,
+	}: VideoEditUpdateListenerParams) {
 		if (type === "align") {
 			this.#alignListeners[operation](callback);
 			return;
@@ -135,11 +138,11 @@ export class VideoPopoverController {
 		assertNever(type);
 	}
 
-	subscribe(params: VideoListenerOption) {
+	subscribe(params: VideoEditListenerOption) {
 		this.#updateListener({ ...params, operation: "add" });
 	}
 
-	unsubscribe(params: VideoListenerOption) {
+	unsubscribe(params: VideoEditListenerOption) {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
@@ -191,9 +194,9 @@ export class VideoPopoverController {
 		}
 	}
 
-	emitSwap(params: VideoEmitSwapParams) {
-		for (const listener of this.#onSwapListeners) {
-			listener(params);
+	emitSwapPopoverOpen() {
+		for (const listener of this.#onSwapPopoverOpenListeners) {
+			listener();
 		}
 	}
 
@@ -211,7 +214,7 @@ export class VideoPopoverController {
 		playback,
 		poster,
 		title,
-	}: UpdateVideoPopoverStateParams) {
+	}: UpdateVideoEditPopoverStateParams) {
 		if (align) {
 			this.#align = align;
 
@@ -273,7 +276,7 @@ export class VideoPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): VideoPopover {
+	get publicAPI(): VideoEditPopover {
 		const controller = this;
 
 		return {
@@ -327,9 +330,9 @@ export class VideoPopoverController {
 				return () => this.#onTitleChangeListeners.delete(callback);
 			},
 
-			onSwap: (callback) => {
-				this.#onSwapListeners.add(callback);
-				return () => this.#onSwapListeners.delete(callback);
+			onSwapPopoverOpen: (callback) => {
+				this.#onSwapPopoverOpenListeners.add(callback);
+				return () => this.#onSwapPopoverOpenListeners.delete(callback);
 			},
 
 			onDelete: (callback) => {

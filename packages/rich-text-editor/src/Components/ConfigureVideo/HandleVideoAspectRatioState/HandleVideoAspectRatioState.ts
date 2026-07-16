@@ -14,9 +14,9 @@ export const handleVideoAspectRatioState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoAspectRatioStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeAspectRatioChange = videoPopover.onAspectRatioChange(
+	const unsubscribeAspectRatioChange = videoEditPopover.onAspectRatioChange(
 		(aspectRatio) => {
 			const currentBlock = getCurrentBlock();
 
@@ -28,7 +28,7 @@ export const handleVideoAspectRatioState = ({
 			const video = getVideoElement({ figure });
 
 			setVideoAspectRatio({ video, aspectRatio });
-			videoPopover.updateState({ aspectRatio });
+			videoEditPopover.updateState({ aspectRatio });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

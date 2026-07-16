@@ -19,8 +19,7 @@ export const showImageSwapPopover = ({
 	popover.hidePopover();
 
 	popover.style.cssText = "";
-	popover.style.marginTop = "8px";
-	popover.style.positionArea = "center bottom";
+	popover.style.positionArea = "center";
 
 	popover.showPopover({ source: figure });
 };

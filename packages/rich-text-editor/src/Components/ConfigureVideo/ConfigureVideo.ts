@@ -1,15 +1,20 @@
 import { componentsName } from "../../Constants";
-import type { ConfigureVideoParams } from "./ConfigureVideo-types";
+import type {
+	ConfigureVideoParams,
+	VideoInternals,
+} from "./ConfigureVideo-types";
 import { handleVideoAlignState } from "./HandleVideoAlignState";
 import { handleVideoAspectRatioState } from "./HandleVideoAspectRatioState";
 import { handleVideoCaptionState } from "./HandleVideoCaptionState";
 import { handleVideoDelete } from "./HandleVideoDelete";
+import { handleVideoEditPopoverAppearance } from "./HandleVideoEditPopoverAppearance";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
 import { handleVideoObjectFitState } from "./HandleVideoObjectFitState";
 import { handleVideoPlaybackState } from "./HandleVideoPlaybackState";
-import { handleVideoPopoverAppearance } from "./HandleVideoPopoverAppearance";
 import { handleVideoPosterState } from "./HandleVideoPosterState";
 import { handleVideoSwap } from "./HandleVideoSwap";
+import { handleVideoSwapButtonOpen } from "./HandleVideoSwapButtonOpen";
+import { handleVideoSwapPopoverClose } from "./HandleVideoSwapPopoverClose";
 import { handleVideoTitleState } from "./HandleVideoTitleState";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
@@ -24,6 +29,8 @@ export const configureVideo = ({
 	blockPopoverAppearanceHandler,
 	onMediaResolve,
 }: ConfigureVideoParams) => {
+	const internals: VideoInternals = { currentVideoFigure: null };
+
 	const blockResizeCleanup = blockResize.registerComponent({
 		handleX: 16,
 		canShow({ blockNestedContext }) {
@@ -37,7 +44,7 @@ export const configureVideo = ({
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleVideoPopoverAppearance({
+		handleVideoEditPopoverAppearance({
 			richTextEditorUI,
 			blockPopoverAppearanceHandler,
 		});
@@ -84,10 +91,21 @@ export const configureVideo = ({
 		getCurrentBlock,
 	});
 
+	const swapButtonOpenCleanup = handleVideoSwapButtonOpen({
+		richTextEditorUI,
+		getCurrentBlock,
+		internals,
+	});
+
 	const swapCleanup = handleVideoSwap({
 		richTextEditorUI,
 		editorAPI,
-		getCurrentBlock,
+		internals,
+	});
+
+	const swapPopoverCloseCleanup = handleVideoSwapPopoverClose({
+		richTextEditorUI,
+		internals,
 	});
 
 	const deleteCleanup = handleVideoDelete({
@@ -107,7 +125,9 @@ export const configureVideo = ({
 		titleStateCleanup();
 		playbackStateCleanup();
 		posterStateCleanup();
+		swapButtonOpenCleanup();
 		swapCleanup();
+		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

@@ -1,9 +1,5 @@
 import { assertNever } from "../../../ErrorHandling";
-import {
-	getVideoElement,
-	getVideoFigure,
-	readFileAsDataURL,
-} from "../_Utilities";
+import { getVideoElement, readFileAsDataURL } from "../_Utilities";
 import type { HandleVideoSwapParams } from "./HandleVideoSwap-types";
 
 /**
@@ -13,19 +9,19 @@ import type { HandleVideoSwapParams } from "./HandleVideoSwap-types";
 export const handleVideoSwap = ({
 	richTextEditorUI,
 	editorAPI,
-	getCurrentBlock,
+	internals,
 }: HandleVideoSwapParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoSwapPopover } = richTextEditorUI;
 
-	const unsubscribeSwap = videoPopover.onSwap((params) => {
-		const currentBlock = getCurrentBlock();
+	const unsubscribeSwap = videoSwapPopover.onSwap((params) => {
+		const { currentVideoFigure } = internals;
 
-		if (!currentBlock) {
+		if (!currentVideoFigure) {
+			console.warn("Figure should have been assigned.");
 			return;
 		}
 
-		const figure = getVideoFigure({ blockNestedContext: currentBlock });
-		const video = getVideoElement({ figure });
+		const video = getVideoElement({ figure: currentVideoFigure });
 
 		const applySrc = (src: string) => {
 			video.setAttribute("src", src);

@@ -10,9 +10,9 @@ export const handleVideoTitleState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoTitleStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeTitleChange = videoPopover.onTitleChange((title) => {
+	const unsubscribeTitleChange = videoEditPopover.onTitleChange((title) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -23,7 +23,7 @@ export const handleVideoTitleState = ({
 		const video = getVideoElement({ figure });
 
 		setVideoTitle({ video, title });
-		videoPopover.updateState({ title });
+		videoEditPopover.updateState({ title });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

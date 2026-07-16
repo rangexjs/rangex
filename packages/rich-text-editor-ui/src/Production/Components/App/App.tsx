@@ -12,7 +12,8 @@ import type {
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
-	VideoPopoverController,
+	VideoEditPopoverController,
+	VideoSwapPopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
@@ -41,7 +42,8 @@ import {
 	MentionPopover,
 	TableQuickActionsPopover,
 	TemplateVariablePopover,
-	VideoPopover,
+	VideoEditPopover,
+	VideoSwapPopover,
 } from "../NodePopovers";
 import {
 	EditorOptionsContext,
@@ -81,7 +83,8 @@ export interface PopoverControllers {
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
 	templateVariablePopoverController: TemplateVariablePopoverController;
-	videoPopoverController: VideoPopoverController;
+	videoEditPopoverController: VideoEditPopoverController;
+	videoSwapPopoverController: VideoSwapPopoverController;
 }
 
 export interface AppProps
@@ -161,7 +164,8 @@ export const App = (props: AppProps) => {
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
 		templateVariablePopoverController: props.templateVariablePopoverController,
-		videoPopoverController: props.videoPopoverController,
+		videoEditPopoverController: props.videoEditPopoverController,
+		videoSwapPopoverController: props.videoSwapPopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -194,7 +198,8 @@ export const App = (props: AppProps) => {
 							<MentionPopover />
 							<TableQuickActionsPopover />
 							<TemplateVariablePopover />
-							<VideoPopover />
+							<VideoEditPopover />
+							<VideoSwapPopover />
 						</PopoverControllersContext.Provider>
 					</div>
 				</div>

@@ -16,10 +16,10 @@ export const handleVideoCaptionState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoCaptionStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeCaptionEnabledChange = videoPopover.onCaptionEnabledChange(
-		(enabled) => {
+	const unsubscribeCaptionEnabledChange =
+		videoEditPopover.onCaptionEnabledChange((enabled) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -29,16 +29,15 @@ export const handleVideoCaptionState = ({
 			const figure = getVideoFigure({ blockNestedContext: currentBlock });
 
 			setVideoCaptionEnabled({ figure, enabled });
-			videoPopover.updateState({ caption: getVideoCaption({ figure }) });
+			videoEditPopover.updateState({ caption: getVideoCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		});
 
-	const unsubscribeCaptionPositionChange = videoPopover.onCaptionPositionChange(
-		(position) => {
+	const unsubscribeCaptionPositionChange =
+		videoEditPopover.onCaptionPositionChange((position) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -48,13 +47,12 @@ export const handleVideoCaptionState = ({
 			const figure = getVideoFigure({ blockNestedContext: currentBlock });
 
 			setVideoCaptionPosition({ figure, position });
-			videoPopover.updateState({ caption: getVideoCaption({ figure }) });
+			videoEditPopover.updateState({ caption: getVideoCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		});
 
 	return () => {
 		unsubscribeCaptionEnabledChange();

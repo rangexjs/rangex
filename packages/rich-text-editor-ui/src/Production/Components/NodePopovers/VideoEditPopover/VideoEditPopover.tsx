@@ -19,7 +19,6 @@ import {
 import { Icon } from "../../Icon";
 import {
 	createTextFieldController,
-	FormField,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../InputFields";
@@ -48,10 +47,9 @@ const captionPositionControls: ContentSwitcherControls<VideoCaptionPosition> = [
 	{ id: "below", node: "Below" },
 ];
 
-type SwapView = "list" | "url";
-
-export const VideoPopover = () => {
-	const { videoPopoverController: controller } = usePopoverControllersContext();
+export const VideoEditPopover = () => {
+	const { videoEditPopoverController: controller } =
+		usePopoverControllersContext();
 
 	const [align, setAlign] = createSignal(controller.align);
 	const [objectFit, setObjectFit] = createSignal(controller.objectFit);
@@ -76,7 +74,6 @@ export const VideoPopover = () => {
 	const isTitleDirty = () => titleModel.value() !== committedTitle();
 
 	let blockAlignPopover: HTMLDivElement | undefined;
-	let swapPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
 
 	onMount(() => {
@@ -115,7 +112,7 @@ export const VideoPopover = () => {
 	});
 
 	const onBeforeToggle = () => {
-		const nestedPopovers = [blockAlignPopover, swapPopover, optionsPopover];
+		const nestedPopovers = [blockAlignPopover, optionsPopover];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -126,76 +123,6 @@ export const VideoPopover = () => {
 				nestedPopover.hidePopover();
 			}
 		}
-	};
-
-	const swapPopoverId = createUniqueId();
-
-	const [swapView, setSwapView] = createSignal<SwapView>("list");
-
-	const [swapUrlModel, swapUrlControls] = createTextFieldController({
-		error: { required: { value: true, message: "Field can't be empty." } },
-	});
-
-	let swapFileInput: HTMLInputElement | undefined;
-
-	onMount(() => {
-		if (!swapFileInput) {
-			throw new Error("SwapFileInput can't be undefined.");
-		}
-
-		swapFileInput.addEventListener("change", () => {
-			const { files } = swapFileInput;
-
-			if (!files?.length) {
-				return;
-			}
-
-			controller.emitSwap({ source: "file-upload", files });
-
-			if (!swapPopover) {
-				throw new Error("SwapPopover shouldn't be undefined.");
-			}
-
-			swapPopover.hidePopover();
-		});
-	});
-
-	const onSwapToggle = (event: ToggleEvent) => {
-		if (event.newState !== "closed") {
-			return;
-		}
-
-		setSwapView("list");
-		swapUrlModel.reset();
-		swapUrlModel.setValue("");
-
-		if (swapFileInput) {
-			swapFileInput.value = "";
-		}
-	};
-
-	const onSwapUrlApply = () => {
-		swapUrlModel.validate();
-
-		if (swapUrlModel.checkValidity().hasError) {
-			return;
-		}
-
-		controller.emitSwap({ source: "url", url: swapUrlModel.value() });
-
-		if (!swapPopover) {
-			throw new Error("SwapPopover shouldn't be undefined.");
-		}
-
-		swapPopover.hidePopover();
-	};
-
-	const onSwapUrlKeyDown = (event: KeyboardEvent) => {
-		if (event.key !== "Enter") {
-			return;
-		}
-
-		onSwapUrlApply();
 	};
 
 	const optionsPopoverId = createUniqueId();
@@ -247,97 +174,14 @@ export const VideoPopover = () => {
 				}}
 			/>
 
-			<span>
-				<button
-					type="button"
-					commandfor={swapPopoverId}
-					command="toggle-popover"
-					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Swap"
-				>
-					<Icon name="Swap" class="size-4" />
-				</button>
-
-				<div
-					ref={(el) => {
-						swapPopover = el;
-					}}
-					id={swapPopoverId}
-					popover="auto"
-					class="w-52 rounded-lg border border-neutral-200 bg-white p-1 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
-					on:toggle={onSwapToggle}
-				>
-					<div hidden={swapView() !== "list"}>
-						<button
-							type="button"
-							class="btn-menu-item w-full rounded px-2 py-1.5 text-left font-medium text-xs"
-							on:click={() => {
-								if (!swapFileInput) {
-									throw new Error("SwapFileInput can't be undefined.");
-								}
-
-								swapFileInput.click();
-							}}
-						>
-							Upload from device
-						</button>
-						<button
-							type="button"
-							class="btn-menu-item w-full rounded px-2 py-1.5 text-left font-medium text-xs"
-							on:click={() => setSwapView("url")}
-						>
-							Upload via URL
-						</button>
-					</div>
-
-					<div class="p-1" hidden={swapView() !== "url"}>
-						<FormField
-							class="mb-2"
-							for={swapUrlModel.id}
-							label="URL"
-							showError={swapUrlModel.state().showError}
-							errorMessage={swapUrlModel.state().message}
-						>
-							<TextFieldWrapper
-								appearance="neutral-filled-underline"
-								size="small"
-							>
-								<InputTextField
-									type="text"
-									id={swapUrlModel.id}
-									placeholder="https://example.com/video.mp4"
-									spellcheck={false}
-									{...swapUrlControls}
-									on:keydown={onSwapUrlKeyDown}
-								/>
-							</TextFieldWrapper>
-						</FormField>
-						<div class="flex justify-end gap-2">
-							<button
-								type="button"
-								class="btn-neutral-solid rounded-sm px-3 py-1 font-medium text-xs"
-								on:click={() => setSwapView("list")}
-							>
-								Cancel
-							</button>
-							<button
-								type="button"
-								class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-xs"
-								on:click={onSwapUrlApply}
-							>
-								Apply
-							</button>
-						</div>
-					</div>
-				</div>
-
-				<input
-					ref={swapFileInput}
-					type="file"
-					accept="video/*"
-					class="hidden"
-				/>
-			</span>
+			<button
+				type="button"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
+				title="Swap"
+				on:click={() => controller.emitSwapPopoverOpen()}
+			>
+				<Icon name="Swap" class="size-4" />
+			</button>
 
 			<button
 				type="button"

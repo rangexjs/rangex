@@ -10,9 +10,9 @@ export const handleVideoAlignState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoAlignStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeAlignChange = videoPopover.onAlignChange((align) => {
+	const unsubscribeAlignChange = videoEditPopover.onAlignChange((align) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -26,7 +26,7 @@ export const handleVideoAlignState = ({
 		}
 
 		setBlockAlign({ blockNestedContextLine: $$parentElement, align });
-		videoPopover.updateState({ align });
+		videoEditPopover.updateState({ align });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

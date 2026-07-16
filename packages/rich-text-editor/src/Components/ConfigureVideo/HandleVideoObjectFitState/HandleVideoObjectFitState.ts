@@ -14,9 +14,9 @@ export const handleVideoObjectFitState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoObjectFitStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeObjectFitChange = videoPopover.onObjectFitChange(
+	const unsubscribeObjectFitChange = videoEditPopover.onObjectFitChange(
 		(objectFit) => {
 			const currentBlock = getCurrentBlock();
 
@@ -28,7 +28,7 @@ export const handleVideoObjectFitState = ({
 			const video = getVideoElement({ figure });
 
 			setVideoObjectFit({ video, objectFit });
-			videoPopover.updateState({ objectFit });
+			videoEditPopover.updateState({ objectFit });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

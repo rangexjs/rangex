@@ -21,7 +21,8 @@ import {
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
-	VideoPopoverController,
+	VideoEditPopoverController,
+	VideoSwapPopoverController,
 } from "../PopoverControllers";
 import { ToolbarButtonDefaultValues } from "../ToolbarButtonDefaultValues";
 import {
@@ -69,7 +70,8 @@ export class RichTextEditorUI extends HTMLElement {
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
 	#templateVariablePopoverController = new TemplateVariablePopoverController();
-	#videoPopoverController = new VideoPopoverController();
+	#videoEditPopoverController = new VideoEditPopoverController();
+	#videoSwapPopoverController = new VideoSwapPopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -148,7 +150,8 @@ export class RichTextEditorUI extends HTMLElement {
 					templateVariablePopoverController={
 						this.#templateVariablePopoverController
 					}
-					videoPopoverController={this.#videoPopoverController}
+					videoEditPopoverController={this.#videoEditPopoverController}
+					videoSwapPopoverController={this.#videoSwapPopoverController}
 				/>
 			),
 			this.#shadowRoot,
@@ -283,8 +286,12 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#templateVariablePopoverController.publicAPI;
 	}
 
-	get videoPopover() {
-		return this.#videoPopoverController.publicAPI;
+	get videoEditPopover() {
+		return this.#videoEditPopoverController.publicAPI;
+	}
+
+	get videoSwapPopover() {
+		return this.#videoSwapPopoverController.publicAPI;
 	}
 
 	dispose() {

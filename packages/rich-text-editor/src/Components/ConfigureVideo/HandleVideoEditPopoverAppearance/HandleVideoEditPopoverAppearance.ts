@@ -10,22 +10,22 @@ import {
 	getVideoPoster,
 	getVideoTitle,
 } from "../_Utilities";
-import type { HandleVideoPopoverAppearanceParams } from "./HandleVideoPopoverAppearance-types";
+import type { HandleVideoEditPopoverAppearanceParams } from "./HandleVideoEditPopoverAppearance-types";
 
 /**
- * Registers the video popover with the shared {@link BlockPopoverAppearanceHandler},
+ * Registers the video edit popover with the shared {@link BlockPopoverAppearanceHandler},
  * pushing the block's current alignment into the popover just before it appears. Returns
  * the registration's `getCurrentBlock`, threaded to every other video handler that needs
  * to know which video block the popover is currently open over.
  */
-export const handleVideoPopoverAppearance = ({
+export const handleVideoEditPopoverAppearance = ({
 	richTextEditorUI,
 	blockPopoverAppearanceHandler,
-}: HandleVideoPopoverAppearanceParams) => {
-	const { videoPopover } = richTextEditorUI;
+}: HandleVideoEditPopoverAppearanceParams) => {
+	const { videoEditPopover } = richTextEditorUI;
 
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: videoPopover.popover,
+		popover: videoEditPopover.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -54,7 +54,7 @@ export const handleVideoPopoverAppearance = ({
 			const poster = getVideoPoster({ video });
 			const title = getVideoTitle({ video });
 
-			videoPopover.updateState({
+			videoEditPopover.updateState({
 				align,
 				objectFit,
 				aspectRatio,

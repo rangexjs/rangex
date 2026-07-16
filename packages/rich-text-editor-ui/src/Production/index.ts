@@ -29,7 +29,8 @@ export type {
 	TemplateVariablePopover,
 	TemplateVariablePopoverState,
 	UpdateCodeBlockPopoverStateParams,
-	VideoPopover,
+	VideoEditPopover,
+	VideoSwapPopover,
 } from "./PopoverControllers";
 export {
 	RichTextEditorUI,

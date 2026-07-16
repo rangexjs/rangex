@@ -9,9 +9,9 @@ export const handleVideoDelete = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoDeleteParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribeDelete = videoPopover.onDelete(() => {
+	const unsubscribeDelete = videoEditPopover.onDelete(() => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {

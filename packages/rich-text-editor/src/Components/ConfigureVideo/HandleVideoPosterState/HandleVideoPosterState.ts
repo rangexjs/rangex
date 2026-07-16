@@ -10,9 +10,9 @@ export const handleVideoPosterState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoPosterStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribePosterChange = videoPopover.onPosterChange((poster) => {
+	const unsubscribePosterChange = videoEditPopover.onPosterChange((poster) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -23,7 +23,7 @@ export const handleVideoPosterState = ({
 		const video = getVideoElement({ figure });
 
 		setVideoPoster({ video, poster });
-		videoPopover.updateState({ poster });
+		videoEditPopover.updateState({ poster });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

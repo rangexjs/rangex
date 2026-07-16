@@ -5,21 +5,7 @@ import type {
 	UpdateAlignFn,
 } from "../ImageEditPopoverController";
 
-export interface VideoEmitSwapURLParams {
-	source: "url";
-	url: string;
-}
-
-export interface VideoEmitSwapFileUploadParams {
-	source: "file-upload";
-	files: FileList;
-}
-
-export type VideoEmitSwapParams =
-	| VideoEmitSwapURLParams
-	| VideoEmitSwapFileUploadParams;
-
-export type OnVideoSwapFn = (params: VideoEmitSwapParams) => void;
+export type OnVideoSwapPopoverOpenFn = () => void;
 
 export type VideoObjectFitValue = "cover" | "contain" | "fill";
 export type VideoAspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
@@ -37,7 +23,7 @@ export interface VideoPlaybackState {
 	muted: boolean;
 }
 
-export interface VideoPopoverState {
+export interface VideoEditPopoverState {
 	align?: BlockAlignValue;
 	objectFit?: VideoObjectFitValue;
 	aspectRatio?: VideoAspectRatioValue;
@@ -47,7 +33,8 @@ export interface VideoPopoverState {
 	title?: string;
 }
 
-export interface UpdateVideoPopoverStateParams extends VideoPopoverState {}
+export interface UpdateVideoEditPopoverStateParams
+	extends VideoEditPopoverState {}
 
 export type UpdateVideoObjectFitFn = (value: VideoObjectFitValue) => void;
 export type UpdateVideoAspectRatioFn = (value: VideoAspectRatioValue) => void;
@@ -56,7 +43,7 @@ export type UpdatePlaybackFn = (value: VideoPlaybackState) => void;
 export type UpdatePosterFn = (value: string) => void;
 export type UpdateTitleFn = (value: string) => void;
 
-export type VideoListenerOption =
+export type VideoEditListenerOption =
 	| { type: "align"; callback: UpdateAlignFn }
 	| { type: "objectFit"; callback: UpdateVideoObjectFitFn }
 	| { type: "aspectRatio"; callback: UpdateVideoAspectRatioFn }
@@ -65,7 +52,7 @@ export type VideoListenerOption =
 	| { type: "poster"; callback: UpdatePosterFn }
 	| { type: "title"; callback: UpdateTitleFn };
 
-export type VideoUpdateListenerParams = VideoListenerOption & {
+export type VideoEditUpdateListenerParams = VideoEditListenerOption & {
 	operation: "add" | "delete";
 };
 
@@ -83,9 +70,9 @@ export type OnPlaybackChangeFn = (
 export type OnPosterChangeFn = (poster: string) => void;
 export type OnTitleChangeFn = (title: string) => void;
 
-export interface VideoPopover {
+export interface VideoEditPopover {
 	popover: HTMLDivElement;
-	updateState(params: UpdateVideoPopoverStateParams): void;
+	updateState(params: UpdateVideoEditPopoverStateParams): void;
 	onAlignChange(callback: OnAlignChangeFn): () => void;
 	onObjectFitChange(callback: OnVideoObjectFitChangeFn): () => void;
 	onAspectRatioChange(callback: OnVideoAspectRatioChangeFn): () => void;
@@ -94,6 +81,6 @@ export interface VideoPopover {
 	onPlaybackChange(callback: OnPlaybackChangeFn): () => void;
 	onPosterChange(callback: OnPosterChangeFn): () => void;
 	onTitleChange(callback: OnTitleChangeFn): () => void;
-	onSwap(callback: OnVideoSwapFn): () => void;
+	onSwapPopoverOpen(callback: OnVideoSwapPopoverOpenFn): () => void;
 	onDelete(callback: OnDeleteFn): () => void;
 }

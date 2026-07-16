@@ -17,27 +17,29 @@ export const handleVideoPlaybackState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoPlaybackStateParams) => {
-	const { videoPopover } = richTextEditorUI;
+	const { videoEditPopover } = richTextEditorUI;
 
-	const unsubscribePlaybackChange = videoPopover.onPlaybackChange((patch) => {
-		const currentBlock = getCurrentBlock();
+	const unsubscribePlaybackChange = videoEditPopover.onPlaybackChange(
+		(patch) => {
+			const currentBlock = getCurrentBlock();
 
-		if (!currentBlock) {
-			return;
-		}
+			if (!currentBlock) {
+				return;
+			}
 
-		const figure = getVideoFigure({ blockNestedContext: currentBlock });
-		const video = getVideoElement({ figure });
+			const figure = getVideoFigure({ blockNestedContext: currentBlock });
+			const video = getVideoElement({ figure });
 
-		const playback = { ...getVideoPlayback({ video }), ...patch };
+			const playback = { ...getVideoPlayback({ video }), ...patch };
 
-		setVideoPlayback({ video, playback });
-		videoPopover.updateState({ playback: getVideoPlayback({ video }) });
+			setVideoPlayback({ video, playback });
+			videoEditPopover.updateState({ playback: getVideoPlayback({ video }) });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
-	});
+			snapshotTimeline.registerSnapshotBoundary();
+		},
+	);
 
 	return () => {
 		unsubscribePlaybackChange();
