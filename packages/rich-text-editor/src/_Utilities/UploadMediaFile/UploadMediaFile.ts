@@ -12,22 +12,22 @@ import type {
 export const uploadMediaFile = ({
 	file,
 	onProgress,
-}: UploadMediaFileParams): Promise<UploadMediaFileResult> => {
-	return new Promise((resolve, reject) => {
+}: UploadMediaFileParams): UploadMediaFileResult => {
+	return new Promise((resolve) => {
 		const reader = new FileReader();
 
 		reader.onprogress = (event) => {
 			if (event.lengthComputable) {
-				onProgress(event.loaded / event.total);
+				onProgress?.(event.loaded / event.total);
 			}
 		};
 
 		reader.onload = () => {
-			resolve({ src: reader.result as string });
+			resolve(reader.result as string);
 		};
 
 		reader.onerror = () => {
-			reject(reader.error);
+			resolve(null);
 		};
 
 		reader.readAsDataURL(file);

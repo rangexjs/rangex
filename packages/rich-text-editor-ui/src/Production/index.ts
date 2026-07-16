@@ -14,10 +14,12 @@ export type {
 } from "./NodeSlotControllers";
 export type {
 	AudioEditPopover,
+	AudioEmitSwapParams,
 	AudioSwapPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,
+	EmitSwapParams,
 	EmojiPopover,
 	EmojiPopoverState,
 	ImageEditPopover,
@@ -32,6 +34,7 @@ export type {
 	TemplateVariablePopoverState,
 	UpdateCodeBlockPopoverStateParams,
 	VideoEditPopover,
+	VideoEmitSwapParams,
 	VideoSwapPopover,
 } from "./PopoverControllers";
 export {

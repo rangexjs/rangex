@@ -1,5 +1,12 @@
-import { createMemo, createSignal, createUniqueId, onMount } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	onCleanup,
+	onMount,
+} from "solid-js";
 import { assertNever } from "../../../ErrorHandling";
+import type { AudioSwapCheckState } from "../../../PopoverControllers";
 import { usePopoverControllersContext } from "../../App";
 import {
 	ContentSwitch,
@@ -45,6 +52,25 @@ export const AudioSwapPopover = () => {
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
+	const [checkState, setCheckState] = createSignal<AudioSwapCheckState>({
+		status: "idle",
+	});
+	const isChecking = () => checkState().status === "checking";
+	const isUploading = () => checkState().status === "uploading";
+	const isBusy = () => isChecking() || isUploading();
+	const uploadProgress = () => {
+		const state = checkState();
+		return state.status === "uploading" ? state.progress : 0;
+	};
+	const checkErrorMessage = () => {
+		const state = checkState();
+		return state.status === "error" ? state.message : "";
+	};
+
+	onMount(() => {
+		onCleanup(controller.onCheckStateChange(setCheckState));
+	});
+
 	const onToggle = (event: ToggleEvent) => {
 		if (event.newState !== "closed") {
 			return;
@@ -54,6 +80,7 @@ export const AudioSwapPopover = () => {
 		urlModel.setValue("");
 		setSourceTab("upload");
 		setFiles(null);
+		setCheckState({ status: "idle" });
 
 		if (fileInput) {
 			fileInput.value = "";
@@ -61,13 +88,14 @@ export const AudioSwapPopover = () => {
 	};
 
 	const onUpdateClick = (event: MouseEvent) => {
+		event.preventDefault();
+
 		const tab = sourceTab();
 
 		if (tab === "url") {
 			urlModel.validate();
 
 			if (urlModel.checkValidity().hasError) {
-				event.preventDefault();
 				return;
 			}
 
@@ -79,7 +107,6 @@ export const AudioSwapPopover = () => {
 			const selectedFiles = files();
 
 			if (!selectedFiles?.length) {
-				event.preventDefault();
 				return;
 			}
 
@@ -88,6 +115,14 @@ export const AudioSwapPopover = () => {
 		}
 
 		assertNever(tab);
+	};
+
+	const onChooseFileClick = () => {
+		if (!fileInput) {
+			throw new Error("FileInput can't be undefined.");
+		}
+
+		fileInput.click();
 	};
 
 	let updateButtonRef: HTMLButtonElement | undefined;
@@ -118,6 +153,7 @@ export const AudioSwapPopover = () => {
 				id={sourceTab()}
 				controls={sourceTabControls}
 				onChange={setSourceTab}
+				disabled={isBusy()}
 				class="mb-3 rounded-sm"
 				commonButtonClass="py-1.5 text-xs font-medium"
 				activeBoxShrink={-1}
@@ -127,14 +163,9 @@ export const AudioSwapPopover = () => {
 			<div class="mb-3" hidden={sourceTab() !== "upload"}>
 				<button
 					type="button"
+					disabled={isBusy()}
 					class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left font-medium text-sm"
-					on:click={() => {
-						if (!fileInput) {
-							throw new Error("FileInput can't be undefined.");
-						}
-
-						fileInput.click();
-					}}
+					on:click={onChooseFileClick}
 				>
 					{fileName() ?? "Choose file…"}
 				</button>
@@ -160,12 +191,32 @@ export const AudioSwapPopover = () => {
 				</FormField>
 			</div>
 
+			<div class="mb-3 text-sm" hidden={checkState().status === "idle"}>
+				<span
+					hidden={!isChecking()}
+					class="text-neutral-500 dark:text-neutral-400"
+				>
+					Checking…
+				</span>
+				<span
+					hidden={!isUploading()}
+					class="text-neutral-500 dark:text-neutral-400"
+				>
+					Uploading… {Math.round(uploadProgress() * 100)}%
+				</span>
+				<span
+					hidden={checkState().status !== "error"}
+					class="text-red-600 dark:text-red-400"
+				>
+					{checkErrorMessage()}
+				</span>
+			</div>
+
 			<div class="text-right">
 				<button
 					ref={updateButtonRef}
 					type="button"
-					commandfor={popoverId}
-					command="hide-popover"
+					disabled={isBusy()}
 					class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
 					on:click={onUpdateClick}
 				>

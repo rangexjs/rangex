@@ -6,5 +6,4 @@ export * from "./AudioLoop";
 export * from "./AudioMuted";
 export * from "./AudioTitle";
 export * from "./GetAudioElements";
-export * from "./ReadFileAsDataURL";
 export * from "./ShowAudioSwapPopover";

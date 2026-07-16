@@ -14,7 +14,7 @@ import { handleVideoSwapButtonOpen } from "./HandleVideoSwapButtonOpen";
 import { handleVideoSwapPopoverClose } from "./HandleVideoSwapPopoverClose";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
-// ConfigureEmptyMedia/_Utilities) instead of going through any upload endpoint or blob
+// src/_Utilities) instead of going through any upload endpoint or blob
 // storage. This embeds the full file bytes directly in the document and in every
 // snapshot/undo boundary. It works for now but isn't viable long term — needs a pluggable
 // upload mechanism (consumer-supplied endpoint/blob storage) eventually.

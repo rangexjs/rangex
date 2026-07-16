@@ -5,12 +5,18 @@ import {
 	detachedContextName,
 	isEditorNode,
 } from "rich-text-area";
+import {
+	isWellFormedUrl,
+	probeMediaSrc,
+	uploadMediaFile,
+} from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
-import { uploadMediaFile } from "../_Utilities";
 import type {
 	OnMediaResolveCallbackFn,
 	OnMediaResolveCallbackParams,
+	ResolveMediaSrcParams,
+	ResolveMediaSrcResult,
 	WatchEmptyMediaParams,
 	WatchEmptyMediaResult,
 } from "./WatchEmptyMedia-types";
@@ -29,6 +35,63 @@ const getMediaDetachedContext = (blockNestedContext: BlockNestedContext) => {
 	}
 
 	return detachedContext;
+};
+
+/**
+ * Resolves a picker submission down to a single `src`, or `null` if the URL was invalid
+ * (an error is pushed into the slot before returning `null`). File uploads report progress
+ * back into the slot as they go, guarded by `isStillCurrent` since the block can disappear
+ * mid-upload.
+ */
+const resolveMediaSrc = async ({
+	detail,
+	container,
+	richTextEditorUI,
+	isStillCurrent,
+}: ResolveMediaSrcParams): ResolveMediaSrcResult => {
+	if (detail.insertionType === "url") {
+		if (!isWellFormedUrl(detail.url)) {
+			richTextEditorUI.emptyMediaSlot.update({
+				container,
+				uploadState: { status: "error", message: "Enter a valid URL." },
+			});
+			return null;
+		}
+
+		return detail.url;
+	}
+
+	richTextEditorUI.emptyMediaSlot.update({
+		container,
+		uploadState: { status: "uploading", progress: 0 },
+	});
+
+	const src = await uploadMediaFile({
+		file: detail.file,
+		onProgress: (progress) => {
+			if (!isStillCurrent()) {
+				return;
+			}
+
+			richTextEditorUI.emptyMediaSlot.update({
+				container,
+				uploadState: { status: "uploading", progress },
+			});
+		},
+	});
+
+	if (!src) {
+		richTextEditorUI.emptyMediaSlot.update({
+			container,
+			uploadState: {
+				status: "error",
+				message: "Couldn't read that file. Try a different one.",
+			},
+		});
+		return null;
+	}
+
+	return src;
 };
 
 /**
@@ -55,7 +118,7 @@ export const watchEmptyMedia = ({
 	};
 
 	const unsubscribeResolve = richTextEditorUI.emptyMediaSlot.onResolve(
-		({ container, detail }) => {
+		async ({ container, detail }) => {
 			const assignedSlot = container.assignedSlot;
 
 			if (!(assignedSlot && isEditorNode(assignedSlot))) {
@@ -75,30 +138,65 @@ export const watchEmptyMedia = ({
 				return;
 			}
 
-			if (detail.insertionType === "url") {
+			// The block might not be available anymore by the time `src` is resolved.
+			const isStillCurrent = () =>
+				containersByBlock.get(blockNestedContext) === container;
+
+			if (detail.type === "embed") {
+				if (!isWellFormedUrl(detail.url)) {
+					richTextEditorUI.emptyMediaSlot.update({
+						container,
+						uploadState: { status: "error", message: "Enter a valid URL." },
+					});
+					return;
+				}
+
 				emitMediaResolve({
 					blockNestedContext,
-					type: detail.type,
+					type: "embed",
 					src: detail.url,
 				});
 				return;
 			}
 
-			richTextEditorUI.emptyMediaSlot.update({
+			const src = await resolveMediaSrc({
+				detail,
 				container,
-				uploadState: { status: "uploading", progress: 0 },
+				richTextEditorUI,
+				isStillCurrent,
 			});
 
-			uploadMediaFile({
-				file: detail.file,
-				onProgress: (progress) =>
-					richTextEditorUI.emptyMediaSlot.update({
-						container,
-						uploadState: { status: "uploading", progress },
-					}),
-			}).then(({ src }) => {
-				emitMediaResolve({ blockNestedContext, type: detail.type, src });
+			if (src === null) {
+				return;
+			}
+
+			if (!isStillCurrent()) {
+				return;
+			}
+
+			richTextEditorUI.emptyMediaSlot.update({
+				container,
+				uploadState: { status: "checking" },
 			});
+
+			const loaded = await probeMediaSrc({ type: detail.type, src });
+
+			if (!isStillCurrent()) {
+				return;
+			}
+
+			if (!loaded) {
+				richTextEditorUI.emptyMediaSlot.update({
+					container,
+					uploadState: {
+						status: "error",
+						message: `Couldn't load that ${detail.type}. Check the link and try again.`,
+					},
+				});
+				return;
+			}
+
+			emitMediaResolve({ blockNestedContext, type: detail.type, src });
 		},
 	);
 

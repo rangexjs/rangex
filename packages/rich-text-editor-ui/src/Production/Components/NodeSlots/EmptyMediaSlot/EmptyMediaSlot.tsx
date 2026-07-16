@@ -25,24 +25,29 @@ const TabLabel = (icon: IconName, label: string) => (
 	</span>
 );
 
-interface UploadingIndicatorProps {
+interface StatusIndicatorProps {
 	uploadState: UploadState;
 }
 
-const UploadingIndicator = (props: UploadingIndicatorProps) => {
+const StatusIndicator = (props: StatusIndicatorProps) => {
 	const progress = () =>
 		props.uploadState.status === "uploading" ? props.uploadState.progress : 0;
+
+	const display = () =>
+		props.uploadState.status === "checking" ||
+		props.uploadState.status === "uploading"
+			? "flex"
+			: "none";
 
 	return (
 		<div
 			class="mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400"
-			classList={{
-				hidden: props.uploadState.status === "idle",
-				flex: props.uploadState.status !== "idle",
-			}}
+			style={{ display: display() }}
 		>
-			<span>Uploading…</span>
-			<span>{Math.round(progress() * 100)}%</span>
+			<span hidden={props.uploadState.status !== "checking"}>Checking…</span>
+			<span hidden={props.uploadState.status !== "uploading"}>
+				Uploading… {Math.round(progress() * 100)}%
+			</span>
 		</div>
 	);
 };
@@ -91,6 +96,14 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 
 	const [uploadFile, setUploadFile] = createSignal<File | null>(null);
 	const uploadFileName = createMemo(() => uploadFile()?.name ?? null);
+
+	const errorMessage = () =>
+		props.uploadState.status === "error" ? props.uploadState.message : "";
+
+	const pickerDisplay = () =>
+		props.uploadState.status === "idle" || props.uploadState.status === "error"
+			? "flex"
+			: "none";
 
 	let fileInput: HTMLInputElement | undefined;
 
@@ -274,15 +287,19 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			on:cut={stopEditorPropagation}
 		>
 			<div
-				classList={{
-					hidden: props.uploadState.status !== "idle",
-					flex: props.uploadState.status === "idle",
-				}}
+				style={{ display: pickerDisplay() }}
 				class="mx-auto w-full max-w-125 flex-col gap-3"
 			>
 				<div class="flex flex-col items-center gap-1 text-neutral-500 text-sm dark:text-neutral-400">
 					<Icon name="FileArrowUp" class="size-6" />
 					<span>Drag and drop, or choose a source below</span>
+				</div>
+
+				<div
+					hidden={props.uploadState.status !== "error"}
+					class="rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400"
+				>
+					{errorMessage()}
 				</div>
 
 				<ContentSwitch
@@ -344,7 +361,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				</div>
 			</div>
 
-			<UploadingIndicator uploadState={props.uploadState} />
+			<StatusIndicator uploadState={props.uploadState} />
 		</div>
 	);
 };

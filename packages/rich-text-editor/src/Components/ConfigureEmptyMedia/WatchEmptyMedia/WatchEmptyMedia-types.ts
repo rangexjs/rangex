@@ -1,4 +1,5 @@
 import type {
+	MediaResolveDetail,
 	MediaResolveType,
 	RichTextEditorUI,
 } from "@rangex/rich-text-editor-ui";
@@ -8,6 +9,15 @@ export interface WatchEmptyMediaParams {
 	richTextEditorUI: RichTextEditorUI;
 	editorAPI: EditorAPI;
 }
+
+export interface ResolveMediaSrcParams {
+	detail: Exclude<MediaResolveDetail, { type: "embed" }>;
+	container: HTMLElement;
+	richTextEditorUI: RichTextEditorUI;
+	isStillCurrent: () => boolean;
+}
+
+export type ResolveMediaSrcResult = Promise<string | null>;
 
 export interface OnMediaResolveCallbackParams {
 	blockNestedContext: BlockNestedContext;

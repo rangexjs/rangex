@@ -18,7 +18,9 @@ export type MediaResolveType = MediaResolveDetail["type"];
 
 export type UploadState =
 	| { status: "idle" }
-	| { status: "uploading"; progress: number };
+	| { status: "checking" }
+	| { status: "uploading"; progress: number }
+	| { status: "error"; message: string };
 
 export interface MountParams {
 	container: HTMLElement;
