@@ -47,6 +47,7 @@ export const handleLinkModification = ({
 		anchor.setAttribute("target", target);
 
 		const createdContentLine = createContentLine({
+			localName: "span",
 			childNodes: [...createFormattableTexts({ data: text })],
 		});
 

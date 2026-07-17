@@ -3,11 +3,17 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
+	AudioPopoverController,
+	BlockResizePopoverController,
 	CodeBlockPopoverController,
+	EmbedPopoverController,
 	EmojiPopoverController,
+	ImagePopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
+	TemplateVariablePopoverController,
+	VideoPopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
@@ -27,11 +33,17 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
+	AudioPopover,
+	BlockResizePopover,
 	CodeBlockPopover,
+	EmbedPopover,
 	EmojiPopover,
+	ImagePopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
+	TemplateVariablePopover,
+	VideoPopover,
 } from "../NodePopovers";
 import {
 	EditorOptionsContext,
@@ -62,11 +74,17 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
+	audioPopoverController: AudioPopoverController;
+	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
+	embedPopoverController: EmbedPopoverController;
 	emojiPopoverController: EmojiPopoverController;
+	imagePopoverController: ImagePopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
+	templateVariablePopoverController: TemplateVariablePopoverController;
+	videoPopoverController: VideoPopoverController;
 }
 
 export interface AppProps
@@ -136,12 +154,18 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
+		audioPopoverController: props.audioPopoverController,
+		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
+		embedPopoverController: props.embedPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
+		imagePopoverController: props.imagePopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
+		templateVariablePopoverController: props.templateVariablePopoverController,
+		videoPopoverController: props.videoPopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -159,17 +183,25 @@ export const App = (props: AppProps) => {
 				>
 					<EditorToolbar toolbarButtons={props.toolbarButtons} />
 				</ToolbarButtonManagersContext.Provider>
-				<div>{props.richTextArea}</div>
-				<div>
-					<PopoverControllersContext.Provider
-						value={popoverControllersContextValue}
-					>
-						<CodeBlockPopover />
-						<EmojiPopover />
-						<LinkPopover />
-						<MentionPopover />
-						<TableQuickActionsPopover />
-					</PopoverControllersContext.Provider>
+				<div class="relative max-h-300 overflow-y-auto">
+					<div>{props.richTextArea}</div>
+					<div>
+						<PopoverControllersContext.Provider
+							value={popoverControllersContextValue}
+						>
+							<AudioPopover />
+							<BlockResizePopover />
+							<CodeBlockPopover />
+							<EmbedPopover />
+							<EmojiPopover />
+							<ImagePopover />
+							<LinkPopover />
+							<MentionPopover />
+							<TableQuickActionsPopover />
+							<TemplateVariablePopover />
+							<VideoPopover />
+						</PopoverControllersContext.Provider>
+					</div>
 				</div>
 			</EditorContainer>
 		</EditorOptionsContext.Provider>

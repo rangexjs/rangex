@@ -5,25 +5,29 @@ import {
 	listRoleSelector,
 } from "rich-text-area";
 import { toHighlighterLang, toHighlighterTheme } from "../_Utilities";
-import { ensureNodeCodeBlockStorage } from "../CodeBlockStorage";
+import {
+	codeBlockStorageFallbacks,
+	ensureNodeCodeBlockStorage,
+} from "../CodeBlockStorage";
 import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopoverState-types";
 
 /**
  * Wires the popover's language/theme/copy actions to the engine.
- * Reads the active code block from `internals` — set by `handleCodeBlockPopoverAppearance`
- * whenever the popover opens over a new block.
+ * Reads the active code block from the shared {@link BlockPopoverAppearanceHandler} —
+ * set whenever the popover opens over a new block.
  */
 export const handleCodeBlockPopoverState = ({
 	richTextEditorUI,
 	editorAPI,
+	getCurrentBlock,
 	codeHighlighter,
-	internals,
 }: HandleCodeBlockPopoverStateParams) => {
 	const { codeBlockPopover } = richTextEditorUI;
 
 	const unsubscribeLanguageChange = codeBlockPopover.onLanguageChange(
 		(language) => {
-			if (!internals.currentCodeBlock) {
+			const currentCodeBlock = getCurrentBlock();
+			if (!currentCodeBlock) {
 				return;
 			}
 			const lang = toHighlighterLang(language);
@@ -31,10 +35,11 @@ export const handleCodeBlockPopoverState = ({
 				return;
 			}
 			const storage = ensureNodeCodeBlockStorage({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
 				lang,
 				theme: storage.theme,
 			});
@@ -44,7 +49,8 @@ export const handleCodeBlockPopoverState = ({
 
 	const unsubscribeLightThemeChange = codeBlockPopover.onLightThemeChange(
 		(lightTheme) => {
-			if (!internals.currentCodeBlock) {
+			const currentCodeBlock = getCurrentBlock();
+			if (!currentCodeBlock) {
 				return;
 			}
 			const highlighterLightTheme = toHighlighterTheme(lightTheme);
@@ -52,10 +58,11 @@ export const handleCodeBlockPopoverState = ({
 				return;
 			}
 			const storage = ensureNodeCodeBlockStorage({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
 				lang: storage.lang,
 				theme: { ...storage.theme, light: highlighterLightTheme },
 			});
@@ -65,7 +72,8 @@ export const handleCodeBlockPopoverState = ({
 
 	const unsubscribeDarkThemeChange = codeBlockPopover.onDarkThemeChange(
 		(darkTheme) => {
-			if (!internals.currentCodeBlock) {
+			const currentCodeBlock = getCurrentBlock();
+			if (!currentCodeBlock) {
 				return;
 			}
 			const highlighterDarkTheme = toHighlighterTheme(darkTheme);
@@ -73,10 +81,11 @@ export const handleCodeBlockPopoverState = ({
 				return;
 			}
 			const storage = ensureNodeCodeBlockStorage({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
+				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
-				blockNestedContext: internals.currentCodeBlock,
+				blockNestedContext: currentCodeBlock,
 				lang: storage.lang,
 				theme: { ...storage.theme, dark: highlighterDarkTheme },
 			});
@@ -85,11 +94,12 @@ export const handleCodeBlockPopoverState = ({
 	);
 
 	const unsubscribeCopy = codeBlockPopover.onCopy(() => {
-		if (!internals.currentCodeBlock) {
+		const currentCodeBlock = getCurrentBlock();
+		if (!currentCodeBlock) {
 			return;
 		}
 
-		const list = internals.currentCodeBlock.$$querySelector(listRoleSelector);
+		const list = currentCodeBlock.$$querySelector(listRoleSelector);
 
 		if (list?.$$editorRole !== listName) {
 			throw new Error("List's type is invalid.");

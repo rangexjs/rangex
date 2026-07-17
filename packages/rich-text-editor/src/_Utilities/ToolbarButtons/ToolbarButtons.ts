@@ -10,7 +10,7 @@ export const toolbarButtons: ToolbarButtons = [
 			"checkbox-list",
 			"code-block",
 			"block-quote",
-			"image",
+			"media",
 			"custom-component",
 			"symbols",
 			"anchor",

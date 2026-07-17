@@ -1,4 +1,3 @@
-import { buildFindReplacePattern } from "../_Utilities";
 import type { HandleSearchChangeParams } from "./HandleSearchChange-types";
 
 /** Updates the engine's search criteria whenever the user changes the find options. */
@@ -13,25 +12,11 @@ export const handleSearchChange = ({
 			return;
 		}
 
-		const {
-			action,
-			findText,
-			includeNonEditableContent,
-			matchCase,
-			useRegex,
-			wholeWord,
-		} = params;
+		const { action, pattern, includeNonEditableContent } = params;
 
 		if (action !== "search-change") {
 			return;
 		}
-
-		const pattern = buildFindReplacePattern({
-			findText,
-			matchCase,
-			useRegex,
-			wholeWord,
-		});
 
 		findReplace.setCriteria({
 			pattern,

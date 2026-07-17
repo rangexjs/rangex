@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
 import { getMentionQuery } from "../_Utilities";
+import { createMentionStorage } from "../MentionStorage";
 import type {
 	CreateMentionComponentParams,
 	CreateMentionComponentResult,
@@ -51,7 +52,7 @@ const createMentionComponent = ({
 	const inlineNestedContext = createInlineNestedContext({
 		componentName: componentsName.mention,
 		content: { type: "custom" },
-		customStorage: { userId },
+		customStorage: createMentionStorage({ userId }),
 		editState: "false",
 		childNodes: [
 			createNestedEditable({
@@ -59,6 +60,7 @@ const createMentionComponent = ({
 				display: "inline",
 				childNodes: [
 					createContentLine({
+						localName: "span",
 						childNodes: [...createFormattableTexts({ data })],
 					}),
 				],
@@ -99,7 +101,7 @@ export const handleMentionInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createContentLine({ childNodes: [mention] })],
+			lines: [createContentLine({ localName: "p", childNodes: [mention] })],
 			breakBeforeInsert: false,
 		});
 

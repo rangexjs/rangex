@@ -25,6 +25,7 @@ import {
 } from "../../InputFields";
 import { Spinning } from "../../Spinning";
 import { ToolbarButton } from "../_Utilities";
+import { buildFindReplacePattern } from "./BuildFindReplacePattern";
 import { FindReplaceResults } from "./FindReplaceResults";
 
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
@@ -75,31 +76,49 @@ export const FindReplaceToolbarButton = () => {
 		});
 	});
 
-	const isValidRegex = (value: string) => {
+	const [useRegexModel, useRegexControls] = createCheckboxController({});
+	const [matchCaseModel, matchCaseControls] = createCheckboxController({});
+	const [wholeWordModel, wholeWordControls] = createCheckboxController({});
+
+	const getPattern = (findText: string) =>
+		buildFindReplacePattern({
+			findText,
+			matchCase: matchCaseModel.checked(),
+			useRegex: useRegexModel.checked(),
+			wholeWord: wholeWordModel.checked(),
+		});
+
+	const isValidPattern = (value: string) => {
 		try {
-			new RegExp(value);
+			const { source, flags } = getPattern(value);
+
+			new RegExp(source, flags);
+
 			return true;
 		} catch {
 			return false;
 		}
 	};
 
-	const [useRegexModel, useRegexControls] = createCheckboxController({});
+	/** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
+	const getSafePattern = () => {
+		findModel.validate();
+
+		const findText = isValidPattern(findModel.value()) ? findModel.value() : "";
+
+		return getPattern(findText);
+	};
 
 	const [findModel, findControls] = createTextFieldController({
 		error: {
 			custom: {
-				isValid: (value) => {
-					return useRegexModel.checked() ? isValidRegex(value) : true;
-				},
+				isValid: (value) => isValidPattern(value),
 				message: "Invalid regular expression.",
 			},
 		},
 		validateOnChange: true,
 	});
 	const [replaceModel, replaceControls] = createTextFieldController({});
-	const [matchCaseModel, matchCaseControls] = createCheckboxController({});
-	const [wholeWordModel, wholeWordControls] = createCheckboxController({});
 	const [includeNonEditableContentModel, includeNonEditableContentControls] =
 		createCheckboxController({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
@@ -137,15 +156,14 @@ export const FindReplaceToolbarButton = () => {
 
 		setChecked(newState === "open");
 
+		const pattern = getSafePattern();
+
 		toolbarButtonsActionManager.emitNonCategorizedOperationChange({
 			type: toolbarButtonsName.findReplace,
 			action: newState === "open" ? "popover-open" : "popover-closed",
 			navigateTo: 0,
-			findText: findModel.value(),
+			pattern,
 			replaceText: replaceModel.value(),
-			matchCase: matchCaseModel.checked(),
-			wholeWord: wholeWordModel.checked(),
-			useRegex: useRegexModel.checked(),
 			includeNonEditableContent: includeNonEditableContentModel.checked(),
 		});
 
@@ -227,21 +245,14 @@ export const FindReplaceToolbarButton = () => {
 	const debounce = createDebounce();
 
 	const emitFindAction = (action: FindReplaceActionType) => {
-		findModel.validate();
-
-		if (findModel.state().hasError) {
-			return;
-		}
+		const pattern = getSafePattern();
 
 		toolbarButtonsActionManager.emitNonCategorizedOperationChange({
 			type: toolbarButtonsName.findReplace,
 			action,
 			navigateTo: 0,
-			findText: findModel.value(),
+			pattern,
 			replaceText: replaceModel.value(),
-			matchCase: matchCaseModel.checked(),
-			wholeWord: wholeWordModel.checked(),
-			useRegex: useRegexModel.checked(),
 			includeNonEditableContent: includeNonEditableContentModel.checked(),
 		});
 	};
@@ -281,15 +292,14 @@ export const FindReplaceToolbarButton = () => {
 	});
 
 	const navigateToIndex = (index: number) => {
+		const pattern = getSafePattern();
+
 		toolbarButtonsActionManager.emitNonCategorizedOperationChange({
 			type: toolbarButtonsName.findReplace,
 			action: "navigate-to-index",
 			navigateTo: index,
-			findText: findModel.value(),
+			pattern,
 			replaceText: replaceModel.value(),
-			matchCase: matchCaseModel.checked(),
-			wholeWord: wholeWordModel.checked(),
-			useRegex: useRegexModel.checked(),
 			includeNonEditableContent: includeNonEditableContentModel.checked(),
 		});
 	};

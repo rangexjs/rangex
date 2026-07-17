@@ -1,4 +1,4 @@
-import { createSignal, For, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, For, onCleanup, onMount } from "solid-js";
 import { menuBarButtonsName } from "../../../Constants";
 import type { MenuBarActionManager } from "../../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../../MenuBarButtonsStateManager";
@@ -14,6 +14,15 @@ const tabs: { label: string; value: PreviewTab }[] = [
 	{ label: "Snapshot", value: "snapshot" },
 ];
 
+interface ResolvedTabContent {
+	element: HTMLElement;
+	text: string | null;
+}
+
+type ResolvedContent = Partial<Record<PreviewTab, ResolvedTabContent>>;
+
+type DownloadMeta = Partial<Record<PreviewTab, { ext: string; mime: string }>>;
+
 interface PreviewDialogProps {
 	dialogId: string;
 	menuBarActionManager: MenuBarActionManager;
@@ -25,9 +34,10 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 	const [preview, setPreview] = createSignal(
 		props.menuBarButtonsStateManager.preview,
 	);
-	const [resolvedContent, setResolvedContent] = createSignal<
-		Partial<Record<PreviewTab, HTMLElement>>
-	>({});
+	const [resolvedContent, setResolvedContent] = createSignal<ResolvedContent>(
+		{},
+	);
+	const [copied, setCopied] = createSignal(false);
 
 	onMount(() => {
 		props.menuBarButtonsStateManager.subscribe({
@@ -63,13 +73,20 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 
 		const resolvers: Record<PreviewTab, () => Promise<HTMLElement>> = {
 			rendered: content.getRendered,
-			html: content.getHtml,
-			json: content.getJson,
+			html: content.getHTML,
+			json: content.getJSON,
 			snapshot: content.getSnapshot,
 		};
 
-		const host = await resolvers[tab]();
-		setResolvedContent((current) => ({ ...current, [tab]: host }));
+		const textResolvers: Partial<Record<PreviewTab, () => string>> = {
+			html: content.getHTMLText,
+			json: content.getJSONText,
+			snapshot: content.getSnapshotText,
+		};
+
+		const element = await resolvers[tab]();
+		const text = textResolvers[tab]?.() ?? null;
+		setResolvedContent((current) => ({ ...current, [tab]: { element, text } }));
 	};
 
 	const handleToggle = (e: ToggleEvent) => {
@@ -87,6 +104,58 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 	};
 
 	const tabAnchorName = "--tab-anchor-name";
+
+	const getTabText = (): string | null => {
+		const tab = activeTab();
+		const resolved = resolvedContent()[tab];
+		return resolved?.text ?? null;
+	};
+
+	const onCopyClick = (() => {
+		let timeoutId = NaN;
+		return () => {
+			const text = getTabText();
+			if (text === null) {
+				return;
+			}
+			navigator.clipboard.writeText(text);
+			setCopied(true);
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(() => setCopied(false), 1200);
+		};
+	})();
+
+	const showActions = createMemo(() => {
+		const text = getTabText();
+		return text !== null;
+	});
+
+	const downloadMeta: DownloadMeta = {
+		html: { ext: "html", mime: "text/html" },
+		json: { ext: "json", mime: "application/json" },
+		snapshot: { ext: "json", mime: "application/json" },
+	};
+
+	const onDownloadClick = () => {
+		const text = getTabText();
+		if (text === null) {
+			return;
+		}
+		const tab = activeTab();
+		const meta = downloadMeta[tab];
+		if (!meta) {
+			return;
+		}
+		const blob = new Blob([text], { type: meta.mime });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement("a");
+		a.href = url;
+		a.download = `${tab}.${meta.ext}`;
+		a.click();
+		URL.revokeObjectURL(url);
+	};
+
+	const actionAnchorName = "--action-anchor-name";
 
 	return (
 		<dialog
@@ -137,17 +206,46 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 					</For>
 				</div>
 			</div>
-			<div class="grow overflow-auto rounded-sm border border-neutral-300 text-sm dark:border-neutral-700">
+			<div
+				class="relative grow overflow-auto rounded-sm border border-neutral-300 text-sm dark:border-neutral-700"
+				style={{
+					"anchor-scope": actionAnchorName,
+					"anchor-name": actionAnchorName,
+				}}
+			>
 				<For each={tabs}>
 					{(tab) => (
 						<div
 							class="h-full"
 							classList={{ hidden: activeTab() !== tab.value }}
 						>
-							{resolvedContent()[tab.value] ?? <Loading />}
+							{resolvedContent()[tab.value]?.element ?? <Loading />}
 						</div>
 					)}
 				</For>
+
+				<div
+					class="fixed top-[calc(anchor(top)+6px)] right-[calc(anchor(right)+24px)] flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900"
+					classList={{ hidden: !showActions() }}
+					style={{ "position-anchor": actionAnchorName }}
+				>
+					<button
+						type="button"
+						class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+						title="Copy"
+						on:click={onCopyClick}
+					>
+						<Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />
+					</button>
+					<button
+						type="button"
+						class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+						title="Download"
+						on:click={onDownloadClick}
+					>
+						<Icon name="FileArrowDown" class="size-4" />
+					</button>
+				</div>
 			</div>
 		</dialog>
 	);

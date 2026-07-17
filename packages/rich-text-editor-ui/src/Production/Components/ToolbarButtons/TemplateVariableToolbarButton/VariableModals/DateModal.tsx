@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface DateModalProps {
 	modalId: string;
@@ -51,13 +52,27 @@ export const DateModal = (props: DateModalProps) => {
 			return;
 		}
 
+		const date = normalizeTemplateVariableValue(dateModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				email: dateModel.value(),
-			},
+			options: { date },
 		});
+	};
+
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
 	};
 
 	return (
@@ -80,12 +95,14 @@ export const DateModal = (props: DateModalProps) => {
 						placeholder="2012-05-22"
 						spellcheck={false}
 						{...dateControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

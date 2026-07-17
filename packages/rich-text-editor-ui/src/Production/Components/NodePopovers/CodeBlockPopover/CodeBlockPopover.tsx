@@ -1,10 +1,4 @@
-import {
-	createSignal,
-	createUniqueId,
-	For,
-	onCleanup,
-	onMount,
-} from "solid-js";
+import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
 	UpdateDarkThemeFn,
 	UpdateLanguageFn,
@@ -15,70 +9,22 @@ import {
 	usePopoverControllersContext,
 } from "../../App";
 import { Icon } from "../../Icon";
-
-interface OptionDropdownProps<Option extends string> {
-	label: string;
-	value: NoInfer<Option>;
-	options: Option[];
-	onSelect: (value: NoInfer<Option>) => void;
-	class?: string;
-}
-
-const OptionDropdown = <Option extends string>(
-	props: OptionDropdownProps<Option>,
-) => {
-	const popoverId = createUniqueId();
-
-	return (
-		<div class="flex flex-col gap-1" classList={{ [props.class ?? ""]: true }}>
-			<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-				{props.label}
-			</span>
-			<button
-				type="button"
-				commandfor={popoverId}
-				command="toggle-popover"
-				class="flex w-full items-center justify-between gap-2 rounded-md border border-neutral-200 px-2 py-1 font-medium text-neutral-800 text-xs transition-colors hover:bg-neutral-50 active:border-neutral-300 dark:border-neutral-600 dark:text-neutral-100 dark:active:border-neutral-500 dark:hover:bg-neutral-800"
-				classList={{
-					"[&:has(~:popover-open)]:mb-px [&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-0": true,
-				}}
-			>
-				<span class="truncate">{props.value}</span>
-				<Icon
-					name="CaretDown"
-					class="size-2 shrink-0 text-neutral-400 dark:text-neutral-500"
-				/>
-			</button>
-			<div
-				id={popoverId}
-				popover="auto"
-				class="max-h-48 w-[anchor-size(width)] overflow-y-auto rounded-b-md border-neutral-200 border-r border-b border-l bg-white shadow-lg [position-area:center_bottom] [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-800"
-			>
-				<For each={props.options}>
-					{(option) => (
-						<button
-							type="button"
-							commandfor={popoverId}
-							command="hide-popover"
-							class="w-full border border-transparent px-2 py-1 text-left font-medium text-neutral-600 text-xs leading-normal transition-colors hover:border-neutral-100 hover:bg-neutral-100 active:border-neutral-200 dark:text-neutral-300 dark:active:border-neutral-500 dark:hover:border-neutral-600 dark:hover:bg-neutral-700"
-							classList={{ hidden: option === props.value }}
-							on:click={() => {
-								props.onSelect(option);
-							}}
-						>
-							{option}
-						</button>
-					)}
-				</For>
-			</div>
-		</div>
-	);
-};
+import { OptionDropdown } from "../_Utilities";
 
 export const CodeBlockPopover = () => {
 	const { codeBlockLanguages, codeBlockThemes } = useEditorOptionsContext();
 	const { codeBlockPopoverController: controller } =
 		usePopoverControllersContext();
+
+	const languageOptions = codeBlockLanguages.map((language) => ({
+		label: language,
+		value: language,
+	}));
+
+	const themeOptions = codeBlockThemes.map((theme) => ({
+		label: theme,
+		value: theme,
+	}));
 
 	const [language, setLanguage] = createSignal(controller.language);
 	const [lightTheme, setLightTheme] = createSignal(controller.lightTheme);
@@ -107,7 +53,7 @@ export const CodeBlockPopover = () => {
 
 	const onBeforeToggle = () => {
 		if (!optionsPopover) {
-			return;
+			throw new Error("OptionsPopover shouldn't be undefined.");
 		}
 
 		if (optionsPopover.matches(":popover-open")) {
@@ -134,7 +80,7 @@ export const CodeBlockPopover = () => {
 		>
 			<button
 				type="button"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
 				title="Copy"
 				on:click={onCopyClick}
 			>
@@ -145,7 +91,7 @@ export const CodeBlockPopover = () => {
 				type="button"
 				commandfor={optionsPopoverId}
 				command="toggle-popover"
-				class="flex items-center justify-center rounded p-1 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-800 active:text-neutral-950 dark:text-neutral-300 dark:active:text-white dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+				class="btn-menu-trigger flex items-center justify-center rounded p-1"
 				title="Options"
 			>
 				<Icon name="DotsThreeHorizontal" class="size-4" />
@@ -160,20 +106,20 @@ export const CodeBlockPopover = () => {
 				<OptionDropdown
 					label="Language"
 					value={language()}
-					options={codeBlockLanguages}
+					options={languageOptions}
 					onSelect={(lang) => controller.emitLanguageChange(lang)}
 				/>
 				<OptionDropdown
 					label="☀ Light"
 					value={lightTheme()}
-					options={codeBlockThemes}
+					options={themeOptions}
 					onSelect={(theme) => controller.emitLightThemeChange(theme)}
 					class="flex-1"
 				/>
 				<OptionDropdown
 					label="☾ Dark"
 					value={darkTheme()}
-					options={codeBlockThemes}
+					options={themeOptions}
 					onSelect={(theme) => controller.emitDarkThemeChange(theme)}
 					class="flex-1"
 				/>

@@ -10,6 +10,7 @@ import {
 import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
 import { getLinkInsertionMode, getPopoverStateFromLink } from "../_Utilities";
+import { createLinkStorage } from "../LinkStorage";
 import type {
 	AnchorPopoverToLinkParams,
 	CreateLinkComponentParams,
@@ -29,6 +30,7 @@ const createLinkComponent = ({
 	const inlineNestedContext = createInlineNestedContext({
 		componentName: componentsName.link,
 		content: { type: "linked-characters" },
+		customStorage: createLinkStorage(),
 		childNodes: [
 			createHTMLLayout({
 				localName: "a",
@@ -40,6 +42,7 @@ const createLinkComponent = ({
 						display: "inline",
 						childNodes: [
 							createContentLine({
+								localName: "span",
 								childNodes: [...createFormattableTexts({ data: text })],
 							}),
 						],
@@ -108,7 +111,7 @@ const insertAtCaret = ({
 	editorAPI.insertNode({
 		fromNode: fromText,
 		fromOffset,
-		lines: [createContentLine({ childNodes: [link] })],
+		lines: [createContentLine({ localName: "p", childNodes: [link] })],
 		breakBeforeInsert: false,
 	});
 
@@ -187,7 +190,7 @@ const wrapWithLink = ({
 		editorAPI.insertNode({
 			fromNode: updatedBoundaryPoints.fromText,
 			fromOffset: updatedBoundaryPoints.fromOffset,
-			lines: [createContentLine({ childNodes: [link] })],
+			lines: [createContentLine({ localName: "p", childNodes: [link] })],
 			breakBeforeInsert: false,
 		});
 	}

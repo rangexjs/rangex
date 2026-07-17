@@ -47,11 +47,16 @@ export const createDetachedContextHTML = ({
 	detachedContextView,
 }: CreateDetachedContextHTMLParams): CreateDetachedContextHTMLResult => {
 	const { namespaceURI, localName, attributes } = detachedContextView;
+
+	if (localName === "slot") {
+		return null;
+	}
+
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 
-	const shadowRoot = el.attachShadow({ mode: "open" });
+	const shadowRoot = el.attachShadow({ mode: "open", serializable: true });
 
 	for (const child of detachedContextView.childNodes) {
 		const childNode = nodeViewToNode(child);

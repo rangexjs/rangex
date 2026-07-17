@@ -87,7 +87,7 @@ export const TextAlignToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="auto"
-				class="absolute mt-1 rounded-md border border-neutral-200 bg-white p-1 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
+				class="mt-1 rounded-md border border-neutral-200 bg-white p-1 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 				on:toggle={onPopoverToggle}
 			>
 				<div class="flex gap-0.5">

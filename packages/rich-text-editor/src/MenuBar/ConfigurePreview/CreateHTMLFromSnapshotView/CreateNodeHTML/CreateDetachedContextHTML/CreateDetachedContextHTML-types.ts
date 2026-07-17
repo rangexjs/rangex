@@ -4,4 +4,4 @@ export interface CreateDetachedContextHTMLParams {
 	detachedContextView: DetachedContextView;
 }
 
-export type CreateDetachedContextHTMLResult = HTMLElement;
+export type CreateDetachedContextHTMLResult = HTMLElement | null;

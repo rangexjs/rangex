@@ -133,6 +133,7 @@ const { RangeX } = defineRangeX({});
 ```ts
 const rangeX = new RangeX({
 	rootEditableFrom: { type: "node", node: rootEditable },
+	shadowRootOptions: { mode: "open", serializable: true },
 	isTextAreaEditable: true,  // default — omit if not needed
 	isTextAnimation: false,    // default — omit if not needed
 });
@@ -146,6 +147,10 @@ Controls how the editor's content is initialized. Two shapes:
 
 - **`{ type: "node", node: RootEditable }`** — fresh start. You construct a `RootEditable` (see [Creating nodes](#5-creating-nodes)) and pass it in.
 - **`{ type: "snapshot", storedSnapshot: StoredSnapshot }`** — restore previously persisted content. Pass a `StoredSnapshot` retrieved from storage (see [Undo/redo & snapshots](#12-undoredo--snapshots)).
+
+### `shadowRootOptions`
+
+`ShadowRootInit` (the same options object native `Element.attachShadow()` accepts: `mode`, `delegatesFocus`, `slotAssignment`, `serializable`, `clonable`). Required — there is no default, so callers must always state their own `mode` explicitly. 
 
 ### `isTextAreaEditable`
 
@@ -242,6 +247,7 @@ Every EditorNode exposes the following traversal properties. All types are narro
 | `$$editorRole` | The `data-editor-role` string of this node |
 | `$$rootEditable` | The `RootEditable` this node belongs to |
 | `$$isContentEditable` | Whether the node is currently editable in the DOM |
+| `$$customStorage` *(get/set)* | `any`. Free-form slot for consumer use. Must be JSON-serializable (string, number, boolean, null, plain objects, or arrays). |
 
 ### RootEditable
 
@@ -267,13 +273,11 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 
 - **`$$display`** *(readonly)* — `"block multi-line" | "block single-line"`. Set at construction time, not changeable after.
 
-- **`$$customStorage`** *(get/set)* — `any`. Free-form slot for consumer use. Store anything — metadata, component state, references, etc.
-
-- **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset.
+- **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a block `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset. `"span"` ContentLines (inline context) are not covered by this mapping and carry no default styles.
 
 - **`$$allowedComponents`** *(get/set)* — `string[] | null`. Whitelist of allowed component names (the string identifier of an `InlineNestedContext` or `BlockNestedContext`). When a component is not in the list, inserting it causes it to be **unwrapped** by the schema — the component element is removed and only its text content is kept. `null` = all components allowed.
 
-- **`$$allowedContentLineLocalNames`** *(get/set)* — `ContentLineLocalName[] | null`. Restricts which `ContentLine` types (`"p"`, `"h1"`–`"h6"`) are valid in this editable. Violations are schema-enforced. `null` = all allowed.
+- **`$$allowedContentLineLocalNames`** *(get/set)* — `BlockContentLineLocalName[] | null`. Restricts which block `ContentLine` localNames (`"p"`, `"h1"`–`"h6"`) are valid in this editable. Violations are schema-enforced. `null` = all allowed. `"span"` ContentLines in inline NestedEditables are never subject to this constraint.
 
 - **`$$allowedContentLineStyleAttrNames`** *(get/set)* — `ContentLineStyleAttrName[] | null`. Restricts which CSS style attributes may be set on `ContentLine`s. `null` = all allowed.
 
@@ -342,7 +346,13 @@ type ContentLineChild   =
   | InlineNestedContextText
 ```
 
-The main content container. Every paragraph, heading, or single-line of text lives in a `ContentLine`. Its `localName` (`"p"`, `"h1"`–`"h6"`) maps directly to the HTML tag used in the DOM and in serialized output.
+The main content container. Every paragraph, heading, or single-line of text lives in a `ContentLine`. Its `localName` maps directly to the HTML tag used in the DOM and in serialized output.
+
+**`localName` is constrained by its parent `ScopedEditable`'s `$display`:**
+- Block context (`"block multi-line"` or `"block single-line"`) → `BlockContentLineLocalName`: `"p"` | `"h1"`–`"h6"`
+- Inline context (`"inline"`) → must be `"span"`
+
+`ContentLineLocalName = BlockContentLineLocalName | "span"`.
 
 **Empty vs non-empty rule:**
 - An empty `ContentLine` must contain exactly one `BeamText` — the sentinel that prevents the line from collapsing and gives `LiveBoundaryPoints` a valid node to point to.
@@ -356,7 +366,7 @@ These are the only CSS properties settable on a `ContentLine` via the API. Appli
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$localName`** *(readonly)* — the HTML tag name (`"p"`, `"h1"`–`"h6"`).
+- **`$$localName`** *(readonly)* — `ContentLineLocalName`: `"p"` | `"h1"`–`"h6"` for block ContentLines, `"span"` for inline ContentLines.
 - **`$$display`** *(readonly)* — `"block"` or `"inline"`.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockNestedContextLine` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
@@ -438,7 +448,6 @@ The inline component primitive. Used to build any inline component — mentions,
 
 - **`$$componentName`** *(readonly)* — the string identifier for this component type. Must match an entry in the owning `ScopedEditable`'s `$$allowedComponents` list, or the component will be unwrapped by the schema.
 - **`$$content`** *(readonly)* — the content type of this component.
-- **`$$customStorage`** *(get/set)* — free-form slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — when `true`, the component is selected as a unit before being removed (e.g. on backspace/delete), giving the user visual feedback before deletion.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — when `true`, navigating the caret into the component selects it as a whole unit rather than entering it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `InlineNestedContext` itself is editable (`$isEditStateEditable`) **and** every direct `NestedEditable` child is also editable. Both conditions must hold.
@@ -485,7 +494,6 @@ The block component primitive. Used to build any block-level component — codeb
 
 - **`$$componentName`** *(readonly)* — string identifier for this component type.
 - **`$$content`** *(readonly)* — the content type.
-- **`$$customStorage`** *(get/set)* — free-form slot for consumer use.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — select the component as a unit before removal.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — select as a unit when the caret navigates into it.
 - **`$$isFullyEditable`** *(readonly)* — `true` when the `BlockNestedContext` itself and all direct `NestedEditable` children are editable.
@@ -545,7 +553,7 @@ Consumers never interact with this node directly. It is created and managed enti
 
 ### DetachedContext
 
-- **HTML element:** `div` or `span` (configurable via `localName`, default `"div"`)
+- **HTML element:** `div`, `span`, or `slot` (configurable via `localName`, default `"div"`)
 - **`data-editor-role`:** `detached-context`
 - **Category:** standalone (part of `EditorElement`, excluded from `ContentFlowNode`)
 
@@ -561,7 +569,7 @@ No EditorNodes, no `LiveBoundaryPoints`, no editor interaction logic applies ins
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$localName`** *(readonly)* — `"div"` or `"span"`.
+- **`$$localName`** *(readonly)* — `"div"`, `"span"`, or `"slot"`.
 - **`$$shadowRoot`** *(readonly)* — the `ShadowRoot` where consumer DOM content lives. Manipulate this directly with standard DOM APIs.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `NestedEditable | LayoutUnit | DetachedContext` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
@@ -1032,7 +1040,7 @@ These parameters appear on most factories:
   - `"inline"` — inline-level, must have exactly one inline `ContentLine`
 - **`editState`** — see per-factory
 - **`allowedComponents?: string[] | null`** — restricts which `componentName`s can be inserted. `null` (default) = no restriction. `[]` = nothing allowed.
-- **`allowedContentLineLocalNames?: ContentLineLocalName[] | null`** — restricts which `ContentLine` tag names (`"p"`, `"h1"`…`"h6"`) are allowed.
+- **`allowedContentLineLocalNames?: BlockContentLineLocalName[] | null`** — restricts which block `ContentLine` tag names (`"p"`, `"h1"`…`"h6"`) are allowed. Does not apply to inline `"span"` ContentLines.
 - **`allowedContentLineStyleAttrNames?: ContentLineStyleAttrName[] | null`** — restricts which line CSS properties can be set.
 - **`allowedGlyphFormatterStyleAttrNames?: GlyphFormatterStyleAttrName[] | null`** — restricts which text CSS properties can be set.
 - **`allowedGlyphFormatterInlineTags?: GlyphFormatterInlineTag[] | null`** — restricts which inline tags (`"b"`, `"i"`, etc.) can be applied.
@@ -1048,11 +1056,11 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `display` | `"block multi-line" \| "block single-line"` | Yes | Structural display mode |
-| `editState` | `"true" \| "false"` | Yes | Whether the editor is initially editable |
+| `editState` | `"true" \| "false"` | No | Defaults to `"true"` |
 | `contentLineLocalNamesStyle` | `ContentLineLocalNamesStyle` | Yes | Default `structuredStyle` per `ContentLine` tag (`p`, `h1`…`h6`). Pass empty objects for no default styles. |
-| `customStorage` | `any` | No | Arbitrary consumer data stored on the node, readable via `$$customStorage` |
+| `customStorage` | `any` | No | JSON-serializable consumer data stored on the node, readable via `$$customStorage` |
 | `allowedComponents` | `string[] \| null` | No | See Common parameters |
-| `allowedContentLineLocalNames` | `ContentLineLocalName[] \| null` | No | See Common parameters |
+| `allowedContentLineLocalNames` | `BlockContentLineLocalName[] \| null` | No | See Common parameters |
 | `allowedContentLineStyleAttrNames` | `ContentLineStyleAttrName[] \| null` | No | See Common parameters |
 | `allowedGlyphFormatterStyleAttrNames` | `GlyphFormatterStyleAttrName[] \| null` | No | See Common parameters |
 | `allowedGlyphFormatterInlineTags` | `GlyphFormatterInlineTag[] \| null` | No | See Common parameters |
@@ -1060,7 +1068,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | Initial child nodes |
 
 ```ts
-const root = createRootEditable({
+const rootEditable = createRootEditable({
   display: "block multi-line",
   editState: "true",
   contentLineLocalNamesStyle: {
@@ -1087,8 +1095,8 @@ Creates a `NestedEditable` — the editable content area inside a `NestedContext
 |---|---|---|---|
 | `content` | `NestedEditableContent` | Yes | Semantic role: `{ type: "default" }` \| `{ type: "linked-characters"; unwrap: "if-modified" \| "if-empty" }` \| `{ type: "list-item" }` \| `{ type: "table-cell" }` |
 | `display` | `ScopedEditableDisplay` | Yes | `"block multi-line"`, `"block single-line"`, or `"inline"` |
-| `editState` | `"true" \| "false" \| "inherit"` | Yes | `"inherit"` = adopts parent editability |
-| `customStorage` | `any` | No | Arbitrary consumer data |
+| `editState` | `"true" \| "false" \| "inherit"` | No | Defaults to `"inherit"`. `"inherit"` = adopts parent editability |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `allowedComponents` … | (same as createRootEditable) | No | |
 | `domAttrs` | `DOMAttrs` | No | |
 | `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | |
@@ -1101,14 +1109,17 @@ Creates a `ContentLine`. An empty `ContentLine` must always have a `BeamText` ch
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `localName` | `ContentLineLocalName` | No | `"p"` (default) \| `"h1"`…`"h6"` |
+| `localName` | `ContentLineLocalName` | Yes | `"p"` \| `"h1"`…`"h6"` for block contexts; `"span"` for inline contexts |
 | `structuredStyle` | `Partial<ContentLineStructuredStyle>` | No | Initial CSS values. Valid properties: `lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent` |
 | `domAttrs` | `DOMAttrs` | No | |
 | `childNodes` | `ContentLineChild[]` | No | `BeamText \| GlyphFormatter \| BasicText \| OneVisualUnitText \| InlineNestedContext \| InlineNestedContextText` |
 
 ```ts
-// empty line
-createContentLine({ childNodes: [createBeamText({})] })
+// empty block line (inside ScopedEditable with display: "block multi-line" or "block single-line")
+createContentLine({ localName: "p", childNodes: [createBeamText({})] })
+
+// empty inline line (inside NestedEditable with display: "inline")
+createContentLine({ localName: "span", childNodes: [createBeamText({})] })
 
 // line with text
 createContentLine({
@@ -1163,8 +1174,8 @@ Creates an `InlineNestedContext` — an inline component inside a `ContentLine` 
 |---|---|---|---|
 | `componentName` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
 | `content` | `InlineNestedContextContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
-| `editState` | `"false" \| "inherit"` | Yes | |
-| `customStorage` | `any` | No | Arbitrary consumer data |
+| `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | If `true`, the component is selected before deletion (gives consumer a chance to intercept) |
 | `shouldSelectOnNavigation` | `boolean` | No | If `true`, navigating onto the component selects it as a unit |
 | `domAttrs` | `DOMAttrs` | No | |
@@ -1180,8 +1191,8 @@ Creates a `BlockNestedContext` — a block-level component container (e.g. codeb
 |---|---|---|---|
 | `componentName` | `string` | Yes | Component type identifier |
 | `content` | `BlockNestedContextContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
-| `editState` | `"false" \| "inherit"` | Yes | |
-| `customStorage` | `any` | No | |
+| `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
+| `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | |
 | `shouldSelectOnNavigation` | `boolean` | No | |
 | `domAttrs` | `DOMAttrs` | No | |
@@ -1257,7 +1268,7 @@ Creates a `DetachedContext` — the schema-free escape hatch with its own shadow
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `localName` | `"div" \| "span"` | No | Defaults to `"div"` |
+| `localName` | `"div" \| "span" \| "slot"` | No | Defaults to `"div"` |
 | `shadowTree` | `(Element \| Comment \| Text)[]` | No | Initial content appended into `$$shadowRoot` |
 | `domAttrs` | `DOMAttrs` | No | |
 
@@ -1384,7 +1395,7 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 **Post-mutation normalization** — after each mutation pipeline completes, the engine runs a normalization pass that silently corrects `$$allowed*` violations. No error is thrown; disallowed content is adjusted automatically:
 
 - `$$allowedComponents` — a `NestedContext` whose `$$componentName` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
-- `$$allowedContentLineLocalNames` — a `ContentLine` with a `localName` not in the list has its tag changed to `p`
+- `$$allowedContentLineLocalNames` — a block `ContentLine` with a `localName` not in the list has its tag changed to `"p"`. Inline `"span"` ContentLines are not subject to this normalization.
 - `$$allowedContentLineStyleAttrNames` — style attributes on a `ContentLine` not in the list are removed
 - `$$allowedGlyphFormatterStyleAttrNames` — style attributes on a `GlyphFormatter` not in the list are removed
 - `$$allowedGlyphFormatterInlineTags` — inline tags on a `GlyphFormatter` not in the list are removed
@@ -1398,11 +1409,11 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 
 `RootEditable` and `NestedEditable` each have a `$display` property that constrains their children:
 
-| `$display` | Allowed children |
-|---|---|
-| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockNestedContextLine`) |
-| `"block single-line"` | Exactly one `ContentLine` (block layout) |
-| `"inline"` | Exactly one `ContentLine` (inline layout) |
+| `$display` | Allowed children | Required `ContentLine.localName` |
+|---|---|---|
+| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockNestedContextLine`) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
+| `"block single-line"` | Exactly one `ContentLine` (block layout) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
+| `"inline"` | Exactly one `ContentLine` (inline layout) | `"span"` |
 
 ### Content types
 
@@ -1658,6 +1669,7 @@ const rangeX = new RangeX({
     type: "snapshot",
     storedSnapshot: JSON.parse(savedJson),
   },
+  shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
 
@@ -1696,13 +1708,16 @@ interface TableSelectionSnapshot {
 ```ts
 const timeline = editorAPI.getSnapshotTimeline();
 
-timeline.editorSnapshots  // EditorSnapshot[] — all snapshots in the timeline (copy)
+timeline.editorSnapshots  // Array<() => EditorSnapshot> — one callback per snapshot in the timeline
 timeline.currentIndex     // number — which snapshot is currently active
 ```
 
-`editorSnapshots` returns a copy of the internal array — mutating it has no effect. `currentIndex` is the index of the snapshot the editor is currently at. After `stepBack()` it decrements; after `stepForward()` it increments.
+`editorSnapshots` returns an array of callbacks — calling one returns a deep clone of that snapshot. This means only the snapshot you actually read is cloned, so the cost is paid on demand. `currentIndex` is the index of the snapshot the editor is currently at. After `stepBack()` it decrements; after `stepForward()` it increments.
 
-`EditorSnapshot` objects are deep-frozen — they cannot be mutated after being pushed to the timeline.
+```ts
+const getSnapshot = timeline.editorSnapshots[timeline.currentIndex];
+const snapshot = getSnapshot(); // EditorSnapshot — a fresh, mutable deep clone
+```
 
 ---
 
@@ -1737,6 +1752,7 @@ A recursive plain-object mirror of the editor tree. Each node in the tree follow
 ```ts
 {
   type: string;               // data-editor-role name (e.g. "content-line", "glyph-formatter")
+  customStorage: any;         // value from $$customStorage on the live node
   namespaceURI: string;       // e.g. "http://www.w3.org/1999/xhtml" (HTML), "http://www.w3.org/2000/svg" (SVG), "http://www.w3.org/1998/Math/MathML" (MathML)
   localName: string;          // tag name (e.g. "p", "span", "svg", "math")
   attributes: Record<string, string>;
@@ -1949,7 +1965,7 @@ callback: () => void
 
 ```ts
 const unregister = editorAPI.registerDOMEvent({
-  when: ({ element }) => isBlockNestedContext(element),  // fires only on BlockNestedContext nodes
+  when: ({ element }) => isNestedContext(element),  // fires only on NestedContext nodes (inline or block)
   eventListener: {
     type: "click",
     listener: (event) => {
@@ -1980,6 +1996,56 @@ When the editor is in read-only mode (`setIsTextAreaEditable(false)`), all inter
 
 ---
 
+### Event interception — `registerEventInterceptor`
+
+`registerEventInterceptor` lets a consumer intercept a specific event **before the engine processes it**. If the interceptor returns `true`, the engine skips its own handling for that event and calls `event.preventDefault()` on the browser event. It returns an unregister function.
+
+```ts
+const unregister = editorAPI.registerEventInterceptor({
+  type: "keydown",
+  interceptor: (event) => {
+    // event is a KeyboardEvent
+    if (event.code === "Tab") {
+      return true; // cancel engine handling — consumer handles Tab externally
+    }
+    return false; // let the engine process normally
+  },
+});
+
+unregister(); // removes the interceptor
+```
+
+The interceptable event types are:
+
+| `type`        | Native event      | Typical engine action cancelled                    |
+|---------------|-------------------|----------------------------------------------------|
+| `"keydown"`   | `KeyboardEvent`   | New line, deletion, directional keys, history nav  |
+| `"beforeinput"` | `InputEvent`    | Printable character insertion, deletion            |
+| `"paste"`     | `ClipboardEvent`  | Paste handling                                     |
+| `"copy"`      | `ClipboardEvent`  | Copy handling                                      |
+| `"cut"`       | `ClipboardEvent`  | Cut handling                                       |
+| `"dragstart"` | `DragEvent`       | Initializing the drag payload for an internal content drag |
+| `"dragenter"` | `DragEvent`       | Drag-and-drop tracking state initialization        |
+| `"dragover"`  | `DragEvent`       | Drop indicator (caret/line) positioning            |
+| `"dragleave"` | `DragEvent`       | Hiding drop indicators                             |
+| `"drop"`      | `DragEvent`       | Content insertion/reordering from an internal drag |
+| `"dragend"`   | `DragEvent`       | Drag-and-drop tracking state cleanup               |
+
+#### Interceptor return value
+
+- Return `true` — cancel engine handling. The engine calls `event.preventDefault()` and returns without executing its normal logic.
+- Return `false` — let the engine proceed normally.
+
+#### Multiple interceptors
+
+All registered interceptors for a given event type always run. If **any** interceptor returns `true`, the engine is cancelled — there is no short-circuit. This ensures every interceptor has the opportunity to observe the event regardless of what others decide.
+
+#### Difference from `registerDOMEvent`
+
+`registerDOMEvent` is observation-only — the engine always processes the event. `registerEventInterceptor` is the only way to prevent the engine's built-in handling of the event.
+
+---
+
 ## 11. SnapshotTimeline
 
 `SnapshotTimeline` is the undo/redo system. Each `RangeX` instance has exactly one timeline. Consumers access it via `editorAPI.getSnapshotTimeline()`, which returns a `SnapshotTimeline`.
@@ -1993,13 +2059,17 @@ const timeline = editorAPI.getSnapshotTimeline();
 ### Reading timeline state
 
 ```ts
-timeline.editorSnapshots   // EditorSnapshot[] — copy of all snapshots in the timeline
+timeline.editorSnapshots   // Array<() => EditorSnapshot> — one callback per snapshot in the timeline
 timeline.currentIndex      // number — index of the currently active snapshot
 timeline.canStepBack       // boolean — whether undo is possible
 timeline.canStepForward    // boolean — whether redo is possible
 ```
 
-`editorSnapshots` returns a shallow copy of the internal array — mutating it has no effect on the timeline. `currentIndex` is `0` at the oldest snapshot (the initial state captured on construction). After each `stepBack()` it decrements; after each `stepForward()` it increments.
+`editorSnapshots` returns an array of callbacks. Call one to get a deep clone of that snapshot — only the snapshot you read is cloned. `currentIndex` is `0` at the oldest snapshot (the initial state captured on construction). After each `stepBack()` it decrements; after each `stepForward()` it increments.
+
+```ts
+const snapshot = timeline.editorSnapshots[timeline.currentIndex](); // EditorSnapshot
+```
 
 ---
 
@@ -2322,7 +2392,7 @@ editorAPI.updateSelectionStyles({
 
 All three parameters are optional and can be combined freely in a single call. Setting a style property to `null` clears it (removes the style from the node). Omitting a property leaves it unchanged.
 
-**`localName`** changes the HTML tag of every `ContentLine` in the selection (`h1`, `h2`, … `h6`, `p`). Omit to leave line tags unchanged.
+**`localName`** (`BlockContentLineLocalName`: `"p"` | `"h1"`–`"h6"`) changes the HTML tag of every block `ContentLine` in the selection. Omit to leave line tags unchanged.
 
 **`styles`** applies `StructuredStyleValue`s to `ContentLine`s and `GlyphFormatter`s in the selection. The 5 ContentLine properties (`lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent`) target the line elements; the 8 GlyphFormatter properties target the text elements. Both can appear in the same `styles` object.
 
@@ -2408,7 +2478,7 @@ interface SelectionFormatStyles extends RangeFormat {
 ```ts
 interface RangeFormat {
   contentLineLocalNames: {
-    values: ContentLineLocalName[];
+    values: BlockContentLineLocalName[];
     permission: PermissionOption;
   };
   contentLineStructuredStyle: {
@@ -2448,7 +2518,7 @@ interface RangeFormat {
 - `"not-allowed"` — the format is restricted by a `ScopedEditable`'s `$allowed*` props
 - `"mixed"` — some `ScopedEditable` ancestors allow it and others don't
 
-`contentLineLocalNames.values` is an array of all distinct local names found in the selection (e.g., `["p"]` if all lines are paragraphs, `["p", "h1"]` if the selection spans mixed line types).
+`contentLineLocalNames.values` is an array of all distinct `BlockContentLineLocalName`s found in the selection (e.g., `["p"]` if all lines are paragraphs, `["p", "h1"]` if the selection spans mixed line types). Inline `"span"` ContentLines are never formattable and never appear in this array.
 
 ---
 
@@ -2953,6 +3023,7 @@ const rangeX = new RangeX({
     type: "snapshot",
     storedSnapshot,
   },
+  shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
 
@@ -2965,3 +3036,5 @@ const rangeX = new RangeX({
 **`subscribeEditorEvent(params)`** — subscribe to editor lifecycle events (`"editor-selection-change"`, `"selection-styles-change"`, etc.). See [section 10 — Events](#10-events) for the full event type reference, payloads, and dispatch order.
 
 **`registerDOMEvent(params)`** — register DOM event listeners on `EditorElement`s via a centralized `when` predicate. See [section 10 — Events](#10-events) for the full specification, the reason to prefer this over `.addEventListener`, and read-only mode behavior.
+
+**`registerEventInterceptor(params)`** — intercept events (`"keydown"`, `"beforeinput"`, `"paste"`, `"copy"`, `"cut"`, `"dragstart"`, `"dragenter"`, `"dragover"`, `"dragleave"`, `"drop"`, `"dragend"`) before the engine processes them. Return `true` from the interceptor to cancel engine handling. See [section 10 — Events](#10-events) for the full specification and the difference from `registerDOMEvent`.

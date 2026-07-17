@@ -5,7 +5,7 @@ import type {
 	CheckboxListToolbarButtonState,
 	CodeBlockToolbarButtonState,
 	CustomComponentToolbarButtonState,
-	ImageToolbarButtonState,
+	MediaToolbarButtonState,
 	OrderedListToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
@@ -50,10 +50,10 @@ export type UpdateCustomComponentStateFn = (
 	params: UpdateCustomComponentStateParams,
 ) => void;
 
-// Image
-export interface UpdateImageStateParams extends ImageToolbarButtonState {}
+// Media
+export interface UpdateMediaStateParams extends MediaToolbarButtonState {}
 
-export type UpdateImageStateFn = (params: UpdateImageStateParams) => void;
+export type UpdateMediaStateFn = (params: UpdateMediaStateParams) => void;
 
 // OrderedList
 export interface UpdateOrderedListStateParams
@@ -95,7 +95,7 @@ export interface NodeInsertionButtonsState {
 	checkboxList: Partial<CheckboxListToolbarButtonState>;
 	codeBlock: Partial<CodeBlockToolbarButtonState>;
 	customComponent: Partial<CustomComponentToolbarButtonState>;
-	image: Partial<ImageToolbarButtonState>;
+	media: Partial<MediaToolbarButtonState>;
 	symbols: Partial<SymbolsToolbarButtonState>;
 	orderedList: Partial<OrderedListToolbarButtonState>;
 	table: Partial<TableToolbarButtonState>;
@@ -111,7 +111,7 @@ export type ListenerMap = {
 	[toolbarButtonsName.checkboxList]: UpdateCheckboxListStateFn;
 	[toolbarButtonsName.codeBlock]: UpdateCodeBlockStateFn;
 	[toolbarButtonsName.customComponent]: UpdateCustomComponentStateFn;
-	[toolbarButtonsName.image]: UpdateImageStateFn;
+	[toolbarButtonsName.media]: UpdateMediaStateFn;
 	[toolbarButtonsName.symbols]: UpdateSymbolsStateFn;
 	[toolbarButtonsName.orderedList]: UpdateOrderedListStateFn;
 	[toolbarButtonsName.table]: UpdateTableStateFn;

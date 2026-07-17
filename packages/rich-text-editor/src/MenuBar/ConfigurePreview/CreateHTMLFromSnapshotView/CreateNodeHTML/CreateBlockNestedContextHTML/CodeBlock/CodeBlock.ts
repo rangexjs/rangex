@@ -1,5 +1,8 @@
 import { contentLineRoleSelector } from "rich-text-area";
-import { ensureCodeBlockStorage } from "../../../../../../Components";
+import {
+	codeBlockStorageFallbacks,
+	ensureCodeBlockStorage,
+} from "../../../../../../Components";
 import { syntaxHighlighter } from "../../../../../../Libs";
 import type {
 	ApplyTokenSpansParams,
@@ -69,7 +72,10 @@ export const highlightCodeBlock = async ({
 	codeBlockEl,
 	customStorage,
 }: HighlightCodeBlockParams): HighlightCodeBlockResult => {
-	const { lang, theme } = ensureCodeBlockStorage(customStorage);
+	const { lang, theme } = ensureCodeBlockStorage({
+		storage: customStorage,
+		fallbacks: codeBlockStorageFallbacks,
+	});
 
 	const contentLineEls = Array.from(
 		codeBlockEl.querySelectorAll(contentLineRoleSelector),

@@ -26,7 +26,11 @@ export const FormField = (props: FormFieldProps) => {
 	);
 
 	return (
-		<div class={`grid content-start gap-0 ${props.class}`} style={props.style}>
+		<div
+			class="grid content-start gap-0"
+			classList={{ [props.class ?? ""]: true }}
+			style={props.style}
+		>
 			<label
 				for={props.for}
 				class={`ml-0.5 justify-self-start font-semibold text-neutral-800 text-xs dark:text-neutral-200`}

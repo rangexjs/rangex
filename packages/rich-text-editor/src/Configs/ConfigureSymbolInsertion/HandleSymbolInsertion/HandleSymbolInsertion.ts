@@ -31,6 +31,7 @@ export const handleSymbolInsertion = ({
 			fromOffset: offset,
 			lines: [
 				createContentLine({
+					localName: "p",
 					childNodes: [...createFormattableTexts({ data })],
 				}),
 			],

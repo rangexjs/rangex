@@ -34,7 +34,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 						throw new Error("DetachedContext's type is invalid.");
 					}
 
-					const textNode = detachedContext.$$shadowRoot.firstChild;
+					const textNode = detachedContext.shadowRoot?.firstChild;
 
 					if (!textNode) {
 						throw new Error("DetachedContext's text node is missing.");

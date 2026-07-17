@@ -1,0 +1,68 @@
+[data-rx-editor-role="block-nested-context"] {
+	&:where([data-rx-component-name="todo-list"]) {
+		width: 100%;
+
+		& ul {
+			list-style-type: none;
+			margin-block: 0;
+			padding-inline-start: 0;
+			display: flex;
+			flex-direction: column;
+
+			& > li {
+				display: grid;
+				grid-template-columns: min-content 1fr;
+				gap: 8px;
+
+				& > [data-name="todo-checkbox"] {
+					appearance: none;
+					cursor: pointer;
+					width: 16px;
+					height: 16px;
+					margin: 0;
+					margin-top: 6px;
+					border: 1px solid
+						light-dark(var(--color-neutral-300), var(--color-neutral-600));
+					border-radius: 4px;
+					display: grid;
+					place-items: center;
+					transition:
+						background-color 100ms ease,
+						border-color 100ms ease;
+
+					&::before {
+						content: "✓";
+						font-family: "Inter", sans-serif;
+						font-size: 14px;
+						font-weight: 600;
+						color: transparent;
+						line-height: 1;
+					}
+
+					&:hover:not(:checked) {
+						border-color: light-dark(
+							var(--color-neutral-400),
+							var(--color-neutral-500)
+						);
+					}
+
+					&:checked {
+						background-color: var(--color-primary-500);
+						border-color: var(--color-primary-500);
+
+						&::before {
+							color: var(--color-white);
+						}
+					}
+				}
+
+				&:has(> [data-name="todo-checkbox"]:checked) {
+					& [data-rx-editor-role="content-line"] {
+						text-decoration: line-through;
+						opacity: 0.5;
+					}
+				}
+			}
+		}
+	}
+}

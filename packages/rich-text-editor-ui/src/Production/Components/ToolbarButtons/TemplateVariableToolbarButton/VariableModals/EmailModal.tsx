@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface EmailModalProps {
 	modalId: string;
@@ -25,7 +26,7 @@ export const EmailModal = (props: EmailModalProps) => {
 	props.nodeInsertionButtonStateManager.subscribe({
 		type: toolbarButtonsName.templateVariable,
 		callback: (state) => {
-			emailModel.setValue(state.options.name?.lastName ?? "");
+			emailModel.setValue(state.options.email ?? "");
 		},
 	});
 
@@ -46,13 +47,27 @@ export const EmailModal = (props: EmailModalProps) => {
 			return;
 		}
 
+		const email = normalizeTemplateVariableValue(emailModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				email: emailModel.value(),
-			},
+			options: { email },
 		});
+	};
+
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
 	};
 
 	return (
@@ -75,12 +90,14 @@ export const EmailModal = (props: EmailModalProps) => {
 						placeholder="name@mail.com"
 						spellcheck={false}
 						{...emailControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

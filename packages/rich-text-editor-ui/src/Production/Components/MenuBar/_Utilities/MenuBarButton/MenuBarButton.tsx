@@ -17,7 +17,7 @@ interface MenuBarButtonProps {
 export const MenuBarButton = (props: MenuBarButtonProps) => (
 	<button
 		type="button"
-		class="rounded-sm border border-transparent px-2 py-0.5 font-medium text-neutral-600 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-800 active:border-neutral-200 active:text-neutral-900 dark:text-neutral-200 dark:active:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+		class="btn-menu-trigger rounded-sm px-2 py-0.5 font-medium text-xs"
 		commandfor={props.commandfor}
 		command={props.command}
 		on:click={props.onClick}

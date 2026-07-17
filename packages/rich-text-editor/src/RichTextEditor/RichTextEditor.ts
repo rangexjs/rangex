@@ -7,15 +7,23 @@ import {
 	toolbarButtons,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
+import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
+import { createBlockResize } from "../BlockResize";
 import {
+	configureAudio,
 	configureBlockQuote,
 	configureCodeBlock,
+	configureEmbed,
 	configureEmoji,
+	configureEmptyMedia,
+	configureImage,
 	configureLink,
 	configureList,
 	configureMention,
 	configureTable,
 	configureTemplateVariable,
+	configureTodoList,
+	configureVideo,
 } from "../Components";
 import {
 	configureCustomStyles,
@@ -60,6 +68,16 @@ export class RichTextEditor extends HTMLElement {
 		const blockComponentPlacement = createBlockComponentPlacement({
 			editorAPI,
 		});
+		const blockResize = createBlockResize({
+			editorAPI,
+			richTextEditorUI: this.#richTextEditorUI,
+		});
+		const blockPopoverAppearanceHandler = createBlockPopoverAppearanceHandler({
+			editorAPI,
+		});
+
+		this.#cleanups.add(blockResize.cleanup);
+		this.#cleanups.add(blockPopoverAppearanceHandler.cleanup);
 
 		configureCustomStyles({ editorAPI });
 
@@ -104,8 +122,14 @@ export class RichTextEditor extends HTMLElement {
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
+			blockPopoverAppearanceHandler,
 		});
 		const listCleanup = configureList({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockComponentPlacement,
+		});
+		const todoListCleanup = configureTodoList({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
@@ -115,11 +139,51 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
+		const { cleanup: emptyMediaCleanup, onMediaResolve } = configureEmptyMedia({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockComponentPlacement,
+		});
+
+		const imageCleanup = configureImage({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
+		const videoCleanup = configureVideo({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
+		const audioCleanup = configureAudio({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
+		const embedCleanup = configureEmbed({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
 		this.#cleanups.add(listCleanup);
+		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
+		this.#cleanups.add(emptyMediaCleanup);
+		this.#cleanups.add(imageCleanup);
+		this.#cleanups.add(videoCleanup);
+		this.#cleanups.add(audioCleanup);
+		this.#cleanups.add(embedCleanup);
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,
@@ -165,27 +229,6 @@ export class RichTextEditor extends HTMLElement {
 
 		// 	console.log(res);
 		// };
-
-		this.#richTextEditorUI.updateNodeInsertionButtonState({
-			table: { disabled: false },
-			orderedList: { disabled: false },
-			checkboxList: { disabled: false },
-			unorderedList: { disabled: false },
-			codeBlock: { disabled: false },
-			blockQuote: { disabled: false },
-			image: { disabled: false },
-			customComponent: { disabled: false },
-			symbols: { disabled: false },
-			anchor: { checked: false, disabled: false },
-			templateVariable: {
-				disabled: false,
-				options: {
-					name: { firstName: "John", lastName: "Doe" },
-					email: null,
-					date: "2024-02-10",
-				},
-			},
-		});
 	}
 
 	destroy() {

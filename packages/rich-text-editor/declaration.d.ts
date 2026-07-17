@@ -10,3 +10,9 @@ declare module "*.css?inline" {
 
 	export default styles;
 }
+
+declare module "*.svg?raw" {
+	const content: string;
+
+	export default content;
+}

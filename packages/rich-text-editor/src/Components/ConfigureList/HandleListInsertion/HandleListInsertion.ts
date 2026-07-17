@@ -9,6 +9,7 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { createListStorage } from "../ListStorage";
 import type {
 	CreateListLineParams,
 	CreateListLineResult,
@@ -27,6 +28,7 @@ const createListLine = ({
 		blockNestedContext: createBlockNestedContext({
 			componentName: componentsName.list,
 			content: { type: "list" },
+			customStorage: createListStorage(),
 			childNodes: [list],
 		}),
 		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),

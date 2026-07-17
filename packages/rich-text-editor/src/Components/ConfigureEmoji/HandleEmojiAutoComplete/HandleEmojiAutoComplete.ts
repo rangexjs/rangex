@@ -2,15 +2,14 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-	type EditorSelectionChangeCallbackFn,
-	editorSelectionChangeEventType,
 } from "rich-text-area";
-import { getEmojiAutoComplete } from "../_Utilities";
+import { getEmojiQuery } from "../_Utilities";
 import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-types";
 
 /**
- * Subscribes to selection changes and auto-inserts an emoji when the cursor sits
- * immediately after a completed :<name>: shortcode that exactly matches a known emoji.
+ * Intercepts the closing ':' keystroke and auto-inserts an emoji when the text
+ * immediately before the cursor forms a completed :<name> shortcode that matches
+ * a known emoji. Fires only on actual typing, not on cursor movement.
  */
 export const handleEmojiAutoComplete = ({
 	richTextEditorUI,
@@ -22,73 +21,78 @@ export const handleEmojiAutoComplete = ({
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const callback: EditorSelectionChangeCallbackFn = () => {
-		const { fromText, fromOffset, toText, toOffset } =
-			selection.getBoundaryPoints();
+	const unregister = editorAPI.registerEventInterceptor({
+		type: "beforeinput",
+		interceptor: (event) => {
+			if (event.data !== ":") {
+				return false;
+			}
 
-		const range = new EditorRange({
-			fromNode: fromText,
-			fromOffset,
-			toNode: toText,
-			toOffset,
-		});
+			const { fromText, fromOffset, toText, toOffset } =
+				selection.getBoundaryPoints();
 
-		if (!range.isSinglePoint) {
-			return;
-		}
+			const range = new EditorRange({
+				fromNode: fromText,
+				fromOffset,
+				toNode: toText,
+				toOffset,
+			});
 
-		const { startText, startOffset } = range;
+			if (!range.isSinglePoint) {
+				return false;
+			}
 
-		const autoComplete = getEmojiAutoComplete({
-			editorAPI,
-			fromText: startText,
-			fromOffset: startOffset,
-		});
+			const { startText, startOffset } = range;
 
-		if (!autoComplete) {
-			return;
-		}
+			const emojiQuery = getEmojiQuery({
+				editorAPI,
+				fromText: startText,
+				fromOffset: startOffset,
+			});
 
-		const match = emojiPopover.findByName(autoComplete.name);
+			if (!emojiQuery) {
+				return false;
+			}
 
-		if (!match) {
-			return;
-		}
+			const match = emojiPopover.findByName(emojiQuery.query);
 
-		// Remove the :<name>: trigger text
-		editorAPI.removeNodesInRange({
-			fromNode: startText,
-			fromOffset: startOffset,
-			toNode: autoComplete.toText,
-			toOffset: autoComplete.toOffset,
-		});
+			if (!match) {
+				return false;
+			}
 
-		// Re-read cursor after removal, then insert the emoji character
-		const { fromText: newFromText, fromOffset: newFromOffset } =
-			selection.getBoundaryPoints();
+			// Remove the :<name> trigger text (the closing ':' is prevented from inserting)
+			editorAPI.removeNodesInRange({
+				fromNode: startText,
+				fromOffset: startOffset,
+				toNode: emojiQuery.toText,
+				toOffset: emojiQuery.toOffset,
+			});
 
-		editorAPI.insertNode({
-			fromNode: newFromText,
-			fromOffset: newFromOffset,
-			lines: [
-				createContentLine({
-					childNodes: [...createFormattableTexts({ data: match.emoji })],
-				}),
-			],
-			breakBeforeInsert: false,
-		});
+			// Re-read cursor after removal, then insert the emoji character
+			const { fromText: newFromText, fromOffset: newFromOffset } =
+				selection.getBoundaryPoints();
 
-		snapshotTimeline.registerSnapshotBoundary();
+			editorAPI.insertNode({
+				fromNode: newFromText,
+				fromOffset: newFromOffset,
+				lines: [
+					createContentLine({
+						localName: "p",
+						childNodes: [...createFormattableTexts({ data: match.emoji })],
+					}),
+				],
+				breakBeforeInsert: false,
+			});
 
-		editorAPI.focus();
-	};
+			snapshotTimeline.registerSnapshotBoundary();
 
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback,
+			editorAPI.focus();
+
+			return true;
+		},
 	});
 
 	return () => {
-		unsubscribe();
+		unregister();
 	};
 };

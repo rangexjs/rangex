@@ -1,22 +1,5 @@
 :host {
-	--primary-50: #effaff;
-	--primary-100: #def4ff;
-	--primary-200: #bfeaff;
-	--primary-300: #95dbff;
-	--primary-400: #52c3ff;
-	--primary-500: #00a1ff;
-	--primary-600: #0086d8;
-	--primary-700: #0069ae;
-	--primary-800: #004c82;
-	--primary-900: #003459;
-	--primary-950: #001e37;
-
 	interpolate-size: allow-keywords;
-}
-
-rich-text-area-view {
-	max-height: 1200px;
-	overflow-y: auto;
 }
 
 [data-rx-editor-role="root-editable"] {

@@ -8,6 +8,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { FixedPosModal } from "../../_Utilities";
+import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface NameModalProps {
 	modalId: string;
@@ -22,8 +23,8 @@ export const NameModal = (props: NameModalProps) => {
 	props.nodeInsertionButtonStateManager.subscribe({
 		type: toolbarButtonsName.templateVariable,
 		callback: (state) => {
-			firstNameModel.setValue(state.options.name?.firstName ?? "");
-			lastNameModel.setValue(state.options.name?.lastName ?? "");
+			firstNameModel.setValue(state.options.firstName ?? "");
+			lastNameModel.setValue(state.options.lastName ?? "");
 		},
 	});
 
@@ -33,21 +34,33 @@ export const NameModal = (props: NameModalProps) => {
 		}
 
 		const { templateVariable } = props.nodeInsertionButtonStateManager;
-		firstNameModel.setValue(templateVariable.options.name?.firstName ?? "");
-		lastNameModel.setValue(templateVariable.options.name?.lastName ?? "");
+		firstNameModel.setValue(templateVariable.options.firstName ?? "");
+		lastNameModel.setValue(templateVariable.options.lastName ?? "");
 	};
 
 	const updateTemplateVariable = () => {
+		const firstName = normalizeTemplateVariableValue(firstNameModel.value());
+		const lastName = normalizeTemplateVariableValue(lastNameModel.value());
+
 		props.toolbarButtonsActionManager.emitNodeInsertionChange({
 			type: toolbarButtonsName.templateVariable,
 			action: "update",
-			options: {
-				name: {
-					firstName: firstNameModel.value(),
-					lastName: lastNameModel.value(),
-				},
-			},
+			options: { firstName, lastName },
 		});
+	};
+
+	let updateButtonRef: HTMLButtonElement | undefined;
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!updateButtonRef) {
+			throw new Error("UpdateButtonRef can't be undefined.");
+		}
+
+		if (event.key !== "Enter") {
+			return;
+		}
+
+		updateButtonRef.click();
 	};
 
 	return (
@@ -70,6 +83,7 @@ export const NameModal = (props: NameModalProps) => {
 						placeholder="John"
 						spellcheck={false}
 						{...firstNameControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
@@ -88,12 +102,14 @@ export const NameModal = (props: NameModalProps) => {
 						placeholder="Doe"
 						spellcheck={false}
 						{...lastNameControls}
+						on:keydown={handleKeyDown}
 					/>
 				</TextFieldWrapper>
 			</FormField>
 
 			<div class="text-right">
 				<button
+					ref={updateButtonRef}
 					type="button"
 					commandfor={props.modalId}
 					command="close"

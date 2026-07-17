@@ -36,13 +36,20 @@ export const createDevelopmentView = () => {
 	const emptyRootEditable = createRootEditable({
 		display: "block multi-line",
 		contentLineLocalNamesStyle: getDefaultContentLineLocalNamesStyles(),
-		childNodes: [createContentLine({ childNodes: [createBeamText()] })],
+		childNodes: [
+			createContentLine({ localName: "p", childNodes: [createBeamText()] }),
+		],
 	});
 
 	const emptyRichTextArea = new RangeX({
 		rootEditableFrom: {
 			type: "node",
 			node: emptyRootEditable,
+		},
+		shadowRootOptions: {
+			mode: "open",
+			serializable: true,
+			slotAssignment: "manual",
 		},
 	});
 
@@ -55,6 +62,11 @@ export const createDevelopmentView = () => {
 			type: "snapshot",
 			// @ts-expect-error
 			storedSnapshot,
+		},
+		shadowRootOptions: {
+			mode: "open",
+			serializable: true,
+			slotAssignment: "manual",
 		},
 	});
 

@@ -8,6 +8,7 @@ import type {
 	CodeBlockLanguage,
 	ColorValue,
 	CustomComponentName,
+	FindReplacePattern,
 	FontFamilyValue,
 	FontSizeValue,
 	IndentationValue,
@@ -85,18 +86,8 @@ export interface CustomComponentActionState
 	name: CustomComponentName;
 }
 
-export interface ImageFileUpload {
-	insertionType: "file-upload";
-	files: FileList;
-}
-
-export interface ImageURL {
-	insertionType: "url";
-	url: string;
-}
-
-export type ImageActionState = GetButtonType<typeof toolbarButtonsName.image> &
-	(ImageFileUpload | ImageURL);
+export interface MediaActionState
+	extends GetButtonType<typeof toolbarButtonsName.media> {}
 
 export interface OrderedListActionState
 	extends GetButtonType<typeof toolbarButtonsName.orderedList> {}
@@ -136,7 +127,7 @@ export type NodeInsertionActionState =
 	| CheckboxListActionState
 	| CodeBlockActionState
 	| CustomComponentActionState
-	| ImageActionState
+	| MediaActionState
 	| OrderedListActionState
 	| SymbolsActionState
 	| TableActionState
@@ -164,11 +155,8 @@ export interface FindReplaceActionState
 	extends GetButtonType<typeof toolbarButtonsName.findReplace> {
 	action: FindReplaceActionType;
 	navigateTo: number;
-	findText: string;
+	pattern: FindReplacePattern;
 	replaceText: string;
-	matchCase: boolean;
-	wholeWord: boolean;
-	useRegex: boolean;
 	includeNonEditableContent: boolean;
 }
 

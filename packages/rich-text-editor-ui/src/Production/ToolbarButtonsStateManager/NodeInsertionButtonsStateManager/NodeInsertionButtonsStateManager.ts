@@ -6,7 +6,7 @@ import type {
 	CheckboxListToolbarButtonState,
 	CodeBlockToolbarButtonState,
 	CustomComponentToolbarButtonState,
-	ImageToolbarButtonState,
+	MediaToolbarButtonState,
 	OrderedListToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
@@ -21,8 +21,8 @@ import type {
 	UpdateCheckboxListStateFn,
 	UpdateCodeBlockStateFn,
 	UpdateCustomComponentStateFn,
-	UpdateImageStateFn,
 	UpdateListenerParams,
+	UpdateMediaStateFn,
 	UpdateNodeInsertionButtonsStateParams,
 	UpdateOrderedListStateFn,
 	UpdateSymbolsStateFn,
@@ -37,13 +37,13 @@ export class NodeInsertionButtonsStateManager {
 	#checkboxList: CheckboxListToolbarButtonState = { disabled: true };
 	#codeBlock: CodeBlockToolbarButtonState = { disabled: true };
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
-	#image: ImageToolbarButtonState = { disabled: true };
+	#media: MediaToolbarButtonState = { disabled: true };
 	#orderedList: OrderedListToolbarButtonState = { disabled: true };
 	#symbols: SymbolsToolbarButtonState = { disabled: true };
 	#table: TableToolbarButtonState = { disabled: true };
 	#templateVariable: TemplateVariableToolbarButtonState = {
 		disabled: true,
-		options: { name: null, email: null, date: null },
+		options: { firstName: null, lastName: null, email: null, date: null },
 	};
 	#unorderedList: UnorderedListToolbarButtonState = { disabled: true };
 
@@ -52,7 +52,7 @@ export class NodeInsertionButtonsStateManager {
 	#checkboxListListeners: Set<UpdateCheckboxListStateFn> = new Set();
 	#codeBlockListeners: Set<UpdateCodeBlockStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
-	#imageListeners: Set<UpdateImageStateFn> = new Set();
+	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
 	#orderedListListeners: Set<UpdateOrderedListStateFn> = new Set();
 	#symbolsListeners: Set<UpdateSymbolsStateFn> = new Set();
 	#tableListeners: Set<UpdateTableStateFn> = new Set();
@@ -80,8 +80,8 @@ export class NodeInsertionButtonsStateManager {
 		return this.#customComponent;
 	}
 
-	get image() {
-		return this.#image;
+	get media() {
+		return this.#media;
 	}
 
 	get orderedList() {
@@ -130,8 +130,8 @@ export class NodeInsertionButtonsStateManager {
 			return;
 		}
 
-		if (type === toolbarButtonsName.image) {
-			this.#imageListeners[operation](callback);
+		if (type === toolbarButtonsName.media) {
+			this.#mediaListeners[operation](callback);
 			return;
 		}
 
@@ -182,7 +182,7 @@ export class NodeInsertionButtonsStateManager {
 		checkboxList,
 		codeBlock,
 		customComponent,
-		image,
+		media,
 		orderedList,
 		symbols,
 		table,
@@ -229,11 +229,11 @@ export class NodeInsertionButtonsStateManager {
 			}
 		}
 
-		if (image) {
-			this.#image = { ...this.#image, ...image };
+		if (media) {
+			this.#media = { ...this.#media, ...media };
 
-			for (const listener of this.#imageListeners) {
-				listener(this.#image);
+			for (const listener of this.#mediaListeners) {
+				listener(this.#media);
 			}
 		}
 
