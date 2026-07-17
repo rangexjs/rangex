@@ -4,19 +4,17 @@
 	"license": "MIT",
 	"workspaces": [
 		"packages/rich-text-area",
-		"packages/rich-text-editor",
-		"packages/rich-text-editor-ui"
+		"packages/rich-text-editor"
 	],
 	"scripts": {
 		"dev": "vite dev",
-		"build": "bun run --filter @rangex/rich-text-editor-ui build && bun run --filter @rangex/rich-text-editor build",
-		"fix": "bun run --filter @rangex/rich-text-editor-ui fix && bun run --filter @rangex/rich-text-editor fix",
-		"lint": "bun run --filter @rangex/rich-text-editor-ui lint && bun run --filter @rangex/rich-text-editor lint"
+		"build": "bun run --filter @rangex/rich-text-editor build",
+		"fix": "bun run --filter @rangex/rich-text-editor fix",
+		"lint": "bun run --filter @rangex/rich-text-editor lint"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",
 		"@rangex/rich-text-editor": "workspace:*",
-		"@rangex/rich-text-editor-ui": "workspace:*",
 		"@tailwindcss/vite": "^4.3.3",
 		"solid-js": "^1.9.14",
 		"tailwindcss": "^4.3.3"

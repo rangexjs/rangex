@@ -1,0 +1,16 @@
+import type { EditorAPI } from "rich-text-area";
+import type { EmbedEmitSwapParams, EmbedPopover, RichTextEditorUI } from "#ui";
+import type { EmbedInternals } from "../ConfigureEmbed-types";
+
+export interface HandleEmbedSwapParams {
+	richTextEditorUI: RichTextEditorUI;
+	editorAPI: EditorAPI;
+	internals: EmbedInternals;
+}
+
+export interface ResolveSwapSrcParams {
+	embedEmitSwapParams: EmbedEmitSwapParams;
+	embedPopover: EmbedPopover;
+}
+
+export type ResolveSwapSrcResult = string | null;
