@@ -1,6 +1,6 @@
 import type {
-	EmitSwapParams,
-	ImageSwapPopover,
+	ImageEmitSwapParams,
+	ImagePopover,
 	RichTextEditorUI,
 } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI } from "rich-text-area";
@@ -13,8 +13,8 @@ export interface HandleImageSwapParams {
 }
 
 export interface ResolveSwapSrcParams {
-	emitSwapParams: EmitSwapParams;
-	imageSwapPopover: ImageSwapPopover;
+	emitSwapParams: ImageEmitSwapParams;
+	imagePopover: ImagePopover;
 	isStillCurrent: () => boolean;
 }
 

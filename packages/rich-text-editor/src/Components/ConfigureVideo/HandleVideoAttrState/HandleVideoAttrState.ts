@@ -22,9 +22,9 @@ export const handleVideoAttrState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoAttrStateParams) => {
-	const { videoEditPopover } = richTextEditorUI;
+	const { videoPopover } = richTextEditorUI;
 
-	const unsubscribeVideoAttrChange = videoEditPopover.onVideoAttrChange(
+	const unsubscribeVideoAttrChange = videoPopover.onVideoAttrChange(
 		({
 			objectFit,
 			aspectRatio,
@@ -76,7 +76,7 @@ export const handleVideoAttrState = ({
 				setVideoMuted({ video, muted });
 			}
 
-			videoEditPopover.updateState({
+			videoPopover.updateState({
 				objectFit,
 				aspectRatio,
 				title,

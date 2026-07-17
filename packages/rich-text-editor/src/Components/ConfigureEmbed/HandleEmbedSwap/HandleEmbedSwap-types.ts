@@ -1,6 +1,6 @@
 import type {
 	EmbedEmitSwapParams,
-	EmbedSwapPopover,
+	EmbedPopover,
 	RichTextEditorUI,
 } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI } from "rich-text-area";
@@ -14,7 +14,7 @@ export interface HandleEmbedSwapParams {
 
 export interface ResolveSwapSrcParams {
 	embedEmitSwapParams: EmbedEmitSwapParams;
-	embedSwapPopover: EmbedSwapPopover;
+	embedPopover: EmbedPopover;
 }
 
 export type ResolveSwapSrcResult = string | null;

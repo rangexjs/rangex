@@ -13,10 +13,10 @@ export interface ConfigureVideoParams {
 }
 
 /**
- * Tracks which video the shared swap popover is currently targeting — set whenever it's
- * opened via the edit popover's Swap button, read when Update is clicked. The swap popover
- * isn't tied to {@link BlockPopoverAppearanceHandler}'s hover-driven current-block tracking,
- * so this is its own source of truth.
+ * Tracks which video the swap popover is currently targeting — set when the popover's
+ * Swap button opens it, read when Update is clicked. The swap popover isn't tied to
+ * {@link BlockPopoverAppearanceHandler}'s hover-driven current-block tracking, so this is
+ * its own source of truth.
  */
 export interface VideoInternals {
 	currentVideoFigure: HTMLLayout | null;

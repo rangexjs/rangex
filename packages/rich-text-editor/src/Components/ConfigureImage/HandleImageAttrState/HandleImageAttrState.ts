@@ -17,9 +17,9 @@ export const handleImageAttrState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleImageAttrStateParams) => {
-	const { imageEditPopover } = richTextEditorUI;
+	const { imagePopover } = richTextEditorUI;
 
-	const unsubscribeImageAttrChange = imageEditPopover.onImageAttrChange(
+	const unsubscribeImageAttrChange = imagePopover.onImageAttrChange(
 		({ objectFit, aspectRatio, altText }) => {
 			const currentBlock = getCurrentBlock();
 
@@ -42,7 +42,7 @@ export const handleImageAttrState = ({
 				setImageAlt({ img, alt: altText });
 			}
 
-			imageEditPopover.updateState({ objectFit, aspectRatio, altText });
+			imagePopover.updateState({ objectFit, aspectRatio, altText });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

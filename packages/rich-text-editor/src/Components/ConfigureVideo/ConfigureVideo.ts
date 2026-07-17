@@ -7,11 +7,10 @@ import { handleVideoAlignState } from "./HandleVideoAlignState";
 import { handleVideoAttrState } from "./HandleVideoAttrState";
 import { handleVideoCaptionState } from "./HandleVideoCaptionState";
 import { handleVideoDelete } from "./HandleVideoDelete";
-import { handleVideoEditPopoverAppearance } from "./HandleVideoEditPopoverAppearance";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
+import { handleVideoPopoverAppearance } from "./HandleVideoPopoverAppearance";
 import { handleVideoSwap } from "./HandleVideoSwap";
-import { handleVideoSwapButtonOpen } from "./HandleVideoSwapButtonOpen";
-import { handleVideoSwapPopoverClose } from "./HandleVideoSwapPopoverClose";
+import { handleVideoSwapPopoverToggle } from "./HandleVideoSwapPopoverToggle";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
 // src/_Utilities) instead of going through any upload endpoint or blob
@@ -40,7 +39,7 @@ export const configureVideo = ({
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleVideoEditPopoverAppearance({
+		handleVideoPopoverAppearance({
 			richTextEditorUI,
 			blockPopoverAppearanceHandler,
 		});
@@ -63,7 +62,7 @@ export const configureVideo = ({
 		getCurrentBlock,
 	});
 
-	const swapButtonOpenCleanup = handleVideoSwapButtonOpen({
+	const swapPopoverToggleCleanup = handleVideoSwapPopoverToggle({
 		richTextEditorUI,
 		getCurrentBlock,
 		internals,
@@ -72,11 +71,6 @@ export const configureVideo = ({
 	const swapCleanup = handleVideoSwap({
 		richTextEditorUI,
 		editorAPI,
-		internals,
-	});
-
-	const swapPopoverCloseCleanup = handleVideoSwapPopoverClose({
-		richTextEditorUI,
 		internals,
 	});
 
@@ -93,9 +87,8 @@ export const configureVideo = ({
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapButtonOpenCleanup();
+		swapPopoverToggleCleanup();
 		swapCleanup();
-		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

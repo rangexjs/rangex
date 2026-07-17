@@ -3,21 +3,17 @@ import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
-	AudioEditPopoverController,
-	AudioSwapPopoverController,
+	AudioPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
-	EmbedEditPopoverController,
-	EmbedSwapPopoverController,
+	EmbedPopoverController,
 	EmojiPopoverController,
-	ImageEditPopoverController,
-	ImageSwapPopoverController,
+	ImagePopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
-	VideoEditPopoverController,
-	VideoSwapPopoverController,
+	VideoPopoverController,
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
@@ -37,21 +33,17 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
-	AudioEditPopover,
-	AudioSwapPopover,
+	AudioPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
-	EmbedEditPopover,
-	EmbedSwapPopover,
+	EmbedPopover,
 	EmojiPopover,
-	ImageEditPopover,
-	ImageSwapPopover,
+	ImagePopover,
 	LinkPopover,
 	MentionPopover,
 	TableQuickActionsPopover,
 	TemplateVariablePopover,
-	VideoEditPopover,
-	VideoSwapPopover,
+	VideoPopover,
 } from "../NodePopovers";
 import {
 	EditorOptionsContext,
@@ -82,21 +74,17 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
-	audioEditPopoverController: AudioEditPopoverController;
-	audioSwapPopoverController: AudioSwapPopoverController;
+	audioPopoverController: AudioPopoverController;
 	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
-	embedEditPopoverController: EmbedEditPopoverController;
-	embedSwapPopoverController: EmbedSwapPopoverController;
+	embedPopoverController: EmbedPopoverController;
 	emojiPopoverController: EmojiPopoverController;
-	imageEditPopoverController: ImageEditPopoverController;
-	imageSwapPopoverController: ImageSwapPopoverController;
+	imagePopoverController: ImagePopoverController;
 	linkPopoverController: LinkPopoverController;
 	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
 	templateVariablePopoverController: TemplateVariablePopoverController;
-	videoEditPopoverController: VideoEditPopoverController;
-	videoSwapPopoverController: VideoSwapPopoverController;
+	videoPopoverController: VideoPopoverController;
 }
 
 export interface AppProps
@@ -166,22 +154,18 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
-		audioEditPopoverController: props.audioEditPopoverController,
-		audioSwapPopoverController: props.audioSwapPopoverController,
+		audioPopoverController: props.audioPopoverController,
 		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
-		embedEditPopoverController: props.embedEditPopoverController,
-		embedSwapPopoverController: props.embedSwapPopoverController,
+		embedPopoverController: props.embedPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
-		imageEditPopoverController: props.imageEditPopoverController,
-		imageSwapPopoverController: props.imageSwapPopoverController,
+		imagePopoverController: props.imagePopoverController,
 		linkPopoverController: props.linkPopoverController,
 		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
 		templateVariablePopoverController: props.templateVariablePopoverController,
-		videoEditPopoverController: props.videoEditPopoverController,
-		videoSwapPopoverController: props.videoSwapPopoverController,
+		videoPopoverController: props.videoPopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -205,21 +189,17 @@ export const App = (props: AppProps) => {
 						<PopoverControllersContext.Provider
 							value={popoverControllersContextValue}
 						>
-							<AudioEditPopover />
-							<AudioSwapPopover />
+							<AudioPopover />
 							<BlockResizePopover />
 							<CodeBlockPopover />
-							<EmbedEditPopover />
-							<EmbedSwapPopover />
+							<EmbedPopover />
 							<EmojiPopover />
-							<ImageEditPopover />
-							<ImageSwapPopover />
+							<ImagePopover />
 							<LinkPopover />
 							<MentionPopover />
 							<TableQuickActionsPopover />
 							<TemplateVariablePopover />
-							<VideoEditPopover />
-							<VideoSwapPopover />
+							<VideoPopover />
 						</PopoverControllersContext.Provider>
 					</div>
 				</div>

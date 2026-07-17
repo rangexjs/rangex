@@ -16,10 +16,10 @@ export const handleEmbedCaptionState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleEmbedCaptionStateParams) => {
-	const { embedEditPopover } = richTextEditorUI;
+	const { embedPopover } = richTextEditorUI;
 
-	const unsubscribeCaptionEnabledChange =
-		embedEditPopover.onCaptionEnabledChange((enabled) => {
+	const unsubscribeCaptionEnabledChange = embedPopover.onCaptionEnabledChange(
+		(enabled) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -29,15 +29,16 @@ export const handleEmbedCaptionState = ({
 			const figure = getEmbedFigure({ blockNestedContext: currentBlock });
 
 			setEmbedCaptionEnabled({ figure, enabled });
-			embedEditPopover.updateState({ caption: getEmbedCaption({ figure }) });
+			embedPopover.updateState({ caption: getEmbedCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
-	const unsubscribeCaptionPositionChange =
-		embedEditPopover.onCaptionPositionChange((position) => {
+	const unsubscribeCaptionPositionChange = embedPopover.onCaptionPositionChange(
+		(position) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -47,12 +48,13 @@ export const handleEmbedCaptionState = ({
 			const figure = getEmbedFigure({ blockNestedContext: currentBlock });
 
 			setEmbedCaptionPosition({ figure, position });
-			embedEditPopover.updateState({ caption: getEmbedCaption({ figure }) });
+			embedPopover.updateState({ caption: getEmbedCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
 	return () => {
 		unsubscribeCaptionEnabledChange();

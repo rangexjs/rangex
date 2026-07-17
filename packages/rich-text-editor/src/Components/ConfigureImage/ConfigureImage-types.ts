@@ -13,10 +13,10 @@ export interface ConfigureImageParams {
 }
 
 /**
- * Tracks which image the shared swap popover is currently targeting — set whenever it's
- * opened (dropzone click or the edit popover's Swap button), read when Update is clicked.
- * The swap popover isn't tied to {@link BlockPopoverAppearanceHandler}'s hover-driven
- * current-block tracking, so this is its own source of truth.
+ * Tracks which image the swap popover is currently targeting — set when the edit popover's
+ * Swap button opens it, read when Update is clicked. The swap popover isn't tied to
+ * {@link BlockPopoverAppearanceHandler}'s hover-driven current-block tracking, so this is
+ * its own source of truth.
  */
 export interface ImageInternals {
 	currentImageFigure: HTMLLayout | null;

@@ -16,10 +16,10 @@ export const handleImageCaptionState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleImageCaptionStateParams) => {
-	const { imageEditPopover } = richTextEditorUI;
+	const { imagePopover } = richTextEditorUI;
 
-	const unsubscribeCaptionEnabledChange =
-		imageEditPopover.onCaptionEnabledChange((enabled) => {
+	const unsubscribeCaptionEnabledChange = imagePopover.onCaptionEnabledChange(
+		(enabled) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -29,15 +29,16 @@ export const handleImageCaptionState = ({
 			const figure = getImageFigure({ blockNestedContext: currentBlock });
 
 			setImageCaptionEnabled({ figure, enabled });
-			imageEditPopover.updateState({ caption: getImageCaption({ figure }) });
+			imagePopover.updateState({ caption: getImageCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
-	const unsubscribeCaptionPositionChange =
-		imageEditPopover.onCaptionPositionChange((position) => {
+	const unsubscribeCaptionPositionChange = imagePopover.onCaptionPositionChange(
+		(position) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -47,12 +48,13 @@ export const handleImageCaptionState = ({
 			const figure = getImageFigure({ blockNestedContext: currentBlock });
 
 			setImageCaptionPosition({ figure, position });
-			imageEditPopover.updateState({ caption: getImageCaption({ figure }) });
+			imagePopover.updateState({ caption: getImageCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
 	return () => {
 		unsubscribeCaptionEnabledChange();

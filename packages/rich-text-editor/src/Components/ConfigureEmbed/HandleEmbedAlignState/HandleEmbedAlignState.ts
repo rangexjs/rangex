@@ -10,9 +10,9 @@ export const handleEmbedAlignState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleEmbedAlignStateParams) => {
-	const { embedEditPopover } = richTextEditorUI;
+	const { embedPopover } = richTextEditorUI;
 
-	const unsubscribeAlignChange = embedEditPopover.onAlignChange((align) => {
+	const unsubscribeAlignChange = embedPopover.onAlignChange((align) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -26,7 +26,7 @@ export const handleEmbedAlignState = ({
 		}
 
 		setBlockAlign({ blockNestedContextLine: $$parentElement, align });
-		embedEditPopover.updateState({ align });
+		embedPopover.updateState({ align });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

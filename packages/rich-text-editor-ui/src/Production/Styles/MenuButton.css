@@ -23,6 +23,19 @@
 		color: light-dark(var(--color-neutral-900), var(--color-white));
 	}
 
+	&[data-is-checked="true"] {
+		background-color: color(from var(--color-primary-500) srgb r g b / 0.1);
+		color: var(--color-primary-500);
+
+		&:hover {
+			background-color: color(from var(--color-primary-500) srgb r g b / 0.15);
+		}
+
+		&:active {
+			border-color: color(from var(--color-primary-500) srgb r g b / 0.3);
+		}
+	}
+
 	&:disabled {
 		cursor: default;
 		pointer-events: none;

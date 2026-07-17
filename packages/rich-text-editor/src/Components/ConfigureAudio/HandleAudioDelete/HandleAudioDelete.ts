@@ -9,9 +9,9 @@ export const handleAudioDelete = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleAudioDeleteParams) => {
-	const { audioEditPopover } = richTextEditorUI;
+	const { audioPopover } = richTextEditorUI;
 
-	const unsubscribeDelete = audioEditPopover.onDelete(() => {
+	const unsubscribeDelete = audioPopover.onDelete(() => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {

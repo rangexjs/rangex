@@ -1,7 +1,7 @@
 import type {
 	RichTextEditorUI,
 	VideoEmitSwapParams,
-	VideoSwapPopover,
+	VideoPopover,
 } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI } from "rich-text-area";
 import type { VideoInternals } from "../ConfigureVideo-types";
@@ -14,7 +14,7 @@ export interface HandleVideoSwapParams {
 
 export interface ResolveSwapSrcParams {
 	videoEmitSwapParams: VideoEmitSwapParams;
-	videoSwapPopover: VideoSwapPopover;
+	videoPopover: VideoPopover;
 	isStillCurrent: () => boolean;
 }
 

@@ -7,11 +7,10 @@ import { handleEmbedAlignState } from "./HandleEmbedAlignState";
 import { handleEmbedAttrState } from "./HandleEmbedAttrState";
 import { handleEmbedCaptionState } from "./HandleEmbedCaptionState";
 import { handleEmbedDelete } from "./HandleEmbedDelete";
-import { handleEmbedEditPopoverAppearance } from "./HandleEmbedEditPopoverAppearance";
 import { handleEmbedInsertion } from "./HandleEmbedInsertion";
+import { handleEmbedPopoverAppearance } from "./HandleEmbedPopoverAppearance";
 import { handleEmbedSwap } from "./HandleEmbedSwap";
-import { handleEmbedSwapButtonOpen } from "./HandleEmbedSwapButtonOpen";
-import { handleEmbedSwapPopoverClose } from "./HandleEmbedSwapPopoverClose";
+import { handleEmbedSwapPopoverToggle } from "./HandleEmbedSwapPopoverToggle";
 
 export const configureEmbed = ({
 	richTextEditorUI,
@@ -35,7 +34,7 @@ export const configureEmbed = ({
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleEmbedEditPopoverAppearance({
+		handleEmbedPopoverAppearance({
 			richTextEditorUI,
 			blockPopoverAppearanceHandler,
 		});
@@ -58,7 +57,7 @@ export const configureEmbed = ({
 		getCurrentBlock,
 	});
 
-	const swapButtonOpenCleanup = handleEmbedSwapButtonOpen({
+	const swapPopoverToggleCleanup = handleEmbedSwapPopoverToggle({
 		richTextEditorUI,
 		getCurrentBlock,
 		internals,
@@ -67,11 +66,6 @@ export const configureEmbed = ({
 	const swapCleanup = handleEmbedSwap({
 		richTextEditorUI,
 		editorAPI,
-		internals,
-	});
-
-	const swapPopoverCloseCleanup = handleEmbedSwapPopoverClose({
-		richTextEditorUI,
 		internals,
 	});
 
@@ -88,9 +82,8 @@ export const configureEmbed = ({
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapButtonOpenCleanup();
+		swapPopoverToggleCleanup();
 		swapCleanup();
-		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

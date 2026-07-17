@@ -12,21 +12,17 @@ import {
 } from "../MenuBarButtonsStateManager";
 import { EmptyMediaSlotController } from "../NodeSlotControllers";
 import {
-	AudioEditPopoverController,
-	AudioSwapPopoverController,
+	AudioPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
-	EmbedEditPopoverController,
-	EmbedSwapPopoverController,
+	EmbedPopoverController,
 	EmojiPopoverController,
-	ImageEditPopoverController,
-	ImageSwapPopoverController,
+	ImagePopoverController,
 	LinkPopoverController,
 	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
-	VideoEditPopoverController,
-	VideoSwapPopoverController,
+	VideoPopoverController,
 } from "../PopoverControllers";
 import { ToolbarButtonDefaultValues } from "../ToolbarButtonDefaultValues";
 import {
@@ -63,23 +59,19 @@ export class RichTextEditorUI extends HTMLElement {
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
 	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
-	#audioEditPopoverController = new AudioEditPopoverController();
-	#audioSwapPopoverController = new AudioSwapPopoverController();
+	#audioPopoverController = new AudioPopoverController();
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
-	#embedEditPopoverController = new EmbedEditPopoverController();
-	#embedSwapPopoverController = new EmbedSwapPopoverController();
+	#embedPopoverController = new EmbedPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
 	#emptyMediaSlotController = new EmptyMediaSlotController();
-	#imageEditPopoverController = new ImageEditPopoverController();
-	#imageSwapPopoverController = new ImageSwapPopoverController();
+	#imagePopoverController = new ImagePopoverController();
 	#linkPopoverController = new LinkPopoverController();
 	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
 	#templateVariablePopoverController = new TemplateVariablePopoverController();
-	#videoEditPopoverController = new VideoEditPopoverController();
-	#videoSwapPopoverController = new VideoSwapPopoverController();
+	#videoPopoverController = new VideoPopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -145,15 +137,12 @@ export class RichTextEditorUI extends HTMLElement {
 						this.#nonCategorizedOperationButtonsStateManager
 					}
 					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
-					audioEditPopoverController={this.#audioEditPopoverController}
-					audioSwapPopoverController={this.#audioSwapPopoverController}
+					audioPopoverController={this.#audioPopoverController}
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
-					embedEditPopoverController={this.#embedEditPopoverController}
-					embedSwapPopoverController={this.#embedSwapPopoverController}
+					embedPopoverController={this.#embedPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
-					imageEditPopoverController={this.#imageEditPopoverController}
-					imageSwapPopoverController={this.#imageSwapPopoverController}
+					imagePopoverController={this.#imagePopoverController}
 					linkPopoverController={this.#linkPopoverController}
 					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
@@ -162,8 +151,7 @@ export class RichTextEditorUI extends HTMLElement {
 					templateVariablePopoverController={
 						this.#templateVariablePopoverController
 					}
-					videoEditPopoverController={this.#videoEditPopoverController}
-					videoSwapPopoverController={this.#videoSwapPopoverController}
+					videoPopoverController={this.#videoPopoverController}
 				/>
 			),
 			this.#shadowRoot,
@@ -258,12 +246,8 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	get audioEditPopover() {
-		return this.#audioEditPopoverController.publicAPI;
-	}
-
-	get audioSwapPopover() {
-		return this.#audioSwapPopoverController.publicAPI;
+	get audioPopover() {
+		return this.#audioPopoverController.publicAPI;
 	}
 
 	get blockResizePopover() {
@@ -274,12 +258,8 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#codeBlockPopoverController.publicAPI;
 	}
 
-	get embedEditPopover() {
-		return this.#embedEditPopoverController.publicAPI;
-	}
-
-	get embedSwapPopover() {
-		return this.#embedSwapPopoverController.publicAPI;
+	get embedPopover() {
+		return this.#embedPopoverController.publicAPI;
 	}
 
 	get emojiPopover() {
@@ -290,12 +270,8 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#emptyMediaSlotController.publicAPI;
 	}
 
-	get imageEditPopover() {
-		return this.#imageEditPopoverController.publicAPI;
-	}
-
-	get imageSwapPopover() {
-		return this.#imageSwapPopoverController.publicAPI;
+	get imagePopover() {
+		return this.#imagePopoverController.publicAPI;
 	}
 
 	get linkPopover() {
@@ -314,12 +290,8 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#templateVariablePopoverController.publicAPI;
 	}
 
-	get videoEditPopover() {
-		return this.#videoEditPopoverController.publicAPI;
-	}
-
-	get videoSwapPopover() {
-		return this.#videoSwapPopoverController.publicAPI;
+	get videoPopover() {
+		return this.#videoPopoverController.publicAPI;
 	}
 
 	dispose() {

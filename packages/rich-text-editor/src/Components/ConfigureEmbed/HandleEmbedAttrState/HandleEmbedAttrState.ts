@@ -16,9 +16,9 @@ export const handleEmbedAttrState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleEmbedAttrStateParams) => {
-	const { embedEditPopover } = richTextEditorUI;
+	const { embedPopover } = richTextEditorUI;
 
-	const unsubscribeEmbedAttrChange = embedEditPopover.onEmbedAttrChange(
+	const unsubscribeEmbedAttrChange = embedPopover.onEmbedAttrChange(
 		({ aspectRatio, title }) => {
 			const currentBlock = getCurrentBlock();
 
@@ -37,7 +37,7 @@ export const handleEmbedAttrState = ({
 				setEmbedTitle({ iframe, title });
 			}
 
-			embedEditPopover.updateState({ aspectRatio, title });
+			embedPopover.updateState({ aspectRatio, title });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

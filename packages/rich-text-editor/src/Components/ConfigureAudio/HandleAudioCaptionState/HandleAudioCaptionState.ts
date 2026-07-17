@@ -16,10 +16,10 @@ export const handleAudioCaptionState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleAudioCaptionStateParams) => {
-	const { audioEditPopover } = richTextEditorUI;
+	const { audioPopover } = richTextEditorUI;
 
-	const unsubscribeCaptionEnabledChange =
-		audioEditPopover.onCaptionEnabledChange((enabled) => {
+	const unsubscribeCaptionEnabledChange = audioPopover.onCaptionEnabledChange(
+		(enabled) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -29,15 +29,16 @@ export const handleAudioCaptionState = ({
 			const figure = getAudioFigure({ blockNestedContext: currentBlock });
 
 			setAudioCaptionEnabled({ figure, enabled });
-			audioEditPopover.updateState({ caption: getAudioCaption({ figure }) });
+			audioPopover.updateState({ caption: getAudioCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
-	const unsubscribeCaptionPositionChange =
-		audioEditPopover.onCaptionPositionChange((position) => {
+	const unsubscribeCaptionPositionChange = audioPopover.onCaptionPositionChange(
+		(position) => {
 			const currentBlock = getCurrentBlock();
 
 			if (!currentBlock) {
@@ -47,12 +48,13 @@ export const handleAudioCaptionState = ({
 			const figure = getAudioFigure({ blockNestedContext: currentBlock });
 
 			setAudioCaptionPosition({ figure, position });
-			audioEditPopover.updateState({ caption: getAudioCaption({ figure }) });
+			audioPopover.updateState({ caption: getAudioCaption({ figure }) });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 			snapshotTimeline.registerSnapshotBoundary();
-		});
+		},
+	);
 
 	return () => {
 		unsubscribeCaptionEnabledChange();

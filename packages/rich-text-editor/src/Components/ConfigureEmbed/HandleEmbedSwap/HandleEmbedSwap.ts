@@ -15,12 +15,11 @@ import type {
  */
 const resolveSwapSrc = ({
 	embedEmitSwapParams,
-	embedSwapPopover,
+	embedPopover,
 }: ResolveSwapSrcParams): ResolveSwapSrcResult => {
 	if (!isWellFormedUrl(embedEmitSwapParams.url)) {
-		embedSwapPopover.updateCheckState({
-			status: "error",
-			message: "Enter a valid URL.",
+		embedPopover.updateState({
+			swapCheckState: { status: "error", message: "Enter a valid URL." },
 		});
 		return null;
 	}
@@ -39,9 +38,9 @@ export const handleEmbedSwap = ({
 	editorAPI,
 	internals,
 }: HandleEmbedSwapParams) => {
-	const { embedSwapPopover } = richTextEditorUI;
+	const { embedPopover } = richTextEditorUI;
 
-	const unsubscribeSwap = embedSwapPopover.onSwap((params) => {
+	const unsubscribeSwap = embedPopover.onSwap((params) => {
 		const { currentEmbedFigure } = internals;
 
 		if (!currentEmbedFigure) {
@@ -51,7 +50,7 @@ export const handleEmbedSwap = ({
 
 		const src = resolveSwapSrc({
 			embedEmitSwapParams: params,
-			embedSwapPopover,
+			embedPopover,
 		});
 
 		if (src === null) {
@@ -59,8 +58,8 @@ export const handleEmbedSwap = ({
 		}
 
 		applyEmbedSrc({ figure: currentEmbedFigure, src, editorAPI });
-		embedSwapPopover.updateCheckState({ status: "idle" });
-		embedSwapPopover.popover.hidePopover();
+		embedPopover.updateState({ swapCheckState: { status: "idle" } });
+		embedPopover.swapPopover.hidePopover();
 	});
 
 	return () => {

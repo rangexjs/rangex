@@ -1,6 +1,6 @@
 import type {
 	AudioEmitSwapParams,
-	AudioSwapPopover,
+	AudioPopover,
 	RichTextEditorUI,
 } from "@rangex/rich-text-editor-ui";
 import type { EditorAPI } from "rich-text-area";
@@ -14,7 +14,7 @@ export interface HandleAudioSwapParams {
 
 export interface ResolveSwapSrcParams {
 	audioEmitSwapParams: AudioEmitSwapParams;
-	audioSwapPopover: AudioSwapPopover;
+	audioPopover: AudioPopover;
 	isStillCurrent: () => boolean;
 }
 

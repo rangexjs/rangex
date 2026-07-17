@@ -9,9 +9,9 @@ export const handleEmbedDelete = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleEmbedDeleteParams) => {
-	const { embedEditPopover } = richTextEditorUI;
+	const { embedPopover } = richTextEditorUI;
 
-	const unsubscribeDelete = embedEditPopover.onDelete(() => {
+	const unsubscribeDelete = embedPopover.onDelete(() => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {

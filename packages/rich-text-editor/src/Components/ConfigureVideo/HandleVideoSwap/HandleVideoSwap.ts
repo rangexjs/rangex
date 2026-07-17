@@ -19,14 +19,13 @@ import type {
  */
 const resolveSwapSrc = async ({
 	videoEmitSwapParams,
-	videoSwapPopover,
+	videoPopover,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (videoEmitSwapParams.source === "url") {
 		if (!isWellFormedUrl(videoEmitSwapParams.url)) {
-			videoSwapPopover.updateCheckState({
-				status: "error",
-				message: "Enter a valid URL.",
+			videoPopover.updateState({
+				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
 		}
@@ -41,7 +40,9 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		videoSwapPopover.updateCheckState({ status: "uploading", progress: 0 });
+		videoPopover.updateState({
+			swapCheckState: { status: "uploading", progress: 0 },
+		});
 
 		const src = await uploadMediaFile({
 			file,
@@ -50,14 +51,18 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				videoSwapPopover.updateCheckState({ status: "uploading", progress });
+				videoPopover.updateState({
+					swapCheckState: { status: "uploading", progress },
+				});
 			},
 		});
 
 		if (!src) {
-			videoSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't read that file. Try a different one.",
+			videoPopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't read that file. Try a different one.",
+				},
 			});
 			return null;
 		}
@@ -79,9 +84,9 @@ export const handleVideoSwap = ({
 	editorAPI,
 	internals,
 }: HandleVideoSwapParams) => {
-	const { videoSwapPopover } = richTextEditorUI;
+	const { videoPopover } = richTextEditorUI;
 
-	const unsubscribeSwap = videoSwapPopover.onSwap(async (params) => {
+	const unsubscribeSwap = videoPopover.onSwap(async (params) => {
 		const { currentVideoFigure } = internals;
 
 		if (!currentVideoFigure) {
@@ -95,7 +100,7 @@ export const handleVideoSwap = ({
 
 		const src = await resolveSwapSrc({
 			videoEmitSwapParams: params,
-			videoSwapPopover,
+			videoPopover,
 			isStillCurrent,
 		});
 
@@ -107,7 +112,7 @@ export const handleVideoSwap = ({
 			return;
 		}
 
-		videoSwapPopover.updateCheckState({ status: "checking" });
+		videoPopover.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "video", src });
 
@@ -116,16 +121,18 @@ export const handleVideoSwap = ({
 		}
 
 		if (!loaded) {
-			videoSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't load that video. Check the link and try again.",
+			videoPopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't load that video. Check the link and try again.",
+				},
 			});
 			return;
 		}
 
 		applyVideoSrc({ figure: currentVideoFigure, src, editorAPI });
-		videoSwapPopover.updateCheckState({ status: "idle" });
-		videoSwapPopover.popover.hidePopover();
+		videoPopover.updateState({ swapCheckState: { status: "idle" } });
+		videoPopover.swapPopover.hidePopover();
 	});
 
 	return () => {

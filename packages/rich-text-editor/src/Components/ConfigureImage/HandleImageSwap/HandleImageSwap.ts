@@ -19,14 +19,13 @@ import type {
  */
 const resolveSwapSrc = async ({
 	emitSwapParams,
-	imageSwapPopover,
+	imagePopover,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (emitSwapParams.source === "url") {
 		if (!isWellFormedUrl(emitSwapParams.url)) {
-			imageSwapPopover.updateCheckState({
-				status: "error",
-				message: "Enter a valid URL.",
+			imagePopover.updateState({
+				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
 		}
@@ -41,7 +40,9 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		imageSwapPopover.updateCheckState({ status: "uploading", progress: 0 });
+		imagePopover.updateState({
+			swapCheckState: { status: "uploading", progress: 0 },
+		});
 
 		const src = await uploadMediaFile({
 			file,
@@ -50,14 +51,18 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				imageSwapPopover.updateCheckState({ status: "uploading", progress });
+				imagePopover.updateState({
+					swapCheckState: { status: "uploading", progress },
+				});
 			},
 		});
 
 		if (!src) {
-			imageSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't read that file. Try a different one.",
+			imagePopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't read that file. Try a different one.",
+				},
 			});
 			return null;
 		}
@@ -69,21 +74,20 @@ const resolveSwapSrc = async ({
 };
 
 /**
- * Wires the shared swap popover's Update action to the engine. Fills the empty
- * placeholder on first use, or just updates `src` on an already-filled image — both
- * driven by `internals.currentImageFigure`, set whenever the popover was opened
- * (dropzone click or the edit popover's Swap button). `src` is never applied until
- * `probeMediaSrc` confirms it actually loads, so a bad swap leaves the current image
- * untouched instead of needing to be rolled back.
+ * Wires the edit popover's Swap action to the engine. Fills the empty placeholder on first
+ * use, or just updates `src` on an already-filled image — both driven by
+ * `internals.currentImageFigure`, set whenever the swap popover was opened. `src` is never
+ * applied until `probeMediaSrc` confirms it actually loads, so a bad swap leaves the current
+ * image untouched instead of needing to be rolled back.
  */
 export const handleImageSwap = ({
 	richTextEditorUI,
 	editorAPI,
 	internals,
 }: HandleImageSwapParams) => {
-	const { imageSwapPopover } = richTextEditorUI;
+	const { imagePopover } = richTextEditorUI;
 
-	const unsubscribeSwap = imageSwapPopover.onSwap(async (params) => {
+	const unsubscribeSwap = imagePopover.onSwap(async (params) => {
 		const { currentImageFigure } = internals;
 
 		if (!currentImageFigure) {
@@ -97,7 +101,7 @@ export const handleImageSwap = ({
 
 		const src = await resolveSwapSrc({
 			emitSwapParams: params,
-			imageSwapPopover,
+			imagePopover,
 			isStillCurrent,
 		});
 
@@ -109,7 +113,7 @@ export const handleImageSwap = ({
 			return;
 		}
 
-		imageSwapPopover.updateCheckState({ status: "checking" });
+		imagePopover.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "image", src });
 
@@ -118,16 +122,18 @@ export const handleImageSwap = ({
 		}
 
 		if (!loaded) {
-			imageSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't load that image. Check the link and try again.",
+			imagePopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't load that image. Check the link and try again.",
+				},
 			});
 			return;
 		}
 
 		applyImageSrc({ figure: currentImageFigure, src, editorAPI });
-		imageSwapPopover.updateCheckState({ status: "idle" });
-		imageSwapPopover.popover.hidePopover();
+		imagePopover.updateState({ swapCheckState: { status: "idle" } });
+		imagePopover.swapPopover.hidePopover();
 	});
 
 	return () => {

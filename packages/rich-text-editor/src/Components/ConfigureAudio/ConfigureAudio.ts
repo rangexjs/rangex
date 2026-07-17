@@ -7,11 +7,10 @@ import { handleAudioAlignState } from "./HandleAudioAlignState";
 import { handleAudioAttrState } from "./HandleAudioAttrState";
 import { handleAudioCaptionState } from "./HandleAudioCaptionState";
 import { handleAudioDelete } from "./HandleAudioDelete";
-import { handleAudioEditPopoverAppearance } from "./HandleAudioEditPopoverAppearance";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
+import { handleAudioPopoverAppearance } from "./HandleAudioPopoverAppearance";
 import { handleAudioSwap } from "./HandleAudioSwap";
-import { handleAudioSwapButtonOpen } from "./HandleAudioSwapButtonOpen";
-import { handleAudioSwapPopoverClose } from "./HandleAudioSwapPopoverClose";
+import { handleAudioSwapPopoverToggle } from "./HandleAudioSwapPopoverToggle";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
 // src/_Utilities) instead of going through any upload endpoint or blob
@@ -40,7 +39,7 @@ export const configureAudio = ({
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleAudioEditPopoverAppearance({
+		handleAudioPopoverAppearance({
 			richTextEditorUI,
 			blockPopoverAppearanceHandler,
 		});
@@ -63,7 +62,7 @@ export const configureAudio = ({
 		getCurrentBlock,
 	});
 
-	const swapButtonOpenCleanup = handleAudioSwapButtonOpen({
+	const swapPopoverToggleCleanup = handleAudioSwapPopoverToggle({
 		richTextEditorUI,
 		getCurrentBlock,
 		internals,
@@ -72,11 +71,6 @@ export const configureAudio = ({
 	const swapCleanup = handleAudioSwap({
 		richTextEditorUI,
 		editorAPI,
-		internals,
-	});
-
-	const swapPopoverCloseCleanup = handleAudioSwapPopoverClose({
-		richTextEditorUI,
 		internals,
 	});
 
@@ -93,9 +87,8 @@ export const configureAudio = ({
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapButtonOpenCleanup();
+		swapPopoverToggleCleanup();
 		swapCleanup();
-		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

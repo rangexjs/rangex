@@ -19,14 +19,13 @@ import type {
  */
 const resolveSwapSrc = async ({
 	audioEmitSwapParams,
-	audioSwapPopover,
+	audioPopover,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (audioEmitSwapParams.source === "url") {
 		if (!isWellFormedUrl(audioEmitSwapParams.url)) {
-			audioSwapPopover.updateCheckState({
-				status: "error",
-				message: "Enter a valid URL.",
+			audioPopover.updateState({
+				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
 		}
@@ -41,7 +40,9 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		audioSwapPopover.updateCheckState({ status: "uploading", progress: 0 });
+		audioPopover.updateState({
+			swapCheckState: { status: "uploading", progress: 0 },
+		});
 
 		const src = await uploadMediaFile({
 			file,
@@ -50,14 +51,18 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				audioSwapPopover.updateCheckState({ status: "uploading", progress });
+				audioPopover.updateState({
+					swapCheckState: { status: "uploading", progress },
+				});
 			},
 		});
 
 		if (!src) {
-			audioSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't read that file. Try a different one.",
+			audioPopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't read that file. Try a different one.",
+				},
 			});
 			return null;
 		}
@@ -79,9 +84,9 @@ export const handleAudioSwap = ({
 	editorAPI,
 	internals,
 }: HandleAudioSwapParams) => {
-	const { audioSwapPopover } = richTextEditorUI;
+	const { audioPopover } = richTextEditorUI;
 
-	const unsubscribeSwap = audioSwapPopover.onSwap(async (params) => {
+	const unsubscribeSwap = audioPopover.onSwap(async (params) => {
 		const { currentAudioFigure } = internals;
 
 		if (!currentAudioFigure) {
@@ -95,7 +100,7 @@ export const handleAudioSwap = ({
 
 		const src = await resolveSwapSrc({
 			audioEmitSwapParams: params,
-			audioSwapPopover,
+			audioPopover,
 			isStillCurrent,
 		});
 
@@ -107,7 +112,7 @@ export const handleAudioSwap = ({
 			return;
 		}
 
-		audioSwapPopover.updateCheckState({ status: "checking" });
+		audioPopover.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "audio", src });
 
@@ -116,16 +121,18 @@ export const handleAudioSwap = ({
 		}
 
 		if (!loaded) {
-			audioSwapPopover.updateCheckState({
-				status: "error",
-				message: "Couldn't load that audio. Check the link and try again.",
+			audioPopover.updateState({
+				swapCheckState: {
+					status: "error",
+					message: "Couldn't load that audio. Check the link and try again.",
+				},
 			});
 			return;
 		}
 
 		applyAudioSrc({ figure: currentAudioFigure, src, editorAPI });
-		audioSwapPopover.updateCheckState({ status: "idle" });
-		audioSwapPopover.popover.hidePopover();
+		audioPopover.updateState({ swapCheckState: { status: "idle" } });
+		audioPopover.swapPopover.hidePopover();
 	});
 
 	return () => {

@@ -9,9 +9,9 @@ export const handleImageDelete = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleImageDeleteParams) => {
-	const { imageEditPopover } = richTextEditorUI;
+	const { imagePopover } = richTextEditorUI;
 
-	const unsubscribeDelete = imageEditPopover.onDelete(() => {
+	const unsubscribeDelete = imagePopover.onDelete(() => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {

@@ -1,6 +1,5 @@
 export * from "./ApplyVideoSrc";
 export * from "./GetVideoElements";
-export * from "./ShowVideoSwapPopover";
 export * from "./VideoAspectRatio";
 export * from "./VideoAutoplay";
 export * from "./VideoCaption";

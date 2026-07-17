@@ -7,11 +7,10 @@ import { handleImageAlignState } from "./HandleImageAlignState";
 import { handleImageAttrState } from "./HandleImageAttrState";
 import { handleImageCaptionState } from "./HandleImageCaptionState";
 import { handleImageDelete } from "./HandleImageDelete";
-import { handleImageEditPopoverAppearance } from "./HandleImageEditPopoverAppearance";
 import { handleImageInsertion } from "./HandleImageInsertion";
+import { handleImagePopoverAppearance } from "./HandleImagePopoverAppearance";
 import { handleImageSwap } from "./HandleImageSwap";
-import { handleImageSwapButtonOpen } from "./HandleImageSwapButtonOpen";
-import { handleImageSwapPopoverClose } from "./HandleImageSwapPopoverClose";
+import { handleImageSwapPopoverToggle } from "./HandleImageSwapPopoverToggle";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
 // src/_Utilities) instead of going through any upload endpoint or blob
@@ -41,7 +40,7 @@ export const configureImage = ({
 	});
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleImageEditPopoverAppearance({
+		handleImagePopoverAppearance({
 			richTextEditorUI,
 			blockPopoverAppearanceHandler,
 		});
@@ -64,7 +63,7 @@ export const configureImage = ({
 		getCurrentBlock,
 	});
 
-	const swapButtonOpenCleanup = handleImageSwapButtonOpen({
+	const swapPopoverToggleCleanup = handleImageSwapPopoverToggle({
 		richTextEditorUI,
 		getCurrentBlock,
 		internals,
@@ -73,11 +72,6 @@ export const configureImage = ({
 	const swapCleanup = handleImageSwap({
 		richTextEditorUI,
 		editorAPI,
-		internals,
-	});
-
-	const swapPopoverCloseCleanup = handleImageSwapPopoverClose({
-		richTextEditorUI,
 		internals,
 	});
 
@@ -94,9 +88,8 @@ export const configureImage = ({
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapButtonOpenCleanup();
+		swapPopoverToggleCleanup();
 		swapCleanup();
-		swapPopoverCloseCleanup();
 		deleteCleanup();
 	};
 };

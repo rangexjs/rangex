@@ -10,9 +10,9 @@ export const handleAudioAlignState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleAudioAlignStateParams) => {
-	const { audioEditPopover } = richTextEditorUI;
+	const { audioPopover } = richTextEditorUI;
 
-	const unsubscribeAlignChange = audioEditPopover.onAlignChange((align) => {
+	const unsubscribeAlignChange = audioPopover.onAlignChange((align) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -26,7 +26,7 @@ export const handleAudioAlignState = ({
 		}
 
 		setBlockAlign({ blockNestedContextLine: $$parentElement, align });
-		audioEditPopover.updateState({ align });
+		audioPopover.updateState({ align });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
