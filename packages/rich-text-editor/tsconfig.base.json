@@ -6,6 +6,11 @@
 		"newLine": "lf",
 		"esModuleInterop": true,
 		"module": "esnext",
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"resolveJsonModule": true,
+		"isolatedModules": true
 	}
 }
