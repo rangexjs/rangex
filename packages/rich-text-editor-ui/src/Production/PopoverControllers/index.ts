@@ -2,6 +2,8 @@ export * from "./AudioEditPopoverController";
 export * from "./AudioSwapPopoverController";
 export * from "./BlockResizePopoverController";
 export * from "./CodeBlockPopoverController";
+export * from "./EmbedEditPopoverController";
+export * from "./EmbedSwapPopoverController";
 export * from "./EmojiPopoverController";
 export * from "./ImageEditPopoverController";
 export * from "./ImageSwapPopoverController";

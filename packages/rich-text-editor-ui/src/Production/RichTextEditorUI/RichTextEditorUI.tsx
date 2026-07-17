@@ -16,6 +16,8 @@ import {
 	AudioSwapPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
+	EmbedEditPopoverController,
+	EmbedSwapPopoverController,
 	EmojiPopoverController,
 	ImageEditPopoverController,
 	ImageSwapPopoverController,
@@ -65,6 +67,8 @@ export class RichTextEditorUI extends HTMLElement {
 	#audioSwapPopoverController = new AudioSwapPopoverController();
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
+	#embedEditPopoverController = new EmbedEditPopoverController();
+	#embedSwapPopoverController = new EmbedSwapPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
 	#emptyMediaSlotController = new EmptyMediaSlotController();
 	#imageEditPopoverController = new ImageEditPopoverController();
@@ -145,6 +149,8 @@ export class RichTextEditorUI extends HTMLElement {
 					audioSwapPopoverController={this.#audioSwapPopoverController}
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
+					embedEditPopoverController={this.#embedEditPopoverController}
+					embedSwapPopoverController={this.#embedSwapPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
 					imageEditPopoverController={this.#imageEditPopoverController}
 					imageSwapPopoverController={this.#imageSwapPopoverController}
@@ -266,6 +272,14 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get codeBlockPopover() {
 		return this.#codeBlockPopoverController.publicAPI;
+	}
+
+	get embedEditPopover() {
+		return this.#embedEditPopoverController.publicAPI;
+	}
+
+	get embedSwapPopover() {
+		return this.#embedSwapPopoverController.publicAPI;
 	}
 
 	get emojiPopover() {

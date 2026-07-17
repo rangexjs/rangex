@@ -7,6 +7,8 @@ import type {
 	AudioSwapPopoverController,
 	BlockResizePopoverController,
 	CodeBlockPopoverController,
+	EmbedEditPopoverController,
+	EmbedSwapPopoverController,
 	EmojiPopoverController,
 	ImageEditPopoverController,
 	ImageSwapPopoverController,
@@ -39,6 +41,8 @@ import {
 	AudioSwapPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
+	EmbedEditPopover,
+	EmbedSwapPopover,
 	EmojiPopover,
 	ImageEditPopover,
 	ImageSwapPopover,
@@ -82,6 +86,8 @@ export interface PopoverControllers {
 	audioSwapPopoverController: AudioSwapPopoverController;
 	blockResizePopoverController: BlockResizePopoverController;
 	codeBlockPopoverController: CodeBlockPopoverController;
+	embedEditPopoverController: EmbedEditPopoverController;
+	embedSwapPopoverController: EmbedSwapPopoverController;
 	emojiPopoverController: EmojiPopoverController;
 	imageEditPopoverController: ImageEditPopoverController;
 	imageSwapPopoverController: ImageSwapPopoverController;
@@ -164,6 +170,8 @@ export const App = (props: AppProps) => {
 		audioSwapPopoverController: props.audioSwapPopoverController,
 		blockResizePopoverController: props.blockResizePopoverController,
 		codeBlockPopoverController: props.codeBlockPopoverController,
+		embedEditPopoverController: props.embedEditPopoverController,
+		embedSwapPopoverController: props.embedSwapPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
 		imageEditPopoverController: props.imageEditPopoverController,
 		imageSwapPopoverController: props.imageSwapPopoverController,
@@ -201,6 +209,8 @@ export const App = (props: AppProps) => {
 							<AudioSwapPopover />
 							<BlockResizePopover />
 							<CodeBlockPopover />
+							<EmbedEditPopover />
+							<EmbedSwapPopover />
 							<EmojiPopover />
 							<ImageEditPopover />
 							<ImageSwapPopover />

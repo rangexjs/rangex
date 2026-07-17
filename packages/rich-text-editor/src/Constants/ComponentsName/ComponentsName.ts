@@ -3,6 +3,7 @@ export const componentsName = {
 	blockQuote: "block-quote",
 	codeBlock: "code-block",
 	collapsible: "collapsible",
+	embed: "embed",
 	emptyMedia: "empty-media",
 	image: "image",
 	link: "link",

@@ -8,6 +8,7 @@ import {
 import {
 	isWellFormedUrl,
 	probeMediaSrc,
+	transformEmbedUrl,
 	uploadMediaFile,
 } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
@@ -151,11 +152,9 @@ export const watchEmptyMedia = ({
 					return;
 				}
 
-				emitMediaResolve({
-					blockNestedContext,
-					type: "embed",
-					src: detail.url,
-				});
+				const src = transformEmbedUrl({ url: detail.url });
+
+				emitMediaResolve({ blockNestedContext, type: "embed", src });
 				return;
 			}
 

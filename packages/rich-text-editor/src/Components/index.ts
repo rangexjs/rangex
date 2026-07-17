@@ -1,6 +1,7 @@
 export * from "./ConfigureAudio";
 export * from "./ConfigureBlockQuote";
 export * from "./ConfigureCodeBlock";
+export * from "./ConfigureEmbed";
 export * from "./ConfigureEmoji";
 export * from "./ConfigureEmptyMedia";
 export * from "./ConfigureImage";

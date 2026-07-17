@@ -13,6 +13,7 @@ import {
 	configureAudio,
 	configureBlockQuote,
 	configureCodeBlock,
+	configureEmbed,
 	configureEmoji,
 	configureEmptyMedia,
 	configureImage,
@@ -165,6 +166,13 @@ export class RichTextEditor extends HTMLElement {
 			blockPopoverAppearanceHandler,
 			onMediaResolve,
 		});
+		const embedCleanup = configureEmbed({
+			richTextEditorUI: this.#richTextEditorUI,
+			editorAPI,
+			blockResize,
+			blockPopoverAppearanceHandler,
+			onMediaResolve,
+		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
@@ -175,6 +183,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(imageCleanup);
 		this.#cleanups.add(videoCleanup);
 		this.#cleanups.add(audioCleanup);
+		this.#cleanups.add(embedCleanup);
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,

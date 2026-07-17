@@ -2,6 +2,8 @@ export * from "./AudioEditPopover";
 export * from "./AudioSwapPopover";
 export * from "./BlockResizePopover";
 export * from "./CodeBlockPopover";
+export * from "./EmbedEditPopover";
+export * from "./EmbedSwapPopover";
 export * from "./EmojiPopover";
 export * from "./ImageEditPopover";
 export * from "./ImageSwapPopover";
