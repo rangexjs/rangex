@@ -17,15 +17,14 @@
 		"rich-text-area": "workspace:*",
 		"@rangex/rich-text-editor": "workspace:*",
 		"@rangex/rich-text-editor-ui": "workspace:*",
-		"@tailwindcss/vite": "^4.1.18",
-		"solid-js": "^1.9.11",
-		"tailwindcss": "^4.1.18"
+		"@tailwindcss/vite": "^4.3.3",
+		"solid-js": "^1.9.14",
+		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.4.12",
-		"typescript": "^5.9.3",
-		"vite": "^7.3.0",
-		"vite-plugin-solid": "^2.11.10",
-		"vite-tsconfig-paths": "^6.0.3"
+		"@biomejs/biome": "2.5.4",
+		"typescript": "^7.0.2",
+		"vite": "^8.1.5",
+		"vite-plugin-solid": "^2.11.12"
 	}
 }
