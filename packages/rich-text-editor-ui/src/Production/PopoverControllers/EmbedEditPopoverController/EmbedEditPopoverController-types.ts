@@ -1,9 +1,7 @@
-import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
+export type EmbedBlockAlignValue = "left" | "center" | "right";
+export type OnEmbedAlignChangeFn = (align: EmbedBlockAlignValue) => void;
+export type UpdateEmbedAlignFn = (value: EmbedBlockAlignValue) => void;
+export type OnEmbedDeleteFn = () => void;
 
 export type OnEmbedSwapPopoverOpenFn = () => void;
 
@@ -16,7 +14,7 @@ export interface EmbedCaptionState {
 }
 
 export interface EmbedEditPopoverState {
-	align?: BlockAlignValue;
+	align?: EmbedBlockAlignValue;
 	aspectRatio?: EmbedAspectRatioValue;
 	caption?: EmbedCaptionState;
 	title?: string;
@@ -30,7 +28,7 @@ export type UpdateEmbedCaptionFn = (value: EmbedCaptionState) => void;
 export type UpdateEmbedTitleFn = (value: string) => void;
 
 export type EmbedEditListenerOption =
-	| { type: "align"; callback: UpdateAlignFn }
+	| { type: "align"; callback: UpdateEmbedAlignFn }
 	| { type: "aspectRatio"; callback: UpdateEmbedAspectRatioFn }
 	| { type: "caption"; callback: UpdateEmbedCaptionFn }
 	| { type: "title"; callback: UpdateEmbedTitleFn };
@@ -54,10 +52,10 @@ export type OnEmbedAttrChangeFn = (params: EmbedAttrChange) => void;
 export interface EmbedEditPopover {
 	popover: HTMLDivElement;
 	updateState(params: UpdateEmbedEditPopoverStateParams): void;
-	onAlignChange(callback: OnAlignChangeFn): () => void;
+	onAlignChange(callback: OnEmbedAlignChangeFn): () => void;
 	onCaptionEnabledChange(callback: OnEmbedCaptionEnabledChangeFn): () => void;
 	onCaptionPositionChange(callback: OnEmbedCaptionPositionChangeFn): () => void;
 	onEmbedAttrChange(callback: OnEmbedAttrChangeFn): () => void;
 	onSwapPopoverOpen(callback: OnEmbedSwapPopoverOpenFn): () => void;
-	onDelete(callback: OnDeleteFn): () => void;
+	onDelete(callback: OnEmbedDeleteFn): () => void;
 }

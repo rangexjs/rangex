@@ -1,21 +1,19 @@
 import { assertNever } from "../../ErrorHandling";
 import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
-import type {
 	AudioAttrChange,
+	AudioBlockAlignValue,
 	AudioCaptionPosition,
 	AudioCaptionState,
 	AudioEditListenerOption,
 	AudioEditPopover,
 	AudioEditUpdateListenerParams,
+	OnAudioAlignChangeFn,
 	OnAudioAttrChangeFn,
 	OnAudioCaptionEnabledChangeFn,
 	OnAudioCaptionPositionChangeFn,
+	OnAudioDeleteFn,
 	OnAudioSwapPopoverOpenFn,
+	UpdateAudioAlignFn,
 	UpdateAudioAutoplayFn,
 	UpdateAudioCaptionFn,
 	UpdateAudioControlsFn,
@@ -27,7 +25,7 @@ import type {
 
 export class AudioEditPopoverController {
 	#popover: HTMLDivElement | null = null;
-	#align: BlockAlignValue = "center";
+	#align: AudioBlockAlignValue = "center";
 	#caption: AudioCaptionState = { enabled: false, position: "below" };
 	#title = "";
 	#controls = true;
@@ -35,7 +33,7 @@ export class AudioEditPopoverController {
 	#loop = false;
 	#muted = false;
 
-	#alignListeners: Set<UpdateAlignFn> = new Set();
+	#alignListeners: Set<UpdateAudioAlignFn> = new Set();
 	#captionListeners: Set<UpdateAudioCaptionFn> = new Set();
 	#titleListeners: Set<UpdateAudioTitleFn> = new Set();
 	#controlsListeners: Set<UpdateAudioControlsFn> = new Set();
@@ -43,14 +41,14 @@ export class AudioEditPopoverController {
 	#loopListeners: Set<UpdateAudioLoopFn> = new Set();
 	#mutedListeners: Set<UpdateAudioMutedFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onAlignChangeListeners: Set<OnAudioAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnAudioCaptionEnabledChangeFn> =
 		new Set();
 	#onCaptionPositionChangeListeners: Set<OnAudioCaptionPositionChangeFn> =
 		new Set();
 	#onAudioAttrChangeListeners: Set<OnAudioAttrChangeFn> = new Set();
 	#onSwapPopoverOpenListeners: Set<OnAudioSwapPopoverOpenFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnAudioDeleteFn> = new Set();
 
 	get align() {
 		return this.#align;
@@ -131,7 +129,7 @@ export class AudioEditPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: BlockAlignValue) {
+	emitAlignChange(align: AudioBlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}

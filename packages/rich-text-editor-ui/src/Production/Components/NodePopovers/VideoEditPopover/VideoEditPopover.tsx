@@ -1,12 +1,12 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
-	UpdateAlignFn,
 	UpdateAutoplayFn,
 	UpdateControlsFn,
 	UpdateLoopFn,
 	UpdateMutedFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
+	UpdateVideoAlignFn,
 	UpdateVideoAspectRatioFn,
 	UpdateVideoCaptionFn,
 	UpdateVideoObjectFitFn,
@@ -83,7 +83,7 @@ export const VideoEditPopover = () => {
 	let optionsPopover: HTMLDivElement | undefined;
 
 	onMount(() => {
-		const onAlign: UpdateAlignFn = (value) => setAlign(value);
+		const onAlign: UpdateVideoAlignFn = (value) => setAlign(value);
 		const onObjectFit: UpdateVideoObjectFitFn = (value) => setObjectFit(value);
 		const onAspectRatio: UpdateVideoAspectRatioFn = (value) =>
 			setAspectRatio(value);

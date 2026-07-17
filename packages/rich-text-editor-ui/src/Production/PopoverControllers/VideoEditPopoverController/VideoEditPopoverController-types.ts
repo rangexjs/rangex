@@ -1,9 +1,7 @@
-import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
+export type VideoBlockAlignValue = "left" | "center" | "right";
+export type OnVideoAlignChangeFn = (align: VideoBlockAlignValue) => void;
+export type UpdateVideoAlignFn = (value: VideoBlockAlignValue) => void;
+export type OnVideoDeleteFn = () => void;
 
 export type OnVideoSwapPopoverOpenFn = () => void;
 
@@ -17,7 +15,7 @@ export interface VideoCaptionState {
 }
 
 export interface VideoEditPopoverState {
-	align?: BlockAlignValue;
+	align?: VideoBlockAlignValue;
 	objectFit?: VideoObjectFitValue;
 	aspectRatio?: VideoAspectRatioValue;
 	caption?: VideoCaptionState;
@@ -43,7 +41,7 @@ export type UpdateLoopFn = (value: boolean) => void;
 export type UpdateMutedFn = (value: boolean) => void;
 
 export type VideoEditListenerOption =
-	| { type: "align"; callback: UpdateAlignFn }
+	| { type: "align"; callback: UpdateVideoAlignFn }
 	| { type: "objectFit"; callback: UpdateVideoObjectFitFn }
 	| { type: "aspectRatio"; callback: UpdateVideoAspectRatioFn }
 	| { type: "caption"; callback: UpdateVideoCaptionFn }
@@ -79,10 +77,10 @@ export type OnVideoAttrChangeFn = (params: VideoAttrChange) => void;
 export interface VideoEditPopover {
 	popover: HTMLDivElement;
 	updateState(params: UpdateVideoEditPopoverStateParams): void;
-	onAlignChange(callback: OnAlignChangeFn): () => void;
+	onAlignChange(callback: OnVideoAlignChangeFn): () => void;
 	onCaptionEnabledChange(callback: OnVideoCaptionEnabledChangeFn): () => void;
 	onCaptionPositionChange(callback: OnVideoCaptionPositionChangeFn): () => void;
 	onVideoAttrChange(callback: OnVideoAttrChangeFn): () => void;
 	onSwapPopoverOpen(callback: OnVideoSwapPopoverOpenFn): () => void;
-	onDelete(callback: OnDeleteFn): () => void;
+	onDelete(callback: OnVideoDeleteFn): () => void;
 }

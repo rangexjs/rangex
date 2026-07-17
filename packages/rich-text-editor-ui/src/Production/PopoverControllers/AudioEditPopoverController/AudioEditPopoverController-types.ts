@@ -1,9 +1,7 @@
-import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
+export type AudioBlockAlignValue = "left" | "center" | "right";
+export type OnAudioAlignChangeFn = (align: AudioBlockAlignValue) => void;
+export type UpdateAudioAlignFn = (value: AudioBlockAlignValue) => void;
+export type OnAudioDeleteFn = () => void;
 
 export type OnAudioSwapPopoverOpenFn = () => void;
 
@@ -15,7 +13,7 @@ export interface AudioCaptionState {
 }
 
 export interface AudioEditPopoverState {
-	align?: BlockAlignValue;
+	align?: AudioBlockAlignValue;
 	caption?: AudioCaptionState;
 	title?: string;
 	controls?: boolean;
@@ -35,7 +33,7 @@ export type UpdateAudioLoopFn = (value: boolean) => void;
 export type UpdateAudioMutedFn = (value: boolean) => void;
 
 export type AudioEditListenerOption =
-	| { type: "align"; callback: UpdateAlignFn }
+	| { type: "align"; callback: UpdateAudioAlignFn }
 	| { type: "caption"; callback: UpdateAudioCaptionFn }
 	| { type: "title"; callback: UpdateAudioTitleFn }
 	| { type: "controls"; callback: UpdateAudioControlsFn }
@@ -65,10 +63,10 @@ export type OnAudioAttrChangeFn = (params: AudioAttrChange) => void;
 export interface AudioEditPopover {
 	popover: HTMLDivElement;
 	updateState(params: UpdateAudioEditPopoverStateParams): void;
-	onAlignChange(callback: OnAlignChangeFn): () => void;
+	onAlignChange(callback: OnAudioAlignChangeFn): () => void;
 	onCaptionEnabledChange(callback: OnAudioCaptionEnabledChangeFn): () => void;
 	onCaptionPositionChange(callback: OnAudioCaptionPositionChangeFn): () => void;
 	onAudioAttrChange(callback: OnAudioAttrChangeFn): () => void;
 	onSwapPopoverOpen(callback: OnAudioSwapPopoverOpenFn): () => void;
-	onDelete(callback: OnDeleteFn): () => void;
+	onDelete(callback: OnAudioDeleteFn): () => void;
 }

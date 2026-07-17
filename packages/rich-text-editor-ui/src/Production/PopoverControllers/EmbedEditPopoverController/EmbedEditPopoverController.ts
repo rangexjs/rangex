@@ -1,22 +1,20 @@
 import { assertNever } from "../../ErrorHandling";
 import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
-import type {
 	EmbedAspectRatioValue,
 	EmbedAttrChange,
+	EmbedBlockAlignValue,
 	EmbedCaptionPosition,
 	EmbedCaptionState,
 	EmbedEditListenerOption,
 	EmbedEditPopover,
 	EmbedEditUpdateListenerParams,
+	OnEmbedAlignChangeFn,
 	OnEmbedAttrChangeFn,
 	OnEmbedCaptionEnabledChangeFn,
 	OnEmbedCaptionPositionChangeFn,
+	OnEmbedDeleteFn,
 	OnEmbedSwapPopoverOpenFn,
+	UpdateEmbedAlignFn,
 	UpdateEmbedAspectRatioFn,
 	UpdateEmbedCaptionFn,
 	UpdateEmbedEditPopoverStateParams,
@@ -25,23 +23,23 @@ import type {
 
 export class EmbedEditPopoverController {
 	#popover: HTMLDivElement | null = null;
-	#align: BlockAlignValue = "center";
+	#align: EmbedBlockAlignValue = "center";
 	#aspectRatio: EmbedAspectRatioValue = "16-9";
 	#caption: EmbedCaptionState = { enabled: false, position: "below" };
 	#title = "";
 
-	#alignListeners: Set<UpdateAlignFn> = new Set();
+	#alignListeners: Set<UpdateEmbedAlignFn> = new Set();
 	#aspectRatioListeners: Set<UpdateEmbedAspectRatioFn> = new Set();
 	#captionListeners: Set<UpdateEmbedCaptionFn> = new Set();
 	#titleListeners: Set<UpdateEmbedTitleFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onAlignChangeListeners: Set<OnEmbedAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnEmbedCaptionEnabledChangeFn> =
 		new Set();
 	#onCaptionPositionChangeListeners: Set<OnEmbedCaptionPositionChangeFn> =
 		new Set();
 	#onEmbedAttrChangeListeners: Set<OnEmbedAttrChangeFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnEmbedDeleteFn> = new Set();
 	#onSwapPopoverOpenListeners: Set<OnEmbedSwapPopoverOpenFn> = new Set();
 
 	get align() {
@@ -96,7 +94,7 @@ export class EmbedEditPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: BlockAlignValue) {
+	emitAlignChange(align: EmbedBlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}

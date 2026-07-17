@@ -1,14 +1,10 @@
 import { assertNever } from "../../ErrorHandling";
 import type {
-	BlockAlignValue,
-	OnAlignChangeFn,
-	OnDeleteFn,
-	UpdateAlignFn,
-} from "../ImageEditPopoverController";
-import type {
+	OnVideoAlignChangeFn,
 	OnVideoAttrChangeFn,
 	OnVideoCaptionEnabledChangeFn,
 	OnVideoCaptionPositionChangeFn,
+	OnVideoDeleteFn,
 	OnVideoSwapPopoverOpenFn,
 	UpdateAutoplayFn,
 	UpdateControlsFn,
@@ -16,12 +12,14 @@ import type {
 	UpdateMutedFn,
 	UpdatePosterFn,
 	UpdateTitleFn,
+	UpdateVideoAlignFn,
 	UpdateVideoAspectRatioFn,
 	UpdateVideoCaptionFn,
 	UpdateVideoEditPopoverStateParams,
 	UpdateVideoObjectFitFn,
 	VideoAspectRatioValue,
 	VideoAttrChange,
+	VideoBlockAlignValue,
 	VideoCaptionPosition,
 	VideoCaptionState,
 	VideoEditListenerOption,
@@ -32,7 +30,7 @@ import type {
 
 export class VideoEditPopoverController {
 	#popover: HTMLDivElement | null = null;
-	#align: BlockAlignValue = "center";
+	#align: VideoBlockAlignValue = "center";
 	#objectFit: VideoObjectFitValue = "cover";
 	#aspectRatio: VideoAspectRatioValue = "auto";
 	#caption: VideoCaptionState = { enabled: false, position: "below" };
@@ -43,7 +41,7 @@ export class VideoEditPopoverController {
 	#loop = false;
 	#muted = false;
 
-	#alignListeners: Set<UpdateAlignFn> = new Set();
+	#alignListeners: Set<UpdateVideoAlignFn> = new Set();
 	#objectFitListeners: Set<UpdateVideoObjectFitFn> = new Set();
 	#aspectRatioListeners: Set<UpdateVideoAspectRatioFn> = new Set();
 	#captionListeners: Set<UpdateVideoCaptionFn> = new Set();
@@ -54,14 +52,14 @@ export class VideoEditPopoverController {
 	#loopListeners: Set<UpdateLoopFn> = new Set();
 	#mutedListeners: Set<UpdateMutedFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onAlignChangeListeners: Set<OnVideoAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnVideoCaptionEnabledChangeFn> =
 		new Set();
 	#onCaptionPositionChangeListeners: Set<OnVideoCaptionPositionChangeFn> =
 		new Set();
 	#onVideoAttrChangeListeners: Set<OnVideoAttrChangeFn> = new Set();
 	#onSwapPopoverOpenListeners: Set<OnVideoSwapPopoverOpenFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnVideoDeleteFn> = new Set();
 
 	get align() {
 		return this.#align;
@@ -169,7 +167,7 @@ export class VideoEditPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: BlockAlignValue) {
+	emitAlignChange(align: VideoBlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}

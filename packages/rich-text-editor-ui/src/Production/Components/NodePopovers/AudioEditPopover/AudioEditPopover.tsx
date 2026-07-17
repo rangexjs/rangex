@@ -1,7 +1,7 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
 	AudioCaptionPosition,
-	UpdateAlignFn,
+	UpdateAudioAlignFn,
 	UpdateAudioAutoplayFn,
 	UpdateAudioCaptionFn,
 	UpdateAudioControlsFn,
@@ -51,7 +51,7 @@ export const AudioEditPopover = () => {
 	let optionsPopover: HTMLDivElement | undefined;
 
 	onMount(() => {
-		const onAlign: UpdateAlignFn = (value) => setAlign(value);
+		const onAlign: UpdateAudioAlignFn = (value) => setAlign(value);
 		const onCaption: UpdateAudioCaptionFn = (value) => setCaption(value);
 		const onControls: UpdateAudioControlsFn = (value) => setControls(value);
 		const onAutoplay: UpdateAudioAutoplayFn = (value) => setAutoplay(value);

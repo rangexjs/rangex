@@ -2,7 +2,7 @@ import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
 	EmbedAspectRatioValue,
 	EmbedCaptionPosition,
-	UpdateAlignFn,
+	UpdateEmbedAlignFn,
 	UpdateEmbedAspectRatioFn,
 	UpdateEmbedCaptionFn,
 	UpdateEmbedTitleFn,
@@ -57,7 +57,7 @@ export const EmbedEditPopover = () => {
 	let optionsPopover: HTMLDivElement | undefined;
 
 	onMount(() => {
-		const onAlign: UpdateAlignFn = (value) => setAlign(value);
+		const onAlign: UpdateEmbedAlignFn = (value) => setAlign(value);
 		const onAspectRatio: UpdateEmbedAspectRatioFn = (value) =>
 			setAspectRatio(value);
 		const onCaption: UpdateEmbedCaptionFn = (value) => setCaption(value);
