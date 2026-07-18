@@ -1,16 +1,14 @@
 import type {
 	HandleLinkUnwrapParams,
-	OnRemoveCallback,
+	OnUnwrapCallback,
 } from "./HandleLinkUnwrap-types";
 
 export const handleLinkUnwrap = ({
-	richTextEditorUI,
+	linkPort,
 	editorAPI,
 	internals,
 }: HandleLinkUnwrapParams) => {
-	const { linkPopover } = richTextEditorUI;
-
-	const callback: OnRemoveCallback = () => {
+	const callback: OnUnwrapCallback = () => {
 		const { currentLink } = internals;
 
 		if (!currentLink) {
@@ -29,7 +27,7 @@ export const handleLinkUnwrap = ({
 		editorAPI.focus();
 	};
 
-	const unsubscribe = linkPopover.onRemove(callback);
+	const unsubscribe = linkPort.onUnwrap(callback);
 
 	return () => {
 		unsubscribe();

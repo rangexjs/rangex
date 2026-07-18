@@ -1,11 +1,11 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPopover, RichTextEditorUI } from "#ui";
+import type { LinkPort } from "#ports";
 import type { LinkInternals } from "../ConfigureLink-types";
 
-export type OnRemoveCallback = Parameters<LinkPopover["onRemove"]>[0];
+export type OnUnwrapCallback = Parameters<LinkPort["onUnwrap"]>[0];
 
 export interface HandleLinkUnwrapParams {
-	richTextEditorUI: RichTextEditorUI;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

@@ -1,7 +1,5 @@
-import type { MentionPopoverState, RichTextEditorUI } from "#ui";
-
-export type MentionItems = NonNullable<MentionPopoverState["items"]>;
+import type { MentionPort } from "#ports";
 
 export interface LoadMentionItemsParams {
-	richTextEditorUI: RichTextEditorUI;
+	mentionPort: MentionPort;
 }

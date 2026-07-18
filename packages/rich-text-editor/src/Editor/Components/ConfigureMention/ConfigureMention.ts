@@ -5,25 +5,25 @@ import { handlePopoverClose } from "./HandlePopoverClose";
 import { loadMentionItems } from "./LoadMentionItems";
 
 export const configureMention = ({
-	richTextEditorUI,
+	mentionPort,
 	editorAPI,
 }: ConfigureMentionParams) => {
-	loadMentionItems({ richTextEditorUI });
+	loadMentionItems({ mentionPort });
 
 	const mentionInsertionCleanup = handleMentionInsertion({
-		richTextEditorUI,
+		mentionPort,
 		editorAPI,
 	});
 
 	// handlePopoverClose must be subscribed before handlePopoverAppearance — both listen to
 	// editorSelectionChangeEventType, and close must fire first to hide before appearance re-evaluates.
 	const popoverCloseCleanup = handlePopoverClose({
-		richTextEditorUI,
+		mentionPort,
 		editorAPI,
 	});
 
 	const popoverAppearanceCleanup = handlePopoverAppearance({
-		richTextEditorUI,
+		mentionPort,
 		editorAPI,
 	});
 

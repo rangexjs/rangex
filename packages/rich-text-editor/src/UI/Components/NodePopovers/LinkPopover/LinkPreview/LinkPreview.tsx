@@ -28,8 +28,8 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 		props.linkPopoverController.emitViewChange();
 	};
 
-	const onRemove = () => {
-		props.linkPopoverController.emitRemove();
+	const onUnwrap = () => {
+		props.linkPopoverController.emitUnwrap();
 	};
 
 	return (
@@ -53,7 +53,7 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 				<button
 					type="button"
 					class="btn-neutral-solid rounded-sm p-1"
-					on:click={onRemove}
+					on:click={onUnwrap}
 				>
 					<Icon name="Trash" class="size-4" />
 				</button>

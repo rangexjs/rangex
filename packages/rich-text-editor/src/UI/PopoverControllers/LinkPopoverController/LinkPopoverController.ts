@@ -1,26 +1,28 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	EmitInsertParams,
 	EmitModifyParams,
 	LinkDisplayText,
-	LinkListenerOption,
 	LinkMode,
 	LinkOnCancelFn,
 	LinkOnInsertFn,
 	LinkOnModifyFn,
-	LinkOnRemoveFn,
 	LinkOnViewChangeFn,
-	LinkPopover,
+	LinkPort,
 	LinkToggleButtons,
+	LinkURL,
+	LinkView,
+	OnUnwrapFn,
+	UpdateLinkPopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	LinkListenerOption,
 	LinkUpdateDisplayTextFn,
 	LinkUpdateListenerParams,
 	LinkUpdateModeFn,
 	LinkUpdateToggleButtonsFn,
 	LinkUpdateURLFn,
 	LinkUpdateViewFn,
-	LinkURL,
-	LinkView,
-	UpdateLinkPopoverStateParams,
 } from "./LinkPopoverController-types";
 
 export class LinkPopoverController {
@@ -48,7 +50,7 @@ export class LinkPopoverController {
 	#onCancelListeners: Set<LinkOnCancelFn> = new Set();
 	#onInsertListeners: Set<LinkOnInsertFn> = new Set();
 	#onModifyListeners: Set<LinkOnModifyFn> = new Set();
-	#onRemoveListeners: Set<LinkOnRemoveFn> = new Set();
+	#onUnwrapListeners: Set<OnUnwrapFn> = new Set();
 
 	get view() {
 		return this.#view;
@@ -131,8 +133,8 @@ export class LinkPopoverController {
 		}
 	}
 
-	emitRemove() {
-		for (const listener of this.#onRemoveListeners) {
+	emitUnwrap() {
+		for (const listener of this.#onUnwrapListeners) {
 			listener();
 		}
 	}
@@ -189,7 +191,7 @@ export class LinkPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): LinkPopover {
+	get publicAPI(): LinkPort {
 		const controller = this;
 
 		return {
@@ -223,9 +225,9 @@ export class LinkPopoverController {
 				return () => this.#onModifyListeners.delete(callback);
 			},
 
-			onRemove: (callback) => {
-				this.#onRemoveListeners.add(callback);
-				return () => this.#onRemoveListeners.delete(callback);
+			onUnwrap: (callback) => {
+				this.#onUnwrapListeners.add(callback);
+				return () => this.#onUnwrapListeners.delete(callback);
 			},
 		};
 	}

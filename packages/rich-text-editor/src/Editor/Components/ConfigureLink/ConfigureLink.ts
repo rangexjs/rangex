@@ -9,6 +9,7 @@ import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
 export const configureLink = ({
 	richTextEditorUI,
+	linkPort,
 	editorAPI,
 }: ConfigureLinkParams) => {
 	const internals: LinkInternals = { currentLink: null };
@@ -20,35 +21,36 @@ export const configureLink = ({
 
 	const toolbarLinkClickCleanup = handleToolbarLinkClick({
 		richTextEditorUI,
+		linkPort,
 		editorAPI,
 	});
 
 	const linkClickCleanup = handleLinkClick({
-		richTextEditorUI,
+		linkPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkInsertionCleanup = handleLinkInsertion({
-		richTextEditorUI,
+		linkPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkModificationCleanup = handleLinkModification({
-		richTextEditorUI,
+		linkPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkUnwrapCleanup = handleLinkUnwrap({
-		richTextEditorUI,
+		linkPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkPopoverCloseCleanup = handleLinkPopoverClose({
-		richTextEditorUI,
+		linkPort,
 		editorAPI,
 		internals,
 	});

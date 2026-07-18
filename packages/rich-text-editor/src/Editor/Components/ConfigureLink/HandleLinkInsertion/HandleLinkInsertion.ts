@@ -93,7 +93,7 @@ const anchorPopoverToLink = ({ link, popover }: AnchorPopoverToLinkParams) => {
  * Creates a link at the collapsed caret, inserts it into the editor, then anchors the preview popover to it.
  */
 const insertAtCaret = ({
-	linkPopover,
+	linkPort,
 	editorAPI,
 	internals,
 	text,
@@ -123,9 +123,9 @@ const insertAtCaret = ({
 
 	const popoverState = getPopoverStateFromLink({ editorAPI, link });
 
-	linkPopover.updateState(popoverState);
+	linkPort.updateState(popoverState);
 
-	const { popover } = linkPopover;
+	const { popover } = linkPort;
 
 	anchorPopoverToLink({ link, popover });
 
@@ -138,7 +138,7 @@ const insertAtCaret = ({
  * Wraps each valid segment in the selection with a link, skipping any that already contain an InlineNestedContext.
  */
 const wrapWithLink = ({
-	linkPopover,
+	linkPort,
 	editorAPI,
 	internals,
 	href,
@@ -210,9 +210,9 @@ const wrapWithLink = ({
 		link: internals.currentLink,
 	});
 
-	linkPopover.updateState(popoverState);
+	linkPort.updateState(popoverState);
 
-	const { popover } = linkPopover;
+	const { popover } = linkPort;
 
 	anchorPopoverToLink({ link: internals.currentLink, popover });
 
@@ -225,12 +225,10 @@ const wrapWithLink = ({
  * Registers the insert callback and delegates to insertAtCaret or wrapWithLink based on the current insertion mode.
  */
 export const handleLinkInsertion = ({
-	richTextEditorUI,
+	linkPort,
 	editorAPI,
 	internals,
 }: HandleLinkInsertionParams) => {
-	const { linkPopover } = richTextEditorUI;
-
 	const callback: OnInsertCallback = ({ text, url, isNewTab }) => {
 		if (internals.currentLink) {
 			console.log("Link should have been unsigned.");
@@ -249,7 +247,7 @@ export const handleLinkInsertion = ({
 		if (linkInsertMode === "insert") {
 			const filledText = text || url;
 			insertAtCaret({
-				linkPopover,
+				linkPort,
 				editorAPI,
 				internals,
 				text: filledText,
@@ -260,14 +258,14 @@ export const handleLinkInsertion = ({
 		}
 
 		if (linkInsertMode === "wrap") {
-			wrapWithLink({ linkPopover, internals, editorAPI, href: url, target });
+			wrapWithLink({ linkPort, internals, editorAPI, href: url, target });
 			return;
 		}
 
 		assertNever(linkInsertMode);
 	};
 
-	const unsubscribe = linkPopover.onInsert(callback);
+	const unsubscribe = linkPort.onInsert(callback);
 
 	return () => {
 		unsubscribe();

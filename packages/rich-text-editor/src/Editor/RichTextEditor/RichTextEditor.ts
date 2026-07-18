@@ -187,6 +187,7 @@ export class RichTextEditor extends HTMLElement {
 
 		const linkCleanup = configureLink({
 			richTextEditorUI: this.#richTextEditorUI,
+			linkPort: this.#richTextEditorUI.linkPort,
 			editorAPI,
 		});
 		const emojiCleanup = configureEmoji({
@@ -194,7 +195,7 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 		const mentionCleanup = configureMention({
-			richTextEditorUI: this.#richTextEditorUI,
+			mentionPort: this.#richTextEditorUI.mentionPort,
 			editorAPI,
 		});
 		const templateVariableCleanup = configureTemplateVariable({

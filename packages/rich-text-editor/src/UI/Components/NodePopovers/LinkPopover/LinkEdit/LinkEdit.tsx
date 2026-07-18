@@ -1,7 +1,6 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
+import type { EmitApplyParams, LinkMode } from "#ports";
 import type {
-	EmitApplyParams,
-	LinkMode,
 	LinkPopoverController,
 	LinkUpdateDisplayTextFn,
 	LinkUpdateModeFn,

@@ -1,5 +1,5 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { MentionPort } from "#ports";
 
 export interface RemoveMentionQueryTextResult {
 	queryFound: boolean;
@@ -17,6 +17,6 @@ export interface CreateMentionComponentParams {
 export interface CreateMentionComponentResult extends InlineNestedContext {}
 
 export interface HandleMentionInsertionParams {
-	richTextEditorUI: RichTextEditorUI;
+	mentionPort: MentionPort;
 	editorAPI: EditorAPI;
 }

@@ -13,10 +13,10 @@ import type {
  * Returns focus to the editor when the user presses Escape inside the popover.
  */
 const restoreFocusOnEscape = ({
-	mentionPopover,
+	mentionPort,
 	editorAPI,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = mentionPopover;
+	const { popover } = mentionPort;
 
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
@@ -41,10 +41,10 @@ const restoreFocusOnEscape = ({
  * Hides the popover whenever the editor selection changes.
  */
 const closeOnSelectionChange = ({
-	mentionPopover,
+	mentionPort,
 	editorAPI,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = mentionPopover;
+	const { popover } = mentionPort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
@@ -62,10 +62,10 @@ const closeOnSelectionChange = ({
  * Hides the popover when the editor loses focus.
  */
 const closeOnEditorBlur = ({
-	mentionPopover,
+	mentionPort,
 	editorAPI,
 }: CloseOnEditorBlurParams) => {
-	const { popover } = mentionPopover;
+	const { popover } = mentionPort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
@@ -93,20 +93,18 @@ const closeOnEditorBlur = ({
  * Wires up all popover close behaviors: selection-driven close, editor blur close, and Escape key handling.
  */
 export const handlePopoverClose = ({
-	richTextEditorUI,
+	mentionPort,
 	editorAPI,
 }: HandlePopoverCloseParams) => {
-	const { mentionPopover } = richTextEditorUI;
-
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		mentionPopover,
+		mentionPort,
 		editorAPI,
 	});
 	const unsubscribeEditorBlur = closeOnEditorBlur({
-		mentionPopover,
+		mentionPort,
 		editorAPI,
 	});
-	const unsubscribeEscape = restoreFocusOnEscape({ mentionPopover, editorAPI });
+	const unsubscribeEscape = restoreFocusOnEscape({ mentionPort, editorAPI });
 
 	return () => {
 		unsubscribeSelectionChange();

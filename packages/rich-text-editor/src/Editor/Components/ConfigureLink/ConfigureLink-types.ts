@@ -1,4 +1,5 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
+import type { LinkPort } from "#ports";
 import type { RichTextEditorUI } from "#ui";
 
 export interface LinkInternals {
@@ -7,5 +8,6 @@ export interface LinkInternals {
 
 export interface ConfigureLinkParams {
 	richTextEditorUI: RichTextEditorUI;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 }

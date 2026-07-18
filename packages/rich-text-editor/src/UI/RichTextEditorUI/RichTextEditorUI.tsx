@@ -274,11 +274,11 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#imagePopoverController.publicAPI;
 	}
 
-	get linkPopover() {
+	get linkPort() {
 		return this.#linkPopoverController.publicAPI;
 	}
 
-	get mentionPopover() {
+	get mentionPort() {
 		return this.#mentionPopoverController.publicAPI;
 	}
 

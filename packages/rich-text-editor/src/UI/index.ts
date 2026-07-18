@@ -1,3 +1,4 @@
+export type { MentionPopoverState } from "#ports";
 export type { LinearGradientColor, SolidColor, StructuredColor } from "./Color";
 export type { ToolbarButtons } from "./CommonTypes";
 export type { MenuBarActionState } from "./MenuBarActionManager";
@@ -18,10 +19,6 @@ export type {
 	CodeBlockPopoverState,
 	EmojiPopover,
 	EmojiPopoverState,
-	LinkPopover,
-	LinkPopoverState,
-	MentionPopover,
-	MentionPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
 	TemplateVariablePopover,

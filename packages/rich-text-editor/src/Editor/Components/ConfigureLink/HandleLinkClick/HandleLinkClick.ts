@@ -14,19 +14,19 @@ import type {
  * Opens the popover in preview mode anchored to the clicked link.
  */
 const openLinkPopover = ({
-	linkPopover,
+	linkPort,
 	editorAPI,
 	internals,
 	link,
 }: OpenLinkPopoverParams) => {
-	const { popover } = linkPopover;
+	const { popover } = linkPort;
 	popover.hidePopover();
 
 	internals.currentLink = link;
 
 	const popoverState = getPopoverStateFromLink({ link, editorAPI });
 
-	linkPopover.updateState({ view: "preview", mode: "modify", ...popoverState });
+	linkPort.updateState({ view: "preview", mode: "modify", ...popoverState });
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
@@ -39,12 +39,10 @@ const openLinkPopover = ({
  * Registers a delegated click handler that opens the modify popover whenever the user clicks an existing link.
  */
 export const handleLinkClick = ({
-	richTextEditorUI,
+	linkPort,
 	editorAPI,
 	internals,
 }: HandleLinkClickParams) => {
-	const { linkPopover } = richTextEditorUI;
-
 	const unsubscribe = editorAPI.registerDOMEvent({
 		eventListener: {
 			type: "click",
@@ -60,7 +58,7 @@ export const handleLinkClick = ({
 				}
 
 				openLinkPopover({
-					linkPopover,
+					linkPort,
 					editorAPI,
 					internals,
 					link: currentTarget,

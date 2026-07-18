@@ -1,8 +1,9 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPopover, RichTextEditorUI } from "#ui";
+import type { LinkPort } from "#ports";
+import type { RichTextEditorUI } from "#ui";
 
 export interface OpenAtCaretParams {
-	linkPopover: LinkPopover;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 }
 
@@ -16,16 +17,17 @@ export interface GetDisplayTextInfoResult {
 }
 
 export interface OpenForWrapParams {
-	linkPopover: LinkPopover;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 }
 
 export interface OpenLinkPopoverParams {
-	linkPopover: LinkPopover;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleToolbarLinkClickParams {
 	richTextEditorUI: RichTextEditorUI;
+	linkPort: LinkPort;
 	editorAPI: EditorAPI;
 }

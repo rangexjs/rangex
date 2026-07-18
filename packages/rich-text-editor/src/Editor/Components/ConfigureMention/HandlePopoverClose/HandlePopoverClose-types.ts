@@ -1,22 +1,22 @@
 import type { EditorAPI } from "rich-text-area";
-import type { MentionPopover, RichTextEditorUI } from "#ui";
+import type { MentionPort } from "#ports";
 
 export interface CloseOnSelectionChangeParams {
-	mentionPopover: MentionPopover;
+	mentionPort: MentionPort;
 	editorAPI: EditorAPI;
 }
 
 export interface CloseOnEditorBlurParams {
-	mentionPopover: MentionPopover;
+	mentionPort: MentionPort;
 	editorAPI: EditorAPI;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	mentionPopover: MentionPopover;
+	mentionPort: MentionPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandlePopoverCloseParams {
-	richTextEditorUI: RichTextEditorUI;
+	mentionPort: MentionPort;
 	editorAPI: EditorAPI;
 }

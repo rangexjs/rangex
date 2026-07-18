@@ -1,5 +1,5 @@
 import { contentLineName, contentLineRoleSelector } from "rich-text-area";
-import type { LinkPopoverState } from "#ui";
+import type { LinkPopoverState } from "#ports";
 import type { GetPopoverStateFromLinkParams } from "./GetPopoverStateFromLink-types";
 
 /**

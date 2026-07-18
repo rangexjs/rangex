@@ -1,15 +1,17 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	MentionItems,
-	MentionListenerOption,
 	MentionOnSelectFn,
-	MentionPopover,
+	MentionPort,
 	MentionSuggestionItem,
+	UpdateMentionPopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	MentionListenerOption,
 	MentionUpdateFilteredItemsFn,
 	MentionUpdateItemsFn,
 	MentionUpdateListenerParams,
 	MentionUpdateQueryFn,
-	UpdateMentionPopoverStateParams,
 } from "./MentionPopoverController-types";
 
 export class MentionPopoverController {
@@ -114,7 +116,7 @@ export class MentionPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): MentionPopover {
+	get publicAPI(): MentionPort {
 		const controller = this;
 
 		return {

@@ -14,12 +14,10 @@ import type {
  * Registers the modify callback, updates the link's attributes and content in-place, then syncs the popover state.
  */
 export const handleLinkModification = ({
-	richTextEditorUI,
+	linkPort,
 	editorAPI,
 	internals,
 }: HandleLinkModificationParams) => {
-	const { linkPopover } = richTextEditorUI;
-
 	const selection = editorAPI.getEditorSelection();
 
 	const callback: OnModifyCallback = ({ text, url, isNewTab }) => {
@@ -58,7 +56,7 @@ export const handleLinkModification = ({
 			link: currentLink,
 		});
 
-		linkPopover.updateState(popoverState);
+		linkPort.updateState(popoverState);
 
 		selection.setBoundaryPoints({
 			fromNode: createdContentLine,
@@ -74,7 +72,7 @@ export const handleLinkModification = ({
 		editorAPI.focus();
 	};
 
-	const unsubscribe = linkPopover.onModify(callback);
+	const unsubscribe = linkPort.onModify(callback);
 
 	return () => {
 		unsubscribe();

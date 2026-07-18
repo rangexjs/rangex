@@ -1,4 +1,4 @@
-import type { MentionItems } from "./LoadMentionItems-types";
+import type { MentionItems } from "#ports";
 
 /**
  * Mock mention items — replace with your actual data source (API call, store, etc.).
