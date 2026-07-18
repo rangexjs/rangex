@@ -25,12 +25,11 @@ const findRegistration = (
  * the handles themselves.
  */
 export const handleBlockResizeAppearance = ({
-	richTextEditorUI,
+	blockResizePort,
 	editorAPI,
 	internals,
 }: HandleBlockResizeAppearanceParams) => {
-	const { blockResizePopover } = richTextEditorUI;
-	const { popover } = blockResizePopover;
+	const { popover } = blockResizePort;
 
 	let hideTimeoutId = NaN;
 
@@ -70,7 +69,7 @@ export const handleBlockResizeAppearance = ({
 
 		cancelHide();
 
-		blockResizePopover.updateHandleX(registration.handleX);
+		blockResizePort.updateHandleX(registration.handleX);
 
 		if (internals.currentBlock === blockNestedContext) {
 			return;

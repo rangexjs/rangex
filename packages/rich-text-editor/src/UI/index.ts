@@ -14,7 +14,6 @@ export type {
 	UploadState,
 } from "./NodeSlotControllers";
 export type {
-	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,
 	EmojiPopover,

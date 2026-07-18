@@ -8,7 +8,7 @@ import { handleBlockResizeAppearance } from "./HandleBlockResizeAppearance";
 import { handleBlockResizeInteraction } from "./HandleBlockResizeInteraction";
 
 export const createBlockResize = ({
-	richTextEditorUI,
+	blockResizePort,
 	editorAPI,
 }: CreateBlockResizeParams): CreateBlockResizeResult => {
 	const internals: BlockResizeInternals = {
@@ -17,13 +17,13 @@ export const createBlockResize = ({
 	};
 
 	const appearanceCleanup = handleBlockResizeAppearance({
-		richTextEditorUI,
+		blockResizePort,
 		editorAPI,
 		internals,
 	});
 
 	const interactionCleanup = handleBlockResizeInteraction({
-		richTextEditorUI,
+		blockResizePort,
 		editorAPI,
 		internals,
 	});

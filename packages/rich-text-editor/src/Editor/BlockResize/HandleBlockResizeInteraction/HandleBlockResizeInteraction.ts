@@ -50,15 +50,13 @@ const calcFlexBasis = ({
 };
 
 export const handleBlockResizeInteraction = ({
-	richTextEditorUI,
+	blockResizePort,
 	editorAPI,
 	internals,
 }: HandleBlockResizeInteractionParams) => {
-	const { blockResizePopover } = richTextEditorUI;
-
 	let dragStartWidth: number | null = null;
 
-	const unsubscribeResizeMove = blockResizePopover.onResizeMove(
+	const unsubscribeResizeMove = blockResizePort.onResizeMove(
 		({ deltaPx, side }) => {
 			const { currentBlock } = internals;
 
@@ -79,7 +77,7 @@ export const handleBlockResizeInteraction = ({
 		},
 	);
 
-	const unsubscribeResizeEnd = blockResizePopover.onResizeEnd(() => {
+	const unsubscribeResizeEnd = blockResizePort.onResizeEnd(() => {
 		dragStartWidth = null;
 
 		const { currentBlock } = internals;

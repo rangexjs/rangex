@@ -1,5 +1,6 @@
 export * from "./_Shared";
 export * from "./AudioPort";
+export * from "./BlockResizePort";
 export * from "./EmbedPort";
 export * from "./ImagePort";
 export * from "./LinkPort";

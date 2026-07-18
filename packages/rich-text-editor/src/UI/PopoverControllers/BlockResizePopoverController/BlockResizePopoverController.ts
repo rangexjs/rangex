@@ -1,10 +1,10 @@
 import type {
-	BlockResizePopover,
+	BlockResizePort,
 	OnResizeEndFn,
 	OnResizeMoveFn,
 	OnResizeMoveParams,
-	UpdateHandleXFn,
-} from "./BlockResizePopoverController-types";
+} from "#ports";
+import type { UpdateHandleXFn } from "./BlockResizePopoverController-types";
 
 export class BlockResizePopoverController {
 	#popover: HTMLDivElement | null = null;
@@ -50,7 +50,7 @@ export class BlockResizePopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): BlockResizePopover {
+	get publicAPI(): BlockResizePort {
 		const controller = this;
 
 		return {

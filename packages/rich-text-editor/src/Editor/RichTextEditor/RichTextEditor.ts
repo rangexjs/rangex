@@ -69,8 +69,8 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 		const blockResize = createBlockResize({
+			blockResizePort: this.#richTextEditorUI.blockResizePopover,
 			editorAPI,
-			richTextEditorUI: this.#richTextEditorUI,
 		});
 		const blockPopoverAppearanceHandler = createBlockPopoverAppearanceHandler({
 			editorAPI,
