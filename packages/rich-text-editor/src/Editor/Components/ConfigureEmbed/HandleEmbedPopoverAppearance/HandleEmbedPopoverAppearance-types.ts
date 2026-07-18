@@ -1,7 +1,7 @@
-import type { RichTextEditorUI } from "#ui";
+import type { EmbedPort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../../BlockPopoverAppearanceHandler";
 
 export interface HandleEmbedPopoverAppearanceParams {
-	richTextEditorUI: RichTextEditorUI;
+	embedPort: EmbedPort;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;
 }

@@ -1,5 +1,5 @@
 import { createUniqueId, For } from "solid-js";
-import type { BlockAlignValue } from "../../../../PopoverControllers";
+import type { BlockAlignValue } from "#ports";
 import { Icon, type IconName } from "../../../Icon";
 
 const iconNameOptions: Record<BlockAlignValue, IconName> = {

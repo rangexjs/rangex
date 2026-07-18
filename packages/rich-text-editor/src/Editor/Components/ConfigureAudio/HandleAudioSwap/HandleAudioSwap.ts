@@ -19,12 +19,12 @@ import type {
  */
 const resolveSwapSrc = async ({
 	audioEmitSwapParams,
-	audioPopover,
+	audioPort,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (audioEmitSwapParams.source === "url") {
 		if (!isWellFormedUrl(audioEmitSwapParams.url)) {
-			audioPopover.updateState({
+			audioPort.updateState({
 				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
@@ -40,7 +40,7 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		audioPopover.updateState({
+		audioPort.updateState({
 			swapCheckState: { status: "uploading", progress: 0 },
 		});
 
@@ -51,14 +51,14 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				audioPopover.updateState({
+				audioPort.updateState({
 					swapCheckState: { status: "uploading", progress },
 				});
 			},
 		});
 
 		if (!src) {
-			audioPopover.updateState({
+			audioPort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't read that file. Try a different one.",
@@ -80,13 +80,11 @@ const resolveSwapSrc = async ({
  * untouched instead of needing to be rolled back.
  */
 export const handleAudioSwap = ({
-	richTextEditorUI,
+	audioPort,
 	editorAPI,
 	internals,
 }: HandleAudioSwapParams) => {
-	const { audioPopover } = richTextEditorUI;
-
-	const unsubscribeSwap = audioPopover.onSwap(async (params) => {
+	const unsubscribeSwap = audioPort.onSwap(async (params) => {
 		const { currentAudioFigure } = internals;
 
 		if (!currentAudioFigure) {
@@ -100,7 +98,7 @@ export const handleAudioSwap = ({
 
 		const src = await resolveSwapSrc({
 			audioEmitSwapParams: params,
-			audioPopover,
+			audioPort,
 			isStillCurrent,
 		});
 
@@ -112,7 +110,7 @@ export const handleAudioSwap = ({
 			return;
 		}
 
-		audioPopover.updateState({ swapCheckState: { status: "checking" } });
+		audioPort.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "audio", src });
 
@@ -121,7 +119,7 @@ export const handleAudioSwap = ({
 		}
 
 		if (!loaded) {
-			audioPopover.updateState({
+			audioPort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't load that audio. Check the link and try again.",
@@ -131,8 +129,8 @@ export const handleAudioSwap = ({
 		}
 
 		applyAudioSrc({ figure: currentAudioFigure, src, editorAPI });
-		audioPopover.updateState({ swapCheckState: { status: "idle" } });
-		audioPopover.swapPopover.hidePopover();
+		audioPort.updateState({ swapCheckState: { status: "idle" } });
+		audioPort.swapPopover.hidePopover();
 	});
 
 	return () => {

@@ -26,6 +26,10 @@
 		"#ui": {
 			"types": "./src/UI/index.ts",
 			"default": "./src/UI/index"
+		},
+		"#ports": {
+			"types": "./src/Ports/index.ts",
+			"default": "./src/Ports/index"
 		}
 	},
 	"files": [

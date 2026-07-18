@@ -5,10 +5,10 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
+import type { ImageSwapCheckState } from "#ports";
 import { assertNever } from "../../../ErrorHandling";
 import type {
 	ImagePopoverController,
-	ImageSwapCheckState,
 	UpdateSwapCheckStateFn,
 } from "../../../PopoverControllers";
 import {

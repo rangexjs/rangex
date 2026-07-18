@@ -21,12 +21,11 @@ import type { HandleImageSwapPopoverToggleParams } from "./HandleImageSwapPopove
  * current-block tracking.
  */
 export const handleImageSwapPopoverToggle = ({
-	richTextEditorUI,
+	imagePort,
 	getCurrentBlock,
 	internals,
 }: HandleImageSwapPopoverToggleParams) => {
-	const { imagePopover } = richTextEditorUI;
-	const { swapPopover } = imagePopover;
+	const { swapPopover } = imagePort;
 
 	const onCommand = (event: Event) => {
 		if (

@@ -1,5 +1,10 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
+	CaptionPosition,
+	VideoAspectRatioValue,
+	VideoObjectFitValue,
+} from "#ports";
+import type {
 	UpdateAutoplayFn,
 	UpdateControlsFn,
 	UpdateLoopFn,
@@ -10,9 +15,6 @@ import type {
 	UpdateVideoAspectRatioFn,
 	UpdateVideoCaptionFn,
 	UpdateVideoObjectFitFn,
-	VideoAspectRatioValue,
-	VideoCaptionPosition,
-	VideoObjectFitValue,
 } from "../../../PopoverControllers";
 import { usePopoverControllersContext } from "../../App";
 import {
@@ -46,7 +48,7 @@ const aspectRatioOptions: OptionDropdownOption<VideoAspectRatioValue>[] = [
 	{ label: "16:9", value: "16-9" },
 ];
 
-const captionPositionControls: ContentSwitcherControls<VideoCaptionPosition> = [
+const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];

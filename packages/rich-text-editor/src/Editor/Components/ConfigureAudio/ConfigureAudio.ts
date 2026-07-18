@@ -1,12 +1,20 @@
 import { componentsName } from "../../Constants";
+import {
+	handleBlockAlignState,
+	handleBlockDelete,
+	handleCaptionState,
+} from "../_Utilities";
+import {
+	getAudioCaption,
+	getAudioFigure,
+	setAudioCaptionEnabled,
+	setAudioCaptionPosition,
+} from "./_Utilities";
 import type {
 	AudioInternals,
 	ConfigureAudioParams,
 } from "./ConfigureAudio-types";
-import { handleAudioAlignState } from "./HandleAudioAlignState";
 import { handleAudioAttrState } from "./HandleAudioAttrState";
-import { handleAudioCaptionState } from "./HandleAudioCaptionState";
-import { handleAudioDelete } from "./HandleAudioDelete";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
 import { handleAudioPopoverAppearance } from "./HandleAudioPopoverAppearance";
 import { handleAudioSwap } from "./HandleAudioSwap";
@@ -18,7 +26,7 @@ import { handleAudioSwapPopoverToggle } from "./HandleAudioSwapPopoverToggle";
 // snapshot/undo boundary. It works for now but isn't viable long term — needs a pluggable
 // upload mechanism (consumer-supplied endpoint/blob storage) eventually.
 export const configureAudio = ({
-	richTextEditorUI,
+	audioPort,
 	editorAPI,
 	blockResize,
 	blockPopoverAppearanceHandler,
@@ -40,42 +48,46 @@ export const configureAudio = ({
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
 		handleAudioPopoverAppearance({
-			richTextEditorUI,
+			audioPort,
 			blockPopoverAppearanceHandler,
 		});
 
-	const alignStateCleanup = handleAudioAlignState({
-		richTextEditorUI,
+	const alignStateCleanup = handleBlockAlignState({
+		port: audioPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
 	const attrStateCleanup = handleAudioAttrState({
-		richTextEditorUI,
+		audioPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
-	const captionStateCleanup = handleAudioCaptionState({
-		richTextEditorUI,
+	const captionStateCleanup = handleCaptionState({
+		port: audioPort,
 		editorAPI,
 		getCurrentBlock,
+		getFigure: getAudioFigure,
+		getCaption: getAudioCaption,
+		setCaptionEnabled: setAudioCaptionEnabled,
+		setCaptionPosition: setAudioCaptionPosition,
 	});
 
 	const swapPopoverToggleCleanup = handleAudioSwapPopoverToggle({
-		richTextEditorUI,
+		audioPort,
 		getCurrentBlock,
 		internals,
 	});
 
 	const swapCleanup = handleAudioSwap({
-		richTextEditorUI,
+		audioPort,
 		editorAPI,
 		internals,
 	});
 
-	const deleteCleanup = handleAudioDelete({
-		richTextEditorUI,
+	const deleteCleanup = handleBlockDelete({
+		port: audioPort,
 		editorAPI,
 		getCurrentBlock,
 	});

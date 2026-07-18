@@ -1,11 +1,23 @@
+import type {
+	BlockAlignValue,
+	CaptionPosition,
+	CaptionState,
+	OnAlignChangeFn,
+	OnCaptionEnabledChangeFn,
+	OnCaptionPositionChangeFn,
+	OnDeleteFn,
+	OnVideoAttrChangeFn,
+	OnVideoSwapFn,
+	UpdateVideoPopoverStateParams,
+	VideoAspectRatioValue,
+	VideoAttrChange,
+	VideoEmitSwapParams,
+	VideoObjectFitValue,
+	VideoPort,
+	VideoSwapCheckState,
+} from "#ports";
 import { assertNever } from "../../ErrorHandling";
 import type {
-	OnVideoAlignChangeFn,
-	OnVideoAttrChangeFn,
-	OnVideoCaptionEnabledChangeFn,
-	OnVideoCaptionPositionChangeFn,
-	OnVideoDeleteFn,
-	OnVideoSwapFn,
 	UpdateAutoplayFn,
 	UpdateControlsFn,
 	UpdateLoopFn,
@@ -16,28 +28,18 @@ import type {
 	UpdateVideoAspectRatioFn,
 	UpdateVideoCaptionFn,
 	UpdateVideoObjectFitFn,
-	UpdateVideoPopoverStateParams,
 	UpdateVideoSwapCheckStateFn,
-	VideoAspectRatioValue,
-	VideoAttrChange,
-	VideoBlockAlignValue,
-	VideoCaptionPosition,
-	VideoCaptionState,
 	VideoEditListenerOption,
 	VideoEditUpdateListenerParams,
-	VideoEmitSwapParams,
-	VideoObjectFitValue,
-	VideoPopover,
-	VideoSwapCheckState,
 } from "./VideoPopoverController-types";
 
 export class VideoPopoverController {
 	#popover: HTMLDivElement | null = null;
 	#swapPopover: HTMLDivElement | null = null;
-	#align: VideoBlockAlignValue = "center";
+	#align: BlockAlignValue = "center";
 	#objectFit: VideoObjectFitValue = "cover";
 	#aspectRatio: VideoAspectRatioValue = "auto";
-	#caption: VideoCaptionState = { enabled: false, position: "below" };
+	#caption: CaptionState = { enabled: false, position: "below" };
 	#poster = "";
 	#title = "";
 	#controls = true;
@@ -58,13 +60,11 @@ export class VideoPopoverController {
 	#mutedListeners: Set<UpdateMutedFn> = new Set();
 	#swapCheckStateListeners: Set<UpdateVideoSwapCheckStateFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnVideoAlignChangeFn> = new Set();
-	#onCaptionEnabledChangeListeners: Set<OnVideoCaptionEnabledChangeFn> =
-		new Set();
-	#onCaptionPositionChangeListeners: Set<OnVideoCaptionPositionChangeFn> =
-		new Set();
+	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
+	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onVideoAttrChangeListeners: Set<OnVideoAttrChangeFn> = new Set();
-	#onDeleteListeners: Set<OnVideoDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 	#onSwapListeners: Set<OnVideoSwapFn> = new Set();
 
 	get align() {
@@ -178,7 +178,7 @@ export class VideoPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: VideoBlockAlignValue) {
+	emitAlignChange(align: BlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}
@@ -190,7 +190,7 @@ export class VideoPopoverController {
 		}
 	}
 
-	emitCaptionPositionChange(position: VideoCaptionPosition) {
+	emitCaptionPositionChange(position: CaptionPosition) {
 		for (const listener of this.#onCaptionPositionChangeListeners) {
 			listener(position);
 		}
@@ -324,7 +324,7 @@ export class VideoPopoverController {
 		this.#swapPopover = element;
 	}
 
-	get publicAPI(): VideoPopover {
+	get publicAPI(): VideoPort {
 		const controller = this;
 
 		return {
@@ -345,6 +345,10 @@ export class VideoPopoverController {
 			},
 
 			updateState: (params) => this.updateState(params),
+
+			setAlign: (align) => this.updateState({ align }),
+
+			setCaption: (caption) => this.updateState({ caption }),
 
 			onAlignChange: (callback) => {
 				this.#onAlignChangeListeners.add(callback);

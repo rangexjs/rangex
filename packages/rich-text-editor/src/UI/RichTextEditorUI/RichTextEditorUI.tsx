@@ -246,7 +246,7 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	get audioPopover() {
+	get audioPort() {
 		return this.#audioPopoverController.publicAPI;
 	}
 
@@ -258,7 +258,7 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#codeBlockPopoverController.publicAPI;
 	}
 
-	get embedPopover() {
+	get embedPort() {
 		return this.#embedPopoverController.publicAPI;
 	}
 
@@ -270,7 +270,7 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#emptyMediaSlotController.publicAPI;
 	}
 
-	get imagePopover() {
+	get imagePort() {
 		return this.#imagePopoverController.publicAPI;
 	}
 
@@ -290,7 +290,7 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#templateVariablePopoverController.publicAPI;
 	}
 
-	get videoPopover() {
+	get videoPort() {
 		return this.#videoPopoverController.publicAPI;
 	}
 

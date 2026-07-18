@@ -22,13 +22,11 @@ import type { HandleVideoPopoverAppearanceParams } from "./HandleVideoPopoverApp
  * to know which video block the popover is currently open over.
  */
 export const handleVideoPopoverAppearance = ({
-	richTextEditorUI,
+	videoPort,
 	blockPopoverAppearanceHandler,
 }: HandleVideoPopoverAppearanceParams) => {
-	const { videoPopover } = richTextEditorUI;
-
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: videoPopover.popover,
+		popover: videoPort.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -60,7 +58,7 @@ export const handleVideoPopoverAppearance = ({
 			const loop = getVideoLoop({ video });
 			const muted = getVideoMuted({ video });
 
-			videoPopover.updateState({
+			videoPort.updateState({
 				align,
 				objectFit,
 				aspectRatio,

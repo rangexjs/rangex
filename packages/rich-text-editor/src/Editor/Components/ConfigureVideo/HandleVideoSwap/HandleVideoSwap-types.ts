@@ -1,16 +1,16 @@
 import type { EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI, VideoEmitSwapParams, VideoPopover } from "#ui";
+import type { VideoEmitSwapParams, VideoPort } from "#ports";
 import type { VideoInternals } from "../ConfigureVideo-types";
 
 export interface HandleVideoSwapParams {
-	richTextEditorUI: RichTextEditorUI;
+	videoPort: VideoPort;
 	editorAPI: EditorAPI;
 	internals: VideoInternals;
 }
 
 export interface ResolveSwapSrcParams {
 	videoEmitSwapParams: VideoEmitSwapParams;
-	videoPopover: VideoPopover;
+	videoPort: VideoPort;
 	isStillCurrent: () => boolean;
 }
 

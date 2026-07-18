@@ -1,8 +1,8 @@
 import type { BlockNestedContext, EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { AudioPort } from "#ports";
 
 export interface HandleAudioAttrStateParams {
-	richTextEditorUI: RichTextEditorUI;
+	audioPort: AudioPort;
 	editorAPI: EditorAPI;
 	getCurrentBlock: () => BlockNestedContext | null;
 }

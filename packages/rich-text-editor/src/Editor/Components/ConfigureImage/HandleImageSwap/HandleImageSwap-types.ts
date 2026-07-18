@@ -1,16 +1,16 @@
 import type { EditorAPI } from "rich-text-area";
-import type { ImageEmitSwapParams, ImagePopover, RichTextEditorUI } from "#ui";
+import type { ImageEmitSwapParams, ImagePort } from "#ports";
 import type { ImageInternals } from "../ConfigureImage-types";
 
 export interface HandleImageSwapParams {
-	richTextEditorUI: RichTextEditorUI;
+	imagePort: ImagePort;
 	editorAPI: EditorAPI;
 	internals: ImageInternals;
 }
 
 export interface ResolveSwapSrcParams {
 	emitSwapParams: ImageEmitSwapParams;
-	imagePopover: ImagePopover;
+	imagePort: ImagePort;
 	isStillCurrent: () => boolean;
 }
 

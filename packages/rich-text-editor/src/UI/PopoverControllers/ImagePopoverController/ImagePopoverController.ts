@@ -1,15 +1,12 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	BlockAlignValue,
+	CaptionPosition,
+	CaptionState,
 	ImageAspectRatioValue,
 	ImageAttrChange,
-	ImageCaptionPosition,
-	ImageCaptionState,
-	ImageEditListenerOption,
-	ImageEditUpdateListenerParams,
 	ImageEmitSwapParams,
 	ImageObjectFitValue,
-	ImagePopover,
+	ImagePort,
 	ImageSwapCheckState,
 	OnAlignChangeFn,
 	OnCaptionEnabledChangeFn,
@@ -17,11 +14,16 @@ import type {
 	OnDeleteFn,
 	OnImageAttrChangeFn,
 	OnImageSwapFn,
+	UpdateImagePopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	ImageEditListenerOption,
+	ImageEditUpdateListenerParams,
 	UpdateAlignFn,
 	UpdateAltTextFn,
 	UpdateAspectRatioFn,
 	UpdateCaptionFn,
-	UpdateImagePopoverStateParams,
 	UpdateObjectFitFn,
 	UpdateSwapCheckStateFn,
 } from "./ImagePopoverController-types";
@@ -32,7 +34,7 @@ export class ImagePopoverController {
 	#align: BlockAlignValue = "center";
 	#objectFit: ImageObjectFitValue = "cover";
 	#aspectRatio: ImageAspectRatioValue = "auto";
-	#caption: ImageCaptionState = { enabled: false, position: "below" };
+	#caption: CaptionState = { enabled: false, position: "below" };
 	#altText = "";
 	#swapCheckState: ImageSwapCheckState = { status: "idle" };
 
@@ -128,7 +130,7 @@ export class ImagePopoverController {
 		}
 	}
 
-	emitCaptionPositionChange(position: ImageCaptionPosition) {
+	emitCaptionPositionChange(position: CaptionPosition) {
 		for (const listener of this.#onCaptionPositionChangeListeners) {
 			listener(position);
 		}
@@ -217,7 +219,7 @@ export class ImagePopoverController {
 		this.#swapPopover = element;
 	}
 
-	get publicAPI(): ImagePopover {
+	get publicAPI(): ImagePort {
 		const controller = this;
 
 		return {
@@ -238,6 +240,10 @@ export class ImagePopoverController {
 			},
 
 			updateState: (params) => this.updateState(params),
+
+			setAlign: (align) => this.updateState({ align }),
+
+			setCaption: (caption) => this.updateState({ caption }),
 
 			onAlignChange: (callback) => {
 				this.#onAlignChangeListeners.add(callback);

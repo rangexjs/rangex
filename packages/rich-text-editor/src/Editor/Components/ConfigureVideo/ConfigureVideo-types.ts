@@ -1,11 +1,11 @@
 import type { EditorAPI, HTMLLayout } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { VideoPort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../BlockPopoverAppearanceHandler";
 import type { BlockResize } from "../../BlockResize";
 import type { OnMediaResolveFn } from "../ConfigureEmptyMedia";
 
 export interface ConfigureVideoParams {
-	richTextEditorUI: RichTextEditorUI;
+	videoPort: VideoPort;
 	editorAPI: EditorAPI;
 	blockResize: BlockResize;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;

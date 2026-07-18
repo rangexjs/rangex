@@ -1,12 +1,20 @@
 import { componentsName } from "../../Constants";
+import {
+	handleBlockAlignState,
+	handleBlockDelete,
+	handleCaptionState,
+} from "../_Utilities";
+import {
+	getVideoCaption,
+	getVideoFigure,
+	setVideoCaptionEnabled,
+	setVideoCaptionPosition,
+} from "./_Utilities";
 import type {
 	ConfigureVideoParams,
 	VideoInternals,
 } from "./ConfigureVideo-types";
-import { handleVideoAlignState } from "./HandleVideoAlignState";
 import { handleVideoAttrState } from "./HandleVideoAttrState";
-import { handleVideoCaptionState } from "./HandleVideoCaptionState";
-import { handleVideoDelete } from "./HandleVideoDelete";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
 import { handleVideoPopoverAppearance } from "./HandleVideoPopoverAppearance";
 import { handleVideoSwap } from "./HandleVideoSwap";
@@ -18,7 +26,7 @@ import { handleVideoSwapPopoverToggle } from "./HandleVideoSwapPopoverToggle";
 // snapshot/undo boundary. It works for now but isn't viable long term — needs a pluggable
 // upload mechanism (consumer-supplied endpoint/blob storage) eventually.
 export const configureVideo = ({
-	richTextEditorUI,
+	videoPort,
 	editorAPI,
 	blockResize,
 	blockPopoverAppearanceHandler,
@@ -40,42 +48,46 @@ export const configureVideo = ({
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
 		handleVideoPopoverAppearance({
-			richTextEditorUI,
+			videoPort,
 			blockPopoverAppearanceHandler,
 		});
 
-	const alignStateCleanup = handleVideoAlignState({
-		richTextEditorUI,
+	const alignStateCleanup = handleBlockAlignState({
+		port: videoPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
 	const attrStateCleanup = handleVideoAttrState({
-		richTextEditorUI,
+		videoPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
-	const captionStateCleanup = handleVideoCaptionState({
-		richTextEditorUI,
+	const captionStateCleanup = handleCaptionState({
+		port: videoPort,
 		editorAPI,
 		getCurrentBlock,
+		getFigure: getVideoFigure,
+		getCaption: getVideoCaption,
+		setCaptionEnabled: setVideoCaptionEnabled,
+		setCaptionPosition: setVideoCaptionPosition,
 	});
 
 	const swapPopoverToggleCleanup = handleVideoSwapPopoverToggle({
-		richTextEditorUI,
+		videoPort,
 		getCurrentBlock,
 		internals,
 	});
 
 	const swapCleanup = handleVideoSwap({
-		richTextEditorUI,
+		videoPort,
 		editorAPI,
 		internals,
 	});
 
-	const deleteCleanup = handleVideoDelete({
-		richTextEditorUI,
+	const deleteCleanup = handleBlockDelete({
+		port: videoPort,
 		editorAPI,
 		getCurrentBlock,
 	});

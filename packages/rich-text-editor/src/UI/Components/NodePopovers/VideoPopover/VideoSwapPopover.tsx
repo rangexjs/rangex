@@ -5,11 +5,11 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
+import type { VideoSwapCheckState } from "#ports";
 import { assertNever } from "../../../ErrorHandling";
 import type {
 	UpdateVideoSwapCheckStateFn,
 	VideoPopoverController,
-	VideoSwapCheckState,
 } from "../../../PopoverControllers";
 import {
 	ContentSwitch,

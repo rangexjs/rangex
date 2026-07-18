@@ -146,28 +146,28 @@ export class RichTextEditor extends HTMLElement {
 		});
 
 		const imageCleanup = configureImage({
-			richTextEditorUI: this.#richTextEditorUI,
+			imagePort: this.#richTextEditorUI.imagePort,
 			editorAPI,
 			blockResize,
 			blockPopoverAppearanceHandler,
 			onMediaResolve,
 		});
 		const videoCleanup = configureVideo({
-			richTextEditorUI: this.#richTextEditorUI,
+			videoPort: this.#richTextEditorUI.videoPort,
 			editorAPI,
 			blockResize,
 			blockPopoverAppearanceHandler,
 			onMediaResolve,
 		});
 		const audioCleanup = configureAudio({
-			richTextEditorUI: this.#richTextEditorUI,
+			audioPort: this.#richTextEditorUI.audioPort,
 			editorAPI,
 			blockResize,
 			blockPopoverAppearanceHandler,
 			onMediaResolve,
 		});
 		const embedCleanup = configureEmbed({
-			richTextEditorUI: this.#richTextEditorUI,
+			embedPort: this.#richTextEditorUI.embedPort,
 			editorAPI,
 			blockResize,
 			blockPopoverAppearanceHandler,

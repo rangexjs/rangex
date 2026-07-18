@@ -5,10 +5,10 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
+import type { AudioSwapCheckState } from "#ports";
 import { assertNever } from "../../../ErrorHandling";
 import type {
 	AudioPopoverController,
-	AudioSwapCheckState,
 	UpdateAudioSwapCheckStateFn,
 } from "../../../PopoverControllers";
 import {

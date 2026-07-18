@@ -1,25 +1,27 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
+	BlockAlignValue,
+	CaptionPosition,
+	CaptionState,
 	EmbedAspectRatioValue,
 	EmbedAttrChange,
-	EmbedBlockAlignValue,
-	EmbedCaptionPosition,
-	EmbedCaptionState,
+	EmbedEmitSwapParams,
+	EmbedPort,
+	EmbedSwapCheckState,
+	OnAlignChangeFn,
+	OnCaptionEnabledChangeFn,
+	OnCaptionPositionChangeFn,
+	OnDeleteFn,
+	OnEmbedAttrChangeFn,
+	OnEmbedSwapFn,
+	UpdateEmbedPopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
 	EmbedEditListenerOption,
 	EmbedEditUpdateListenerParams,
-	EmbedEmitSwapParams,
-	EmbedPopover,
-	EmbedSwapCheckState,
-	OnEmbedAlignChangeFn,
-	OnEmbedAttrChangeFn,
-	OnEmbedCaptionEnabledChangeFn,
-	OnEmbedCaptionPositionChangeFn,
-	OnEmbedDeleteFn,
-	OnEmbedSwapFn,
 	UpdateEmbedAlignFn,
 	UpdateEmbedAspectRatioFn,
 	UpdateEmbedCaptionFn,
-	UpdateEmbedPopoverStateParams,
 	UpdateEmbedSwapCheckStateFn,
 	UpdateEmbedTitleFn,
 } from "./EmbedPopoverController-types";
@@ -27,9 +29,9 @@ import type {
 export class EmbedPopoverController {
 	#popover: HTMLDivElement | null = null;
 	#swapPopover: HTMLDivElement | null = null;
-	#align: EmbedBlockAlignValue = "center";
+	#align: BlockAlignValue = "center";
 	#aspectRatio: EmbedAspectRatioValue = "16-9";
-	#caption: EmbedCaptionState = { enabled: false, position: "below" };
+	#caption: CaptionState = { enabled: false, position: "below" };
 	#title = "";
 	#swapCheckState: EmbedSwapCheckState = { status: "idle" };
 
@@ -39,13 +41,11 @@ export class EmbedPopoverController {
 	#titleListeners: Set<UpdateEmbedTitleFn> = new Set();
 	#swapCheckStateListeners: Set<UpdateEmbedSwapCheckStateFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnEmbedAlignChangeFn> = new Set();
-	#onCaptionEnabledChangeListeners: Set<OnEmbedCaptionEnabledChangeFn> =
-		new Set();
-	#onCaptionPositionChangeListeners: Set<OnEmbedCaptionPositionChangeFn> =
-		new Set();
+	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
+	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onEmbedAttrChangeListeners: Set<OnEmbedAttrChangeFn> = new Set();
-	#onDeleteListeners: Set<OnEmbedDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 	#onSwapListeners: Set<OnEmbedSwapFn> = new Set();
 
 	get align() {
@@ -105,7 +105,7 @@ export class EmbedPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: EmbedBlockAlignValue) {
+	emitAlignChange(align: BlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}
@@ -117,7 +117,7 @@ export class EmbedPopoverController {
 		}
 	}
 
-	emitCaptionPositionChange(position: EmbedCaptionPosition) {
+	emitCaptionPositionChange(position: CaptionPosition) {
 		for (const listener of this.#onCaptionPositionChangeListeners) {
 			listener(position);
 		}
@@ -197,7 +197,7 @@ export class EmbedPopoverController {
 		this.#swapPopover = element;
 	}
 
-	get publicAPI(): EmbedPopover {
+	get publicAPI(): EmbedPort {
 		const controller = this;
 
 		return {
@@ -218,6 +218,10 @@ export class EmbedPopoverController {
 			},
 
 			updateState: (params) => this.updateState(params),
+
+			setAlign: (align) => this.updateState({ align }),
+
+			setCaption: (caption) => this.updateState({ caption }),
 
 			onAlignChange: (callback) => {
 				this.#onAlignChangeListeners.add(callback);

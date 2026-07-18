@@ -13,17 +13,11 @@ export type {
 	UploadState,
 } from "./NodeSlotControllers";
 export type {
-	AudioEmitSwapParams,
-	AudioPopover,
 	BlockResizePopover,
 	CodeBlockPopover,
 	CodeBlockPopoverState,
-	EmbedEmitSwapParams,
-	EmbedPopover,
 	EmojiPopover,
 	EmojiPopoverState,
-	ImageEmitSwapParams,
-	ImagePopover,
 	LinkPopover,
 	LinkPopoverState,
 	MentionPopover,
@@ -33,8 +27,6 @@ export type {
 	TemplateVariablePopover,
 	TemplateVariablePopoverState,
 	UpdateCodeBlockPopoverStateParams,
-	VideoEmitSwapParams,
-	VideoPopover,
 } from "./PopoverControllers";
 export {
 	RichTextEditorUI,

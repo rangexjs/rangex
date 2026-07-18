@@ -1,6 +1,6 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import type { CaptionPosition } from "#ports";
 import type {
-	AudioCaptionPosition,
 	UpdateAudioAlignFn,
 	UpdateAudioAutoplayFn,
 	UpdateAudioCaptionFn,
@@ -24,7 +24,7 @@ import { ToggleButton } from "../../ToggleButton";
 import { BlockAlign } from "../_Utilities";
 import { AudioSwapPopover } from "./AudioSwapPopover";
 
-const captionPositionControls: ContentSwitcherControls<AudioCaptionPosition> = [
+const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];

@@ -1,27 +1,29 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	AudioAttrChange,
-	AudioBlockAlignValue,
-	AudioCaptionPosition,
-	AudioCaptionState,
+	AudioEmitSwapParams,
+	AudioPort,
+	AudioSwapCheckState,
+	BlockAlignValue,
+	CaptionPosition,
+	CaptionState,
+	OnAlignChangeFn,
+	OnAudioAttrChangeFn,
+	OnAudioSwapFn,
+	OnCaptionEnabledChangeFn,
+	OnCaptionPositionChangeFn,
+	OnDeleteFn,
+	UpdateAudioPopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
 	AudioEditListenerOption,
 	AudioEditUpdateListenerParams,
-	AudioEmitSwapParams,
-	AudioPopover,
-	AudioSwapCheckState,
-	OnAudioAlignChangeFn,
-	OnAudioAttrChangeFn,
-	OnAudioCaptionEnabledChangeFn,
-	OnAudioCaptionPositionChangeFn,
-	OnAudioDeleteFn,
-	OnAudioSwapFn,
 	UpdateAudioAlignFn,
 	UpdateAudioAutoplayFn,
 	UpdateAudioCaptionFn,
 	UpdateAudioControlsFn,
 	UpdateAudioLoopFn,
 	UpdateAudioMutedFn,
-	UpdateAudioPopoverStateParams,
 	UpdateAudioSwapCheckStateFn,
 	UpdateAudioTitleFn,
 } from "./AudioPopoverController-types";
@@ -29,8 +31,8 @@ import type {
 export class AudioPopoverController {
 	#popover: HTMLDivElement | null = null;
 	#swapPopover: HTMLDivElement | null = null;
-	#align: AudioBlockAlignValue = "center";
-	#caption: AudioCaptionState = { enabled: false, position: "below" };
+	#align: BlockAlignValue = "center";
+	#caption: CaptionState = { enabled: false, position: "below" };
 	#title = "";
 	#controls = true;
 	#autoplay = false;
@@ -47,13 +49,11 @@ export class AudioPopoverController {
 	#mutedListeners: Set<UpdateAudioMutedFn> = new Set();
 	#swapCheckStateListeners: Set<UpdateAudioSwapCheckStateFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnAudioAlignChangeFn> = new Set();
-	#onCaptionEnabledChangeListeners: Set<OnAudioCaptionEnabledChangeFn> =
-		new Set();
-	#onCaptionPositionChangeListeners: Set<OnAudioCaptionPositionChangeFn> =
-		new Set();
+	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
+	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onAudioAttrChangeListeners: Set<OnAudioAttrChangeFn> = new Set();
-	#onDeleteListeners: Set<OnAudioDeleteFn> = new Set();
+	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 	#onSwapListeners: Set<OnAudioSwapFn> = new Set();
 
 	get align() {
@@ -140,7 +140,7 @@ export class AudioPopoverController {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	emitAlignChange(align: AudioBlockAlignValue) {
+	emitAlignChange(align: BlockAlignValue) {
 		for (const listener of this.#onAlignChangeListeners) {
 			listener(align);
 		}
@@ -152,7 +152,7 @@ export class AudioPopoverController {
 		}
 	}
 
-	emitCaptionPositionChange(position: AudioCaptionPosition) {
+	emitCaptionPositionChange(position: CaptionPosition) {
 		for (const listener of this.#onCaptionPositionChangeListeners) {
 			listener(position);
 		}
@@ -259,7 +259,7 @@ export class AudioPopoverController {
 		this.#swapPopover = element;
 	}
 
-	get publicAPI(): AudioPopover {
+	get publicAPI(): AudioPort {
 		const controller = this;
 
 		return {
@@ -280,6 +280,10 @@ export class AudioPopoverController {
 			},
 
 			updateState: (params) => this.updateState(params),
+
+			setAlign: (align) => this.updateState({ align }),
+
+			setCaption: (caption) => this.updateState({ caption }),
 
 			onAlignChange: (callback) => {
 				this.#onAlignChangeListeners.add(callback);

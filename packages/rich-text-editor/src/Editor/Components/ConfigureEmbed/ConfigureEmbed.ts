@@ -1,19 +1,27 @@
 import { componentsName } from "../../Constants";
+import {
+	handleBlockAlignState,
+	handleBlockDelete,
+	handleCaptionState,
+} from "../_Utilities";
+import {
+	getEmbedCaption,
+	getEmbedFigure,
+	setEmbedCaptionEnabled,
+	setEmbedCaptionPosition,
+} from "./_Utilities";
 import type {
 	ConfigureEmbedParams,
 	EmbedInternals,
 } from "./ConfigureEmbed-types";
-import { handleEmbedAlignState } from "./HandleEmbedAlignState";
 import { handleEmbedAttrState } from "./HandleEmbedAttrState";
-import { handleEmbedCaptionState } from "./HandleEmbedCaptionState";
-import { handleEmbedDelete } from "./HandleEmbedDelete";
 import { handleEmbedInsertion } from "./HandleEmbedInsertion";
 import { handleEmbedPopoverAppearance } from "./HandleEmbedPopoverAppearance";
 import { handleEmbedSwap } from "./HandleEmbedSwap";
 import { handleEmbedSwapPopoverToggle } from "./HandleEmbedSwapPopoverToggle";
 
 export const configureEmbed = ({
-	richTextEditorUI,
+	embedPort,
 	editorAPI,
 	blockResize,
 	blockPopoverAppearanceHandler,
@@ -35,42 +43,46 @@ export const configureEmbed = ({
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
 		handleEmbedPopoverAppearance({
-			richTextEditorUI,
+			embedPort,
 			blockPopoverAppearanceHandler,
 		});
 
-	const alignStateCleanup = handleEmbedAlignState({
-		richTextEditorUI,
+	const alignStateCleanup = handleBlockAlignState({
+		port: embedPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
 	const attrStateCleanup = handleEmbedAttrState({
-		richTextEditorUI,
+		embedPort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
-	const captionStateCleanup = handleEmbedCaptionState({
-		richTextEditorUI,
+	const captionStateCleanup = handleCaptionState({
+		port: embedPort,
 		editorAPI,
 		getCurrentBlock,
+		getFigure: getEmbedFigure,
+		getCaption: getEmbedCaption,
+		setCaptionEnabled: setEmbedCaptionEnabled,
+		setCaptionPosition: setEmbedCaptionPosition,
 	});
 
 	const swapPopoverToggleCleanup = handleEmbedSwapPopoverToggle({
-		richTextEditorUI,
+		embedPort,
 		getCurrentBlock,
 		internals,
 	});
 
 	const swapCleanup = handleEmbedSwap({
-		richTextEditorUI,
+		embedPort,
 		editorAPI,
 		internals,
 	});
 
-	const deleteCleanup = handleEmbedDelete({
-		richTextEditorUI,
+	const deleteCleanup = handleBlockDelete({
+		port: embedPort,
 		editorAPI,
 		getCurrentBlock,
 	});

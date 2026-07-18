@@ -1,12 +1,20 @@
 import { componentsName } from "../../Constants";
+import {
+	handleBlockAlignState,
+	handleBlockDelete,
+	handleCaptionState,
+} from "../_Utilities";
+import {
+	getImageCaption,
+	getImageFigure,
+	setImageCaptionEnabled,
+	setImageCaptionPosition,
+} from "./_Utilities";
 import type {
 	ConfigureImageParams,
 	ImageInternals,
 } from "./ConfigureImage-types";
-import { handleImageAlignState } from "./HandleImageAlignState";
 import { handleImageAttrState } from "./HandleImageAttrState";
-import { handleImageCaptionState } from "./HandleImageCaptionState";
-import { handleImageDelete } from "./HandleImageDelete";
 import { handleImageInsertion } from "./HandleImageInsertion";
 import { handleImagePopoverAppearance } from "./HandleImagePopoverAppearance";
 import { handleImageSwap } from "./HandleImageSwap";
@@ -19,7 +27,7 @@ import { handleImageSwapPopoverToggle } from "./HandleImageSwapPopoverToggle";
 // upload mechanism (consumer-supplied endpoint/blob storage) eventually. configureVideo
 // currently mirrors this same approach, where the problem is much more pronounced.
 export const configureImage = ({
-	richTextEditorUI,
+	imagePort,
 	editorAPI,
 	blockResize,
 	blockPopoverAppearanceHandler,
@@ -41,42 +49,46 @@ export const configureImage = ({
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
 		handleImagePopoverAppearance({
-			richTextEditorUI,
+			imagePort,
 			blockPopoverAppearanceHandler,
 		});
 
-	const alignStateCleanup = handleImageAlignState({
-		richTextEditorUI,
+	const alignStateCleanup = handleBlockAlignState({
+		port: imagePort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
 	const attrStateCleanup = handleImageAttrState({
-		richTextEditorUI,
+		imagePort,
 		editorAPI,
 		getCurrentBlock,
 	});
 
-	const captionStateCleanup = handleImageCaptionState({
-		richTextEditorUI,
+	const captionStateCleanup = handleCaptionState({
+		port: imagePort,
 		editorAPI,
 		getCurrentBlock,
+		getFigure: getImageFigure,
+		getCaption: getImageCaption,
+		setCaptionEnabled: setImageCaptionEnabled,
+		setCaptionPosition: setImageCaptionPosition,
 	});
 
 	const swapPopoverToggleCleanup = handleImageSwapPopoverToggle({
-		richTextEditorUI,
+		imagePort,
 		getCurrentBlock,
 		internals,
 	});
 
 	const swapCleanup = handleImageSwap({
-		richTextEditorUI,
+		imagePort,
 		editorAPI,
 		internals,
 	});
 
-	const deleteCleanup = handleImageDelete({
-		richTextEditorUI,
+	const deleteCleanup = handleBlockDelete({
+		port: imagePort,
 		editorAPI,
 		getCurrentBlock,
 	});

@@ -21,12 +21,11 @@ import type { HandleAudioSwapPopoverToggleParams } from "./HandleAudioSwapPopove
  * current-block tracking.
  */
 export const handleAudioSwapPopoverToggle = ({
-	richTextEditorUI,
+	audioPort,
 	getCurrentBlock,
 	internals,
 }: HandleAudioSwapPopoverToggleParams) => {
-	const { audioPopover } = richTextEditorUI;
-	const { swapPopover } = audioPopover;
+	const { swapPopover } = audioPort;
 
 	const onCommand = (event: Event) => {
 		if (

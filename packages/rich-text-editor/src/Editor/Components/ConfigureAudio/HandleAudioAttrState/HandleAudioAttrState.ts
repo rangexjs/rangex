@@ -15,13 +15,11 @@ import type { HandleAudioAttrStateParams } from "./HandleAudioAttrState-types";
  * new block.
  */
 export const handleAudioAttrState = ({
-	richTextEditorUI,
+	audioPort,
 	editorAPI,
 	getCurrentBlock,
 }: HandleAudioAttrStateParams) => {
-	const { audioPopover } = richTextEditorUI;
-
-	const unsubscribeAudioAttrChange = audioPopover.onAudioAttrChange(
+	const unsubscribeAudioAttrChange = audioPort.onAudioAttrChange(
 		({ title, controls, autoplay, loop, muted }) => {
 			const currentBlock = getCurrentBlock();
 
@@ -52,7 +50,7 @@ export const handleAudioAttrState = ({
 				setAudioMuted({ audio, muted });
 			}
 
-			audioPopover.updateState({
+			audioPort.updateState({
 				title,
 				controls,
 				autoplay,

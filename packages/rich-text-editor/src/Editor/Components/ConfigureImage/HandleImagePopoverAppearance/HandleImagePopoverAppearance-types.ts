@@ -1,7 +1,7 @@
-import type { RichTextEditorUI } from "#ui";
+import type { ImagePort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../../BlockPopoverAppearanceHandler";
 
 export interface HandleImagePopoverAppearanceParams {
-	richTextEditorUI: RichTextEditorUI;
+	imagePort: ImagePort;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;
 }

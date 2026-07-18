@@ -1,8 +1,8 @@
 import type { BlockNestedContext, EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { EmbedPort } from "#ports";
 
 export interface HandleEmbedAttrStateParams {
-	richTextEditorUI: RichTextEditorUI;
+	embedPort: EmbedPort;
 	editorAPI: EditorAPI;
 	getCurrentBlock: () => BlockNestedContext | null;
 }

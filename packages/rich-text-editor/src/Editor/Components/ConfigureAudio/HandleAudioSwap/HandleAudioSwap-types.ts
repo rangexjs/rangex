@@ -1,16 +1,16 @@
 import type { EditorAPI } from "rich-text-area";
-import type { AudioEmitSwapParams, AudioPopover, RichTextEditorUI } from "#ui";
+import type { AudioEmitSwapParams, AudioPort } from "#ports";
 import type { AudioInternals } from "../ConfigureAudio-types";
 
 export interface HandleAudioSwapParams {
-	richTextEditorUI: RichTextEditorUI;
+	audioPort: AudioPort;
 	editorAPI: EditorAPI;
 	internals: AudioInternals;
 }
 
 export interface ResolveSwapSrcParams {
 	audioEmitSwapParams: AudioEmitSwapParams;
-	audioPopover: AudioPopover;
+	audioPort: AudioPort;
 	isStillCurrent: () => boolean;
 }
 

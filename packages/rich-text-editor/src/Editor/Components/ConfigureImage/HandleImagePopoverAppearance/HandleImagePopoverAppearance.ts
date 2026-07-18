@@ -17,13 +17,11 @@ import type { HandleImagePopoverAppearanceParams } from "./HandleImagePopoverApp
  * to know which image block the popover is currently open over.
  */
 export const handleImagePopoverAppearance = ({
-	richTextEditorUI,
+	imagePort,
 	blockPopoverAppearanceHandler,
 }: HandleImagePopoverAppearanceParams) => {
-	const { imagePopover } = richTextEditorUI;
-
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: imagePopover.popover,
+		popover: imagePort.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -50,7 +48,7 @@ export const handleImagePopoverAppearance = ({
 			const caption = getImageCaption({ figure });
 			const altText = getImageAlt({ img });
 
-			imagePopover.updateState({
+			imagePort.updateState({
 				align,
 				objectFit,
 				aspectRatio,

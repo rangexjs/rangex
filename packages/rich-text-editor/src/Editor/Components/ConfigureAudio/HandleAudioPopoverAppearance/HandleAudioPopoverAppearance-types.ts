@@ -1,7 +1,7 @@
-import type { RichTextEditorUI } from "#ui";
+import type { AudioPort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../../BlockPopoverAppearanceHandler";
 
 export interface HandleAudioPopoverAppearanceParams {
-	richTextEditorUI: RichTextEditorUI;
+	audioPort: AudioPort;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;
 }

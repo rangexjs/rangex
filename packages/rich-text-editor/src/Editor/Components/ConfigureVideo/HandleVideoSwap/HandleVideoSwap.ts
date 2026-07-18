@@ -19,12 +19,12 @@ import type {
  */
 const resolveSwapSrc = async ({
 	videoEmitSwapParams,
-	videoPopover,
+	videoPort,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (videoEmitSwapParams.source === "url") {
 		if (!isWellFormedUrl(videoEmitSwapParams.url)) {
-			videoPopover.updateState({
+			videoPort.updateState({
 				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
@@ -40,7 +40,7 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		videoPopover.updateState({
+		videoPort.updateState({
 			swapCheckState: { status: "uploading", progress: 0 },
 		});
 
@@ -51,14 +51,14 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				videoPopover.updateState({
+				videoPort.updateState({
 					swapCheckState: { status: "uploading", progress },
 				});
 			},
 		});
 
 		if (!src) {
-			videoPopover.updateState({
+			videoPort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't read that file. Try a different one.",
@@ -80,13 +80,11 @@ const resolveSwapSrc = async ({
  * the current video untouched instead of needing to be rolled back.
  */
 export const handleVideoSwap = ({
-	richTextEditorUI,
+	videoPort,
 	editorAPI,
 	internals,
 }: HandleVideoSwapParams) => {
-	const { videoPopover } = richTextEditorUI;
-
-	const unsubscribeSwap = videoPopover.onSwap(async (params) => {
+	const unsubscribeSwap = videoPort.onSwap(async (params) => {
 		const { currentVideoFigure } = internals;
 
 		if (!currentVideoFigure) {
@@ -100,7 +98,7 @@ export const handleVideoSwap = ({
 
 		const src = await resolveSwapSrc({
 			videoEmitSwapParams: params,
-			videoPopover,
+			videoPort,
 			isStillCurrent,
 		});
 
@@ -112,7 +110,7 @@ export const handleVideoSwap = ({
 			return;
 		}
 
-		videoPopover.updateState({ swapCheckState: { status: "checking" } });
+		videoPort.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "video", src });
 
@@ -121,7 +119,7 @@ export const handleVideoSwap = ({
 		}
 
 		if (!loaded) {
-			videoPopover.updateState({
+			videoPort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't load that video. Check the link and try again.",
@@ -131,8 +129,8 @@ export const handleVideoSwap = ({
 		}
 
 		applyVideoSrc({ figure: currentVideoFigure, src, editorAPI });
-		videoPopover.updateState({ swapCheckState: { status: "idle" } });
-		videoPopover.swapPopover.hidePopover();
+		videoPort.updateState({ swapCheckState: { status: "idle" } });
+		videoPort.swapPopover.hidePopover();
 	});
 
 	return () => {

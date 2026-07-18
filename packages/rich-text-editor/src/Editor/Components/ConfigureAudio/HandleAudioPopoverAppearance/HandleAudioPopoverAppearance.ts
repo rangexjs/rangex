@@ -19,13 +19,11 @@ import type { HandleAudioPopoverAppearanceParams } from "./HandleAudioPopoverApp
  * to know which audio block the popover is currently open over.
  */
 export const handleAudioPopoverAppearance = ({
-	richTextEditorUI,
+	audioPort,
 	blockPopoverAppearanceHandler,
 }: HandleAudioPopoverAppearanceParams) => {
-	const { audioPopover } = richTextEditorUI;
-
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: audioPopover.popover,
+		popover: audioPort.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -54,7 +52,7 @@ export const handleAudioPopoverAppearance = ({
 			const loop = getAudioLoop({ audio });
 			const muted = getAudioMuted({ audio });
 
-			audioPopover.updateState({
+			audioPort.updateState({
 				align,
 				caption,
 				title,

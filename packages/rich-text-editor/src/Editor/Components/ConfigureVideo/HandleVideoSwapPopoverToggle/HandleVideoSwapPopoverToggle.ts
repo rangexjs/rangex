@@ -21,12 +21,11 @@ import type { HandleVideoSwapPopoverToggleParams } from "./HandleVideoSwapPopove
  * current-block tracking.
  */
 export const handleVideoSwapPopoverToggle = ({
-	richTextEditorUI,
+	videoPort,
 	getCurrentBlock,
 	internals,
 }: HandleVideoSwapPopoverToggleParams) => {
-	const { videoPopover } = richTextEditorUI;
-	const { swapPopover } = videoPopover;
+	const { swapPopover } = videoPort;
 
 	const onCommand = (event: Event) => {
 		if (

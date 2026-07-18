@@ -1,9 +1,9 @@
 import type { BlockNestedContext } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { ImagePort } from "#ports";
 import type { ImageInternals } from "../ConfigureImage-types";
 
 export interface HandleImageSwapPopoverToggleParams {
-	richTextEditorUI: RichTextEditorUI;
+	imagePort: ImagePort;
 	getCurrentBlock: () => BlockNestedContext | null;
 	internals: ImageInternals;
 }

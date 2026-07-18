@@ -16,13 +16,11 @@ import type { HandleEmbedPopoverAppearanceParams } from "./HandleEmbedPopoverApp
  * to know which embed block the popover is currently open over.
  */
 export const handleEmbedPopoverAppearance = ({
-	richTextEditorUI,
+	embedPort,
 	blockPopoverAppearanceHandler,
 }: HandleEmbedPopoverAppearanceParams) => {
-	const { embedPopover } = richTextEditorUI;
-
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: embedPopover.popover,
+		popover: embedPort.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -48,7 +46,7 @@ export const handleEmbedPopoverAppearance = ({
 			const caption = getEmbedCaption({ figure });
 			const title = getEmbedTitle({ iframe });
 
-			embedPopover.updateState({
+			embedPort.updateState({
 				align,
 				aspectRatio,
 				caption,

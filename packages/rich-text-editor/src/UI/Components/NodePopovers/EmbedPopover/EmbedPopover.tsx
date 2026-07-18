@@ -1,7 +1,6 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import type { CaptionPosition, EmbedAspectRatioValue } from "#ports";
 import type {
-	EmbedAspectRatioValue,
-	EmbedCaptionPosition,
 	UpdateEmbedAlignFn,
 	UpdateEmbedAspectRatioFn,
 	UpdateEmbedCaptionFn,
@@ -33,7 +32,7 @@ const aspectRatioOptions: OptionDropdownOption<EmbedAspectRatioValue>[] = [
 	{ label: "16:9", value: "16-9" },
 ];
 
-const captionPositionControls: ContentSwitcherControls<EmbedCaptionPosition> = [
+const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];

@@ -1,7 +1,7 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import type { EmbedSwapCheckState } from "#ports";
 import type {
 	EmbedPopoverController,
-	EmbedSwapCheckState,
 	UpdateEmbedSwapCheckStateFn,
 } from "../../../PopoverControllers";
 import { Icon } from "../../Icon";

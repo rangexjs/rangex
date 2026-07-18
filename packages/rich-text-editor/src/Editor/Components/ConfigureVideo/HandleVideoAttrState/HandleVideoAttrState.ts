@@ -18,13 +18,11 @@ import type { HandleVideoAttrStateParams } from "./HandleVideoAttrState-types";
  * new block.
  */
 export const handleVideoAttrState = ({
-	richTextEditorUI,
+	videoPort,
 	editorAPI,
 	getCurrentBlock,
 }: HandleVideoAttrStateParams) => {
-	const { videoPopover } = richTextEditorUI;
-
-	const unsubscribeVideoAttrChange = videoPopover.onVideoAttrChange(
+	const unsubscribeVideoAttrChange = videoPort.onVideoAttrChange(
 		({
 			objectFit,
 			aspectRatio,
@@ -76,7 +74,7 @@ export const handleVideoAttrState = ({
 				setVideoMuted({ video, muted });
 			}
 
-			videoPopover.updateState({
+			videoPort.updateState({
 				objectFit,
 				aspectRatio,
 				title,

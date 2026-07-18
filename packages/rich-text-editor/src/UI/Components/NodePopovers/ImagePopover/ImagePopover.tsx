@@ -1,8 +1,10 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type {
+	CaptionPosition,
 	ImageAspectRatioValue,
-	ImageCaptionPosition,
 	ImageObjectFitValue,
+} from "#ports";
+import type {
 	UpdateAlignFn,
 	UpdateAltTextFn,
 	UpdateAspectRatioFn,
@@ -41,7 +43,7 @@ const aspectRatioOptions: OptionDropdownOption<ImageAspectRatioValue>[] = [
 	{ label: "16:9", value: "16-9" },
 ];
 
-const captionPositionControls: ContentSwitcherControls<ImageCaptionPosition> = [
+const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];

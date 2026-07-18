@@ -13,13 +13,11 @@ import type { HandleImageAttrStateParams } from "./HandleImageAttrState-types";
  * new block.
  */
 export const handleImageAttrState = ({
-	richTextEditorUI,
+	imagePort,
 	editorAPI,
 	getCurrentBlock,
 }: HandleImageAttrStateParams) => {
-	const { imagePopover } = richTextEditorUI;
-
-	const unsubscribeImageAttrChange = imagePopover.onImageAttrChange(
+	const unsubscribeImageAttrChange = imagePort.onImageAttrChange(
 		({ objectFit, aspectRatio, altText }) => {
 			const currentBlock = getCurrentBlock();
 
@@ -42,7 +40,7 @@ export const handleImageAttrState = ({
 				setImageAlt({ img, alt: altText });
 			}
 
-			imagePopover.updateState({ objectFit, aspectRatio, altText });
+			imagePort.updateState({ objectFit, aspectRatio, altText });
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

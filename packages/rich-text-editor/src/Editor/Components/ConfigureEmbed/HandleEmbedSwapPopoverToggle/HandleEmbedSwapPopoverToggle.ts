@@ -21,12 +21,11 @@ import type { HandleEmbedSwapPopoverToggleParams } from "./HandleEmbedSwapPopove
  * current-block tracking.
  */
 export const handleEmbedSwapPopoverToggle = ({
-	richTextEditorUI,
+	embedPort,
 	getCurrentBlock,
 	internals,
 }: HandleEmbedSwapPopoverToggleParams) => {
-	const { embedPopover } = richTextEditorUI;
-	const { swapPopover } = embedPopover;
+	const { swapPopover } = embedPort;
 
 	const onCommand = (event: Event) => {
 		if (

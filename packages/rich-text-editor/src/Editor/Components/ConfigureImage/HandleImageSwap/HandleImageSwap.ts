@@ -19,12 +19,12 @@ import type {
  */
 const resolveSwapSrc = async ({
 	emitSwapParams,
-	imagePopover,
+	imagePort,
 	isStillCurrent,
 }: ResolveSwapSrcParams): Promise<ResolveSwapSrcResult> => {
 	if (emitSwapParams.source === "url") {
 		if (!isWellFormedUrl(emitSwapParams.url)) {
-			imagePopover.updateState({
+			imagePort.updateState({
 				swapCheckState: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
@@ -40,7 +40,7 @@ const resolveSwapSrc = async ({
 			return null;
 		}
 
-		imagePopover.updateState({
+		imagePort.updateState({
 			swapCheckState: { status: "uploading", progress: 0 },
 		});
 
@@ -51,14 +51,14 @@ const resolveSwapSrc = async ({
 					return;
 				}
 
-				imagePopover.updateState({
+				imagePort.updateState({
 					swapCheckState: { status: "uploading", progress },
 				});
 			},
 		});
 
 		if (!src) {
-			imagePopover.updateState({
+			imagePort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't read that file. Try a different one.",
@@ -81,13 +81,11 @@ const resolveSwapSrc = async ({
  * image untouched instead of needing to be rolled back.
  */
 export const handleImageSwap = ({
-	richTextEditorUI,
+	imagePort,
 	editorAPI,
 	internals,
 }: HandleImageSwapParams) => {
-	const { imagePopover } = richTextEditorUI;
-
-	const unsubscribeSwap = imagePopover.onSwap(async (params) => {
+	const unsubscribeSwap = imagePort.onSwap(async (params) => {
 		const { currentImageFigure } = internals;
 
 		if (!currentImageFigure) {
@@ -101,7 +99,7 @@ export const handleImageSwap = ({
 
 		const src = await resolveSwapSrc({
 			emitSwapParams: params,
-			imagePopover,
+			imagePort,
 			isStillCurrent,
 		});
 
@@ -113,7 +111,7 @@ export const handleImageSwap = ({
 			return;
 		}
 
-		imagePopover.updateState({ swapCheckState: { status: "checking" } });
+		imagePort.updateState({ swapCheckState: { status: "checking" } });
 
 		const loaded = await probeMediaSrc({ type: "image", src });
 
@@ -122,7 +120,7 @@ export const handleImageSwap = ({
 		}
 
 		if (!loaded) {
-			imagePopover.updateState({
+			imagePort.updateState({
 				swapCheckState: {
 					status: "error",
 					message: "Couldn't load that image. Check the link and try again.",
@@ -132,8 +130,8 @@ export const handleImageSwap = ({
 		}
 
 		applyImageSrc({ figure: currentImageFigure, src, editorAPI });
-		imagePopover.updateState({ swapCheckState: { status: "idle" } });
-		imagePopover.swapPopover.hidePopover();
+		imagePort.updateState({ swapCheckState: { status: "idle" } });
+		imagePort.swapPopover.hidePopover();
 	});
 
 	return () => {

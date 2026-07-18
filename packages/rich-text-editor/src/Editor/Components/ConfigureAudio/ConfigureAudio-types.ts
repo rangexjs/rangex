@@ -1,11 +1,11 @@
 import type { EditorAPI, HTMLLayout } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { AudioPort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../BlockPopoverAppearanceHandler";
 import type { BlockResize } from "../../BlockResize";
 import type { OnMediaResolveFn } from "../ConfigureEmptyMedia";
 
 export interface ConfigureAudioParams {
-	richTextEditorUI: RichTextEditorUI;
+	audioPort: AudioPort;
 	editorAPI: EditorAPI;
 	blockResize: BlockResize;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;
