@@ -5,11 +5,11 @@ import { handlePopoverAppearance } from "./HandlePopoverAppearance";
 import { handlePopoverClose } from "./HandlePopoverClose";
 
 export const configureEmoji = ({
-	richTextEditorUI,
+	emojiPort,
 	editorAPI,
 }: ConfigureEmojiParams) => {
 	const emojiInsertionCleanup = handleEmojiInsertion({
-		richTextEditorUI,
+		emojiPort,
 		editorAPI,
 	});
 
@@ -18,17 +18,17 @@ export const configureEmoji = ({
 	// 2. autoComplete — inserts emoji for a completed :<name>: shortcode
 	// 3. appearance  — shows the popover for a partial :query
 	const popoverCloseCleanup = handlePopoverClose({
-		richTextEditorUI,
+		emojiPort,
 		editorAPI,
 	});
 
 	const emojiAutoCompleteCleanup = handleEmojiAutoComplete({
-		richTextEditorUI,
+		emojiPort,
 		editorAPI,
 	});
 
 	const popoverAppearanceCleanup = handlePopoverAppearance({
-		richTextEditorUI,
+		emojiPort,
 		editorAPI,
 	});
 

@@ -12,11 +12,9 @@ import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-ty
  * a known emoji. Fires only on actual typing, not on cursor movement.
  */
 export const handleEmojiAutoComplete = ({
-	richTextEditorUI,
+	emojiPort,
 	editorAPI,
 }: HandleEmojiAutoCompleteParams) => {
-	const { emojiPopover } = richTextEditorUI;
-
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
@@ -54,7 +52,7 @@ export const handleEmojiAutoComplete = ({
 				return false;
 			}
 
-			const match = emojiPopover.findByName(emojiQuery.query);
+			const match = emojiPort.findByName(emojiQuery.query);
 
 			if (!match) {
 				return false;

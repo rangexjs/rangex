@@ -1,8 +1,8 @@
 import type { EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { EmojiPort } from "#ports";
 
 export interface HandleEmojiInsertionParams {
-	richTextEditorUI: RichTextEditorUI;
+	emojiPort: EmojiPort;
 	editorAPI: EditorAPI;
 }
 

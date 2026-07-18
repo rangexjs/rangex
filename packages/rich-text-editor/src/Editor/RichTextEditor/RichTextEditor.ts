@@ -192,7 +192,7 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 		const emojiCleanup = configureEmoji({
-			richTextEditorUI: this.#richTextEditorUI,
+			emojiPort: this.#richTextEditorUI.emojiPopover,
 			editorAPI,
 		});
 		const mentionCleanup = configureMention({

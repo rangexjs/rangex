@@ -1,15 +1,17 @@
+import type {
+	EmojiItems,
+	EmojiOnSelectFn,
+	EmojiPort,
+	EmojiSuggestionItem,
+	UpdateEmojiPopoverStateParams,
+} from "#ports";
 import { assertNever } from "../../ErrorHandling";
 import { emojiData } from "./EmojiData";
 import type {
-	EmojiItems,
 	EmojiListenerOption,
-	EmojiOnSelectFn,
-	EmojiPopover,
-	EmojiSuggestionItem,
 	EmojiUpdateFilteredItemsFn,
 	EmojiUpdateListenerParams,
 	EmojiUpdateQueryFn,
-	UpdateEmojiPopoverStateParams,
 } from "./EmojiPopoverController-types";
 
 const MAX_RESULTS = 8;
@@ -90,7 +92,7 @@ export class EmojiPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): EmojiPopover {
+	get publicAPI(): EmojiPort {
 		const controller = this;
 
 		return {

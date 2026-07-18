@@ -2,6 +2,7 @@ export type {
 	CodeBlockLanguage,
 	CodeBlockPopoverState,
 	CodeBlockTheme,
+	EmojiPopoverState,
 	MentionPopoverState,
 	TemplateVariablePopoverState,
 } from "#ports";
@@ -20,8 +21,6 @@ export type {
 	UploadState,
 } from "./NodeSlotControllers";
 export type {
-	EmojiPopover,
-	EmojiPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
 } from "./PopoverControllers";

@@ -1,4 +1,4 @@
-import type { EmojiItems } from "./EmojiPopoverController-types";
+import type { EmojiItems } from "#ports";
 
 export const emojiData: EmojiItems = [
 	{ emoji: "😀", name: "grinning" },

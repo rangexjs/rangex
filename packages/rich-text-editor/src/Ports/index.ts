@@ -3,6 +3,7 @@ export * from "./AudioPort";
 export * from "./BlockResizePort";
 export * from "./CodeBlockPort";
 export * from "./EmbedPort";
+export * from "./EmojiPort";
 export * from "./ImagePort";
 export * from "./LinkPort";
 export * from "./MentionPort";

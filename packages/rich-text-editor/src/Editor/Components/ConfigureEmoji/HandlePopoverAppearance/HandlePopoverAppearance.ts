@@ -12,11 +12,10 @@ import type { HandlePopoverAppearanceParams } from "./HandlePopoverAppearance-ty
  * Does not hide — hiding is handled by handlePopoverClose, which must be subscribed first.
  */
 export const handlePopoverAppearance = ({
-	richTextEditorUI,
+	emojiPort,
 	editorAPI,
 }: HandlePopoverAppearanceParams) => {
-	const { emojiPopover } = richTextEditorUI;
-	const { popover } = emojiPopover;
+	const { popover } = emojiPort;
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -50,9 +49,9 @@ export const handlePopoverAppearance = ({
 
 		const { query } = emojiQuery;
 
-		emojiPopover.updateState({ query });
+		emojiPort.updateState({ query });
 
-		if (!emojiPopover.filteredItems.length) {
+		if (!emojiPort.filteredItems.length) {
 			return;
 		}
 

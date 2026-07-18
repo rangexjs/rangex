@@ -39,16 +39,14 @@ const removeEmojiQueryText = ({
  * Strips the :query text first, then re-reads the cursor position and inserts there.
  */
 export const handleEmojiInsertion = ({
-	richTextEditorUI,
+	emojiPort,
 	editorAPI,
 }: HandleEmojiInsertionParams) => {
-	const { emojiPopover } = richTextEditorUI;
-
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = emojiPopover.onSelect(({ emoji }) => {
+	const unsubscribe = emojiPort.onSelect(({ emoji }) => {
 		const { queryFound } = removeEmojiQueryText({ editorAPI });
 
 		if (!queryFound) {

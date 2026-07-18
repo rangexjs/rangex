@@ -13,10 +13,10 @@ import type {
  * Returns focus to the editor when the user presses Escape inside the popover.
  */
 const restoreFocusOnEscape = ({
-	emojiPopover,
+	emojiPort,
 	editorAPI,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = emojiPopover;
+	const { popover } = emojiPort;
 
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
@@ -41,10 +41,10 @@ const restoreFocusOnEscape = ({
  * Hides the popover whenever the editor selection changes.
  */
 const closeOnSelectionChange = ({
-	emojiPopover,
+	emojiPort,
 	editorAPI,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = emojiPopover;
+	const { popover } = emojiPort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
@@ -62,10 +62,10 @@ const closeOnSelectionChange = ({
  * Hides the popover when the editor loses focus.
  */
 const closeOnEditorBlur = ({
-	emojiPopover,
+	emojiPort,
 	editorAPI,
 }: CloseOnEditorBlurParams) => {
-	const { popover } = emojiPopover;
+	const { popover } = emojiPort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
@@ -93,17 +93,15 @@ const closeOnEditorBlur = ({
  * Wires up all popover close behaviors: selection-driven close, editor blur close, and Escape key handling.
  */
 export const handlePopoverClose = ({
-	richTextEditorUI,
+	emojiPort,
 	editorAPI,
 }: HandlePopoverCloseParams) => {
-	const { emojiPopover } = richTextEditorUI;
-
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		emojiPopover,
+		emojiPort,
 		editorAPI,
 	});
-	const unsubscribeEditorBlur = closeOnEditorBlur({ emojiPopover, editorAPI });
-	const unsubscribeEscape = restoreFocusOnEscape({ emojiPopover, editorAPI });
+	const unsubscribeEditorBlur = closeOnEditorBlur({ emojiPort, editorAPI });
+	const unsubscribeEscape = restoreFocusOnEscape({ emojiPort, editorAPI });
 
 	return () => {
 		unsubscribeSelectionChange();

@@ -1,22 +1,22 @@
 import type { EditorAPI } from "rich-text-area";
-import type { EmojiPopover, RichTextEditorUI } from "#ui";
+import type { EmojiPort } from "#ports";
 
 export interface CloseOnSelectionChangeParams {
-	emojiPopover: EmojiPopover;
+	emojiPort: EmojiPort;
 	editorAPI: EditorAPI;
 }
 
 export interface CloseOnEditorBlurParams {
-	emojiPopover: EmojiPopover;
+	emojiPort: EmojiPort;
 	editorAPI: EditorAPI;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	emojiPopover: EmojiPopover;
+	emojiPort: EmojiPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandlePopoverCloseParams {
-	richTextEditorUI: RichTextEditorUI;
+	emojiPort: EmojiPort;
 	editorAPI: EditorAPI;
 }
