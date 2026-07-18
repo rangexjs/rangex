@@ -1,17 +1,17 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	CodeBlockLanguage,
+	CodeBlockPort,
 	CodeBlockTheme,
-} from "../../ToolbarButtonProps";
-import type {
-	CodeBlockListenerOption,
-	CodeBlockPopover,
-	CodeBlockUpdateListenerParams,
 	OnCopyFn,
 	OnDarkThemeChangeFn,
 	OnLanguageChangeFn,
 	OnLightThemeChangeFn,
 	UpdateCodeBlockPopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	CodeBlockListenerOption,
+	CodeBlockUpdateListenerParams,
 	UpdateDarkThemeFn,
 	UpdateLanguageFn,
 	UpdateLightThemeFn,
@@ -133,7 +133,7 @@ export class CodeBlockPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): CodeBlockPopover {
+	get publicAPI(): CodeBlockPort {
 		const controller = this;
 
 		return {

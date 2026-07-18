@@ -17,14 +17,12 @@ import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopover
  * set whenever the popover opens over a new block.
  */
 export const handleCodeBlockPopoverState = ({
-	richTextEditorUI,
+	codeBlockPort,
 	editorAPI,
 	getCurrentBlock,
 	codeHighlighter,
 }: HandleCodeBlockPopoverStateParams) => {
-	const { codeBlockPopover } = richTextEditorUI;
-
-	const unsubscribeLanguageChange = codeBlockPopover.onLanguageChange(
+	const unsubscribeLanguageChange = codeBlockPort.onLanguageChange(
 		(language) => {
 			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
@@ -43,11 +41,11 @@ export const handleCodeBlockPopoverState = ({
 				lang,
 				theme: storage.theme,
 			});
-			codeBlockPopover.updateState({ language });
+			codeBlockPort.updateState({ language });
 		},
 	);
 
-	const unsubscribeLightThemeChange = codeBlockPopover.onLightThemeChange(
+	const unsubscribeLightThemeChange = codeBlockPort.onLightThemeChange(
 		(lightTheme) => {
 			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
@@ -66,11 +64,11 @@ export const handleCodeBlockPopoverState = ({
 				lang: storage.lang,
 				theme: { ...storage.theme, light: highlighterLightTheme },
 			});
-			codeBlockPopover.updateState({ lightTheme });
+			codeBlockPort.updateState({ lightTheme });
 		},
 	);
 
-	const unsubscribeDarkThemeChange = codeBlockPopover.onDarkThemeChange(
+	const unsubscribeDarkThemeChange = codeBlockPort.onDarkThemeChange(
 		(darkTheme) => {
 			const currentCodeBlock = getCurrentBlock();
 			if (!currentCodeBlock) {
@@ -89,11 +87,11 @@ export const handleCodeBlockPopoverState = ({
 				lang: storage.lang,
 				theme: { ...storage.theme, dark: highlighterDarkTheme },
 			});
-			codeBlockPopover.updateState({ darkTheme });
+			codeBlockPort.updateState({ darkTheme });
 		},
 	);
 
-	const unsubscribeCopy = codeBlockPopover.onCopy(() => {
+	const unsubscribeCopy = codeBlockPort.onCopy(() => {
 		const currentCodeBlock = getCurrentBlock();
 		if (!currentCodeBlock) {
 			return;

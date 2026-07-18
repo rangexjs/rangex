@@ -1,6 +1,6 @@
 import { createSignal, createUniqueId } from "solid-js";
+import type { CodeBlockLanguage } from "#ports";
 import { toolbarButtonsName } from "../../../Constants";
-import type { CodeBlockLanguage } from "../../../ToolbarButtonProps";
 import { useToolbarButtonManagersContext } from "../../App";
 import { Icon } from "../../Icon";
 import { Dropdown, type DropdownList, ToolbarButton } from "../_Utilities";

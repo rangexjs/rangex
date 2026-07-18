@@ -7,6 +7,7 @@ import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButto
 import { handleLineNumbers } from "./HandleLineNumbers";
 
 export const configureCodeBlock = ({
+	codeBlockPort,
 	richTextEditorUI,
 	editorAPI,
 	blockComponentPlacement,
@@ -30,12 +31,12 @@ export const configureCodeBlock = ({
 
 	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
 		handleCodeBlockPopoverAppearance({
-			richTextEditorUI,
+			codeBlockPort,
 			blockPopoverAppearanceHandler,
 		});
 
 	const popoverStateCleanup = handleCodeBlockPopoverState({
-		richTextEditorUI,
+		codeBlockPort,
 		editorAPI,
 		codeHighlighter,
 		getCurrentBlock,

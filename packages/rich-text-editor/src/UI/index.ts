@@ -1,4 +1,10 @@
-export type { MentionPopoverState, TemplateVariablePopoverState } from "#ports";
+export type {
+	CodeBlockLanguage,
+	CodeBlockPopoverState,
+	CodeBlockTheme,
+	MentionPopoverState,
+	TemplateVariablePopoverState,
+} from "#ports";
 export type { LinearGradientColor, SolidColor, StructuredColor } from "./Color";
 export type { ToolbarButtons } from "./CommonTypes";
 export type { MenuBarActionState } from "./MenuBarActionManager";
@@ -14,13 +20,10 @@ export type {
 	UploadState,
 } from "./NodeSlotControllers";
 export type {
-	CodeBlockPopover,
-	CodeBlockPopoverState,
 	EmojiPopover,
 	EmojiPopoverState,
 	TableQuickActionsPopover,
 	TableQuickActionsPopoverState,
-	UpdateCodeBlockPopoverStateParams,
 } from "./PopoverControllers";
 export {
 	RichTextEditorUI,
@@ -34,8 +37,6 @@ export type {
 	BlockQuoteToolbarButtonState,
 	BoldToolbarButtonState,
 	CheckboxListToolbarButtonState,
-	CodeBlockLanguage,
-	CodeBlockTheme,
 	CodeBlockToolbarButtonState,
 	CodeToolbarButtonState,
 	ColorToolbarButtonState,

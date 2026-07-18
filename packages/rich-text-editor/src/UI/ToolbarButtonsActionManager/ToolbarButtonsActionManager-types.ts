@@ -1,3 +1,4 @@
+import type { CodeBlockLanguage, TemplateVariableKind } from "#ports";
 import type {
 	ToolbarButtonValue,
 	toolbarButtonActionsName,
@@ -5,7 +6,6 @@ import type {
 } from "../Constants";
 import type {
 	BackgroundColorValue,
-	CodeBlockLanguage,
 	ColorValue,
 	CustomComponentName,
 	FindReplacePattern,
@@ -16,7 +16,6 @@ import type {
 	LineHeightValue,
 	LineLocalNameValue,
 	LineSpacingValue,
-	TemplateVariableKind,
 	TemplateVariableOptions,
 	TextAlignValue,
 	ToggleButtonPressed,

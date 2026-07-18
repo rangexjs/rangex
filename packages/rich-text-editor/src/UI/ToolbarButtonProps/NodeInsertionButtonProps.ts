@@ -15,10 +15,6 @@ export interface CheckboxListToolbarButtonState {
 }
 
 // CodeBlock
-export type CodeBlockLanguage = string;
-
-export type CodeBlockTheme = string;
-
 export interface CodeBlockToolbarButtonState {
 	disabled: boolean;
 }

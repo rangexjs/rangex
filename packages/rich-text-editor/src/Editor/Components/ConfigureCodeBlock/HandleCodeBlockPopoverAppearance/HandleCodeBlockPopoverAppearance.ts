@@ -12,13 +12,11 @@ import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPo
  * Returns the registration's `getCurrentBlock`, threaded to {@link handleCodeBlockPopoverState}.
  */
 export const handleCodeBlockPopoverAppearance = ({
-	richTextEditorUI,
+	codeBlockPort,
 	blockPopoverAppearanceHandler,
 }: HandleCodeBlockPopoverAppearanceParams) => {
-	const { codeBlockPopover } = richTextEditorUI;
-
 	return blockPopoverAppearanceHandler.registerComponent({
-		popover: codeBlockPopover.popover,
+		popover: codeBlockPort.popover,
 		position: {
 			margin: "4px",
 			positionArea: "top right",
@@ -34,7 +32,7 @@ export const handleCodeBlockPopoverAppearance = ({
 				fallbacks: codeBlockStorageFallbacks,
 			});
 
-			codeBlockPopover.updateState({
+			codeBlockPort.updateState({
 				language: toUILanguage(lang),
 				lightTheme: toUITheme(theme.light),
 				darkTheme: toUITheme(theme.dark),

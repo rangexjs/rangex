@@ -1,4 +1,5 @@
 import { useContext } from "solid-js";
+import type { CodeBlockLanguage, CodeBlockTheme } from "#ports";
 import type { ToolbarButtons } from "../../CommonTypes";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
@@ -17,8 +18,6 @@ import type {
 } from "../../PopoverControllers";
 import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
 	CustomComponentName,
 	FontFamilyOption,
 } from "../../ToolbarButtonProps";

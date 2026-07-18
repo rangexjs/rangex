@@ -119,6 +119,7 @@ export class RichTextEditor extends HTMLElement {
 			blockComponentPlacement,
 		});
 		const codeBlockCleanup = configureCodeBlock({
+			codeBlockPort: this.#richTextEditorUI.codeBlockPopover,
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,

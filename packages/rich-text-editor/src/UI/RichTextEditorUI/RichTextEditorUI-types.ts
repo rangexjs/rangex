@@ -1,8 +1,7 @@
+import type { CodeBlockLanguage, CodeBlockTheme } from "#ports";
 import type { ToolbarButtons } from "../CommonTypes";
 import type { DefaultStyleValues } from "../ToolbarButtonDefaultValues";
 import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
 	CustomComponentName,
 	FontFamilyOption,
 } from "../ToolbarButtonProps";

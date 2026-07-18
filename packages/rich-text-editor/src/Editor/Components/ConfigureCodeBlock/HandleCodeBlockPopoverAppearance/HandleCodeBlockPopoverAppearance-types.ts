@@ -1,7 +1,7 @@
-import type { RichTextEditorUI } from "#ui";
+import type { CodeBlockPort } from "#ports";
 import type { BlockPopoverAppearanceHandler } from "../../../BlockPopoverAppearanceHandler";
 
 export interface HandleCodeBlockPopoverAppearanceParams {
-	richTextEditorUI: RichTextEditorUI;
+	codeBlockPort: CodeBlockPort;
 	blockPopoverAppearanceHandler: BlockPopoverAppearanceHandler;
 }
