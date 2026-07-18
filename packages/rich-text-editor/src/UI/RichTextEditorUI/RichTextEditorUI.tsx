@@ -286,7 +286,7 @@ export class RichTextEditorUI extends HTMLElement {
 		return this.#tableQuickActionsPopoverController.publicAPI;
 	}
 
-	get templateVariablePopover() {
+	get templateVariablePort() {
 		return this.#templateVariablePopoverController.publicAPI;
 	}
 

@@ -1,7 +1,7 @@
 import type { EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { TemplateVariablePort } from "#ports";
 
 export interface HandleTemplateVariablePopoverAppearanceParams {
-	richTextEditorUI: RichTextEditorUI;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }

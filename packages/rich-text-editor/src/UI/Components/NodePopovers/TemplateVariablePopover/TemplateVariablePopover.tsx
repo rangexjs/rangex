@@ -8,7 +8,7 @@ import {
 import type {
 	TemplateVariablePopoverItem,
 	TemplateVariablePopoverItems,
-} from "../../../PopoverControllers";
+} from "#ports";
 import { usePopoverControllersContext } from "../../App";
 
 interface TemplateVariableItemProps {
@@ -137,7 +137,7 @@ export const TemplateVariablePopover = () => {
 			}}
 			id={popoverId}
 			popover="manual"
-			class="max-h-[min(100%,360px)] min-w-40 max-w-56 rounded-lg border border-neutral-300 bg-white shadow-md [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-900"
+			class="scrollbar-thin max-h-[min(100%,360px)] min-w-40 max-w-56 rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={filteredItems()}>

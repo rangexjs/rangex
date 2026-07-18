@@ -13,10 +13,10 @@ import type {
  * Returns focus to the editor when the user presses Escape inside the popover.
  */
 const restoreFocusOnEscape = ({
-	templateVariablePopover,
+	templateVariablePort,
 	editorAPI,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = templateVariablePopover;
+	const { popover } = templateVariablePort;
 
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
@@ -41,10 +41,10 @@ const restoreFocusOnEscape = ({
  * Hides the popover whenever the editor selection changes.
  */
 const closeOnSelectionChange = ({
-	templateVariablePopover,
+	templateVariablePort,
 	editorAPI,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = templateVariablePopover;
+	const { popover } = templateVariablePort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
@@ -62,10 +62,10 @@ const closeOnSelectionChange = ({
  * Hides the popover when the editor loses focus.
  */
 const closeOnEditorBlur = ({
-	templateVariablePopover,
+	templateVariablePort,
 	editorAPI,
 }: CloseOnEditorBlurParams) => {
-	const { popover } = templateVariablePopover;
+	const { popover } = templateVariablePort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
@@ -93,21 +93,19 @@ const closeOnEditorBlur = ({
  * Wires up all popover close behaviors: selection-driven close, editor blur close, and Escape key handling.
  */
 export const handleTemplateVariablePopoverClose = ({
-	richTextEditorUI,
+	templateVariablePort,
 	editorAPI,
 }: HandleTemplateVariablePopoverCloseParams) => {
-	const { templateVariablePopover } = richTextEditorUI;
-
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		templateVariablePopover,
+		templateVariablePort,
 		editorAPI,
 	});
 	const unsubscribeEditorBlur = closeOnEditorBlur({
-		templateVariablePopover,
+		templateVariablePort,
 		editorAPI,
 	});
 	const unsubscribeEscape = restoreFocusOnEscape({
-		templateVariablePopover,
+		templateVariablePort,
 		editorAPI,
 	});
 

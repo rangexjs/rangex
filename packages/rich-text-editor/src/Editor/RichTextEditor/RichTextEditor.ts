@@ -199,6 +199,7 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 		const templateVariableCleanup = configureTemplateVariable({
+			templateVariablePort: this.#richTextEditorUI.templateVariablePort,
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 		});

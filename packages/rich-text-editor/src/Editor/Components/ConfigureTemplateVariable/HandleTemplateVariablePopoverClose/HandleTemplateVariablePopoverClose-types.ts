@@ -1,22 +1,22 @@
 import type { EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI, TemplateVariablePopover } from "#ui";
+import type { TemplateVariablePort } from "#ports";
 
 export interface CloseOnSelectionChangeParams {
-	templateVariablePopover: TemplateVariablePopover;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }
 
 export interface CloseOnEditorBlurParams {
-	templateVariablePopover: TemplateVariablePopover;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	templateVariablePopover: TemplateVariablePopover;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleTemplateVariablePopoverCloseParams {
-	richTextEditorUI: RichTextEditorUI;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }

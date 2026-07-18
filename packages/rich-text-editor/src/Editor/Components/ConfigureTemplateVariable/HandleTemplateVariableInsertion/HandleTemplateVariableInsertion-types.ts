@@ -1,5 +1,6 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
-import type { RichTextEditorUI, TemplateVariableKind } from "#ui";
+import type { TemplateVariableKind } from "#ports";
+import type { RichTextEditorUI } from "#ui";
 
 export interface CreateTemplateVariableComponentParams {
 	type: TemplateVariableKind;

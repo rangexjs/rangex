@@ -4,4 +4,5 @@ export * from "./EmbedPort";
 export * from "./ImagePort";
 export * from "./LinkPort";
 export * from "./MentionPort";
+export * from "./TemplateVariablePort";
 export * from "./VideoPort";

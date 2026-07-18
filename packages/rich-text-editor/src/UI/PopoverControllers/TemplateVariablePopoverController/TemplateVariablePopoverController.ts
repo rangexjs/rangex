@@ -1,13 +1,15 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
-	TemplateVariablePopover,
 	TemplateVariablePopoverItem,
 	TemplateVariablePopoverItems,
-	TemplateVariablePopoverListenerOption,
 	TemplateVariablePopoverOnSelectFn,
+	TemplateVariablePort,
+	UpdateTemplateVariablePopoverStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	TemplateVariablePopoverListenerOption,
 	TemplateVariablePopoverUpdateFilteredItemsFn,
 	TemplateVariablePopoverUpdateListenerParams,
-	UpdateTemplateVariablePopoverStateParams,
 } from "./TemplateVariablePopoverController-types";
 
 const ALL_ITEMS: TemplateVariablePopoverItems = [
@@ -85,7 +87,7 @@ export class TemplateVariablePopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): TemplateVariablePopover {
+	get publicAPI(): TemplateVariablePort {
 		const controller = this;
 
 		return {

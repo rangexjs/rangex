@@ -7,6 +7,7 @@ import { handleTemplateVariableToolbarButtonState } from "./HandleTemplateVariab
 import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
 
 export const configureTemplateVariable = ({
+	templateVariablePort,
 	richTextEditorUI,
 	editorAPI,
 }: ConfigureTemplateVariableParams) => {
@@ -26,18 +27,18 @@ export const configureTemplateVariable = ({
 	});
 
 	const popoverInsertionCleanup = handleTemplateVariablePopoverInsertion({
-		richTextEditorUI,
+		templateVariablePort,
 		editorAPI,
 	});
 
 	// Close must be subscribed before appearance — both listen to selection changes and close must fire first
 	const popoverCloseCleanup = handleTemplateVariablePopoverClose({
-		richTextEditorUI,
+		templateVariablePort,
 		editorAPI,
 	});
 
 	const popoverAppearanceCleanup = handleTemplateVariablePopoverAppearance({
-		richTextEditorUI,
+		templateVariablePort,
 		editorAPI,
 	});
 

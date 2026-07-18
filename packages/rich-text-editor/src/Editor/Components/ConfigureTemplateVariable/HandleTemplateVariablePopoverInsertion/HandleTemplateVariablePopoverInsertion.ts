@@ -84,15 +84,14 @@ const createTemplateVariableComponent = ({
  * On select, strips the {{query text first, then re-reads the cursor position and inserts there.
  */
 export const handleTemplateVariablePopoverInsertion = ({
-	richTextEditorUI,
+	templateVariablePort,
 	editorAPI,
 }: HandleTemplateVariablePopoverInsertionParams) => {
-	const { templateVariablePopover } = richTextEditorUI;
 	const { rootEditable } = editorAPI;
 
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = templateVariablePopover.onSelect(({ kind }) => {
+	const unsubscribe = templateVariablePort.onSelect(({ kind }) => {
 		const { queryFound } = removeTemplateVariableQueryText({ editorAPI });
 
 		if (!queryFound) {

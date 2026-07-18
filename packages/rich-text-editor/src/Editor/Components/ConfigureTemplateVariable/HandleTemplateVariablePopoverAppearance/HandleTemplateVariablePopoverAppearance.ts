@@ -15,11 +15,10 @@ import type { HandleTemplateVariablePopoverAppearanceParams } from "./HandleTemp
  * Does not hide — hiding is handled by handleTemplateVariablePopoverClose, which must be subscribed first.
  */
 export const handleTemplateVariablePopoverAppearance = ({
-	richTextEditorUI,
+	templateVariablePort,
 	editorAPI,
 }: HandleTemplateVariablePopoverAppearanceParams) => {
-	const { templateVariablePopover } = richTextEditorUI;
-	const { popover } = templateVariablePopover;
+	const { popover } = templateVariablePort;
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -57,9 +56,9 @@ export const handleTemplateVariablePopoverAppearance = ({
 
 		const { query } = templateVariableQuery;
 
-		templateVariablePopover.updateState({ query });
+		templateVariablePort.updateState({ query });
 
-		if (!templateVariablePopover.filteredItems.length) {
+		if (!templateVariablePort.filteredItems.length) {
 			return;
 		}
 

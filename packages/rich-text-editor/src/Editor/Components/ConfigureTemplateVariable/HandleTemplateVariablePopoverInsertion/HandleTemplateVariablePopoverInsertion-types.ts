@@ -1,5 +1,5 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
-import type { RichTextEditorUI, TemplateVariableKind } from "#ui";
+import type { TemplateVariableKind, TemplateVariablePort } from "#ports";
 
 export interface RemoveTemplateVariableQueryTextParams {
 	editorAPI: EditorAPI;
@@ -18,6 +18,6 @@ export interface CreateTemplateVariableComponentResult
 	extends InlineNestedContext {}
 
 export interface HandleTemplateVariablePopoverInsertionParams {
-	richTextEditorUI: RichTextEditorUI;
+	templateVariablePort: TemplateVariablePort;
 	editorAPI: EditorAPI;
 }

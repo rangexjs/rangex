@@ -1,5 +1,5 @@
 import type { InlineNestedContext } from "rich-text-area";
-import type { TemplateVariableKind } from "#ui";
+import type { TemplateVariableKind } from "#ports";
 import type { RootStorage } from "../../../_Utilities";
 import type {
 	TemplateVariableId,
