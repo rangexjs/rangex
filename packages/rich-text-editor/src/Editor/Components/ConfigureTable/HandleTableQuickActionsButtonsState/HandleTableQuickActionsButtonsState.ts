@@ -133,12 +133,10 @@ const isClearContentsDisabled = ({
 };
 
 const updateTableQuickActionsButtonsState = ({
-	richTextEditorUI,
+	tableQuickActionsPort,
 	editorAPI,
 	table,
 }: UpdateTableQuickActionsButtonsStateParams) => {
-	const { tableQuickActionsPopover } = richTextEditorUI;
-
 	const mergeCellsValidityState = table.$$checkMergeCells({
 		type: "selection",
 	});
@@ -239,7 +237,7 @@ const updateTableQuickActionsButtonsState = ({
 
 	const clearContentsDisabled = isClearContentsDisabled({ editorAPI, table });
 
-	tableQuickActionsPopover.updateState({
+	tableQuickActionsPort.updateState({
 		sectionType: {
 			header: {
 				disabled: !moveRowsToSectionValidityState.canMoveToHead,
@@ -320,7 +318,7 @@ const updateTableQuickActionsButtonsState = ({
 };
 
 export const handleTableQuickActionsButtonsState = ({
-	richTextEditorUI,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleTableQuickActionsButtonsStateParams) => {
 	const unsubscribeSelection = editorAPI.subscribeEditorEvent({
@@ -344,7 +342,7 @@ export const handleTableQuickActionsButtonsState = ({
 			}
 
 			updateTableQuickActionsButtonsState({
-				richTextEditorUI,
+				tableQuickActionsPort,
 				editorAPI,
 				table: $$table,
 			});
@@ -362,7 +360,7 @@ export const handleTableQuickActionsButtonsState = ({
 				}
 
 				updateTableQuickActionsButtonsState({
-					richTextEditorUI,
+					tableQuickActionsPort,
 					editorAPI,
 					table,
 				});
@@ -381,7 +379,7 @@ export const handleTableQuickActionsButtonsState = ({
 				}
 
 				updateTableQuickActionsButtonsState({
-					richTextEditorUI,
+					tableQuickActionsPort,
 					editorAPI,
 					table,
 				});

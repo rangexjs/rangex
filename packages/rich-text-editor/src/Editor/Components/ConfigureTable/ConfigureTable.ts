@@ -24,7 +24,7 @@ export const configureTable = ({
 	);
 
 	const quickActionsStateCleanup = handleTableQuickActionsButtonsState({
-		richTextEditorUI,
+		tableQuickActionsPort: richTextEditorUI.tableQuickActionsPopover,
 		editorAPI,
 	});
 

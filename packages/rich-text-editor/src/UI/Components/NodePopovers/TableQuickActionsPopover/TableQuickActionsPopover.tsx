@@ -6,7 +6,6 @@ import {
 	onMount,
 	Show,
 } from "solid-js";
-import { assertNever } from "../../../ErrorHandling";
 import type {
 	TableQuickActionsCellResizingState,
 	TableQuickActionsCellTypeState,
@@ -15,7 +14,8 @@ import type {
 	TableQuickActionsMergeSplitState,
 	TableQuickActionsSectionTypeState,
 	TableQuickActionsVerticalAlignmentState,
-} from "../../../PopoverControllers";
+} from "#ports";
+import { assertNever } from "../../../ErrorHandling";
 import { usePopoverControllersContext } from "../../App";
 import { Icon } from "../../Icon";
 import {

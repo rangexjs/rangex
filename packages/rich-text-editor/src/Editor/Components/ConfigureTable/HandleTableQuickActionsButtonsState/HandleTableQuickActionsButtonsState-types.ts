@@ -1,5 +1,5 @@
 import type { EditorAPI, Table, TableCell } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { TableQuickActionsPort } from "#ports";
 
 export interface GetActiveTableCellsParams {
 	editorAPI: EditorAPI;
@@ -48,12 +48,12 @@ export interface IsClearContentsDisabledParams {
 export type IsClearContentsDisabledResult = boolean;
 
 export interface UpdateTableQuickActionsButtonsStateParams {
-	richTextEditorUI: RichTextEditorUI;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 	table: Table;
 }
 
 export interface HandleTableQuickActionsButtonsStateParams {
-	richTextEditorUI: RichTextEditorUI;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }

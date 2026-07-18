@@ -50,10 +50,10 @@ const getActiveTable = ({
 };
 
 const handleSelectionType = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleSelectionTypeParams) => {
-	return tableQuickActionsPopover.onSectionType((type) => {
+	return tableQuickActionsPort.onSectionType((type) => {
 		const toSection: TableSectionLocalName = (
 			{
 				header: "thead",
@@ -79,10 +79,10 @@ const handleSelectionType = ({
 };
 
 const handleMergeSplit = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleMergeSplitParams) => {
-	return tableQuickActionsPopover.onMergeSplit((action) => {
+	return tableQuickActionsPort.onMergeSplit((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -111,10 +111,10 @@ const handleMergeSplit = ({
 };
 
 const handleInsertDelete = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleInsertDeleteParams) => {
-	return tableQuickActionsPopover.onInsertDelete((action) => {
+	return tableQuickActionsPort.onInsertDelete((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -139,10 +139,10 @@ const handleInsertDelete = ({
 };
 
 const handleCellType = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleCellTypeParams) => {
-	return tableQuickActionsPopover.onCellType((action) => {
+	return tableQuickActionsPort.onCellType((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -183,10 +183,10 @@ const getActiveTableCells = ({
 };
 
 const handleVerticalAlignment = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleVerticalAlignmentParams) => {
-	return tableQuickActionsPopover.onVerticalAlignment((action) => {
+	return tableQuickActionsPort.onVerticalAlignment((action) => {
 		const tableCells = getActiveTableCells({ editorAPI });
 
 		const alignContent = (
@@ -214,10 +214,10 @@ const handleVerticalAlignment = ({
 };
 
 const handleCellResizing = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleCellResizingParams) => {
-	return tableQuickActionsPopover.onCellResizing((action) => {
+	return tableQuickActionsPort.onCellResizing((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -264,12 +264,12 @@ const handleCellResizing = ({
 };
 
 const handleClearContents = ({
-	tableQuickActionsPopover,
+	tableQuickActionsPort,
 	editorAPI,
 }: HandleClearContentsParams) => {
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	return tableQuickActionsPopover.onClearContents(() => {
+	return tableQuickActionsPort.onClearContents(() => {
 		const tableCells = getActiveTableCells({ editorAPI });
 
 		for (const tableCell of tableCells) {
@@ -300,34 +300,34 @@ export const handleTableQuickActionsButtonsInteraction = ({
 	richTextEditorUI,
 	editorAPI,
 }: HandleTableQuickActionsButtonsInteractionParams) => {
-	const { tableQuickActionsPopover } = richTextEditorUI;
+	const tableQuickActionsPort = richTextEditorUI.tableQuickActionsPopover;
 
 	const sectionTypeCleanup = handleSelectionType({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const mergeSplitCleanup = handleMergeSplit({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const insertDeleteCleanup = handleInsertDelete({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const cellTypeCleanup = handleCellType({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const verticalAlignmentCleanup = handleVerticalAlignment({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const cellResizingCleanup = handleCellResizing({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 	const clearContentsCleanup = handleClearContents({
-		tableQuickActionsPopover,
+		tableQuickActionsPort,
 		editorAPI,
 	});
 

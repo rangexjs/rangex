@@ -7,5 +7,6 @@ export * from "./EmojiPort";
 export * from "./ImagePort";
 export * from "./LinkPort";
 export * from "./MentionPort";
+export * from "./TableQuickActionsPort";
 export * from "./TemplateVariablePort";
 export * from "./VideoPort";

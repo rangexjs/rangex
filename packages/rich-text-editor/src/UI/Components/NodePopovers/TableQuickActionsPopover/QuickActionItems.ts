@@ -5,10 +5,10 @@ import type {
 	TableQuickActionsClearContentsState,
 	TableQuickActionsInsertDeleteState,
 	TableQuickActionsMergeSplitState,
-	TableQuickActionsPopoverController,
 	TableQuickActionsSectionTypeState,
 	TableQuickActionsVerticalAlignmentState,
-} from "../../../PopoverControllers";
+} from "#ports";
+import type { TableQuickActionsPopoverController } from "../../../PopoverControllers";
 
 export interface ActionItem {
 	type: "button";

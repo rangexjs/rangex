@@ -1,5 +1,6 @@
 import type { EditorAPI, Table, TableCell } from "rich-text-area";
-import type { RichTextEditorUI, TableQuickActionsPopover } from "#ui";
+import type { TableQuickActionsPort } from "#ports";
+import type { RichTextEditorUI } from "#ui";
 
 export interface GetActiveTableParams {
 	editorAPI: EditorAPI;
@@ -8,22 +9,22 @@ export interface GetActiveTableParams {
 export type GetActiveTableResult = Table | null;
 
 export interface HandleSelectionTypeParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleMergeSplitParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleInsertDeleteParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleCellTypeParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
@@ -34,17 +35,17 @@ export interface GetActiveTableCellsParams {
 export type GetActiveTableCellsResult = TableCell[];
 
 export interface HandleVerticalAlignmentParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleCellResizingParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleClearContentsParams {
-	tableQuickActionsPopover: TableQuickActionsPopover;
+	tableQuickActionsPort: TableQuickActionsPort;
 	editorAPI: EditorAPI;
 }
 

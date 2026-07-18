@@ -1,4 +1,3 @@
-import { assertNever } from "../../ErrorHandling";
 import type {
 	TableQuickActionsCellResizingAction,
 	TableQuickActionsCellResizingState,
@@ -7,7 +6,6 @@ import type {
 	TableQuickActionsClearContentsState,
 	TableQuickActionsInsertDeleteAction,
 	TableQuickActionsInsertDeleteState,
-	TableQuickActionsListenerOption,
 	TableQuickActionsMergeSplitAction,
 	TableQuickActionsMergeSplitState,
 	TableQuickActionsOnCellResizingFn,
@@ -17,9 +15,16 @@ import type {
 	TableQuickActionsOnMergeSplitFn,
 	TableQuickActionsOnSectionTypeFn,
 	TableQuickActionsOnVerticalAlignmentFn,
-	TableQuickActionsPopover,
+	TableQuickActionsPort,
 	TableQuickActionsSectionTypeAction,
 	TableQuickActionsSectionTypeState,
+	TableQuickActionsVerticalAlignmentAction,
+	TableQuickActionsVerticalAlignmentState,
+	UpdateTableQuickActionsStateParams,
+} from "#ports";
+import { assertNever } from "../../ErrorHandling";
+import type {
+	TableQuickActionsListenerOption,
 	TableQuickActionsUpdateCellResizingFn,
 	TableQuickActionsUpdateCellTypeFn,
 	TableQuickActionsUpdateClearContentsFn,
@@ -28,9 +33,6 @@ import type {
 	TableQuickActionsUpdateMergeSplitFn,
 	TableQuickActionsUpdateSectionTypeFn,
 	TableQuickActionsUpdateVerticalAlignmentFn,
-	TableQuickActionsVerticalAlignmentAction,
-	TableQuickActionsVerticalAlignmentState,
-	UpdateTableQuickActionsStateParams,
 } from "./TableQuickActionsPopoverController-types";
 
 export class TableQuickActionsPopoverController {
@@ -293,7 +295,7 @@ export class TableQuickActionsPopoverController {
 		this.#popover = element;
 	}
 
-	get publicAPI(): TableQuickActionsPopover {
+	get publicAPI(): TableQuickActionsPort {
 		const controller = this;
 
 		return {

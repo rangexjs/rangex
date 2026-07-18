@@ -4,6 +4,7 @@ export type {
 	CodeBlockTheme,
 	EmojiPopoverState,
 	MentionPopoverState,
+	TableQuickActionsPopoverState,
 	TemplateVariablePopoverState,
 } from "#ports";
 export type { LinearGradientColor, SolidColor, StructuredColor } from "./Color";
@@ -20,10 +21,6 @@ export type {
 	MediaSource,
 	UploadState,
 } from "./NodeSlotControllers";
-export type {
-	TableQuickActionsPopover,
-	TableQuickActionsPopoverState,
-} from "./PopoverControllers";
 export {
 	RichTextEditorUI,
 	type RichTextEditorUIOptions,
