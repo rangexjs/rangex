@@ -1,4 +1,9 @@
-import type { AdapterBlueprint, Extension, ExtensionDefinition } from "#ports";
+import type {
+	AdapterBlueprint,
+	Extension,
+	ExtensionDefinition,
+	ExtensionName,
+} from "#ports";
 
 /**
  * `createAdapter` must be called exactly once per editor instance — the driver threads
@@ -7,7 +12,7 @@ import type { AdapterBlueprint, Extension, ExtensionDefinition } from "#ports";
  * feature that depends on it.
  */
 export const createExtension = <
-	Name extends string,
+	Name extends ExtensionName,
 	Options extends object,
 	Port extends object,
 	Adapter extends AdapterBlueprint<Options, Port>,

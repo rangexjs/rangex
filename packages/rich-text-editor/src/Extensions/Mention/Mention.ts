@@ -1,10 +1,11 @@
 import { MentionAdapter } from "#adapters";
 import { configureMention } from "#editor-extensions";
+import { extensionsName } from "#ports";
 import { MentionPopover } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const Mention = createExtension({
-	name: "mention",
+	name: extensionsName.mention,
 	defaultSettings: {},
 	createAdapter: (settings) => new MentionAdapter(settings),
 	configure: ({ adapter, editorAPI }) =>

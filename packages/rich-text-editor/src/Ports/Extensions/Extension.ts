@@ -1,5 +1,7 @@
 import type { EditorAPI } from "rich-text-area";
 import type { Component } from "solid-js";
+import type { ToolbarButtonValue } from "../ToolbarButtons";
+import type { ExtensionName } from "./ExtensionsName";
 
 export interface ConfigPort<Port extends object> {
 	port: Port;
@@ -34,14 +36,16 @@ export interface ExtensionComponents<
 	Port extends object,
 	Adapter extends AdapterBlueprint<Options, Port>,
 > {
-	toolbarButton?: Component<{ adapter: Adapter }>;
+	toolbarButtons?: Partial<
+		Record<ToolbarButtonValue, Component<{ adapter: Adapter }>>
+	>;
 	popover?: Component<{ adapter: Adapter }>;
 	nodeSlot?: Component<{ adapter: Adapter }>;
 	commandMenu?: Component<{ adapter: Adapter }>;
 }
 
 export interface ExtensionDefinition<
-	Name extends string,
+	Name extends ExtensionName,
 	Options extends object,
 	Port extends object,
 	Adapter extends AdapterBlueprint<Options, Port>,
@@ -54,7 +58,7 @@ export interface ExtensionDefinition<
 }
 
 export interface Extension<
-	Name extends string,
+	Name extends ExtensionName,
 	Options extends object,
 	Port extends object,
 	Adapter extends AdapterBlueprint<Options, Port>,
@@ -66,11 +70,11 @@ export interface Extension<
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: erased for the generic "any extension" shape
-type AnyExtension = Extension<string, any, any, any>;
+type AnyExtension = Extension<ExtensionName, any, any, any>;
 
 /**
  * What `RichTextEditor` builds per active extension after calling `createAdapter`/`configure` —
- * the payload `RichTextEditorUI` needs to render `components.toolbarButton`/`components.popover`, etc.
+ * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`/`components.popover`, etc.
  * Derived from `Extension` (not hand-duplicated) so a rename/removal on `Extension` breaks this too.
  */
 export type ResolvedExtension = Pick<AnyExtension, "name" | "components"> & {

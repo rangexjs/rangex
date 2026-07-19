@@ -2,6 +2,7 @@ import type { Component } from "solid-js";
 import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
+	type ExtensionName,
 	type ResolvedExtension,
 	type ToolbarButtons,
 	type ToolbarButtonValue,
@@ -42,7 +43,25 @@ import {
 	UnorderedListToolbarButton,
 } from "../ToolbarButtons";
 
-type StaticToolbarButtonValue = Exclude<ToolbarButtonValue, "link">;
+type StaticToolbarButtonValue = Exclude<
+	ToolbarButtonValue,
+	typeof toolbarButtonsName.link | ExtensionName
+>;
+
+const findExtensionToolbarButton = (
+	name: ToolbarButtonValue,
+	extensions: ResolvedExtension[],
+) => {
+	for (const extension of extensions) {
+		const component = extension.components.toolbarButtons?.[name];
+
+		if (component) {
+			return { component, adapter: extension.adapter };
+		}
+	}
+
+	return null;
+};
 
 interface ToolbarButtonProps {
 	name: ToolbarButtonValue;
@@ -87,9 +106,9 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 			[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
 		};
 
-	const extension = extensions.find((ext) => ext.name === name);
+	const match = findExtensionToolbarButton(name, extensions);
 
-	if (!extension?.components.toolbarButton) {
+	if (!match) {
 		return (
 			<Dynamic
 				component={ToolbarButtonComponentMap[name as StaticToolbarButtonValue]}
@@ -97,12 +116,7 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 		);
 	}
 
-	return (
-		<Dynamic
-			component={extension.components.toolbarButton}
-			adapter={extension.adapter}
-		/>
-	);
+	return <Dynamic component={match.component} adapter={match.adapter} />;
 };
 
 export interface EditorToolbarProps {
