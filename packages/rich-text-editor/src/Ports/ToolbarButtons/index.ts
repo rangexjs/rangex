@@ -1,2 +1,2 @@
-export * from "./Toolbar-types";
+export * from "./ToolbarButtonsLayout";
 export * from "./ToolbarButtonsName";
