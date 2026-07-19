@@ -1,29 +1,29 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { LinkAdapter, LinkUpdateToolbarButtonFn } from "#adapters";
+import type { LinkUIPort, LinkUpdateToolbarButtonFn } from "#adapters";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 interface LinkToolbarButtonProps {
-	adapter: LinkAdapter;
+	uiPort: LinkUIPort;
 }
 
 export const LinkToolbarButton = (props: LinkToolbarButtonProps) => {
-	const adapter = props.adapter;
+	const uiPort = props.uiPort;
 
-	const [checked, setChecked] = createSignal(adapter.toolbarButton.checked);
-	const [disabled, setDisabled] = createSignal(adapter.toolbarButton.disabled);
+	const [checked, setChecked] = createSignal(uiPort.toolbarButton.checked);
+	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
 
 	onMount(() => {
 		const callback: LinkUpdateToolbarButtonFn = (state) => {
 			setChecked(state.checked);
 			setDisabled(state.disabled);
 		};
-		adapter.subscribe({ type: "toolbarButton", callback });
-		onCleanup(() => adapter.unsubscribe({ type: "toolbarButton", callback }));
+		uiPort.subscribe({ type: "toolbarButton", callback });
+		onCleanup(() => uiPort.unsubscribe({ type: "toolbarButton", callback }));
 	});
 
 	const onClick = () => {
-		adapter.emitToolbarClick();
+		uiPort.emitToolbarClick();
 	};
 
 	return (

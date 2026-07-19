@@ -3,8 +3,8 @@ import { Dynamic } from "solid-js/web";
 import type {
 	CodeBlockLanguage,
 	CodeBlockTheme,
-	ResolvedExtension,
 	ToolbarButtons,
+	UIExtension,
 } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
@@ -91,7 +91,7 @@ export interface AppProps
 		PopoverControllers {
 	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
-	extensions: ResolvedExtension[];
+	extensions: UIExtension[];
 	richTextArea: HTMLElement;
 }
 
@@ -208,7 +208,7 @@ export const App = (props: AppProps) => {
 								}
 
 								return (
-									<Dynamic component={Popover} adapter={extension.adapter} />
+									<Dynamic component={Popover} uiPort={extension.uiPort} />
 								);
 							}}
 						</For>

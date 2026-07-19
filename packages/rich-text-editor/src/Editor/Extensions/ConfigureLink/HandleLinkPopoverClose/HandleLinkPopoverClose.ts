@@ -11,11 +11,11 @@ import type {
  * Closes the popover whenever the selection moves outside the current link or becomes non-collapsed.
  */
 const closeOnSelectionChange = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
@@ -59,12 +59,12 @@ const closeOnSelectionChange = ({
  * Closes the popover on cancel only in insert mode — in modify mode the UI handles transitioning back to preview.
  */
 const handleLinkPopoverCancel = ({
-	linkPort,
+	editorPort,
 	internals,
 }: HandleLinkPopoverCancelParams) => {
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
-	return linkPort.onCancel(() => {
+	return editorPort.onCancel(() => {
 		if (internals.currentLink) {
 			return;
 		}
@@ -77,10 +77,10 @@ const handleLinkPopoverCancel = ({
  * Returns focus to the editor when the user presses Escape inside the popover.
  */
 const restoreFocusOnEscape = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
@@ -99,11 +99,11 @@ const restoreFocusOnEscape = ({
  * Clears currentLink whenever the popover closes, keeping internals consistent regardless of how it was dismissed.
  */
 const onPopoverClose = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: OnPopoverCloseParams) => {
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 	const selection = editorAPI.getEditorSelection();
 
 	const listener = (event: ToggleEvent) => {
@@ -124,19 +124,19 @@ const onPopoverClose = ({
  * Wires up all popover close behaviors: selection-driven close, cancel handling, and internals cleanup on toggle.
  */
 export const handleLinkPopoverClose = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: HandleLinkPopoverCloseParams) => {
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});
-	const unsubscribeCancel = handleLinkPopoverCancel({ linkPort, internals });
-	const unsubscribeEscape = restoreFocusOnEscape({ linkPort, editorAPI });
+	const unsubscribeCancel = handleLinkPopoverCancel({ editorPort, internals });
+	const unsubscribeEscape = restoreFocusOnEscape({ editorPort, editorAPI });
 	const unsubscribeToggle = onPopoverClose({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});

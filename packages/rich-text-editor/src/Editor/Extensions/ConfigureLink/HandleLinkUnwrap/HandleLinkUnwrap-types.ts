@@ -1,11 +1,11 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
-export type OnUnwrapCallback = Parameters<LinkPort["onUnwrap"]>[0];
+export type OnUnwrapCallback = Parameters<LinkEditorPort["onUnwrap"]>[0];
 
 export interface HandleLinkUnwrapParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

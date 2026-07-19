@@ -9,7 +9,7 @@ export const Mention = createExtension({
 	defaultSettings: {},
 	createAdapter: (settings) => new MentionAdapter(settings),
 	configure: ({ adapter, editorAPI }) =>
-		configureMention({ mentionPort: adapter.port, editorAPI }),
+		configureMention({ editorPort: adapter.editorPort, editorAPI }),
 	components: {
 		popover: MentionPopover,
 	},

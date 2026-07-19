@@ -4,7 +4,7 @@ import type {
 } from "./HandleLinkUnwrap-types";
 
 export const handleLinkUnwrap = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: HandleLinkUnwrapParams) => {
@@ -27,7 +27,7 @@ export const handleLinkUnwrap = ({
 		editorAPI.focus();
 	};
 
-	const unsubscribe = linkPort.onUnwrap(callback);
+	const unsubscribe = editorPort.onUnwrap(callback);
 
 	return () => {
 		unsubscribe();

@@ -77,12 +77,12 @@ const createMentionComponent = ({
  * at where the @ was) and inserts the component there.
  */
 export const handleMentionInsertion = ({
-	mentionPort,
+	editorPort,
 	editorAPI,
 }: HandleMentionInsertionParams) => {
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = mentionPort.onSelect(({ id, name }) => {
+	const unsubscribe = editorPort.onSelect(({ id, name }) => {
 		const { queryFound } = removeMentionQueryText({ editorAPI });
 
 		if (!queryFound) {

@@ -3,7 +3,7 @@ import type {
 	EditorSelection,
 	InlineNestedContext,
 } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface CreateLinkComponentParams {
@@ -25,7 +25,7 @@ export interface AnchorPopoverToLinkParams {
 }
 
 export interface InsertAtCaretParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 	text: string;
@@ -34,17 +34,17 @@ export interface InsertAtCaretParams {
 }
 
 export interface WrapWithLinkParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 	href: string;
 	target: string;
 }
 
-export type OnInsertCallback = Parameters<LinkPort["onInsert"]>[0];
+export type OnInsertCallback = Parameters<LinkEditorPort["onInsert"]>[0];
 
 export interface HandleLinkInsertionParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

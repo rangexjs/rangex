@@ -14,14 +14,15 @@ import type {
 export const createExtension = <
 	Name extends ExtensionName,
 	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
+	UIPort extends object,
+	EditorPort extends object,
+	Adapter extends AdapterBlueprint<Options, UIPort, EditorPort>,
 >(
-	definition: ExtensionDefinition<Name, Options, Port, Adapter>,
+	definition: ExtensionDefinition<Name, Options, UIPort, EditorPort, Adapter>,
 ) => {
 	return (
 		settings?: Partial<Options>,
-	): Extension<Name, Options, Port, Adapter> => {
+	): Extension<Name, Options, UIPort, EditorPort, Adapter> => {
 		const mergedSettings = { ...definition.defaultSettings, ...settings };
 
 		return {

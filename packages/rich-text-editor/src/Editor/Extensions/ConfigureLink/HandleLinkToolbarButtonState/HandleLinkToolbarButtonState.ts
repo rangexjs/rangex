@@ -6,7 +6,7 @@ import type { HandleLinkToolbarButtonStateParams } from "./HandleLinkToolbarButt
  * Keeps the link button disabled when the selection is in a context that doesn't allow link insertion.
  */
 export const handleLinkToolbarButtonState = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 }: HandleLinkToolbarButtonStateParams) => {
 	const unsubscribe = editorAPI.subscribeEditorEvent({
@@ -14,7 +14,7 @@ export const handleLinkToolbarButtonState = ({
 		callback: () => {
 			const mode = getLinkInsertionMode({ editorAPI });
 
-			linkPort.updateState({
+			editorPort.updateState({
 				toolbarButton: { checked: false, disabled: mode === null },
 			});
 		},

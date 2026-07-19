@@ -1,16 +1,16 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface OpenLinkPopoverParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 	link: InlineNestedContext;
 }
 
 export interface HandleLinkClickParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

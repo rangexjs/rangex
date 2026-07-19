@@ -1,4 +1,4 @@
-import type { ResolvedExtension } from "#ports";
+import type { UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import {
 	codeBlockLanguages,
@@ -64,10 +64,10 @@ export class RichTextEditor extends HTMLElement {
 			adapter: extension.createAdapter(),
 		}));
 
-		const resolvedExtensions: ResolvedExtension[] = extensionAdapters.map(
+		const uiExtensions: UIExtension[] = extensionAdapters.map(
 			({ extension, adapter }) => ({
 				name: extension.name,
-				adapter,
+				uiPort: adapter.uiPort,
 				components: extension.components,
 			}),
 		);
@@ -75,7 +75,7 @@ export class RichTextEditor extends HTMLElement {
 		this.#richTextEditorUI = new RichTextEditorUI({
 			richTextArea: rangeX,
 			toolbarButtons,
-			extensions: resolvedExtensions,
+			extensions: uiExtensions,
 			options: {
 				codeBlockLanguages,
 				codeBlockThemes,
@@ -86,7 +86,7 @@ export class RichTextEditor extends HTMLElement {
 
 		shadowRoot.append(this.#richTextEditorUI);
 
-		// configure must run after the mount above — e.g. LinkPort.popover throws until its element exists.
+		// configure must run after the mount above — e.g. LinkEditorPort.popover throws until its element exists.
 		for (const { extension, adapter } of extensionAdapters) {
 			const configure = extension.configure as ErasedConfigureExtensionFn;
 			const cleanup = configure({ adapter, editorAPI });

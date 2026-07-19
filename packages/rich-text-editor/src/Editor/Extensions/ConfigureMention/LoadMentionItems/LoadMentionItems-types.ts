@@ -1,5 +1,5 @@
-import type { MentionPort } from "#ports";
+import type { MentionEditorPort } from "#adapters";
 
 export interface LoadMentionItemsParams {
-	mentionPort: MentionPort;
+	editorPort: MentionEditorPort;
 }

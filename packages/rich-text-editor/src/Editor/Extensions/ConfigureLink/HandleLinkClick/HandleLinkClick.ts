@@ -14,19 +14,19 @@ import type {
  * Opens the popover in preview mode anchored to the clicked link.
  */
 const openLinkPopover = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 	link,
 }: OpenLinkPopoverParams) => {
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 	popover.hidePopover();
 
 	internals.currentLink = link;
 
 	const popoverState = getPopoverStateFromLink({ link, editorAPI });
 
-	linkPort.updateState({ view: "preview", mode: "modify", ...popoverState });
+	editorPort.updateState({ view: "preview", mode: "modify", ...popoverState });
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
@@ -39,7 +39,7 @@ const openLinkPopover = ({
  * Registers a delegated click handler that opens the modify popover whenever the user clicks an existing link.
  */
 export const handleLinkClick = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: HandleLinkClickParams) => {
@@ -58,7 +58,7 @@ export const handleLinkClick = ({
 				}
 
 				openLinkPopover({
-					linkPort,
+					editorPort,
 					editorAPI,
 					internals,
 					link: currentTarget,

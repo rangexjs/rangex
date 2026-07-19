@@ -5,8 +5,12 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { MentionAdapter, MentionUpdateFilteredItemsFn } from "#adapters";
-import type { MentionItems, MentionSuggestionItem } from "#ports";
+import type {
+	MentionItems,
+	MentionSuggestionItem,
+	MentionUIPort,
+	MentionUpdateFilteredItemsFn,
+} from "#adapters";
 
 interface MentionItemProps {
 	popoverId: string;
@@ -44,14 +48,14 @@ const MentionItem = (props: MentionItemProps) => {
 };
 
 interface MentionPopoverProps {
-	adapter: MentionAdapter;
+	uiPort: MentionUIPort;
 }
 
 export const MentionPopover = (props: MentionPopoverProps) => {
-	const adapter = props.adapter;
+	const uiPort = props.uiPort;
 
 	const [filteredItems, setFilteredItems] = createSignal<MentionItems>(
-		adapter.filteredItems,
+		uiPort.filteredItems,
 	);
 
 	const popoverId = createUniqueId();
@@ -132,11 +136,11 @@ export const MentionPopover = (props: MentionPopoverProps) => {
 	onMount(() => {
 		const callback: MentionUpdateFilteredItemsFn = (value) =>
 			setFilteredItems(value);
-		adapter.subscribe({ type: "filteredItems", callback });
+		uiPort.subscribe({ type: "filteredItems", callback });
 		document.addEventListener("keydown", onKeyDown, { capture: true });
 
 		onCleanup(() => {
-			adapter.unsubscribe({ type: "filteredItems", callback });
+			uiPort.unsubscribe({ type: "filteredItems", callback });
 			document.removeEventListener("keydown", onKeyDown, { capture: true });
 		});
 	});
@@ -145,7 +149,7 @@ export const MentionPopover = (props: MentionPopoverProps) => {
 		<div
 			ref={(el) => {
 				popoverEl = el;
-				adapter.setPopover(el);
+				uiPort.setPopover(el);
 			}}
 			id={popoverId}
 			popover="manual"
@@ -157,7 +161,7 @@ export const MentionPopover = (props: MentionPopoverProps) => {
 						<MentionItem
 							popoverId={popoverId}
 							item={item}
-							onSelect={() => adapter.emitSelect(item)}
+							onSelect={() => uiPort.emitSelect(item)}
 						/>
 					)}
 				</For>

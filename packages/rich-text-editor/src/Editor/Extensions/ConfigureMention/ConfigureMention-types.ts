@@ -1,7 +1,7 @@
 import type { EditorAPI } from "rich-text-area";
-import type { MentionPort } from "#ports";
+import type { MentionEditorPort } from "#adapters";
 
 export interface ConfigureMentionParams {
-	mentionPort: MentionPort;
+	editorPort: MentionEditorPort;
 	editorAPI: EditorAPI;
 }

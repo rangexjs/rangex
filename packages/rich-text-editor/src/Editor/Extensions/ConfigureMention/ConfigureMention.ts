@@ -5,25 +5,25 @@ import { handlePopoverClose } from "./HandlePopoverClose";
 import { loadMentionItems } from "./LoadMentionItems";
 
 export const configureMention = ({
-	mentionPort,
+	editorPort,
 	editorAPI,
 }: ConfigureMentionParams) => {
-	loadMentionItems({ mentionPort });
+	loadMentionItems({ editorPort });
 
 	const mentionInsertionCleanup = handleMentionInsertion({
-		mentionPort,
+		editorPort,
 		editorAPI,
 	});
 
 	// handlePopoverClose must be subscribed before handlePopoverAppearance — both listen to
 	// editorSelectionChangeEventType, and close must fire first to hide before appearance re-evaluates.
 	const popoverCloseCleanup = handlePopoverClose({
-		mentionPort,
+		editorPort,
 		editorAPI,
 	});
 
 	const popoverAppearanceCleanup = handlePopoverAppearance({
-		mentionPort,
+		editorPort,
 		editorAPI,
 	});
 

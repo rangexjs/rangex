@@ -1,18 +1,15 @@
-import type {
-	MentionItems,
-	MentionOnSelectFn,
-	MentionPort,
-	MentionSuggestionItem,
-	UpdateMentionPopoverStateParams,
-} from "#ports";
 import { assertNever } from "../_Utilities";
 import type {
 	MentionAdapterConstructorParams,
-	MentionListenerOption,
+	MentionEditorPort,
+	MentionItems,
+	MentionOnSelectFn,
+	MentionUIPort,
 	MentionUpdateFilteredItemsFn,
 	MentionUpdateItemsFn,
 	MentionUpdateListenerParams,
 	MentionUpdateQueryFn,
+	UpdateMentionPopoverStateParams,
 } from "./MentionAdapter-types";
 
 export class MentionAdapter {
@@ -30,18 +27,6 @@ export class MentionAdapter {
 	// biome-ignore lint/complexity/noUselessConstructor: Allowed for adapters
 	// biome-ignore lint/suspicious/noEmptyBlockStatements: Allowed for adapters
 	constructor(_params: MentionAdapterConstructorParams) {}
-
-	get items() {
-		return this.#items;
-	}
-
-	get query() {
-		return this.#query;
-	}
-
-	get filteredItems() {
-		return this.#filteredItems;
-	}
 
 	#computeFilteredItems() {
 		const q = this.#query.toLowerCase();
@@ -77,21 +62,7 @@ export class MentionAdapter {
 		assertNever(type);
 	}
 
-	subscribe(params: MentionListenerOption) {
-		this.#updateListener({ ...params, operation: "add" });
-	}
-
-	unsubscribe(params: MentionListenerOption) {
-		this.#updateListener({ ...params, operation: "delete" });
-	}
-
-	emitSelect(item: MentionSuggestionItem) {
-		for (const listener of this.#onSelectListeners) {
-			listener(item);
-		}
-	}
-
-	updateState({ items, query }: UpdateMentionPopoverStateParams) {
+	#updateState({ items, query }: UpdateMentionPopoverStateParams) {
 		let dirty = false;
 
 		if (items !== undefined) {
@@ -117,11 +88,33 @@ export class MentionAdapter {
 		}
 	}
 
-	setPopover(element: HTMLDivElement) {
-		this.#popover = element;
+	get uiPort(): MentionUIPort {
+		const adapter = this;
+
+		return {
+			get filteredItems() {
+				return adapter.#filteredItems;
+			},
+
+			subscribe: (params) =>
+				adapter.#updateListener({ ...params, operation: "add" }),
+
+			unsubscribe: (params) =>
+				adapter.#updateListener({ ...params, operation: "delete" }),
+
+			setPopover: (element) => {
+				adapter.#popover = element;
+			},
+
+			emitSelect: (item) => {
+				for (const listener of adapter.#onSelectListeners) {
+					listener(item);
+				}
+			},
+		};
 	}
 
-	get port(): MentionPort {
+	get editorPort(): MentionEditorPort {
 		const adapter = this;
 
 		return {
@@ -137,7 +130,7 @@ export class MentionAdapter {
 				return adapter.#filteredItems;
 			},
 
-			updateState: (params) => this.updateState(params),
+			updateState: (params) => this.#updateState(params),
 
 			onSelect: (callback) => {
 				this.#onSelectListeners.add(callback);

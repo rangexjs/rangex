@@ -1,25 +1,18 @@
+import type { OnUnwrapFn } from "#ports";
+import { assertNever } from "../_Utilities";
 import type {
-	EmitInsertParams,
-	EmitModifyParams,
+	LinkAdapterConstructorParams,
 	LinkDisplayText,
+	LinkEditorPort,
 	LinkMode,
 	LinkOnCancelFn,
 	LinkOnInsertFn,
 	LinkOnModifyFn,
 	LinkOnToolbarClickFn,
 	LinkOnViewChangeFn,
-	LinkPort,
 	LinkToggleButtons,
 	LinkToolbarButtonState,
-	LinkURL,
-	LinkView,
-	OnUnwrapFn,
-	UpdateLinkPopoverStateParams,
-} from "#ports";
-import { assertNever } from "../_Utilities";
-import type {
-	LinkAdapterConstructorParams,
-	LinkListenerOption,
+	LinkUIPort,
 	LinkUpdateDisplayTextFn,
 	LinkUpdateListenerParams,
 	LinkUpdateModeFn,
@@ -27,14 +20,17 @@ import type {
 	LinkUpdateToolbarButtonFn,
 	LinkUpdateURLFn,
 	LinkUpdateViewFn,
+	LinkURL,
+	LinkView,
+	UpdateLinkPopoverStateParams,
 } from "./LinkAdapter-types";
 
 export class LinkAdapter {
+	#popover: HTMLDivElement | null = null;
 	#toolbarButton: LinkToolbarButtonState = {
 		checked: false,
 		disabled: true,
 	};
-	#popover: HTMLDivElement | null = null;
 	#view: LinkView = "preview";
 	#mode: LinkMode = "insert";
 	#displayText: LinkDisplayText = {
@@ -65,30 +61,6 @@ export class LinkAdapter {
 	// biome-ignore lint/complexity/noUselessConstructor: Allowed for adapters
 	// biome-ignore lint/suspicious/noEmptyBlockStatements: Allowed for adapters
 	constructor(_params: LinkAdapterConstructorParams) {}
-
-	get toolbarButton() {
-		return this.#toolbarButton;
-	}
-
-	get view() {
-		return this.#view;
-	}
-
-	get mode() {
-		return this.#mode;
-	}
-
-	get displayText() {
-		return this.#displayText;
-	}
-
-	get url() {
-		return this.#url;
-	}
-
-	get toggleButtons() {
-		return this.#toggleButtons;
-	}
 
 	#updateListener({ type, callback, operation }: LinkUpdateListenerParams) {
 		if (type === "toolbarButton") {
@@ -124,51 +96,7 @@ export class LinkAdapter {
 		assertNever(type);
 	}
 
-	subscribe(params: LinkListenerOption) {
-		this.#updateListener({ ...params, operation: "add" });
-	}
-
-	unsubscribe(params: LinkListenerOption) {
-		this.#updateListener({ ...params, operation: "delete" });
-	}
-
-	emitToolbarClick() {
-		for (const listener of this.#onToolbarClickListeners) {
-			listener();
-		}
-	}
-
-	emitViewChange() {
-		for (const listener of this.#onViewChangeListeners) {
-			listener(this.#view);
-		}
-	}
-
-	emitCancel() {
-		for (const listener of this.#onCancelListeners) {
-			listener();
-		}
-	}
-
-	emitInsert(params: EmitInsertParams) {
-		for (const listener of this.#onInsertListeners) {
-			listener(params);
-		}
-	}
-
-	emitModify(params: EmitModifyParams) {
-		for (const listener of this.#onModifyListeners) {
-			listener(params);
-		}
-	}
-
-	emitUnwrap() {
-		for (const listener of this.#onUnwrapListeners) {
-			listener();
-		}
-	}
-
-	updateState({
+	#updateState({
 		toolbarButton,
 		view,
 		mode,
@@ -225,11 +153,85 @@ export class LinkAdapter {
 		}
 	}
 
-	setPopover(element: HTMLDivElement) {
-		this.#popover = element;
+	get uiPort(): LinkUIPort {
+		const adapter = this;
+
+		return {
+			get toolbarButton() {
+				return adapter.#toolbarButton;
+			},
+
+			get view() {
+				return adapter.#view;
+			},
+
+			get mode() {
+				return adapter.#mode;
+			},
+
+			get displayText() {
+				return adapter.#displayText;
+			},
+
+			get url() {
+				return adapter.#url;
+			},
+
+			get toggleButtons() {
+				return adapter.#toggleButtons;
+			},
+
+			subscribe: (params) =>
+				adapter.#updateListener({ ...params, operation: "add" }),
+
+			unsubscribe: (params) =>
+				adapter.#updateListener({ ...params, operation: "delete" }),
+
+			setPopover: (element) => {
+				adapter.#popover = element;
+			},
+
+			setView: (view) => adapter.#updateState({ view }),
+
+			emitToolbarClick: () => {
+				for (const listener of adapter.#onToolbarClickListeners) {
+					listener();
+				}
+			},
+
+			emitViewChange: () => {
+				for (const listener of adapter.#onViewChangeListeners) {
+					listener(adapter.#view);
+				}
+			},
+
+			emitCancel: () => {
+				for (const listener of adapter.#onCancelListeners) {
+					listener();
+				}
+			},
+
+			emitInsert: (params) => {
+				for (const listener of adapter.#onInsertListeners) {
+					listener(params);
+				}
+			},
+
+			emitModify: (params) => {
+				for (const listener of adapter.#onModifyListeners) {
+					listener(params);
+				}
+			},
+
+			emitUnwrap: () => {
+				for (const listener of adapter.#onUnwrapListeners) {
+					listener();
+				}
+			},
+		};
 	}
 
-	get port(): LinkPort {
+	get editorPort(): LinkEditorPort {
 		const adapter = this;
 
 		return {
@@ -241,7 +243,7 @@ export class LinkAdapter {
 				return adapter.#popover;
 			},
 
-			updateState: (params) => this.updateState(params),
+			updateState: (params) => this.#updateState(params),
 
 			onToolbarClick: (callback) => {
 				this.#onToolbarClickListeners.add(callback);

@@ -7,45 +7,48 @@ import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
 import { handleLinkUnwrap } from "./HandleLinkUnwrap";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
-export const configureLink = ({ linkPort, editorAPI }: ConfigureLinkParams) => {
+export const configureLink = ({
+	editorPort,
+	editorAPI,
+}: ConfigureLinkParams) => {
 	const internals: LinkInternals = { currentLink: null };
 
 	const toolbarButtonStateCleanup = handleLinkToolbarButtonState({
-		linkPort,
+		editorPort,
 		editorAPI,
 	});
 
 	const toolbarLinkClickCleanup = handleToolbarLinkClick({
-		linkPort,
+		editorPort,
 		editorAPI,
 	});
 
 	const linkClickCleanup = handleLinkClick({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkInsertionCleanup = handleLinkInsertion({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkModificationCleanup = handleLinkModification({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkUnwrapCleanup = handleLinkUnwrap({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});
 
 	const linkPopoverCloseCleanup = handleLinkPopoverClose({
-		linkPort,
+		editorPort,
 		editorAPI,
 		internals,
 	});

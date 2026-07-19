@@ -7,7 +7,14 @@ export type ExtensionUnion =
 	| ReturnType<typeof Mention>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union
-export type ErasedConfigureExtensionFn = ConfigureExtensionFn<any, any, any>;
+type ErasedPort = any;
+
+export type ErasedConfigureExtensionFn = ConfigureExtensionFn<
+	ErasedPort,
+	ErasedPort,
+	ErasedPort,
+	ErasedPort
+>;
 
 export type Extensions = ExtensionUnion[];
 

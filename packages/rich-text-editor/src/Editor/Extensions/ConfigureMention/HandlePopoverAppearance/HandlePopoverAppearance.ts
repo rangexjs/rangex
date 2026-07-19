@@ -12,10 +12,10 @@ import type { HandlePopoverAppearanceParams } from "./HandlePopoverAppearance-ty
  * Does not hide — hiding is handled by handlePopoverClose, which must be subscribed first.
  */
 export const handlePopoverAppearance = ({
-	mentionPort,
+	editorPort,
 	editorAPI,
 }: HandlePopoverAppearanceParams) => {
-	const { popover } = mentionPort;
+	const { popover } = editorPort;
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -53,9 +53,9 @@ export const handlePopoverAppearance = ({
 
 		const { query } = mentionQuery;
 
-		mentionPort.updateState({ query });
+		editorPort.updateState({ query });
 
-		if (!mentionPort.filteredItems.length) {
+		if (!editorPort.filteredItems.length) {
 			return;
 		}
 

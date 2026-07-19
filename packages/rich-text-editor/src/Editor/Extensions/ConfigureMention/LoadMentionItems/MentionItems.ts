@@ -1,4 +1,4 @@
-import type { MentionItems } from "#ports";
+import type { MentionItems } from "#adapters";
 
 /**
  * Mock mention items — replace with your actual data source (API call, store, etc.).

@@ -3,19 +3,22 @@ import type { Component } from "solid-js";
 import type { ToolbarButtonValue } from "../ToolbarButtons";
 import type { ExtensionName } from "./ExtensionsName";
 
-export interface ConfigPort<Port extends object> {
-	port: Port;
+export interface AdapterPort<UIPort extends object, EditorPort extends object> {
+	uiPort: UIPort;
+	editorPort: EditorPort;
 }
 
 export type AdapterBlueprint<
 	Options extends object,
-	Port extends object,
-> = InstanceType<new (options: Options) => ConfigPort<Port>>;
+	UIPort extends object,
+	EditorPort extends object,
+> = InstanceType<new (options: Options) => AdapterPort<UIPort, EditorPort>>;
 
 export interface ConfigureExtensionParams<
 	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
+	UIPort extends object,
+	EditorPort extends object,
+	Adapter extends AdapterBlueprint<Options, UIPort, EditorPort>,
 > {
 	adapter: Adapter;
 	editorAPI: EditorAPI;
@@ -25,58 +28,57 @@ export type ConfigureExtensionResult = () => void;
 
 export type ConfigureExtensionFn<
 	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
+	UIPort extends object,
+	EditorPort extends object,
+	Adapter extends AdapterBlueprint<Options, UIPort, EditorPort>,
 > = (
-	params: ConfigureExtensionParams<Options, Port, Adapter>,
+	params: ConfigureExtensionParams<Options, UIPort, EditorPort, Adapter>,
 ) => ConfigureExtensionResult;
 
-export interface ExtensionComponents<
-	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
-> {
+export interface ExtensionComponents<UIPort extends object> {
 	toolbarButtons?: Partial<
-		Record<ToolbarButtonValue, Component<{ adapter: Adapter }>>
+		Record<ToolbarButtonValue, Component<{ uiPort: UIPort }>>
 	>;
-	popover?: Component<{ adapter: Adapter }>;
-	nodeSlot?: Component<{ adapter: Adapter }>;
-	commandMenu?: Component<{ adapter: Adapter }>;
+	popover?: Component<{ uiPort: UIPort }>;
+	nodeSlot?: Component<{ uiPort: UIPort }>;
+	commandMenu?: Component<{ uiPort: UIPort }>;
 }
 
 export interface ExtensionDefinition<
 	Name extends ExtensionName,
 	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
+	UIPort extends object,
+	EditorPort extends object,
+	Adapter extends AdapterBlueprint<Options, UIPort, EditorPort>,
 > {
 	name: Name;
 	defaultSettings: Options;
 	createAdapter: (settings: Options) => Adapter;
-	configure: ConfigureExtensionFn<Options, Port, Adapter>;
-	components: ExtensionComponents<Options, Port, Adapter>;
+	configure: ConfigureExtensionFn<Options, UIPort, EditorPort, Adapter>;
+	components: ExtensionComponents<UIPort>;
 }
 
 export interface Extension<
 	Name extends ExtensionName,
 	Options extends object,
-	Port extends object,
-	Adapter extends AdapterBlueprint<Options, Port>,
+	UIPort extends object,
+	EditorPort extends object,
+	Adapter extends AdapterBlueprint<Options, UIPort, EditorPort>,
 > {
 	name: Name;
 	createAdapter: () => Adapter;
-	configure: ConfigureExtensionFn<Options, Port, Adapter>;
-	components: ExtensionComponents<Options, Port, Adapter>;
+	configure: ConfigureExtensionFn<Options, UIPort, EditorPort, Adapter>;
+	components: ExtensionComponents<UIPort>;
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: erased for the generic "any extension" shape
-type AnyExtension = Extension<ExtensionName, any, any, any>;
+type AnyExtension = Extension<ExtensionName, any, any, any, any>;
 
 /**
  * What `RichTextEditor` builds per active extension after calling `createAdapter`/`configure` —
  * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`/`components.popover`, etc.
  * Derived from `Extension` (not hand-duplicated) so a rename/removal on `Extension` breaks this too.
  */
-export type ResolvedExtension = Pick<AnyExtension, "name" | "components"> & {
-	adapter: unknown;
+export type UIExtension = Pick<AnyExtension, "name" | "components"> & {
+	uiPort: unknown;
 };

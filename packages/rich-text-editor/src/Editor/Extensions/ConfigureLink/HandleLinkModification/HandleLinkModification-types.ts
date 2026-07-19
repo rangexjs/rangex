@@ -1,11 +1,11 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
-export type OnModifyCallback = Parameters<LinkPort["onModify"]>[0];
+export type OnModifyCallback = Parameters<LinkEditorPort["onModify"]>[0];
 
 export interface HandleLinkModificationParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

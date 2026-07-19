@@ -1,11 +1,11 @@
 import type { EditorAPI, InlineNestedContext } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 
 export interface LinkInternals {
 	currentLink: InlineNestedContext | null;
 }
 
 export interface ConfigureLinkParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 }

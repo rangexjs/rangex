@@ -3,10 +3,10 @@ import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import {
 	type ExtensionName,
-	type ResolvedExtension,
 	type ToolbarButtons,
 	type ToolbarButtonValue,
 	toolbarButtonsName,
+	type UIExtension,
 } from "#ports";
 import {
 	BackgroundColorToolbarButton,
@@ -50,13 +50,13 @@ type StaticToolbarButtonValue = Exclude<
 
 const findExtensionToolbarButton = (
 	name: ToolbarButtonValue,
-	extensions: ResolvedExtension[],
+	extensions: UIExtension[],
 ) => {
 	for (const extension of extensions) {
 		const component = extension.components.toolbarButtons?.[name];
 
 		if (component) {
-			return { component, adapter: extension.adapter };
+			return { component, uiPort: extension.uiPort };
 		}
 	}
 
@@ -65,7 +65,7 @@ const findExtensionToolbarButton = (
 
 interface ToolbarButtonProps {
 	name: ToolbarButtonValue;
-	extensions: ResolvedExtension[];
+	extensions: UIExtension[];
 }
 
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
@@ -116,12 +116,12 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 		);
 	}
 
-	return <Dynamic component={match.component} adapter={match.adapter} />;
+	return <Dynamic component={match.component} uiPort={match.uiPort} />;
 };
 
 export interface EditorToolbarProps {
 	toolbarButtons: ToolbarButtons;
-	extensions: ResolvedExtension[];
+	extensions: UIExtension[];
 }
 
 export const EditorToolbar = (props: EditorToolbarProps) => {

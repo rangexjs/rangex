@@ -14,7 +14,7 @@ import type {
 /**
  * Opens the popover anchored to the caret anchor — used when the selection is collapsed, so there is no range to position against.
  */
-const openAtCaret = ({ linkPort, editorAPI }: OpenAtCaretParams) => {
+const openAtCaret = ({ editorPort, editorAPI }: OpenAtCaretParams) => {
 	const { shadowRoot } = editorAPI;
 
 	const caretAnchor = shadowRoot.querySelector(caretAnchorName);
@@ -28,7 +28,7 @@ const openAtCaret = ({ linkPort, editorAPI }: OpenAtCaretParams) => {
 		document.activeElement.blur();
 	}
 
-	linkPort.updateState({
+	editorPort.updateState({
 		view: "edit",
 		mode: "insert",
 		displayText: { inputValue: "", disabled: false },
@@ -36,7 +36,7 @@ const openAtCaret = ({ linkPort, editorAPI }: OpenAtCaretParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
@@ -79,7 +79,7 @@ const getDisplayTextInfo = ({
 /**
  * Opens the popover positioned to the selection with pre-filled display text — used when the selection is non-collapsed.
  */
-const openForWrap = ({ linkPort, editorAPI }: OpenForWrapParams) => {
+const openForWrap = ({ editorPort, editorAPI }: OpenForWrapParams) => {
 	// Blur the editor before opening the popover so focus passes cleanly to it
 	if (document.activeElement instanceof HTMLElement) {
 		document.activeElement.blur();
@@ -87,7 +87,7 @@ const openForWrap = ({ linkPort, editorAPI }: OpenForWrapParams) => {
 
 	const displayText = getDisplayTextInfo({ editorAPI });
 
-	linkPort.updateState({
+	editorPort.updateState({
 		view: "edit",
 		mode: "insert",
 		displayText,
@@ -95,7 +95,7 @@ const openForWrap = ({ linkPort, editorAPI }: OpenForWrapParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	positionPopoverToSelection({ editorAPI, popover, topMargin: 10 });
 
@@ -108,7 +108,7 @@ const openForWrap = ({ linkPort, editorAPI }: OpenForWrapParams) => {
 /**
  * Delegates to openAtCaret or openForWrap based on the insertion mode, or bails if insertion is not allowed.
  */
-const openLinkPopover = ({ linkPort, editorAPI }: OpenLinkPopoverParams) => {
+const openLinkPopover = ({ editorPort, editorAPI }: OpenLinkPopoverParams) => {
 	const linkInsertionMode = getLinkInsertionMode({ editorAPI });
 
 	if (!linkInsertionMode) {
@@ -117,12 +117,12 @@ const openLinkPopover = ({ linkPort, editorAPI }: OpenLinkPopoverParams) => {
 	}
 
 	if (linkInsertionMode === "insert") {
-		openAtCaret({ linkPort, editorAPI });
+		openAtCaret({ editorPort, editorAPI });
 		return;
 	}
 
 	if (linkInsertionMode === "wrap") {
-		openForWrap({ linkPort, editorAPI });
+		openForWrap({ editorPort, editorAPI });
 		return;
 	}
 
@@ -133,11 +133,11 @@ const openLinkPopover = ({ linkPort, editorAPI }: OpenLinkPopoverParams) => {
  * Registers the toolbar insert button handler and opens the link popover when the user clicks it.
  */
 export const handleToolbarLinkClick = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 }: HandleToolbarLinkClickParams) => {
-	const unsubscribe = linkPort.onToolbarClick(() => {
-		openLinkPopover({ linkPort, editorAPI });
+	const unsubscribe = editorPort.onToolbarClick(() => {
+		openLinkPopover({ editorPort, editorAPI });
 	});
 
 	return () => {

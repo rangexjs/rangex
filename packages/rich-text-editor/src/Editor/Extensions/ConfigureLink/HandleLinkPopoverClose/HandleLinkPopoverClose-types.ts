@@ -1,31 +1,31 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface CloseOnSelectionChangeParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }
 
 export interface HandleLinkPopoverCancelParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	internals: LinkInternals;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 }
 
 export interface OnPopoverCloseParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }
 
 export interface HandleLinkPopoverCloseParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
 }

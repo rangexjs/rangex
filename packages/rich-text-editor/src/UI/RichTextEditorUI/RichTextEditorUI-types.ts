@@ -1,8 +1,8 @@
 import type {
 	CodeBlockLanguage,
 	CodeBlockTheme,
-	ResolvedExtension,
 	ToolbarButtons,
+	UIExtension,
 } from "#ports";
 import type { DefaultStyleValues } from "../ToolbarButtonDefaultValues";
 import type {
@@ -20,7 +20,7 @@ export interface RichTextEditorUIOptions {
 export interface RichTextEditorUIConstructorParams {
 	richTextArea: HTMLElement;
 	toolbarButtons: ToolbarButtons;
-	extensions: ResolvedExtension[];
+	extensions: UIExtension[];
 	defaultStyleValues?: Partial<DefaultStyleValues>;
 	options?: RichTextEditorUIOptions;
 }

@@ -3,7 +3,6 @@ export type {
 	CodeBlockPopoverState,
 	CodeBlockTheme,
 	EmojiPopoverState,
-	MentionPopoverState,
 	TableQuickActionsPopoverState,
 	TemplateVariablePopoverState,
 } from "#ports";

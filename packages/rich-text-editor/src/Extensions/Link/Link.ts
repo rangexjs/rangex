@@ -9,7 +9,7 @@ export const Link = createExtension({
 	defaultSettings: {},
 	createAdapter: (settings) => new LinkAdapter(settings),
 	configure: ({ adapter, editorAPI }) =>
-		configureLink({ linkPort: adapter.port, editorAPI }),
+		configureLink({ editorPort: adapter.editorPort, editorAPI }),
 	components: {
 		toolbarButtons: {
 			[toolbarButtonsName.link]: LinkToolbarButton,

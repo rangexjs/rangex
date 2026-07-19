@@ -1,13 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
 import type {
-	LinkAdapter,
+	EmitApplyParams,
+	LinkMode,
+	LinkUIPort,
 	LinkUpdateDisplayTextFn,
 	LinkUpdateModeFn,
 	LinkUpdateToggleButtonsFn,
 	LinkUpdateURLFn,
 	LinkUpdateViewFn,
 } from "#adapters";
-import type { EmitApplyParams, LinkMode } from "#ports";
 import {
 	createTextFieldController,
 	FormField,
@@ -18,27 +19,27 @@ import { ToggleButton } from "../../../../ToggleButton";
 import { allowedPrefixes } from "../_Utilities";
 
 interface LinkEditProps {
-	adapter: LinkAdapter;
+	uiPort: LinkUIPort;
 }
 
 export const LinkEdit = (props: LinkEditProps) => {
-	const adapter = props.adapter;
+	const uiPort = props.uiPort;
 
-	const [currentMode, setCurrentMode] = createSignal(adapter.mode);
+	const [currentMode, setCurrentMode] = createSignal(uiPort.mode);
 
 	const [displayTextModel, displayTextControls] = createTextFieldController({
-		defaultValue: adapter.displayText.inputValue,
+		defaultValue: uiPort.displayText.inputValue,
 	});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(
-		adapter.displayText.disabled,
+		uiPort.displayText.disabled,
 	);
 
 	const [urlModel, urlControls] = createTextFieldController({
-		defaultValue: adapter.url.inputValue,
+		defaultValue: uiPort.url.inputValue,
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
-	const [isNewTab, setIsNewTab] = createSignal(adapter.toggleButtons.isNewTab);
+	const [isNewTab, setIsNewTab] = createSignal(uiPort.toggleButtons.isNewTab);
 
 	const modeLabel: Record<LinkMode, string> = {
 		insert: "Insert",
@@ -47,8 +48,8 @@ export const LinkEdit = (props: LinkEditProps) => {
 
 	const emitApply = (mode: LinkMode, params: EmitApplyParams) =>
 		({
-			insert: () => adapter.emitInsert(params),
-			modify: () => adapter.emitModify(params),
+			insert: () => uiPort.emitInsert(params),
+			modify: () => uiPort.emitModify(params),
 		})[mode]();
 
 	onMount(() => {
@@ -63,24 +64,24 @@ export const LinkEdit = (props: LinkEditProps) => {
 		const toggleButtonsCallback: LinkUpdateToggleButtonsFn = (state) =>
 			setIsNewTab(state.isNewTab);
 
-		adapter.subscribe({ type: "view", callback: viewCallback });
-		adapter.subscribe({ type: "mode", callback: modeCallback });
-		adapter.subscribe({ type: "displayText", callback: displayTextCallback });
-		adapter.subscribe({ type: "url", callback: urlCallback });
-		adapter.subscribe({
+		uiPort.subscribe({ type: "view", callback: viewCallback });
+		uiPort.subscribe({ type: "mode", callback: modeCallback });
+		uiPort.subscribe({ type: "displayText", callback: displayTextCallback });
+		uiPort.subscribe({ type: "url", callback: urlCallback });
+		uiPort.subscribe({
 			type: "toggleButtons",
 			callback: toggleButtonsCallback,
 		});
 
 		onCleanup(() => {
-			adapter.unsubscribe({ type: "view", callback: viewCallback });
-			adapter.unsubscribe({ type: "mode", callback: modeCallback });
-			adapter.unsubscribe({
+			uiPort.unsubscribe({ type: "view", callback: viewCallback });
+			uiPort.unsubscribe({ type: "mode", callback: modeCallback });
+			uiPort.unsubscribe({
 				type: "displayText",
 				callback: displayTextCallback,
 			});
-			adapter.unsubscribe({ type: "url", callback: urlCallback });
-			adapter.unsubscribe({
+			uiPort.unsubscribe({ type: "url", callback: urlCallback });
+			uiPort.unsubscribe({
 				type: "toggleButtons",
 				callback: toggleButtonsCallback,
 			});
@@ -92,10 +93,10 @@ export const LinkEdit = (props: LinkEditProps) => {
 	};
 
 	const onCancel = () => {
-		adapter.updateState({ view: "preview" });
+		uiPort.setView("preview");
 
-		adapter.emitViewChange();
-		adapter.emitCancel();
+		uiPort.emitViewChange();
+		uiPort.emitCancel();
 	};
 
 	const onApply = () => {
@@ -112,9 +113,9 @@ export const LinkEdit = (props: LinkEditProps) => {
 			? rawUrl
 			: `https://${rawUrl}`;
 
-		adapter.updateState({ view: "preview" });
+		uiPort.setView("preview");
 
-		adapter.emitViewChange();
+		uiPort.emitViewChange();
 
 		const applyParams: EmitApplyParams = {
 			text: displayTextModel.value(),

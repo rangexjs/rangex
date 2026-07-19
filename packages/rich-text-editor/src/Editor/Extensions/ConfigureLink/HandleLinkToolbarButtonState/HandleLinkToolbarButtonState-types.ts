@@ -1,7 +1,7 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkPort } from "#ports";
+import type { LinkEditorPort } from "#adapters";
 
 export interface HandleLinkToolbarButtonStateParams {
-	linkPort: LinkPort;
+	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 }

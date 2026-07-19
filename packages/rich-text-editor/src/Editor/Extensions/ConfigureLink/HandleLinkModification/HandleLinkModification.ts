@@ -14,7 +14,7 @@ import type {
  * Registers the modify callback, updates the link's attributes and content in-place, then syncs the popover state.
  */
 export const handleLinkModification = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: HandleLinkModificationParams) => {
@@ -56,7 +56,7 @@ export const handleLinkModification = ({
 			link: currentLink,
 		});
 
-		linkPort.updateState(popoverState);
+		editorPort.updateState(popoverState);
 
 		selection.setBoundaryPoints({
 			fromNode: createdContentLine,
@@ -72,7 +72,7 @@ export const handleLinkModification = ({
 		editorAPI.focus();
 	};
 
-	const unsubscribe = linkPort.onModify(callback);
+	const unsubscribe = editorPort.onModify(callback);
 
 	return () => {
 		unsubscribe();

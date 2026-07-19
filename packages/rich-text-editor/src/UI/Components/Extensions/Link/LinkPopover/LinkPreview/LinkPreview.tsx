@@ -1,30 +1,30 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { LinkAdapter, LinkUpdateURLFn } from "#adapters";
+import type { LinkUIPort, LinkUpdateURLFn } from "#adapters";
 import { Icon } from "../../../../Icon";
 import { serializeURL } from "../_Utilities";
 
 interface LinkPreviewProps {
-	adapter: LinkAdapter;
+	uiPort: LinkUIPort;
 }
 
 export const LinkPreview = (props: LinkPreviewProps) => {
-	const adapter = props.adapter;
+	const uiPort = props.uiPort;
 
-	const [url, setUrl] = createSignal(adapter.url.inputValue);
+	const [url, setUrl] = createSignal(uiPort.url.inputValue);
 
 	onMount(() => {
 		const callback: LinkUpdateURLFn = (state) => setUrl(state.inputValue);
-		adapter.subscribe({ type: "url", callback });
-		onCleanup(() => adapter.unsubscribe({ type: "url", callback }));
+		uiPort.subscribe({ type: "url", callback });
+		onCleanup(() => uiPort.unsubscribe({ type: "url", callback }));
 	});
 
 	const onEdit = () => {
-		adapter.updateState({ view: "edit" });
-		adapter.emitViewChange();
+		uiPort.setView("edit");
+		uiPort.emitViewChange();
 	};
 
 	const onUnwrap = () => {
-		adapter.emitUnwrap();
+		uiPort.emitUnwrap();
 	};
 
 	return (

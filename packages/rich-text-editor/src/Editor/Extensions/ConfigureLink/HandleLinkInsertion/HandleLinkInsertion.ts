@@ -93,7 +93,7 @@ const anchorPopoverToLink = ({ link, popover }: AnchorPopoverToLinkParams) => {
  * Creates a link at the collapsed caret, inserts it into the editor, then anchors the preview popover to it.
  */
 const insertAtCaret = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 	text,
@@ -123,9 +123,9 @@ const insertAtCaret = ({
 
 	const popoverState = getPopoverStateFromLink({ editorAPI, link });
 
-	linkPort.updateState(popoverState);
+	editorPort.updateState(popoverState);
 
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	anchorPopoverToLink({ link, popover });
 
@@ -138,7 +138,7 @@ const insertAtCaret = ({
  * Wraps each valid segment in the selection with a link, skipping any that already contain an InlineNestedContext.
  */
 const wrapWithLink = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 	href,
@@ -210,9 +210,9 @@ const wrapWithLink = ({
 		link: internals.currentLink,
 	});
 
-	linkPort.updateState(popoverState);
+	editorPort.updateState(popoverState);
 
-	const { popover } = linkPort;
+	const { popover } = editorPort;
 
 	anchorPopoverToLink({ link: internals.currentLink, popover });
 
@@ -225,7 +225,7 @@ const wrapWithLink = ({
  * Registers the insert callback and delegates to insertAtCaret or wrapWithLink based on the current insertion mode.
  */
 export const handleLinkInsertion = ({
-	linkPort,
+	editorPort,
 	editorAPI,
 	internals,
 }: HandleLinkInsertionParams) => {
@@ -247,7 +247,7 @@ export const handleLinkInsertion = ({
 		if (linkInsertMode === "insert") {
 			const filledText = text || url;
 			insertAtCaret({
-				linkPort,
+				editorPort,
 				editorAPI,
 				internals,
 				text: filledText,
@@ -258,14 +258,14 @@ export const handleLinkInsertion = ({
 		}
 
 		if (linkInsertMode === "wrap") {
-			wrapWithLink({ linkPort, internals, editorAPI, href: url, target });
+			wrapWithLink({ editorPort, internals, editorAPI, href: url, target });
 			return;
 		}
 
 		assertNever(linkInsertMode);
 	};
 
-	const unsubscribe = linkPort.onInsert(callback);
+	const unsubscribe = editorPort.onInsert(callback);
 
 	return () => {
 		unsubscribe();
