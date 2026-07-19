@@ -203,9 +203,13 @@ export const App = (props: AppProps) => {
 							{(extension) => {
 								const Popover = extension.components.popover;
 
-								return Popover ? (
+								if (!Popover) {
+									return null;
+								}
+
+								return (
 									<Dynamic component={Popover} adapter={extension.adapter} />
-								) : null;
+								);
 							}}
 						</For>
 					</div>
