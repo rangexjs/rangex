@@ -1,6 +1,11 @@
-import { useContext } from "solid-js";
-import type { CodeBlockLanguage, CodeBlockTheme } from "#ports";
-import type { ToolbarButtons } from "../../CommonTypes";
+import { For, useContext } from "solid-js";
+import { Dynamic } from "solid-js/web";
+import type {
+	CodeBlockLanguage,
+	CodeBlockTheme,
+	ResolvedExtension,
+	ToolbarButtons,
+} from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
@@ -10,8 +15,6 @@ import type {
 	EmbedPopoverController,
 	EmojiPopoverController,
 	ImagePopoverController,
-	LinkPopoverController,
-	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
 	VideoPopoverController,
@@ -38,8 +41,6 @@ import {
 	EmbedPopover,
 	EmojiPopover,
 	ImagePopover,
-	LinkPopover,
-	MentionPopover,
 	TableQuickActionsPopover,
 	TemplateVariablePopover,
 	VideoPopover,
@@ -79,8 +80,6 @@ export interface PopoverControllers {
 	embedPopoverController: EmbedPopoverController;
 	emojiPopoverController: EmojiPopoverController;
 	imagePopoverController: ImagePopoverController;
-	linkPopoverController: LinkPopoverController;
-	mentionPopoverController: MentionPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
 	templateVariablePopoverController: TemplateVariablePopoverController;
 	videoPopoverController: VideoPopoverController;
@@ -92,6 +91,7 @@ export interface AppProps
 		PopoverControllers {
 	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
+	extensions: ResolvedExtension[];
 	richTextArea: HTMLElement;
 }
 
@@ -159,8 +159,6 @@ export const App = (props: AppProps) => {
 		embedPopoverController: props.embedPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
 		imagePopoverController: props.imagePopoverController,
-		linkPopoverController: props.linkPopoverController,
-		mentionPopoverController: props.mentionPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
 		templateVariablePopoverController: props.templateVariablePopoverController,
@@ -180,7 +178,10 @@ export const App = (props: AppProps) => {
 				<ToolbarButtonManagersContext.Provider
 					value={toolbarButtonManagersContextValue}
 				>
-					<EditorToolbar toolbarButtons={props.toolbarButtons} />
+					<EditorToolbar
+						toolbarButtons={props.toolbarButtons}
+						extensions={props.extensions}
+					/>
 				</ToolbarButtonManagersContext.Provider>
 				<div class="relative max-h-300 overflow-y-auto">
 					<div>{props.richTextArea}</div>
@@ -194,12 +195,19 @@ export const App = (props: AppProps) => {
 							<EmbedPopover />
 							<EmojiPopover />
 							<ImagePopover />
-							<LinkPopover />
-							<MentionPopover />
 							<TableQuickActionsPopover />
 							<TemplateVariablePopover />
 							<VideoPopover />
 						</PopoverControllersContext.Provider>
+						<For each={props.extensions}>
+							{(extension) => {
+								const Popover = extension.components.popover;
+
+								return Popover ? (
+									<Dynamic component={Popover} adapter={extension.adapter} />
+								) : null;
+							}}
+						</For>
 					</div>
 				</div>
 			</EditorContainer>

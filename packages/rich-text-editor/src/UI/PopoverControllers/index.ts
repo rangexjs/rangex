@@ -4,8 +4,6 @@ export * from "./CodeBlockPopoverController";
 export * from "./EmbedPopoverController";
 export * from "./EmojiPopoverController";
 export * from "./ImagePopoverController";
-export * from "./LinkPopoverController";
-export * from "./MentionPopoverController";
 export * from "./TableQuickActionsPopoverController";
 export * from "./TemplateVariablePopoverController";
 export * from "./VideoPopoverController";

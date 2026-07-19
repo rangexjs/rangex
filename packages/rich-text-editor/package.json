@@ -23,13 +23,25 @@
 		}
 	},
 	"imports": {
+		"#adapters": {
+			"types": "./src/Adapters/index.ts",
+			"default": "./src/Adapters/index"
+		},
 		"#ui": {
 			"types": "./src/UI/index.ts",
 			"default": "./src/UI/index"
 		},
+		"#ui-extensions": {
+			"types": "./src/UI/Components/Extensions/index.ts",
+			"default": "./src/UI/Components/Extensions/index"
+		},
 		"#ports": {
 			"types": "./src/Ports/index.ts",
 			"default": "./src/Ports/index"
+		},
+		"#editor-extensions": {
+			"types": "./src/Editor/Extensions/index.ts",
+			"default": "./src/Editor/Extensions/index"
 		}
 	},
 	"files": [

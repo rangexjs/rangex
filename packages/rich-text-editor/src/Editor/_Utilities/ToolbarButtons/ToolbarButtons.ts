@@ -1,4 +1,4 @@
-import type { ToolbarButtons } from "#ui";
+import type { ToolbarButtons } from "#ports";
 
 export const toolbarButtons: ToolbarButtons = [
 	[
@@ -13,7 +13,7 @@ export const toolbarButtons: ToolbarButtons = [
 			"media",
 			"custom-component",
 			"symbols",
-			"anchor",
+			"link",
 		],
 		["find-replace", "template-variable", "text-area-readability"],
 	],

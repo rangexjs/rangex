@@ -1,9 +1,13 @@
+import type { Component } from "solid-js";
 import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import type { ToolbarButtons } from "../../CommonTypes";
-import { type ToolbarButtonValue, toolbarButtonsName } from "../../Constants";
 import {
-	AnchorToolbarButton,
+	type ResolvedExtension,
+	type ToolbarButtons,
+	type ToolbarButtonValue,
+	toolbarButtonsName,
+} from "#ports";
+import {
 	BackgroundColorToolbarButton,
 	BlockQuoteToolbarButton,
 	BoldToolbarButton,
@@ -38,52 +42,72 @@ import {
 	UnorderedListToolbarButton,
 } from "../ToolbarButtons";
 
+type StaticToolbarButtonValue = Exclude<ToolbarButtonValue, "link">;
+
 interface ToolbarButtonProps {
 	name: ToolbarButtonValue;
+	extensions: ResolvedExtension[];
 }
 
-const ToolbarButton = ({ name }: ToolbarButtonProps) => {
-	const ToolbarButtonComponentMap = {
-		[toolbarButtonsName.anchor]: AnchorToolbarButton,
-		[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
-		[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
-		[toolbarButtonsName.bold]: BoldToolbarButton,
-		[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
-		[toolbarButtonsName.code]: CodeToolbarButton,
-		[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
-		[toolbarButtonsName.color]: ColorToolbarButton,
-		[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
-		[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
-		[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
-		[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
-		[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
-		[toolbarButtonsName.indentation]: IndentationToolbarButton,
-		[toolbarButtonsName.media]: MediaToolbarButton,
-		[toolbarButtonsName.italic]: ItalicToolbarButton,
-		[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
-		[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
-		[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
-		[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
-		[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
-		[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
-		[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
-		[toolbarButtonsName.subscript]: SubscriptToolbarButton,
-		[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
-		[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
-		[toolbarButtonsName.symbols]: SymbolsToolbarButton,
-		[toolbarButtonsName.table]: TableToolbarButton,
-		[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
-		[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
-		[toolbarButtonsName.textAreaReadability]: TextAreaReadabilityToolbarButton,
-		[toolbarButtonsName.underline]: UnderlineToolbarButton,
-		[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
-	} as const;
+const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
+	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
+		{
+			[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
+			[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
+			[toolbarButtonsName.bold]: BoldToolbarButton,
+			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
+			[toolbarButtonsName.code]: CodeToolbarButton,
+			[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
+			[toolbarButtonsName.color]: ColorToolbarButton,
+			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
+			[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
+			[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
+			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
+			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
+			[toolbarButtonsName.indentation]: IndentationToolbarButton,
+			[toolbarButtonsName.media]: MediaToolbarButton,
+			[toolbarButtonsName.italic]: ItalicToolbarButton,
+			[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
+			[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
+			[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
+			[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
+			[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
+			[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
+			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
+			[toolbarButtonsName.subscript]: SubscriptToolbarButton,
+			[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
+			[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
+			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
+			[toolbarButtonsName.table]: TableToolbarButton,
+			[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
+			[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
+			[toolbarButtonsName.textAreaReadability]:
+				TextAreaReadabilityToolbarButton,
+			[toolbarButtonsName.underline]: UnderlineToolbarButton,
+			[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
+		};
 
-	return <Dynamic component={ToolbarButtonComponentMap[name]} />;
+	const extension = extensions.find((ext) => ext.name === name);
+
+	if (!extension?.components.toolbarButton) {
+		return (
+			<Dynamic
+				component={ToolbarButtonComponentMap[name as StaticToolbarButtonValue]}
+			/>
+		);
+	}
+
+	return (
+		<Dynamic
+			component={extension.components.toolbarButton}
+			adapter={extension.adapter}
+		/>
+	);
 };
 
 export interface EditorToolbarProps {
 	toolbarButtons: ToolbarButtons;
+	extensions: ResolvedExtension[];
 }
 
 export const EditorToolbar = (props: EditorToolbarProps) => {
@@ -97,7 +121,12 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 								<>
 									<span class="space-x-0.5">
 										<For each={group}>
-											{(name) => <ToolbarButton name={name} />}
+											{(name) => (
+												<ToolbarButton
+													name={name}
+													extensions={props.extensions}
+												/>
+											)}
 										</For>
 									</span>
 									<Show when={index() < row.length - 1}>

@@ -1,4 +1,3 @@
-export * from "./AnchorToolbarButton";
 export * from "./BackgroundColorToolbarButton";
 export * from "./BlockQuoteToolbarButton";
 export * from "./BoldToolbarButton";

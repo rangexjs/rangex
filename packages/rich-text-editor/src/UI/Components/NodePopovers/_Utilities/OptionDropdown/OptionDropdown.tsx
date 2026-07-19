@@ -54,7 +54,7 @@ export const OptionDropdown = <Option extends string>(
 			<div
 				id={popoverId}
 				popover="auto"
-				class="max-h-48 w-[anchor-size(width)] overflow-y-auto rounded-b-md border-neutral-200 border-r border-b border-l bg-white shadow-lg [position-area:center_bottom] [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-800"
+				class="scrollbar-thin max-h-48 w-[anchor-size(width)] overflow-y-auto rounded-b-md border-neutral-200 border-r border-b border-l bg-white shadow-lg [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-800"
 			>
 				<For each={props.options}>
 					{(option) => (

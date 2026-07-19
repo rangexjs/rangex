@@ -14,11 +14,13 @@ import video from "../Components/Video.css?inline";
 import blockNestedContextLine from "../EditorElements/BlockNestedContextLine.css?inline";
 import contentLine from "../EditorElements/ContentLine.css?inline";
 import glyphFormatter from "../EditorElements/GlyphFormatter.css?inline";
+import fontStyles from "../FontStyles.css?inline";
 import globalContentStyles from "../GlobalContentStyles.css?inline";
 
 export const getContentStyles = () => {
 	const styles =
 		colors +
+		fontStyles +
 		globalContentStyles +
 		contentLine +
 		blockQuote +

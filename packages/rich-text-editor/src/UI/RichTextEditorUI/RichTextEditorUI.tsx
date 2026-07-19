@@ -18,8 +18,6 @@ import {
 	EmbedPopoverController,
 	EmojiPopoverController,
 	ImagePopoverController,
-	LinkPopoverController,
-	MentionPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
 	VideoPopoverController,
@@ -48,6 +46,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#shadowRoot;
 	#toolbarButtons;
 	#richTextArea;
+	#extensions;
 	#dispose;
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
@@ -66,8 +65,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#emojiPopoverController = new EmojiPopoverController();
 	#emptyMediaSlotController = new EmptyMediaSlotController();
 	#imagePopoverController = new ImagePopoverController();
-	#linkPopoverController = new LinkPopoverController();
-	#mentionPopoverController = new MentionPopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
 	#templateVariablePopoverController = new TemplateVariablePopoverController();
@@ -76,6 +73,7 @@ export class RichTextEditorUI extends HTMLElement {
 	constructor({
 		toolbarButtons,
 		richTextArea,
+		extensions,
 		defaultStyleValues,
 		options = {},
 	}: RichTextEditorUIConstructorParams) {
@@ -109,12 +107,14 @@ export class RichTextEditorUI extends HTMLElement {
 		this.#shadowRoot.append(style);
 		this.#toolbarButtons = toolbarButtons;
 		this.#richTextArea = richTextArea;
+		this.#extensions = extensions;
 
 		this.#dispose = render(
 			() => (
 				<App
 					toolbarButtons={this.#toolbarButtons}
 					richTextArea={this.#richTextArea}
+					extensions={this.#extensions}
 					options={{
 						codeBlockLanguages,
 						codeBlockThemes,
@@ -143,8 +143,6 @@ export class RichTextEditorUI extends HTMLElement {
 					embedPopoverController={this.#embedPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
 					imagePopoverController={this.#imagePopoverController}
-					linkPopoverController={this.#linkPopoverController}
-					mentionPopoverController={this.#mentionPopoverController}
 					tableQuickActionsPopoverController={
 						this.#tableQuickActionsPopoverController
 					}
@@ -272,14 +270,6 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get imagePort() {
 		return this.#imagePopoverController.publicAPI;
-	}
-
-	get linkPort() {
-		return this.#linkPopoverController.publicAPI;
-	}
-
-	get mentionPort() {
-		return this.#mentionPopoverController.publicAPI;
 	}
 
 	get tableQuickActionsPopover() {

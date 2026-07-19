@@ -1,10 +1,11 @@
+import type { ResolvedExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import {
 	codeBlockLanguages,
 	codeBlockThemes,
 	customComponentNames,
+	toolbarButtons as defaultToolbarButtons,
 	fontFamilyOptions,
-	toolbarButtons,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
@@ -17,9 +18,7 @@ import {
 	configureEmoji,
 	configureEmptyMedia,
 	configureImage,
-	configureLink,
 	configureList,
-	configureMention,
 	configureTable,
 	configureTemplateVariable,
 	configureTodoList,
@@ -39,20 +38,44 @@ import {
 	configureTemplate,
 	configureView,
 } from "../MenuBar";
-import type { RichTextEditorParams } from "./RichTextEditor-types";
+import { createRangeX } from "./CreateRangeX";
+import type {
+	ErasedConfigureExtensionFn,
+	RichTextEditorParams,
+} from "./RichTextEditor-types";
 
 export class RichTextEditor extends HTMLElement {
 	#richTextEditorUI: RichTextEditorUI;
 	#cleanups: Set<() => void> = new Set();
 
-	constructor({ rangeX }: RichTextEditorParams) {
+	constructor({
+		storedSnapshot,
+		toolbarButtons = defaultToolbarButtons,
+		extensions = [],
+	}: RichTextEditorParams) {
 		super();
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
+		const rangeX = createRangeX({ storedSnapshot });
+		const { editorAPI } = rangeX;
+
+		const extensionAdapters = extensions.map((extension) => ({
+			extension,
+			adapter: extension.createAdapter(),
+		}));
+
+		const resolvedExtensions: ResolvedExtension[] = extensionAdapters.map(
+			({ extension, adapter }) => ({
+				name: extension.name,
+				adapter,
+				components: extension.components,
+			}),
+		);
 
 		this.#richTextEditorUI = new RichTextEditorUI({
 			richTextArea: rangeX,
 			toolbarButtons,
+			extensions: resolvedExtensions,
 			options: {
 				codeBlockLanguages,
 				codeBlockThemes,
@@ -63,7 +86,13 @@ export class RichTextEditor extends HTMLElement {
 
 		shadowRoot.append(this.#richTextEditorUI);
 
-		const { editorAPI } = rangeX;
+		// configure must run after the mount above — e.g. LinkPort.popover throws until its element exists.
+		for (const { extension, adapter } of extensionAdapters) {
+			const configure = extension.configure as ErasedConfigureExtensionFn;
+			const cleanup = configure({ adapter, editorAPI });
+
+			this.#cleanups.add(cleanup);
+		}
 
 		const blockComponentPlacement = createBlockComponentPlacement({
 			editorAPI,
@@ -186,17 +215,8 @@ export class RichTextEditor extends HTMLElement {
 		this.#cleanups.add(audioCleanup);
 		this.#cleanups.add(embedCleanup);
 
-		const linkCleanup = configureLink({
-			richTextEditorUI: this.#richTextEditorUI,
-			linkPort: this.#richTextEditorUI.linkPort,
-			editorAPI,
-		});
 		const emojiCleanup = configureEmoji({
 			emojiPort: this.#richTextEditorUI.emojiPopover,
-			editorAPI,
-		});
-		const mentionCleanup = configureMention({
-			mentionPort: this.#richTextEditorUI.mentionPort,
 			editorAPI,
 		});
 		const templateVariableCleanup = configureTemplateVariable({
@@ -205,9 +225,7 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 
-		this.#cleanups.add(linkCleanup);
 		this.#cleanups.add(emojiCleanup);
-		this.#cleanups.add(mentionCleanup);
 		this.#cleanups.add(templateVariableCleanup);
 
 		const findReplaceCleanup = configureFindReplace({

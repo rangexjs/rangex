@@ -30,7 +30,7 @@ This is a monorepo (Bun workspaces) for the RangeX rich text editor project:
 | `rich-text-area` | `packages/rich-text-area/` | Close-source engine — separate private repo, gitignored here, must be cloned separately |
 | `@rangex/rich-text-editor` | `packages/rich-text-editor/` | Tracked in this repo — wires the engine to the UI; TypeScript feature implementations plus the SolidJS Web Component toolbar/UI layer (`src/UI/`), all in one package. Private, not published. |
 
-The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from `@rangex/rich-text-editor` to preview the full editor. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
+The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/MockDatabase`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
 
 Each package has its own `CLAUDE.md` with package-specific guidance.
 
@@ -91,7 +91,6 @@ src/
     NodeQuery/             ← Stateless DOM traversal helpers (same pattern as engine)
     _Utilities/            ← Toolbar button layout definition
     RichTextEditor/        ← Main wiring entry point
-    CreateDevelopmentView/ ← Dev harness only
 ```
 
 Each `Editor/Components/ConfigureXxx` folder wires one editor feature: it subscribes to engine events, handles toolbar button presses, and calls `editorAPI` methods.

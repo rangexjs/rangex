@@ -1,6 +1,5 @@
 export * from "./EditorOptions";
 export * from "./GetCSSText";
-export * from "./GetDefaultContentLineLocalNamesStyles";
 export * from "./IsScopedEditableEmpty";
 export * from "./IsWellFormedUrl";
 export * from "./PositionPopoverToSelection";
