@@ -4,7 +4,6 @@ import type {
 	ToolbarButtons,
 	UIExtension,
 } from "#ports";
-import type { DefaultStyleValues } from "../ToolbarButtonDefaultValues";
 import type {
 	CustomComponentName,
 	FontFamilyOption,
@@ -21,6 +20,5 @@ export interface RichTextEditorUIConstructorParams {
 	richTextArea: HTMLElement;
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
-	defaultStyleValues?: Partial<DefaultStyleValues>;
 	options?: RichTextEditorUIOptions;
 }

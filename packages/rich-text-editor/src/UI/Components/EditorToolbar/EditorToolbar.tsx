@@ -9,43 +9,44 @@ import {
 	type UIExtension,
 } from "#ports";
 import {
-	BackgroundColorToolbarButton,
 	BlockQuoteToolbarButton,
-	BoldToolbarButton,
 	CheckboxListToolbarButton,
 	CodeBlockToolbarButton,
-	CodeToolbarButton,
-	ColorToolbarButton,
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
-	FontFamilyToolbarButton,
-	FontSizeToolbarButton,
 	HistoryBackToolbarButton,
 	HistoryForwardToolbarButton,
-	IndentationToolbarButton,
-	ItalicToolbarButton,
-	LetterSpacingToolbarButton,
-	LineHeightToolbarButton,
-	LineLocalNameToolbarButton,
-	LineSpacingToolbarButton,
 	MediaToolbarButton,
 	OrderedListToolbarButton,
-	RemoveFormatToolbarButton,
-	StrikethroughToolbarButton,
-	SubscriptToolbarButton,
-	SuperscriptToolbarButton,
 	SymbolsToolbarButton,
 	TableToolbarButton,
 	TemplateVariableToolbarButton,
-	TextAlignToolbarButton,
 	TextAreaReadabilityToolbarButton,
-	UnderlineToolbarButton,
 	UnorderedListToolbarButton,
 } from "../ToolbarButtons";
 
 type StaticToolbarButtonValue = Exclude<
 	ToolbarButtonValue,
-	typeof toolbarButtonsName.link | ExtensionName
+	| typeof toolbarButtonsName.link
+	| typeof toolbarButtonsName.backgroundColor
+	| typeof toolbarButtonsName.bold
+	| typeof toolbarButtonsName.code
+	| typeof toolbarButtonsName.color
+	| typeof toolbarButtonsName.fontFamily
+	| typeof toolbarButtonsName.fontSize
+	| typeof toolbarButtonsName.indentation
+	| typeof toolbarButtonsName.italic
+	| typeof toolbarButtonsName.letterSpacing
+	| typeof toolbarButtonsName.lineHeight
+	| typeof toolbarButtonsName.lineLocalName
+	| typeof toolbarButtonsName.lineSpacing
+	| typeof toolbarButtonsName.removeFormat
+	| typeof toolbarButtonsName.strikethrough
+	| typeof toolbarButtonsName.subscript
+	| typeof toolbarButtonsName.superscript
+	| typeof toolbarButtonsName.textAlign
+	| typeof toolbarButtonsName.underline
+	| ExtensionName
 >;
 
 const findExtensionToolbarButton = (
@@ -71,38 +72,20 @@ interface ToolbarButtonProps {
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
-			[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
 			[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
-			[toolbarButtonsName.bold]: BoldToolbarButton,
 			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
-			[toolbarButtonsName.code]: CodeToolbarButton,
 			[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
-			[toolbarButtonsName.color]: ColorToolbarButton,
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
-			[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
-			[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
 			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
 			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
-			[toolbarButtonsName.indentation]: IndentationToolbarButton,
 			[toolbarButtonsName.media]: MediaToolbarButton,
-			[toolbarButtonsName.italic]: ItalicToolbarButton,
-			[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
-			[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
-			[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
-			[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
-			[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
 			[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
-			[toolbarButtonsName.subscript]: SubscriptToolbarButton,
-			[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
-			[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
 			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
 			[toolbarButtonsName.table]: TableToolbarButton,
 			[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
-			[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
-			[toolbarButtonsName.underline]: UnderlineToolbarButton,
 			[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
 		};
 

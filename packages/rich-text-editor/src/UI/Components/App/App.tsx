@@ -19,14 +19,12 @@ import type {
 	TemplateVariablePopoverController,
 	VideoPopoverController,
 } from "../../PopoverControllers";
-import type { ToolbarButtonDefaultValues } from "../../ToolbarButtonDefaultValues";
 import type {
 	CustomComponentName,
 	FontFamilyOption,
 } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
-	FormatStylesButtonsStateManager,
 	HistoryNavigationButtonsStateManager,
 	NodeInsertionButtonsStateManager,
 	NonCategorizedOperationButtonsStateManager,
@@ -66,11 +64,9 @@ export interface MenuBarManagers {
 
 export interface ToolbarButtonManagers {
 	toolbarButtonsActionManager: ToolbarButtonsActionManager;
-	formatStylesButtonsStateManager: FormatStylesButtonsStateManager;
 	historyNavigationButtonsStateManager: HistoryNavigationButtonsStateManager;
 	nodeInsertionButtonsStateManager: NodeInsertionButtonsStateManager;
 	nonCategorizedOperationButtonsStateManager: NonCategorizedOperationButtonsStateManager;
-	toolbarButtonDefaultValues: ToolbarButtonDefaultValues;
 }
 
 export interface PopoverControllers {
@@ -143,13 +139,11 @@ export const App = (props: AppProps) => {
 
 	const toolbarButtonManagersContextValue: ToolbarButtonManagers = {
 		toolbarButtonsActionManager: props.toolbarButtonsActionManager,
-		formatStylesButtonsStateManager: props.formatStylesButtonsStateManager,
 		historyNavigationButtonsStateManager:
 			props.historyNavigationButtonsStateManager,
 		nodeInsertionButtonsStateManager: props.nodeInsertionButtonsStateManager,
 		nonCategorizedOperationButtonsStateManager:
 			props.nonCategorizedOperationButtonsStateManager,
-		toolbarButtonDefaultValues: props.toolbarButtonDefaultValues,
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {

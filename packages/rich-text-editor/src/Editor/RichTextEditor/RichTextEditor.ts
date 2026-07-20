@@ -27,7 +27,6 @@ import {
 import {
 	configureCustomStyles,
 	configureFindReplace,
-	configureFormatStyles,
 	configureHistoryNavigation,
 	configureNonCategorized,
 	configureSymbolInsertion,
@@ -110,10 +109,6 @@ export class RichTextEditor extends HTMLElement {
 
 		configureCustomStyles({ editorAPI });
 
-		const formatStylesCleanup = configureFormatStyles({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
 		const nonCategorizedCleanup = configureNonCategorized({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
@@ -123,7 +118,6 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 		});
 
-		this.#cleanups.add(formatStylesCleanup);
 		this.#cleanups.add(nonCategorizedCleanup);
 		this.#cleanups.add(historyNavigationCleanup);
 

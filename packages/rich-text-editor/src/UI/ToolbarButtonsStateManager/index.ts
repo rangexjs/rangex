@@ -1,9 +1,4 @@
 export {
-	type FormatStylesButtonsState,
-	FormatStylesButtonsStateManager,
-	type UpdateFormatStylesButtonsStateParams,
-} from "./FormatStylesButtonsStateManager";
-export {
 	type HistoryNavigationButtonsState,
 	HistoryNavigationButtonsStateManager,
 	type UpdateHistoryNavigationButtonsStateParams,

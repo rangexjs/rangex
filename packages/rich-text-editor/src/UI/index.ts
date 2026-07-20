@@ -89,17 +89,14 @@ export type {
 	UnorderedListToolbarButtonState,
 } from "./ToolbarButtonProps";
 export type {
-	FormatStylesActionState,
 	HistoryNavigationActionState,
 	NodeInsertionActionState,
 	NonCategorizedOperationActionState,
 } from "./ToolbarButtonsActionManager";
 export type {
-	FormatStylesButtonsState,
 	HistoryNavigationButtonsState,
 	NodeInsertionButtonsState,
 	NonCategorizedOperationButtonsState,
-	UpdateFormatStylesButtonsStateParams,
 	UpdateHistoryNavigationButtonsStateParams,
 	UpdateNodeInsertionButtonsStateParams,
 	UpdateNonCategorizedOperationButtonsStateParams,

@@ -5,52 +5,14 @@ import type {
 	toolbarButtonsName,
 } from "../Constants";
 import type {
-	BackgroundColorValue,
-	ColorValue,
 	CustomComponentName,
 	FindReplacePattern,
-	FontFamilyValue,
-	FontSizeValue,
-	IndentationValue,
-	LetterSpacingValue,
-	LineHeightValue,
-	LineLocalNameValue,
-	LineSpacingValue,
 	TemplateVariableOptions,
-	TextAlignValue,
-	ToggleButtonPressed,
 } from "../ToolbarButtonProps";
-
-// FormatStyles
-export interface FormatStylesActionState {
-	backgroundColor?: BackgroundColorValue | null;
-	bold?: ToggleButtonPressed;
-	code?: ToggleButtonPressed;
-	color?: ColorValue | null;
-	fontFamily?: FontFamilyValue | null;
-	fontSize?: FontSizeValue | null;
-	indentation?: IndentationValue;
-	italic?: ToggleButtonPressed;
-	letterSpacing?: LetterSpacingValue | null;
-	lineHeight?: LineHeightValue;
-	lineLocalName?: LineLocalNameValue;
-	lineSpacing?: LineSpacingValue;
-	subscript?: ToggleButtonPressed;
-	superscript?: ToggleButtonPressed;
-	strikethrough?: ToggleButtonPressed;
-	textAlign?: TextAlignValue;
-	underline?: ToggleButtonPressed;
-}
 
 interface GetButtonType<Type extends ToolbarButtonValue> {
 	type: Type;
 }
-
-export interface OnFormatStylesParams extends FormatStylesActionState {}
-
-export type OnFormatStylesFn = (params: OnFormatStylesParams) => void;
-
-export interface EmitFormatStylesChangeParams extends FormatStylesActionState {}
 
 // HistoryNavigation
 export interface HistoryNavigationActionState {
@@ -178,7 +140,6 @@ export type EmitNonCategorizedOperationChangeParams =
 	NonCategorizedOperationActionState;
 
 export type ActionListenerMap = {
-	[toolbarButtonActionsName.formatStyles]: OnFormatStylesFn;
 	[toolbarButtonActionsName.historyNavigation]: OnHistoryNavigationFn;
 	[toolbarButtonActionsName.nodeInsertion]: OnNodeInsertionFn;
 	[toolbarButtonActionsName.nonCategorizedOperation]: OnNonCategorizedOperationFn;

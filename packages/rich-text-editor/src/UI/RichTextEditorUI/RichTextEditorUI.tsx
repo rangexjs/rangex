@@ -22,20 +22,16 @@ import {
 	TemplateVariablePopoverController,
 	VideoPopoverController,
 } from "../PopoverControllers";
-import { ToolbarButtonDefaultValues } from "../ToolbarButtonDefaultValues";
 import {
-	type OnFormatStylesFn,
 	type OnHistoryNavigationFn,
 	type OnNodeInsertionFn,
 	type OnNonCategorizedOperationFn,
 	ToolbarButtonsActionManager,
 } from "../ToolbarButtonsActionManager";
 import {
-	FormatStylesButtonsStateManager,
 	HistoryNavigationButtonsStateManager,
 	NodeInsertionButtonsStateManager,
 	NonCategorizedOperationButtonsStateManager,
-	type UpdateFormatStylesButtonsStateParams,
 	type UpdateHistoryNavigationButtonsStateParams,
 	type UpdateNodeInsertionButtonsStateParams,
 	type UpdateNonCategorizedOperationButtonsStateParams,
@@ -51,13 +47,11 @@ export class RichTextEditorUI extends HTMLElement {
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
 	#toolbarButtonsActionManager = new ToolbarButtonsActionManager();
-	#formatStylesButtonsStateManager = new FormatStylesButtonsStateManager();
 	#historyNavigationButtonsStateManager =
 		new HistoryNavigationButtonsStateManager();
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
-	#toolbarButtonDefaultValues = new ToolbarButtonDefaultValues();
 	#audioPopoverController = new AudioPopoverController();
 	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
@@ -74,7 +68,6 @@ export class RichTextEditorUI extends HTMLElement {
 		toolbarButtons,
 		richTextArea,
 		extensions,
-		defaultStyleValues,
 		options = {},
 	}: RichTextEditorUIConstructorParams) {
 		super();
@@ -99,10 +92,6 @@ export class RichTextEditorUI extends HTMLElement {
 			});
 		}
 
-		if (defaultStyleValues) {
-			this.#toolbarButtonDefaultValues.updateState(defaultStyleValues);
-		}
-
 		this.#shadowRoot = this.attachShadow({ mode: "open" });
 		this.#shadowRoot.append(style);
 		this.#toolbarButtons = toolbarButtons;
@@ -124,9 +113,6 @@ export class RichTextEditorUI extends HTMLElement {
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
 					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}
-					formatStylesButtonsStateManager={
-						this.#formatStylesButtonsStateManager
-					}
 					historyNavigationButtonsStateManager={
 						this.#historyNavigationButtonsStateManager
 					}
@@ -136,7 +122,6 @@ export class RichTextEditorUI extends HTMLElement {
 					nonCategorizedOperationButtonsStateManager={
 						this.#nonCategorizedOperationButtonsStateManager
 					}
-					toolbarButtonDefaultValues={this.#toolbarButtonDefaultValues}
 					audioPopoverController={this.#audioPopoverController}
 					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
@@ -168,10 +153,6 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	updateFormatStylesButtonState(state: UpdateFormatStylesButtonsStateParams) {
-		this.#formatStylesButtonsStateManager.updateState(state);
-	}
-
 	updateHistoryNavigationButtonState(
 		state: UpdateHistoryNavigationButtonsStateParams,
 	) {
@@ -186,20 +167,6 @@ export class RichTextEditorUI extends HTMLElement {
 		state: UpdateNonCategorizedOperationButtonsStateParams,
 	) {
 		this.#nonCategorizedOperationButtonsStateManager.updateState(state);
-	}
-
-	onFormatStyles(callback: OnFormatStylesFn) {
-		this.#toolbarButtonsActionManager.subscribe({
-			type: toolbarButtonActionsName.formatStyles,
-			callback,
-		});
-
-		return () => {
-			this.#toolbarButtonsActionManager.unsubscribe({
-				type: toolbarButtonActionsName.formatStyles,
-				callback,
-			});
-		};
 	}
 
 	onHistoryNavigation(callback: OnHistoryNavigationFn) {

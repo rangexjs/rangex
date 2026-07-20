@@ -1,8 +1,9 @@
 import type { StoredSnapshot } from "rich-text-area";
 import type { ConfigureExtensionFn, ToolbarButtons } from "#ports";
-import type { Link, Mention } from "../../Extensions";
+import type { Formatting, Link, Mention } from "../../Extensions";
 
 export type ExtensionUnion =
+	| ReturnType<typeof Formatting>
 	| ReturnType<typeof Link>
 	| ReturnType<typeof Mention>;
 

@@ -1,4 +1,9 @@
-import { Link, Mention, RichTextEditor } from "@rangex/rich-text-editor";
+import {
+	Formatting,
+	Link,
+	Mention,
+	RichTextEditor,
+} from "@rangex/rich-text-editor";
 import storedSnapshot from "../MockDatabase/Demo.json";
 
 // window.$snapshot = (node) => {
@@ -22,13 +27,13 @@ export const createDevelopmentView = () => {
 	);
 
 	const emptyRichTextEditor = new RichTextEditor({
-		extensions: [Link(), Mention()],
+		extensions: [Link(), Mention(), Formatting()],
 	});
 
 	const filledRichTextEditor = new RichTextEditor({
 		// @ts-expect-error
 		storedSnapshot,
-		extensions: [Link(), Mention()],
+		extensions: [Link(), Mention(), Formatting()],
 	});
 
 	maxViewContainer.append(emptyRichTextEditor, filledRichTextEditor);

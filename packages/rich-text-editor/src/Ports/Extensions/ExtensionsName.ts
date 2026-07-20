@@ -1,4 +1,5 @@
 export const extensionsName = {
+	formatting: "formatting",
 	link: "link",
 	mention: "mention",
 } as const;

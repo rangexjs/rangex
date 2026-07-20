@@ -1,14 +1,14 @@
 import type { StructuredStyleValue } from "rich-text-area";
 import type {
-	FontFamilyValue,
-	FontSizeValue,
-	IndentationValue,
-	LetterSpacingValue,
-	LineHeightValue,
-	LineSpacingValue,
-	StructuredColor,
-	TextAlignValue,
-} from "#ui";
+	FormattingFontFamilyValue,
+	FormattingFontSizeValue,
+	FormattingIndentationValue,
+	FormattingLetterSpacingValue,
+	FormattingLineHeightValue,
+	FormattingLineSpacingValue,
+	FormattingStructuredColor,
+	FormattingTextAlignValue,
+} from "#adapters";
 
 type GetStructuredStyleValue<T extends StructuredStyleValue> = T;
 
@@ -27,8 +27,8 @@ export type StructuredStyleValueType =
 export type BackgroundColorStructuredStyleValue = GetStructuredStyleValue<{
 	type: "background-color";
 	values: {
-		light: StructuredColor;
-		dark: StructuredColor;
+		light: FormattingStructuredColor;
+		dark: FormattingStructuredColor;
 	};
 	declarationValue: string;
 }>;
@@ -36,8 +36,8 @@ export type BackgroundColorStructuredStyleValue = GetStructuredStyleValue<{
 export type ColorStructuredStyleValue = GetStructuredStyleValue<{
 	type: "color";
 	values: {
-		light: StructuredColor;
-		dark: StructuredColor;
+		light: FormattingStructuredColor;
+		dark: FormattingStructuredColor;
 	};
 	declarationValue: string;
 }>;
@@ -45,7 +45,7 @@ export type ColorStructuredStyleValue = GetStructuredStyleValue<{
 export type FontFamilyStructuredStyleValue = GetStructuredStyleValue<{
 	type: "font-family";
 	values: {
-		fontFamily: FontFamilyValue;
+		fontFamily: FormattingFontFamilyValue;
 	};
 	declarationValue: string;
 }>;
@@ -53,7 +53,7 @@ export type FontFamilyStructuredStyleValue = GetStructuredStyleValue<{
 export type FontSizeStructuredStyleValue = GetStructuredStyleValue<{
 	type: "font-size";
 	values: {
-		fontSize: FontSizeValue;
+		fontSize: FormattingFontSizeValue;
 	};
 	declarationValue: string;
 }>;
@@ -61,7 +61,7 @@ export type FontSizeStructuredStyleValue = GetStructuredStyleValue<{
 export type LetterSpacingStructuredStyleValue = GetStructuredStyleValue<{
 	type: "letter-spacing";
 	values: {
-		letterSpacing: LetterSpacingValue;
+		letterSpacing: FormattingLetterSpacingValue;
 	};
 	declarationValue: string;
 }>;
@@ -69,7 +69,7 @@ export type LetterSpacingStructuredStyleValue = GetStructuredStyleValue<{
 export type LineHeightStructuredStyleValue = GetStructuredStyleValue<{
 	type: "line-height";
 	values: {
-		lineHeight: LineHeightValue;
+		lineHeight: FormattingLineHeightValue;
 	};
 	declarationValue: string;
 }>;
@@ -77,7 +77,7 @@ export type LineHeightStructuredStyleValue = GetStructuredStyleValue<{
 export type PaddingBlockStructuredStyleValue = GetStructuredStyleValue<{
 	type: "padding-block";
 	values: {
-		paddingBlock: LineSpacingValue;
+		paddingBlock: FormattingLineSpacingValue;
 	};
 	declarationValue: string;
 }>;
@@ -97,7 +97,7 @@ export type PaddingInlineStructuredStyleValue = GetStructuredStyleValue<{
 export type TextAlignStructuredStyleValue = GetStructuredStyleValue<{
 	type: "text-align";
 	values: {
-		textAlign: TextAlignValue;
+		textAlign: FormattingTextAlignValue;
 	};
 	declarationValue: string;
 }>;
@@ -105,7 +105,7 @@ export type TextAlignStructuredStyleValue = GetStructuredStyleValue<{
 export type TextIndentStructuredStyleValue = GetStructuredStyleValue<{
 	type: "text-indent";
 	values: {
-		textIndent: IndentationValue;
+		textIndent: FormattingIndentationValue;
 	};
 	declarationValue: string;
 }>;
