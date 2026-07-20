@@ -1,14 +1,5 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type {
-	EmitApplyParams,
-	LinkMode,
-	LinkUIPort,
-	LinkUpdateDisplayTextFn,
-	LinkUpdateModeFn,
-	LinkUpdateToggleButtonsFn,
-	LinkUpdateURLFn,
-	LinkUpdateViewFn,
-} from "#adapters";
+import type { EmitApplyParams, LinkMode, LinkUIPort } from "#adapters";
 import {
 	createTextFieldController,
 	FormField,
@@ -53,38 +44,27 @@ export const LinkEdit = (props: LinkEditProps) => {
 		})[mode]();
 
 	onMount(() => {
-		const viewCallback: LinkUpdateViewFn = () => urlModel.reset();
-		const modeCallback: LinkUpdateModeFn = (value) => setCurrentMode(value);
-		const displayTextCallback: LinkUpdateDisplayTextFn = (state) => {
+		const unsubscribeView = uiPort.onViewUpdate(() => urlModel.reset());
+		const unsubscribeMode = uiPort.onModeUpdate((value) =>
+			setCurrentMode(value),
+		);
+		const unsubscribeDisplayText = uiPort.onDisplayTextUpdate((state) => {
 			displayTextModel.setValue(state.inputValue);
 			setDisplayTextDisabled(state.disabled);
-		};
-		const urlCallback: LinkUpdateURLFn = (state) =>
-			urlModel.setValue(state.inputValue);
-		const toggleButtonsCallback: LinkUpdateToggleButtonsFn = (state) =>
-			setIsNewTab(state.isNewTab);
-
-		uiPort.subscribe({ type: "view", callback: viewCallback });
-		uiPort.subscribe({ type: "mode", callback: modeCallback });
-		uiPort.subscribe({ type: "displayText", callback: displayTextCallback });
-		uiPort.subscribe({ type: "url", callback: urlCallback });
-		uiPort.subscribe({
-			type: "toggleButtons",
-			callback: toggleButtonsCallback,
 		});
+		const unsubscribeUrl = uiPort.onUrlUpdate((state) =>
+			urlModel.setValue(state.inputValue),
+		);
+		const unsubscribeToggleButtons = uiPort.onToggleButtonsUpdate((state) =>
+			setIsNewTab(state.isNewTab),
+		);
 
 		onCleanup(() => {
-			uiPort.unsubscribe({ type: "view", callback: viewCallback });
-			uiPort.unsubscribe({ type: "mode", callback: modeCallback });
-			uiPort.unsubscribe({
-				type: "displayText",
-				callback: displayTextCallback,
-			});
-			uiPort.unsubscribe({ type: "url", callback: urlCallback });
-			uiPort.unsubscribe({
-				type: "toggleButtons",
-				callback: toggleButtonsCallback,
-			});
+			unsubscribeView();
+			unsubscribeMode();
+			unsubscribeDisplayText();
+			unsubscribeUrl();
+			unsubscribeToggleButtons();
 		});
 	});
 

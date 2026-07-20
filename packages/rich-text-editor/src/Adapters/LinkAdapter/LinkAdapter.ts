@@ -1,5 +1,4 @@
 import type { OnUnwrapFn } from "#ports";
-import { assertNever } from "../_Utilities";
 import type {
 	LinkAdapterConstructorParams,
 	LinkDisplayText,
@@ -14,7 +13,6 @@ import type {
 	LinkToolbarButtonState,
 	LinkUIPort,
 	LinkUpdateDisplayTextFn,
-	LinkUpdateListenerParams,
 	LinkUpdateModeFn,
 	LinkUpdateToggleButtonsFn,
 	LinkUpdateToolbarButtonFn,
@@ -22,7 +20,7 @@ import type {
 	LinkUpdateViewFn,
 	LinkURL,
 	LinkView,
-	UpdateLinkPopoverStateParams,
+	UpdateLinkStateParams,
 } from "./LinkAdapter-types";
 
 export class LinkAdapter {
@@ -62,40 +60,6 @@ export class LinkAdapter {
 	// biome-ignore lint/suspicious/noEmptyBlockStatements: Allowed for adapters
 	constructor(_params: LinkAdapterConstructorParams) {}
 
-	#updateListener({ type, callback, operation }: LinkUpdateListenerParams) {
-		if (type === "toolbarButton") {
-			this.#toolbarButtonListeners[operation](callback);
-			return;
-		}
-
-		if (type === "view") {
-			this.#viewListeners[operation](callback);
-			return;
-		}
-
-		if (type === "mode") {
-			this.#modeListeners[operation](callback);
-			return;
-		}
-
-		if (type === "displayText") {
-			this.#displayTextListeners[operation](callback);
-			return;
-		}
-
-		if (type === "url") {
-			this.#urlListeners[operation](callback);
-			return;
-		}
-
-		if (type === "toggleButtons") {
-			this.#toggleButtonsListeners[operation](callback);
-			return;
-		}
-
-		assertNever(type);
-	}
-
 	#updateState({
 		toolbarButton,
 		view,
@@ -103,8 +67,8 @@ export class LinkAdapter {
 		displayText,
 		url,
 		toggleButtons,
-	}: UpdateLinkPopoverStateParams) {
-		if (toolbarButton) {
+	}: UpdateLinkStateParams) {
+		if (toolbarButton !== undefined) {
 			this.#toolbarButton = toolbarButton;
 
 			for (const listener of this.#toolbarButtonListeners) {
@@ -112,7 +76,7 @@ export class LinkAdapter {
 			}
 		}
 
-		if (view) {
+		if (view !== undefined) {
 			this.#view = view;
 
 			for (const listener of this.#viewListeners) {
@@ -120,7 +84,7 @@ export class LinkAdapter {
 			}
 		}
 
-		if (mode) {
+		if (mode !== undefined) {
 			this.#mode = mode;
 
 			for (const listener of this.#modeListeners) {
@@ -128,7 +92,7 @@ export class LinkAdapter {
 			}
 		}
 
-		if (displayText) {
+		if (displayText !== undefined) {
 			this.#displayText = displayText;
 
 			for (const listener of this.#displayTextListeners) {
@@ -136,7 +100,7 @@ export class LinkAdapter {
 			}
 		}
 
-		if (url) {
+		if (url !== undefined) {
 			this.#url = url;
 
 			for (const listener of this.#urlListeners) {
@@ -144,7 +108,7 @@ export class LinkAdapter {
 			}
 		}
 
-		if (toggleButtons) {
+		if (toggleButtons !== undefined) {
 			this.#toggleButtons = toggleButtons;
 
 			for (const listener of this.#toggleButtonsListeners) {
@@ -181,11 +145,35 @@ export class LinkAdapter {
 				return adapter.#toggleButtons;
 			},
 
-			subscribe: (params) =>
-				adapter.#updateListener({ ...params, operation: "add" }),
+			onToolbarButtonUpdate: (callback) => {
+				adapter.#toolbarButtonListeners.add(callback);
+				return () => adapter.#toolbarButtonListeners.delete(callback);
+			},
 
-			unsubscribe: (params) =>
-				adapter.#updateListener({ ...params, operation: "delete" }),
+			onViewUpdate: (callback) => {
+				adapter.#viewListeners.add(callback);
+				return () => adapter.#viewListeners.delete(callback);
+			},
+
+			onModeUpdate: (callback) => {
+				adapter.#modeListeners.add(callback);
+				return () => adapter.#modeListeners.delete(callback);
+			},
+
+			onDisplayTextUpdate: (callback) => {
+				adapter.#displayTextListeners.add(callback);
+				return () => adapter.#displayTextListeners.delete(callback);
+			},
+
+			onUrlUpdate: (callback) => {
+				adapter.#urlListeners.add(callback);
+				return () => adapter.#urlListeners.delete(callback);
+			},
+
+			onToggleButtonsUpdate: (callback) => {
+				adapter.#toggleButtonsListeners.add(callback);
+				return () => adapter.#toggleButtonsListeners.delete(callback);
+			},
 
 			setPopover: (element) => {
 				adapter.#popover = element;

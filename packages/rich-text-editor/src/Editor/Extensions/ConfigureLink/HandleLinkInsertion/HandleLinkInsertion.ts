@@ -9,7 +9,7 @@ import {
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
-import { getLinkInsertionMode, getPopoverStateFromLink } from "../_Utilities";
+import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
 import { createLinkStorage } from "../LinkStorage";
 import type {
 	AnchorPopoverToLinkParams,
@@ -121,9 +121,9 @@ const insertAtCaret = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	const popoverState = getPopoverStateFromLink({ editorAPI, link });
+	const state = getStateFromLink({ editorAPI, link });
 
-	editorPort.updateState(popoverState);
+	editorPort.updateState(state);
 
 	const { popover } = editorPort;
 
@@ -205,12 +205,12 @@ const wrapWithLink = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	const popoverState = getPopoverStateFromLink({
+	const state = getStateFromLink({
 		editorAPI,
 		link: internals.currentLink,
 	});
 
-	editorPort.updateState(popoverState);
+	editorPort.updateState(state);
 
 	const { popover } = editorPort;
 

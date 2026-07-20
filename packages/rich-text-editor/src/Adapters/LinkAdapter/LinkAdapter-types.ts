@@ -25,7 +25,7 @@ export interface LinkToggleButtons {
 	isNewTab: boolean;
 }
 
-export interface LinkPopoverState {
+export interface LinkState {
 	toolbarButton?: LinkToolbarButtonState;
 	view?: LinkView;
 	mode?: LinkMode;
@@ -34,7 +34,7 @@ export interface LinkPopoverState {
 	toggleButtons?: LinkToggleButtons;
 }
 
-export interface UpdateLinkPopoverStateParams extends LinkPopoverState {}
+export interface UpdateLinkStateParams extends LinkState {}
 
 export interface EmitApplyParams {
 	text: string;
@@ -45,40 +45,12 @@ export interface EmitApplyParams {
 export interface EmitInsertParams extends EmitApplyParams {}
 export interface EmitModifyParams extends EmitApplyParams {}
 
-export type LinkOnToolbarClickFn = () => void;
-export type LinkOnViewChangeFn = (view: LinkView) => void;
-export type LinkOnCancelFn = () => void;
-export type LinkOnInsertFn = (params: EmitInsertParams) => void;
-export type LinkOnModifyFn = (params: EmitModifyParams) => void;
-
-export interface LinkEditorPort extends UnwrapPort {
-	popover: HTMLDivElement;
-	updateState(params: LinkPopoverState): void;
-	onToolbarClick(callback: LinkOnToolbarClickFn): () => void;
-	onViewChange(callback: LinkOnViewChangeFn): () => void;
-	onCancel(callback: LinkOnCancelFn): () => void;
-	onInsert(callback: LinkOnInsertFn): () => void;
-	onModify(callback: LinkOnModifyFn): () => void;
-}
-
 export type LinkUpdateToolbarButtonFn = (value: LinkToolbarButtonState) => void;
 export type LinkUpdateViewFn = (value: LinkView) => void;
 export type LinkUpdateModeFn = (value: LinkMode) => void;
 export type LinkUpdateDisplayTextFn = (value: LinkDisplayText) => void;
 export type LinkUpdateURLFn = (value: LinkURL) => void;
 export type LinkUpdateToggleButtonsFn = (value: LinkToggleButtons) => void;
-
-export type LinkListenerOption =
-	| { type: "toolbarButton"; callback: LinkUpdateToolbarButtonFn }
-	| { type: "view"; callback: LinkUpdateViewFn }
-	| { type: "mode"; callback: LinkUpdateModeFn }
-	| { type: "displayText"; callback: LinkUpdateDisplayTextFn }
-	| { type: "url"; callback: LinkUpdateURLFn }
-	| { type: "toggleButtons"; callback: LinkUpdateToggleButtonsFn };
-
-export type LinkUpdateListenerParams = LinkListenerOption & {
-	operation: "add" | "delete";
-};
 
 export interface LinkUIPort {
 	readonly toolbarButton: LinkToolbarButtonState;
@@ -87,8 +59,12 @@ export interface LinkUIPort {
 	readonly displayText: LinkDisplayText;
 	readonly url: LinkURL;
 	readonly toggleButtons: LinkToggleButtons;
-	subscribe(params: LinkListenerOption): void;
-	unsubscribe(params: LinkListenerOption): void;
+	onToolbarButtonUpdate(callback: LinkUpdateToolbarButtonFn): () => void;
+	onViewUpdate(callback: LinkUpdateViewFn): () => void;
+	onModeUpdate(callback: LinkUpdateModeFn): () => void;
+	onDisplayTextUpdate(callback: LinkUpdateDisplayTextFn): () => void;
+	onUrlUpdate(callback: LinkUpdateURLFn): () => void;
+	onToggleButtonsUpdate(callback: LinkUpdateToggleButtonsFn): () => void;
 	setPopover(element: HTMLDivElement): void;
 	/**
 	 * Temporary — state changes should only ever come from the Editor. `LinkEdit`/`LinkPreview`
@@ -102,4 +78,20 @@ export interface LinkUIPort {
 	emitInsert(params: EmitInsertParams): void;
 	emitModify(params: EmitModifyParams): void;
 	emitUnwrap(): void;
+}
+
+export type LinkOnToolbarClickFn = () => void;
+export type LinkOnViewChangeFn = (view: LinkView) => void;
+export type LinkOnCancelFn = () => void;
+export type LinkOnInsertFn = (params: EmitInsertParams) => void;
+export type LinkOnModifyFn = (params: EmitModifyParams) => void;
+
+export interface LinkEditorPort extends UnwrapPort {
+	popover: HTMLDivElement;
+	updateState(params: LinkState): void;
+	onToolbarClick(callback: LinkOnToolbarClickFn): () => void;
+	onViewChange(callback: LinkOnViewChangeFn): () => void;
+	onCancel(callback: LinkOnCancelFn): () => void;
+	onInsert(callback: LinkOnInsertFn): () => void;
+	onModify(callback: LinkOnModifyFn): () => void;
 }

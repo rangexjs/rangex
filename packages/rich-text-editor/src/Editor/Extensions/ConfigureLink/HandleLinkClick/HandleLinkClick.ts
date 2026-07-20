@@ -4,7 +4,7 @@ import {
 	isEditorNode,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
-import { getPopoverStateFromLink } from "../_Utilities";
+import { getStateFromLink } from "../_Utilities";
 import type {
 	HandleLinkClickParams,
 	OpenLinkPopoverParams,
@@ -24,9 +24,9 @@ const openLinkPopover = ({
 
 	internals.currentLink = link;
 
-	const popoverState = getPopoverStateFromLink({ link, editorAPI });
+	const state = getStateFromLink({ link, editorAPI });
 
-	editorPort.updateState({ view: "preview", mode: "modify", ...popoverState });
+	editorPort.updateState({ view: "preview", mode: "modify", ...state });
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";

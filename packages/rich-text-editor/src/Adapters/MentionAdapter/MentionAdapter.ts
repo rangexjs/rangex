@@ -1,4 +1,3 @@
-import { assertNever } from "../_Utilities";
 import type {
 	MentionAdapterConstructorParams,
 	MentionEditorPort,
@@ -7,9 +6,8 @@ import type {
 	MentionUIPort,
 	MentionUpdateFilteredItemsFn,
 	MentionUpdateItemsFn,
-	MentionUpdateListenerParams,
 	MentionUpdateQueryFn,
-	UpdateMentionPopoverStateParams,
+	UpdateMentionStateParams,
 } from "./MentionAdapter-types";
 
 export class MentionAdapter {
@@ -43,26 +41,7 @@ export class MentionAdapter {
 		}
 	}
 
-	#updateListener({ type, callback, operation }: MentionUpdateListenerParams) {
-		if (type === "items") {
-			this.#itemsListeners[operation](callback);
-			return;
-		}
-
-		if (type === "query") {
-			this.#queryListeners[operation](callback);
-			return;
-		}
-
-		if (type === "filteredItems") {
-			this.#filteredItemsListeners[operation](callback);
-			return;
-		}
-
-		assertNever(type);
-	}
-
-	#updateState({ items, query }: UpdateMentionPopoverStateParams) {
+	#updateState({ items, query }: UpdateMentionStateParams) {
 		let dirty = false;
 
 		if (items !== undefined) {
@@ -96,11 +75,10 @@ export class MentionAdapter {
 				return adapter.#filteredItems;
 			},
 
-			subscribe: (params) =>
-				adapter.#updateListener({ ...params, operation: "add" }),
-
-			unsubscribe: (params) =>
-				adapter.#updateListener({ ...params, operation: "delete" }),
+			onFilteredItemsUpdate: (callback) => {
+				adapter.#filteredItemsListeners.add(callback);
+				return () => adapter.#filteredItemsListeners.delete(callback);
+			},
 
 			setPopover: (element) => {
 				adapter.#popover = element;

@@ -1,14 +1,14 @@
 import { contentLineName, contentLineRoleSelector } from "rich-text-area";
-import type { LinkPopoverState } from "#adapters";
-import type { GetPopoverStateFromLinkParams } from "./GetPopoverStateFromLink-types";
+import type { LinkState } from "#adapters";
+import type { GetStateFromLinkParams } from "./GetStateFromLink-types";
 
 /**
- * Reads the link's current href, target, and display text from the DOM and returns them as popover state.
+ * Reads the link's current href, target, and display text from the DOM and returns them as state.
  */
-export const getPopoverStateFromLink = ({
+export const getStateFromLink = ({
 	editorAPI,
 	link,
-}: GetPopoverStateFromLinkParams) => {
+}: GetStateFromLinkParams) => {
 	const anchor = link.$$querySelector("a");
 
 	if (!(anchor instanceof HTMLAnchorElement)) {
@@ -32,11 +32,11 @@ export const getPopoverStateFromLink = ({
 		toOffset: contentLine.$$childNodes.length,
 	});
 
-	const popoverState: LinkPopoverState = {
+	const state: LinkState = {
 		displayText: { inputValue: plainText, disabled: false },
 		url: { inputValue: href },
 		toggleButtons: { isNewTab },
 	};
 
-	return popoverState;
+	return state;
 };

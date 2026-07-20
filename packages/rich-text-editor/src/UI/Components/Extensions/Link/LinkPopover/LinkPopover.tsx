@@ -1,5 +1,5 @@
 import { createSignal, Match, onCleanup, onMount, Switch } from "solid-js";
-import type { LinkUIPort, LinkUpdateViewFn } from "#adapters";
+import type { LinkUIPort } from "#adapters";
 import { LinkEdit } from "./LinkEdit";
 import { LinkPreview } from "./LinkPreview";
 
@@ -9,14 +9,14 @@ interface LinkPopoverProps {
 
 export const LinkPopover = (props: LinkPopoverProps) => {
 	const uiPort = props.uiPort;
-	console.log(uiPort);
 
 	const [view, setView] = createSignal(uiPort.view);
 
 	onMount(() => {
-		const callback: LinkUpdateViewFn = (state) => setView(state);
-		uiPort.subscribe({ type: "view", callback });
-		onCleanup(() => uiPort.unsubscribe({ type: "view", callback }));
+		const unsubscribeView = uiPort.onViewUpdate((state) => setView(state));
+		onCleanup(() => {
+			unsubscribeView();
+		});
 	});
 
 	return (

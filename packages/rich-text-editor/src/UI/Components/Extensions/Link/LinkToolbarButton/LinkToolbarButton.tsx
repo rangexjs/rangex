@@ -1,5 +1,5 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { LinkUIPort, LinkUpdateToolbarButtonFn } from "#adapters";
+import type { LinkUIPort } from "#adapters";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
@@ -14,12 +14,14 @@ export const LinkToolbarButton = (props: LinkToolbarButtonProps) => {
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
 
 	onMount(() => {
-		const callback: LinkUpdateToolbarButtonFn = (state) => {
+		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
 			setChecked(state.checked);
 			setDisabled(state.disabled);
-		};
-		uiPort.subscribe({ type: "toolbarButton", callback });
-		onCleanup(() => uiPort.unsubscribe({ type: "toolbarButton", callback }));
+		});
+
+		onCleanup(() => {
+			unsubscribe();
+		});
 	});
 
 	const onClick = () => {

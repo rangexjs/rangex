@@ -4,7 +4,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 } from "rich-text-area";
-import { getPopoverStateFromLink } from "../_Utilities";
+import { getStateFromLink } from "../_Utilities";
 import type {
 	HandleLinkModificationParams,
 	OnModifyCallback,
@@ -51,12 +51,12 @@ export const handleLinkModification = ({
 
 		contentLine.$$replaceWith(createdContentLine);
 
-		const popoverState = getPopoverStateFromLink({
+		const state = getStateFromLink({
 			editorAPI,
 			link: currentLink,
 		});
 
-		editorPort.updateState(popoverState);
+		editorPort.updateState(state);
 
 		selection.setBoundaryPoints({
 			fromNode: createdContentLine,

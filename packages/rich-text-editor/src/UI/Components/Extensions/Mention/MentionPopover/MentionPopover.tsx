@@ -9,7 +9,6 @@ import type {
 	MentionItems,
 	MentionSuggestionItem,
 	MentionUIPort,
-	MentionUpdateFilteredItemsFn,
 } from "#adapters";
 
 interface MentionItemProps {
@@ -134,13 +133,13 @@ export const MentionPopover = (props: MentionPopoverProps) => {
 	};
 
 	onMount(() => {
-		const callback: MentionUpdateFilteredItemsFn = (value) =>
-			setFilteredItems(value);
-		uiPort.subscribe({ type: "filteredItems", callback });
+		const unsubscribe = uiPort.onFilteredItemsUpdate((value) =>
+			setFilteredItems(value),
+		);
 		document.addEventListener("keydown", onKeyDown, { capture: true });
 
 		onCleanup(() => {
-			uiPort.unsubscribe({ type: "filteredItems", callback });
+			unsubscribe();
 			document.removeEventListener("keydown", onKeyDown, { capture: true });
 		});
 	});

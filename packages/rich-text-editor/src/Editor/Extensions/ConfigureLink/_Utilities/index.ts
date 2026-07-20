@@ -1,2 +1,2 @@
 export * from "./GetLinkInsertionMode";
-export * from "./GetPopoverStateFromLink";
+export * from "./GetStateFromLink";
