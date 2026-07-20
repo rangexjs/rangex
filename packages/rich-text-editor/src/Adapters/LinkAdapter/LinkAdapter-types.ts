@@ -1,4 +1,4 @@
-import type { UnwrapPort } from "#ports";
+import type { UnwrapPort } from "../_Utilities";
 
 export interface LinkAdapterConstructorParams {
 	[index: string]: never;
