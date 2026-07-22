@@ -1,10 +1,12 @@
 import type { EditorAPI } from "rich-text-area";
 import type { Component } from "solid-js";
+import type { AdapterBus } from "../AdapterBus";
 import type { OverlayHost } from "../OverlayHost";
 import type { ToolbarButtonValue } from "../ToolbarButtons";
 import type { ExtensionName } from "./ExtensionsName";
 
 export interface AdapterOptions {
+	adapterBus: AdapterBus;
 	overlayHost: OverlayHost;
 }
 

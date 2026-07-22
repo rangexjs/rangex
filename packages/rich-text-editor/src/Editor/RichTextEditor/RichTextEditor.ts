@@ -1,4 +1,4 @@
-import { OverlayHost, type UIExtension } from "#ports";
+import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import {
 	codeBlockLanguages,
@@ -58,11 +58,12 @@ export class RichTextEditor extends HTMLElement {
 		const rangeX = createRangeX({ storedSnapshot });
 		const { editorAPI } = rangeX;
 
+		const adapterBus = new AdapterBus();
 		const overlayHost = new OverlayHost();
 
 		const extensionAdapters = extensions.map((extension) => ({
 			extension,
-			adapter: extension.createAdapter({ overlayHost }),
+			adapter: extension.createAdapter({ adapterBus, overlayHost }),
 		}));
 
 		const uiExtensions: UIExtension[] = extensionAdapters.map(
