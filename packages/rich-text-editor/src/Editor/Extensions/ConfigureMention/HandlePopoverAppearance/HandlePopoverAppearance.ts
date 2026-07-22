@@ -15,8 +15,6 @@ export const handlePopoverAppearance = ({
 	editorPort,
 	editorAPI,
 }: HandlePopoverAppearanceParams) => {
-	const { popover } = editorPort;
-
 	const selection = editorAPI.getEditorSelection();
 
 	const editorSelectionChangeCallback: EditorSelectionChangeCallbackFn = () => {
@@ -59,9 +57,13 @@ export const handlePopoverAppearance = ({
 			return;
 		}
 
-		positionPopoverToSelection({ editorAPI, popover, topMargin: 8 });
+		editorPort.popover.mount();
 
-		popover.showPopover();
+		positionPopoverToSelection({
+			editorAPI,
+			popover: editorPort.popover.element,
+			topMargin: 8,
+		});
 	};
 
 	const unsubscribe = editorAPI.subscribeEditorEvent({

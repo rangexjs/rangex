@@ -1,3 +1,5 @@
+import { MentionPopover } from "#ui-extensions";
+import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	MentionAdapterConstructorParams,
 	MentionEditorPort,
@@ -11,7 +13,7 @@ import type {
 } from "./MentionAdapter-types";
 
 export class MentionAdapter {
-	#popover: HTMLDivElement | null = null;
+	#overlayMount: OverlayMount;
 	#items: MentionItems = [];
 	#query = "";
 	#filteredItems: MentionItems = [];
@@ -22,9 +24,18 @@ export class MentionAdapter {
 
 	#onSelectListeners: Set<MentionOnSelectFn> = new Set();
 
-	// biome-ignore lint/complexity/noUselessConstructor: Allowed for adapters
-	// biome-ignore lint/suspicious/noEmptyBlockStatements: Allowed for adapters
-	constructor(_params: MentionAdapterConstructorParams) {}
+	#uiPort: MentionUIPort | null = null;
+	#editorPort: MentionEditorPort | null = null;
+
+	constructor(...params: MentionAdapterConstructorParams) {
+		const [_settings, { overlayHost }] = params;
+
+		this.#overlayMount = createOverlayMount({
+			overlayHost,
+			component: MentionPopover,
+			getProps: () => ({ uiPort: this.uiPort }),
+		});
+	}
 
 	#computeFilteredItems() {
 		const q = this.#query.toLowerCase();
@@ -70,7 +81,11 @@ export class MentionAdapter {
 	get uiPort(): MentionUIPort {
 		const adapter = this;
 
-		return {
+		this.#uiPort ??= {
+			get popover() {
+				return adapter.#overlayMount.uiOverlayMount;
+			},
+
 			get filteredItems() {
 				return adapter.#filteredItems;
 			},
@@ -80,40 +95,36 @@ export class MentionAdapter {
 				return () => adapter.#filteredItemsListeners.delete(callback);
 			},
 
-			setPopover: (element) => {
-				adapter.#popover = element;
-			},
-
 			emitSelect: (item) => {
 				for (const listener of adapter.#onSelectListeners) {
 					listener(item);
 				}
 			},
 		};
+
+		return this.#uiPort;
 	}
 
 	get editorPort(): MentionEditorPort {
 		const adapter = this;
 
-		return {
+		this.#editorPort ??= {
 			get popover() {
-				if (!adapter.#popover) {
-					throw new Error("PopoverNode shouldn't be null.");
-				}
-
-				return adapter.#popover;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			get filteredItems() {
 				return adapter.#filteredItems;
 			},
 
-			updateState: (params) => this.#updateState(params),
+			updateState: (params) => adapter.#updateState(params),
 
 			onSelect: (callback) => {
-				this.#onSelectListeners.add(callback);
-				return () => this.#onSelectListeners.delete(callback);
+				adapter.#onSelectListeners.add(callback);
+				return () => adapter.#onSelectListeners.delete(callback);
 			},
 		};
+
+		return this.#editorPort;
 	}
 }

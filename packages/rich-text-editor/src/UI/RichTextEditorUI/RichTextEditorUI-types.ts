@@ -1,6 +1,7 @@
 import type {
 	CodeBlockLanguage,
 	CodeBlockTheme,
+	OverlayHost,
 	ToolbarButtons,
 	UIExtension,
 } from "#ports";
@@ -20,5 +21,6 @@ export interface RichTextEditorUIConstructorParams {
 	richTextArea: HTMLElement;
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
+	overlayHost: OverlayHost;
 	options?: RichTextEditorUIOptions;
 }

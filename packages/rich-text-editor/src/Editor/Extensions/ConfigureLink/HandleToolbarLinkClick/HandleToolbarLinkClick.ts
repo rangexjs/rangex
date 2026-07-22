@@ -36,7 +36,9 @@ const openAtCaret = ({ editorPort, editorAPI }: OpenAtCaretParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	const { popover } = editorPort;
+	editorPort.popover.mount();
+
+	const popover = editorPort.popover.element;
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
@@ -95,7 +97,9 @@ const openForWrap = ({ editorPort, editorAPI }: OpenForWrapParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	const { popover } = editorPort;
+	editorPort.popover.mount();
+
+	const popover = editorPort.popover.element;
 
 	positionPopoverToSelection({ editorAPI, popover, topMargin: 10 });
 

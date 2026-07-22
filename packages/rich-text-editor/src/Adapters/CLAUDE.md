@@ -14,7 +14,7 @@ Every state slice has its own `Set` of listeners, split by direction, both follo
 
 Only build an `onXxxUpdate`/`onXxx` method for a slice actually consumed from that side — `MentionAdapter` still tracks `#itemsListeners`/`#queryListeners` internally but doesn't expose them on `uiPort`, since nothing reads them from there.
 
-`onXxxUpdate`/`setPopover`/`emitXxx` are defined directly inline inside `uiPort`'s returned object literal, so the logic lives in exactly one place.
+`onXxxUpdate`/`emitXxx` are defined directly inline inside `uiPort`'s returned object literal, so the logic lives in exactly one place.
 
 ## Getters
 
@@ -32,7 +32,13 @@ The Editor side should reach state changes through a semantically-named method o
 
 ## `uiPort` / `editorPort`
 
-`get uiPort()` and `get editorPort()` each return a fresh object literal, built for their consumer: `uiPort` carries the getters, `onXxxUpdate` per state slice, `setPopover`, and every `emitXxx`; `editorPort` carries the `popover` getter (throws until the element is mounted via `uiPort.setPopover`), `updateState`, and every `onXxx` registration.
+`get uiPort()` and `get editorPort()` each build one object literal for their consumer — `uiPort` carries the getters, `onXxxUpdate` per state slice, and every `emitXxx`; `editorPort` carries `updateState` and every `onXxx` registration — and memoize it in a private field (`this.#uiPort ??= { ... }`) so repeated access returns the same object rather than rebuilding it.
+
+### Adapters that own their own overlay (popover)
+
+An Adapter with its own popover (`LinkAdapter`, `MentionAdapter`) builds one `createOverlayMount({ overlayHost, component, getProps })` (from `Adapters/_Utilities`) in its constructor and stores it in a private field. Its `uiOverlayMount`/`editorOverlayMount` are never flattened onto `uiPort`/`editorPort` directly — each is assigned to its own named field instead (`popover: this.#overlayMount.uiOverlayMount` / `popover: this.#overlayMount.editorOverlayMount`), so an Adapter that ends up owning more than one overlay just adds another differently-named field rather than colliding on generic names like `mount`/`unmount`. `uiPort.popover.setElement(element)` is called from the popover component's own `ref`; `editorPort.popover` then exposes `element` (throws until set), `isMounted`, `mount()`, `unmount()`.
+
+`getProps` is a function, not a plain value — `createOverlayMount` only calls it inside `mount()`, not at construction time. Passing `props: { uiPort: this.uiPort }` eagerly would evaluate `this.uiPort` *during* the `this.#overlayMount = createOverlayMount(...)` assignment, before `#overlayMount` itself has been assigned — a circular-init crash the first version of this hit.
 
 **Note:** Adapters have so far been designed UI-first — the adapter's shape follows what the UI component needs to render and subscribe to, and `editorPort` is the narrower slice carved out afterward for the Editor side. Keep that direction in mind when building a new one: start from what the UI needs, then narrow down to `editorPort`.
 

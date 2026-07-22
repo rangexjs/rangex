@@ -1,6 +1,9 @@
-export interface MentionAdapterConstructorParams {
+import type { CreateAdapterConstructor } from "#ports";
+import type { EditorOverlayMount, UIOverlayMount } from "../_Utilities";
+
+export type MentionAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
-}
+}>;
 
 export interface MentionSuggestionItem {
 	id: string;
@@ -23,9 +26,9 @@ export type MentionUpdateQueryFn = (value: string) => void;
 export type MentionUpdateFilteredItemsFn = (value: MentionItems) => void;
 
 export interface MentionUIPort {
+	readonly popover: UIOverlayMount;
 	readonly filteredItems: MentionItems;
 	onFilteredItemsUpdate(callback: MentionUpdateFilteredItemsFn): () => void;
-	setPopover(element: HTMLDivElement): void;
 	emitSelect(item: MentionSuggestionItem): void;
 }
 
@@ -37,8 +40,8 @@ export interface MentionSelectParams {
 export type MentionOnSelectFn = (params: MentionSelectParams) => void;
 
 export interface MentionEditorPort {
-	popover: HTMLDivElement;
-	filteredItems: MentionItems;
+	readonly popover: EditorOverlayMount;
+	readonly filteredItems: MentionItems;
 	updateState(params: MentionState): void;
 	onSelect(callback: MentionOnSelectFn): () => void;
 }

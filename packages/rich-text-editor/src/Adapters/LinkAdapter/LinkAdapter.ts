@@ -1,4 +1,6 @@
 import type { OnUnwrapFn } from "#ports";
+import { LinkPopover } from "#ui-extensions";
+import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	LinkAdapterConstructorParams,
 	LinkDisplayText,
@@ -24,7 +26,7 @@ import type {
 } from "./LinkAdapter-types";
 
 export class LinkAdapter {
-	#popover: HTMLDivElement | null = null;
+	#overlayMount: OverlayMount;
 	#toolbarButton: LinkToolbarButtonState = {
 		checked: false,
 		disabled: true,
@@ -56,9 +58,18 @@ export class LinkAdapter {
 	#onUnwrapListeners: Set<OnUnwrapFn> = new Set();
 	#onToolbarClickListeners: Set<LinkOnToolbarClickFn> = new Set();
 
-	// biome-ignore lint/complexity/noUselessConstructor: Allowed for adapters
-	// biome-ignore lint/suspicious/noEmptyBlockStatements: Allowed for adapters
-	constructor(_params: LinkAdapterConstructorParams) {}
+	#uiPort: LinkUIPort | null = null;
+	#editorPort: LinkEditorPort | null = null;
+
+	constructor(...params: LinkAdapterConstructorParams) {
+		const [_settings, { overlayHost }] = params;
+
+		this.#overlayMount = createOverlayMount({
+			overlayHost,
+			component: LinkPopover,
+			getProps: () => ({ uiPort: this.uiPort }),
+		});
+	}
 
 	#updateState({
 		toolbarButton,
@@ -120,7 +131,11 @@ export class LinkAdapter {
 	get uiPort(): LinkUIPort {
 		const adapter = this;
 
-		return {
+		this.#uiPort ??= {
+			get popover() {
+				return adapter.#overlayMount.uiOverlayMount;
+			},
+
 			get toolbarButton() {
 				return adapter.#toolbarButton;
 			},
@@ -175,10 +190,6 @@ export class LinkAdapter {
 				return () => adapter.#toggleButtonsListeners.delete(callback);
 			},
 
-			setPopover: (element) => {
-				adapter.#popover = element;
-			},
-
 			setView: (view) => adapter.#updateState({ view }),
 
 			emitToolbarClick: () => {
@@ -217,51 +228,51 @@ export class LinkAdapter {
 				}
 			},
 		};
+
+		return this.#uiPort;
 	}
 
 	get editorPort(): LinkEditorPort {
 		const adapter = this;
 
-		return {
+		this.#editorPort ??= {
 			get popover() {
-				if (!adapter.#popover) {
-					throw new Error("PopoverNode shouldn't be null.");
-				}
-
-				return adapter.#popover;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
-			updateState: (params) => this.#updateState(params),
+			updateState: (params) => adapter.#updateState(params),
 
 			onToolbarClick: (callback) => {
-				this.#onToolbarClickListeners.add(callback);
-				return () => this.#onToolbarClickListeners.delete(callback);
+				adapter.#onToolbarClickListeners.add(callback);
+				return () => adapter.#onToolbarClickListeners.delete(callback);
 			},
 
 			onViewChange: (callback) => {
-				this.#onViewChangeListeners.add(callback);
-				return () => this.#onViewChangeListeners.delete(callback);
+				adapter.#onViewChangeListeners.add(callback);
+				return () => adapter.#onViewChangeListeners.delete(callback);
 			},
 
 			onCancel: (callback) => {
-				this.#onCancelListeners.add(callback);
-				return () => this.#onCancelListeners.delete(callback);
+				adapter.#onCancelListeners.add(callback);
+				return () => adapter.#onCancelListeners.delete(callback);
 			},
 
 			onInsert: (callback) => {
-				this.#onInsertListeners.add(callback);
-				return () => this.#onInsertListeners.delete(callback);
+				adapter.#onInsertListeners.add(callback);
+				return () => adapter.#onInsertListeners.delete(callback);
 			},
 
 			onModify: (callback) => {
-				this.#onModifyListeners.add(callback);
-				return () => this.#onModifyListeners.delete(callback);
+				adapter.#onModifyListeners.add(callback);
+				return () => adapter.#onModifyListeners.delete(callback);
 			},
 
 			onUnwrap: (callback) => {
-				this.#onUnwrapListeners.add(callback);
-				return () => this.#onUnwrapListeners.delete(callback);
+				adapter.#onUnwrapListeners.add(callback);
+				return () => adapter.#onUnwrapListeners.delete(callback);
 			},
 		};
+
+		return this.#editorPort;
 	}
 }

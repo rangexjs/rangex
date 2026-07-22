@@ -493,12 +493,14 @@ export class FormattingAdapter {
 	}
 
 	get editorPort(): FormattingEditorPort {
+		const adapter = this;
+
 		return {
-			updateState: (params) => this.#updateState(params),
+			updateState: (params) => adapter.#updateState(params),
 
 			onFormattingChange: (callback) => {
-				this.#onFormattingChangeListeners.add(callback);
-				return () => this.#onFormattingChangeListeners.delete(callback);
+				adapter.#onFormattingChangeListeners.add(callback);
+				return () => adapter.#onFormattingChangeListeners.delete(callback);
 			},
 		};
 	}

@@ -10,7 +10,8 @@
 		"rules": {
 			"preset": "recommended",
 			"complexity": {
-				"useSimplifiedLogicExpression": "warn"
+				"useSimplifiedLogicExpression": "warn",
+				"noUselessThisAlias": "off"
 			},
 			"correctness": {
 				"noUnusedImports": "warn",

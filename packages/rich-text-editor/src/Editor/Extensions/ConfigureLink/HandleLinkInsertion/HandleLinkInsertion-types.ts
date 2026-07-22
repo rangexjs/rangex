@@ -21,7 +21,7 @@ export interface SetSelectionToLinkEndParams {
 
 export interface AnchorPopoverToLinkParams {
 	link: InlineNestedContext;
-	popover: HTMLDivElement;
+	editorPort: LinkEditorPort;
 }
 
 export interface InsertAtCaretParams {

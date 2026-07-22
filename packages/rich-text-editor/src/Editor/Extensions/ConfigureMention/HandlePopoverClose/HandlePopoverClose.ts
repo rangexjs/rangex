@@ -16,18 +16,16 @@ const restoreFocusOnEscape = ({
 	editorPort,
 	editorAPI,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = editorPort;
-
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
 
-		if (!popover.matches(":popover-open")) {
+		if (!editorPort.popover.isMounted) {
 			return;
 		}
 
-		popover.hidePopover();
+		editorPort.popover.unmount();
 
 		editorAPI.focus();
 	};
@@ -44,16 +42,14 @@ const closeOnSelectionChange = ({
 	editorPort,
 	editorAPI,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = editorPort;
-
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			if (!popover.matches(":popover-open")) {
+			if (!editorPort.popover.isMounted) {
 				return;
 			}
 
-			popover.hidePopover();
+			editorPort.popover.unmount();
 		},
 	});
 };
@@ -65,15 +61,14 @@ const closeOnEditorBlur = ({
 	editorPort,
 	editorAPI,
 }: CloseOnEditorBlurParams) => {
-	const { popover } = editorPort;
-
 	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
 		callback: () => {
-			if (!popover.matches(":popover-open")) {
+			if (!editorPort.popover.isMounted) {
 				return;
 			}
 
+			const popover = editorPort.popover.element;
 			const root = popover.getRootNode();
 
 			if (!(root instanceof ShadowRoot)) {
@@ -84,7 +79,7 @@ const closeOnEditorBlur = ({
 				return;
 			}
 
-			popover.hidePopover();
+			editorPort.popover.unmount();
 		},
 	});
 };

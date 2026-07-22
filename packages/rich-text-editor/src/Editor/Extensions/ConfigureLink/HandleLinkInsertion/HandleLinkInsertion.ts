@@ -77,10 +77,18 @@ const setSelectionToLinkEnd = ({
 };
 
 /**
- * Hides then re-shows the popover anchored to the link — required by the Popover API spec when changing the source.
+ * Unmounts then re-mounts the popover anchored to the link — required by the Popover API spec
+ * when changing the source, and a fresh mount is also the simplest way to guarantee the previous
+ * insert-mode instance is gone before the modify-mode one takes its place.
  */
-const anchorPopoverToLink = ({ link, popover }: AnchorPopoverToLinkParams) => {
-	popover.hidePopover();
+const anchorPopoverToLink = ({
+	link,
+	editorPort,
+}: AnchorPopoverToLinkParams) => {
+	editorPort.popover.unmount();
+	editorPort.popover.mount();
+
+	const popover = editorPort.popover.element;
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
@@ -125,9 +133,7 @@ const insertAtCaret = ({
 
 	editorPort.updateState(state);
 
-	const { popover } = editorPort;
-
-	anchorPopoverToLink({ link, popover });
+	anchorPopoverToLink({ link, editorPort });
 
 	editorAPI.focus();
 
@@ -212,9 +218,7 @@ const wrapWithLink = ({
 
 	editorPort.updateState(state);
 
-	const { popover } = editorPort;
-
-	anchorPopoverToLink({ link: internals.currentLink, popover });
+	anchorPopoverToLink({ link: internals.currentLink, editorPort });
 
 	editorAPI.focus();
 

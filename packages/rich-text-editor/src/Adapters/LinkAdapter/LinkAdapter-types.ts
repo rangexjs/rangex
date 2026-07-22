@@ -1,8 +1,13 @@
-import type { UnwrapPort } from "../_Utilities";
+import type { CreateAdapterConstructor } from "#ports";
+import type {
+	EditorOverlayMount,
+	UIOverlayMount,
+	UnwrapPort,
+} from "../_Utilities";
 
-export interface LinkAdapterConstructorParams {
+export type LinkAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
-}
+}>;
 
 export interface LinkToolbarButtonState {
 	checked: boolean;
@@ -53,6 +58,7 @@ export type LinkUpdateURLFn = (value: LinkURL) => void;
 export type LinkUpdateToggleButtonsFn = (value: LinkToggleButtons) => void;
 
 export interface LinkUIPort {
+	readonly popover: UIOverlayMount;
 	readonly toolbarButton: LinkToolbarButtonState;
 	readonly view: LinkView;
 	readonly mode: LinkMode;
@@ -65,7 +71,6 @@ export interface LinkUIPort {
 	onDisplayTextUpdate(callback: LinkUpdateDisplayTextFn): () => void;
 	onUrlUpdate(callback: LinkUpdateURLFn): () => void;
 	onToggleButtonsUpdate(callback: LinkUpdateToggleButtonsFn): () => void;
-	setPopover(element: HTMLDivElement): void;
 	/**
 	 * Temporary — state changes should only ever come from the Editor. `LinkEdit`/`LinkPreview`
 	 * currently update `view` directly as a pre-Adapter-era shortcut; this is kept as-is during
@@ -87,7 +92,7 @@ export type LinkOnInsertFn = (params: EmitInsertParams) => void;
 export type LinkOnModifyFn = (params: EmitModifyParams) => void;
 
 export interface LinkEditorPort extends UnwrapPort {
-	popover: HTMLDivElement;
+	readonly popover: EditorOverlayMount;
 	updateState(params: LinkState): void;
 	onToolbarClick(callback: LinkOnToolbarClickFn): () => void;
 	onViewChange(callback: LinkOnViewChangeFn): () => void;

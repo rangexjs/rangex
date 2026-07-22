@@ -68,6 +68,7 @@ export class RichTextEditorUI extends HTMLElement {
 		toolbarButtons,
 		richTextArea,
 		extensions,
+		overlayHost,
 		options = {},
 	}: RichTextEditorUIConstructorParams) {
 		super();
@@ -135,6 +136,9 @@ export class RichTextEditorUI extends HTMLElement {
 						this.#templateVariablePopoverController
 					}
 					videoPopoverController={this.#videoPopoverController}
+					overlayContainerRef={(element) =>
+						overlayHost.initialize({ container: element })
+					}
 				/>
 			),
 			this.#shadowRoot,

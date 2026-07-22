@@ -7,9 +7,7 @@ import type {
 
 /**
  * `createAdapter` must be called exactly once per editor instance — the driver threads
- * that same adapter into both the UI mount point and `configure`, the same way
- * `RichTextEditor` shares one `blockResize`/`blockPopoverAppearanceHandler` across every
- * feature that depends on it.
+ * that same adapter into both the UI mount point and `configure`.
  */
 export const createExtension = <
 	Name extends ExtensionName,
@@ -27,7 +25,8 @@ export const createExtension = <
 
 		return {
 			name: definition.name,
-			createAdapter: () => definition.createAdapter(mergedSettings),
+			createAdapter: (options) =>
+				definition.createAdapter(mergedSettings, options),
 			configure: definition.configure,
 			components: definition.components,
 		};

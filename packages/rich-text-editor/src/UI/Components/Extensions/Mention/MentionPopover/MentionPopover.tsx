@@ -148,7 +148,7 @@ export const MentionPopover = (props: MentionPopoverProps) => {
 		<div
 			ref={(el) => {
 				popoverEl = el;
-				uiPort.setPopover(el);
+				uiPort.popover.setElement(el);
 			}}
 			id={popoverId}
 			popover="manual"

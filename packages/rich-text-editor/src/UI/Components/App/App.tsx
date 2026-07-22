@@ -1,5 +1,4 @@
-import { For, useContext } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { useContext } from "solid-js";
 import type {
 	CodeBlockLanguage,
 	CodeBlockTheme,
@@ -89,6 +88,7 @@ export interface AppProps
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
 	richTextArea: HTMLElement;
+	overlayContainerRef: (element: HTMLDivElement) => void;
 }
 
 export const useEditorOptionsContext = () => {
@@ -179,6 +179,7 @@ export const App = (props: AppProps) => {
 				</ToolbarButtonManagersContext.Provider>
 				<div class="relative max-h-300 overflow-y-auto">
 					<div>{props.richTextArea}</div>
+					<div ref={props.overlayContainerRef} />
 					<div>
 						<PopoverControllersContext.Provider
 							value={popoverControllersContextValue}
@@ -193,19 +194,6 @@ export const App = (props: AppProps) => {
 							<TemplateVariablePopover />
 							<VideoPopover />
 						</PopoverControllersContext.Provider>
-						<For each={props.extensions}>
-							{(extension) => {
-								const Popover = extension.components.popover;
-
-								if (!Popover) {
-									return null;
-								}
-
-								return (
-									<Dynamic component={Popover} uiPort={extension.uiPort} />
-								);
-							}}
-						</For>
 					</div>
 				</div>
 			</EditorContainer>

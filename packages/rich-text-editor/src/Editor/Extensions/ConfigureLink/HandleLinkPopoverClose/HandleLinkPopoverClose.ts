@@ -1,11 +1,25 @@
 import { EditorRange, editorSelectionChangeEventType } from "rich-text-area";
 import type {
 	CloseOnSelectionChangeParams,
+	ClosePopoverParams,
 	HandleLinkPopoverCancelParams,
 	HandleLinkPopoverCloseParams,
-	OnPopoverCloseParams,
 	RestoreFocusOnEscapeParams,
 } from "./HandleLinkPopoverClose-types";
+
+/**
+ * Resets `internals.currentLink`/`selection.highlight` and hides the popover.
+ */
+const closePopover = ({
+	editorPort,
+	editorAPI,
+	internals,
+}: ClosePopoverParams) => {
+	const selection = editorAPI.getEditorSelection();
+	selection.highlight = false;
+	internals.currentLink = null;
+	editorPort.popover.unmount();
+};
 
 /**
  * Closes the popover whenever the selection moves outside the current link or becomes non-collapsed.
@@ -15,42 +29,37 @@ const closeOnSelectionChange = ({
 	editorAPI,
 	internals,
 }: CloseOnSelectionChangeParams) => {
-	const { popover } = editorPort;
-
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			if (!popover.matches(":popover-open")) {
+			if (!editorPort.popover.isMounted) {
 				return;
 			}
 
 			const { currentLink } = internals;
 
-			if (!currentLink) {
-				popover.hidePopover();
-				return;
+			if (currentLink) {
+				const selection = editorAPI.getEditorSelection();
+
+				const { fromText, fromOffset, toText, toOffset } =
+					selection.getBoundaryPoints();
+
+				const range = new EditorRange({
+					fromNode: fromText,
+					fromOffset,
+					toNode: toText,
+					toOffset,
+				});
+
+				const { startText } = range;
+
+				// Keep the popover open only while the caret is collapsed and positioned inside the link
+				if (currentLink.contains(startText) && range.isSinglePoint) {
+					return;
+				}
 			}
 
-			const selection = editorAPI.getEditorSelection();
-
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
-
-			const range = new EditorRange({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-			});
-
-			const { startText } = range;
-
-			// Keep the popover open only while the caret is collapsed and positioned inside the link
-			if (currentLink.contains(startText) && range.isSinglePoint) {
-				return;
-			}
-
-			popover.hidePopover();
+			closePopover({ editorPort, editorAPI, internals });
 		},
 	});
 };
@@ -60,68 +69,47 @@ const closeOnSelectionChange = ({
  */
 const handleLinkPopoverCancel = ({
 	editorPort,
+	editorAPI,
 	internals,
 }: HandleLinkPopoverCancelParams) => {
-	const { popover } = editorPort;
-
 	return editorPort.onCancel(() => {
 		if (internals.currentLink) {
 			return;
 		}
 
-		popover.hidePopover();
+		closePopover({ editorPort, editorAPI, internals });
 	});
 };
 
 /**
- * Returns focus to the editor when the user presses Escape inside the popover.
+ * Dismisses the popover and returns focus to the editor when the user presses Escape while it's open.
  */
 const restoreFocusOnEscape = ({
 	editorPort,
 	editorAPI,
+	internals,
 }: RestoreFocusOnEscapeParams) => {
-	const { popover } = editorPort;
-
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
 
-		editorAPI.focus();
-	};
-
-	popover.addEventListener("keydown", listener);
-
-	return () => popover.removeEventListener("keydown", listener);
-};
-
-/**
- * Clears currentLink whenever the popover closes, keeping internals consistent regardless of how it was dismissed.
- */
-const onPopoverClose = ({
-	editorPort,
-	editorAPI,
-	internals,
-}: OnPopoverCloseParams) => {
-	const { popover } = editorPort;
-	const selection = editorAPI.getEditorSelection();
-
-	const listener = (event: ToggleEvent) => {
-		if (event.newState === "open") {
+		if (!editorPort.popover.isMounted) {
 			return;
 		}
 
-		selection.highlight = false;
-		internals.currentLink = null;
+		closePopover({ editorPort, editorAPI, internals });
+
+		editorAPI.focus();
 	};
 
-	popover.addEventListener("toggle", listener);
+	document.addEventListener("keydown", listener);
 
-	return () => popover.removeEventListener("toggle", listener);
+	return () => document.removeEventListener("keydown", listener);
 };
 
 /**
- * Wires up all popover close behaviors: selection-driven close, cancel handling, and internals cleanup on toggle.
+ * Wires up all popover close behaviors: selection-driven close, cancel handling, and escape.
  */
 export const handleLinkPopoverClose = ({
 	editorPort,
@@ -133,9 +121,12 @@ export const handleLinkPopoverClose = ({
 		editorAPI,
 		internals,
 	});
-	const unsubscribeCancel = handleLinkPopoverCancel({ editorPort, internals });
-	const unsubscribeEscape = restoreFocusOnEscape({ editorPort, editorAPI });
-	const unsubscribeToggle = onPopoverClose({
+	const unsubscribeCancel = handleLinkPopoverCancel({
+		editorPort,
+		editorAPI,
+		internals,
+	});
+	const unsubscribeEscape = restoreFocusOnEscape({
 		editorPort,
 		editorAPI,
 		internals,
@@ -145,6 +136,5 @@ export const handleLinkPopoverClose = ({
 		unsubscribeSelectionChange();
 		unsubscribeCancel();
 		unsubscribeEscape();
-		unsubscribeToggle();
 	};
 };

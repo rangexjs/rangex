@@ -19,14 +19,17 @@ const openLinkPopover = ({
 	internals,
 	link,
 }: OpenLinkPopoverParams) => {
-	const { popover } = editorPort;
-	popover.hidePopover();
+	editorPort.popover.unmount();
 
 	internals.currentLink = link;
 
 	const state = getStateFromLink({ link, editorAPI });
 
 	editorPort.updateState({ view: "preview", mode: "modify", ...state });
+
+	editorPort.popover.mount();
+
+	const popover = editorPort.popover.element;
 
 	popover.style.cssText = "";
 	popover.style.marginTop = "8px";
