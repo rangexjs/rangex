@@ -54,7 +54,6 @@ export type {
 	StructuredThemeColors,
 	SubscriptToolbarButtonState,
 	SuperscriptToolbarButtonState,
-	SymbolsToolbarButtonState,
 	TextAlignToolbarButtonState,
 	TextAlignValue,
 	TextAlignValues,

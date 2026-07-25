@@ -1,4 +1,10 @@
-export const emojis = [
+import { SymbolsAdapter, type SymbolsItems } from "#adapters";
+import { configureSymbols } from "#editor-extensions";
+import { extensionsName, toolbarButtonsName } from "#ports";
+import { SymbolsToolbarButton } from "#ui-extensions";
+import { createExtension } from "../_Utilities";
+
+const defaultItems: SymbolsItems = [
 	"😂",
 	"🤣",
 	"😊",
@@ -100,3 +106,18 @@ export const emojis = [
 	"😑",
 	"😶",
 ];
+
+export const Symbols = createExtension({
+	name: extensionsName.symbols,
+	defaultSettings: {
+		items: defaultItems,
+	},
+	createAdapter: (settings, options) => new SymbolsAdapter(settings, options),
+	configure: ({ adapter, editorAPI }) =>
+		configureSymbols({ editorPort: adapter.editorPort, editorAPI }),
+	components: {
+		toolbarButtons: {
+			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
+		},
+	},
+});

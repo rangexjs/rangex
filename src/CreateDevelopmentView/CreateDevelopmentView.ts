@@ -11,6 +11,7 @@ import {
 	List,
 	Mention,
 	RichTextEditor,
+	Symbols,
 	Table,
 	TemplateVariable,
 	TodoList,
@@ -57,6 +58,7 @@ export const createDevelopmentView = () => {
 			TemplateVariable(),
 			Table(),
 			UndoRedo(),
+			Symbols(),
 		],
 	});
 
@@ -80,6 +82,7 @@ export const createDevelopmentView = () => {
 			TemplateVariable(),
 			Table(),
 			UndoRedo(),
+			Symbols(),
 		],
 	});
 

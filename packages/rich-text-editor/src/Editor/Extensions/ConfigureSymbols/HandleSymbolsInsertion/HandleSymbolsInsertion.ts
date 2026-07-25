@@ -1,21 +1,14 @@
 import { createContentLine, createFormattableTexts } from "rich-text-area";
-import type { HandleSymbolInsertionParams } from "./HandleSymbolInsertion-types";
+import type { HandleSymbolsInsertionParams } from "./HandleSymbolsInsertion-types";
 
-export const handleSymbolInsertion = ({
-	richTextEditorUI,
+export const handleSymbolsInsertion = ({
+	editorPort,
 	editorAPI,
-}: HandleSymbolInsertionParams) => {
+}: HandleSymbolsInsertionParams) => {
 	const selection = editorAPI.getEditorSelection();
-
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
-		if (params.type !== "symbols") {
-			return;
-		}
-
-		const { data } = params;
-
+	const unsubscribe = editorPort.onInsertRequest(({ data }) => {
 		const { fromText, fromOffset, toText, toOffset } =
 			selection.getBoundaryPoints();
 		const { domDirection } = selection;

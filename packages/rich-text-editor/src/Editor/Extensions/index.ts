@@ -9,6 +9,7 @@ export * from "./ConfigureImage";
 export * from "./ConfigureLink";
 export * from "./ConfigureList";
 export * from "./ConfigureMention";
+export * from "./ConfigureSymbols";
 export * from "./ConfigureTable";
 export * from "./ConfigureTemplateVariable";
 export * from "./ConfigureTodoList";

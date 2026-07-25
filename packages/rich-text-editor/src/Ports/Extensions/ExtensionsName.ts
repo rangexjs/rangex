@@ -10,6 +10,7 @@ export const extensionsName = {
 	link: "link",
 	list: "list",
 	mention: "mention",
+	symbols: "symbols",
 	table: "table",
 	templateVariable: "templateVariable",
 	todoList: "todoList",

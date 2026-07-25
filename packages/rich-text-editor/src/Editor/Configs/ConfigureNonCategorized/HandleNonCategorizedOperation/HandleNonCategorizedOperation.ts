@@ -9,10 +9,6 @@ const setupInitialStates = ({
 }: SetupInitialStatesParams) => {
 	const isTextAreaEditable = editorAPI.getIsTextAreaEditable();
 
-	richTextEditorUI.updateNodeInsertionButtonState({
-		symbols: { disabled: !isTextAreaEditable },
-	});
-
 	richTextEditorUI.updateNonCategorizedButtonState({
 		textAreaReadability: { checked: !isTextAreaEditable },
 	});
@@ -33,10 +29,6 @@ export const handleNonCategorizedOperation = ({
 			editorAPI.setIsTextAreaEditable(!newState);
 
 			const textAreaReadonly = !editorAPI.getIsTextAreaEditable();
-
-			richTextEditorUI.updateNodeInsertionButtonState({
-				symbols: { disabled: textAreaReadonly },
-			});
 
 			richTextEditorUI.updateNonCategorizedButtonState({
 				textAreaReadability: { checked: textAreaReadonly },

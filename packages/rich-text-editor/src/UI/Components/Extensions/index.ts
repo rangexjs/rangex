@@ -10,6 +10,7 @@ export * from "./Image";
 export * from "./Link";
 export * from "./List";
 export * from "./Mention";
+export * from "./Symbols";
 export * from "./Table";
 export * from "./TemplateVariable";
 export * from "./TodoList";

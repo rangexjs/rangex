@@ -10,6 +10,7 @@ export { Image } from "./Extensions/Image";
 export { Link } from "./Extensions/Link";
 export { List } from "./Extensions/List";
 export { Mention } from "./Extensions/Mention";
+export { Symbols } from "./Extensions/Symbols";
 export { Table } from "./Extensions/Table";
 export { TemplateVariable } from "./Extensions/TemplateVariable";
 export { TodoList } from "./Extensions/TodoList";

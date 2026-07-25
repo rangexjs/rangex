@@ -15,8 +15,3 @@ export interface CustomComponentToolbarButtonState {
 export interface MediaToolbarButtonState {
 	disabled: boolean;
 }
-
-// Symbols
-export interface SymbolsToolbarButtonState {
-	disabled: boolean;
-}

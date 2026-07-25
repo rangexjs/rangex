@@ -8,7 +8,6 @@ import {
 	configureCustomStyles,
 	configureFindReplace,
 	configureNonCategorized,
-	configureSymbolInsertion,
 } from "../Configs";
 import {
 	configurePreview,
@@ -101,13 +100,8 @@ export class RichTextEditor extends HTMLElement {
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 		});
-		const symbolInsertionCleanup = configureSymbolInsertion({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
 
 		this.#cleanups.add(findReplaceCleanup);
-		this.#cleanups.add(symbolInsertionCleanup);
 
 		// ---------- CODE BELOW IS TEMPORARY ----------
 

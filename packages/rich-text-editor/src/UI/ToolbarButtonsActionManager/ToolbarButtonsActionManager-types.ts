@@ -24,16 +24,10 @@ export interface CustomComponentActionState
 export interface MediaActionState
 	extends GetButtonType<typeof toolbarButtonsName.media> {}
 
-export interface SymbolsActionState
-	extends GetButtonType<typeof toolbarButtonsName.symbols> {
-	data: string;
-}
-
 export type NodeInsertionActionState =
 	| AnchorActionState
 	| CustomComponentActionState
-	| MediaActionState
-	| SymbolsActionState;
+	| MediaActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

@@ -11,7 +11,6 @@ import {
 import {
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
-	SymbolsToolbarButton,
 	TextAreaReadabilityToolbarButton,
 } from "../ToolbarButtons";
 
@@ -41,6 +40,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.strikethrough
 	| typeof toolbarButtonsName.subscript
 	| typeof toolbarButtonsName.superscript
+	| typeof toolbarButtonsName.symbols
 	| typeof toolbarButtonsName.table
 	| typeof toolbarButtonsName.templateVariable
 	| typeof toolbarButtonsName.textAlign
@@ -74,7 +74,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 		{
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
-			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
 		};

@@ -4,7 +4,6 @@ import type {
 	AnchorToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
-	SymbolsToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
@@ -14,19 +13,16 @@ import type {
 	UpdateListenerParams,
 	UpdateMediaStateFn,
 	UpdateNodeInsertionButtonsStateParams,
-	UpdateSymbolsStateFn,
 } from "./NodeInsertionButtonsStateManager-types";
 
 export class NodeInsertionButtonsStateManager {
 	#anchor: AnchorToolbarButtonState = { disabled: true, checked: false };
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
-	#symbols: SymbolsToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
-	#symbolsListeners: Set<UpdateSymbolsStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
@@ -39,10 +35,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get media() {
 		return this.#media;
-	}
-
-	get symbols() {
-		return this.#symbols;
 	}
 
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
@@ -58,11 +50,6 @@ export class NodeInsertionButtonsStateManager {
 
 		if (type === toolbarButtonsName.media) {
 			this.#mediaListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.symbols) {
-			this.#symbolsListeners[operation](callback);
 			return;
 		}
 
@@ -86,7 +73,6 @@ export class NodeInsertionButtonsStateManager {
 		anchor,
 		customComponent,
 		media,
-		symbols,
 	}: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
@@ -109,14 +95,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#mediaListeners) {
 				listener(this.#media);
-			}
-		}
-
-		if (symbols) {
-			this.#symbols = { ...this.#symbols, ...symbols };
-
-			for (const listener of this.#symbolsListeners) {
-				listener(this.#symbols);
 			}
 		}
 
