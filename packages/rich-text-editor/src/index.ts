@@ -1,4 +1,9 @@
 export { RichTextEditor } from "./Editor/RichTextEditor";
+export { Audio } from "./Extensions/Audio";
+export { Embed } from "./Extensions/Embed";
+export { EmptyMedia } from "./Extensions/EmptyMedia";
 export { Formatting } from "./Extensions/Formatting";
+export { Image } from "./Extensions/Image";
 export { Link } from "./Extensions/Link";
 export { Mention } from "./Extensions/Mention";
+export { Video } from "./Extensions/Video";

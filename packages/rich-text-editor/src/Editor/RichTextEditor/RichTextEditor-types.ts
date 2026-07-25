@@ -1,11 +1,25 @@
 import type { StoredSnapshot } from "rich-text-area";
 import type { ConfigureExtensionFn, ToolbarButtons } from "#ports";
-import type { Formatting, Link, Mention } from "../../Extensions";
+import type {
+	Audio,
+	Embed,
+	EmptyMedia,
+	Formatting,
+	Image,
+	Link,
+	Mention,
+	Video,
+} from "../../Extensions";
 
 export type ExtensionUnion =
+	| ReturnType<typeof Audio>
+	| ReturnType<typeof Embed>
+	| ReturnType<typeof EmptyMedia>
 	| ReturnType<typeof Formatting>
+	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>
-	| ReturnType<typeof Mention>;
+	| ReturnType<typeof Mention>
+	| ReturnType<typeof Video>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union
 type ErasedPort = any;

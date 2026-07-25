@@ -16,7 +16,6 @@ import {
 	FindReplaceToolbarButton,
 	HistoryBackToolbarButton,
 	HistoryForwardToolbarButton,
-	MediaToolbarButton,
 	OrderedListToolbarButton,
 	SymbolsToolbarButton,
 	TableToolbarButton,
@@ -28,6 +27,7 @@ import {
 type StaticToolbarButtonValue = Exclude<
 	ToolbarButtonValue,
 	| typeof toolbarButtonsName.link
+	| typeof toolbarButtonsName.media
 	| typeof toolbarButtonsName.backgroundColor
 	| typeof toolbarButtonsName.bold
 	| typeof toolbarButtonsName.code
@@ -78,7 +78,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
 			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
-			[toolbarButtonsName.media]: MediaToolbarButton,
 			[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
 			[toolbarButtonsName.symbols]: SymbolsToolbarButton,

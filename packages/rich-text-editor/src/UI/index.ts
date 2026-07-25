@@ -14,12 +14,6 @@ export type {
 	MenuBarButtonsState,
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
-export type {
-	MediaResolveDetail,
-	MediaResolveType,
-	MediaSource,
-	UploadState,
-} from "./NodeSlotControllers";
 export {
 	RichTextEditorUI,
 	type RichTextEditorUIOptions,

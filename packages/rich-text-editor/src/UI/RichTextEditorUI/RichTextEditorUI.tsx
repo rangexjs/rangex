@@ -10,17 +10,11 @@ import {
 	MenuBarButtonsStateManager,
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
-import { EmptyMediaSlotController } from "../NodeSlotControllers";
 import {
-	AudioPopoverController,
-	BlockResizePopoverController,
 	CodeBlockPopoverController,
-	EmbedPopoverController,
 	EmojiPopoverController,
-	ImagePopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
-	VideoPopoverController,
 } from "../PopoverControllers";
 import {
 	type OnHistoryNavigationFn,
@@ -52,17 +46,11 @@ export class RichTextEditorUI extends HTMLElement {
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
-	#audioPopoverController = new AudioPopoverController();
-	#blockResizePopoverController = new BlockResizePopoverController();
 	#codeBlockPopoverController = new CodeBlockPopoverController();
-	#embedPopoverController = new EmbedPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
-	#emptyMediaSlotController = new EmptyMediaSlotController();
-	#imagePopoverController = new ImagePopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
 	#templateVariablePopoverController = new TemplateVariablePopoverController();
-	#videoPopoverController = new VideoPopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -123,19 +111,14 @@ export class RichTextEditorUI extends HTMLElement {
 					nonCategorizedOperationButtonsStateManager={
 						this.#nonCategorizedOperationButtonsStateManager
 					}
-					audioPopoverController={this.#audioPopoverController}
-					blockResizePopoverController={this.#blockResizePopoverController}
 					codeBlockPopoverController={this.#codeBlockPopoverController}
-					embedPopoverController={this.#embedPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
-					imagePopoverController={this.#imagePopoverController}
 					tableQuickActionsPopoverController={
 						this.#tableQuickActionsPopoverController
 					}
 					templateVariablePopoverController={
 						this.#templateVariablePopoverController
 					}
-					videoPopoverController={this.#videoPopoverController}
 					overlayContainerRef={(element) =>
 						overlayHost.initialize({ container: element })
 					}
@@ -215,32 +198,12 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	get audioPort() {
-		return this.#audioPopoverController.publicAPI;
-	}
-
-	get blockResizePopover() {
-		return this.#blockResizePopoverController.publicAPI;
-	}
-
 	get codeBlockPopover() {
 		return this.#codeBlockPopoverController.publicAPI;
 	}
 
-	get embedPort() {
-		return this.#embedPopoverController.publicAPI;
-	}
-
 	get emojiPopover() {
 		return this.#emojiPopoverController.publicAPI;
-	}
-
-	get emptyMediaSlot() {
-		return this.#emptyMediaSlotController.publicAPI;
-	}
-
-	get imagePort() {
-		return this.#imagePopoverController.publicAPI;
 	}
 
 	get tableQuickActionsPopover() {
@@ -249,10 +212,6 @@ export class RichTextEditorUI extends HTMLElement {
 
 	get templateVariablePort() {
 		return this.#templateVariablePopoverController.publicAPI;
-	}
-
-	get videoPort() {
-		return this.#videoPopoverController.publicAPI;
 	}
 
 	dispose() {

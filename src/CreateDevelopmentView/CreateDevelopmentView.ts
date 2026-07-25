@@ -1,8 +1,13 @@
 import {
+	Audio,
+	Embed,
+	EmptyMedia,
 	Formatting,
+	Image,
 	Link,
 	Mention,
 	RichTextEditor,
+	Video,
 } from "@rangex/rich-text-editor";
 import storedSnapshot from "../MockDatabase/Demo.json";
 
@@ -27,13 +32,31 @@ export const createDevelopmentView = () => {
 	);
 
 	const emptyRichTextEditor = new RichTextEditor({
-		extensions: [Link(), Mention(), Formatting()],
+		extensions: [
+			Link(),
+			Mention(),
+			Formatting(),
+			EmptyMedia(),
+			Image(),
+			Video(),
+			Audio(),
+			Embed(),
+		],
 	});
 
 	const filledRichTextEditor = new RichTextEditor({
 		// @ts-expect-error
 		storedSnapshot,
-		extensions: [Link(), Mention(), Formatting()],
+		extensions: [
+			Link(),
+			Mention(),
+			Formatting(),
+			EmptyMedia(),
+			Image(),
+			Video(),
+			Audio(),
+			Embed(),
+		],
 	});
 
 	maxViewContainer.append(emptyRichTextEditor, filledRichTextEditor);

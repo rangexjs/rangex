@@ -9,20 +9,14 @@ import {
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
-import { createBlockResize } from "../BlockResize";
 import {
-	configureAudio,
 	configureBlockQuote,
 	configureCodeBlock,
-	configureEmbed,
 	configureEmoji,
-	configureEmptyMedia,
-	configureImage,
 	configureList,
 	configureTable,
 	configureTemplateVariable,
 	configureTodoList,
-	configureVideo,
 } from "../Components";
 import {
 	configureCustomStyles,
@@ -100,15 +94,10 @@ export class RichTextEditor extends HTMLElement {
 		const blockComponentPlacement = createBlockComponentPlacement({
 			editorAPI,
 		});
-		const blockResize = createBlockResize({
-			blockResizePort: this.#richTextEditorUI.blockResizePopover,
-			editorAPI,
-		});
 		const blockPopoverAppearanceHandler = createBlockPopoverAppearanceHandler({
 			editorAPI,
 		});
 
-		this.#cleanups.add(blockResize.cleanup);
 		this.#cleanups.add(blockPopoverAppearanceHandler.cleanup);
 
 		configureCustomStyles({ editorAPI });
@@ -167,51 +156,12 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
-		const { cleanup: emptyMediaCleanup, onMediaResolve } = configureEmptyMedia({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-		});
-
-		const imageCleanup = configureImage({
-			imagePort: this.#richTextEditorUI.imagePort,
-			editorAPI,
-			blockResize,
-			blockPopoverAppearanceHandler,
-			onMediaResolve,
-		});
-		const videoCleanup = configureVideo({
-			videoPort: this.#richTextEditorUI.videoPort,
-			editorAPI,
-			blockResize,
-			blockPopoverAppearanceHandler,
-			onMediaResolve,
-		});
-		const audioCleanup = configureAudio({
-			audioPort: this.#richTextEditorUI.audioPort,
-			editorAPI,
-			blockResize,
-			blockPopoverAppearanceHandler,
-			onMediaResolve,
-		});
-		const embedCleanup = configureEmbed({
-			embedPort: this.#richTextEditorUI.embedPort,
-			editorAPI,
-			blockResize,
-			blockPopoverAppearanceHandler,
-			onMediaResolve,
-		});
 
 		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(codeBlockCleanup);
 		this.#cleanups.add(listCleanup);
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
-		this.#cleanups.add(emptyMediaCleanup);
-		this.#cleanups.add(imageCleanup);
-		this.#cleanups.add(videoCleanup);
-		this.#cleanups.add(audioCleanup);
-		this.#cleanups.add(embedCleanup);
 
 		const emojiCleanup = configureEmoji({
 			emojiPort: this.#richTextEditorUI.emojiPopover,

@@ -5,7 +5,6 @@ export * from "./CustomComponentToolbarButton";
 export * from "./FindReplaceToolbarButton";
 export * from "./HistoryBackToolbarButton";
 export * from "./HistoryForwardToolbarButton";
-export * from "./MediaToolbarButton";
 export * from "./OrderedListToolbarButton";
 export * from "./SymbolsToolbarButton";
 export * from "./TableToolbarButton";
