@@ -32,7 +32,6 @@ export type {
 	CustomComponentToolbarButtonState,
 	FindReplaceSearchResult,
 	FindReplaceToolbarButtonState,
-	FontFamilyOption,
 	FontFamilyToolbarButtonState,
 	FontFamilyValue,
 	FontFamilyValues,

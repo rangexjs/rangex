@@ -1,3 +1,8 @@
+export interface FontFamilyOption {
+	value: string;
+	group: "sans-serif" | "serif" | "monospace";
+}
+
 export interface FormattingAdapterConstructorParams {
 	defaultFontFamily?: FormattingFontFamilyValue;
 	defaultFontSize?: FormattingFontSizeValue;
@@ -5,6 +10,7 @@ export interface FormattingAdapterConstructorParams {
 	defaultLineHeight?: FormattingLineHeightValue;
 	defaultLineSpacing?: FormattingLineSpacingValue;
 	defaultTextAlign?: FormattingTextAlignValue;
+	fontFamilyOptions: FontFamilyOption[];
 }
 
 export type FormattingTogglePressed = "true" | "false" | "mixed";
@@ -261,6 +267,7 @@ export interface FormattingUIPort {
 	readonly defaultLineHeight: FormattingLineHeightValue;
 	readonly defaultLineSpacing: FormattingLineSpacingValue;
 	readonly defaultTextAlign: FormattingTextAlignValue;
+	readonly fontFamilyOptions: FontFamilyOption[];
 	onBackgroundColorUpdate(
 		callback: FormattingUpdateBackgroundColorFn,
 	): () => void;

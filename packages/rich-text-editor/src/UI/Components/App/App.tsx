@@ -7,10 +7,7 @@ import type {
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
 } from "../../PopoverControllers";
-import type {
-	CustomComponentName,
-	FontFamilyOption,
-} from "../../ToolbarButtonProps";
+import type { CustomComponentName } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
 	HistoryNavigationButtonsStateManager,
@@ -34,7 +31,6 @@ import {
 
 export interface EditorOptions {
 	customComponentNames: CustomComponentName[];
-	fontFamilyOptions: FontFamilyOption[];
 }
 
 export interface MenuBarManagers {

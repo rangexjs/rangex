@@ -40,11 +40,6 @@ export interface ColorToolbarButtonState {
 
 export type FontFamilyValue = string;
 
-export interface FontFamilyOption {
-	value: string;
-	group: "sans-serif" | "serif" | "monospace";
-}
-
 // FontFamily
 export type FontFamilyValues = Set<FontFamilyValue>;
 

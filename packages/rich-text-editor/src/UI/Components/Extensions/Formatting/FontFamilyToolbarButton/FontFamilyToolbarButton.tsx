@@ -6,7 +6,6 @@ import {
 	onMount,
 } from "solid-js";
 import type { FormattingFontFamilyValue, FormattingUIPort } from "#adapters";
-import { useEditorOptionsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	createTextFieldController,
@@ -47,7 +46,7 @@ export const FontFamilyToolbarButton = (
 	props: FontFamilyToolbarButtonProps,
 ) => {
 	const uiPort = props.uiPort;
-	const { fontFamilyOptions } = useEditorOptionsContext();
+	const fontFamilyOptions = uiPort.fontFamilyOptions;
 	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
 
 	const [disabled, setDisabled] = createSignal(uiPort.fontFamily.disabled);

@@ -1,12 +1,8 @@
 import type { OverlayHost, ToolbarButtons, UIExtension } from "#ports";
-import type {
-	CustomComponentName,
-	FontFamilyOption,
-} from "../ToolbarButtonProps";
+import type { CustomComponentName } from "../ToolbarButtonProps";
 
 export interface RichTextEditorUIOptions {
 	customComponentNames?: CustomComponentName[];
-	fontFamilyOptions?: FontFamilyOption[];
 }
 
 export interface RichTextEditorUIConstructorParams {

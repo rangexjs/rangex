@@ -59,7 +59,7 @@ export class RichTextEditorUI extends HTMLElement {
 	}: RichTextEditorUIConstructorParams) {
 		super();
 
-		const { customComponentNames = [], fontFamilyOptions = [] } = options;
+		const { customComponentNames = [] } = options;
 
 		const style = document.createElement("style");
 		style.textContent = inlineTailwind;
@@ -88,7 +88,6 @@ export class RichTextEditorUI extends HTMLElement {
 					extensions={this.#extensions}
 					options={{
 						customComponentNames,
-						fontFamilyOptions,
 					}}
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}

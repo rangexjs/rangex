@@ -1,4 +1,5 @@
 import type {
+	FontFamilyOption,
 	FormattingActionState,
 	FormattingAdapterConstructorParams,
 	FormattingBackgroundColorState,
@@ -101,6 +102,8 @@ export class FormattingAdapter {
 	#defaultLineSpacing: FormattingLineSpacingValue;
 	#defaultTextAlign: FormattingTextAlignValue;
 
+	#fontFamilyOptions: FontFamilyOption[];
+
 	#backgroundColorListeners: Set<FormattingUpdateBackgroundColorFn> = new Set();
 	#boldListeners: Set<FormattingUpdateBoldFn> = new Set();
 	#codeListeners: Set<FormattingUpdateCodeFn> = new Set();
@@ -129,6 +132,7 @@ export class FormattingAdapter {
 		defaultLineHeight = { type: "number", value: 1.5 },
 		defaultLineSpacing = { type: "px", value: 0 },
 		defaultTextAlign = "start",
+		fontFamilyOptions,
 	}: FormattingAdapterConstructorParams) {
 		this.#defaultFontFamily = defaultFontFamily;
 		this.#defaultFontSize = defaultFontSize;
@@ -136,6 +140,7 @@ export class FormattingAdapter {
 		this.#defaultLineHeight = defaultLineHeight;
 		this.#defaultLineSpacing = defaultLineSpacing;
 		this.#defaultTextAlign = defaultTextAlign;
+		this.#fontFamilyOptions = fontFamilyOptions;
 	}
 
 	#updateState({
@@ -392,6 +397,10 @@ export class FormattingAdapter {
 
 			get defaultTextAlign() {
 				return adapter.#defaultTextAlign;
+			},
+
+			get fontFamilyOptions() {
+				return adapter.#fontFamilyOptions;
 			},
 
 			onBackgroundColorUpdate: (callback) => {

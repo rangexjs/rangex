@@ -3,7 +3,6 @@ import { RichTextEditorUI } from "#ui";
 import {
 	customComponentNames,
 	toolbarButtons as defaultToolbarButtons,
-	fontFamilyOptions,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
@@ -71,7 +70,6 @@ export class RichTextEditor extends HTMLElement {
 			overlayHost,
 			options: {
 				customComponentNames,
-				fontFamilyOptions,
 			},
 		});
 
