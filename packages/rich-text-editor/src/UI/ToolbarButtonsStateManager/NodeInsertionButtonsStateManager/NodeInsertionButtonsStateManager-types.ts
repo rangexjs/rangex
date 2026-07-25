@@ -5,7 +5,6 @@ import type {
 	MediaToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
-	TemplateVariableToolbarButtonState,
 } from "../../ToolbarButtonProps";
 
 // Anchor
@@ -36,21 +35,12 @@ export interface UpdateTableStateParams extends TableToolbarButtonState {}
 
 export type UpdateTableStateFn = (params: UpdateTableStateParams) => void;
 
-// TemplateVariable
-export interface UpdateTemplateVariableStateParams
-	extends TemplateVariableToolbarButtonState {}
-
-export type UpdateTemplateVariableStateFn = (
-	params: UpdateTemplateVariableStateParams,
-) => void;
-
 export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
 	customComponent: Partial<CustomComponentToolbarButtonState>;
 	media: Partial<MediaToolbarButtonState>;
 	symbols: Partial<SymbolsToolbarButtonState>;
 	table: Partial<TableToolbarButtonState>;
-	templateVariable: Partial<TemplateVariableToolbarButtonState>;
 }
 
 export type StateChangeFn = () => void;
@@ -61,7 +51,6 @@ export type ListenerMap = {
 	[toolbarButtonsName.media]: UpdateMediaStateFn;
 	[toolbarButtonsName.symbols]: UpdateSymbolsStateFn;
 	[toolbarButtonsName.table]: UpdateTableStateFn;
-	[toolbarButtonsName.templateVariable]: UpdateTemplateVariableStateFn;
 	statechange: () => void;
 };
 

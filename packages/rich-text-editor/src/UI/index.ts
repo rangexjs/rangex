@@ -1,8 +1,4 @@
-export type {
-	EmojiPopoverState,
-	TableQuickActionsPopoverState,
-	TemplateVariablePopoverState,
-} from "#ports";
+export type { TableQuickActionsPopoverState } from "#ports";
 export type { LinearGradientColor, SolidColor, StructuredColor } from "./Color";
 export type { ToolbarButtons } from "./CommonTypes";
 export type { MenuBarActionState } from "./MenuBarActionManager";
@@ -63,9 +59,6 @@ export type {
 	SuperscriptToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
-	TemplateVariableKind,
-	TemplateVariableOptions,
-	TemplateVariableToolbarButtonState,
 	TextAlignToolbarButtonState,
 	TextAlignValue,
 	TextAlignValues,

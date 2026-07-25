@@ -1,4 +1,3 @@
-import type { TemplateVariableKind } from "#ports";
 import type {
 	ToolbarButtonValue,
 	toolbarButtonActionsName,
@@ -7,7 +6,6 @@ import type {
 import type {
 	CustomComponentName,
 	FindReplacePattern,
-	TemplateVariableOptions,
 } from "../ToolbarButtonProps";
 
 interface GetButtonType<Type extends ToolbarButtonValue> {
@@ -50,28 +48,12 @@ export interface TableActionState
 	row: number;
 }
 
-export interface TemplateVariableInsertion {
-	action: "insertion";
-	kind: TemplateVariableKind;
-}
-
-export interface TemplateVariableUpdate {
-	action: "update";
-	options: Partial<TemplateVariableOptions>;
-}
-
-export type TemplateVariableActionState = GetButtonType<
-	typeof toolbarButtonsName.templateVariable
-> &
-	(TemplateVariableInsertion | TemplateVariableUpdate);
-
 export type NodeInsertionActionState =
 	| AnchorActionState
 	| CustomComponentActionState
 	| MediaActionState
 	| SymbolsActionState
-	| TableActionState
-	| TemplateVariableActionState;
+	| TableActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

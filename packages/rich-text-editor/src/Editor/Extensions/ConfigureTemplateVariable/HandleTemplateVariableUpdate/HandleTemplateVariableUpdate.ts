@@ -1,0 +1,118 @@
+import {
+	contentLineName,
+	contentLineRoleSelector,
+	createContentLine,
+	createFormattableTexts,
+	inlineNestedContextName,
+	inlineNestedContextRoleSelector,
+	nestedEditableRoleSelector,
+} from "rich-text-area";
+import { ensureNodeRootStorage } from "../../../_Utilities";
+import { componentsName } from "../../../Constants";
+import {
+	resolveTemplateVariableDisplayText,
+	storageToOptions,
+} from "../_Utilities";
+import {
+	ensureTemplateVariableRootStorage,
+	validateTemplateVariableStorage,
+} from "../TemplateVariableStorage";
+import type {
+	HandleTemplateVariableUpdateParams,
+	UpdateAllTemplateVariableNodesParams,
+} from "./HandleTemplateVariableUpdate-types";
+
+const updateAllTemplateVariableNodes = ({
+	rootEditable,
+	storage,
+}: UpdateAllTemplateVariableNodesParams) => {
+	const nodes = rootEditable.$$querySelectorAll(
+		inlineNestedContextRoleSelector,
+	);
+
+	for (const node of nodes) {
+		if (node.$$editorRole !== inlineNestedContextName) {
+			throw new Error("Expected an InlineNestedContext node.");
+		}
+
+		if (node.$$componentName !== componentsName.templateVariable) {
+			continue;
+		}
+
+		const nodeStorage = node.$$customStorage;
+		if (!validateTemplateVariableStorage(nodeStorage)) {
+			continue;
+		}
+
+		const displayText = resolveTemplateVariableDisplayText({
+			type: nodeStorage.type,
+			storage,
+		});
+
+		const nestedEditable = node.$$querySelector(nestedEditableRoleSelector);
+		if (!nestedEditable) {
+			throw new Error(
+				"Expected a NestedEditable inside the template variable node.",
+			);
+		}
+
+		const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
+		if (contentLine?.$$editorRole !== contentLineName) {
+			throw new Error("Expected a ContentLine inside the NestedEditable.");
+		}
+
+		contentLine.$$replaceWith(
+			createContentLine({
+				localName: "span",
+				childNodes: [...createFormattableTexts({ data: displayText })],
+			}),
+		);
+	}
+};
+
+export const handleTemplateVariableUpdate = ({
+	editorPort,
+	editorAPI,
+}: HandleTemplateVariableUpdateParams) => {
+	const unsubscribe = editorPort.onUpdateRequest(({ options }) => {
+		const { rootEditable } = editorAPI;
+
+		const rootStorage = ensureNodeRootStorage({ rootEditable });
+		const storage = ensureTemplateVariableRootStorage({ rootStorage });
+
+		if (options.firstName !== undefined) {
+			storage.firstName = options.firstName;
+		}
+
+		if (options.lastName !== undefined) {
+			storage.lastName = options.lastName;
+		}
+
+		if (options.email !== undefined) {
+			storage.email = options.email;
+		}
+
+		if (options.date !== undefined) {
+			storage.date = options.date;
+		}
+
+		editorPort.updateState({
+			toolbarButton: {
+				disabled: editorPort.toolbarButton.disabled,
+				options: storageToOptions({ storage }),
+			},
+		});
+
+		updateAllTemplateVariableNodes({ rootEditable, storage });
+
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+		snapshotTimeline.registerSnapshotBoundary();
+
+		editorAPI.focus();
+	});
+
+	return () => {
+		unsubscribe();
+	};
+};

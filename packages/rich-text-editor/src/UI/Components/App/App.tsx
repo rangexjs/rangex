@@ -2,11 +2,7 @@ import { useContext } from "solid-js";
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
-import type {
-	EmojiPopoverController,
-	TableQuickActionsPopoverController,
-	TemplateVariablePopoverController,
-} from "../../PopoverControllers";
+import type { TableQuickActionsPopoverController } from "../../PopoverControllers";
 import type { CustomComponentName } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
@@ -17,11 +13,7 @@ import type {
 import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
-import {
-	EmojiPopover,
-	TableQuickActionsPopover,
-	TemplateVariablePopover,
-} from "../NodePopovers";
+import { TableQuickActionsPopover } from "../NodePopovers";
 import {
 	EditorOptionsContext,
 	MenuBarManagersContext,
@@ -46,9 +38,7 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
-	emojiPopoverController: EmojiPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
-	templateVariablePopoverController: TemplateVariablePopoverController;
 }
 
 export interface AppProps
@@ -118,10 +108,8 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
-		emojiPopoverController: props.emojiPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
-		templateVariablePopoverController: props.templateVariablePopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -149,9 +137,7 @@ export const App = (props: AppProps) => {
 						<PopoverControllersContext.Provider
 							value={popoverControllersContextValue}
 						>
-							<EmojiPopover />
 							<TableQuickActionsPopover />
-							<TemplateVariablePopover />
 						</PopoverControllersContext.Provider>
 					</div>
 				</div>

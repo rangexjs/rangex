@@ -5,11 +5,7 @@ import {
 	toolbarButtons as defaultToolbarButtons,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
-import {
-	configureEmoji,
-	configureTable,
-	configureTemplateVariable,
-} from "../Components";
+import { configureTable } from "../Components";
 import {
 	configureCustomStyles,
 	configureFindReplace,
@@ -120,19 +116,6 @@ export class RichTextEditor extends HTMLElement {
 		});
 
 		this.#cleanups.add(tableCleanup);
-
-		const emojiCleanup = configureEmoji({
-			emojiPort: this.#richTextEditorUI.emojiPopover,
-			editorAPI,
-		});
-		const templateVariableCleanup = configureTemplateVariable({
-			templateVariablePort: this.#richTextEditorUI.templateVariablePort,
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
-
-		this.#cleanups.add(emojiCleanup);
-		this.#cleanups.add(templateVariableCleanup);
 
 		const findReplaceCleanup = configureFindReplace({
 			richTextEditorUI: this.#richTextEditorUI,

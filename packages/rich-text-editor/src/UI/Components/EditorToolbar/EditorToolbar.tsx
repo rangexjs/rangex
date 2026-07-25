@@ -15,7 +15,6 @@ import {
 	HistoryForwardToolbarButton,
 	SymbolsToolbarButton,
 	TableToolbarButton,
-	TemplateVariableToolbarButton,
 	TextAreaReadabilityToolbarButton,
 } from "../ToolbarButtons";
 
@@ -43,6 +42,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.strikethrough
 	| typeof toolbarButtonsName.subscript
 	| typeof toolbarButtonsName.superscript
+	| typeof toolbarButtonsName.templateVariable
 	| typeof toolbarButtonsName.textAlign
 	| typeof toolbarButtonsName.underline
 	| typeof toolbarButtonsName.unorderedList
@@ -78,7 +78,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
 			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
 			[toolbarButtonsName.table]: TableToolbarButton,
-			[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
 		};

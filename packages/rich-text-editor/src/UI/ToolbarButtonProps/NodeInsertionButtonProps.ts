@@ -25,23 +25,3 @@ export interface SymbolsToolbarButtonState {
 export interface TableToolbarButtonState {
 	disabled: boolean;
 }
-
-// TemplateVariable
-export type TemplateVariableKind =
-	| "full-name"
-	| "first-name"
-	| "last-name"
-	| "email"
-	| "date";
-
-export interface TemplateVariableOptions {
-	firstName: string | null;
-	lastName: string | null;
-	email: string | null;
-	date: string | null;
-}
-
-export interface TemplateVariableToolbarButtonState {
-	disabled: boolean;
-	options: TemplateVariableOptions;
-}

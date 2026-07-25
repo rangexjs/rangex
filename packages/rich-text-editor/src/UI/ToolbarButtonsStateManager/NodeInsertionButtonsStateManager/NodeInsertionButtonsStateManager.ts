@@ -6,7 +6,6 @@ import type {
 	MediaToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
-	TemplateVariableToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
@@ -18,7 +17,6 @@ import type {
 	UpdateNodeInsertionButtonsStateParams,
 	UpdateSymbolsStateFn,
 	UpdateTableStateFn,
-	UpdateTemplateVariableStateFn,
 } from "./NodeInsertionButtonsStateManager-types";
 
 export class NodeInsertionButtonsStateManager {
@@ -27,17 +25,12 @@ export class NodeInsertionButtonsStateManager {
 	#media: MediaToolbarButtonState = { disabled: true };
 	#symbols: SymbolsToolbarButtonState = { disabled: true };
 	#table: TableToolbarButtonState = { disabled: true };
-	#templateVariable: TemplateVariableToolbarButtonState = {
-		disabled: true,
-		options: { firstName: null, lastName: null, email: null, date: null },
-	};
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
 	#symbolsListeners: Set<UpdateSymbolsStateFn> = new Set();
 	#tableListeners: Set<UpdateTableStateFn> = new Set();
-	#templateVariableListeners: Set<UpdateTemplateVariableStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
@@ -58,10 +51,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get table() {
 		return this.#table;
-	}
-
-	get templateVariable() {
-		return this.#templateVariable;
 	}
 
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
@@ -90,11 +79,6 @@ export class NodeInsertionButtonsStateManager {
 			return;
 		}
 
-		if (type === toolbarButtonsName.templateVariable) {
-			this.#templateVariableListeners[operation](callback);
-			return;
-		}
-
 		if (type === "statechange") {
 			this.#stateChangeListeners[operation](callback);
 			return;
@@ -117,7 +101,6 @@ export class NodeInsertionButtonsStateManager {
 		media,
 		symbols,
 		table,
-		templateVariable,
 	}: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
@@ -156,17 +139,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#tableListeners) {
 				listener(this.#table);
-			}
-		}
-
-		if (templateVariable) {
-			this.#templateVariable = {
-				...this.#templateVariable,
-				...templateVariable,
-			};
-
-			for (const listener of this.#templateVariableListeners) {
-				listener(this.#templateVariable);
 			}
 		}
 

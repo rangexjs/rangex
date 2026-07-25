@@ -10,11 +10,7 @@ import {
 	MenuBarButtonsStateManager,
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
-import {
-	EmojiPopoverController,
-	TableQuickActionsPopoverController,
-	TemplateVariablePopoverController,
-} from "../PopoverControllers";
+import { TableQuickActionsPopoverController } from "../PopoverControllers";
 import {
 	type OnHistoryNavigationFn,
 	type OnNodeInsertionFn,
@@ -45,10 +41,8 @@ export class RichTextEditorUI extends HTMLElement {
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
-	#emojiPopoverController = new EmojiPopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
-	#templateVariablePopoverController = new TemplateVariablePopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -101,12 +95,8 @@ export class RichTextEditorUI extends HTMLElement {
 					nonCategorizedOperationButtonsStateManager={
 						this.#nonCategorizedOperationButtonsStateManager
 					}
-					emojiPopoverController={this.#emojiPopoverController}
 					tableQuickActionsPopoverController={
 						this.#tableQuickActionsPopoverController
-					}
-					templateVariablePopoverController={
-						this.#templateVariablePopoverController
 					}
 					overlayContainerRef={(element) =>
 						overlayHost.initialize({ container: element })
@@ -187,16 +177,8 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	get emojiPopover() {
-		return this.#emojiPopoverController.publicAPI;
-	}
-
 	get tableQuickActionsPopover() {
 		return this.#tableQuickActionsPopoverController.publicAPI;
-	}
-
-	get templateVariablePort() {
-		return this.#templateVariablePopoverController.publicAPI;
 	}
 
 	dispose() {

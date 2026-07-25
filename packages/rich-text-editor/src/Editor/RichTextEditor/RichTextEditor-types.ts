@@ -5,12 +5,14 @@ import type {
 	BlockQuote,
 	CodeBlock,
 	Embed,
+	Emoji,
 	EmptyMedia,
 	Formatting,
 	Image,
 	Link,
 	List,
 	Mention,
+	TemplateVariable,
 	TodoList,
 	Video,
 } from "../../Extensions";
@@ -20,12 +22,14 @@ export type ExtensionUnion =
 	| ReturnType<typeof BlockQuote>
 	| ReturnType<typeof CodeBlock>
 	| ReturnType<typeof Embed>
+	| ReturnType<typeof Emoji>
 	| ReturnType<typeof EmptyMedia>
 	| ReturnType<typeof Formatting>
 	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>
 	| ReturnType<typeof List>
 	| ReturnType<typeof Mention>
+	| ReturnType<typeof TemplateVariable>
 	| ReturnType<typeof TodoList>
 	| ReturnType<typeof Video>;
 

@@ -3,6 +3,7 @@ import {
 	BlockQuote,
 	CodeBlock,
 	Embed,
+	Emoji,
 	EmptyMedia,
 	Formatting,
 	Image,
@@ -10,6 +11,7 @@ import {
 	List,
 	Mention,
 	RichTextEditor,
+	TemplateVariable,
 	TodoList,
 	Video,
 } from "@rangex/rich-text-editor";
@@ -49,6 +51,8 @@ export const createDevelopmentView = () => {
 			BlockQuote(),
 			List(),
 			TodoList(),
+			Emoji(),
+			TemplateVariable(),
 		],
 	});
 
@@ -68,6 +72,8 @@ export const createDevelopmentView = () => {
 			BlockQuote(),
 			List(),
 			TodoList(),
+			Emoji(),
+			TemplateVariable(),
 		],
 	});
 
