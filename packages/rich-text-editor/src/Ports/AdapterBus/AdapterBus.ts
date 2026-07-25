@@ -1,6 +1,6 @@
 import type {
 	MediaResolveParams,
-	MediaResolveType,
+	MediaType,
 	OnMediaResolveFn,
 } from "./AdapterBus-types";
 
@@ -13,7 +13,7 @@ import type {
  */
 export class AdapterBus {
 	#mediaResolveListeners: Set<OnMediaResolveFn> = new Set();
-	#supportedMediaTypes: Set<MediaResolveType> = new Set();
+	#supportedMediaTypes: Set<MediaType> = new Set();
 
 	onMediaResolve(callback: OnMediaResolveFn) {
 		this.#mediaResolveListeners.add(callback);
@@ -26,11 +26,11 @@ export class AdapterBus {
 		}
 	}
 
-	registerSupportedMediaType(type: MediaResolveType) {
+	registerSupportedMediaType(type: MediaType) {
 		this.#supportedMediaTypes.add(type);
 	}
 
-	getSupportedMediaTypes(): MediaResolveType[] {
+	getSupportedMediaTypes(): MediaType[] {
 		return [...this.#supportedMediaTypes];
 	}
 }

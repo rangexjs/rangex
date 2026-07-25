@@ -1,6 +1,6 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import type { EmptyMediaUIPort, UploadState } from "#adapters";
-import type { MediaResolveType } from "#ports";
+import type { MediaType } from "#ports";
 import {
 	ContentSwitch,
 	type ContentSwitcherControls,
@@ -14,7 +14,7 @@ import {
 } from "../../../InputFields";
 import type { EmptyMediaSlotProps } from "./EmptyMediaSlot-types";
 
-type MediaTab = "upload" | MediaResolveType;
+type MediaTab = "upload" | MediaType;
 
 const NoSupportedMediaTypes = () => (
 	<div class="flex flex-col items-center gap-1 rounded-lg border border-neutral-300 border-dashed p-4 text-center text-neutral-500 text-sm dark:border-neutral-700 dark:text-neutral-400">
@@ -62,7 +62,7 @@ const StatusIndicator = (props: StatusIndicatorProps) => {
 	);
 };
 
-const urlPlaceholderByType: Record<MediaResolveType, string> = {
+const urlPlaceholderByType: Record<MediaType, string> = {
 	image: "https://example.com/image.png",
 	video: "https://example.com/video.mp4",
 	audio: "https://example.com/audio.mp3",
@@ -71,8 +71,8 @@ const urlPlaceholderByType: Record<MediaResolveType, string> = {
 
 const detectDroppedFileType = (
 	file: File,
-	supportedMediaTypes: MediaResolveType[],
-): Exclude<MediaResolveType, "embed"> | null => {
+	supportedMediaTypes: MediaType[],
+): Exclude<MediaType, "embed"> | null => {
 	if (file.type.startsWith("image/") && supportedMediaTypes.includes("image")) {
 		return "image";
 	}
@@ -89,7 +89,7 @@ const isFileDrag = (event: DragEvent) =>
 	!!event.dataTransfer?.types.includes("Files");
 
 const getMediaTabControls = (
-	supportedMediaTypes: MediaResolveType[],
+	supportedMediaTypes: MediaType[],
 ): ContentSwitcherControls<MediaTab> => {
 	const controls: ContentSwitcherControls<MediaTab> = [];
 
@@ -423,9 +423,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 							type="text"
 							id={urlModel.id}
 							aria-label="URL"
-							placeholder={
-								urlPlaceholderByType[activeTab() as MediaResolveType]
-							}
+							placeholder={urlPlaceholderByType[activeTab() as MediaType]}
 							spellcheck={false}
 							{...urlControls}
 							on:keydown={onUrlKeyDown}

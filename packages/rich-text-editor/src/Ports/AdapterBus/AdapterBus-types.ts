@@ -1,7 +1,7 @@
-export type MediaResolveType = "image" | "video" | "audio" | "embed";
+export type MediaType = "image" | "video" | "audio" | "embed";
 
 export interface MediaResolveParams {
-	type: MediaResolveType;
+	type: MediaType;
 	src: string;
 }
 
