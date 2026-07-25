@@ -7,16 +7,16 @@ import {
 	inlineNestedContextRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { ensureNodeRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
+import {
+	ensureNodeRootStorage,
+	ensureTemplateVariableRootStorage,
+	validateTemplateVariableStorage,
+} from "../../../Storage";
 import {
 	resolveTemplateVariableDisplayText,
 	storageToOptions,
 } from "../_Utilities";
-import {
-	ensureTemplateVariableRootStorage,
-	validateTemplateVariableStorage,
-} from "../TemplateVariableStorage";
 import type {
 	HandleTemplateVariableUpdateParams,
 	UpdateAllTemplateVariableNodesParams,

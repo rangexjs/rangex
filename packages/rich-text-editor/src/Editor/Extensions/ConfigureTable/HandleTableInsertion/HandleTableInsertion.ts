@@ -6,7 +6,7 @@ import {
 } from "rich-text-area";
 import { getCSSText } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
-import { createTableStorage } from "../TableStorage";
+import { createTableStorage } from "../../../Storage";
 import type {
 	CreateTableComponentParams,
 	CreateTableComponentResult,

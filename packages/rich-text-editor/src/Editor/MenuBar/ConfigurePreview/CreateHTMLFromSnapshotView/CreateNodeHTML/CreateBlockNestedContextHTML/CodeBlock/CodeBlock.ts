@@ -1,9 +1,9 @@
 import { contentLineRoleSelector } from "rich-text-area";
+import { syntaxHighlighter } from "../../../../../../Libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureCodeBlockStorage,
-} from "../../../../../../Extensions/ConfigureCodeBlock/CodeBlockStorage";
-import { syntaxHighlighter } from "../../../../../../Libs";
+} from "../../../../../../Storage";
 import type {
 	ApplyTokenSpansParams,
 	HighlightCodeBlockParams,

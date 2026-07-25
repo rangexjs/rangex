@@ -13,7 +13,7 @@ import {
 import {
 	ensureNodeTodoCheckboxStorage,
 	todoCheckboxStorageFallbacks,
-} from "../TodoCheckboxStorage";
+} from "../../../Storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 const todoCheckboxSelector = createElementNameSelector(todoCheckboxElementName);

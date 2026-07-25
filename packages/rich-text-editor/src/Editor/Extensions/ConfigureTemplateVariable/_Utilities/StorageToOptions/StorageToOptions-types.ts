@@ -1,5 +1,5 @@
 import type { TemplateVariableOptions } from "#adapters";
-import type { TemplateVariableRootStorage } from "../../TemplateVariableStorage";
+import type { TemplateVariableRootStorage } from "../../../../Storage";
 
 export interface StorageToOptionsParams {
 	storage: TemplateVariableRootStorage;

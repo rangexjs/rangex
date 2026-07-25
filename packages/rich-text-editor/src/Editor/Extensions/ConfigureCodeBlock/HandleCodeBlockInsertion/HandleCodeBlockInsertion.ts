@@ -11,8 +11,8 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { createCodeBlockStorage } from "../../../Storage";
 import { toHighlighterLang } from "../_Utilities";
-import { createCodeBlockStorage } from "../CodeBlockStorage";
 import type {
 	CreateCodeBlockLineParams,
 	CreateCodeBlockLineResult,

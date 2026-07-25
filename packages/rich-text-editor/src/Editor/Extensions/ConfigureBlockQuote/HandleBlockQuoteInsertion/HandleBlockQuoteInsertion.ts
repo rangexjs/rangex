@@ -8,7 +8,7 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
-import { createBlockQuoteStorage } from "../BlockQuoteStorage";
+import { createBlockQuoteStorage } from "../../../Storage";
 import type {
 	CreateBlockQuoteLineResult,
 	HandleBlockQuoteInsertionParams,

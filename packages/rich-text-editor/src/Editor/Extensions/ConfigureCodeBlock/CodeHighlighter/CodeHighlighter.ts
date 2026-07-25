@@ -15,7 +15,7 @@ import { getClosestBlockNestedContext } from "../../../NodeQuery";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
-} from "../CodeBlockStorage";
+} from "../../../Storage";
 import type {
 	ApplyTokenColorsParams,
 	CodeHighlighterConstructorParams,

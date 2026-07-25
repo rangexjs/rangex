@@ -1,6 +1,6 @@
 import type { EditorAPI, RootEditable } from "rich-text-area";
 import type { TemplateVariableEditorPort } from "#adapters";
-import type { TemplateVariableRootStorage } from "../TemplateVariableStorage";
+import type { TemplateVariableRootStorage } from "../../../Storage";
 
 export interface HandleTemplateVariableUpdateParams {
 	editorPort: TemplateVariableEditorPort;

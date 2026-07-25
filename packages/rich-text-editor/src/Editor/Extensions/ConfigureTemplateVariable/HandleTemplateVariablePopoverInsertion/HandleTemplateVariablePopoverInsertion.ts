@@ -4,16 +4,16 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
-import { ensureNodeRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
+import {
+	createTemplateVariableStorage,
+	ensureNodeRootStorage,
+	ensureTemplateVariableRootStorage,
+} from "../../../Storage";
 import {
 	getTemplateVariableQuery,
 	resolveTemplateVariableDisplayText,
 } from "../_Utilities";
-import {
-	createTemplateVariableStorage,
-	ensureTemplateVariableRootStorage,
-} from "../TemplateVariableStorage";
 import type {
 	CreateTemplateVariableComponentParams,
 	CreateTemplateVariableComponentResult,

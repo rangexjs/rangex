@@ -9,8 +9,8 @@ import {
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
 import { assertNever } from "../../../ErrorHandling";
+import { createLinkStorage } from "../../../Storage";
 import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
-import { createLinkStorage } from "../LinkStorage";
 import type {
 	AnchorPopoverToLinkParams,
 	CreateLinkComponentParams,

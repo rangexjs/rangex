@@ -1,9 +1,11 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { ensureNodeRootStorage } from "../../../_Utilities";
 import { componentsName } from "../../../Constants";
 import { getClosestScopedEditable } from "../../../NodeQuery";
+import {
+	ensureNodeRootStorage,
+	ensureTemplateVariableRootStorage,
+} from "../../../Storage";
 import { storageToOptions } from "../_Utilities";
-import { ensureTemplateVariableRootStorage } from "../TemplateVariableStorage";
 import type { HandleTemplateVariableToolbarButtonStateParams } from "./HandleTemplateVariableToolbarButtonState-types";
 
 export const handleTemplateVariableToolbarButtonState = ({

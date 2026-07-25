@@ -5,8 +5,8 @@ import {
 	createNestedEditable,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
+import { createMentionStorage } from "../../../Storage";
 import { getMentionQuery } from "../_Utilities";
-import { createMentionStorage } from "../MentionStorage";
 import type {
 	CreateMentionComponentParams,
 	CreateMentionComponentResult,

@@ -10,7 +10,7 @@ import {
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "../../../Constants";
-import { createListStorage } from "../ListStorage";
+import { createListStorage } from "../../../Storage";
 import type {
 	CreateListLineParams,
 	CreateListLineResult,
