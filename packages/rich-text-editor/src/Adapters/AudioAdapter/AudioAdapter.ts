@@ -70,6 +70,7 @@ export class AudioAdapter {
 		const [_settings, { adapterBus, overlayHost }] = params;
 
 		this.#adapterBus = adapterBus;
+		this.#adapterBus.registerSupportedMediaType("audio");
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

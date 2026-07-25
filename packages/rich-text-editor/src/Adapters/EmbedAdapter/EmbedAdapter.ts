@@ -62,6 +62,7 @@ export class EmbedAdapter {
 		const [_settings, { adapterBus, overlayHost }] = params;
 
 		this.#adapterBus = adapterBus;
+		this.#adapterBus.registerSupportedMediaType("embed");
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

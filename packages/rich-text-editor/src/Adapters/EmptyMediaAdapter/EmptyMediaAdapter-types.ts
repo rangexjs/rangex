@@ -1,4 +1,8 @@
-import type { CreateAdapterConstructor, MediaResolveParams } from "#ports";
+import type {
+	CreateAdapterConstructor,
+	MediaResolveParams,
+	MediaResolveType,
+} from "#ports";
 
 export type EmptyMediaAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
@@ -72,6 +76,7 @@ export type EmptyMediaOnResolveFn = (params: EmitResolveParams) => void;
 
 export interface EmptyMediaUIPort {
 	readonly toolbarButton: EmptyMediaToolbarButtonState;
+	readonly supportedMediaTypes: MediaResolveType[];
 	onToolbarButtonUpdate(callback: EmptyMediaUpdateToolbarButtonFn): () => void;
 	getUploadState(element: HTMLElement): UploadState;
 	onUploadStateUpdate(

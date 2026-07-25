@@ -111,6 +111,10 @@ export class EmptyMediaAdapter {
 				return adapter.#toolbarButton;
 			},
 
+			get supportedMediaTypes() {
+				return adapter.#adapterBus.getSupportedMediaTypes();
+			},
+
 			onToolbarButtonUpdate: (callback) => {
 				adapter.#toolbarButtonListeners.add(callback);
 				return () => adapter.#toolbarButtonListeners.delete(callback);

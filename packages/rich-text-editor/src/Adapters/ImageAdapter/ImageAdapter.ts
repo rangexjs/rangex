@@ -66,6 +66,7 @@ export class ImageAdapter {
 		const [_settings, { adapterBus, overlayHost }] = params;
 
 		this.#adapterBus = adapterBus;
+		this.#adapterBus.registerSupportedMediaType("image");
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

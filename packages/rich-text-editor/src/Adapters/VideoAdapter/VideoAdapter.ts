@@ -81,6 +81,7 @@ export class VideoAdapter {
 		const [_settings, { adapterBus, overlayHost }] = params;
 
 		this.#adapterBus = adapterBus;
+		this.#adapterBus.registerSupportedMediaType("video");
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

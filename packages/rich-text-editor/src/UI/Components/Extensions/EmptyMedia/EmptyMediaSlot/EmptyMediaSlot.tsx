@@ -16,6 +16,18 @@ import type { EmptyMediaSlotProps } from "./EmptyMediaSlot-types";
 
 type MediaTab = "upload" | MediaResolveType;
 
+const NoSupportedMediaTypes = () => (
+	<div class="flex flex-col items-center gap-1 rounded-lg border border-neutral-300 border-dashed p-4 text-center text-neutral-500 text-sm dark:border-neutral-700 dark:text-neutral-400">
+		<Icon name="WarningCircle" class="size-6" />
+		<span>No media types are available</span>
+		<span class="text-xs">
+			This editor has no Image, Video, Audio, or Embed extension registered —
+			add at least one to the `extensions` array passed to RichTextEditor to
+			enable media insertion.
+		</span>
+	</div>
+);
+
 const TabLabel = (icon: IconName, label: string) => (
 	<span class="inline-flex items-center gap-1">
 		<Icon name={icon} class="size-4" />
@@ -59,14 +71,15 @@ const urlPlaceholderByType: Record<MediaResolveType, string> = {
 
 const detectDroppedFileType = (
 	file: File,
+	supportedMediaTypes: MediaResolveType[],
 ): Exclude<MediaResolveType, "embed"> | null => {
-	if (file.type.startsWith("image/")) {
+	if (file.type.startsWith("image/") && supportedMediaTypes.includes("image")) {
 		return "image";
 	}
-	if (file.type.startsWith("video/")) {
+	if (file.type.startsWith("video/") && supportedMediaTypes.includes("video")) {
 		return "video";
 	}
-	if (file.type.startsWith("audio/")) {
+	if (file.type.startsWith("audio/") && supportedMediaTypes.includes("audio")) {
 		return "audio";
 	}
 	return null;
@@ -74,6 +87,58 @@ const detectDroppedFileType = (
 
 const isFileDrag = (event: DragEvent) =>
 	!!event.dataTransfer?.types.includes("Files");
+
+const getMediaTabControls = (
+	supportedMediaTypes: MediaResolveType[],
+): ContentSwitcherControls<MediaTab> => {
+	const controls: ContentSwitcherControls<MediaTab> = [];
+
+	if (
+		supportedMediaTypes.includes("image") ||
+		supportedMediaTypes.includes("video") ||
+		supportedMediaTypes.includes("audio")
+	) {
+		controls.push({
+			id: "upload",
+			node: TabLabel("FileArrowUp", "Upload"),
+			"aria-label": "Upload",
+		});
+	}
+
+	if (supportedMediaTypes.includes("image")) {
+		controls.push({
+			id: "image",
+			node: TabLabel("FileImage", "Image"),
+			"aria-label": "Image",
+		});
+	}
+
+	if (supportedMediaTypes.includes("video")) {
+		controls.push({
+			id: "video",
+			node: TabLabel("FileVideo", "Video"),
+			"aria-label": "Video",
+		});
+	}
+
+	if (supportedMediaTypes.includes("audio")) {
+		controls.push({
+			id: "audio",
+			node: TabLabel("FileAudio", "Audio"),
+			"aria-label": "Audio",
+		});
+	}
+
+	if (supportedMediaTypes.includes("embed")) {
+		controls.push({
+			id: "embed",
+			node: TabLabel("FileCloud", "Embed"),
+			"aria-label": "Embed",
+		});
+	}
+
+	return controls;
+};
 
 /**
  * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
@@ -92,6 +157,12 @@ const isFileDrag = (event: DragEvent) =>
  * component's screen area and still needs to reach the editor.
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
+	const supportedMediaTypes = props.uiPort.supportedMediaTypes;
+
+	if (!supportedMediaTypes.length) {
+		return <NoSupportedMediaTypes />;
+	}
+
 	const [uploadState, setUploadState] = createSignal(
 		props.uiPort.getUploadState(props.element),
 	);
@@ -113,7 +184,16 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		props.uiPort.emitResolve({ element: props.element, detail });
 	};
 
-	const [activeTab, setActiveTab] = createSignal<MediaTab>("upload");
+	const mediaTabControls = getMediaTabControls(supportedMediaTypes);
+
+	const uploadFileAccept = supportedMediaTypes
+		.filter((type) => type !== "embed")
+		.map((type) => `${type}/*`)
+		.join(",");
+
+	const [activeTab, setActiveTab] = createSignal<MediaTab>(
+		mediaTabControls[0]?.id ?? "upload",
+	);
 	const [dragActive, setDragActive] = createSignal(false);
 	// dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
 	// needed to tell "left a child" apart from "left the dropzone entirely".
@@ -158,7 +238,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		const type = detectDroppedFileType(file);
+		const type = detectDroppedFileType(file, supportedMediaTypes);
 
 		if (!type) {
 			return;
@@ -177,7 +257,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				return;
 			}
 
-			const type = detectDroppedFileType(file);
+			const type = detectDroppedFileType(file, supportedMediaTypes);
 
 			if (!type) {
 				return;
@@ -259,7 +339,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		const type = detectDroppedFileType(file);
+		const type = detectDroppedFileType(file, supportedMediaTypes);
 
 		if (!type) {
 			return;
@@ -271,34 +351,6 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const stopEditorPropagation = (event: Event) => {
 		event.stopPropagation();
 	};
-
-	const mediaTabControls: ContentSwitcherControls<MediaTab> = [
-		{
-			id: "upload",
-			node: TabLabel("FileArrowUp", "Upload"),
-			"aria-label": "Upload",
-		},
-		{
-			id: "image",
-			node: TabLabel("FileImage", "Image"),
-			"aria-label": "Image",
-		},
-		{
-			id: "video",
-			node: TabLabel("FileVideo", "Video"),
-			"aria-label": "Video",
-		},
-		{
-			id: "audio",
-			node: TabLabel("FileAudio", "Audio"),
-			"aria-label": "Audio",
-		},
-		{
-			id: "embed",
-			node: TabLabel("FileCloud", "Embed"),
-			"aria-label": "Embed",
-		},
-	];
 
 	return (
 		<div
@@ -354,7 +406,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 					<input
 						ref={fileInput}
 						type="file"
-						accept="image/*,video/*,audio/*"
+						accept={uploadFileAccept}
 						class="hidden"
 						onChange={onUploadFileChange}
 					/>
