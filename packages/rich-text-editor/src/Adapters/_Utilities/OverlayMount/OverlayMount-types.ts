@@ -4,7 +4,7 @@ import type { OverlayHost } from "#ports";
 export interface CreateOverlayMountParams<Props extends object> {
 	overlayHost: OverlayHost;
 	component: Component<Props>;
-	getProps: () => Props;
+	props: Props;
 }
 
 export interface UIOverlayMount {

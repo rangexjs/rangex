@@ -67,7 +67,7 @@ export class LinkAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: LinkPopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 	}
 

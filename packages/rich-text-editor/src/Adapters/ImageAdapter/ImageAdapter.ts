@@ -71,7 +71,7 @@ export class ImageAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: ImagePopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });

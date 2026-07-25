@@ -86,7 +86,7 @@ export class VideoAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: VideoPopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });

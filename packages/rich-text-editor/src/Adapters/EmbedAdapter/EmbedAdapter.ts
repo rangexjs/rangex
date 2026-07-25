@@ -67,7 +67,7 @@ export class EmbedAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: EmbedPopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });

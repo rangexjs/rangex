@@ -33,7 +33,7 @@ export class MentionAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: MentionPopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 	}
 

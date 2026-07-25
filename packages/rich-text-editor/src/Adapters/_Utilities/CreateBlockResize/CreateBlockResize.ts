@@ -25,14 +25,10 @@ export const createBlockResize = ({
 	const onResizeMoveListeners: Set<OnResizeMoveFn> = new Set();
 	const onResizeEndListeners: Set<OnResizeEndFn> = new Set();
 
-	const { uiOverlayMount, editorOverlayMount } = createOverlayMount({
-		overlayHost,
-		component: BlockResizeHandle,
-		getProps: () => ({ uiBlockResize }),
-	});
-
 	const uiBlockResize: UIBlockResize = {
-		setElement: uiOverlayMount.setElement,
+		setElement: (element) => {
+			overlayMount.uiOverlayMount.setElement(element);
+		},
 
 		get handleX() {
 			return handleX;
@@ -58,16 +54,16 @@ export const createBlockResize = ({
 
 	const editorBlockResize: EditorBlockResize = {
 		get element() {
-			return editorOverlayMount.element;
+			return overlayMount.editorOverlayMount.element;
 		},
 
 		get isMounted() {
-			return editorOverlayMount.isMounted;
+			return overlayMount.editorOverlayMount.isMounted;
 		},
 
-		mount: () => editorOverlayMount.mount(),
+		mount: () => overlayMount.editorOverlayMount.mount(),
 
-		unmount: () => editorOverlayMount.unmount(),
+		unmount: () => overlayMount.editorOverlayMount.unmount(),
 
 		updateHandleX: (x) => {
 			handleX = x;
@@ -87,6 +83,12 @@ export const createBlockResize = ({
 			return () => onResizeEndListeners.delete(callback);
 		},
 	};
+
+	const overlayMount = createOverlayMount({
+		overlayHost,
+		component: BlockResizeHandle,
+		props: { uiBlockResize },
+	});
 
 	return { uiBlockResize, editorBlockResize };
 };

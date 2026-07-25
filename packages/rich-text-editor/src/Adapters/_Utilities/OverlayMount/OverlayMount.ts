@@ -15,7 +15,7 @@ import type {
 export const createOverlayMount = <Props extends object>({
 	overlayHost,
 	component,
-	getProps,
+	props,
 }: CreateOverlayMountParams<Props>): OverlayMount => {
 	let element: HTMLDivElement | null = null;
 	let localUnmount: (() => void) | null = null;
@@ -43,8 +43,6 @@ export const createOverlayMount = <Props extends object>({
 			if (localUnmount) {
 				return;
 			}
-
-			const props = getProps();
 
 			const { unmount } = overlayHost.mount({ component, props });
 

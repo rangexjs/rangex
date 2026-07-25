@@ -75,7 +75,7 @@ export class AudioAdapter {
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: AudioPopover,
-			getProps: () => ({ uiPort: this.uiPort }),
+			props: { uiPort: this.uiPort },
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });
