@@ -1,4 +1,3 @@
-export type { TableQuickActionsPopoverState } from "#ports";
 export type { LinearGradientColor, SolidColor, StructuredColor } from "./Color";
 export type { ToolbarButtons } from "./CommonTypes";
 export type { MenuBarActionState } from "./MenuBarActionManager";
@@ -58,7 +57,6 @@ export type {
 	SubscriptToolbarButtonState,
 	SuperscriptToolbarButtonState,
 	SymbolsToolbarButtonState,
-	TableToolbarButtonState,
 	TextAlignToolbarButtonState,
 	TextAlignValue,
 	TextAlignValues,

@@ -2,7 +2,6 @@ import { useContext } from "solid-js";
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
-import type { TableQuickActionsPopoverController } from "../../PopoverControllers";
 import type { CustomComponentName } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
@@ -13,11 +12,9 @@ import type {
 import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
-import { TableQuickActionsPopover } from "../NodePopovers";
 import {
 	EditorOptionsContext,
 	MenuBarManagersContext,
-	PopoverControllersContext,
 	ToolbarButtonManagersContext,
 } from "./Context";
 
@@ -37,14 +34,7 @@ export interface ToolbarButtonManagers {
 	nonCategorizedOperationButtonsStateManager: NonCategorizedOperationButtonsStateManager;
 }
 
-export interface PopoverControllers {
-	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
-}
-
-export interface AppProps
-	extends MenuBarManagers,
-		ToolbarButtonManagers,
-		PopoverControllers {
+export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
 	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
@@ -82,16 +72,6 @@ export const useToolbarButtonManagersContext = () => {
 	return value;
 };
 
-export const usePopoverControllersContext = () => {
-	const value = useContext(PopoverControllersContext);
-
-	if (!value) {
-		throw new Error("Value can't be undefined.");
-	}
-
-	return value;
-};
-
 export const App = (props: AppProps) => {
 	const menuBarManagersContextValue: MenuBarManagers = {
 		menuBarActionManager: props.menuBarActionManager,
@@ -105,11 +85,6 @@ export const App = (props: AppProps) => {
 		nodeInsertionButtonsStateManager: props.nodeInsertionButtonsStateManager,
 		nonCategorizedOperationButtonsStateManager:
 			props.nonCategorizedOperationButtonsStateManager,
-	};
-
-	const popoverControllersContextValue: PopoverControllers = {
-		tableQuickActionsPopoverController:
-			props.tableQuickActionsPopoverController,
 	};
 
 	const editorOptionsContextValue: EditorOptions = props.options;
@@ -133,13 +108,6 @@ export const App = (props: AppProps) => {
 				<div class="relative max-h-300 overflow-y-auto">
 					<div>{props.richTextArea}</div>
 					<div ref={props.overlayContainerRef} />
-					<div>
-						<PopoverControllersContext.Provider
-							value={popoverControllersContextValue}
-						>
-							<TableQuickActionsPopover />
-						</PopoverControllersContext.Provider>
-					</div>
 				</div>
 			</EditorContainer>
 		</EditorOptionsContext.Provider>

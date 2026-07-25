@@ -12,6 +12,7 @@ import type {
 	Link,
 	List,
 	Mention,
+	Table,
 	TemplateVariable,
 	TodoList,
 	Video,
@@ -29,6 +30,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Link>
 	| ReturnType<typeof List>
 	| ReturnType<typeof Mention>
+	| ReturnType<typeof Table>
 	| ReturnType<typeof TemplateVariable>
 	| ReturnType<typeof TodoList>
 	| ReturnType<typeof Video>;

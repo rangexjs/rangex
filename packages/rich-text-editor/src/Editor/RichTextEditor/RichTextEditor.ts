@@ -4,8 +4,6 @@ import {
 	customComponentNames,
 	toolbarButtons as defaultToolbarButtons,
 } from "../_Utilities";
-import { createBlockComponentPlacement } from "../BlockComponentPlacement";
-import { configureTable } from "../Components";
 import {
 	configureCustomStyles,
 	configureFindReplace,
@@ -76,10 +74,6 @@ export class RichTextEditor extends HTMLElement {
 			this.#cleanups.add(cleanup);
 		}
 
-		const blockComponentPlacement = createBlockComponentPlacement({
-			editorAPI,
-		});
-
 		configureCustomStyles({ editorAPI });
 
 		const nonCategorizedCleanup = configureNonCategorized({
@@ -108,14 +102,6 @@ export class RichTextEditor extends HTMLElement {
 
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-
-		const tableCleanup = configureTable({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-		});
-
-		this.#cleanups.add(tableCleanup);
 
 		const findReplaceCleanup = configureFindReplace({
 			richTextEditorUI: this.#richTextEditorUI,

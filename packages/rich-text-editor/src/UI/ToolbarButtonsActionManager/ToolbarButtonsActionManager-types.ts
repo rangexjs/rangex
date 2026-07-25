@@ -42,18 +42,11 @@ export interface SymbolsActionState
 	data: string;
 }
 
-export interface TableActionState
-	extends GetButtonType<typeof toolbarButtonsName.table> {
-	column: number;
-	row: number;
-}
-
 export type NodeInsertionActionState =
 	| AnchorActionState
 	| CustomComponentActionState
 	| MediaActionState
-	| SymbolsActionState
-	| TableActionState;
+	| SymbolsActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

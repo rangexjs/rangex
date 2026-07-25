@@ -11,6 +11,7 @@ import {
 	List,
 	Mention,
 	RichTextEditor,
+	Table,
 	TemplateVariable,
 	TodoList,
 	Video,
@@ -53,6 +54,7 @@ export const createDevelopmentView = () => {
 			TodoList(),
 			Emoji(),
 			TemplateVariable(),
+			Table(),
 		],
 	});
 
@@ -74,6 +76,7 @@ export const createDevelopmentView = () => {
 			TodoList(),
 			Emoji(),
 			TemplateVariable(),
+			Table(),
 		],
 	});
 

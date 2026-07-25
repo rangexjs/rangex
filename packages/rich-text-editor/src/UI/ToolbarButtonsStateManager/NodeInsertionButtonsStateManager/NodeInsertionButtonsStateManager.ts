@@ -5,7 +5,6 @@ import type {
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
 	SymbolsToolbarButtonState,
-	TableToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
@@ -16,7 +15,6 @@ import type {
 	UpdateMediaStateFn,
 	UpdateNodeInsertionButtonsStateParams,
 	UpdateSymbolsStateFn,
-	UpdateTableStateFn,
 } from "./NodeInsertionButtonsStateManager-types";
 
 export class NodeInsertionButtonsStateManager {
@@ -24,13 +22,11 @@ export class NodeInsertionButtonsStateManager {
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
 	#symbols: SymbolsToolbarButtonState = { disabled: true };
-	#table: TableToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
 	#symbolsListeners: Set<UpdateSymbolsStateFn> = new Set();
-	#tableListeners: Set<UpdateTableStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
@@ -47,10 +43,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get symbols() {
 		return this.#symbols;
-	}
-
-	get table() {
-		return this.#table;
 	}
 
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
@@ -71,11 +63,6 @@ export class NodeInsertionButtonsStateManager {
 
 		if (type === toolbarButtonsName.symbols) {
 			this.#symbolsListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.table) {
-			this.#tableListeners[operation](callback);
 			return;
 		}
 
@@ -100,7 +87,6 @@ export class NodeInsertionButtonsStateManager {
 		customComponent,
 		media,
 		symbols,
-		table,
 	}: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
@@ -131,14 +117,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#symbolsListeners) {
 				listener(this.#symbols);
-			}
-		}
-
-		if (table) {
-			this.#table = { ...this.#table, ...table };
-
-			for (const listener of this.#tableListeners) {
-				listener(this.#table);
 			}
 		}
 

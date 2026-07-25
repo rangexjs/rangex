@@ -20,8 +20,3 @@ export interface MediaToolbarButtonState {
 export interface SymbolsToolbarButtonState {
 	disabled: boolean;
 }
-
-// Table
-export interface TableToolbarButtonState {
-	disabled: boolean;
-}

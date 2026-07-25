@@ -10,6 +10,7 @@ export * from "./ImageAdapter";
 export * from "./LinkAdapter";
 export * from "./ListAdapter";
 export * from "./MentionAdapter";
+export * from "./TableAdapter";
 export * from "./TemplateVariableAdapter";
 export * from "./TodoListAdapter";
 export * from "./VideoAdapter";

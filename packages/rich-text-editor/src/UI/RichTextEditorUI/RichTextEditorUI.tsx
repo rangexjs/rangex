@@ -10,7 +10,6 @@ import {
 	MenuBarButtonsStateManager,
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
-import { TableQuickActionsPopoverController } from "../PopoverControllers";
 import {
 	type OnHistoryNavigationFn,
 	type OnNodeInsertionFn,
@@ -41,8 +40,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
-	#tableQuickActionsPopoverController =
-		new TableQuickActionsPopoverController();
 
 	constructor({
 		toolbarButtons,
@@ -94,9 +91,6 @@ export class RichTextEditorUI extends HTMLElement {
 					}
 					nonCategorizedOperationButtonsStateManager={
 						this.#nonCategorizedOperationButtonsStateManager
-					}
-					tableQuickActionsPopoverController={
-						this.#tableQuickActionsPopoverController
 					}
 					overlayContainerRef={(element) =>
 						overlayHost.initialize({ container: element })
@@ -175,10 +169,6 @@ export class RichTextEditorUI extends HTMLElement {
 				callback,
 			});
 		};
-	}
-
-	get tableQuickActionsPopover() {
-		return this.#tableQuickActionsPopoverController.publicAPI;
 	}
 
 	dispose() {
