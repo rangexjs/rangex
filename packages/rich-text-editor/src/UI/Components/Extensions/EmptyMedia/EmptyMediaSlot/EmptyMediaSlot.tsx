@@ -137,6 +137,10 @@ const getMediaTabControls = (
 		});
 	}
 
+	if (!controls.length) {
+		throw new Error("No tabs available for the supported media types.");
+	}
+
 	return controls;
 };
 
@@ -181,7 +185,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		.join(",");
 
 	const [activeTab, setActiveTab] = createSignal<MediaTab>(
-		mediaTabControls[0]?.id ?? "upload",
+		mediaTabControls[0].id,
 	);
 	const [dragActive, setDragActive] = createSignal(false);
 	// dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
