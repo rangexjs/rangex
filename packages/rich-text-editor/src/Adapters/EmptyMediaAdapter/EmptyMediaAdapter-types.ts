@@ -8,6 +8,22 @@ export type EmptyMediaAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
 }>;
 
+export type UploadState =
+	| { status: "idle" }
+	| { status: "checking" }
+	| { status: "uploading"; progress: number }
+	| { status: "error"; message: string };
+
+export interface EmptyMediaToolbarButtonState {
+	disabled: boolean;
+}
+
+export interface EmptyMediaElementState {
+	uploadState: UploadState;
+	uploadStateListeners: Set<EmptyMediaUpdateUploadStateFn>;
+	dispose: () => void;
+}
+
 export interface MediaFile {
 	insertionType: "file";
 	file: File;
@@ -24,14 +40,28 @@ export type MediaResolveDetail =
 	| ({ type: "image" | "video" | "audio" } & MediaSource)
 	| ({ type: "embed" } & MediaURL);
 
-export type UploadState =
-	| { status: "idle" }
-	| { status: "checking" }
-	| { status: "uploading"; progress: number }
-	| { status: "error"; message: string };
+export type EmptyMediaUpdateToolbarButtonFn = (
+	value: EmptyMediaToolbarButtonState,
+) => void;
 
-export interface EmptyMediaToolbarButtonState {
-	disabled: boolean;
+export type EmptyMediaUpdateUploadStateFn = (value: UploadState) => void;
+
+export interface EmitResolveParams {
+	element: HTMLElement;
+	detail: MediaResolveDetail;
+}
+
+export interface EmptyMediaUIPort {
+	readonly toolbarButton: EmptyMediaToolbarButtonState;
+	readonly supportedMediaTypes: MediaResolveType[];
+	onToolbarButtonUpdate(callback: EmptyMediaUpdateToolbarButtonFn): () => void;
+	getUploadState(element: HTMLElement): UploadState;
+	onUploadStateUpdate(
+		element: HTMLElement,
+		callback: EmptyMediaUpdateUploadStateFn,
+	): () => void;
+	emitInsertRequest(): void;
+	emitResolve(params: EmitResolveParams): void;
 }
 
 export interface EmptyMediaState {
@@ -40,19 +70,7 @@ export interface EmptyMediaState {
 
 export interface UpdateEmptyMediaStateParams extends EmptyMediaState {}
 
-export type EmptyMediaUpdateToolbarButtonFn = (
-	value: EmptyMediaToolbarButtonState,
-) => void;
-
 export type EmptyMediaOnInsertRequestFn = () => void;
-
-export interface EmptyMediaElementState {
-	uploadState: UploadState;
-	uploadStateListeners: Set<EmptyMediaUpdateUploadStateFn>;
-	dispose: () => void;
-}
-
-export type EmptyMediaUpdateUploadStateFn = (value: UploadState) => void;
 
 export interface AttachEmptyMediaParams {
 	element: HTMLElement;
@@ -67,25 +85,7 @@ export interface UpdateEmptyMediaElementStateParams {
 	uploadState?: UploadState;
 }
 
-export interface EmitResolveParams {
-	element: HTMLElement;
-	detail: MediaResolveDetail;
-}
-
 export type EmptyMediaOnResolveFn = (params: EmitResolveParams) => void;
-
-export interface EmptyMediaUIPort {
-	readonly toolbarButton: EmptyMediaToolbarButtonState;
-	readonly supportedMediaTypes: MediaResolveType[];
-	onToolbarButtonUpdate(callback: EmptyMediaUpdateToolbarButtonFn): () => void;
-	getUploadState(element: HTMLElement): UploadState;
-	onUploadStateUpdate(
-		element: HTMLElement,
-		callback: EmptyMediaUpdateUploadStateFn,
-	): () => void;
-	emitInsertRequest(): void;
-	emitResolve(params: EmitResolveParams): void;
-}
 
 export interface EmptyMediaEditorPort {
 	updateState(params: UpdateEmptyMediaStateParams): void;
