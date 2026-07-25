@@ -1,4 +1,5 @@
 import type {
+	ListAdapterConstructorParams,
 	ListEditorPort,
 	ListInsertRequestParams,
 	ListOnInsertRequestFn,
@@ -11,6 +12,11 @@ import type {
 
 export class ListAdapter {
 	#orderedListToolbarButton: ListToolbarButtonState = { disabled: true };
+
+	constructor(...params: ListAdapterConstructorParams) {
+		const [_settings, _options] = params;
+	}
+
 	#unorderedListToolbarButton: ListToolbarButtonState = { disabled: true };
 
 	#orderedListToolbarButtonListeners: Set<ListUpdateOrderedListToolbarButtonFn> =

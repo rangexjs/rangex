@@ -125,15 +125,20 @@ export class FormattingAdapter {
 	#onFormattingChangeListeners: Set<OnFormattingChangeFn> = new Set();
 	#onAnyFieldUpdateListeners: Set<OnAnyFieldUpdateFn> = new Set();
 
-	constructor({
-		defaultFontFamily = "Inter",
-		defaultFontSize = { type: "px", value: 16 },
-		defaultIndentation = { type: "px", value: 0 },
-		defaultLineHeight = { type: "number", value: 1.5 },
-		defaultLineSpacing = { type: "px", value: 0 },
-		defaultTextAlign = "start",
-		fontFamilyOptions,
-	}: FormattingAdapterConstructorParams) {
+	constructor(...params: FormattingAdapterConstructorParams) {
+		const [
+			{
+				defaultFontFamily = "Inter",
+				defaultFontSize = { type: "px", value: 16 } as const,
+				defaultIndentation = { type: "px", value: 0 } as const,
+				defaultLineHeight = { type: "number", value: 1.5 } as const,
+				defaultLineSpacing = { type: "px", value: 0 } as const,
+				defaultTextAlign = "start",
+				fontFamilyOptions,
+			},
+			_options,
+		] = params;
+
 		this.#defaultFontFamily = defaultFontFamily;
 		this.#defaultFontSize = defaultFontSize;
 		this.#defaultIndentation = defaultIndentation;

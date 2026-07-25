@@ -42,7 +42,8 @@ const defaultFontFamilyOptions: FontFamilyOption[] = [
 export const Formatting = createExtension({
 	name: extensionsName.formatting,
 	defaultSettings: { fontFamilyOptions: defaultFontFamilyOptions },
-	createAdapter: (settings) => new FormattingAdapter(settings),
+	createAdapter: (settings, options) =>
+		new FormattingAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureFormatting({ editorPort: adapter.editorPort, editorAPI }),
 	components: {

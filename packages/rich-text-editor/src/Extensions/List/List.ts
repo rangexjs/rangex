@@ -10,7 +10,7 @@ import { createExtension } from "../_Utilities";
 export const List = createExtension({
 	name: extensionsName.list,
 	defaultSettings: {},
-	createAdapter: () => new ListAdapter(),
+	createAdapter: (settings, options) => new ListAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureList({ editorPort: adapter.editorPort, editorAPI }),
 	components: {

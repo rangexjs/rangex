@@ -1,4 +1,5 @@
 import type {
+	BlockQuoteAdapterConstructorParams,
 	BlockQuoteEditorPort,
 	BlockQuoteOnInsertRequestFn,
 	BlockQuoteToolbarButtonState,
@@ -9,6 +10,10 @@ import type {
 
 export class BlockQuoteAdapter {
 	#toolbarButton: BlockQuoteToolbarButtonState = { disabled: true };
+
+	constructor(...params: BlockQuoteAdapterConstructorParams) {
+		const [_settings, _options] = params;
+	}
 
 	#toolbarButtonListeners: Set<BlockQuoteUpdateToolbarButtonFn> = new Set();
 	#onInsertRequestListeners: Set<BlockQuoteOnInsertRequestFn> = new Set();

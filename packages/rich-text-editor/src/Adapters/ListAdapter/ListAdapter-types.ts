@@ -1,3 +1,9 @@
+import type { CreateAdapterConstructor } from "#ports";
+
+export type ListAdapterConstructorParams = CreateAdapterConstructor<{
+	[index: string]: never;
+}>;
+
 export type ListInsertionType = "ordered-list" | "unordered-list";
 
 export interface ListToolbarButtonState {

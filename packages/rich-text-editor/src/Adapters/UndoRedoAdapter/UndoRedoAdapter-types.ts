@@ -1,3 +1,9 @@
+import type { CreateAdapterConstructor } from "#ports";
+
+export type UndoRedoAdapterConstructorParams = CreateAdapterConstructor<{
+	[index: string]: never;
+}>;
+
 export interface UndoRedoToolbarButtonState {
 	disabled: boolean;
 }

@@ -7,7 +7,7 @@ import { createExtension } from "../_Utilities";
 export const TodoList = createExtension({
 	name: extensionsName.todoList,
 	defaultSettings: {},
-	createAdapter: () => new TodoListAdapter(),
+	createAdapter: (settings, options) => new TodoListAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureTodoList({ editorPort: adapter.editorPort, editorAPI }),
 	components: {

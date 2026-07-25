@@ -1,9 +1,11 @@
+import type { CreateAdapterConstructor } from "#ports";
+
 export interface FontFamilyOption {
 	value: string;
 	group: "sans-serif" | "serif" | "monospace";
 }
 
-export interface FormattingAdapterConstructorParams {
+export interface FormattingSettings {
 	defaultFontFamily?: FormattingFontFamilyValue;
 	defaultFontSize?: FormattingFontSizeValue;
 	defaultIndentation?: FormattingIndentationValue;
@@ -12,6 +14,9 @@ export interface FormattingAdapterConstructorParams {
 	defaultTextAlign?: FormattingTextAlignValue;
 	fontFamilyOptions: FontFamilyOption[];
 }
+
+export type FormattingAdapterConstructorParams =
+	CreateAdapterConstructor<FormattingSettings>;
 
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 

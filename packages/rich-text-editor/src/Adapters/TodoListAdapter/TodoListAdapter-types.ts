@@ -1,3 +1,9 @@
+import type { CreateAdapterConstructor } from "#ports";
+
+export type TodoListAdapterConstructorParams = CreateAdapterConstructor<{
+	[index: string]: never;
+}>;
+
 export interface TodoListToolbarButtonState {
 	disabled: boolean;
 }

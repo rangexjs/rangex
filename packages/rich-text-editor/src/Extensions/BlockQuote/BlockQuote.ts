@@ -7,7 +7,8 @@ import { createExtension } from "../_Utilities";
 export const BlockQuote = createExtension({
 	name: extensionsName.blockQuote,
 	defaultSettings: {},
-	createAdapter: () => new BlockQuoteAdapter(),
+	createAdapter: (settings, options) =>
+		new BlockQuoteAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureBlockQuote({ editorPort: adapter.editorPort, editorAPI }),
 	components: {

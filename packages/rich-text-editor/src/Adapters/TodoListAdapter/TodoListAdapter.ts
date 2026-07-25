@@ -1,4 +1,5 @@
 import type {
+	TodoListAdapterConstructorParams,
 	TodoListEditorPort,
 	TodoListOnInsertRequestFn,
 	TodoListToolbarButtonState,
@@ -9,6 +10,10 @@ import type {
 
 export class TodoListAdapter {
 	#toolbarButton: TodoListToolbarButtonState = { disabled: true };
+
+	constructor(...params: TodoListAdapterConstructorParams) {
+		const [_settings, _options] = params;
+	}
 
 	#toolbarButtonListeners: Set<TodoListUpdateToolbarButtonFn> = new Set();
 	#onInsertRequestListeners: Set<TodoListOnInsertRequestFn> = new Set();

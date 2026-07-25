@@ -1,4 +1,5 @@
 import type {
+	UndoRedoAdapterConstructorParams,
 	UndoRedoEditorPort,
 	UndoRedoNavigateParams,
 	UndoRedoOnNavigateFn,
@@ -11,6 +12,11 @@ import type {
 
 export class UndoRedoAdapter {
 	#historyBackToolbarButton: UndoRedoToolbarButtonState = { disabled: true };
+
+	constructor(...params: UndoRedoAdapterConstructorParams) {
+		const [_settings, _options] = params;
+	}
+
 	#historyForwardToolbarButton: UndoRedoToolbarButtonState = {
 		disabled: true,
 	};
