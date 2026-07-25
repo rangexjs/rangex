@@ -1,20 +1,22 @@
+import { createBlockComponentPlacement } from "../../BlockComponentPlacement";
 import type { ConfigureBlockQuoteParams } from "./ConfigureBlockQuote-types";
 import { handleBlockQuoteInsertion } from "./HandleBlockQuoteInsertion";
 import { handleBlockQuoteToolbarButtonState } from "./HandleBlockQuoteToolbarButtonState";
 
 export const configureBlockQuote = ({
-	richTextEditorUI,
+	editorPort,
 	editorAPI,
-	blockComponentPlacement,
 }: ConfigureBlockQuoteParams) => {
+	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+
 	const toolbarButtonStateCleanup = handleBlockQuoteToolbarButtonState({
-		richTextEditorUI,
+		editorPort,
 		editorAPI,
 		blockComponentPlacement,
 	});
 
 	const insertionCleanup = handleBlockQuoteInsertion({
-		richTextEditorUI,
+		editorPort,
 		editorAPI,
 		blockComponentPlacement,
 	});

@@ -1,7 +1,6 @@
 import type { toolbarButtonsName } from "../../Constants";
 import type {
 	AnchorToolbarButtonState,
-	BlockQuoteToolbarButtonState,
 	CheckboxListToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
@@ -23,14 +22,6 @@ export interface UpdateCheckboxListStateParams
 
 export type UpdateCheckboxListStateFn = (
 	params: UpdateCheckboxListStateParams,
-) => void;
-
-// BlockQuote
-export interface UpdateBlockQuoteStateParams
-	extends BlockQuoteToolbarButtonState {}
-
-export type UpdateBlockQuoteStateFn = (
-	params: UpdateBlockQuoteStateParams,
 ) => void;
 
 // CustomComponent
@@ -82,7 +73,6 @@ export type UpdateUnorderedListStateFn = (
 
 export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
-	blockQuote: Partial<BlockQuoteToolbarButtonState>;
 	checkboxList: Partial<CheckboxListToolbarButtonState>;
 	customComponent: Partial<CustomComponentToolbarButtonState>;
 	media: Partial<MediaToolbarButtonState>;
@@ -97,7 +87,6 @@ export type StateChangeFn = () => void;
 
 export type ListenerMap = {
 	[toolbarButtonsName.anchor]: UpdateAnchorStateFn;
-	[toolbarButtonsName.blockQuote]: UpdateBlockQuoteStateFn;
 	[toolbarButtonsName.checkboxList]: UpdateCheckboxListStateFn;
 	[toolbarButtonsName.customComponent]: UpdateCustomComponentStateFn;
 	[toolbarButtonsName.media]: UpdateMediaStateFn;

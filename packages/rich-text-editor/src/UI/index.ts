@@ -20,7 +20,6 @@ export type {
 	BackgroundColorToolbarButtonState,
 	BackgroundColorValue,
 	BackgroundColorValues,
-	BlockQuoteToolbarButtonState,
 	BoldToolbarButtonState,
 	CheckboxListToolbarButtonState,
 	CodeToolbarButtonState,

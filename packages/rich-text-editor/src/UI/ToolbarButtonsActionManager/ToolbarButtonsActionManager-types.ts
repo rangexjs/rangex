@@ -31,9 +31,6 @@ export interface EmitHistoryNavigationChangeParams
 export interface AnchorActionState
 	extends GetButtonType<typeof toolbarButtonsName.anchor> {}
 
-export interface BlockQuoteActionState
-	extends GetButtonType<typeof toolbarButtonsName.blockQuote> {}
-
 export interface CheckboxListActionState
 	extends GetButtonType<typeof toolbarButtonsName.checkboxList> {}
 
@@ -79,7 +76,6 @@ export interface UnorderedListActionState
 
 export type NodeInsertionActionState =
 	| AnchorActionState
-	| BlockQuoteActionState
 	| CheckboxListActionState
 	| CustomComponentActionState
 	| MediaActionState

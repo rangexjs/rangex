@@ -1,11 +1,11 @@
 import type { BlockNestedContextLine, EditorAPI } from "rich-text-area";
-import type { RichTextEditorUI } from "#ui";
+import type { BlockQuoteEditorPort } from "#adapters";
 import type { BlockComponentPlacement } from "../../../BlockComponentPlacement";
 
 export interface CreateBlockQuoteLineResult extends BlockNestedContextLine {}
 
 export interface HandleBlockQuoteInsertionParams {
-	richTextEditorUI: RichTextEditorUI;
+	editorPort: BlockQuoteEditorPort;
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
 }

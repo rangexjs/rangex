@@ -3,7 +3,7 @@ import { componentsName } from "../../../Constants";
 import type { HandleBlockQuoteToolbarButtonStateParams } from "./HandleBlockQuoteToolbarButtonState-types";
 
 export const handleBlockQuoteToolbarButtonState = ({
-	richTextEditorUI,
+	editorPort,
 	editorAPI,
 	blockComponentPlacement,
 }: HandleBlockQuoteToolbarButtonStateParams) => {
@@ -14,9 +14,7 @@ export const handleBlockQuoteToolbarButtonState = ({
 				allowedComponents: [componentsName.blockQuote],
 			});
 
-			richTextEditorUI.updateNodeInsertionButtonState({
-				blockQuote: { disabled: !canWrap },
-			});
+			editorPort.updateState({ toolbarButton: { disabled: !canWrap } });
 		},
 	});
 

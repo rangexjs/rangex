@@ -1,5 +1,6 @@
 import {
 	Audio,
+	BlockQuote,
 	CodeBlock,
 	Embed,
 	EmptyMedia,
@@ -43,6 +44,7 @@ export const createDevelopmentView = () => {
 			Audio(),
 			Embed(),
 			CodeBlock(),
+			BlockQuote(),
 		],
 	});
 
@@ -59,6 +61,7 @@ export const createDevelopmentView = () => {
 			Audio(),
 			Embed(),
 			CodeBlock(),
+			BlockQuote(),
 		],
 	});
 

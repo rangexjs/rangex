@@ -2,7 +2,6 @@ import { toolbarButtonsName } from "../../Constants";
 import { assertNever } from "../../ErrorHandling";
 import type {
 	AnchorToolbarButtonState,
-	BlockQuoteToolbarButtonState,
 	CheckboxListToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
@@ -16,7 +15,6 @@ import type {
 	ListenerOption,
 	StateChangeFn,
 	UpdateAnchorStateFn,
-	UpdateBlockQuoteStateFn,
 	UpdateCheckboxListStateFn,
 	UpdateCustomComponentStateFn,
 	UpdateListenerParams,
@@ -31,7 +29,6 @@ import type {
 
 export class NodeInsertionButtonsStateManager {
 	#anchor: AnchorToolbarButtonState = { disabled: true, checked: false };
-	#blockQuote: BlockQuoteToolbarButtonState = { disabled: true };
 	#checkboxList: CheckboxListToolbarButtonState = { disabled: true };
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
@@ -45,7 +42,6 @@ export class NodeInsertionButtonsStateManager {
 	#unorderedList: UnorderedListToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
-	#blockQuoteListeners: Set<UpdateBlockQuoteStateFn> = new Set();
 	#checkboxListListeners: Set<UpdateCheckboxListStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
@@ -58,10 +54,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get anchor() {
 		return this.#anchor;
-	}
-
-	get blockQuote() {
-		return this.#blockQuote;
 	}
 
 	get checkboxList() {
@@ -99,11 +91,6 @@ export class NodeInsertionButtonsStateManager {
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
 		if (type === toolbarButtonsName.anchor) {
 			this.#anchorListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.blockQuote) {
-			this.#blockQuoteListeners[operation](callback);
 			return;
 		}
 
@@ -165,7 +152,6 @@ export class NodeInsertionButtonsStateManager {
 
 	updateState({
 		anchor,
-		blockQuote,
 		checkboxList,
 		customComponent,
 		media,
@@ -180,14 +166,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#anchorListeners) {
 				listener(this.#anchor);
-			}
-		}
-
-		if (blockQuote) {
-			this.#blockQuote = { ...this.#blockQuote, ...blockQuote };
-
-			for (const listener of this.#blockQuoteListeners) {
-				listener(this.#blockQuote);
 			}
 		}
 

@@ -6,7 +6,6 @@ import {
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
-	configureBlockQuote,
 	configureEmoji,
 	configureList,
 	configureTable,
@@ -116,11 +115,6 @@ export class RichTextEditor extends HTMLElement {
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 
-		const blockQuoteCleanup = configureBlockQuote({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-		});
 		const listCleanup = configureList({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
@@ -137,7 +131,6 @@ export class RichTextEditor extends HTMLElement {
 			blockComponentPlacement,
 		});
 
-		this.#cleanups.add(blockQuoteCleanup);
 		this.#cleanups.add(listCleanup);
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);

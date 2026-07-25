@@ -4,11 +4,6 @@ export interface AnchorToolbarButtonState {
 	checked: boolean;
 }
 
-// BlockQuote
-export interface BlockQuoteToolbarButtonState {
-	disabled: boolean;
-}
-
 // CheckboxList
 export interface CheckboxListToolbarButtonState {
 	disabled: boolean;

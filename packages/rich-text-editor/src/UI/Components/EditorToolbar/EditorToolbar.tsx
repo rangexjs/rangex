@@ -9,7 +9,6 @@ import {
 	type UIExtension,
 } from "#ports";
 import {
-	BlockQuoteToolbarButton,
 	CheckboxListToolbarButton,
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
@@ -28,6 +27,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.link
 	| typeof toolbarButtonsName.media
 	| typeof toolbarButtonsName.backgroundColor
+	| typeof toolbarButtonsName.blockQuote
 	| typeof toolbarButtonsName.bold
 	| typeof toolbarButtonsName.code
 	| typeof toolbarButtonsName.codeBlock
@@ -72,7 +72,6 @@ interface ToolbarButtonProps {
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
-			[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
 			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,

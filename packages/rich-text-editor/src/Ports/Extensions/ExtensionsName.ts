@@ -1,5 +1,6 @@
 export const extensionsName = {
 	audio: "audio",
+	blockQuote: "blockQuote",
 	codeBlock: "codeBlock",
 	embed: "embed",
 	emptyMedia: "emptyMedia",

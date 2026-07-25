@@ -40,15 +40,11 @@ const createBlockQuoteLine = (): CreateBlockQuoteLineResult => {
 };
 
 export const handleBlockQuoteInsertion = ({
-	richTextEditorUI,
+	editorPort,
 	editorAPI,
 	blockComponentPlacement,
 }: HandleBlockQuoteInsertionParams) => {
-	const unsubscribe = richTextEditorUI.onNodeInsertion((params) => {
-		if (params.type !== "block-quote") {
-			return;
-		}
-
+	const unsubscribe = editorPort.onInsertRequest(() => {
 		const blockQuoteLine = createBlockQuoteLine();
 
 		const nestedEditable = blockQuoteLine.$$querySelector(
