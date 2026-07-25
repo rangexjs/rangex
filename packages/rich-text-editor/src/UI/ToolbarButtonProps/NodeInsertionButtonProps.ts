@@ -4,11 +4,6 @@ export interface AnchorToolbarButtonState {
 	checked: boolean;
 }
 
-// CheckboxList
-export interface CheckboxListToolbarButtonState {
-	disabled: boolean;
-}
-
 // CustomComponent
 export type CustomComponentName = string;
 
@@ -18,11 +13,6 @@ export interface CustomComponentToolbarButtonState {
 
 // Media
 export interface MediaToolbarButtonState {
-	disabled: boolean;
-}
-
-// OrderedList
-export interface OrderedListToolbarButtonState {
 	disabled: boolean;
 }
 
@@ -54,9 +44,4 @@ export interface TemplateVariableOptions {
 export interface TemplateVariableToolbarButtonState {
 	disabled: boolean;
 	options: TemplateVariableOptions;
-}
-
-// UnorderedList
-export interface UnorderedListToolbarButtonState {
-	disabled: boolean;
 }

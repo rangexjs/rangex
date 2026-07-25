@@ -7,5 +7,7 @@ export { EmptyMedia } from "./Extensions/EmptyMedia";
 export { Formatting } from "./Extensions/Formatting";
 export { Image } from "./Extensions/Image";
 export { Link } from "./Extensions/Link";
+export { List } from "./Extensions/List";
 export { Mention } from "./Extensions/Mention";
+export { TodoList } from "./Extensions/TodoList";
 export { Video } from "./Extensions/Video";

@@ -1,4 +1,4 @@
-import { validateTodoCheckboxStorage } from "../../../../../../Components/ConfigureTodoList";
+import { validateTodoCheckboxStorage } from "../../../../../../Extensions/ConfigureTodoList/TodoCheckboxStorage";
 import type { ApplyTodoCheckboxOutputParams } from "./TodoCheckbox-types";
 
 export const applyTodoCheckboxOutput = ({

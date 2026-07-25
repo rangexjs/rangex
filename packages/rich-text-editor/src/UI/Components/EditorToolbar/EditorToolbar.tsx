@@ -9,17 +9,14 @@ import {
 	type UIExtension,
 } from "#ports";
 import {
-	CheckboxListToolbarButton,
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
 	HistoryBackToolbarButton,
 	HistoryForwardToolbarButton,
-	OrderedListToolbarButton,
 	SymbolsToolbarButton,
 	TableToolbarButton,
 	TemplateVariableToolbarButton,
 	TextAreaReadabilityToolbarButton,
-	UnorderedListToolbarButton,
 } from "../ToolbarButtons";
 
 type StaticToolbarButtonValue = Exclude<
@@ -29,6 +26,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.backgroundColor
 	| typeof toolbarButtonsName.blockQuote
 	| typeof toolbarButtonsName.bold
+	| typeof toolbarButtonsName.checkboxList
 	| typeof toolbarButtonsName.code
 	| typeof toolbarButtonsName.codeBlock
 	| typeof toolbarButtonsName.color
@@ -40,12 +38,14 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.lineHeight
 	| typeof toolbarButtonsName.lineLocalName
 	| typeof toolbarButtonsName.lineSpacing
+	| typeof toolbarButtonsName.orderedList
 	| typeof toolbarButtonsName.removeFormat
 	| typeof toolbarButtonsName.strikethrough
 	| typeof toolbarButtonsName.subscript
 	| typeof toolbarButtonsName.superscript
 	| typeof toolbarButtonsName.textAlign
 	| typeof toolbarButtonsName.underline
+	| typeof toolbarButtonsName.unorderedList
 	| ExtensionName
 >;
 
@@ -72,18 +72,15 @@ interface ToolbarButtonProps {
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
-			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
 			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
-			[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
 			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
 			[toolbarButtonsName.table]: TableToolbarButton,
 			[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
-			[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
 		};
 
 	const match = findExtensionToolbarButton(name, extensions);

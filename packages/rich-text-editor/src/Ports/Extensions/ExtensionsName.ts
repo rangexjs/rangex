@@ -7,7 +7,9 @@ export const extensionsName = {
 	formatting: "formatting",
 	image: "image",
 	link: "link",
+	list: "list",
 	mention: "mention",
+	todoList: "todoList",
 	video: "video",
 } as const;
 

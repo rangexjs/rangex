@@ -7,10 +7,8 @@ import {
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
 import {
 	configureEmoji,
-	configureList,
 	configureTable,
 	configureTemplateVariable,
-	configureTodoList,
 } from "../Components";
 import {
 	configureCustomStyles,
@@ -115,24 +113,12 @@ export class RichTextEditor extends HTMLElement {
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 
-		const listCleanup = configureList({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-		});
-		const todoListCleanup = configureTodoList({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-		});
 		const tableCleanup = configureTable({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 			blockComponentPlacement,
 		});
 
-		this.#cleanups.add(listCleanup);
-		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);
 
 		const emojiCleanup = configureEmoji({

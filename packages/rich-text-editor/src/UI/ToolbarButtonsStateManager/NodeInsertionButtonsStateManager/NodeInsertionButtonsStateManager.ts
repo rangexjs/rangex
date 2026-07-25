@@ -2,62 +2,46 @@ import { toolbarButtonsName } from "../../Constants";
 import { assertNever } from "../../ErrorHandling";
 import type {
 	AnchorToolbarButtonState,
-	CheckboxListToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
-	OrderedListToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
 	TemplateVariableToolbarButtonState,
-	UnorderedListToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
 	StateChangeFn,
 	UpdateAnchorStateFn,
-	UpdateCheckboxListStateFn,
 	UpdateCustomComponentStateFn,
 	UpdateListenerParams,
 	UpdateMediaStateFn,
 	UpdateNodeInsertionButtonsStateParams,
-	UpdateOrderedListStateFn,
 	UpdateSymbolsStateFn,
 	UpdateTableStateFn,
 	UpdateTemplateVariableStateFn,
-	UpdateUnorderedListStateFn,
 } from "./NodeInsertionButtonsStateManager-types";
 
 export class NodeInsertionButtonsStateManager {
 	#anchor: AnchorToolbarButtonState = { disabled: true, checked: false };
-	#checkboxList: CheckboxListToolbarButtonState = { disabled: true };
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
-	#orderedList: OrderedListToolbarButtonState = { disabled: true };
 	#symbols: SymbolsToolbarButtonState = { disabled: true };
 	#table: TableToolbarButtonState = { disabled: true };
 	#templateVariable: TemplateVariableToolbarButtonState = {
 		disabled: true,
 		options: { firstName: null, lastName: null, email: null, date: null },
 	};
-	#unorderedList: UnorderedListToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
-	#checkboxListListeners: Set<UpdateCheckboxListStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
-	#orderedListListeners: Set<UpdateOrderedListStateFn> = new Set();
 	#symbolsListeners: Set<UpdateSymbolsStateFn> = new Set();
 	#tableListeners: Set<UpdateTableStateFn> = new Set();
 	#templateVariableListeners: Set<UpdateTemplateVariableStateFn> = new Set();
-	#unorderedListListeners: Set<UpdateUnorderedListStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
 		return this.#anchor;
-	}
-
-	get checkboxList() {
-		return this.#checkboxList;
 	}
 
 	get customComponent() {
@@ -66,10 +50,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get media() {
 		return this.#media;
-	}
-
-	get orderedList() {
-		return this.#orderedList;
 	}
 
 	get symbols() {
@@ -84,18 +64,9 @@ export class NodeInsertionButtonsStateManager {
 		return this.#templateVariable;
 	}
 
-	get unorderedList() {
-		return this.#unorderedList;
-	}
-
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
 		if (type === toolbarButtonsName.anchor) {
 			this.#anchorListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.checkboxList) {
-			this.#checkboxListListeners[operation](callback);
 			return;
 		}
 
@@ -114,11 +85,6 @@ export class NodeInsertionButtonsStateManager {
 			return;
 		}
 
-		if (type === toolbarButtonsName.orderedList) {
-			this.#orderedListListeners[operation](callback);
-			return;
-		}
-
 		if (type === toolbarButtonsName.table) {
 			this.#tableListeners[operation](callback);
 			return;
@@ -126,11 +92,6 @@ export class NodeInsertionButtonsStateManager {
 
 		if (type === toolbarButtonsName.templateVariable) {
 			this.#templateVariableListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.unorderedList) {
-			this.#unorderedListListeners[operation](callback);
 			return;
 		}
 
@@ -152,28 +113,17 @@ export class NodeInsertionButtonsStateManager {
 
 	updateState({
 		anchor,
-		checkboxList,
 		customComponent,
 		media,
-		orderedList,
 		symbols,
 		table,
 		templateVariable,
-		unorderedList,
 	}: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
 
 			for (const listener of this.#anchorListeners) {
 				listener(this.#anchor);
-			}
-		}
-
-		if (checkboxList) {
-			this.#checkboxList = { ...this.#checkboxList, ...checkboxList };
-
-			for (const listener of this.#checkboxListListeners) {
-				listener(this.#checkboxList);
 			}
 		}
 
@@ -190,14 +140,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#mediaListeners) {
 				listener(this.#media);
-			}
-		}
-
-		if (orderedList) {
-			this.#orderedList = { ...this.#orderedList, ...orderedList };
-
-			for (const listener of this.#orderedListListeners) {
-				listener(this.#orderedList);
 			}
 		}
 
@@ -225,14 +167,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#templateVariableListeners) {
 				listener(this.#templateVariable);
-			}
-		}
-
-		if (unorderedList) {
-			this.#unorderedList = { ...this.#unorderedList, ...unorderedList };
-
-			for (const listener of this.#unorderedListListeners) {
-				listener(this.#unorderedList);
 			}
 		}
 

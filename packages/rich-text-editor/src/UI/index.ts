@@ -21,7 +21,6 @@ export type {
 	BackgroundColorValue,
 	BackgroundColorValues,
 	BoldToolbarButtonState,
-	CheckboxListToolbarButtonState,
 	CodeToolbarButtonState,
 	ColorToolbarButtonState,
 	ColorValue,
@@ -56,7 +55,6 @@ export type {
 	LineSpacingValue,
 	LineSpacingValues,
 	MediaToolbarButtonState,
-	OrderedListToolbarButtonState,
 	StrikethroughToolbarButtonState,
 	StructuredFontSizePx,
 	StructuredIndentationPx,
@@ -74,7 +72,6 @@ export type {
 	TextAreaReadabilityToolbarButtonState,
 	ToggleButtonPressed,
 	UnderlineToolbarButtonState,
-	UnorderedListToolbarButtonState,
 } from "./ToolbarButtonProps";
 export type {
 	HistoryNavigationActionState,

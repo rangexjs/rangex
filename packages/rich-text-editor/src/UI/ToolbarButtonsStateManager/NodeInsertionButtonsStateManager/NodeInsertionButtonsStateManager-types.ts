@@ -1,28 +1,17 @@
 import type { toolbarButtonsName } from "../../Constants";
 import type {
 	AnchorToolbarButtonState,
-	CheckboxListToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
-	OrderedListToolbarButtonState,
 	SymbolsToolbarButtonState,
 	TableToolbarButtonState,
 	TemplateVariableToolbarButtonState,
-	UnorderedListToolbarButtonState,
 } from "../../ToolbarButtonProps";
 
 // Anchor
 export interface UpdateAnchorStateParams extends AnchorToolbarButtonState {}
 
 export type UpdateAnchorStateFn = (params: UpdateAnchorStateParams) => void;
-
-// CheckboxList
-export interface UpdateCheckboxListStateParams
-	extends CheckboxListToolbarButtonState {}
-
-export type UpdateCheckboxListStateFn = (
-	params: UpdateCheckboxListStateParams,
-) => void;
 
 // CustomComponent
 export interface UpdateCustomComponentStateParams
@@ -36,14 +25,6 @@ export type UpdateCustomComponentStateFn = (
 export interface UpdateMediaStateParams extends MediaToolbarButtonState {}
 
 export type UpdateMediaStateFn = (params: UpdateMediaStateParams) => void;
-
-// OrderedList
-export interface UpdateOrderedListStateParams
-	extends UnorderedListToolbarButtonState {}
-
-export type UpdateOrderedListStateFn = (
-	params: UpdateOrderedListStateParams,
-) => void;
 
 // Symbols
 export interface UpdateSymbolsStateParams extends SymbolsToolbarButtonState {}
@@ -63,38 +44,24 @@ export type UpdateTemplateVariableStateFn = (
 	params: UpdateTemplateVariableStateParams,
 ) => void;
 
-// UnorderedList
-export interface UpdateUnorderedListStateParams
-	extends UnorderedListToolbarButtonState {}
-
-export type UpdateUnorderedListStateFn = (
-	params: UpdateUnorderedListStateParams,
-) => void;
-
 export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
-	checkboxList: Partial<CheckboxListToolbarButtonState>;
 	customComponent: Partial<CustomComponentToolbarButtonState>;
 	media: Partial<MediaToolbarButtonState>;
 	symbols: Partial<SymbolsToolbarButtonState>;
-	orderedList: Partial<OrderedListToolbarButtonState>;
 	table: Partial<TableToolbarButtonState>;
 	templateVariable: Partial<TemplateVariableToolbarButtonState>;
-	unorderedList: Partial<UnorderedListToolbarButtonState>;
 }
 
 export type StateChangeFn = () => void;
 
 export type ListenerMap = {
 	[toolbarButtonsName.anchor]: UpdateAnchorStateFn;
-	[toolbarButtonsName.checkboxList]: UpdateCheckboxListStateFn;
 	[toolbarButtonsName.customComponent]: UpdateCustomComponentStateFn;
 	[toolbarButtonsName.media]: UpdateMediaStateFn;
 	[toolbarButtonsName.symbols]: UpdateSymbolsStateFn;
-	[toolbarButtonsName.orderedList]: UpdateOrderedListStateFn;
 	[toolbarButtonsName.table]: UpdateTableStateFn;
 	[toolbarButtonsName.templateVariable]: UpdateTemplateVariableStateFn;
-	[toolbarButtonsName.unorderedList]: UpdateUnorderedListStateFn;
 	statechange: () => void;
 };
 

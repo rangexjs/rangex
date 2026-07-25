@@ -6,5 +6,7 @@ export * from "./ConfigureEmptyMedia";
 export * from "./ConfigureFormatting";
 export * from "./ConfigureImage";
 export * from "./ConfigureLink";
+export * from "./ConfigureList";
 export * from "./ConfigureMention";
+export * from "./ConfigureTodoList";
 export * from "./ConfigureVideo";

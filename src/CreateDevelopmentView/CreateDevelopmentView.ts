@@ -7,8 +7,10 @@ import {
 	Formatting,
 	Image,
 	Link,
+	List,
 	Mention,
 	RichTextEditor,
+	TodoList,
 	Video,
 } from "@rangex/rich-text-editor";
 import storedSnapshot from "../MockDatabase/Demo.json";
@@ -45,6 +47,8 @@ export const createDevelopmentView = () => {
 			Embed(),
 			CodeBlock(),
 			BlockQuote(),
+			List(),
+			TodoList(),
 		],
 	});
 
@@ -62,6 +66,8 @@ export const createDevelopmentView = () => {
 			Embed(),
 			CodeBlock(),
 			BlockQuote(),
+			List(),
+			TodoList(),
 		],
 	});
 

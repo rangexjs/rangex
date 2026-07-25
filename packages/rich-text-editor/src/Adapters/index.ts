@@ -7,5 +7,7 @@ export * from "./EmptyMediaAdapter";
 export * from "./FormattingAdapter";
 export * from "./ImageAdapter";
 export * from "./LinkAdapter";
+export * from "./ListAdapter";
 export * from "./MentionAdapter";
+export * from "./TodoListAdapter";
 export * from "./VideoAdapter";

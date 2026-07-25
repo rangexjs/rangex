@@ -31,9 +31,6 @@ export interface EmitHistoryNavigationChangeParams
 export interface AnchorActionState
 	extends GetButtonType<typeof toolbarButtonsName.anchor> {}
 
-export interface CheckboxListActionState
-	extends GetButtonType<typeof toolbarButtonsName.checkboxList> {}
-
 export interface CustomComponentActionState
 	extends GetButtonType<typeof toolbarButtonsName.customComponent> {
 	name: CustomComponentName;
@@ -41,9 +38,6 @@ export interface CustomComponentActionState
 
 export interface MediaActionState
 	extends GetButtonType<typeof toolbarButtonsName.media> {}
-
-export interface OrderedListActionState
-	extends GetButtonType<typeof toolbarButtonsName.orderedList> {}
 
 export interface SymbolsActionState
 	extends GetButtonType<typeof toolbarButtonsName.symbols> {
@@ -71,19 +65,13 @@ export type TemplateVariableActionState = GetButtonType<
 > &
 	(TemplateVariableInsertion | TemplateVariableUpdate);
 
-export interface UnorderedListActionState
-	extends GetButtonType<typeof toolbarButtonsName.unorderedList> {}
-
 export type NodeInsertionActionState =
 	| AnchorActionState
-	| CheckboxListActionState
 	| CustomComponentActionState
 	| MediaActionState
-	| OrderedListActionState
 	| SymbolsActionState
 	| TableActionState
-	| TemplateVariableActionState
-	| UnorderedListActionState;
+	| TemplateVariableActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

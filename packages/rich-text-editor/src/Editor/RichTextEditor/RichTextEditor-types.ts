@@ -9,7 +9,9 @@ import type {
 	Formatting,
 	Image,
 	Link,
+	List,
 	Mention,
+	TodoList,
 	Video,
 } from "../../Extensions";
 
@@ -22,7 +24,9 @@ export type ExtensionUnion =
 	| ReturnType<typeof Formatting>
 	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>
+	| ReturnType<typeof List>
 	| ReturnType<typeof Mention>
+	| ReturnType<typeof TodoList>
 	| ReturnType<typeof Video>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union
