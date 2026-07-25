@@ -13,4 +13,5 @@ export { Mention } from "./Extensions/Mention";
 export { Table } from "./Extensions/Table";
 export { TemplateVariable } from "./Extensions/TemplateVariable";
 export { TodoList } from "./Extensions/TodoList";
+export { UndoRedo } from "./Extensions/UndoRedo";
 export { Video } from "./Extensions/Video";

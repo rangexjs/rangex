@@ -13,6 +13,7 @@ export const extensionsName = {
 	table: "table",
 	templateVariable: "templateVariable",
 	todoList: "todoList",
+	undoRedo: "undoRedo",
 	video: "video",
 } as const;
 

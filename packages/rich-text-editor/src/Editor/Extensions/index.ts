@@ -12,4 +12,5 @@ export * from "./ConfigureMention";
 export * from "./ConfigureTable";
 export * from "./ConfigureTemplateVariable";
 export * from "./ConfigureTodoList";
+export * from "./ConfigureUndoRedo";
 export * from "./ConfigureVideo";

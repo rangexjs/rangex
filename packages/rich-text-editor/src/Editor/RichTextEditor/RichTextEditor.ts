@@ -7,7 +7,6 @@ import {
 import {
 	configureCustomStyles,
 	configureFindReplace,
-	configureHistoryNavigation,
 	configureNonCategorized,
 	configureSymbolInsertion,
 } from "../Configs";
@@ -80,13 +79,8 @@ export class RichTextEditor extends HTMLElement {
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
 		});
-		const historyNavigationCleanup = configureHistoryNavigation({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
 
 		this.#cleanups.add(nonCategorizedCleanup);
-		this.#cleanups.add(historyNavigationCleanup);
 
 		const viewCleanup = configureView({
 			richTextEditorUI: this.#richTextEditorUI,

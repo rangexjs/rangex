@@ -11,8 +11,6 @@ import {
 import {
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
-	HistoryBackToolbarButton,
-	HistoryForwardToolbarButton,
 	SymbolsToolbarButton,
 	TextAreaReadabilityToolbarButton,
 } from "../ToolbarButtons";
@@ -30,6 +28,8 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.color
 	| typeof toolbarButtonsName.fontFamily
 	| typeof toolbarButtonsName.fontSize
+	| typeof toolbarButtonsName.historyBack
+	| typeof toolbarButtonsName.historyForward
 	| typeof toolbarButtonsName.indentation
 	| typeof toolbarButtonsName.italic
 	| typeof toolbarButtonsName.letterSpacing
@@ -73,8 +73,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
-			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
-			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
 			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
 			[toolbarButtonsName.symbols]: SymbolsToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:

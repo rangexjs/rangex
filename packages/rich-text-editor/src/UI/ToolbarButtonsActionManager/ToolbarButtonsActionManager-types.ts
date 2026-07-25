@@ -12,19 +12,6 @@ interface GetButtonType<Type extends ToolbarButtonValue> {
 	type: Type;
 }
 
-// HistoryNavigation
-export interface HistoryNavigationActionState {
-	type: "history-back" | "history-forward";
-}
-
-export interface OnHistoryNavigationParams
-	extends HistoryNavigationActionState {}
-
-export type OnHistoryNavigationFn = (params: OnHistoryNavigationParams) => void;
-
-export interface EmitHistoryNavigationChangeParams
-	extends HistoryNavigationActionState {}
-
 // NodeInsertion
 export interface AnchorActionState
 	extends GetButtonType<typeof toolbarButtonsName.anchor> {}
@@ -93,7 +80,6 @@ export type EmitNonCategorizedOperationChangeParams =
 	NonCategorizedOperationActionState;
 
 export type ActionListenerMap = {
-	[toolbarButtonActionsName.historyNavigation]: OnHistoryNavigationFn;
 	[toolbarButtonActionsName.nodeInsertion]: OnNodeInsertionFn;
 	[toolbarButtonActionsName.nonCategorizedOperation]: OnNonCategorizedOperationFn;
 };

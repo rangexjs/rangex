@@ -31,8 +31,6 @@ export type {
 	FontSizeToolbarButtonState,
 	FontSizeValue,
 	FontSizeValues,
-	HistoryBackToolbarButtonState,
-	HistoryForwardToolbarButtonState,
 	IndentationToolbarButtonState,
 	IndentationValue,
 	IndentationValues,
@@ -65,15 +63,12 @@ export type {
 	UnderlineToolbarButtonState,
 } from "./ToolbarButtonProps";
 export type {
-	HistoryNavigationActionState,
 	NodeInsertionActionState,
 	NonCategorizedOperationActionState,
 } from "./ToolbarButtonsActionManager";
 export type {
-	HistoryNavigationButtonsState,
 	NodeInsertionButtonsState,
 	NonCategorizedOperationButtonsState,
-	UpdateHistoryNavigationButtonsStateParams,
 	UpdateNodeInsertionButtonsStateParams,
 	UpdateNonCategorizedOperationButtonsStateParams,
 } from "./ToolbarButtonsStateManager";

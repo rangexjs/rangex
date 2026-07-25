@@ -5,7 +5,6 @@ import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManage
 import type { CustomComponentName } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
-	HistoryNavigationButtonsStateManager,
 	NodeInsertionButtonsStateManager,
 	NonCategorizedOperationButtonsStateManager,
 } from "../../ToolbarButtonsStateManager";
@@ -29,7 +28,6 @@ export interface MenuBarManagers {
 
 export interface ToolbarButtonManagers {
 	toolbarButtonsActionManager: ToolbarButtonsActionManager;
-	historyNavigationButtonsStateManager: HistoryNavigationButtonsStateManager;
 	nodeInsertionButtonsStateManager: NodeInsertionButtonsStateManager;
 	nonCategorizedOperationButtonsStateManager: NonCategorizedOperationButtonsStateManager;
 }
@@ -80,8 +78,6 @@ export const App = (props: AppProps) => {
 
 	const toolbarButtonManagersContextValue: ToolbarButtonManagers = {
 		toolbarButtonsActionManager: props.toolbarButtonsActionManager,
-		historyNavigationButtonsStateManager:
-			props.historyNavigationButtonsStateManager,
 		nodeInsertionButtonsStateManager: props.nodeInsertionButtonsStateManager,
 		nonCategorizedOperationButtonsStateManager:
 			props.nonCategorizedOperationButtonsStateManager,

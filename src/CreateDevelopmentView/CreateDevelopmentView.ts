@@ -14,6 +14,7 @@ import {
 	Table,
 	TemplateVariable,
 	TodoList,
+	UndoRedo,
 	Video,
 } from "@rangex/rich-text-editor";
 import storedSnapshot from "../MockDatabase/Demo.json";
@@ -55,6 +56,7 @@ export const createDevelopmentView = () => {
 			Emoji(),
 			TemplateVariable(),
 			Table(),
+			UndoRedo(),
 		],
 	});
 
@@ -77,6 +79,7 @@ export const createDevelopmentView = () => {
 			Emoji(),
 			TemplateVariable(),
 			Table(),
+			UndoRedo(),
 		],
 	});
 

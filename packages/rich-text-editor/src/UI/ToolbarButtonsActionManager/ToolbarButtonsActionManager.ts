@@ -1,25 +1,18 @@
 import { toolbarButtonActionsName } from "../Constants";
 import type {
 	ActionListenerOption,
-	EmitHistoryNavigationChangeParams,
 	EmitNodeInsertionChangeParams,
 	EmitNonCategorizedOperationChangeParams,
-	OnHistoryNavigationFn,
 	OnNodeInsertionFn,
 	OnNonCategorizedOperationFn,
 	UpdateActionListenerParams,
 } from "./ToolbarButtonsActionManager-types";
 
 export class ToolbarButtonsActionManager {
-	#historyNavigationListeners: Set<OnHistoryNavigationFn> = new Set();
 	#nodeInsertion: Set<OnNodeInsertionFn> = new Set();
 	#nonCategorizedOperation: Set<OnNonCategorizedOperationFn> = new Set();
 
 	#updateListener({ type, callback, operation }: UpdateActionListenerParams) {
-		if (type === toolbarButtonActionsName.historyNavigation) {
-			this.#historyNavigationListeners[operation](callback);
-		}
-
 		if (type === toolbarButtonActionsName.nodeInsertion) {
 			this.#nodeInsertion[operation](callback);
 		}
@@ -35,12 +28,6 @@ export class ToolbarButtonsActionManager {
 
 	unsubscribe(params: ActionListenerOption) {
 		this.#updateListener({ ...params, operation: "delete" });
-	}
-
-	emitHistoryNavigationChange(params: EmitHistoryNavigationChangeParams) {
-		for (const listener of this.#historyNavigationListeners) {
-			listener(params);
-		}
 	}
 
 	emitNodeInsertionChange(params: EmitNodeInsertionChangeParams) {

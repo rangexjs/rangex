@@ -1,9 +1,4 @@
 export {
-	type HistoryNavigationButtonsState,
-	HistoryNavigationButtonsStateManager,
-	type UpdateHistoryNavigationButtonsStateParams,
-} from "./HistoryNavigationButtonsStateManager";
-export {
 	type NodeInsertionButtonsState,
 	NodeInsertionButtonsStateManager,
 	type UpdateNodeInsertionButtonsStateParams,

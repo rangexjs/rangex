@@ -15,6 +15,7 @@ import type {
 	Table,
 	TemplateVariable,
 	TodoList,
+	UndoRedo,
 	Video,
 } from "../../Extensions";
 
@@ -33,6 +34,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Table>
 	| ReturnType<typeof TemplateVariable>
 	| ReturnType<typeof TodoList>
+	| ReturnType<typeof UndoRedo>
 	| ReturnType<typeof Video>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union

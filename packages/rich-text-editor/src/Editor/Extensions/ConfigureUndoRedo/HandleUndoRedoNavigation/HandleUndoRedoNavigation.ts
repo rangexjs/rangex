@@ -1,12 +1,12 @@
-import type { HandleHistoryNavigationParams } from "./HandleHistoryNavigation-types";
+import type { HandleUndoRedoNavigationParams } from "./HandleUndoRedoNavigation-types";
 
-export const handleHistoryNavigation = ({
-	richTextEditorUI,
+export const handleUndoRedoNavigation = ({
+	editorPort,
 	editorAPI,
-}: HandleHistoryNavigationParams) => {
+}: HandleUndoRedoNavigationParams) => {
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = richTextEditorUI.onHistoryNavigation(({ type }) => {
+	const unsubscribe = editorPort.onNavigate(({ type }) => {
 		if (type === "history-back") {
 			snapshotTimeline.stepBack();
 		}

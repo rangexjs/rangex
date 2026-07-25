@@ -13,4 +13,5 @@ export * from "./MentionAdapter";
 export * from "./TableAdapter";
 export * from "./TemplateVariableAdapter";
 export * from "./TodoListAdapter";
+export * from "./UndoRedoAdapter";
 export * from "./VideoAdapter";

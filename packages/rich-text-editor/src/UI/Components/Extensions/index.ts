@@ -13,4 +13,5 @@ export * from "./Mention";
 export * from "./Table";
 export * from "./TemplateVariable";
 export * from "./TodoList";
+export * from "./UndoRedo";
 export * from "./Video";

@@ -11,16 +11,13 @@ import {
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
 import {
-	type OnHistoryNavigationFn,
 	type OnNodeInsertionFn,
 	type OnNonCategorizedOperationFn,
 	ToolbarButtonsActionManager,
 } from "../ToolbarButtonsActionManager";
 import {
-	HistoryNavigationButtonsStateManager,
 	NodeInsertionButtonsStateManager,
 	NonCategorizedOperationButtonsStateManager,
-	type UpdateHistoryNavigationButtonsStateParams,
 	type UpdateNodeInsertionButtonsStateParams,
 	type UpdateNonCategorizedOperationButtonsStateParams,
 } from "../ToolbarButtonsStateManager";
@@ -35,8 +32,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
 	#toolbarButtonsActionManager = new ToolbarButtonsActionManager();
-	#historyNavigationButtonsStateManager =
-		new HistoryNavigationButtonsStateManager();
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
@@ -83,9 +78,6 @@ export class RichTextEditorUI extends HTMLElement {
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
 					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}
-					historyNavigationButtonsStateManager={
-						this.#historyNavigationButtonsStateManager
-					}
 					nodeInsertionButtonsStateManager={
 						this.#nodeInsertionButtonsStateManager
 					}
@@ -113,12 +105,6 @@ export class RichTextEditorUI extends HTMLElement {
 		};
 	}
 
-	updateHistoryNavigationButtonState(
-		state: UpdateHistoryNavigationButtonsStateParams,
-	) {
-		this.#historyNavigationButtonsStateManager.updateState(state);
-	}
-
 	updateNodeInsertionButtonState(state: UpdateNodeInsertionButtonsStateParams) {
 		this.#nodeInsertionButtonsStateManager.updateState(state);
 	}
@@ -127,20 +113,6 @@ export class RichTextEditorUI extends HTMLElement {
 		state: UpdateNonCategorizedOperationButtonsStateParams,
 	) {
 		this.#nonCategorizedOperationButtonsStateManager.updateState(state);
-	}
-
-	onHistoryNavigation(callback: OnHistoryNavigationFn) {
-		this.#toolbarButtonsActionManager.subscribe({
-			type: toolbarButtonActionsName.historyNavigation,
-			callback,
-		});
-
-		return () => {
-			this.#toolbarButtonsActionManager.unsubscribe({
-				type: toolbarButtonActionsName.historyNavigation,
-				callback,
-			});
-		};
 	}
 
 	onNodeInsertion(callback: OnNodeInsertionFn) {
