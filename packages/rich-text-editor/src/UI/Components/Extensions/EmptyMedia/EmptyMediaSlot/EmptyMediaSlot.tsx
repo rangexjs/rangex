@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
-import type { EmptyMediaUIPort, UploadState } from "#adapters";
+import type { MediaResolveDetail, UploadState } from "#adapters";
 import type { MediaType } from "#ports";
 import {
 	ContentSwitch,
@@ -146,15 +146,6 @@ const getMediaTabControls = (
  * decides when it's "done": `uploadState` is read from `uiPort` and kept live via
  * subscription, and every capture just forwards through `uiPort.emitResolve` — the Editor
  * side owns uploading and resolution.
- *
- * Still slot-assigned directly into the editor's DOM tree (via `DetachedContext.assign(...)`
- * in `WatchEmptyMedia`), even though it no longer lives under the old `NodeSlots/` folder — so
- * every `stopPropagation()` call below still matters. See that folder's (now-deleted)
- * `CLAUDE.md`: focus-driven events (`keydown`, `beforeinput`, `paste`, `copy`, `cut`) are
- * stopped unconditionally, since they can only originate from something focused inside this
- * component's own subtree; drag events stay conditional on `dataTransfer.types.includes("Files")`,
- * since the editor's own internal drag-to-reorder can legitimately pass over or land on this
- * component's screen area and still needs to reach the editor.
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const supportedMediaTypes = props.uiPort.supportedMediaTypes;
@@ -178,9 +169,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		});
 	});
 
-	const onResolve = (
-		detail: Parameters<EmptyMediaUIPort["emitResolve"]>[0]["detail"],
-	) => {
+	const onResolve = (detail: MediaResolveDetail) => {
 		props.uiPort.emitResolve({ element: props.element, detail });
 	};
 
