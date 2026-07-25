@@ -166,7 +166,7 @@ export const VideoSwapPopover = (props: VideoSwapPopoverProps) => {
 					props.popoverRef?.(el);
 				}}
 				id={popoverId}
-				popover="auto"
+				popover="manual"
 				class="w-64 rounded-lg border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-700 dark:bg-neutral-900"
 				on:toggle={onToggle}
 			>
@@ -235,7 +235,15 @@ export const VideoSwapPopover = (props: VideoSwapPopoverProps) => {
 					</span>
 				</div>
 
-				<div class="text-right">
+				<div class="flex justify-end gap-2">
+					<button
+						type="button"
+						commandfor={popoverId}
+						command="hide-popover"
+						class="btn-neutral-solid rounded-sm px-4 py-1 font-semibold text-sm"
+					>
+						Cancel
+					</button>
 					<button
 						ref={updateButtonRef}
 						type="button"
