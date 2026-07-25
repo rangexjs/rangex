@@ -1,5 +1,9 @@
+export const audioId = "audio" as const;
 export const blockQuoteId = "block-quote" as const;
 export const codeBlockId = "code-block" as const;
+export const embedId = "embed" as const;
+export const emptyMediaId = "empty-media" as const;
+export const imageId = "image" as const;
 export const linkId = "link" as const;
 export const listId = "list" as const;
 export const mentionId = "mention" as const;
@@ -8,3 +12,4 @@ export const tableId = "table" as const;
 export const templateVariableId = "template-variable" as const;
 export const templateVariableRootId = "template-variable-root" as const;
 export const todoCheckboxId = "todo-checkbox" as const;
+export const videoId = "video" as const;
