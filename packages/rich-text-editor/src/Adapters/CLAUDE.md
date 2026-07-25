@@ -30,6 +30,21 @@ The adapter class uses this internally to mutate its private fields and notify t
 
 The Editor side should reach state changes through a semantically-named method on `editorPort` wherever one exists — either adapter-specific, or composed in from a shared `_Shared/` fragment the same way `LinkEditorPort extends UnwrapPort` already does (`BlockAlignPort`'s `setAlign(align)` is the same idea — currently composed into the old per-feature Ports, and a candidate for the same treatment once an aligned feature migrates to an Adapter). Calling `updateState` directly — the way every current call site does today (`HandleLinkClick`, `HandleToolbarLinkClick`, `HandlePopoverAppearance`, `LoadMentionItems`, ...) — is the fallback for state that has no semantic method. Both `LinkEditorPort.updateState` and `MentionEditorPort.updateState` are exposed this way only because neither adapter has needed one yet, not because a direct `updateState` call is the intended end state.
 
+## `XxxAdapter-types.ts` file order
+
+Types are laid out in the order their consumer reads them, UI-first (see note below), not alphabetically or by when they were written. Reference `ImageAdapter-types.ts`:
+
+1. `CreateAdapterConstructor<Settings>` params (plus the `Settings` interface, if any).
+2. Plain value/union types used by state slices (`ImageObjectFitValue`, `ImageSwapCheckState`, ...).
+3. The aggregate `XxxState` interface (all slices optional) and `UpdateXxxStateParams extends XxxState`.
+4. Emit-param types that appear directly in a `uiPort` method signature (e.g. `ImageEmitSwapParams`, used by `emitSwap(params: ImageEmitSwapParams)`) — these stay early, grouped with the other UI-facing types, since `uiPort` needs them.
+5. `UpdateXxxFn` types — one per state slice, the UI-side push signatures used by `onXxxUpdate`.
+6. Any UI-only nested sub-port interface (`ImageUISwapPopover`).
+7. `XxxUIPort` itself.
+8. Any Editor-only nested sub-port interface (`ImageEditorSwapPopover`) and Editor-only param types (`ImageAttrChange`).
+9. `OnXxxFn` types — the Editor-side listener registrations (`OnImageAttrChangeFn`, `OnImageSwapFn`). These go **here**, right before `XxxEditorPort`, never grouped with the step-5 `UpdateXxxFn` block even though both are "just function types" — a `UpdateXxxFn` is UI-facing (Adapter → UI push), an `OnXxxFn` is Editor-facing (UI → Editor event), and each belongs next to the port that actually consumes it.
+10. `XxxEditorPort` itself.
+
 ## `uiPort` / `editorPort`
 
 `get uiPort()` and `get editorPort()` each build one object literal for their consumer — `uiPort` carries the getters, `onXxxUpdate` per state slice, and every `emitXxx`; `editorPort` carries `updateState` and every `onXxx` registration — and memoize it in a private field (`this.#uiPort ??= { ... }`) so repeated access returns the same object rather than rebuilding it.

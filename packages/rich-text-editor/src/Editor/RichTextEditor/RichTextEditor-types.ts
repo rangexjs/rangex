@@ -2,6 +2,7 @@ import type { StoredSnapshot } from "rich-text-area";
 import type { ConfigureExtensionFn, ToolbarButtons } from "#ports";
 import type {
 	Audio,
+	CodeBlock,
 	Embed,
 	EmptyMedia,
 	Formatting,
@@ -13,6 +14,7 @@ import type {
 
 export type ExtensionUnion =
 	| ReturnType<typeof Audio>
+	| ReturnType<typeof CodeBlock>
 	| ReturnType<typeof Embed>
 	| ReturnType<typeof EmptyMedia>
 	| ReturnType<typeof Formatting>

@@ -1,4 +1,3 @@
-export * from "./CodeBlockPopover";
 export * from "./EmojiPopover";
 export * from "./TableQuickActionsPopover";
 export * from "./TemplateVariablePopover";

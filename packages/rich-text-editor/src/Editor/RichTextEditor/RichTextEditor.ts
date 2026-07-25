@@ -1,17 +1,13 @@
 import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import {
-	codeBlockLanguages,
-	codeBlockThemes,
 	customComponentNames,
 	toolbarButtons as defaultToolbarButtons,
 	fontFamilyOptions,
 } from "../_Utilities";
 import { createBlockComponentPlacement } from "../BlockComponentPlacement";
-import { createBlockPopoverAppearanceHandler } from "../BlockPopoverAppearanceHandler";
 import {
 	configureBlockQuote,
-	configureCodeBlock,
 	configureEmoji,
 	configureList,
 	configureTable,
@@ -74,8 +70,6 @@ export class RichTextEditor extends HTMLElement {
 			extensions: uiExtensions,
 			overlayHost,
 			options: {
-				codeBlockLanguages,
-				codeBlockThemes,
 				customComponentNames,
 				fontFamilyOptions,
 			},
@@ -94,11 +88,6 @@ export class RichTextEditor extends HTMLElement {
 		const blockComponentPlacement = createBlockComponentPlacement({
 			editorAPI,
 		});
-		const blockPopoverAppearanceHandler = createBlockPopoverAppearanceHandler({
-			editorAPI,
-		});
-
-		this.#cleanups.add(blockPopoverAppearanceHandler.cleanup);
 
 		configureCustomStyles({ editorAPI });
 
@@ -134,13 +123,6 @@ export class RichTextEditor extends HTMLElement {
 			editorAPI,
 			blockComponentPlacement,
 		});
-		const codeBlockCleanup = configureCodeBlock({
-			codeBlockPort: this.#richTextEditorUI.codeBlockPopover,
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-			blockComponentPlacement,
-			blockPopoverAppearanceHandler,
-		});
 		const listCleanup = configureList({
 			richTextEditorUI: this.#richTextEditorUI,
 			editorAPI,
@@ -158,7 +140,6 @@ export class RichTextEditor extends HTMLElement {
 		});
 
 		this.#cleanups.add(blockQuoteCleanup);
-		this.#cleanups.add(codeBlockCleanup);
 		this.#cleanups.add(listCleanup);
 		this.#cleanups.add(todoListCleanup);
 		this.#cleanups.add(tableCleanup);

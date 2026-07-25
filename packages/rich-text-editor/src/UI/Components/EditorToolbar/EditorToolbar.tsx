@@ -11,7 +11,6 @@ import {
 import {
 	BlockQuoteToolbarButton,
 	CheckboxListToolbarButton,
-	CodeBlockToolbarButton,
 	CustomComponentToolbarButton,
 	FindReplaceToolbarButton,
 	HistoryBackToolbarButton,
@@ -31,6 +30,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.backgroundColor
 	| typeof toolbarButtonsName.bold
 	| typeof toolbarButtonsName.code
+	| typeof toolbarButtonsName.codeBlock
 	| typeof toolbarButtonsName.color
 	| typeof toolbarButtonsName.fontFamily
 	| typeof toolbarButtonsName.fontSize
@@ -74,7 +74,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 		{
 			[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
 			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
-			[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
 			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,

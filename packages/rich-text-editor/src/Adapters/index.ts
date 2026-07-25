@@ -1,5 +1,6 @@
 export * from "./_Utilities";
 export * from "./AudioAdapter";
+export * from "./CodeBlockAdapter";
 export * from "./EmbedAdapter";
 export * from "./EmptyMediaAdapter";
 export * from "./FormattingAdapter";

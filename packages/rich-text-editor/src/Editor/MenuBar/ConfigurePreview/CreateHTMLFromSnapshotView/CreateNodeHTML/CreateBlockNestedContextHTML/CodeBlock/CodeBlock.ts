@@ -2,7 +2,7 @@ import { contentLineRoleSelector } from "rich-text-area";
 import {
 	codeBlockStorageFallbacks,
 	ensureCodeBlockStorage,
-} from "../../../../../../Components";
+} from "../../../../../../Extensions/ConfigureCodeBlock/CodeBlockStorage";
 import { syntaxHighlighter } from "../../../../../../Libs";
 import type {
 	ApplyTokenSpansParams,

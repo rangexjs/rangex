@@ -1,4 +1,4 @@
-import type { CodeBlockLanguage, TemplateVariableKind } from "#ports";
+import type { TemplateVariableKind } from "#ports";
 import type {
 	ToolbarButtonValue,
 	toolbarButtonActionsName,
@@ -36,11 +36,6 @@ export interface BlockQuoteActionState
 
 export interface CheckboxListActionState
 	extends GetButtonType<typeof toolbarButtonsName.checkboxList> {}
-
-export interface CodeBlockActionState
-	extends GetButtonType<typeof toolbarButtonsName.codeBlock> {
-	language: CodeBlockLanguage;
-}
 
 export interface CustomComponentActionState
 	extends GetButtonType<typeof toolbarButtonsName.customComponent> {
@@ -86,7 +81,6 @@ export type NodeInsertionActionState =
 	| AnchorActionState
 	| BlockQuoteActionState
 	| CheckboxListActionState
-	| CodeBlockActionState
 	| CustomComponentActionState
 	| MediaActionState
 	| OrderedListActionState

@@ -1,5 +1,6 @@
 import {
 	Audio,
+	CodeBlock,
 	Embed,
 	EmptyMedia,
 	Formatting,
@@ -41,6 +42,7 @@ export const createDevelopmentView = () => {
 			Video(),
 			Audio(),
 			Embed(),
+			CodeBlock(),
 		],
 	});
 
@@ -56,6 +58,7 @@ export const createDevelopmentView = () => {
 			Video(),
 			Audio(),
 			Embed(),
+			CodeBlock(),
 		],
 	});
 

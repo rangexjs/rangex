@@ -14,11 +14,6 @@ export interface CheckboxListToolbarButtonState {
 	disabled: boolean;
 }
 
-// CodeBlock
-export interface CodeBlockToolbarButtonState {
-	disabled: boolean;
-}
-
 // CustomComponent
 export type CustomComponentName = string;
 

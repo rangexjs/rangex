@@ -1,7 +1,4 @@
 export type {
-	CodeBlockLanguage,
-	CodeBlockPopoverState,
-	CodeBlockTheme,
 	EmojiPopoverState,
 	TableQuickActionsPopoverState,
 	TemplateVariablePopoverState,
@@ -26,7 +23,6 @@ export type {
 	BlockQuoteToolbarButtonState,
 	BoldToolbarButtonState,
 	CheckboxListToolbarButtonState,
-	CodeBlockToolbarButtonState,
 	CodeToolbarButtonState,
 	ColorToolbarButtonState,
 	ColorValue,

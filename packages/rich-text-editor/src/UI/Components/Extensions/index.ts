@@ -1,5 +1,6 @@
 export * from "./_Utilities";
 export * from "./Audio";
+export * from "./CodeBlock";
 export * from "./Embed";
 export * from "./EmptyMedia";
 export * from "./Formatting";

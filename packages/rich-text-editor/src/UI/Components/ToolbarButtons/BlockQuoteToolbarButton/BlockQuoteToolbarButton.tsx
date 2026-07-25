@@ -8,12 +8,12 @@ export const BlockQuoteToolbarButton = () => {
 	const { toolbarButtonsActionManager, nodeInsertionButtonsStateManager } =
 		useToolbarButtonManagersContext();
 
-	const { codeBlock } = nodeInsertionButtonsStateManager;
+	const { blockQuote } = nodeInsertionButtonsStateManager;
 
-	const [disabled, setDisabled] = createSignal(codeBlock.disabled);
+	const [disabled, setDisabled] = createSignal(blockQuote.disabled);
 
 	nodeInsertionButtonsStateManager.subscribe({
-		type: toolbarButtonsName.codeBlock,
+		type: toolbarButtonsName.blockQuote,
 		callback: (state) => {
 			setDisabled(state.disabled);
 		},

@@ -3,7 +3,6 @@ import type {
 	AnchorToolbarButtonState,
 	BlockQuoteToolbarButtonState,
 	CheckboxListToolbarButtonState,
-	CodeBlockToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
 	OrderedListToolbarButtonState,
@@ -32,14 +31,6 @@ export interface UpdateBlockQuoteStateParams
 
 export type UpdateBlockQuoteStateFn = (
 	params: UpdateBlockQuoteStateParams,
-) => void;
-
-// CodeBlock
-export interface UpdateCodeBlockStateParams
-	extends CodeBlockToolbarButtonState {}
-
-export type UpdateCodeBlockStateFn = (
-	params: UpdateCodeBlockStateParams,
 ) => void;
 
 // CustomComponent
@@ -93,7 +84,6 @@ export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
 	blockQuote: Partial<BlockQuoteToolbarButtonState>;
 	checkboxList: Partial<CheckboxListToolbarButtonState>;
-	codeBlock: Partial<CodeBlockToolbarButtonState>;
 	customComponent: Partial<CustomComponentToolbarButtonState>;
 	media: Partial<MediaToolbarButtonState>;
 	symbols: Partial<SymbolsToolbarButtonState>;
@@ -109,7 +99,6 @@ export type ListenerMap = {
 	[toolbarButtonsName.anchor]: UpdateAnchorStateFn;
 	[toolbarButtonsName.blockQuote]: UpdateBlockQuoteStateFn;
 	[toolbarButtonsName.checkboxList]: UpdateCheckboxListStateFn;
-	[toolbarButtonsName.codeBlock]: UpdateCodeBlockStateFn;
 	[toolbarButtonsName.customComponent]: UpdateCustomComponentStateFn;
 	[toolbarButtonsName.media]: UpdateMediaStateFn;
 	[toolbarButtonsName.symbols]: UpdateSymbolsStateFn;

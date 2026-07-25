@@ -4,7 +4,6 @@ import type {
 	AnchorToolbarButtonState,
 	BlockQuoteToolbarButtonState,
 	CheckboxListToolbarButtonState,
-	CodeBlockToolbarButtonState,
 	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
 	OrderedListToolbarButtonState,
@@ -19,7 +18,6 @@ import type {
 	UpdateAnchorStateFn,
 	UpdateBlockQuoteStateFn,
 	UpdateCheckboxListStateFn,
-	UpdateCodeBlockStateFn,
 	UpdateCustomComponentStateFn,
 	UpdateListenerParams,
 	UpdateMediaStateFn,
@@ -35,7 +33,6 @@ export class NodeInsertionButtonsStateManager {
 	#anchor: AnchorToolbarButtonState = { disabled: true, checked: false };
 	#blockQuote: BlockQuoteToolbarButtonState = { disabled: true };
 	#checkboxList: CheckboxListToolbarButtonState = { disabled: true };
-	#codeBlock: CodeBlockToolbarButtonState = { disabled: true };
 	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
 	#orderedList: OrderedListToolbarButtonState = { disabled: true };
@@ -50,7 +47,6 @@ export class NodeInsertionButtonsStateManager {
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
 	#blockQuoteListeners: Set<UpdateBlockQuoteStateFn> = new Set();
 	#checkboxListListeners: Set<UpdateCheckboxListStateFn> = new Set();
-	#codeBlockListeners: Set<UpdateCodeBlockStateFn> = new Set();
 	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
 	#orderedListListeners: Set<UpdateOrderedListStateFn> = new Set();
@@ -70,10 +66,6 @@ export class NodeInsertionButtonsStateManager {
 
 	get checkboxList() {
 		return this.#checkboxList;
-	}
-
-	get codeBlock() {
-		return this.#codeBlock;
 	}
 
 	get customComponent() {
@@ -117,11 +109,6 @@ export class NodeInsertionButtonsStateManager {
 
 		if (type === toolbarButtonsName.checkboxList) {
 			this.#checkboxListListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.codeBlock) {
-			this.#codeBlockListeners[operation](callback);
 			return;
 		}
 
@@ -180,7 +167,6 @@ export class NodeInsertionButtonsStateManager {
 		anchor,
 		blockQuote,
 		checkboxList,
-		codeBlock,
 		customComponent,
 		media,
 		orderedList,
@@ -210,14 +196,6 @@ export class NodeInsertionButtonsStateManager {
 
 			for (const listener of this.#checkboxListListeners) {
 				listener(this.#checkboxList);
-			}
-		}
-
-		if (codeBlock) {
-			this.#codeBlock = { ...this.#codeBlock, ...codeBlock };
-
-			for (const listener of this.#codeBlockListeners) {
-				listener(this.#codeBlock);
 			}
 		}
 

@@ -1,18 +1,10 @@
-import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
-	OverlayHost,
-	ToolbarButtons,
-	UIExtension,
-} from "#ports";
+import type { OverlayHost, ToolbarButtons, UIExtension } from "#ports";
 import type {
 	CustomComponentName,
 	FontFamilyOption,
 } from "../ToolbarButtonProps";
 
 export interface RichTextEditorUIOptions {
-	codeBlockLanguages?: CodeBlockLanguage[];
-	codeBlockThemes?: CodeBlockTheme[];
 	customComponentNames?: CustomComponentName[];
 	fontFamilyOptions?: FontFamilyOption[];
 }

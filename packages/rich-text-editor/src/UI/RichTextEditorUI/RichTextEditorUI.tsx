@@ -11,7 +11,6 @@ import {
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
 import {
-	CodeBlockPopoverController,
 	EmojiPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
@@ -46,7 +45,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 	#nonCategorizedOperationButtonsStateManager =
 		new NonCategorizedOperationButtonsStateManager();
-	#codeBlockPopoverController = new CodeBlockPopoverController();
 	#emojiPopoverController = new EmojiPopoverController();
 	#tableQuickActionsPopoverController =
 		new TableQuickActionsPopoverController();
@@ -61,12 +59,7 @@ export class RichTextEditorUI extends HTMLElement {
 	}: RichTextEditorUIConstructorParams) {
 		super();
 
-		const {
-			codeBlockLanguages = [],
-			codeBlockThemes = [],
-			customComponentNames = [],
-			fontFamilyOptions = [],
-		} = options;
+		const { customComponentNames = [], fontFamilyOptions = [] } = options;
 
 		const style = document.createElement("style");
 		style.textContent = inlineTailwind;
@@ -94,8 +87,6 @@ export class RichTextEditorUI extends HTMLElement {
 					richTextArea={this.#richTextArea}
 					extensions={this.#extensions}
 					options={{
-						codeBlockLanguages,
-						codeBlockThemes,
 						customComponentNames,
 						fontFamilyOptions,
 					}}
@@ -111,7 +102,6 @@ export class RichTextEditorUI extends HTMLElement {
 					nonCategorizedOperationButtonsStateManager={
 						this.#nonCategorizedOperationButtonsStateManager
 					}
-					codeBlockPopoverController={this.#codeBlockPopoverController}
 					emojiPopoverController={this.#emojiPopoverController}
 					tableQuickActionsPopoverController={
 						this.#tableQuickActionsPopoverController
@@ -196,10 +186,6 @@ export class RichTextEditorUI extends HTMLElement {
 				callback,
 			});
 		};
-	}
-
-	get codeBlockPopover() {
-		return this.#codeBlockPopoverController.publicAPI;
 	}
 
 	get emojiPopover() {

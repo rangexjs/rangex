@@ -1,14 +1,8 @@
 import { useContext } from "solid-js";
-import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
-	ToolbarButtons,
-	UIExtension,
-} from "#ports";
+import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type {
-	CodeBlockPopoverController,
 	EmojiPopoverController,
 	TableQuickActionsPopoverController,
 	TemplateVariablePopoverController,
@@ -27,7 +21,6 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
-	CodeBlockPopover,
 	EmojiPopover,
 	TableQuickActionsPopover,
 	TemplateVariablePopover,
@@ -40,8 +33,6 @@ import {
 } from "./Context";
 
 export interface EditorOptions {
-	codeBlockLanguages: CodeBlockLanguage[];
-	codeBlockThemes: CodeBlockTheme[];
 	customComponentNames: CustomComponentName[];
 	fontFamilyOptions: FontFamilyOption[];
 }
@@ -59,7 +50,6 @@ export interface ToolbarButtonManagers {
 }
 
 export interface PopoverControllers {
-	codeBlockPopoverController: CodeBlockPopoverController;
 	emojiPopoverController: EmojiPopoverController;
 	tableQuickActionsPopoverController: TableQuickActionsPopoverController;
 	templateVariablePopoverController: TemplateVariablePopoverController;
@@ -132,7 +122,6 @@ export const App = (props: AppProps) => {
 	};
 
 	const popoverControllersContextValue: PopoverControllers = {
-		codeBlockPopoverController: props.codeBlockPopoverController,
 		emojiPopoverController: props.emojiPopoverController,
 		tableQuickActionsPopoverController:
 			props.tableQuickActionsPopoverController,
@@ -164,7 +153,6 @@ export const App = (props: AppProps) => {
 						<PopoverControllersContext.Provider
 							value={popoverControllersContextValue}
 						>
-							<CodeBlockPopover />
 							<EmojiPopover />
 							<TableQuickActionsPopover />
 							<TemplateVariablePopover />

@@ -1,6 +1,5 @@
 export * from "./BlockQuoteToolbarButton";
 export * from "./CheckboxListToolbarButton";
-export * from "./CodeBlockToolbarButton";
 export * from "./CustomComponentToolbarButton";
 export * from "./FindReplaceToolbarButton";
 export * from "./HistoryBackToolbarButton";

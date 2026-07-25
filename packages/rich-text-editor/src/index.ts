@@ -1,5 +1,6 @@
 export { RichTextEditor } from "./Editor/RichTextEditor";
 export { Audio } from "./Extensions/Audio";
+export { CodeBlock } from "./Extensions/CodeBlock";
 export { Embed } from "./Extensions/Embed";
 export { EmptyMedia } from "./Extensions/EmptyMedia";
 export { Formatting } from "./Extensions/Formatting";
