@@ -9,7 +9,6 @@ export type {
 } from "./MenuBarButtonsStateManager";
 export { RichTextEditorUI } from "./RichTextEditorUI";
 export type {
-	AnchorToolbarButtonState,
 	BackgroundColorToolbarButtonState,
 	BackgroundColorValue,
 	BackgroundColorValues,
@@ -41,7 +40,6 @@ export type {
 	LineSpacingToolbarButtonState,
 	LineSpacingValue,
 	LineSpacingValues,
-	MediaToolbarButtonState,
 	StrikethroughToolbarButtonState,
 	StructuredFontSizePx,
 	StructuredIndentationPx,
@@ -54,8 +52,3 @@ export type {
 	ToggleButtonPressed,
 	UnderlineToolbarButtonState,
 } from "./ToolbarButtonProps";
-export type { NodeInsertionActionState } from "./ToolbarButtonsActionManager";
-export type {
-	NodeInsertionButtonsState,
-	UpdateNodeInsertionButtonsStateParams,
-} from "./ToolbarButtonsStateManager";

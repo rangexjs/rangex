@@ -18,16 +18,10 @@ import type {
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
-import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
-import type { NodeInsertionButtonsStateManager } from "../../ToolbarButtonsStateManager";
 import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
-import {
-	MenuBarManagersContext,
-	ToolbarButtonManagersContext,
-	UIPortsContext,
-} from "./Context";
+import { MenuBarManagersContext, UIPortsContext } from "./Context";
 
 export interface UIPortsContextValue {
 	accordionItemUIPort: AccordionItemUIPort | null;
@@ -51,12 +45,7 @@ export interface MenuBarManagers {
 	menuBarButtonsStateManager: MenuBarButtonsStateManager;
 }
 
-export interface ToolbarButtonManagers {
-	toolbarButtonsActionManager: ToolbarButtonsActionManager;
-	nodeInsertionButtonsStateManager: NodeInsertionButtonsStateManager;
-}
-
-export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
+export interface AppProps extends MenuBarManagers {
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
 	uiPorts: UIPortsContextValue;
@@ -66,16 +55,6 @@ export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
 
 export const useMenuBarManagersContext = () => {
 	const value = useContext(MenuBarManagersContext);
-
-	if (!value) {
-		throw new Error("Value can't be undefined.");
-	}
-
-	return value;
-};
-
-export const useToolbarButtonManagersContext = () => {
-	const value = useContext(ToolbarButtonManagersContext);
 
 	if (!value) {
 		throw new Error("Value can't be undefined.");
@@ -100,11 +79,6 @@ export const App = (props: AppProps) => {
 		menuBarButtonsStateManager: props.menuBarButtonsStateManager,
 	};
 
-	const toolbarButtonManagersContextValue: ToolbarButtonManagers = {
-		toolbarButtonsActionManager: props.toolbarButtonsActionManager,
-		nodeInsertionButtonsStateManager: props.nodeInsertionButtonsStateManager,
-	};
-
 	return (
 		<EditorContainer
 			menuBarButtonsStateManager={props.menuBarButtonsStateManager}
@@ -112,16 +86,12 @@ export const App = (props: AppProps) => {
 			<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
 				<MenuBar />
 			</MenuBarManagersContext.Provider>
-			<ToolbarButtonManagersContext.Provider
-				value={toolbarButtonManagersContextValue}
-			>
-				<UIPortsContext.Provider value={props.uiPorts}>
-					<EditorToolbar
-						toolbarButtons={props.toolbarButtons}
-						extensions={props.extensions}
-					/>
-				</UIPortsContext.Provider>
-			</ToolbarButtonManagersContext.Provider>
+			<UIPortsContext.Provider value={props.uiPorts}>
+				<EditorToolbar
+					toolbarButtons={props.toolbarButtons}
+					extensions={props.extensions}
+				/>
+			</UIPortsContext.Provider>
 			<div class="relative max-h-300 overflow-y-auto">
 				<div>{props.richTextArea}</div>
 				<div ref={props.overlayContainerRef} />

@@ -1,6 +1,5 @@
 import { render } from "solid-js/web";
 import { App } from "../Components";
-import { toolbarButtonActionsName } from "../Constants";
 import inlineTailwind from "../global.css?inline";
 import {
 	MenuBarActionManager,
@@ -10,14 +9,6 @@ import {
 	MenuBarButtonsStateManager,
 	type UpdateMenuBarButtonsStateParams,
 } from "../MenuBarButtonsStateManager";
-import {
-	type OnNodeInsertionFn,
-	ToolbarButtonsActionManager,
-} from "../ToolbarButtonsActionManager";
-import {
-	NodeInsertionButtonsStateManager,
-	type UpdateNodeInsertionButtonsStateParams,
-} from "../ToolbarButtonsStateManager";
 import type { RichTextEditorUIConstructorParams } from "./RichTextEditorUI-types";
 
 export class RichTextEditorUI extends HTMLElement {
@@ -29,8 +20,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#dispose;
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
-	#toolbarButtonsActionManager = new ToolbarButtonsActionManager();
-	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
 
 	constructor({
 		toolbarButtons,
@@ -70,10 +59,6 @@ export class RichTextEditorUI extends HTMLElement {
 					uiPorts={this.#uiPorts}
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
-					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}
-					nodeInsertionButtonsStateManager={
-						this.#nodeInsertionButtonsStateManager
-					}
 					overlayContainerRef={(element) =>
 						overlayHost.initialize({ container: element })
 					}
@@ -92,24 +77,6 @@ export class RichTextEditorUI extends HTMLElement {
 
 		return () => {
 			this.#menuBarActionManager.unsubscribe(callback);
-		};
-	}
-
-	updateNodeInsertionButtonState(state: UpdateNodeInsertionButtonsStateParams) {
-		this.#nodeInsertionButtonsStateManager.updateState(state);
-	}
-
-	onNodeInsertion(callback: OnNodeInsertionFn) {
-		this.#toolbarButtonsActionManager.subscribe({
-			type: toolbarButtonActionsName.nodeInsertion,
-			callback,
-		});
-
-		return () => {
-			this.#toolbarButtonsActionManager.unsubscribe({
-				type: toolbarButtonActionsName.nodeInsertion,
-				callback,
-			});
 		};
 	}
 
