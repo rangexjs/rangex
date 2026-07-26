@@ -1,4 +1,3 @@
-export * from "./EditorOptions";
 export * from "./GetCSSText";
 export * from "./IsScopedEditableEmpty";
 export * from "./IsWellFormedUrl";

@@ -1,3 +1,4 @@
+export * from "./AccordionItem";
 export * from "./Audio";
 export * from "./BlockQuote";
 export * from "./CodeBlock";

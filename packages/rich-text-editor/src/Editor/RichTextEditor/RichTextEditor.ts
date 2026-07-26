@@ -1,9 +1,6 @@
 import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
-import {
-	customComponentNames,
-	toolbarButtons as defaultToolbarButtons,
-} from "../_Utilities";
+import { toolbarButtons as defaultToolbarButtons } from "../_Utilities";
 import { configureCustomStyles, configureNonCategorized } from "../Configs";
 import {
 	configurePreview,
@@ -58,9 +55,6 @@ export class RichTextEditor extends HTMLElement {
 			extensions: uiExtensions,
 			uiPorts,
 			overlayHost,
-			options: {
-				customComponentNames,
-			},
 		});
 
 		shadowRoot.append(this.#richTextEditorUI);

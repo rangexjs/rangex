@@ -1,6 +1,7 @@
 import type { StoredSnapshot } from "rich-text-area";
 import type { ConfigureExtensionFn, ToolbarButtons } from "#ports";
 import type {
+	AccordionItem,
 	Audio,
 	BlockQuote,
 	CodeBlock,
@@ -22,6 +23,7 @@ import type {
 } from "../../Extensions";
 
 export type ExtensionUnion =
+	| ReturnType<typeof AccordionItem>
 	| ReturnType<typeof Audio>
 	| ReturnType<typeof BlockQuote>
 	| ReturnType<typeof CodeBlock>

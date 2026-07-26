@@ -1,4 +1,5 @@
 import {
+	AccordionItemAdapter,
 	BlockQuoteAdapter,
 	CodeBlockAdapter,
 	EmptyMediaAdapter,
@@ -25,6 +26,7 @@ export const buildUIPorts = ({
 	adapters,
 }: BuildUIPortsParams): UIPortsContextValue => {
 	const uiPorts: UIPortsContextValue = {
+		accordionItemUIPort: null,
 		linkUIPort: null,
 		undoRedoUIPort: null,
 		symbolsUIPort: null,
@@ -40,6 +42,10 @@ export const buildUIPorts = ({
 	};
 
 	for (const adapter of adapters) {
+		if (adapter instanceof AccordionItemAdapter) {
+			uiPorts.accordionItemUIPort = adapter.uiPort;
+		}
+
 		if (adapter instanceof LinkAdapter) {
 			uiPorts.linkUIPort = adapter.uiPort;
 		}

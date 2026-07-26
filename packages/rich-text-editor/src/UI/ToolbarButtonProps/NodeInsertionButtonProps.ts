@@ -4,13 +4,6 @@ export interface AnchorToolbarButtonState {
 	checked: boolean;
 }
 
-// CustomComponent
-export type CustomComponentName = string;
-
-export interface CustomComponentToolbarButtonState {
-	disabled: boolean;
-}
-
 // Media
 export interface MediaToolbarButtonState {
 	disabled: boolean;

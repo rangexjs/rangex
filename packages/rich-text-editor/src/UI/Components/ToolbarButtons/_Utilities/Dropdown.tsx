@@ -22,7 +22,7 @@ export const Dropdown = (props: DropdownProps) => {
 			id={props.id}
 			popover="auto"
 			on:toggle={props.onToggle}
-			class="mt-1 max-h-[min(100%,360px)] rounded-md border border-neutral-200 bg-white p-1 shadow-sm [scrollbar-width:thin] dark:border-neutral-700 dark:bg-neutral-900"
+			class="scrollbar-thin mt-1 max-h-[min(100%,360px)] rounded-md border border-neutral-200 bg-white p-1 shadow-sm dark:border-neutral-700 dark:bg-neutral-900"
 			classList={{ [props.class ?? ""]: true }}
 			style={props.style}
 		>

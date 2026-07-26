@@ -1,7 +1,7 @@
 import colors from "../Colors.css?inline";
+import accordionItem from "../Components/AccordionItem.css?inline";
 import blockQuote from "../Components/BlockQuote.css?inline";
 import codeBlock from "../Components/CodeBlock.css?inline";
-import collapsible from "../Components/Collapsible.css?inline";
 import embed from "../Components/Embed.css?inline";
 import image from "../Components/Image.css?inline";
 import link from "../Components/Link.css?inline";
@@ -23,9 +23,9 @@ export const getContentStyles = () => {
 		fontStyles +
 		globalContentStyles +
 		contentLine +
+		accordionItem +
 		blockQuote +
 		codeBlock +
-		collapsible +
 		embed +
 		image +
 		link +

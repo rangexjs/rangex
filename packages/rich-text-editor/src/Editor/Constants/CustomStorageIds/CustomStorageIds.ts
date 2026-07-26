@@ -1,3 +1,4 @@
+export const accordionItemId = "accordion-item" as const;
 export const audioId = "audio" as const;
 export const blockQuoteId = "block-quote" as const;
 export const codeBlockId = "code-block" as const;

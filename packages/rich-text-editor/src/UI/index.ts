@@ -7,10 +7,7 @@ export type {
 	MenuBarButtonsState,
 	UpdateMenuBarButtonsStateParams,
 } from "./MenuBarButtonsStateManager";
-export {
-	RichTextEditorUI,
-	type RichTextEditorUIOptions,
-} from "./RichTextEditorUI";
+export { RichTextEditorUI } from "./RichTextEditorUI";
 export type {
 	AnchorToolbarButtonState,
 	BackgroundColorToolbarButtonState,
@@ -22,8 +19,6 @@ export type {
 	ColorValue,
 	ColorValues,
 	CommonToggleButtonProps,
-	CustomComponentName,
-	CustomComponentToolbarButtonState,
 	FontFamilyToolbarButtonState,
 	FontFamilyValue,
 	FontFamilyValues,

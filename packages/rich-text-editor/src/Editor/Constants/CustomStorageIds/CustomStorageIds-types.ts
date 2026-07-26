@@ -1,4 +1,5 @@
 import type {
+	accordionItemId,
 	audioId,
 	blockQuoteId,
 	codeBlockId,
@@ -16,6 +17,7 @@ import type {
 	videoId,
 } from "./CustomStorageIds";
 
+export type AccordionItemId = typeof accordionItemId;
 export type AudioId = typeof audioId;
 export type BlockQuoteId = typeof blockQuoteId;
 export type CodeBlockId = typeof codeBlockId;

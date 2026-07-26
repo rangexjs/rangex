@@ -1,5 +1,6 @@
 import { useContext } from "solid-js";
 import type {
+	AccordionItemUIPort,
 	BlockQuoteUIPort,
 	CodeBlockUIPort,
 	EmptyMediaUIPort,
@@ -16,7 +17,6 @@ import type {
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
-import type { CustomComponentName } from "../../ToolbarButtonProps";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
 import type {
 	NodeInsertionButtonsStateManager,
@@ -26,17 +26,13 @@ import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
 import {
-	EditorOptionsContext,
 	MenuBarManagersContext,
 	ToolbarButtonManagersContext,
 	UIPortsContext,
 } from "./Context";
 
-export interface EditorOptions {
-	customComponentNames: CustomComponentName[];
-}
-
 export interface UIPortsContextValue {
+	accordionItemUIPort: AccordionItemUIPort | null;
 	linkUIPort: LinkUIPort | null;
 	undoRedoUIPort: UndoRedoUIPort | null;
 	symbolsUIPort: SymbolsUIPort | null;
@@ -63,23 +59,12 @@ export interface ToolbarButtonManagers {
 }
 
 export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
-	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
 	uiPorts: UIPortsContextValue;
 	richTextArea: HTMLElement;
 	overlayContainerRef: (element: HTMLDivElement) => void;
 }
-
-export const useEditorOptionsContext = () => {
-	const value = useContext(EditorOptionsContext);
-
-	if (!value) {
-		throw new Error("Value can't be undefined.");
-	}
-
-	return value;
-};
 
 export const useMenuBarManagersContext = () => {
 	const value = useContext(MenuBarManagersContext);
@@ -124,31 +109,27 @@ export const App = (props: AppProps) => {
 			props.nonCategorizedOperationButtonsStateManager,
 	};
 
-	const editorOptionsContextValue: EditorOptions = props.options;
-
 	return (
-		<EditorOptionsContext.Provider value={editorOptionsContextValue}>
-			<EditorContainer
-				menuBarButtonsStateManager={props.menuBarButtonsStateManager}
+		<EditorContainer
+			menuBarButtonsStateManager={props.menuBarButtonsStateManager}
+		>
+			<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
+				<MenuBar />
+			</MenuBarManagersContext.Provider>
+			<ToolbarButtonManagersContext.Provider
+				value={toolbarButtonManagersContextValue}
 			>
-				<MenuBarManagersContext.Provider value={menuBarManagersContextValue}>
-					<MenuBar />
-				</MenuBarManagersContext.Provider>
-				<ToolbarButtonManagersContext.Provider
-					value={toolbarButtonManagersContextValue}
-				>
-					<UIPortsContext.Provider value={props.uiPorts}>
-						<EditorToolbar
-							toolbarButtons={props.toolbarButtons}
-							extensions={props.extensions}
-						/>
-					</UIPortsContext.Provider>
-				</ToolbarButtonManagersContext.Provider>
-				<div class="relative max-h-300 overflow-y-auto">
-					<div>{props.richTextArea}</div>
-					<div ref={props.overlayContainerRef} />
-				</div>
-			</EditorContainer>
-		</EditorOptionsContext.Provider>
+				<UIPortsContext.Provider value={props.uiPorts}>
+					<EditorToolbar
+						toolbarButtons={props.toolbarButtons}
+						extensions={props.extensions}
+					/>
+				</UIPortsContext.Provider>
+			</ToolbarButtonManagersContext.Provider>
+			<div class="relative max-h-300 overflow-y-auto">
+				<div>{props.richTextArea}</div>
+				<div ref={props.overlayContainerRef} />
+			</div>
+		</EditorContainer>
 	);
 };

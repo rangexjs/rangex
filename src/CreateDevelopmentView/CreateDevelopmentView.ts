@@ -1,4 +1,5 @@
 import {
+	AccordionItem,
 	Audio,
 	BlockQuote,
 	CodeBlock,
@@ -61,6 +62,7 @@ export const createDevelopmentView = () => {
 			UndoRedo(),
 			Symbols(),
 			FindReplace(),
+			AccordionItem(),
 		],
 	});
 
@@ -86,6 +88,7 @@ export const createDevelopmentView = () => {
 			UndoRedo(),
 			Symbols(),
 			FindReplace(),
+			AccordionItem(),
 		],
 	});
 

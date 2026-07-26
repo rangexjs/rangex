@@ -2,14 +2,12 @@ import { toolbarButtonsName } from "../../Constants";
 import { assertNever } from "../../ErrorHandling";
 import type {
 	AnchorToolbarButtonState,
-	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
 } from "../../ToolbarButtonProps";
 import type {
 	ListenerOption,
 	StateChangeFn,
 	UpdateAnchorStateFn,
-	UpdateCustomComponentStateFn,
 	UpdateListenerParams,
 	UpdateMediaStateFn,
 	UpdateNodeInsertionButtonsStateParams,
@@ -17,20 +15,14 @@ import type {
 
 export class NodeInsertionButtonsStateManager {
 	#anchor: AnchorToolbarButtonState = { disabled: true, checked: false };
-	#customComponent: CustomComponentToolbarButtonState = { disabled: true };
 	#media: MediaToolbarButtonState = { disabled: true };
 
 	#anchorListeners: Set<UpdateAnchorStateFn> = new Set();
-	#customComponentListeners: Set<UpdateCustomComponentStateFn> = new Set();
 	#mediaListeners: Set<UpdateMediaStateFn> = new Set();
 	#stateChangeListeners: Set<StateChangeFn> = new Set();
 
 	get anchor() {
 		return this.#anchor;
-	}
-
-	get customComponent() {
-		return this.#customComponent;
 	}
 
 	get media() {
@@ -40,11 +32,6 @@ export class NodeInsertionButtonsStateManager {
 	#updateListener({ type, callback, operation }: UpdateListenerParams) {
 		if (type === toolbarButtonsName.anchor) {
 			this.#anchorListeners[operation](callback);
-			return;
-		}
-
-		if (type === toolbarButtonsName.customComponent) {
-			this.#customComponentListeners[operation](callback);
 			return;
 		}
 
@@ -69,24 +56,12 @@ export class NodeInsertionButtonsStateManager {
 		this.#updateListener({ ...params, operation: "delete" });
 	}
 
-	updateState({
-		anchor,
-		customComponent,
-		media,
-	}: UpdateNodeInsertionButtonsStateParams) {
+	updateState({ anchor, media }: UpdateNodeInsertionButtonsStateParams) {
 		if (anchor) {
 			this.#anchor = { ...this.#anchor, ...anchor };
 
 			for (const listener of this.#anchorListeners) {
 				listener(this.#anchor);
-			}
-		}
-
-		if (customComponent) {
-			this.#customComponent = { ...this.#customComponent, ...customComponent };
-
-			for (const listener of this.#customComponentListeners) {
-				listener(this.#customComponent);
 			}
 		}
 

@@ -8,10 +8,7 @@ import {
 	toolbarButtonsName,
 	type UIExtension,
 } from "#ports";
-import {
-	CustomComponentToolbarButton,
-	TextAreaReadabilityToolbarButton,
-} from "../ToolbarButtons";
+import { TextAreaReadabilityToolbarButton } from "../ToolbarButtons";
 
 type StaticToolbarButtonValue = Exclude<
 	ToolbarButtonValue,
@@ -24,6 +21,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.code
 	| typeof toolbarButtonsName.codeBlock
 	| typeof toolbarButtonsName.color
+	| typeof toolbarButtonsName.customComponent
 	| typeof toolbarButtonsName.findReplace
 	| typeof toolbarButtonsName.fontFamily
 	| typeof toolbarButtonsName.fontSize
@@ -72,7 +70,6 @@ interface ToolbarButtonProps {
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
-			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
 		};

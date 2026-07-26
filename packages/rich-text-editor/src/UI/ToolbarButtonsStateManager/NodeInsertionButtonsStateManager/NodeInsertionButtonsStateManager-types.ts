@@ -1,7 +1,6 @@
 import type { toolbarButtonsName } from "../../Constants";
 import type {
 	AnchorToolbarButtonState,
-	CustomComponentToolbarButtonState,
 	MediaToolbarButtonState,
 } from "../../ToolbarButtonProps";
 
@@ -10,14 +9,6 @@ export interface UpdateAnchorStateParams extends AnchorToolbarButtonState {}
 
 export type UpdateAnchorStateFn = (params: UpdateAnchorStateParams) => void;
 
-// CustomComponent
-export interface UpdateCustomComponentStateParams
-	extends CustomComponentToolbarButtonState {}
-
-export type UpdateCustomComponentStateFn = (
-	params: UpdateCustomComponentStateParams,
-) => void;
-
 // Media
 export interface UpdateMediaStateParams extends MediaToolbarButtonState {}
 
@@ -25,7 +16,6 @@ export type UpdateMediaStateFn = (params: UpdateMediaStateParams) => void;
 
 export interface NodeInsertionButtonsState {
 	anchor: Partial<AnchorToolbarButtonState>;
-	customComponent: Partial<CustomComponentToolbarButtonState>;
 	media: Partial<MediaToolbarButtonState>;
 }
 
@@ -33,7 +23,6 @@ export type StateChangeFn = () => void;
 
 export type ListenerMap = {
 	[toolbarButtonsName.anchor]: UpdateAnchorStateFn;
-	[toolbarButtonsName.customComponent]: UpdateCustomComponentStateFn;
 	[toolbarButtonsName.media]: UpdateMediaStateFn;
 	statechange: () => void;
 };

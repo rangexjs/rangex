@@ -43,11 +43,8 @@ export class RichTextEditorUI extends HTMLElement {
 		extensions,
 		uiPorts,
 		overlayHost,
-		options = {},
 	}: RichTextEditorUIConstructorParams) {
 		super();
-
-		const { customComponentNames = [] } = options;
 
 		const style = document.createElement("style");
 		style.textContent = inlineTailwind;
@@ -76,9 +73,6 @@ export class RichTextEditorUI extends HTMLElement {
 					richTextArea={this.#richTextArea}
 					extensions={this.#extensions}
 					uiPorts={this.#uiPorts}
-					options={{
-						customComponentNames,
-					}}
 					menuBarActionManager={this.#menuBarActionManager}
 					menuBarButtonsStateManager={this.#menuBarButtonsStateManager}
 					toolbarButtonsActionManager={this.#toolbarButtonsActionManager}

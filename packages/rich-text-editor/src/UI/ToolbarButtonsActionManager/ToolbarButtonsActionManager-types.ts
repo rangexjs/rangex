@@ -3,7 +3,6 @@ import type {
 	toolbarButtonActionsName,
 	toolbarButtonsName,
 } from "../Constants";
-import type { CustomComponentName } from "../ToolbarButtonProps";
 
 interface GetButtonType<Type extends ToolbarButtonValue> {
 	type: Type;
@@ -13,18 +12,10 @@ interface GetButtonType<Type extends ToolbarButtonValue> {
 export interface AnchorActionState
 	extends GetButtonType<typeof toolbarButtonsName.anchor> {}
 
-export interface CustomComponentActionState
-	extends GetButtonType<typeof toolbarButtonsName.customComponent> {
-	name: CustomComponentName;
-}
-
 export interface MediaActionState
 	extends GetButtonType<typeof toolbarButtonsName.media> {}
 
-export type NodeInsertionActionState =
-	| AnchorActionState
-	| CustomComponentActionState
-	| MediaActionState;
+export type NodeInsertionActionState = AnchorActionState | MediaActionState;
 
 export type OnNodeInsertionFnProps = NodeInsertionActionState;
 

@@ -1,4 +1,5 @@
 export const extensionsName = {
+	accordionItem: "accordionItem",
 	audio: "audio",
 	blockQuote: "blockQuote",
 	codeBlock: "codeBlock",

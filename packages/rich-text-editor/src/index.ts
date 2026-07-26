@@ -1,4 +1,5 @@
 export { RichTextEditor } from "./Editor/RichTextEditor";
+export { AccordionItem } from "./Extensions/AccordionItem";
 export { Audio } from "./Extensions/Audio";
 export { BlockQuote } from "./Extensions/BlockQuote";
 export { CodeBlock } from "./Extensions/CodeBlock";

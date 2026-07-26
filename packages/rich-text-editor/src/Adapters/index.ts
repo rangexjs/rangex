@@ -1,4 +1,5 @@
 export * from "./_Utilities";
+export * from "./AccordionItemAdapter";
 export * from "./AudioAdapter";
 export * from "./BlockQuoteAdapter";
 export * from "./CodeBlockAdapter";

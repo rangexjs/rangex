@@ -1,3 +1,4 @@
+export * from "./AccordionItem/index";
 export * from "./Audio/index";
 export * from "./BlockQuote/index";
 export * from "./CodeBlock/index";
