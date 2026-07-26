@@ -3,10 +3,7 @@ import type {
 	toolbarButtonActionsName,
 	toolbarButtonsName,
 } from "../Constants";
-import type {
-	CustomComponentName,
-	FindReplacePattern,
-} from "../ToolbarButtonProps";
+import type { CustomComponentName } from "../ToolbarButtonProps";
 
 interface GetButtonType<Type extends ToolbarButtonValue> {
 	type: Type;
@@ -36,33 +33,12 @@ export type OnNodeInsertionFn = (props: OnNodeInsertionFnProps) => void;
 export type EmitNodeInsertionChangeParams = NodeInsertionActionState;
 
 // NonCategorizedOperation
-export type FindReplaceActionType =
-	| "popover-open"
-	| "popover-closed"
-	| "search-change"
-	| "previous"
-	| "next"
-	| "navigate-to-index"
-	| "replace"
-	| "replace-all";
-
-export interface FindReplaceActionState
-	extends GetButtonType<typeof toolbarButtonsName.findReplace> {
-	action: FindReplaceActionType;
-	navigateTo: number;
-	pattern: FindReplacePattern;
-	replaceText: string;
-	includeNonEditableContent: boolean;
-}
-
 export interface TextAreaReadabilityActionState
 	extends GetButtonType<typeof toolbarButtonsName.textAreaReadability> {
 	newState: boolean;
 }
 
-export type NonCategorizedOperationActionState =
-	| FindReplaceActionState
-	| TextAreaReadabilityActionState;
+export type NonCategorizedOperationActionState = TextAreaReadabilityActionState;
 
 type OnNonCategorizedOperationParams = NonCategorizedOperationActionState;
 

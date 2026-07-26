@@ -4,6 +4,7 @@ export * from "./ConfigureCodeBlock";
 export * from "./ConfigureEmbed";
 export * from "./ConfigureEmoji";
 export * from "./ConfigureEmptyMedia";
+export * from "./ConfigureFindReplace";
 export * from "./ConfigureFormatting";
 export * from "./ConfigureImage";
 export * from "./ConfigureLink";

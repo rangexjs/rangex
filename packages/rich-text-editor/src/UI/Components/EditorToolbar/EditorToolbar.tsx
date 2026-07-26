@@ -10,7 +10,6 @@ import {
 } from "#ports";
 import {
 	CustomComponentToolbarButton,
-	FindReplaceToolbarButton,
 	TextAreaReadabilityToolbarButton,
 } from "../ToolbarButtons";
 
@@ -25,6 +24,7 @@ type StaticToolbarButtonValue = Exclude<
 	| typeof toolbarButtonsName.code
 	| typeof toolbarButtonsName.codeBlock
 	| typeof toolbarButtonsName.color
+	| typeof toolbarButtonsName.findReplace
 	| typeof toolbarButtonsName.fontFamily
 	| typeof toolbarButtonsName.fontSize
 	| typeof toolbarButtonsName.historyBack
@@ -73,7 +73,6 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
 		{
 			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
-			[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
 			[toolbarButtonsName.textAreaReadability]:
 				TextAreaReadabilityToolbarButton,
 		};

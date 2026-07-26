@@ -7,6 +7,7 @@ import type {
 	Embed,
 	Emoji,
 	EmptyMedia,
+	FindReplace,
 	Formatting,
 	Image,
 	Link,
@@ -27,6 +28,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Embed>
 	| ReturnType<typeof Emoji>
 	| ReturnType<typeof EmptyMedia>
+	| ReturnType<typeof FindReplace>
 	| ReturnType<typeof Formatting>
 	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>

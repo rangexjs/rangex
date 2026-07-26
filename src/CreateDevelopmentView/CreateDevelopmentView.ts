@@ -5,6 +5,7 @@ import {
 	Embed,
 	Emoji,
 	EmptyMedia,
+	FindReplace,
 	Formatting,
 	Image,
 	Link,
@@ -59,6 +60,7 @@ export const createDevelopmentView = () => {
 			Table(),
 			UndoRedo(),
 			Symbols(),
+			FindReplace(),
 		],
 	});
 
@@ -83,6 +85,7 @@ export const createDevelopmentView = () => {
 			Table(),
 			UndoRedo(),
 			Symbols(),
+			FindReplace(),
 		],
 	});
 

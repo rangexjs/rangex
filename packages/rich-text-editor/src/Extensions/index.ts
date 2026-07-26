@@ -4,6 +4,7 @@ export * from "./CodeBlock";
 export * from "./Embed";
 export * from "./Emoji";
 export * from "./EmptyMedia";
+export * from "./FindReplace";
 export * from "./Formatting";
 export * from "./Image";
 export * from "./Link";

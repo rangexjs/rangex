@@ -4,11 +4,7 @@ import {
 	customComponentNames,
 	toolbarButtons as defaultToolbarButtons,
 } from "../_Utilities";
-import {
-	configureCustomStyles,
-	configureFindReplace,
-	configureNonCategorized,
-} from "../Configs";
+import { configureCustomStyles, configureNonCategorized } from "../Configs";
 import {
 	configurePreview,
 	configureSettings,
@@ -95,13 +91,6 @@ export class RichTextEditor extends HTMLElement {
 
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-
-		const findReplaceCleanup = configureFindReplace({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
-
-		this.#cleanups.add(findReplaceCleanup);
 
 		// ---------- CODE BELOW IS TEMPORARY ----------
 

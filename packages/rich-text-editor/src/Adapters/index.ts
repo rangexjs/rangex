@@ -5,6 +5,7 @@ export * from "./CodeBlockAdapter";
 export * from "./EmbedAdapter";
 export * from "./EmojiAdapter";
 export * from "./EmptyMediaAdapter";
+export * from "./FindReplaceAdapter";
 export * from "./FormattingAdapter";
 export * from "./ImageAdapter";
 export * from "./LinkAdapter";

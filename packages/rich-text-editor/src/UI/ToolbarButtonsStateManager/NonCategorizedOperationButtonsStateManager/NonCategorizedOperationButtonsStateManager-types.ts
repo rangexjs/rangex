@@ -1,16 +1,5 @@
 import type { toolbarButtonsName } from "../../Constants";
-import type {
-	FindReplaceToolbarButtonState,
-	TextAreaReadabilityToolbarButtonState,
-} from "../../ToolbarButtonProps";
-
-// FindReplace
-export interface UpdateFindReplaceStateParams
-	extends FindReplaceToolbarButtonState {}
-
-export type UpdateFindReplaceStateFn = (
-	params: UpdateFindReplaceStateParams,
-) => void;
+import type { TextAreaReadabilityToolbarButtonState } from "../../ToolbarButtonProps";
 
 // TextAreaReadability
 export interface UpdateTextAreaReadabilityStateParams
@@ -21,14 +10,12 @@ export type UpdateTextAreaReadabilityStateFn = (
 ) => void;
 
 export interface NonCategorizedOperationButtonsState {
-	findReplace: Partial<FindReplaceToolbarButtonState>;
 	textAreaReadability: Partial<TextAreaReadabilityToolbarButtonState>;
 }
 
 export type StateChangeFn = () => void;
 
 export type ListenerMap = {
-	[toolbarButtonsName.findReplace]: UpdateFindReplaceStateFn;
 	[toolbarButtonsName.textAreaReadability]: UpdateTextAreaReadabilityStateFn;
 	statechange: () => void;
 };

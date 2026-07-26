@@ -5,6 +5,7 @@ export const extensionsName = {
 	embed: "embed",
 	emoji: "emoji",
 	emptyMedia: "emptyMedia",
+	findReplace: "findReplace",
 	formatting: "formatting",
 	image: "image",
 	link: "link",

@@ -23,8 +23,6 @@ export type {
 	CommonToggleButtonProps,
 	CustomComponentName,
 	CustomComponentToolbarButtonState,
-	FindReplaceSearchResult,
-	FindReplaceToolbarButtonState,
 	FontFamilyToolbarButtonState,
 	FontFamilyValue,
 	FontFamilyValues,

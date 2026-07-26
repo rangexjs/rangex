@@ -5,6 +5,7 @@ export { CodeBlock } from "./Extensions/CodeBlock";
 export { Embed } from "./Extensions/Embed";
 export { Emoji } from "./Extensions/Emoji";
 export { EmptyMedia } from "./Extensions/EmptyMedia";
+export { FindReplace } from "./Extensions/FindReplace";
 export { Formatting } from "./Extensions/Formatting";
 export { Image } from "./Extensions/Image";
 export { Link } from "./Extensions/Link";
