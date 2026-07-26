@@ -42,24 +42,35 @@ const getToolbarIconFromActiveValues = (
 };
 
 export const TextAlignToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.textAlign.disabled);
-	const [activeValues, setActiveValues] = createSignal(uiPort.textAlign.values);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.textAlign.disabled,
+	);
+	const [activeValues, setActiveValues] = createSignal(
+		formattingUIPort.textAlign.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onTextAlignUpdate((state) => {
-			setDisabled(state.disabled);
+		const unsubscribeTextAlign = formattingUIPort.onTextAlignUpdate((state) => {
+			setButtonDisabled(state.disabled);
 			setActiveValues(state.values);
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeTextAlign();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -76,8 +87,10 @@ export const TextAlignToolbarButton = () => {
 	};
 
 	const onTextAlignClick = (textAlign: FormattingTextAlignValue) => {
-		uiPort.emitFormattingChange({ textAlign });
+		formattingUIPort.emitFormattingChange({ textAlign });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

@@ -1,4 +1,5 @@
 import {
+	createMemo,
 	createSignal,
 	createUniqueId,
 	For,
@@ -10,22 +11,33 @@ import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const SymbolsToolbarButton = () => {
-	const { symbolsUIPort: uiPort } = useUIPortsContext();
+	const { symbolsUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!symbolsUIPort) {
 		throw new Error("SymbolsUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		symbolsUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = symbolsUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -38,8 +50,10 @@ export const SymbolsToolbarButton = () => {
 	};
 
 	const onSymbolClick = (data: string) => {
-		uiPort.emitInsertRequest({ data });
+		symbolsUIPort.emitInsertRequest({ data });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>
@@ -60,7 +74,7 @@ export const SymbolsToolbarButton = () => {
 			>
 				<div>
 					<div class="inline-grid grid-cols-[repeat(8,min-content)] gap-1">
-						<For each={uiPort.items}>
+						<For each={symbolsUIPort.items}>
 							{(item) => (
 								<button
 									type="button"

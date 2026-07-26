@@ -32,28 +32,39 @@ const defaultValues: Set<FormattingIndentationValue> = new Set([
 ]);
 
 export const IndentationToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.indentation.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.indentation.disabled,
+	);
 	const [activeValues, setActiveValues] = createSignal(
-		uiPort.indentation.values,
+		formattingUIPort.indentation.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onIndentationUpdate((state) => {
-			setDisabled(state.disabled);
-			setActiveValues(state.values);
-		});
+		const unsubscribeIndentation = formattingUIPort.onIndentationUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setActiveValues(state.values);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeIndentation();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -98,13 +109,15 @@ export const IndentationToolbarButton = () => {
 				text: `${indentation.value}`,
 				button: {
 					"on:click": () => {
-						uiPort.emitFormattingChange({ indentation });
+						formattingUIPort.emitFormattingChange({ indentation });
 					},
 					class: "justify-center",
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

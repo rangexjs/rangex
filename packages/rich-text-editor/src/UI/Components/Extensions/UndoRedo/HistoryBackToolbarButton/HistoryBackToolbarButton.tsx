@@ -1,32 +1,42 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const HistoryBackToolbarButton = () => {
-	const { undoRedoUIPort: uiPort } = useUIPortsContext();
+	const { undoRedoUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!undoRedoUIPort) {
 		throw new Error("UndoRedoUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(
-		uiPort.historyBackToolbarButton.disabled,
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		undoRedoUIPort.historyBackToolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onHistoryBackToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton =
+			undoRedoUIPort.onHistoryBackToolbarButtonUpdate((state) => {
+				setButtonDisabled(state.disabled);
+			});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitNavigate({ type: "history-back" });
+		undoRedoUIPort.emitNavigate({ type: "history-back" });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

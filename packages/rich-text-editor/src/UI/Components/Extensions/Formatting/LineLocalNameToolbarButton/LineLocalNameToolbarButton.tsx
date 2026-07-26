@@ -14,26 +14,37 @@ import {
 } from "../../../ToolbarButtons/_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.lineLocalName.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.lineLocalName.disabled,
+	);
 	const [lineLocalNames, setLineLocalNames] = createSignal(
-		uiPort.lineLocalName.values,
+		formattingUIPort.lineLocalName.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onLineLocalNameUpdate((state) => {
-			setDisabled(state.disabled);
-			setLineLocalNames(state.values);
-		});
+		const unsubscribeLineLocalName = formattingUIPort.onLineLocalNameUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setLineLocalNames(state.values);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeLineLocalName();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -77,7 +88,7 @@ export const LineLocalNameToolbarButton = () => {
 
 	const list = createMemo<DropdownList>(() => {
 		const updateLocalName = (lineLocalName: FormattingLineLocalNameValue) => {
-			uiPort.emitFormattingChange({ lineLocalName });
+			formattingUIPort.emitFormattingChange({ lineLocalName });
 		};
 
 		const localNames: FormattingLineLocalNameValue[] = [
@@ -107,6 +118,8 @@ export const LineLocalNameToolbarButton = () => {
 
 		return dropDownList;
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

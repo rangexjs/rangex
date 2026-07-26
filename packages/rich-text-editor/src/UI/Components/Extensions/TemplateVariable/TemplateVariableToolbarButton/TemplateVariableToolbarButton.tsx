@@ -16,22 +16,32 @@ import {
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
 export const TemplateVariableToolbarButton = () => {
-	const { templateVariableUIPort: uiPort } = useUIPortsContext();
+	const { templateVariableUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!templateVariableUIPort) {
 		throw new Error("TemplateVariableUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		templateVariableUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton =
+			templateVariableUIPort.onToolbarButtonUpdate((state) => {
+				setButtonDisabled(state.disabled);
+			});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -43,7 +53,7 @@ export const TemplateVariableToolbarButton = () => {
 
 	const list = createMemo<DropdownList>(() => {
 		const insertTemplate = (kind: TemplateVariableKind) => {
-			uiPort.emitInsertRequest({ kind });
+			templateVariableUIPort.emitInsertRequest({ kind });
 		};
 
 		return [
@@ -116,6 +126,8 @@ export const TemplateVariableToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
+
 	return (
 		<span>
 			<ToolbarButton
@@ -133,9 +145,9 @@ export const TemplateVariableToolbarButton = () => {
 				class="[position-area:center_bottom]"
 				onToggle={onPopoverToggle}
 			/>
-			<NameModal modalId={nameModalId} uiPort={uiPort} />
-			<EmailModal modalId={emailModalId} uiPort={uiPort} />
-			<DateModal modalId={dateModalId} uiPort={uiPort} />
+			<NameModal modalId={nameModalId} uiPort={templateVariableUIPort} />
+			<EmailModal modalId={emailModalId} uiPort={templateVariableUIPort} />
+			<DateModal modalId={dateModalId} uiPort={templateVariableUIPort} />
 		</span>
 	);
 };

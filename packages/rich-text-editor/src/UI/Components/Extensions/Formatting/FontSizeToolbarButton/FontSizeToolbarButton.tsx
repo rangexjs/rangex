@@ -59,35 +59,49 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontSizeToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.fontSize.disabled);
-	const [activeValues, setActiveValues] = createSignal(uiPort.fontSize.values);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.fontSize.disabled,
+	);
+	const [activeValues, setActiveValues] = createSignal(
+		formattingUIPort.fontSize.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 	const [inputModel, inputControls] =
 		createTextFieldController<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
 				activeValues(),
-				uiPort.defaultFontSize,
+				formattingUIPort.defaultFontSize,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onFontSizeUpdate((state) => {
-			setDisabled(state.disabled);
+		const unsubscribeFontSize = formattingUIPort.onFontSizeUpdate((state) => {
+			setButtonDisabled(state.disabled);
 			setActiveValues(state.values);
 			inputModel.setValue(
-				getInputValueFromActiveValues(state.values, uiPort.defaultFontSize),
+				getInputValueFromActiveValues(
+					state.values,
+					formattingUIPort.defaultFontSize,
+				),
 			);
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeFontSize();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -109,13 +123,13 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = uiPort.defaultFontSize;
+		const defaultFontSize = formattingUIPort.defaultFontSize;
 		const fontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		uiPort.emitFormattingChange({ fontSize });
+		formattingUIPort.emitFormattingChange({ fontSize });
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -129,7 +143,7 @@ export const FontSizeToolbarButton = () => {
 
 		const activeValue = getInputValueFromActiveValues(
 			activeValues(),
-			uiPort.defaultFontSize,
+			formattingUIPort.defaultFontSize,
 		);
 
 		if (!value || value === activeValue || /[^\d]/.test(value)) {
@@ -138,13 +152,13 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = uiPort.defaultFontSize;
+		const defaultFontSize = formattingUIPort.defaultFontSize;
 		const fontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		uiPort.emitFormattingChange({ fontSize });
+		formattingUIPort.emitFormattingChange({ fontSize });
 	};
 
 	const sortedLetterSpacings = createMemo(() => {
@@ -182,18 +196,20 @@ export const FontSizeToolbarButton = () => {
 				text: `${fontSizeItem.value}`,
 				button: {
 					"on:click": () => {
-						const defaultFontSize = uiPort.defaultFontSize;
+						const defaultFontSize = formattingUIPort.defaultFontSize;
 						const fontSize: FormattingFontSizeValue | null =
 							fontSizeItem.value === defaultFontSize.value
 								? null
 								: fontSizeItem;
-						uiPort.emitFormattingChange({ fontSize });
+						formattingUIPort.emitFormattingChange({ fontSize });
 					},
 					class: "justify-center",
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	const anchorName = "--font-size-anchor";
 

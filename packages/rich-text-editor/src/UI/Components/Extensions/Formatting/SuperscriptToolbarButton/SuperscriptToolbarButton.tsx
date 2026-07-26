@@ -4,33 +4,48 @@ import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const SuperscriptToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.superscript.disabled);
-	const [pressed, setPressed] = createSignal(uiPort.superscript.pressed);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.superscript.disabled,
+	);
+	const [pressed, setPressed] = createSignal(
+		formattingUIPort.superscript.pressed,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const checked = createMemo(
 		() => pressed() === "true" || pressed() === "mixed",
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onSuperscriptUpdate((state) => {
-			setDisabled(state.disabled);
-			setPressed(state.pressed);
-		});
+		const unsubscribeSuperscript = formattingUIPort.onSuperscriptUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setPressed(state.pressed);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeSuperscript();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitFormattingChange({ superscript: pressed() });
+		formattingUIPort.emitFormattingChange({ superscript: pressed() });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

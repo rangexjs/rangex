@@ -4,33 +4,48 @@ import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const StrikethroughToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.strikethrough.disabled);
-	const [pressed, setPressed] = createSignal(uiPort.strikethrough.pressed);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.strikethrough.disabled,
+	);
+	const [pressed, setPressed] = createSignal(
+		formattingUIPort.strikethrough.pressed,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const checked = createMemo(
 		() => pressed() === "true" || pressed() === "mixed",
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onStrikethroughUpdate((state) => {
-			setDisabled(state.disabled);
-			setPressed(state.pressed);
-		});
+		const unsubscribeStrikethrough = formattingUIPort.onStrikethroughUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setPressed(state.pressed);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeStrikethrough();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitFormattingChange({ strikethrough: pressed() });
+		formattingUIPort.emitFormattingChange({ strikethrough: pressed() });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

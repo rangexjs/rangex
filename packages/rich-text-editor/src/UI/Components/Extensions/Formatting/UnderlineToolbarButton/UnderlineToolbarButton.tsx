@@ -4,33 +4,46 @@ import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const UnderlineToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.underline.disabled);
-	const [pressed, setPressed] = createSignal(uiPort.underline.pressed);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.underline.disabled,
+	);
+	const [pressed, setPressed] = createSignal(
+		formattingUIPort.underline.pressed,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const checked = createMemo(
 		() => pressed() === "true" || pressed() === "mixed",
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onUnderlineUpdate((state) => {
-			setDisabled(state.disabled);
+		const unsubscribeUnderline = formattingUIPort.onUnderlineUpdate((state) => {
+			setButtonDisabled(state.disabled);
 			setPressed(state.pressed);
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeUnderline();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitFormattingChange({ underline: pressed() });
+		formattingUIPort.emitFormattingChange({ underline: pressed() });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

@@ -1,30 +1,43 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const BlockQuoteToolbarButton = () => {
-	const { blockQuoteUIPort: uiPort } = useUIPortsContext();
+	const { blockQuoteUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!blockQuoteUIPort) {
 		throw new Error("BlockQuoteUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		blockQuoteUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = blockQuoteUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitInsertRequest();
+		blockQuoteUIPort.emitInsertRequest();
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

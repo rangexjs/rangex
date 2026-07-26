@@ -1,32 +1,43 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const OrderedListToolbarButton = () => {
-	const { listUIPort: uiPort } = useUIPortsContext();
+	const { listUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!listUIPort) {
 		throw new Error("ListUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(
-		uiPort.orderedListToolbarButton.disabled,
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		listUIPort.orderedListToolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onOrderedListToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeOrderedList = listUIPort.onOrderedListToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeOrderedList();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitInsertRequest({ type: "ordered-list" });
+		listUIPort.emitInsertRequest({ type: "ordered-list" });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

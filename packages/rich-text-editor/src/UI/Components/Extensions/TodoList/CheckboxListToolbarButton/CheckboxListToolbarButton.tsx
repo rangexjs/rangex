@@ -1,30 +1,43 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const CheckboxListToolbarButton = () => {
-	const { todoListUIPort: uiPort } = useUIPortsContext();
+	const { todoListUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!todoListUIPort) {
 		throw new Error("TodoListUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		todoListUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = todoListUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitInsertRequest();
+		todoListUIPort.emitInsertRequest();
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

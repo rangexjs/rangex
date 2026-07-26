@@ -1,30 +1,43 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const EmptyMediaToolbarButton = () => {
-	const { emptyMediaUIPort: uiPort } = useUIPortsContext();
+	const { emptyMediaUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!emptyMediaUIPort) {
 		throw new Error("EmptyMediaUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		emptyMediaUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = emptyMediaUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitInsertRequest();
+		emptyMediaUIPort.emitInsertRequest();
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

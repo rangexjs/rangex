@@ -1,4 +1,5 @@
 import {
+	createMemo,
 	createSignal,
 	createUniqueId,
 	Index,
@@ -26,9 +27,9 @@ const createGrid = (rows: number, cols: number): Grid => {
 };
 
 export const TableToolbarButton = () => {
-	const { tableUIPort: uiPort } = useUIPortsContext();
+	const { tableUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!tableUIPort) {
 		throw new Error("TableUIPort can't be null.");
 	}
 
@@ -37,7 +38,12 @@ export const TableToolbarButton = () => {
 	const size = 12;
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		tableUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 	const [grid, setGrid] = createSignal<Grid>(createGrid(rows, cols));
 	const [selectedCellPos, setSelectedCellPos] = createSignal({
 		row: 0,
@@ -45,12 +51,18 @@ export const TableToolbarButton = () => {
 	});
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = tableUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -114,11 +126,13 @@ export const TableToolbarButton = () => {
 	};
 
 	const emitTableInsertionInfo = () => {
-		uiPort.emitInsertRequest({
+		tableUIPort.emitInsertRequest({
 			row: selectedCellPos().row,
 			column: selectedCellPos().col,
 		});
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

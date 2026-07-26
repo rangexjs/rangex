@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import type {
 	FormattingIndentationState,
 	FormattingIndentationValue,
@@ -156,21 +156,30 @@ const isButtonDisabled = (uiPort: FormattingUIPort) => {
 };
 
 export const RemoveFormatToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(isButtonDisabled(uiPort));
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		isButtonDisabled(formattingUIPort),
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onAnyFieldUpdate(() => {
-			setDisabled(isButtonDisabled(uiPort));
+		const unsubscribeFormatting = formattingUIPort.onAnyFieldUpdate(() => {
+			setButtonDisabled(isButtonDisabled(formattingUIPort));
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeFormatting();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -178,7 +187,7 @@ export const RemoveFormatToolbarButton = () => {
 		// Each toggle field is sent as "true" — not the value to set, but the
 		// currently-applied state the Editor is being told to turn off. Toggle
 		// fields in FormattingActionState always mean "this is on, flip it."
-		uiPort.emitFormattingChange({
+		formattingUIPort.emitFormattingChange({
 			backgroundColor: null,
 			bold: "true",
 			code: "true",
@@ -197,6 +206,8 @@ export const RemoveFormatToolbarButton = () => {
 			underline: "true",
 		});
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

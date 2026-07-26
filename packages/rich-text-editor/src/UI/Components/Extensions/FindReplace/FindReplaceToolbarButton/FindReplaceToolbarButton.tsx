@@ -29,22 +29,25 @@ import { FindReplaceResults } from "./FindReplaceResults";
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
 export const FindReplaceToolbarButton = () => {
-	const { findReplaceUIPort: uiPort } = useUIPortsContext();
+	const { findReplaceUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!findReplaceUIPort) {
 		throw new Error("FindReplaceUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [isFindLoading, setIsFindLoading] = createSignal(false);
 	const [currentIndex, setCurrentIndex] = createSignal(
-		uiPort.results.currentIndex,
+		findReplaceUIPort.results.currentIndex,
 	);
 	const [totalResults, setTotalResults] = createSignal(
-		uiPort.results.totalResults,
+		findReplaceUIPort.results.totalResults,
 	);
 	const [results, setResults] = createSignal<FindReplaceSearchResult[]>(
-		uiPort.results.results,
+		findReplaceUIPort.results.results,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	const displayIndex = createMemo(() =>
@@ -54,14 +57,18 @@ export const FindReplaceToolbarButton = () => {
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onResultsUpdate((state) => {
+		const unsubscribeResults = findReplaceUIPort.onResultsUpdate((state) => {
 			setCurrentIndex(state.currentIndex);
 			setTotalResults(state.totalResults);
 			setResults(state.results);
 		});
+		const unsubscribeReadonly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeResults();
+			unsubscribeReadonly?.();
 		});
 	});
 
@@ -111,12 +118,18 @@ export const FindReplaceToolbarButton = () => {
 	const [includeNonEditableContentModel, includeNonEditableContentControls] =
 		createCheckboxController({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
-	const [replaceDisabled, setReplaceDisabled] = createSignal(false);
+	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
 
 	createEffect(() => {
-		setReplaceDisabled(totalResults() === 0 || findModel.state().showError);
+		setReplaceButtonDisabled(
+			totalResults() === 0 || findModel.state().showError,
+		);
 	});
+
+	const replaceDisabled = createMemo(
+		() => replaceButtonDisabled() || readOnly(),
+	);
 
 	const findInputAnchorName = "--find-input-anchor-name";
 
@@ -152,9 +165,9 @@ export const FindReplaceToolbarButton = () => {
 		};
 
 		if (newState === "open") {
-			uiPort.emitPopoverOpen(criteria);
+			findReplaceUIPort.emitPopoverOpen(criteria);
 		} else {
-			uiPort.emitPopoverClosed();
+			findReplaceUIPort.emitPopoverClosed();
 		}
 
 		if (!(currentTarget instanceof HTMLElement)) {
@@ -237,18 +250,18 @@ export const FindReplaceToolbarButton = () => {
 	const emitSearchChange = () => {
 		const pattern = getSafePattern();
 
-		uiPort.emitSearchChange({
+		findReplaceUIPort.emitSearchChange({
 			pattern,
 			includeNonEditableContent: includeNonEditableContentModel.checked(),
 		});
 	};
 
 	const findPreviousMatch = () => {
-		uiPort.emitStepBack();
+		findReplaceUIPort.emitStepBack();
 	};
 
 	const findNextMatch = () => {
-		uiPort.emitStepForward();
+		findReplaceUIPort.emitStepForward();
 	};
 
 	findModel.onValueChange("add", () => {
@@ -278,15 +291,15 @@ export const FindReplaceToolbarButton = () => {
 	});
 
 	const navigateToIndex = (index: number) => {
-		uiPort.emitNavigateToIndex({ index });
+		findReplaceUIPort.emitNavigateToIndex({ index });
 	};
 
 	const replaceText = () => {
-		uiPort.emitReplace({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplace({ replaceText: replaceModel.value() });
 	};
 
 	const replaceAllText = () => {
-		uiPort.emitReplaceAll({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplaceAll({ replaceText: replaceModel.value() });
 	};
 
 	const checkboxFilterList: CheckboxFilterList = [

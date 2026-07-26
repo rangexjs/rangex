@@ -34,28 +34,39 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 ]);
 
 export const LetterSpacingToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.letterSpacing.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.letterSpacing.disabled,
+	);
 	const [activeValues, setActiveValues] = createSignal(
-		uiPort.letterSpacing.values,
+		formattingUIPort.letterSpacing.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onLetterSpacingUpdate((state) => {
-			setDisabled(state.disabled);
-			setActiveValues(state.values);
-		});
+		const unsubscribeLetterSpacing = formattingUIPort.onLetterSpacingUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setActiveValues(state.values);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeLetterSpacing();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -100,13 +111,15 @@ export const LetterSpacingToolbarButton = () => {
 				text: `${spacing.value}`,
 				button: {
 					"on:click": () => {
-						uiPort.emitFormattingChange({ letterSpacing: spacing });
+						formattingUIPort.emitFormattingChange({ letterSpacing: spacing });
 					},
 					class: "justify-center",
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

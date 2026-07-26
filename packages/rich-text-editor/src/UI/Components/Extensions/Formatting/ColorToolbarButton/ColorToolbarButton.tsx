@@ -1,4 +1,10 @@
-import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	onCleanup,
+	onMount,
+} from "solid-js";
 import { ColorFormat, type HslFormat } from "../../../../Color";
 import { useUIPortsContext } from "../../../App";
 import {
@@ -16,14 +22,19 @@ import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const ColorToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.color.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.color.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const popoverId = createUniqueId();
 	let popover: HTMLDivElement | undefined;
@@ -34,7 +45,9 @@ export const ColorToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const initialHslColors = getHslThemeColors({ colors: uiPort.color.values });
+	const initialHslColors = getHslThemeColors({
+		colors: formattingUIPort.color.values,
+	});
 	const initialColorMode = getColorMode(initialHslColors);
 
 	const [lightHsl, setLightHsl] = createSignal<HslFormat>(
@@ -54,8 +67,8 @@ export const ColorToolbarButton = () => {
 	const [activeColors, setActiveColors] = createSignal(initialActiveColors);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onColorUpdate((state) => {
-			setDisabled(state.disabled);
+		const unsubscribeColor = formattingUIPort.onColorUpdate((state) => {
+			setButtonDisabled(state.disabled);
 			const hslColors = getHslThemeColors({ colors: state.values });
 			const colorMode = getColorMode(hslColors);
 
@@ -80,9 +93,13 @@ export const ColorToolbarButton = () => {
 
 			setActiveColors(activeColors);
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeColor();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -98,13 +115,13 @@ export const ColorToolbarButton = () => {
 		}
 
 		if (type === "remove") {
-			uiPort.emitFormattingChange({
+			formattingUIPort.emitFormattingChange({
 				color: null,
 			});
 		}
 
 		if (type === "apply") {
-			uiPort.emitFormattingChange({
+			formattingUIPort.emitFormattingChange({
 				color: {
 					light: {
 						type: "solid",
@@ -115,6 +132,8 @@ export const ColorToolbarButton = () => {
 			});
 		}
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

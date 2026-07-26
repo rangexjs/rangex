@@ -1,4 +1,10 @@
-import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	onCleanup,
+	onMount,
+} from "solid-js";
 import type { CodeBlockLanguage } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
@@ -32,24 +38,35 @@ const languages: CodeBlockLanguage[] = [
 ];
 
 export const CodeBlockToolbarButton = () => {
-	const { codeBlockUIPort: uiPort } = useUIPortsContext();
+	const { codeBlockUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!codeBlockUIPort) {
 		throw new Error("CodeBlockUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		codeBlockUIPort.toolbarButton.disabled,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onToolbarButtonUpdate((state) => {
-			setDisabled(state.disabled);
-		});
+		const unsubscribeToolbarButton = codeBlockUIPort.onToolbarButtonUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeToolbarButton();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -64,11 +81,13 @@ export const CodeBlockToolbarButton = () => {
 			text: language,
 			button: {
 				"on:click": () => {
-					uiPort.emitInsertRequest({ language });
+					codeBlockUIPort.emitInsertRequest({ language });
 				},
 			},
 		};
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

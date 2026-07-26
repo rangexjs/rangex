@@ -4,33 +4,44 @@ import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
 export const BoldToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
-	const [disabled, setDisabled] = createSignal(uiPort.bold.disabled);
-	const [pressed, setPressed] = createSignal(uiPort.bold.pressed);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.bold.disabled,
+	);
+	const [pressed, setPressed] = createSignal(formattingUIPort.bold.pressed);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
 
 	const checked = createMemo(
 		() => pressed() === "true" || pressed() === "mixed",
 	);
 
 	onMount(() => {
-		const unsubscribe = uiPort.onBoldUpdate((state) => {
-			setDisabled(state.disabled);
+		const unsubscribeBold = formattingUIPort.onBoldUpdate((state) => {
+			setButtonDisabled(state.disabled);
 			setPressed(state.pressed);
 		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeBold();
+			unsubscribeReadOnly?.();
 		});
 	});
 
 	const onClick = () => {
-		uiPort.emitFormattingChange({ bold: pressed() });
+		formattingUIPort.emitFormattingChange({ bold: pressed() });
 	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

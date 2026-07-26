@@ -40,39 +40,53 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontFamilyToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
-	const fontFamilyOptions = uiPort.fontFamilyOptions;
+	const fontFamilyOptions = formattingUIPort.fontFamilyOptions;
 	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
 
-	const [disabled, setDisabled] = createSignal(uiPort.fontFamily.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.fontFamily.disabled,
+	);
 	const [activeValues, setActiveValues] = createSignal(
-		uiPort.fontFamily.values,
+		formattingUIPort.fontFamily.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 	const [inputModel, inputControls] =
 		createTextFieldController<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
 				activeValues(),
-				uiPort.defaultFontFamily,
+				formattingUIPort.defaultFontFamily,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onFontFamilyUpdate((state) => {
-			setDisabled(state.disabled);
-			setActiveValues(state.values);
-			inputModel.setValue(
-				getInputValueFromActiveValues(state.values, uiPort.defaultFontFamily),
-			);
-		});
+		const unsubscribeFontFamily = formattingUIPort.onFontFamilyUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setActiveValues(state.values);
+				inputModel.setValue(
+					getInputValueFromActiveValues(
+						state.values,
+						formattingUIPort.defaultFontFamily,
+					),
+				);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeFontFamily();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -100,9 +114,11 @@ export const FontFamilyToolbarButton = () => {
 		inputModel.setValue(normalizedValue);
 
 		const fontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === uiPort.defaultFontFamily ? null : normalizedValue;
+			normalizedValue === formattingUIPort.defaultFontFamily
+				? null
+				: normalizedValue;
 
-		uiPort.emitFormattingChange({ fontFamily });
+		formattingUIPort.emitFormattingChange({ fontFamily });
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -120,7 +136,7 @@ export const FontFamilyToolbarButton = () => {
 
 		const activeValue = getInputValueFromActiveValues(
 			activeValues(),
-			uiPort.defaultFontFamily,
+			formattingUIPort.defaultFontFamily,
 		);
 
 		if (!normalizedValue || normalizedValue === activeValue) {
@@ -131,9 +147,11 @@ export const FontFamilyToolbarButton = () => {
 		inputModel.setValue(normalizedValue);
 
 		const fontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === uiPort.defaultFontFamily ? null : normalizedValue;
+			normalizedValue === formattingUIPort.defaultFontFamily
+				? null
+				: normalizedValue;
 
-		uiPort.emitFormattingChange({ fontFamily });
+		formattingUIPort.emitFormattingChange({ fontFamily });
 	};
 
 	const list = createMemo<DropdownList>(() => {
@@ -154,15 +172,17 @@ export const FontFamilyToolbarButton = () => {
 				button: {
 					"on:click": () => {
 						const fontFamily: FormattingFontFamilyValue | null =
-							fontFamilyItem === uiPort.defaultFontFamily
+							fontFamilyItem === formattingUIPort.defaultFontFamily
 								? null
 								: fontFamilyItem;
-						uiPort.emitFormattingChange({ fontFamily });
+						formattingUIPort.emitFormattingChange({ fontFamily });
 					},
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	const anchorName = "--font-family-anchor";
 

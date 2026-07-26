@@ -23,28 +23,39 @@ const defaultValues: Set<FormattingLineSpacingValue> = new Set([
 ]);
 
 export const LineSpacingToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.lineSpacing.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.lineSpacing.disabled,
+	);
 	const [activeValues, setActiveValues] = createSignal(
-		uiPort.lineSpacing.values,
+		formattingUIPort.lineSpacing.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onLineSpacingUpdate((state) => {
-			setDisabled(state.disabled);
-			setActiveValues(state.values);
-		});
+		const unsubscribeLineSpacing = formattingUIPort.onLineSpacingUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setActiveValues(state.values);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeLineSpacing();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -89,13 +100,15 @@ export const LineSpacingToolbarButton = () => {
 				text: `${lineSpacing.value}`,
 				button: {
 					"on:click": () => {
-						uiPort.emitFormattingChange({ lineSpacing });
+						formattingUIPort.emitFormattingChange({ lineSpacing });
 					},
 					class: "justify-center",
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>

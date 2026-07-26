@@ -27,28 +27,39 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 ]);
 
 export const LineHeightToolbarButton = () => {
-	const { formattingUIPort: uiPort } = useUIPortsContext();
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
 
-	if (!uiPort) {
+	if (!formattingUIPort) {
 		throw new Error("FormattingUIPort can't be null.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
-	const [disabled, setDisabled] = createSignal(uiPort.lineHeight.disabled);
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.lineHeight.disabled,
+	);
 	const [activeValues, setActiveValues] = createSignal(
-		uiPort.lineHeight.values,
+		formattingUIPort.lineHeight.values,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
 	);
 
 	const popoverId = createUniqueId();
 
 	onMount(() => {
-		const unsubscribe = uiPort.onLineHeightUpdate((state) => {
-			setDisabled(state.disabled);
-			setActiveValues(state.values);
-		});
+		const unsubscribeLineHeight = formattingUIPort.onLineHeightUpdate(
+			(state) => {
+				setButtonDisabled(state.disabled);
+				setActiveValues(state.values);
+			},
+		);
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeLineHeight();
+			unsubscribeReadOnly?.();
 		});
 	});
 
@@ -93,13 +104,15 @@ export const LineHeightToolbarButton = () => {
 				text: `${lineHeight.value}`,
 				button: {
 					"on:click": () => {
-						uiPort.emitFormattingChange({ lineHeight });
+						formattingUIPort.emitFormattingChange({ lineHeight });
 					},
 					class: "justify-center",
 				},
 			};
 		});
 	});
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
 	return (
 		<span>
