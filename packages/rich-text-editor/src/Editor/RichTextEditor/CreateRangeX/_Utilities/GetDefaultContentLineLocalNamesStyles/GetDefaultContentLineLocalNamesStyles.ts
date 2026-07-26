@@ -1,4 +1,4 @@
-import type { TextAlignValue } from "#ui";
+import type { FormattingTextAlignValue } from "#adapters";
 import type {
 	LineHeightStructuredStyleValue,
 	PaddingBlockStructuredStyleValue,
@@ -39,7 +39,7 @@ const createDefaultPaddingInline = (
 };
 
 const createDefaultTextAlign = (
-	value: TextAlignValue,
+	value: FormattingTextAlignValue,
 ): TextAlignStructuredStyleValue => {
 	return {
 		type: "text-align",

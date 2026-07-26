@@ -1,7 +1,7 @@
+import type { FormattingStructuredThemeColors } from "#adapters";
 import type { StructuredColor } from "../../Color";
 import { ColorFormat, type HslFormat } from "../../Color";
 import { assertNever } from "../../ErrorHandling";
-import type { ColorValues } from "../../ToolbarButtonProps";
 import type { ColorMode } from "./ColorPanel";
 
 const getHslFromColorType = (color: StructuredColor): HslFormat => {
@@ -21,7 +21,7 @@ const getHslFromColorType = (color: StructuredColor): HslFormat => {
 };
 
 interface GetHslThemeColorsParams {
-	colors: ColorValues;
+	colors: Set<FormattingStructuredThemeColors>;
 }
 
 interface GetHslThemeColorsResult {
