@@ -5,7 +5,7 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { TableUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
@@ -25,12 +25,12 @@ const createGrid = (rows: number, cols: number): Grid => {
 	});
 };
 
-interface TableToolbarButtonProps {
-	uiPort: TableUIPort;
-}
+export const TableToolbarButton = () => {
+	const { tableUIPort: uiPort } = useUIPortsContext();
 
-export const TableToolbarButton = (props: TableToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("TableUIPort can't be null.");
+	}
 
 	const rows = 10;
 	const cols = 10;

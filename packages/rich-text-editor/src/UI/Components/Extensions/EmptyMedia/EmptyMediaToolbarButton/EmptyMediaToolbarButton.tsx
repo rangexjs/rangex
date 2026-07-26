@@ -1,16 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { EmptyMediaUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface EmptyMediaToolbarButtonProps {
-	uiPort: EmptyMediaUIPort;
-}
+export const EmptyMediaToolbarButton = () => {
+	const { emptyMediaUIPort: uiPort } = useUIPortsContext();
 
-export const EmptyMediaToolbarButton = (
-	props: EmptyMediaToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("EmptyMediaUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
 

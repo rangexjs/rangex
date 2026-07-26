@@ -1,16 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { TodoListUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface CheckboxListToolbarButtonProps {
-	uiPort: TodoListUIPort;
-}
+export const CheckboxListToolbarButton = () => {
+	const { todoListUIPort: uiPort } = useUIPortsContext();
 
-export const CheckboxListToolbarButton = (
-	props: CheckboxListToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("TodoListUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
 

@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingFontFamilyValue, FormattingUIPort } from "#adapters";
+import type { FormattingFontFamilyValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	createTextFieldController,
@@ -38,14 +39,12 @@ const getInputValueFromActiveValues = (
 	return "Mixed";
 };
 
-interface FontFamilyToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const FontFamilyToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const FontFamilyToolbarButton = (
-	props: FontFamilyToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 	const fontFamilyOptions = uiPort.fontFamilyOptions;
 	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
 

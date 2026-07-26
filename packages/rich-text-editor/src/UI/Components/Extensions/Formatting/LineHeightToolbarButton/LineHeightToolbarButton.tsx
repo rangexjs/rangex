@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingLineHeightValue, FormattingUIPort } from "#adapters";
+import type { FormattingLineHeightValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -25,14 +26,12 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 	{ type: "number", value: 3 },
 ]);
 
-interface LineHeightToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const LineHeightToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const LineHeightToolbarButton = (
-	props: LineHeightToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.lineHeight.disabled);

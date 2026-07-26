@@ -57,7 +57,7 @@ const findExtensionToolbarButton = (
 		const component = extension.components.toolbarButtons?.[name];
 
 		if (component) {
-			return { component, uiPort: extension.uiPort };
+			return { component };
 		}
 	}
 
@@ -87,7 +87,7 @@ const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
 		);
 	}
 
-	return <Dynamic component={match.component} uiPort={match.uiPort} />;
+	return <Dynamic component={match.component} />;
 };
 
 export interface EditorToolbarProps {

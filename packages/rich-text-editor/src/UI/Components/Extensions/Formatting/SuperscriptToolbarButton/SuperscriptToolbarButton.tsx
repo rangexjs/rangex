@@ -1,16 +1,14 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
-import type { FormattingUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface SuperscriptToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const SuperscriptToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const SuperscriptToolbarButton = (
-	props: SuperscriptToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.superscript.disabled);
 	const [pressed, setPressed] = createSignal(uiPort.superscript.pressed);

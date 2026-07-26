@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingIndentationValue, FormattingUIPort } from "#adapters";
+import type { FormattingIndentationValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -30,14 +31,12 @@ const defaultValues: Set<FormattingIndentationValue> = new Set([
 	{ type: "px", value: 120 },
 ]);
 
-interface IndentationToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const IndentationToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const IndentationToolbarButton = (
-	props: IndentationToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.indentation.disabled);

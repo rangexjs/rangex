@@ -8,8 +8,9 @@ import {
 	onMount,
 	Show,
 } from "solid-js";
-import type { FindReplaceSearchResult, FindReplaceUIPort } from "#adapters";
+import type { FindReplaceSearchResult } from "#adapters";
 import { createDebounce } from "../../../../Utilities";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Checkbox,
@@ -27,14 +28,12 @@ import { FindReplaceResults } from "./FindReplaceResults";
 
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
-interface FindReplaceToolbarButtonProps {
-	uiPort: FindReplaceUIPort;
-}
+export const FindReplaceToolbarButton = () => {
+	const { findReplaceUIPort: uiPort } = useUIPortsContext();
 
-export const FindReplaceToolbarButton = (
-	props: FindReplaceToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FindReplaceUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [isFindLoading, setIsFindLoading] = createSignal(false);

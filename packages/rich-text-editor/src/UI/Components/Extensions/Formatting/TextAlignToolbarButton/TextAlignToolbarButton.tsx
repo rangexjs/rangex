@@ -6,7 +6,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingTextAlignValue, FormattingUIPort } from "#adapters";
+import type { FormattingTextAlignValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon, type IconName } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
@@ -24,10 +25,6 @@ const iconNameOptions: Record<FormattingTextAlignValue, IconName> = {
 	justify: "TextAlignJustify",
 };
 
-interface TextAlignToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
-
 const getToolbarIconFromActiveValues = (
 	activeValues: Set<FormattingTextAlignValue>,
 ): IconName => {
@@ -44,8 +41,12 @@ const getToolbarIconFromActiveValues = (
 	return iconNameOptions[value];
 };
 
-export const TextAlignToolbarButton = (props: TextAlignToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+export const TextAlignToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
+
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.textAlign.disabled);

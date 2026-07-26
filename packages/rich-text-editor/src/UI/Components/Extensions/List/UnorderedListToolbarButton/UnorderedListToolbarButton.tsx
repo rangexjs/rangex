@@ -1,16 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { ListUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface UnorderedListToolbarButtonProps {
-	uiPort: ListUIPort;
-}
+export const UnorderedListToolbarButton = () => {
+	const { listUIPort: uiPort } = useUIPortsContext();
 
-export const UnorderedListToolbarButton = (
-	props: UnorderedListToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("ListUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(
 		uiPort.unorderedListToolbarButton.disabled,

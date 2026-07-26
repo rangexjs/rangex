@@ -5,16 +5,16 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { SymbolsUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface SymbolsToolbarButtonProps {
-	uiPort: SymbolsUIPort;
-}
+export const SymbolsToolbarButton = () => {
+	const { symbolsUIPort: uiPort } = useUIPortsContext();
 
-export const SymbolsToolbarButton = (props: SymbolsToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("SymbolsUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);

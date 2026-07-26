@@ -52,11 +52,9 @@ export type ConfigureExtensionFn<
 	params: ConfigureExtensionParams<Settings, UIPort, EditorPort, Adapter>,
 ) => ConfigureExtensionResult;
 
-export interface ExtensionComponents<UIPort extends object> {
-	toolbarButtons?: Partial<
-		Record<ToolbarButtonValue, Component<{ uiPort: UIPort }>>
-	>;
-	commandMenu?: Component<{ uiPort: UIPort }>;
+export interface ExtensionComponents {
+	toolbarButtons?: Partial<Record<ToolbarButtonValue, Component>>;
+	commandMenu?: Component;
 }
 
 export interface ExtensionDefinition<
@@ -70,7 +68,7 @@ export interface ExtensionDefinition<
 	defaultSettings: Settings;
 	createAdapter: (settings: Settings, options: AdapterOptions) => Adapter;
 	configure: ConfigureExtensionFn<Settings, UIPort, EditorPort, Adapter>;
-	components: ExtensionComponents<UIPort>;
+	components: ExtensionComponents;
 }
 
 export interface Extension<
@@ -83,7 +81,7 @@ export interface Extension<
 	name: Name;
 	createAdapter: (options: AdapterOptions) => Adapter;
 	configure: ConfigureExtensionFn<Settings, UIPort, EditorPort, Adapter>;
-	components: ExtensionComponents<UIPort>;
+	components: ExtensionComponents;
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: erased for the generic "any extension" shape
@@ -94,6 +92,4 @@ type AnyExtension = Extension<ExtensionName, any, any, any, any>;
  * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`/`components.commandMenu`, etc.
  * Derived from `Extension` (not hand-duplicated) so a rename/removal on `Extension` breaks this too.
  */
-export type UIExtension = Pick<AnyExtension, "name" | "components"> & {
-	uiPort: unknown;
-};
+export type UIExtension = Pick<AnyExtension, "name" | "components">;

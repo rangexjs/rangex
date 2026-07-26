@@ -1,16 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { BlockQuoteUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface BlockQuoteToolbarButtonProps {
-	uiPort: BlockQuoteUIPort;
-}
+export const BlockQuoteToolbarButton = () => {
+	const { blockQuoteUIPort: uiPort } = useUIPortsContext();
 
-export const BlockQuoteToolbarButton = (
-	props: BlockQuoteToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("BlockQuoteUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);
 

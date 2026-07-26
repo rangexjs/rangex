@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { TemplateVariableKind, TemplateVariableUIPort } from "#adapters";
+import type { TemplateVariableKind } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -14,14 +15,12 @@ import {
 } from "../../../ToolbarButtons/_Utilities";
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
-interface TemplateVariableToolbarButtonProps {
-	uiPort: TemplateVariableUIPort;
-}
+export const TemplateVariableToolbarButton = () => {
+	const { templateVariableUIPort: uiPort } = useUIPortsContext();
 
-export const TemplateVariableToolbarButton = (
-	props: TemplateVariableToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("TemplateVariableUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);

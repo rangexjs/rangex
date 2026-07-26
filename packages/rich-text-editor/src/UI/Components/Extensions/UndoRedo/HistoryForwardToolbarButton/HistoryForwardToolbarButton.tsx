@@ -1,16 +1,14 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
-import type { UndoRedoUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface HistoryForwardToolbarButtonProps {
-	uiPort: UndoRedoUIPort;
-}
+export const HistoryForwardToolbarButton = () => {
+	const { undoRedoUIPort: uiPort } = useUIPortsContext();
 
-export const HistoryForwardToolbarButton = (
-	props: HistoryForwardToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("UndoRedoUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(
 		uiPort.historyForwardToolbarButton.disabled,

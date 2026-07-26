@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingLineSpacingValue, FormattingUIPort } from "#adapters";
+import type { FormattingLineSpacingValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -21,14 +22,12 @@ const defaultValues: Set<FormattingLineSpacingValue> = new Set([
 	{ type: "px", value: 24 },
 ]);
 
-interface LineSpacingToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const LineSpacingToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const LineSpacingToolbarButton = (
-	props: LineSpacingToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.lineSpacing.disabled);

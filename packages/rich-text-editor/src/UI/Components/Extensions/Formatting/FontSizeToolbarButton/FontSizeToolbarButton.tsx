@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingFontSizeValue, FormattingUIPort } from "#adapters";
+import type { FormattingFontSizeValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	createTextFieldController,
@@ -57,12 +58,12 @@ const getInputValueFromActiveValues = (
 	return "Mixed";
 };
 
-interface FontSizeToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const FontSizeToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const FontSizeToolbarButton = (props: FontSizeToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.fontSize.disabled);
 	const [activeValues, setActiveValues] = createSignal(uiPort.fontSize.values);

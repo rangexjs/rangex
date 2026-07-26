@@ -5,7 +5,8 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingLetterSpacingValue, FormattingUIPort } from "#adapters";
+import type { FormattingLetterSpacingValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -32,14 +33,12 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 	{ type: "px", value: 10 },
 ]);
 
-interface LetterSpacingToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const LetterSpacingToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const LetterSpacingToolbarButton = (
-	props: LetterSpacingToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.letterSpacing.disabled);

@@ -28,6 +28,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#toolbarButtons;
 	#richTextArea;
 	#extensions;
+	#uiPorts;
 	#dispose;
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
@@ -40,6 +41,7 @@ export class RichTextEditorUI extends HTMLElement {
 		toolbarButtons,
 		richTextArea,
 		extensions,
+		uiPorts,
 		overlayHost,
 		options = {},
 	}: RichTextEditorUIConstructorParams) {
@@ -65,6 +67,7 @@ export class RichTextEditorUI extends HTMLElement {
 		this.#toolbarButtons = toolbarButtons;
 		this.#richTextArea = richTextArea;
 		this.#extensions = extensions;
+		this.#uiPorts = uiPorts;
 
 		this.#dispose = render(
 			() => (
@@ -72,6 +75,7 @@ export class RichTextEditorUI extends HTMLElement {
 					toolbarButtons={this.#toolbarButtons}
 					richTextArea={this.#richTextArea}
 					extensions={this.#extensions}
+					uiPorts={this.#uiPorts}
 					options={{
 						customComponentNames,
 					}}

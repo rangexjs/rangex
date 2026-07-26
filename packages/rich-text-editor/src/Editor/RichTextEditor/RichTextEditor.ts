@@ -11,6 +11,7 @@ import {
 	configureTemplate,
 	configureView,
 } from "../MenuBar";
+import { buildUIPorts } from "./BuildUIPorts";
 import { createRangeX } from "./CreateRangeX";
 import type {
 	ErasedConfigureExtensionFn,
@@ -41,17 +42,21 @@ export class RichTextEditor extends HTMLElement {
 		}));
 
 		const uiExtensions: UIExtension[] = extensionAdapters.map(
-			({ extension, adapter }) => ({
+			({ extension }) => ({
 				name: extension.name,
-				uiPort: adapter.uiPort,
 				components: extension.components,
 			}),
 		);
+
+		const uiPorts = buildUIPorts({
+			adapters: extensionAdapters.map(({ adapter }) => adapter),
+		});
 
 		this.#richTextEditorUI = new RichTextEditorUI({
 			richTextArea: rangeX,
 			toolbarButtons,
 			extensions: uiExtensions,
+			uiPorts,
 			overlayHost,
 			options: {
 				customComponentNames,

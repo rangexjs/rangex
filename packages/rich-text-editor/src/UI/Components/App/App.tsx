@@ -1,4 +1,18 @@
 import { useContext } from "solid-js";
+import type {
+	BlockQuoteUIPort,
+	CodeBlockUIPort,
+	EmptyMediaUIPort,
+	FindReplaceUIPort,
+	FormattingUIPort,
+	LinkUIPort,
+	ListUIPort,
+	SymbolsUIPort,
+	TableUIPort,
+	TemplateVariableUIPort,
+	TodoListUIPort,
+	UndoRedoUIPort,
+} from "#adapters";
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
@@ -15,10 +29,26 @@ import {
 	EditorOptionsContext,
 	MenuBarManagersContext,
 	ToolbarButtonManagersContext,
+	UIPortsContext,
 } from "./Context";
 
 export interface EditorOptions {
 	customComponentNames: CustomComponentName[];
+}
+
+export interface UIPortsContextValue {
+	linkUIPort: LinkUIPort | null;
+	undoRedoUIPort: UndoRedoUIPort | null;
+	symbolsUIPort: SymbolsUIPort | null;
+	findReplaceUIPort: FindReplaceUIPort | null;
+	formattingUIPort: FormattingUIPort | null;
+	blockQuoteUIPort: BlockQuoteUIPort | null;
+	codeBlockUIPort: CodeBlockUIPort | null;
+	emptyMediaUIPort: EmptyMediaUIPort | null;
+	listUIPort: ListUIPort | null;
+	tableUIPort: TableUIPort | null;
+	templateVariableUIPort: TemplateVariableUIPort | null;
+	todoListUIPort: TodoListUIPort | null;
 }
 
 export interface MenuBarManagers {
@@ -36,6 +66,7 @@ export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
 	options: EditorOptions;
 	toolbarButtons: ToolbarButtons;
 	extensions: UIExtension[];
+	uiPorts: UIPortsContextValue;
 	richTextArea: HTMLElement;
 	overlayContainerRef: (element: HTMLDivElement) => void;
 }
@@ -70,6 +101,16 @@ export const useToolbarButtonManagersContext = () => {
 	return value;
 };
 
+export const useUIPortsContext = () => {
+	const value = useContext(UIPortsContext);
+
+	if (!value) {
+		throw new Error("Value can't be undefined.");
+	}
+
+	return value;
+};
+
 export const App = (props: AppProps) => {
 	const menuBarManagersContextValue: MenuBarManagers = {
 		menuBarActionManager: props.menuBarActionManager,
@@ -96,10 +137,12 @@ export const App = (props: AppProps) => {
 				<ToolbarButtonManagersContext.Provider
 					value={toolbarButtonManagersContextValue}
 				>
-					<EditorToolbar
-						toolbarButtons={props.toolbarButtons}
-						extensions={props.extensions}
-					/>
+					<UIPortsContext.Provider value={props.uiPorts}>
+						<EditorToolbar
+							toolbarButtons={props.toolbarButtons}
+							extensions={props.extensions}
+						/>
+					</UIPortsContext.Provider>
 				</ToolbarButtonManagersContext.Provider>
 				<div class="relative max-h-300 overflow-y-auto">
 					<div>{props.richTextArea}</div>

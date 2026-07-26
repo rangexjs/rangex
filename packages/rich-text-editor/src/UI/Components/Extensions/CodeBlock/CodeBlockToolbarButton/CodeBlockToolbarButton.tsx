@@ -1,5 +1,6 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
-import type { CodeBlockLanguage, CodeBlockUIPort } from "#adapters";
+import type { CodeBlockLanguage } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
 	Dropdown,
@@ -30,12 +31,12 @@ const languages: CodeBlockLanguage[] = [
 	"Markdown",
 ];
 
-interface CodeBlockToolbarButtonProps {
-	uiPort: CodeBlockUIPort;
-}
+export const CodeBlockToolbarButton = () => {
+	const { codeBlockUIPort: uiPort } = useUIPortsContext();
 
-export const CodeBlockToolbarButton = (props: CodeBlockToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("CodeBlockUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.toolbarButton.disabled);

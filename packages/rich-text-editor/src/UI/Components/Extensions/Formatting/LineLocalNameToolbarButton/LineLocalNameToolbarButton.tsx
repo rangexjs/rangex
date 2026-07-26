@@ -5,21 +5,20 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
-import type { FormattingLineLocalNameValue, FormattingUIPort } from "#adapters";
+import type { FormattingLineLocalNameValue } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import {
 	Dropdown,
 	type DropdownList,
 	ToolbarButton,
 } from "../../../ToolbarButtons/_Utilities";
 
-interface LineLocalNameToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const LineLocalNameToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const LineLocalNameToolbarButton = (
-	props: LineLocalNameToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.lineLocalName.disabled);

@@ -1,6 +1,6 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
-import type { FormattingUIPort } from "#adapters";
 import { ColorFormat, type HslFormat } from "../../../../Color";
+import { useUIPortsContext } from "../../../App";
 import {
 	type ColorMode,
 	ColorPanel,
@@ -12,15 +12,15 @@ import {
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface ColorToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
-
 /**
  * Note: Gradient-colors are not supported yet.
  */
-export const ColorToolbarButton = (props: ColorToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+export const ColorToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
+
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [checked, setChecked] = createSignal(false);
 	const [disabled, setDisabled] = createSignal(uiPort.color.disabled);

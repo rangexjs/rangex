@@ -10,6 +10,7 @@ import type {
 	FormattingTextAlignValue,
 	FormattingUIPort,
 } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
@@ -154,14 +155,12 @@ const isButtonDisabled = (uiPort: FormattingUIPort) => {
 	);
 };
 
-interface RemoveFormatToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const RemoveFormatToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const RemoveFormatToolbarButton = (
-	props: RemoveFormatToolbarButtonProps,
-) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(isButtonDisabled(uiPort));
 

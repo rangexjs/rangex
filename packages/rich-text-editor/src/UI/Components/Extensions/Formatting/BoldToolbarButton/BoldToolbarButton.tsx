@@ -1,14 +1,14 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
-import type { FormattingUIPort } from "#adapters";
+import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
 
-interface BoldToolbarButtonProps {
-	uiPort: FormattingUIPort;
-}
+export const BoldToolbarButton = () => {
+	const { formattingUIPort: uiPort } = useUIPortsContext();
 
-export const BoldToolbarButton = (props: BoldToolbarButtonProps) => {
-	const uiPort = props.uiPort;
+	if (!uiPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
 
 	const [disabled, setDisabled] = createSignal(uiPort.bold.disabled);
 	const [pressed, setPressed] = createSignal(uiPort.bold.pressed);
