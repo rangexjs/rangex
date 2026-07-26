@@ -1,5 +1,6 @@
 export * from "./BlockNestedContext";
 export * from "./ContentLine";
+export * from "./InlineNestedContext";
 export * from "./Line";
 export * from "./NestedEditable";
 export * from "./RootEditable";
