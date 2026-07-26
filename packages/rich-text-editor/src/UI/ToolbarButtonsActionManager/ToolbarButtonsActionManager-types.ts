@@ -23,26 +23,8 @@ export type OnNodeInsertionFn = (props: OnNodeInsertionFnProps) => void;
 
 export type EmitNodeInsertionChangeParams = NodeInsertionActionState;
 
-// NonCategorizedOperation
-export interface TextAreaReadabilityActionState
-	extends GetButtonType<typeof toolbarButtonsName.textAreaReadability> {
-	newState: boolean;
-}
-
-export type NonCategorizedOperationActionState = TextAreaReadabilityActionState;
-
-type OnNonCategorizedOperationParams = NonCategorizedOperationActionState;
-
-export type OnNonCategorizedOperationFn = (
-	params: OnNonCategorizedOperationParams,
-) => void;
-
-export type EmitNonCategorizedOperationChangeParams =
-	NonCategorizedOperationActionState;
-
 export type ActionListenerMap = {
 	[toolbarButtonActionsName.nodeInsertion]: OnNodeInsertionFn;
-	[toolbarButtonActionsName.nonCategorizedOperation]: OnNonCategorizedOperationFn;
 };
 
 export type ActionListenerOption = {

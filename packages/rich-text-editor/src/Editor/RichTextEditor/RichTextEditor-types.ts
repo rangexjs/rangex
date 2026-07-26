@@ -14,6 +14,7 @@ import type {
 	Link,
 	List,
 	Mention,
+	ReadOnly,
 	Symbols,
 	Table,
 	TemplateVariable,
@@ -36,6 +37,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Link>
 	| ReturnType<typeof List>
 	| ReturnType<typeof Mention>
+	| ReturnType<typeof ReadOnly>
 	| ReturnType<typeof Symbols>
 	| ReturnType<typeof Table>
 	| ReturnType<typeof TemplateVariable>

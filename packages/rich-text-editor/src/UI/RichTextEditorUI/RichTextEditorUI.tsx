@@ -12,14 +12,11 @@ import {
 } from "../MenuBarButtonsStateManager";
 import {
 	type OnNodeInsertionFn,
-	type OnNonCategorizedOperationFn,
 	ToolbarButtonsActionManager,
 } from "../ToolbarButtonsActionManager";
 import {
 	NodeInsertionButtonsStateManager,
-	NonCategorizedOperationButtonsStateManager,
 	type UpdateNodeInsertionButtonsStateParams,
-	type UpdateNonCategorizedOperationButtonsStateParams,
 } from "../ToolbarButtonsStateManager";
 import type { RichTextEditorUIConstructorParams } from "./RichTextEditorUI-types";
 
@@ -34,8 +31,6 @@ export class RichTextEditorUI extends HTMLElement {
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
 	#toolbarButtonsActionManager = new ToolbarButtonsActionManager();
 	#nodeInsertionButtonsStateManager = new NodeInsertionButtonsStateManager();
-	#nonCategorizedOperationButtonsStateManager =
-		new NonCategorizedOperationButtonsStateManager();
 
 	constructor({
 		toolbarButtons,
@@ -79,9 +74,6 @@ export class RichTextEditorUI extends HTMLElement {
 					nodeInsertionButtonsStateManager={
 						this.#nodeInsertionButtonsStateManager
 					}
-					nonCategorizedOperationButtonsStateManager={
-						this.#nonCategorizedOperationButtonsStateManager
-					}
 					overlayContainerRef={(element) =>
 						overlayHost.initialize({ container: element })
 					}
@@ -107,12 +99,6 @@ export class RichTextEditorUI extends HTMLElement {
 		this.#nodeInsertionButtonsStateManager.updateState(state);
 	}
 
-	updateNonCategorizedButtonState(
-		state: UpdateNonCategorizedOperationButtonsStateParams,
-	) {
-		this.#nonCategorizedOperationButtonsStateManager.updateState(state);
-	}
-
 	onNodeInsertion(callback: OnNodeInsertionFn) {
 		this.#toolbarButtonsActionManager.subscribe({
 			type: toolbarButtonActionsName.nodeInsertion,
@@ -122,20 +108,6 @@ export class RichTextEditorUI extends HTMLElement {
 		return () => {
 			this.#toolbarButtonsActionManager.unsubscribe({
 				type: toolbarButtonActionsName.nodeInsertion,
-				callback,
-			});
-		};
-	}
-
-	onNonCategorizedOperation(callback: OnNonCategorizedOperationFn) {
-		this.#toolbarButtonsActionManager.subscribe({
-			type: toolbarButtonActionsName.nonCategorizedOperation,
-			callback,
-		});
-
-		return () => {
-			this.#toolbarButtonsActionManager.unsubscribe({
-				type: toolbarButtonActionsName.nonCategorizedOperation,
 				callback,
 			});
 		};

@@ -1,7 +1,7 @@
 import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import { toolbarButtons as defaultToolbarButtons } from "../_Utilities";
-import { configureCustomStyles, configureNonCategorized } from "../Configs";
+import { configureCustomStyles } from "../Configs";
 import {
 	configurePreview,
 	configureSettings,
@@ -68,13 +68,6 @@ export class RichTextEditor extends HTMLElement {
 		}
 
 		configureCustomStyles({ editorAPI });
-
-		const nonCategorizedCleanup = configureNonCategorized({
-			richTextEditorUI: this.#richTextEditorUI,
-			editorAPI,
-		});
-
-		this.#cleanups.add(nonCategorizedCleanup);
 
 		const viewCleanup = configureView({
 			richTextEditorUI: this.#richTextEditorUI,

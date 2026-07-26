@@ -12,6 +12,7 @@ import {
 	Link,
 	List,
 	Mention,
+	ReadOnly,
 	RichTextEditor,
 	Symbols,
 	Table,
@@ -63,6 +64,7 @@ export const createDevelopmentView = () => {
 			Symbols(),
 			FindReplace(),
 			AccordionItem(),
+			ReadOnly(),
 		],
 	});
 
@@ -89,6 +91,7 @@ export const createDevelopmentView = () => {
 			Symbols(),
 			FindReplace(),
 			AccordionItem(),
+			ReadOnly(),
 		],
 	});
 

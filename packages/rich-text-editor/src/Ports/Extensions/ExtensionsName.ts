@@ -12,6 +12,7 @@ export const extensionsName = {
 	link: "link",
 	list: "list",
 	mention: "mention",
+	readOnly: "readOnly",
 	symbols: "symbols",
 	table: "table",
 	templateVariable: "templateVariable",

@@ -15,7 +15,7 @@ export const toolbarButtons: ToolbarButtons = [
 			"symbols",
 			"link",
 		],
-		["find-replace", "template-variable", "text-area-readability"],
+		["find-replace", "template-variable", "read-only"],
 	],
 	[
 		["line-local-name"],

@@ -11,6 +11,7 @@ export * from "./Image";
 export * from "./Link";
 export * from "./List";
 export * from "./Mention";
+export * from "./ReadOnly";
 export * from "./Symbols";
 export * from "./Table";
 export * from "./TemplateVariable";

@@ -1,66 +1,6 @@
-import type { Component } from "solid-js";
 import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import {
-	type ExtensionName,
-	type ToolbarButtons,
-	type ToolbarButtonValue,
-	toolbarButtonsName,
-	type UIExtension,
-} from "#ports";
-import { TextAreaReadabilityToolbarButton } from "../ToolbarButtons";
-
-type StaticToolbarButtonValue = Exclude<
-	ToolbarButtonValue,
-	| typeof toolbarButtonsName.link
-	| typeof toolbarButtonsName.media
-	| typeof toolbarButtonsName.backgroundColor
-	| typeof toolbarButtonsName.blockQuote
-	| typeof toolbarButtonsName.bold
-	| typeof toolbarButtonsName.checkboxList
-	| typeof toolbarButtonsName.code
-	| typeof toolbarButtonsName.codeBlock
-	| typeof toolbarButtonsName.color
-	| typeof toolbarButtonsName.customComponent
-	| typeof toolbarButtonsName.findReplace
-	| typeof toolbarButtonsName.fontFamily
-	| typeof toolbarButtonsName.fontSize
-	| typeof toolbarButtonsName.historyBack
-	| typeof toolbarButtonsName.historyForward
-	| typeof toolbarButtonsName.indentation
-	| typeof toolbarButtonsName.italic
-	| typeof toolbarButtonsName.letterSpacing
-	| typeof toolbarButtonsName.lineHeight
-	| typeof toolbarButtonsName.lineLocalName
-	| typeof toolbarButtonsName.lineSpacing
-	| typeof toolbarButtonsName.orderedList
-	| typeof toolbarButtonsName.removeFormat
-	| typeof toolbarButtonsName.strikethrough
-	| typeof toolbarButtonsName.subscript
-	| typeof toolbarButtonsName.superscript
-	| typeof toolbarButtonsName.symbols
-	| typeof toolbarButtonsName.table
-	| typeof toolbarButtonsName.templateVariable
-	| typeof toolbarButtonsName.textAlign
-	| typeof toolbarButtonsName.underline
-	| typeof toolbarButtonsName.unorderedList
-	| ExtensionName
->;
-
-const findExtensionToolbarButton = (
-	name: ToolbarButtonValue,
-	extensions: UIExtension[],
-) => {
-	for (const extension of extensions) {
-		const component = extension.components.toolbarButtons?.[name];
-
-		if (component) {
-			return { component };
-		}
-	}
-
-	return null;
-};
+import type { ToolbarButtons, ToolbarButtonValue, UIExtension } from "#ports";
 
 interface ToolbarButtonProps {
 	name: ToolbarButtonValue;
@@ -68,23 +8,15 @@ interface ToolbarButtonProps {
 }
 
 const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
-	const ToolbarButtonComponentMap: Record<StaticToolbarButtonValue, Component> =
-		{
-			[toolbarButtonsName.textAreaReadability]:
-				TextAreaReadabilityToolbarButton,
-		};
+	for (const extension of extensions) {
+		const component = extension.components.toolbarButtons?.[name];
 
-	const match = findExtensionToolbarButton(name, extensions);
-
-	if (!match) {
-		return (
-			<Dynamic
-				component={ToolbarButtonComponentMap[name as StaticToolbarButtonValue]}
-			/>
-		);
+		if (component) {
+			return <Dynamic component={component} />;
+		}
 	}
 
-	return <Dynamic component={match.component} />;
+	return null;
 };
 
 export interface EditorToolbarProps {

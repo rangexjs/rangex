@@ -51,17 +51,11 @@ export type {
 	TextAlignToolbarButtonState,
 	TextAlignValue,
 	TextAlignValues,
-	TextAreaReadabilityToolbarButtonState,
 	ToggleButtonPressed,
 	UnderlineToolbarButtonState,
 } from "./ToolbarButtonProps";
-export type {
-	NodeInsertionActionState,
-	NonCategorizedOperationActionState,
-} from "./ToolbarButtonsActionManager";
+export type { NodeInsertionActionState } from "./ToolbarButtonsActionManager";
 export type {
 	NodeInsertionButtonsState,
-	NonCategorizedOperationButtonsState,
 	UpdateNodeInsertionButtonsStateParams,
-	UpdateNonCategorizedOperationButtonsStateParams,
 } from "./ToolbarButtonsStateManager";

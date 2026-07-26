@@ -8,6 +8,7 @@ import type {
 	FormattingUIPort,
 	LinkUIPort,
 	ListUIPort,
+	ReadOnlyUIPort,
 	SymbolsUIPort,
 	TableUIPort,
 	TemplateVariableUIPort,
@@ -18,10 +19,7 @@ import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
 import type { ToolbarButtonsActionManager } from "../../ToolbarButtonsActionManager";
-import type {
-	NodeInsertionButtonsStateManager,
-	NonCategorizedOperationButtonsStateManager,
-} from "../../ToolbarButtonsStateManager";
+import type { NodeInsertionButtonsStateManager } from "../../ToolbarButtonsStateManager";
 import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
@@ -34,6 +32,7 @@ import {
 export interface UIPortsContextValue {
 	accordionItemUIPort: AccordionItemUIPort | null;
 	linkUIPort: LinkUIPort | null;
+	readOnlyUIPort: ReadOnlyUIPort | null;
 	undoRedoUIPort: UndoRedoUIPort | null;
 	symbolsUIPort: SymbolsUIPort | null;
 	findReplaceUIPort: FindReplaceUIPort | null;
@@ -55,7 +54,6 @@ export interface MenuBarManagers {
 export interface ToolbarButtonManagers {
 	toolbarButtonsActionManager: ToolbarButtonsActionManager;
 	nodeInsertionButtonsStateManager: NodeInsertionButtonsStateManager;
-	nonCategorizedOperationButtonsStateManager: NonCategorizedOperationButtonsStateManager;
 }
 
 export interface AppProps extends MenuBarManagers, ToolbarButtonManagers {
@@ -105,8 +103,6 @@ export const App = (props: AppProps) => {
 	const toolbarButtonManagersContextValue: ToolbarButtonManagers = {
 		toolbarButtonsActionManager: props.toolbarButtonsActionManager,
 		nodeInsertionButtonsStateManager: props.nodeInsertionButtonsStateManager,
-		nonCategorizedOperationButtonsStateManager:
-			props.nonCategorizedOperationButtonsStateManager,
 	};
 
 	return (

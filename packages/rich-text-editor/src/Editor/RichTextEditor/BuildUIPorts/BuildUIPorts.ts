@@ -7,6 +7,7 @@ import {
 	FormattingAdapter,
 	LinkAdapter,
 	ListAdapter,
+	ReadOnlyAdapter,
 	SymbolsAdapter,
 	TableAdapter,
 	TemplateVariableAdapter,
@@ -28,6 +29,7 @@ export const buildUIPorts = ({
 	const uiPorts: UIPortsContextValue = {
 		accordionItemUIPort: null,
 		linkUIPort: null,
+		readOnlyUIPort: null,
 		undoRedoUIPort: null,
 		symbolsUIPort: null,
 		findReplaceUIPort: null,
@@ -48,6 +50,10 @@ export const buildUIPorts = ({
 
 		if (adapter instanceof LinkAdapter) {
 			uiPorts.linkUIPort = adapter.uiPort;
+		}
+
+		if (adapter instanceof ReadOnlyAdapter) {
+			uiPorts.readOnlyUIPort = adapter.uiPort;
 		}
 
 		if (adapter instanceof UndoRedoAdapter) {
