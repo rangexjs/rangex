@@ -1,0 +1,60 @@
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
+import { useUIPortsContext } from "../../../App";
+import { Icon } from "../../../Icon";
+import { ToolbarButton } from "../../_Utilities";
+
+export const SubscriptToolbarButton = () => {
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
+
+	if (!formattingUIPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
+
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.subscript.disabled,
+	);
+	const [pressed, setPressed] = createSignal(
+		formattingUIPort.subscript.pressed,
+	);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
+
+	const checked = createMemo(
+		() => pressed() === "true" || pressed() === "mixed",
+	);
+
+	onMount(() => {
+		const unsubscribeSubscript = formattingUIPort.onSubscriptUpdate((state) => {
+			setButtonDisabled(state.disabled);
+			setPressed(state.pressed);
+		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
+
+		onCleanup(() => {
+			unsubscribeSubscript();
+			unsubscribeReadOnly?.();
+		});
+	});
+
+	const onClick = () => {
+		formattingUIPort.emitFormattingChange({ subscript: pressed() });
+	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
+
+	return (
+		<span>
+			<ToolbarButton
+				checked={checked()}
+				disabled={disabled()}
+				onClick={onClick}
+				aria-pressed={pressed()}
+			>
+				<Icon name="Subscript" class="size-4" />
+			</ToolbarButton>
+		</span>
+	);
+};

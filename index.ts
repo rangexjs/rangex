@@ -1,4 +1,4 @@
-import { createDevelopmentView } from "@rangex/rich-text-editor";
+import { createDevelopmentView } from "./src/CreateDevelopmentView";
 
 const root = document.getElementById("root");
 

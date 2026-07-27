@@ -1,89 +1,27 @@
 import { For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import type { ToolbarButtons } from "../../CommonTypes";
-import { type ToolbarButtonValue, toolbarButtonsName } from "../../Constants";
-import {
-	AnchorToolbarButton,
-	BackgroundColorToolbarButton,
-	BlockQuoteToolbarButton,
-	BoldToolbarButton,
-	CheckboxListToolbarButton,
-	CodeBlockToolbarButton,
-	CodeToolbarButton,
-	ColorToolbarButton,
-	CustomComponentToolbarButton,
-	FindReplaceToolbarButton,
-	FontFamilyToolbarButton,
-	FontSizeToolbarButton,
-	HistoryBackToolbarButton,
-	HistoryForwardToolbarButton,
-	IndentationToolbarButton,
-	ItalicToolbarButton,
-	LetterSpacingToolbarButton,
-	LineHeightToolbarButton,
-	LineLocalNameToolbarButton,
-	LineSpacingToolbarButton,
-	MediaToolbarButton,
-	OrderedListToolbarButton,
-	RemoveFormatToolbarButton,
-	StrikethroughToolbarButton,
-	SubscriptToolbarButton,
-	SuperscriptToolbarButton,
-	SymbolsToolbarButton,
-	TableToolbarButton,
-	TemplateVariableToolbarButton,
-	TextAlignToolbarButton,
-	TextAreaReadabilityToolbarButton,
-	UnderlineToolbarButton,
-	UnorderedListToolbarButton,
-} from "../ToolbarButtons";
+import type { ToolbarButtons, ToolbarButtonValue, UIExtension } from "#ports";
 
 interface ToolbarButtonProps {
 	name: ToolbarButtonValue;
+	extensions: UIExtension[];
 }
 
-const ToolbarButton = ({ name }: ToolbarButtonProps) => {
-	const ToolbarButtonComponentMap = {
-		[toolbarButtonsName.anchor]: AnchorToolbarButton,
-		[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
-		[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
-		[toolbarButtonsName.bold]: BoldToolbarButton,
-		[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
-		[toolbarButtonsName.code]: CodeToolbarButton,
-		[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
-		[toolbarButtonsName.color]: ColorToolbarButton,
-		[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
-		[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
-		[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
-		[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
-		[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
-		[toolbarButtonsName.indentation]: IndentationToolbarButton,
-		[toolbarButtonsName.media]: MediaToolbarButton,
-		[toolbarButtonsName.italic]: ItalicToolbarButton,
-		[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
-		[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
-		[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
-		[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
-		[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
-		[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
-		[toolbarButtonsName.findReplace]: FindReplaceToolbarButton,
-		[toolbarButtonsName.subscript]: SubscriptToolbarButton,
-		[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
-		[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
-		[toolbarButtonsName.symbols]: SymbolsToolbarButton,
-		[toolbarButtonsName.table]: TableToolbarButton,
-		[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
-		[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
-		[toolbarButtonsName.textAreaReadability]: TextAreaReadabilityToolbarButton,
-		[toolbarButtonsName.underline]: UnderlineToolbarButton,
-		[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
-	} as const;
+const ToolbarButton = ({ name, extensions }: ToolbarButtonProps) => {
+	for (const extension of extensions) {
+		const component = extension.components.toolbarButtons?.[name];
 
-	return <Dynamic component={ToolbarButtonComponentMap[name]} />;
+		if (component) {
+			return <Dynamic component={component} />;
+		}
+	}
+
+	return null;
 };
 
 export interface EditorToolbarProps {
 	toolbarButtons: ToolbarButtons;
+	extensions: UIExtension[];
 }
 
 export const EditorToolbar = (props: EditorToolbarProps) => {
@@ -97,7 +35,12 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 								<>
 									<span class="space-x-0.5">
 										<For each={group}>
-											{(name) => <ToolbarButton name={name} />}
+											{(name) => (
+												<ToolbarButton
+													name={name}
+													extensions={props.extensions}
+												/>
+											)}
 										</For>
 									</span>
 									<Show when={index() < row.length - 1}>

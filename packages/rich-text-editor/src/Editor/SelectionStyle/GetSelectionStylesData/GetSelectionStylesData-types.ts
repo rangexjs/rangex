@@ -3,7 +3,10 @@ import type {
 	TextFormatInlineTags,
 	UpdateSelectionStylesParams,
 } from "rich-text-area";
-import type { FormatStylesActionState, StructuredColor } from "#ui";
+import type {
+	FormattingActionState,
+	FormattingStructuredColor,
+} from "#adapters";
 import type {
 	BackgroundColorStructuredStyleValue,
 	ColorStructuredStyleValue,
@@ -17,13 +20,13 @@ import type {
 } from "../StructuredStyleValue";
 
 export interface GetColorValueFromStructuredColorParams {
-	color: StructuredColor;
+	color: FormattingStructuredColor;
 }
 
 export type GetColorValueFromStructuredColorResult = string;
 
 export interface GetBackgroundColorStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetBackgroundColorStylesResult =
@@ -32,13 +35,13 @@ export type GetBackgroundColorStylesResult =
 	| undefined;
 
 export interface GetColorStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetColorStylesResult = ColorStructuredStyleValue | null | undefined;
 
 export interface GetFontFamilyStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetFontFamilyStylesResult =
@@ -47,7 +50,7 @@ export type GetFontFamilyStylesResult =
 	| undefined;
 
 export interface GetFontSizeStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetFontSizeStylesResult =
@@ -56,7 +59,7 @@ export type GetFontSizeStylesResult =
 	| undefined;
 
 export interface GetLetterSpacingStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetLetterSpacingStylesResult =
@@ -65,7 +68,7 @@ export type GetLetterSpacingStylesResult =
 	| undefined;
 
 export interface GetLineHeightStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetLineHeightStylesResult =
@@ -73,7 +76,7 @@ export type GetLineHeightStylesResult =
 	| undefined;
 
 export interface GetPaddingBlockStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetPaddingBlockStylesResult =
@@ -81,7 +84,7 @@ export type GetPaddingBlockStylesResult =
 	| undefined;
 
 export interface GetTextAlignStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetTextAlignStylesResult =
@@ -89,7 +92,7 @@ export type GetTextAlignStylesResult =
 	| undefined;
 
 export interface GetTextIndentStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export type GetTextIndentStylesResult =
@@ -97,7 +100,7 @@ export type GetTextIndentStylesResult =
 	| undefined;
 
 export interface GetStylesParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 }
 
 export interface GetStylesResult extends MergedFormatsStyles {}
@@ -105,14 +108,14 @@ export interface GetStylesResult extends MergedFormatsStyles {}
 type WhenMixed = "apply" | "remove";
 
 export interface GetInlineTagsParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 	whenMixed: WhenMixed;
 }
 
 export interface GetInlineTagsResult extends TextFormatInlineTags {}
 
 export interface GetSelectionStylesDataParams {
-	formatStylesActionState: FormatStylesActionState;
+	formattingActionState: FormattingActionState;
 	whenMixed: WhenMixed;
 }
 

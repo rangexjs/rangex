@@ -10,7 +10,7 @@
 		"dev": "vite dev",
 		"build": "bun run --filter @rangex/rich-text-editor build",
 		"fix": "bun run --filter @rangex/rich-text-editor fix",
-		"lint": "bun run --filter @rangex/rich-text-editor lint"
+		"lint": "biome check index.ts src && bun run --filter @rangex/rich-text-editor lint"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",

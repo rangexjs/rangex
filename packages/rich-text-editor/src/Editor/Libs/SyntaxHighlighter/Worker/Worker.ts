@@ -1,5 +1,5 @@
 import { createHighlighter } from "shiki";
-import { assertNever } from "../../../ErrorHandling";
+import { assertNever } from "#ports";
 import {
 	highlighterLangs,
 	highlighterThemes,

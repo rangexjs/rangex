@@ -1,0 +1,58 @@
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
+import { useUIPortsContext } from "../../../App";
+import { Icon } from "../../../Icon";
+import { ToolbarButton } from "../../_Utilities";
+
+export const ItalicToolbarButton = () => {
+	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
+
+	if (!formattingUIPort) {
+		throw new Error("FormattingUIPort can't be null.");
+	}
+
+	const [buttonDisabled, setButtonDisabled] = createSignal(
+		formattingUIPort.italic.disabled,
+	);
+	const [pressed, setPressed] = createSignal(formattingUIPort.italic.pressed);
+	const [readOnly, setReadOnly] = createSignal(
+		!!readOnlyUIPort?.toolbarButton.checked,
+	);
+
+	const checked = createMemo(
+		() => pressed() === "true" || pressed() === "mixed",
+	);
+
+	onMount(() => {
+		const unsubscribeItalic = formattingUIPort.onItalicUpdate((state) => {
+			setButtonDisabled(state.disabled);
+			setPressed(state.pressed);
+		});
+		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
+			setReadOnly(state.checked),
+		);
+
+		onCleanup(() => {
+			unsubscribeItalic();
+			unsubscribeReadOnly?.();
+		});
+	});
+
+	const onClick = () => {
+		formattingUIPort.emitFormattingChange({ italic: pressed() });
+	};
+
+	const disabled = createMemo(() => buttonDisabled() || readOnly());
+
+	return (
+		<span>
+			<ToolbarButton
+				checked={checked()}
+				disabled={disabled()}
+				onClick={onClick}
+				aria-pressed={pressed()}
+			>
+				<Icon name="Italic" class="size-4" />
+			</ToolbarButton>
+		</span>
+	);
+};

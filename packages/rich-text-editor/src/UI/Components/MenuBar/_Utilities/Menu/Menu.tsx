@@ -1,5 +1,5 @@
 import { createUniqueId, For } from "solid-js";
-import { assertNever } from "../../../../ErrorHandling";
+import { assertNever } from "#ports";
 import { Icon } from "../../../Icon";
 
 export interface MenuButtonItem {

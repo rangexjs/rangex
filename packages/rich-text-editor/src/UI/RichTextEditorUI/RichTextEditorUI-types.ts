@@ -1,22 +1,10 @@
-import type { ToolbarButtons } from "../CommonTypes";
-import type { DefaultStyleValues } from "../ToolbarButtonDefaultValues";
-import type {
-	CodeBlockLanguage,
-	CodeBlockTheme,
-	CustomComponentName,
-	FontFamilyOption,
-} from "../ToolbarButtonProps";
-
-export interface RichTextEditorUIOptions {
-	codeBlockLanguages?: CodeBlockLanguage[];
-	codeBlockThemes?: CodeBlockTheme[];
-	customComponentNames?: CustomComponentName[];
-	fontFamilyOptions?: FontFamilyOption[];
-}
+import type { OverlayHost, ToolbarButtons, UIExtension } from "#ports";
+import type { UIPortsContextValue } from "../Components/App";
 
 export interface RichTextEditorUIConstructorParams {
 	richTextArea: HTMLElement;
 	toolbarButtons: ToolbarButtons;
-	defaultStyleValues?: Partial<DefaultStyleValues>;
-	options?: RichTextEditorUIOptions;
+	extensions: UIExtension[];
+	uiPorts: UIPortsContextValue;
+	overlayHost: OverlayHost;
 }

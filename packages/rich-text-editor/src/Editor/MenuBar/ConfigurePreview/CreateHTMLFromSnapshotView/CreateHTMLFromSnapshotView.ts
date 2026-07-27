@@ -26,7 +26,7 @@ import {
 	tableRowName,
 	tableSectionName,
 } from "rich-text-area";
-import { assertNever } from "../../../ErrorHandling/ErrorHandling";
+import { assertNever } from "#ports";
 import { getStyleSheetTexts } from "../../../Styles";
 import type {
 	CreateHTMLFromSnapshotViewParams,
