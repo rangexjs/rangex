@@ -5,7 +5,7 @@ import type {
 	PaddingInlineStructuredStyleValue,
 	TextAlignStructuredStyleValue,
 	TextIndentStructuredStyleValue,
-} from "../../../../SelectionStyle";
+} from "#editor";
 import type { GetDefaultContentLineLocalNamesStylesResult } from "./GetDefaultContentLineLocalNamesStyles-types";
 
 const createDefaultLineHeight = (

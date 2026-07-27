@@ -1,13 +1,13 @@
-import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
-import { RichTextEditorUI } from "#ui";
-import { toolbarButtons as defaultToolbarButtons } from "../_Utilities";
-import { configureCustomStyles } from "../Configs";
 import {
+	configureCustomStyles,
 	configurePreview,
 	configureSettings,
 	configureTemplate,
 	configureView,
-} from "../MenuBar";
+} from "#editor";
+import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
+import { RichTextEditorUI } from "#ui";
+import { toolbarButtons as defaultToolbarButtons } from "./_Utilities";
 import { buildUIPorts } from "./BuildUIPorts";
 import { createRangeX } from "./CreateRangeX";
 import type {
@@ -83,17 +83,6 @@ export class RichTextEditor extends HTMLElement {
 
 		configureTemplate({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
-
-		// ---------- CODE BELOW IS TEMPORARY ----------
-
-		// window.snapshot = () => {
-		// 	const storedSnapshot = editorAPI.createStoredSnapshot();
-		// 	// console.log(storedSnapshot);
-
-		// 	const res = createSnapshotView({ storedSnapshot });
-
-		// 	console.log(res);
-		// };
 	}
 
 	destroy() {

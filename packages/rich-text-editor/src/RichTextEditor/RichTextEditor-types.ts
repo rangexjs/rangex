@@ -21,7 +21,7 @@ import type {
 	TodoList,
 	UndoRedo,
 	Video,
-} from "../../Extensions";
+} from "../Extensions";
 
 export type ExtensionUnion =
 	| ReturnType<typeof AccordionItem>

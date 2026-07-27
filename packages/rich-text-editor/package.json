@@ -27,6 +27,10 @@
 			"types": "./src/Adapters/index.ts",
 			"default": "./src/Adapters/index"
 		},
+		"#editor": {
+			"types": "./src/Editor/index.ts",
+			"default": "./src/Editor/index"
+		},
 		"#ui": {
 			"types": "./src/UI/index.ts",
 			"default": "./src/UI/index"

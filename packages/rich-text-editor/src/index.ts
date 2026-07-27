@@ -1,4 +1,3 @@
-export { RichTextEditor } from "./Editor/RichTextEditor";
 export { AccordionItem } from "./Extensions/AccordionItem";
 export { Audio } from "./Extensions/Audio";
 export { BlockQuote } from "./Extensions/BlockQuote";
@@ -19,3 +18,4 @@ export { TemplateVariable } from "./Extensions/TemplateVariable";
 export { TodoList } from "./Extensions/TodoList";
 export { UndoRedo } from "./Extensions/UndoRedo";
 export { Video } from "./Extensions/Video";
+export { RichTextEditor } from "./RichTextEditor";
