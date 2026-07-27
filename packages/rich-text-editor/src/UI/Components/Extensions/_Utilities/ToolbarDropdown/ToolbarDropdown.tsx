@@ -1,22 +1,22 @@
 import { Index, type JSX, Show } from "solid-js";
 import { Icon } from "../../../Icon";
 
-export type DropdownList = {
+export type ToolbarDropdownList = {
 	checked?: boolean;
 	text: string;
 	button: JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 	settings?: JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 }[];
 
-interface DropdownProps {
+interface ToolbarDropdownProps {
 	id: string;
 	class?: string;
 	style?: JSX.CSSProperties;
-	list: DropdownList;
+	list: ToolbarDropdownList;
 	onToggle?: (event: ToggleEvent) => void;
 }
 
-export const Dropdown = (props: DropdownProps) => {
+export const ToolbarDropdown = (props: ToolbarDropdownProps) => {
 	return (
 		<div
 			id={props.id}

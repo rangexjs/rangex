@@ -7,8 +7,8 @@ import {
 } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList } from "../Dropdown";
 import { ToolbarButton } from "../ToolbarButton";
+import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
 	const { accordionItemUIPort, readOnlyUIPort } = useUIPortsContext();
@@ -51,8 +51,8 @@ export const CustomComponentToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const list = createMemo<DropdownList>(() => {
-		const items: DropdownList = [];
+	const list = createMemo<ToolbarDropdownList>(() => {
+		const items: ToolbarDropdownList = [];
 
 		if (accordionItemUIPort) {
 			items.push({
@@ -81,7 +81,7 @@ export const CustomComponentToolbarButton = () => {
 				<Icon name="SquaresFour" class="size-4" />
 			</ToolbarButton>
 
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
 				class="[position-area:bottom_center]"

@@ -13,7 +13,7 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
-import { Dropdown, type DropdownList } from "../../_Utilities";
+import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const getInputValueFromActiveValues = (
 	fontFamily: Set<FormattingFontFamilyValue>,
@@ -151,7 +151,7 @@ export const FontFamilyToolbarButton = () => {
 		formattingUIPort.emitFormattingChange({ fontFamily });
 	};
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const getText = (value: FormattingFontFamilyValue) => {
 			const option = fontFamilyOptions.find((o) => o.value === value);
 
@@ -214,7 +214,7 @@ export const FontFamilyToolbarButton = () => {
 					{...inputControls}
 				/>
 			</TextFieldWrapper>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
 				class="absolute [position-area:center_bottom]"

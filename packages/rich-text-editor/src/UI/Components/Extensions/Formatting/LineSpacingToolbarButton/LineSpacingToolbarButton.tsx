@@ -8,7 +8,11 @@ import {
 import type { FormattingLineSpacingValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 const defaultValues: Set<FormattingLineSpacingValue> = new Set([
 	{ type: "px", value: 0 },
@@ -82,7 +86,7 @@ export const LineSpacingToolbarButton = () => {
 		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
 	});
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const contains = (value: FormattingLineSpacingValue) => {
 			return !![...activeValues()].find(
 				(activeValue) =>
@@ -90,7 +94,7 @@ export const LineSpacingToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map<DropdownList[number]>((lineSpacing) => {
+		return sortedList().map<ToolbarDropdownList[number]>((lineSpacing) => {
 			return {
 				checked: contains(lineSpacing),
 				text: `${lineSpacing.value}`,
@@ -117,7 +121,7 @@ export const LineSpacingToolbarButton = () => {
 			>
 				<Icon name="ArrowsOutLineVertical" class="size-4" />
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				onToggle={onPopoverToggle}
 				list={list()}

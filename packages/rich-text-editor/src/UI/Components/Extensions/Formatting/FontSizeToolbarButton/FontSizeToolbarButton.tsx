@@ -13,7 +13,7 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
-import { Dropdown, type DropdownList } from "../../_Utilities";
+import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const fontSizeValues: FormattingFontSizeValue[] = [
 	{ type: "px", value: 10 },
@@ -179,7 +179,7 @@ export const FontSizeToolbarButton = () => {
 		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
 	});
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const contains = (value: FormattingFontSizeValue) => {
 			return !![...activeValues()].find(
 				(activeValue) =>
@@ -187,23 +187,25 @@ export const FontSizeToolbarButton = () => {
 			);
 		};
 
-		return sortedLetterSpacings().map<DropdownList[number]>((fontSizeItem) => {
-			return {
-				checked: contains(fontSizeItem),
-				text: `${fontSizeItem.value}`,
-				button: {
-					"on:click": () => {
-						const defaultFontSize = formattingUIPort.defaultFontSize;
-						const fontSize: FormattingFontSizeValue | null =
-							fontSizeItem.value === defaultFontSize.value
-								? null
-								: fontSizeItem;
-						formattingUIPort.emitFormattingChange({ fontSize });
+		return sortedLetterSpacings().map<ToolbarDropdownList[number]>(
+			(fontSizeItem) => {
+				return {
+					checked: contains(fontSizeItem),
+					text: `${fontSizeItem.value}`,
+					button: {
+						"on:click": () => {
+							const defaultFontSize = formattingUIPort.defaultFontSize;
+							const fontSize: FormattingFontSizeValue | null =
+								fontSizeItem.value === defaultFontSize.value
+									? null
+									: fontSizeItem;
+							formattingUIPort.emitFormattingChange({ fontSize });
+						},
+						class: "justify-center",
 					},
-					class: "justify-center",
-				},
-			};
-		});
+				};
+			},
+		);
 	});
 
 	const disabled = createMemo(() => buttonDisabled() || readOnly());
@@ -241,7 +243,7 @@ export const FontSizeToolbarButton = () => {
 					{...inputControls}
 				/>
 			</TextFieldWrapper>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
 				class="absolute [position-area:center_bottom]"

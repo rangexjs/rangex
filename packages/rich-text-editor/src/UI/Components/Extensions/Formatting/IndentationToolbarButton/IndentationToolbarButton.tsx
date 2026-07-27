@@ -8,7 +8,11 @@ import {
 import type { FormattingIndentationValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 const defaultValues: Set<FormattingIndentationValue> = new Set([
 	{ type: "px", value: 0 },
@@ -91,7 +95,7 @@ export const IndentationToolbarButton = () => {
 		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
 	});
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const contains = (value: FormattingIndentationValue) => {
 			return !![...activeValues()].find(
 				(activeValue) =>
@@ -99,7 +103,7 @@ export const IndentationToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map<DropdownList[number]>((indentation) => {
+		return sortedList().map<ToolbarDropdownList[number]>((indentation) => {
 			return {
 				checked: contains(indentation),
 				text: `${indentation.value}`,
@@ -126,7 +130,7 @@ export const IndentationToolbarButton = () => {
 			>
 				<Icon name="Indentation" class="size-4" />
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				onToggle={onPopoverToggle}
 				list={list()}

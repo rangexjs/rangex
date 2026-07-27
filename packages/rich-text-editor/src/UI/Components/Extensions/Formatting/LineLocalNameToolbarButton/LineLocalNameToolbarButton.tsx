@@ -7,7 +7,11 @@ import {
 } from "solid-js";
 import type { FormattingLineLocalNameValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
 	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
@@ -82,7 +86,7 @@ export const LineLocalNameToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const updateLocalName = (lineLocalName: FormattingLineLocalNameValue) => {
 			formattingUIPort.emitFormattingChange({ lineLocalName });
 		};
@@ -97,20 +101,20 @@ export const LineLocalNameToolbarButton = () => {
 			"h6",
 		];
 
-		const dropDownList: DropdownList = localNames.map<DropdownList[number]>(
-			(localName) => {
-				return {
-					text: getTitle(localName),
-					checked: lineLocalNames().has(localName),
-					button: {
-						"on:click": () => {
-							updateLocalName(localName);
-						},
-						class: "justify-center",
+		const dropDownList: ToolbarDropdownList = localNames.map<
+			ToolbarDropdownList[number]
+		>((localName) => {
+			return {
+				text: getTitle(localName),
+				checked: lineLocalNames().has(localName),
+				button: {
+					"on:click": () => {
+						updateLocalName(localName);
 					},
-				};
-			},
-		);
+					class: "justify-center",
+				},
+			};
+		});
 
 		return dropDownList;
 	});
@@ -129,7 +133,7 @@ export const LineLocalNameToolbarButton = () => {
 			>
 				{title()}
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
 				onToggle={onPopoverToggle}

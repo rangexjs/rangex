@@ -8,7 +8,11 @@ import {
 import type { CodeBlockLanguage } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 const languages: CodeBlockLanguage[] = [
 	"JavaScript",
@@ -72,7 +76,7 @@ export const CodeBlockToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const list: DropdownList = languages.map((language) => {
+	const list: ToolbarDropdownList = languages.map((language) => {
 		return {
 			text: language,
 			button: {
@@ -97,7 +101,7 @@ export const CodeBlockToolbarButton = () => {
 				<Icon name="CodeBlock" class="size-4" />
 			</ToolbarButton>
 
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list}
 				class="[position-area:bottom_center]"

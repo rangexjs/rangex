@@ -8,7 +8,11 @@ import {
 import type { FormattingLetterSpacingValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 	{ type: "px", value: -3 },
@@ -93,7 +97,7 @@ export const LetterSpacingToolbarButton = () => {
 		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
 	});
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const contains = (value: FormattingLetterSpacingValue) => {
 			return !![...activeValues()].find(
 				(activeValue) =>
@@ -101,18 +105,20 @@ export const LetterSpacingToolbarButton = () => {
 			);
 		};
 
-		return sortedLetterSpacings().map<DropdownList[number]>((spacing) => {
-			return {
-				checked: contains(spacing),
-				text: `${spacing.value}`,
-				button: {
-					"on:click": () => {
-						formattingUIPort.emitFormattingChange({ letterSpacing: spacing });
+		return sortedLetterSpacings().map<ToolbarDropdownList[number]>(
+			(spacing) => {
+				return {
+					checked: contains(spacing),
+					text: `${spacing.value}`,
+					button: {
+						"on:click": () => {
+							formattingUIPort.emitFormattingChange({ letterSpacing: spacing });
+						},
+						class: "justify-center",
 					},
-					class: "justify-center",
-				},
-			};
-		});
+				};
+			},
+		);
 	});
 
 	const disabled = createMemo(() => buttonDisabled() || readOnly());
@@ -128,7 +134,7 @@ export const LetterSpacingToolbarButton = () => {
 			>
 				<Icon name="LetterSpacing" class="size-4" />
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				onToggle={onPopoverToggle}
 				list={list()}

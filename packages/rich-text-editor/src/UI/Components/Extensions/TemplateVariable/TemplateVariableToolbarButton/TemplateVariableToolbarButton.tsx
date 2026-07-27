@@ -8,7 +8,11 @@ import {
 import type { TemplateVariableKind } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
 export const TemplateVariableToolbarButton = () => {
@@ -47,7 +51,7 @@ export const TemplateVariableToolbarButton = () => {
 	const emailModalId = createUniqueId();
 	const dateModalId = createUniqueId();
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const insertTemplate = (kind: TemplateVariableKind) => {
 			templateVariableUIPort.emitInsertRequest({ kind });
 		};
@@ -135,7 +139,7 @@ export const TemplateVariableToolbarButton = () => {
 			>
 				<Icon name="TemplateVariable" class="size-4" />
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
 				class="[position-area:center_bottom]"

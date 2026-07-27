@@ -8,7 +8,11 @@ import {
 import type { FormattingLineHeightValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
+import {
+	ToolbarButton,
+	ToolbarDropdown,
+	type ToolbarDropdownList,
+} from "../../_Utilities";
 
 const defaultValues: Set<FormattingLineHeightValue> = new Set([
 	{ type: "number", value: 0.8 },
@@ -86,7 +90,7 @@ export const LineHeightToolbarButton = () => {
 		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
 	});
 
-	const list = createMemo<DropdownList>(() => {
+	const list = createMemo<ToolbarDropdownList>(() => {
 		const contains = (value: FormattingLineHeightValue) => {
 			return !![...activeValues()].find(
 				(activeValue) =>
@@ -121,7 +125,7 @@ export const LineHeightToolbarButton = () => {
 			>
 				<Icon name="LineHeight" class="size-4" />
 			</ToolbarButton>
-			<Dropdown
+			<ToolbarDropdown
 				id={popoverId}
 				onToggle={onPopoverToggle}
 				list={list()}
