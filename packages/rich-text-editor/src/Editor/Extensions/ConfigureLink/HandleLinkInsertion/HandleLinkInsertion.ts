@@ -7,8 +7,8 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
+import { assertNever } from "#ports";
 import { componentsName } from "../../../Constants";
-import { assertNever } from "../../../ErrorHandling";
 import { createLinkStorage } from "../../../Storage";
 import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
 import type {

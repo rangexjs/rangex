@@ -1,6 +1,6 @@
 import { createStructuredStyleValue } from "rich-text-area";
 import type { FormattingTogglePressed } from "#adapters";
-import { assertNever } from "../../ErrorHandling";
+import { assertNever } from "#ports";
 import type {
 	GetBackgroundColorStylesParams,
 	GetBackgroundColorStylesResult,

@@ -1,5 +1,5 @@
+import { assertNever } from "#ports";
 import { menuBarButtonsName } from "../Constants";
-import { assertNever } from "../ErrorHandling";
 import type {
 	LanguageMenuBarButtonState,
 	PreviewMenuBarButtonState,

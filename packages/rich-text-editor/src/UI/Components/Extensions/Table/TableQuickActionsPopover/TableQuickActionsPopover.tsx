@@ -16,7 +16,7 @@ import type {
 	TableUIPort,
 	TableVerticalAlignmentState,
 } from "#adapters";
-import { assertNever } from "../../../../ErrorHandling";
+import { assertNever } from "#ports";
 import { Icon } from "../../../Icon";
 import {
 	type ActionItem,

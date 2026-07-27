@@ -1,6 +1,6 @@
 import { caretAnchorName } from "rich-text-area";
+import { assertNever } from "#ports";
 import { positionPopoverToSelection } from "../../../_Utilities";
-import { assertNever } from "../../../ErrorHandling";
 import { getLinkInsertionMode } from "../_Utilities";
 import type {
 	GetDisplayTextInfoParams,

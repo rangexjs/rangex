@@ -9,6 +9,7 @@ This package uses **Ports → Adapters → Extensions** for every feature — ev
 **`Ports/`** — cross-cutting contract types with no feature-specific implementation.
 - `Ports/Extensions/` — the generic `Extension`/`ExtensionDefinition`/`ExtensionComponents`/`UIExtension` shapes `createExtension` produces, plus `ExtensionsName` — the single constant every extension's `name` must come from (`extensionsName.link`, never the literal `"link"`).
 - `Ports/ToolbarButtons/` — `ToolbarButtonsName` (every toolbar button's name/value) and `ToolbarButtonsLayout` (the row/group array `RichTextEditor`'s `toolbarButtons` param takes).
+- `Ports/ErrorHandling/` — `assertNever`, the one shared exhaustiveness-check helper. Every tier imports it via `#ports` rather than keeping its own copy.
 - Exposed package-wide only via `#ports`.
 
 **`Adapters/`** — one class per extension (`LinkAdapter`, `MentionAdapter`, `FormattingAdapter`), each fully self-contained: its own state types, Port types, and implementation all live in that Adapter's folder (e.g. `Adapters/LinkAdapter/LinkAdapter-types.ts` has everything Link-related — `LinkEditorPort`, `LinkUIPort`, `LinkState`, the lot). See `Adapters/CLAUDE.md` for the internal mechanics.
@@ -68,7 +69,6 @@ Cross-tier imports must go through the `package.json` `imports` field, never a r
 ### Caveats
 
 - Every extension in the public API (`src/index.ts`) — `AccordionItem`, `Audio`, `BlockQuote`, `CodeBlock`, `Embed`, `Emoji`, `EmptyMedia`, `FindReplace`, `Formatting`, `Image`, `Link`, `List`, `Mention`, `ReadOnly`, `Symbols`, `Table`, `TemplateVariable`, `TodoList`, `UndoRedo`, `Video` — has fully migrated to an Adapter, `Formatting` included (all 18 format-related buttons consume `FormattingAdapter` via `uiPort`; there is no partial-migration split left). There is no more old-path per-feature wiring: `Editor/Components/`, `UI/PopoverControllers/`, and `FormatStylesButtonsStateManager` are all gone. The only surviving `{ richTextEditorUI, editorAPI }`-style wiring is `Editor/Configs/` and `Editor/MenuBar/` — cross-cutting concerns (custom styles, the menu bar), not per-node features, so they were never in scope for the extension migration in the first place.
-- Small utilities are still duplicated per tier on purpose (e.g. `assertNever` exists separately under `UI/ErrorHandling/`, `Editor/ErrorHandling/`, and `Adapters/_Utilities/ErrorHandling/`) — this is intentional, so touching one tier's copy never risks another's.
 - Sibling Adapters/PopoverControllers must not import types from one another, even when nearly identical — duplicate instead.
 - There is currently no validation that a `toolbarButtons` layout entry referencing an extension-owned name actually has a matching extension present — an unmatched name silently renders nothing rather than throwing.
 

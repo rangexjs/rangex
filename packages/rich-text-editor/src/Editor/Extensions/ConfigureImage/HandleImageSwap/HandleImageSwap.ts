@@ -1,9 +1,9 @@
+import { assertNever } from "#ports";
 import {
 	isWellFormedUrl,
 	probeMediaSrc,
 	uploadMediaFile,
 } from "../../../_Utilities";
-import { assertNever } from "../../../ErrorHandling";
 import { applyImageSrc } from "../_Utilities";
 import type {
 	HandleImageSwapParams,

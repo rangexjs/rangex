@@ -6,7 +6,7 @@ import {
 	onMount,
 } from "solid-js";
 import type { VideoUIPort } from "#adapters";
-import { assertNever } from "../../../../ErrorHandling";
+import { assertNever } from "#ports";
 import {
 	ContentSwitch,
 	type ContentSwitcherControls,

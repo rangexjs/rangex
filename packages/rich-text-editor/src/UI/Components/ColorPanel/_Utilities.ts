@@ -1,7 +1,7 @@
 import type { FormattingStructuredThemeColors } from "#adapters";
+import { assertNever } from "#ports";
 import type { StructuredColor } from "../../Color";
 import { ColorFormat, type HslFormat } from "../../Color";
-import { assertNever } from "../../ErrorHandling";
 import type { ColorMode } from "./ColorPanel";
 
 const getHslFromColorType = (color: StructuredColor): HslFormat => {

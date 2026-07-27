@@ -1,4 +1,4 @@
-import { assertNever } from "../../../../ErrorHandling";
+import { assertNever } from "#ports";
 import type { ResolveTemplateVariableDisplayTextParams } from "./ResolveDisplayText-types";
 
 export const resolveTemplateVariableDisplayText = ({
