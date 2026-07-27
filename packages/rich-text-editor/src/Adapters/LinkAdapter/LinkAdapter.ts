@@ -1,6 +1,9 @@
-import type { OnUnwrapFn } from "#ports";
 import { LinkPopover } from "#ui-extensions";
-import { createOverlayMount, type OverlayMount } from "../_Utilities";
+import {
+	createOverlayMount,
+	type OnUnwrapFn,
+	type OverlayMount,
+} from "../_Utilities";
 import type {
 	LinkAdapterConstructorParams,
 	LinkDisplayText,

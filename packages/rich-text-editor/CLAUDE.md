@@ -7,7 +7,6 @@ This package is mid-migration between two coexisting architectures. New features
 ### The tiers
 
 **`Ports/`** — cross-cutting contract types with no feature-specific implementation.
-- `Ports/Components/` — one `*Port.ts` interface per not-yet-migrated feature (`ImagePort`, `VideoPort`, `AudioPort`, ...), describing its state shape plus `onXxx(callback)`/`updateState(...)` signatures. `Ports/Components/_Shared/` holds fragments composed into a Port via `extends` (`UnwrapPort`, `CaptionPort`, `DeletePort`, `BlockAlignPort`) — these stay here regardless of migration status since they're genuinely shared across features. Once a feature migrates to an Adapter (see below), its Port types move out of here and into that Adapter's own folder — `Link`/`Mention` already have (no `LinkPort.ts`/`MentionPort.ts` exist anymore).
 - `Ports/Extensions/` — the generic `Extension`/`ExtensionDefinition`/`ExtensionComponents`/`UIExtension` shapes `createExtension` produces, plus `ExtensionsName` — the single constant every extension's `name` must come from (`extensionsName.link`, never the literal `"link"`).
 - `Ports/ToolbarButtons/` — `ToolbarButtonsName` (every toolbar button's name/value) and `ToolbarButtonsLayout` (the row/group array `RichTextEditor`'s `toolbarButtons` param takes).
 - Exposed package-wide only via `#ports`.
@@ -15,6 +14,7 @@ This package is mid-migration between two coexisting architectures. New features
 **`Adapters/`** — one class per extension (`LinkAdapter`, `MentionAdapter`, `FormattingAdapter`), each fully self-contained: its own state types, Port types, and implementation all live in that Adapter's folder (e.g. `Adapters/LinkAdapter/LinkAdapter-types.ts` has everything Link-related — `LinkEditorPort`, `LinkUIPort`, `LinkState`, the lot). See `Adapters/CLAUDE.md` for the internal mechanics.
 - Holds real state (`#toolbarButton`, `#view`, ...) and a `Set` of listeners per state slice, but exposes none of it directly — only through two narrowed accessors.
 - `get uiPort()` and `get editorPort()` are two separate, non-overlapping views built fresh on each access. UI components receive `uiPort` (their prop is literally named `uiPort`); Editor-side wiring receives `editorPort` (its param is literally named `editorPort`). Neither side ever sees the raw adapter instance or the other side's members.
+- `Adapters/_Utilities/SharedPorts/` holds fragments composed into an Adapter's `EditorPort`/`UIPort` via `extends` (`UnwrapPort`, `CaptionPort`, `DeletePort`, `BlockAlignPort`) — genuinely shared across features, so they live outside any single Adapter's folder.
 - Exposed via `#adapters`.
 
 **`Extensions/`** (top-level, package root) — composes one adapter + its Editor wiring + its UI components into a single opt-in unit via `createExtension(...)`.
