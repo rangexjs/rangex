@@ -7,11 +7,8 @@ import {
 } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import {
-	Dropdown,
-	type DropdownList,
-	ToolbarButton,
-} from "../../../ToolbarButtons/_Utilities";
+import { Dropdown, type DropdownList } from "../Dropdown";
+import { ToolbarButton } from "../ToolbarButton";
 
 export const CustomComponentToolbarButton = () => {
 	const { accordionItemUIPort, readOnlyUIPort } = useUIPortsContext();

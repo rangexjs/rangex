@@ -16,7 +16,7 @@ import {
 	type OnActionFn,
 } from "../../../ColorPanel";
 import { Icon } from "../../../Icon";
-import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 
 /**
  * Note: Gradient-colors are not supported yet.

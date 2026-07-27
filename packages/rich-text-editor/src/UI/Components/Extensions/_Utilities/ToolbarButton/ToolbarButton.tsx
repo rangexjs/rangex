@@ -1,5 +1,5 @@
 import { type JSX, Show } from "solid-js";
-import { Icon } from "../../Icon";
+import { Icon } from "../../../Icon";
 
 export interface ToolbarButtonProps {
 	checked?: boolean;

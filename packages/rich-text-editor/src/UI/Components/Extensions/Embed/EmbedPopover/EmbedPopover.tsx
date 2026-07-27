@@ -14,12 +14,12 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
+import { ToggleButton } from "../../../ToggleButton";
 import {
+	BlockAlign,
 	OptionDropdown,
 	type OptionDropdownOption,
-} from "../../../NodePopovers/_Utilities";
-import { ToggleButton } from "../../../ToggleButton";
-import { BlockAlign } from "../../_Utilities";
+} from "../../_Utilities";
 import { EmbedSwapPopover } from "./EmbedSwapPopover";
 
 const aspectRatioOptions: OptionDropdownOption<EmbedAspectRatioValue>[] = [

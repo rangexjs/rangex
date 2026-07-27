@@ -1,5 +1,5 @@
 import { Index, type JSX, Show } from "solid-js";
-import { Icon } from "../../Icon";
+import { Icon } from "../../../Icon";
 
 export type DropdownList = {
 	checked?: boolean;

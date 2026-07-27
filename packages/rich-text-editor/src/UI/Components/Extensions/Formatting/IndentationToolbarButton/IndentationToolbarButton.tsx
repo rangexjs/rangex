@@ -8,11 +8,7 @@ import {
 import type { FormattingIndentationValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import {
-	Dropdown,
-	type DropdownList,
-	ToolbarButton,
-} from "../../../ToolbarButtons/_Utilities";
+import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
 
 const defaultValues: Set<FormattingIndentationValue> = new Set([
 	{ type: "px", value: 0 },

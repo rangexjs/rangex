@@ -13,10 +13,7 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
-import {
-	Dropdown,
-	type DropdownList,
-} from "../../../ToolbarButtons/_Utilities";
+import { Dropdown, type DropdownList } from "../../_Utilities";
 
 const fontSizeValues: FormattingFontSizeValue[] = [
 	{ type: "px", value: 10 },

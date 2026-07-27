@@ -8,11 +8,7 @@ import {
 import type { CodeBlockLanguage } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import {
-	Dropdown,
-	type DropdownList,
-	ToolbarButton,
-} from "../../../ToolbarButtons/_Utilities";
+import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
 
 const languages: CodeBlockLanguage[] = [
 	"JavaScript",

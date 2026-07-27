@@ -1,7 +1,7 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type { CodeBlockUIPort } from "#adapters";
 import { Icon } from "../../../Icon";
-import { OptionDropdown } from "../../../NodePopovers/_Utilities";
+import { OptionDropdown } from "../../_Utilities";
 
 interface CodeBlockPopoverProps {
 	uiPort: CodeBlockUIPort;

@@ -8,7 +8,7 @@ import {
 } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 
 export const SymbolsToolbarButton = () => {
 	const { symbolsUIPort, readOnlyUIPort } = useUIPortsContext();

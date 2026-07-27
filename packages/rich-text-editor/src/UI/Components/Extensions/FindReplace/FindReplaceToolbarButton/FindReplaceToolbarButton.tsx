@@ -22,7 +22,7 @@ import {
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { Spinning } from "../../../Spinning";
-import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 import { buildFindReplacePattern } from "./BuildFindReplacePattern";
 import { FindReplaceResults } from "./FindReplaceResults";
 

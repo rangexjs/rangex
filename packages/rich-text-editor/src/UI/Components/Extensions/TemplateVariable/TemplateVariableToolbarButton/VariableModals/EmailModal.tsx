@@ -6,7 +6,7 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../../InputFields";
-import { FixedPosModal } from "../../../../ToolbarButtons/_Utilities";
+import { FixedPosModal } from "../../../_Utilities";
 import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface EmailModalProps {

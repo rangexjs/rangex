@@ -1,7 +1,7 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
-import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 
 export const ItalicToolbarButton = () => {
 	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();

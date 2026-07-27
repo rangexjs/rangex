@@ -9,7 +9,7 @@ import {
 import type { FormattingTextAlignValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon, type IconName } from "../../../Icon";
-import { ToolbarButton } from "../../../ToolbarButtons/_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 
 export const textAlignValues: FormattingTextAlignValue[] = [
 	"start",

@@ -7,11 +7,7 @@ import {
 } from "solid-js";
 import type { FormattingLineLocalNameValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
-import {
-	Dropdown,
-	type DropdownList,
-	ToolbarButton,
-} from "../../../ToolbarButtons/_Utilities";
+import { Dropdown, type DropdownList, ToolbarButton } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
 	const { formattingUIPort, readOnlyUIPort } = useUIPortsContext();
