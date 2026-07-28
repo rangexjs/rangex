@@ -46,14 +46,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Video>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union
-type ErasedPort = any;
-
-export type ErasedConfigureExtensionFn = ConfigureExtensionFn<
-	ErasedPort,
-	ErasedPort,
-	ErasedPort,
-	ErasedPort
->;
+export type ErasedConfigureExtensionFn = ConfigureExtensionFn<any>;
 
 export type Extensions = ExtensionUnion[];
 

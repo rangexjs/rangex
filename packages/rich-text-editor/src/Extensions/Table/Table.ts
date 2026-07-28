@@ -1,11 +1,10 @@
 import { TableAdapter } from "#adapters";
 import { configureTable } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import { TableToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
-export const Table = createExtension({
-	name: extensionsName.table,
+export const Table = createExtension<typeof TableAdapter>({
 	defaultSettings: {},
 	createAdapter: (settings, options) => new TableAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

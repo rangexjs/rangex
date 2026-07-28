@@ -1,6 +1,6 @@
 import { type FontFamilyOption, FormattingAdapter } from "#adapters";
 import { configureFormatting } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import {
 	BackgroundColorToolbarButton,
 	BoldToolbarButton,
@@ -39,8 +39,7 @@ const defaultFontFamilyOptions: FontFamilyOption[] = [
 	{ value: "monospace", group: "monospace" },
 ];
 
-export const Formatting = createExtension({
-	name: extensionsName.formatting,
+export const Formatting = createExtension<typeof FormattingAdapter>({
 	defaultSettings: { fontFamilyOptions: defaultFontFamilyOptions },
 	createAdapter: (settings, options) =>
 		new FormattingAdapter(settings, options),

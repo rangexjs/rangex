@@ -3,7 +3,6 @@ import type { Component } from "solid-js";
 import type { AdapterBus } from "../AdapterBus";
 import type { OverlayHost } from "../OverlayHost";
 import type { ToolbarButtonValue } from "../ToolbarButtons";
-import type { ExtensionName } from "./ExtensionsName";
 
 export interface AdapterOptions {
 	adapterBus: AdapterBus;
@@ -15,81 +14,61 @@ export type CreateAdapterConstructor<Settings extends object> = [
 	AdapterOptions,
 ];
 
-export interface AdapterPort<UIPort extends object, EditorPort extends object> {
-	uiPort: UIPort;
-	editorPort: EditorPort;
+export interface AdapterPort {
+	// biome-ignore lint/suspicious/noExplicitAny: concrete Adapter classes carry the real uiPort type
+	uiPort: any;
+	// biome-ignore lint/suspicious/noExplicitAny: concrete Adapter classes carry the real editorPort type
+	editorPort: any;
 }
 
-export type AdapterBlueprint<
-	Settings extends object,
-	UIPort extends object,
-	EditorPort extends object,
-> = InstanceType<
-	new (
-		settings: Settings,
-		options: AdapterOptions,
-	) => AdapterPort<UIPort, EditorPort>
->;
+export type AdapterBlueprint = new (
+	// biome-ignore lint/suspicious/noExplicitAny: concrete Adapter classes carry the real settings type
+	settings: any,
+	options: AdapterOptions,
+) => AdapterPort;
 
-export interface ConfigureExtensionParams<
-	Settings extends object,
-	UIPort extends object,
-	EditorPort extends object,
-	Adapter extends AdapterBlueprint<Settings, UIPort, EditorPort>,
-> {
-	adapter: Adapter;
+export interface ConfigureExtensionParams<Adapter extends AdapterBlueprint> {
+	adapter: InstanceType<Adapter>;
 	editorAPI: EditorAPI;
 }
 
 export type ConfigureExtensionResult = () => void;
 
-export type ConfigureExtensionFn<
-	Settings extends object,
-	UIPort extends object,
-	EditorPort extends object,
-	Adapter extends AdapterBlueprint<Settings, UIPort, EditorPort>,
-> = (
-	params: ConfigureExtensionParams<Settings, UIPort, EditorPort, Adapter>,
+export type ConfigureExtensionFn<Adapter extends AdapterBlueprint> = (
+	params: ConfigureExtensionParams<Adapter>,
 ) => ConfigureExtensionResult;
 
 export interface ExtensionComponents {
 	toolbarButtons?: Partial<Record<ToolbarButtonValue, Component>>;
-	commandMenu?: Component;
+	commandMenu?: Partial<Record<string, Component>>;
 }
 
-export interface ExtensionDefinition<
-	Name extends ExtensionName,
-	Settings extends object,
-	UIPort extends object,
-	EditorPort extends object,
-	Adapter extends AdapterBlueprint<Settings, UIPort, EditorPort>,
-> {
-	name: Name;
-	defaultSettings: Settings;
-	createAdapter: (settings: Settings, options: AdapterOptions) => Adapter;
-	configure: ConfigureExtensionFn<Settings, UIPort, EditorPort, Adapter>;
+export type GetSettings<T> = T extends AdapterBlueprint
+	? ConstructorParameters<T>["0"]
+	: never;
+
+export interface ExtensionDefinition<Adapter extends AdapterBlueprint> {
+	defaultSettings: GetSettings<Adapter>;
+	createAdapter: (
+		settings: GetSettings<Adapter>,
+		options: AdapterOptions,
+	) => InstanceType<Adapter>;
+	configure: ConfigureExtensionFn<Adapter>;
 	components: ExtensionComponents;
 }
 
-export interface Extension<
-	Name extends ExtensionName,
-	Settings extends object,
-	UIPort extends object,
-	EditorPort extends object,
-	Adapter extends AdapterBlueprint<Settings, UIPort, EditorPort>,
-> {
-	name: Name;
-	createAdapter: (options: AdapterOptions) => Adapter;
-	configure: ConfigureExtensionFn<Settings, UIPort, EditorPort, Adapter>;
+export interface Extension<Adapter extends AdapterBlueprint> {
+	createAdapter: (options: AdapterOptions) => InstanceType<Adapter>;
+	configure: ConfigureExtensionFn<Adapter>;
 	components: ExtensionComponents;
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: erased for the generic "any extension" shape
-type AnyExtension = Extension<ExtensionName, any, any, any, any>;
+type AnyExtension = Extension<any>;
 
 /**
  * What `RichTextEditor` builds per active extension after calling `createAdapter`/`configure` —
  * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`/`components.commandMenu`, etc.
  * Derived from `Extension` (not hand-duplicated) so a rename/removal on `Extension` breaks this too.
  */
-export type UIExtension = Pick<AnyExtension, "name" | "components">;
+export type UIExtension = Pick<AnyExtension, "components">;

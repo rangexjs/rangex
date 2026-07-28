@@ -1,14 +1,13 @@
 import { ListAdapter } from "#adapters";
 import { configureList } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import {
 	OrderedListToolbarButton,
 	UnorderedListToolbarButton,
 } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
-export const List = createExtension({
-	name: extensionsName.list,
+export const List = createExtension<typeof ListAdapter>({
 	defaultSettings: {},
 	createAdapter: (settings, options) => new ListAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

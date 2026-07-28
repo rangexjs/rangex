@@ -40,7 +40,6 @@ export class RichTextEditor extends HTMLElement {
 
 		const uiExtensions: UIExtension[] = extensionAdapters.map(
 			({ extension }) => ({
-				name: extension.name,
 				components: extension.components,
 			}),
 		);
