@@ -1,4 +1,4 @@
-import { EditorRange } from "rich-text-area";
+import { caretAnchorName, EditorRange } from "rich-text-area";
 import type { PositionPopoverToSelectionParams } from "./PositionPopoverToSelection-types";
 
 /**
@@ -41,6 +41,21 @@ export const positionPopoverToSelection = ({
 		toNode: toText,
 		toOffset,
 	});
+
+	if (range.isSinglePoint) {
+		const caretAnchor =
+			editorAPI.shadowRoot.querySelector<HTMLElement>(caretAnchorName);
+
+		if (!caretAnchor) {
+			throw new Error("CaretAnchor can't be null.");
+		}
+
+		popover.showPopover({ source: caretAnchor });
+
+		popover.style.cssText = "";
+		popover.style.positionArea = "center bottom";
+		return;
+	}
 
 	popover.showPopover({ source: rootEditable });
 
