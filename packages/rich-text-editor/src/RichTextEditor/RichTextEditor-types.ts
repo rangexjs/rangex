@@ -5,6 +5,7 @@ import type {
 	Audio,
 	BlockQuote,
 	CodeBlock,
+	CommandMenu,
 	Embed,
 	Emoji,
 	EmptyMedia,
@@ -28,6 +29,7 @@ export type ExtensionUnion =
 	| ReturnType<typeof Audio>
 	| ReturnType<typeof BlockQuote>
 	| ReturnType<typeof CodeBlock>
+	| ReturnType<typeof CommandMenu>
 	| ReturnType<typeof Embed>
 	| ReturnType<typeof Emoji>
 	| ReturnType<typeof EmptyMedia>

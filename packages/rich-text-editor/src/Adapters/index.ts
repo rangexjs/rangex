@@ -3,6 +3,7 @@ export * from "./AccordionItemAdapter";
 export * from "./AudioAdapter";
 export * from "./BlockQuoteAdapter";
 export * from "./CodeBlockAdapter";
+export * from "./CommandMenuAdapter";
 export * from "./EmbedAdapter";
 export * from "./EmojiAdapter";
 export * from "./EmptyMediaAdapter";

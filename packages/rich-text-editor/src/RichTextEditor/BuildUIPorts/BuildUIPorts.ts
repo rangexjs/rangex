@@ -2,6 +2,7 @@ import {
 	AccordionItemAdapter,
 	BlockQuoteAdapter,
 	CodeBlockAdapter,
+	CommandMenuAdapter,
 	EmptyMediaAdapter,
 	FindReplaceAdapter,
 	FormattingAdapter,
@@ -36,6 +37,7 @@ export const buildUIPorts = ({
 		formattingUIPort: null,
 		blockQuoteUIPort: null,
 		codeBlockUIPort: null,
+		commandMenuUIPort: null,
 		emptyMediaUIPort: null,
 		listUIPort: null,
 		tableUIPort: null,
@@ -78,6 +80,10 @@ export const buildUIPorts = ({
 
 		if (adapter instanceof CodeBlockAdapter) {
 			uiPorts.codeBlockUIPort = adapter.uiPort;
+		}
+
+		if (adapter instanceof CommandMenuAdapter) {
+			uiPorts.commandMenuUIPort = adapter.uiPort;
 		}
 
 		if (adapter instanceof EmptyMediaAdapter) {

@@ -2,6 +2,7 @@ export { AccordionItem } from "./Extensions/AccordionItem";
 export { Audio } from "./Extensions/Audio";
 export { BlockQuote } from "./Extensions/BlockQuote";
 export { CodeBlock } from "./Extensions/CodeBlock";
+export { CommandMenu } from "./Extensions/CommandMenu";
 export { Embed } from "./Extensions/Embed";
 export { Emoji } from "./Extensions/Emoji";
 export { EmptyMedia } from "./Extensions/EmptyMedia";

@@ -2,6 +2,7 @@ export * from "./AccordionItem";
 export * from "./Audio";
 export * from "./BlockQuote";
 export * from "./CodeBlock";
+export * from "./CommandMenu";
 export * from "./Embed";
 export * from "./Emoji";
 export * from "./EmptyMedia";

@@ -3,6 +3,7 @@ import type {
 	AccordionItemUIPort,
 	BlockQuoteUIPort,
 	CodeBlockUIPort,
+	CommandMenuUIPort,
 	EmptyMediaUIPort,
 	FindReplaceUIPort,
 	FormattingUIPort,
@@ -18,6 +19,7 @@ import type {
 import type { ToolbarButtons, UIExtension } from "#ports";
 import type { MenuBarActionManager } from "../../MenuBarActionManager";
 import type { MenuBarButtonsStateManager } from "../../MenuBarButtonsStateManager";
+import { CommandMenu } from "../CommandMenu";
 import { EditorContainer } from "../EditorContainer";
 import { EditorToolbar } from "../EditorToolbar";
 import { MenuBar } from "../MenuBar";
@@ -33,6 +35,7 @@ export interface UIPortsContextValue {
 	formattingUIPort: FormattingUIPort | null;
 	blockQuoteUIPort: BlockQuoteUIPort | null;
 	codeBlockUIPort: CodeBlockUIPort | null;
+	commandMenuUIPort: CommandMenuUIPort | null;
 	emptyMediaUIPort: EmptyMediaUIPort | null;
 	listUIPort: ListUIPort | null;
 	tableUIPort: TableUIPort | null;
@@ -91,11 +94,14 @@ export const App = (props: AppProps) => {
 					toolbarButtons={props.toolbarButtons}
 					extensions={props.extensions}
 				/>
+				<div class="relative max-h-300 overflow-y-auto">
+					<div>{props.richTextArea}</div>
+					<div ref={props.overlayContainerRef} />
+					<div>
+						<CommandMenu />
+					</div>
+				</div>
 			</UIPortsContext.Provider>
-			<div class="relative max-h-300 overflow-y-auto">
-				<div>{props.richTextArea}</div>
-				<div ref={props.overlayContainerRef} />
-			</div>
 		</EditorContainer>
 	);
 };

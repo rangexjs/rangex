@@ -40,7 +40,6 @@ export type ConfigureExtensionFn<Adapter extends AdapterBlueprint> = (
 
 export interface ExtensionComponents {
 	toolbarButtons?: Partial<Record<ToolbarButtonValue, Component>>;
-	commandMenu?: Partial<Record<string, Component>>;
 }
 
 export type GetSettings<T> = T extends AdapterBlueprint
@@ -68,7 +67,7 @@ type AnyExtension = Extension<any>;
 
 /**
  * What `RichTextEditor` builds per active extension after calling `createAdapter`/`configure` —
- * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`/`components.commandMenu`, etc.
+ * the payload `RichTextEditorUI` needs to render `components.toolbarButtons`, etc.
  * Derived from `Extension` (not hand-duplicated) so a rename/removal on `Extension` breaks this too.
  */
 export type UIExtension = Pick<AnyExtension, "components">;
