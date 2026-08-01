@@ -12,6 +12,7 @@ import type {
 	FindReplace,
 	Formatting,
 	Image,
+	LineHandler,
 	Link,
 	List,
 	Mention,
@@ -45,7 +46,8 @@ export type ExtensionUnion =
 	| ReturnType<typeof TemplateVariable>
 	| ReturnType<typeof TodoList>
 	| ReturnType<typeof UndoRedo>
-	| ReturnType<typeof Video>;
+	| ReturnType<typeof Video>
+	| ReturnType<typeof LineHandler>;
 
 // biome-ignore lint/suspicious/noExplicitAny: extension/adapter correlation can't be expressed across the union
 export type ErasedConfigureExtensionFn = ConfigureExtensionFn<any>;

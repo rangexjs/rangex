@@ -3,7 +3,13 @@
 }
 
 [data-rx-editor-role="root-editable"] {
-	padding: 16px 20px;
+	padding-block: 16px;
+	padding-inline: 20px;
+
+	@media (min-width: 640px) {
+		padding-inline: 60px;
+	}
+
 	font-family: "Inter", sans-serif;
 	outline: none;
 

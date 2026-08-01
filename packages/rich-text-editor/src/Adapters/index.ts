@@ -10,6 +10,7 @@ export * from "./EmptyMediaAdapter";
 export * from "./FindReplaceAdapter";
 export * from "./FormattingAdapter";
 export * from "./ImageAdapter";
+export * from "./LineHandlerAdapter";
 export * from "./LinkAdapter";
 export * from "./ListAdapter";
 export * from "./MentionAdapter";

@@ -43,6 +43,7 @@ export * from "./NotePencil";
 export * from "./PaintBucket";
 export * from "./Palette";
 export * from "./Paragraph";
+export * from "./Plus";
 export * from "./SimpleLink";
 export * from "./Smiley";
 export * from "./SquaresFour";

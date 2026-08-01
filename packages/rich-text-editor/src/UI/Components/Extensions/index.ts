@@ -8,6 +8,7 @@ export * from "./EmptyMedia";
 export * from "./FindReplace";
 export * from "./Formatting";
 export * from "./Image";
+export * from "./LineHandler";
 export * from "./Link";
 export * from "./List";
 export * from "./Mention";

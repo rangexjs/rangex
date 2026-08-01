@@ -9,6 +9,7 @@ export { EmptyMedia } from "./Extensions/EmptyMedia";
 export { FindReplace } from "./Extensions/FindReplace";
 export { Formatting } from "./Extensions/Formatting";
 export { Image } from "./Extensions/Image";
+export { LineHandler } from "./Extensions/LineHandler";
 export { Link } from "./Extensions/Link";
 export { List } from "./Extensions/List";
 export { Mention } from "./Extensions/Mention";

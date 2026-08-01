@@ -10,6 +10,7 @@ import {
 	FindReplace,
 	Formatting,
 	Image,
+	LineHandler,
 	Link,
 	List,
 	Mention,
@@ -67,6 +68,7 @@ export const createDevelopmentView = () => {
 			AccordionItem(),
 			ReadOnly(),
 			CommandMenu(),
+			LineHandler(),
 		],
 	});
 
@@ -95,6 +97,7 @@ export const createDevelopmentView = () => {
 			AccordionItem(),
 			ReadOnly(),
 			CommandMenu(),
+			LineHandler(),
 		],
 	});
 
