@@ -1,6 +1,12 @@
 import { blockNestedContextLineName } from "rich-text-area";
 import { componentsName } from "#ports";
-import { createBlockQuote, createCodeBlock } from "../../_Utilities";
+import {
+	createAccordionItem,
+	createBlockQuote,
+	createCodeBlock,
+	createList,
+	createTodoList,
+} from "../../_Utilities";
 import type {
 	CreateBlockComponentParams,
 	CreateBlockComponentResult,
@@ -12,9 +18,14 @@ const createBlockComponent = ({
 	childNodes,
 }: CreateBlockComponentParams): CreateBlockComponentResult => {
 	const blockComponent = {
+		[componentsName.accordionItem]: () =>
+			createAccordionItem({ childNodes }).blockNestedContextLine,
 		[componentsName.blockQuote]: () => createBlockQuote({ childNodes }),
 		[componentsName.codeBlock]: () =>
 			createCodeBlock({ language: "typescript", childNodes }),
+		[componentsName.list]: () =>
+			createList({ localName: "ul", lineType: "multi-line", childNodes }),
+		[componentsName.todoList]: () => createTodoList({ childNodes }),
 	}[name]();
 
 	return blockComponent;

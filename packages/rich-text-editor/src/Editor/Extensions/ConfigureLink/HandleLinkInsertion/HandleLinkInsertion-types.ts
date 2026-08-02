@@ -6,14 +6,6 @@ import type {
 import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
-export interface CreateLinkComponentParams {
-	text: string;
-	href: string;
-	target: string;
-}
-
-export interface CreateLinkComponentResult extends InlineNestedContext {}
-
 export interface SetSelectionToLinkEndParams {
 	link: InlineNestedContext;
 	selection: EditorSelection;

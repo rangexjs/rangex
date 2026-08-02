@@ -15,8 +15,11 @@ import type {
 const handleContentLine = ({ editorPort }: HandleContentLineParams) => {
 	editorPort.updateState({
 		turnInto: {
+			[componentsName.accordionItem]: false,
 			[componentsName.blockQuote]: false,
 			[componentsName.codeBlock]: false,
+			[componentsName.list]: false,
+			[componentsName.todoList]: false,
 		},
 		canDelete: true,
 		canDuplicate: true,
@@ -41,8 +44,11 @@ const handleBlockNestedContextLine = ({
 
 	editorPort.updateState({
 		turnInto: {
+			[componentsName.accordionItem]: isVisible(componentsName.accordionItem),
 			[componentsName.blockQuote]: isVisible(componentsName.blockQuote),
 			[componentsName.codeBlock]: isVisible(componentsName.codeBlock),
+			[componentsName.list]: isVisible(componentsName.list),
+			[componentsName.todoList]: isVisible(componentsName.todoList),
 		},
 		canDelete: true,
 		canDuplicate: true,

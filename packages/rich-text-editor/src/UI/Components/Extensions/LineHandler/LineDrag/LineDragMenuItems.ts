@@ -19,6 +19,16 @@ const createTurnIntoItems = ({
 }: CreateTurnIntoItemsParams): MenuItem[] => {
 	const items: MenuItem[] = [];
 
+	if (turnInto[componentsName.accordionItem]) {
+		items.push({
+			type: "button",
+			label: "Accordion Item",
+			icon: "CaretCircleRight",
+			checked: () => undefined,
+			onClick: () => uiPort.emitTurnInto(componentsName.accordionItem),
+		});
+	}
+
 	if (turnInto[componentsName.blockQuote]) {
 		items.push({
 			type: "button",
@@ -36,6 +46,26 @@ const createTurnIntoItems = ({
 			icon: "CodeBlock",
 			checked: () => undefined,
 			onClick: () => uiPort.emitTurnInto(componentsName.codeBlock),
+		});
+	}
+
+	if (turnInto[componentsName.list]) {
+		items.push({
+			type: "button",
+			label: "List",
+			icon: "ListBullets",
+			checked: () => undefined,
+			onClick: () => uiPort.emitTurnInto(componentsName.list),
+		});
+	}
+
+	if (turnInto[componentsName.todoList]) {
+		items.push({
+			type: "button",
+			label: "Todo List",
+			icon: "ListChecks",
+			checked: () => undefined,
+			onClick: () => uiPort.emitTurnInto(componentsName.todoList),
 		});
 	}
 

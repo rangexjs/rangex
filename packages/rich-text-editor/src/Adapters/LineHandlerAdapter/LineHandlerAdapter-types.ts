@@ -14,7 +14,7 @@ export type LineHandlerAdapterConstructorParams = CreateAdapterConstructor<{
 
 export type TurnableComponentName = Extract<
 	BlockComponentName,
-	"block-quote" | "code-block"
+	"accordion-item" | "block-quote" | "code-block" | "list" | "todo-list"
 >;
 
 export type TurnIntoAvailability = Record<TurnableComponentName, boolean>;

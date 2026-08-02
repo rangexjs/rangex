@@ -1,56 +1,5 @@
-import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createTable,
-} from "rich-text-area";
-import { componentsName } from "#ports";
-import { getCSSText } from "../../../_Utilities";
-import { createTableStorage } from "../../../Storage";
-import type {
-	CreateTableComponentParams,
-	CreateTableComponentResult,
-	HandleTableInsertionParams,
-} from "./HandleTableInsertion-types";
-
-const createTableComponent = ({
-	rows,
-	cols,
-}: CreateTableComponentParams): CreateTableComponentResult => {
-	const table = createTable({
-		rows,
-		cols,
-		domAttrs: {
-			style: getCSSText({
-				borderWidth: "1px",
-				borderStyle: "solid",
-				borderColor: "grey",
-			}),
-		},
-		cellDOMAttrs: {
-			style: getCSSText({
-				borderWidth: "1px",
-				borderStyle: "solid",
-				borderColor: "grey",
-			}),
-		},
-	});
-
-	const blockNestedContextLine = createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.table,
-			content: { type: "custom" },
-			customStorage: createTableStorage(),
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			childNodes: [table],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-
-	return blockNestedContextLine;
-};
+import { createTable } from "../../_Utilities";
+import type { HandleTableInsertionParams } from "./HandleTableInsertion-types";
 
 export const handleTableInsertion = ({
 	editorPort,
@@ -58,7 +7,7 @@ export const handleTableInsertion = ({
 	blockComponentPlacement,
 }: HandleTableInsertionParams) => {
 	const unsubscribe = editorPort.onInsertRequest(({ row, column }) => {
-		const table = createTableComponent({ rows: row, cols: column });
+		const table = createTable({ rows: row, cols: column });
 
 		blockComponentPlacement.insertBySelection({
 			lines: [table],

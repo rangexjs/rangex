@@ -1,49 +1,11 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createHTMLLayout,
-	createList,
 	listName,
 	listRoleSelector,
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import { elementNameAttr, todoCheckboxElementName } from "../../../Constants";
-import type {
-	CreateTodoListLineResult,
-	HandleTodoListInsertionParams,
-} from "./HandleTodoListInsertion-types";
-
-const createTodoListLine = (): CreateTodoListLineResult => {
-	const list = createList({
-		localName: "ul",
-		lineType: "single-line",
-		createPreLayout: ({ nestedEditable }) => [
-			createHTMLLayout({
-				localName: "input",
-				domAttrs: {
-					type: "checkbox",
-					[elementNameAttr]: todoCheckboxElementName,
-				},
-			}),
-			nestedEditable({}),
-		],
-	});
-
-	const blockNestedContextLine = createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.todoList,
-			content: { type: "list" },
-			childNodes: [list],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-
-	return blockNestedContextLine;
-};
+import { createTodoList } from "../../_Utilities";
+import type { HandleTodoListInsertionParams } from "./HandleTodoListInsertion-types";
 
 export const handleTodoListInsertion = ({
 	editorPort,
@@ -51,7 +13,7 @@ export const handleTodoListInsertion = ({
 	blockComponentPlacement,
 }: HandleTodoListInsertionParams) => {
 	const unsubscribe = editorPort.onInsertRequest(() => {
-		const todoListLine = createTodoListLine();
+		const todoListLine = createTodoList({});
 
 		const list = todoListLine.$$querySelector(listRoleSelector);
 

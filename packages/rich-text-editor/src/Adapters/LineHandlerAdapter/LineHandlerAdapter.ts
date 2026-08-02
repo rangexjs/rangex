@@ -25,8 +25,11 @@ export class LineHandlerAdapter {
 	#popoverOverlayMount: OverlayMount;
 
 	#turnInto: TurnIntoAvailability = {
+		[componentsName.accordionItem]: false,
 		[componentsName.blockQuote]: false,
 		[componentsName.codeBlock]: false,
+		[componentsName.list]: false,
+		[componentsName.todoList]: false,
 	};
 	#canDelete = true;
 	#canDuplicate = true;
