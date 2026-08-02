@@ -5,13 +5,13 @@ import {
 	detachedContextName,
 	isEditorNode,
 } from "rich-text-area";
+import { componentsName } from "#ports";
 import {
 	isWellFormedUrl,
 	probeMediaSrc,
 	transformEmbedUrl,
 	uploadMediaFile,
 } from "../../../_Utilities";
-import { componentsName } from "../../../Constants";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
 import type {
 	FinalizeResolveParams,

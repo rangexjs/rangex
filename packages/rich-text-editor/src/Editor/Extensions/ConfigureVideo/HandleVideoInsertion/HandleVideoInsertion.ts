@@ -4,10 +4,10 @@ import {
 	createBlockNestedContextTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
+import { componentsName } from "#ports";
 import {
 	aspectRatioAttr,
 	blockAlignAttr,
-	componentsName,
 	objectFitAttr,
 } from "../../../Constants";
 import type { HandleVideoInsertionParams } from "./HandleVideoInsertion-types";

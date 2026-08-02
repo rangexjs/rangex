@@ -4,8 +4,7 @@ import {
 	blockNestedContextRoleSelector,
 	contentLineName,
 } from "rich-text-area";
-import { assertNever } from "#ports";
-import { componentsName } from "../../../Constants";
+import { assertNever, type BlockComponentName, componentsName } from "#ports";
 import type {
 	HandleBlockNestedContextLineParams,
 	HandleContentLineParams,
@@ -15,7 +14,10 @@ import type {
 
 const handleContentLine = ({ editorPort }: HandleContentLineParams) => {
 	editorPort.updateState({
-		turnInto: { blockQuote: false, codeBlock: false },
+		turnInto: {
+			[componentsName.blockQuote]: false,
+			[componentsName.codeBlock]: false,
+		},
 		canDelete: true,
 		canDuplicate: true,
 	});
@@ -35,11 +37,13 @@ const handleBlockNestedContextLine = ({
 
 	const { $$componentName } = blockNestedContext;
 
-	const blockQuote = $$componentName !== componentsName.blockQuote;
-	const codeBlock = $$componentName !== componentsName.codeBlock;
+	const isVisible = (name: BlockComponentName) => $$componentName !== name;
 
 	editorPort.updateState({
-		turnInto: { blockQuote, codeBlock },
+		turnInto: {
+			[componentsName.blockQuote]: isVisible(componentsName.blockQuote),
+			[componentsName.codeBlock]: isVisible(componentsName.codeBlock),
+		},
 		canDelete: true,
 		canDuplicate: true,
 	});

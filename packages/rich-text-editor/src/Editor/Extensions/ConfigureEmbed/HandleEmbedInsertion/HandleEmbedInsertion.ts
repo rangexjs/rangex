@@ -4,11 +4,8 @@ import {
 	createBlockNestedContextTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-} from "../../../Constants";
+import { componentsName } from "#ports";
+import { aspectRatioAttr, blockAlignAttr } from "../../../Constants";
 import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
 
 // Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are

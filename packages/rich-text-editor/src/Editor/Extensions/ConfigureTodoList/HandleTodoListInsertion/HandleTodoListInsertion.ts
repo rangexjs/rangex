@@ -9,11 +9,8 @@ import {
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import {
-	componentsName,
-	elementNameAttr,
-	todoCheckboxElementName,
-} from "../../../Constants";
+import { componentsName } from "#ports";
+import { elementNameAttr, todoCheckboxElementName } from "../../../Constants";
 import type {
 	CreateTodoListLineResult,
 	HandleTodoListInsertionParams,

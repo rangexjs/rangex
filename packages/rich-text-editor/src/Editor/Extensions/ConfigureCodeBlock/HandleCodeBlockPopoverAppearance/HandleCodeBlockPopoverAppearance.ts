@@ -1,4 +1,4 @@
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import { toUILanguage, toUITheme } from "../../../Libs";
 import {
 	codeBlockStorageFallbacks,

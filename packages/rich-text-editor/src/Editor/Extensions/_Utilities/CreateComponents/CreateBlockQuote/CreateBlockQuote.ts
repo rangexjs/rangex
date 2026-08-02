@@ -5,7 +5,7 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName } from "../../../../Constants";
+import { componentsName } from "#ports";
 import { createBlockQuoteStorage } from "../../../../Storage";
 import type {
 	CreateBlockQuoteParams,

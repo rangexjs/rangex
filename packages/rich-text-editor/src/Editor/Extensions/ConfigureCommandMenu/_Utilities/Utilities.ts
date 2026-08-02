@@ -1,4 +1,4 @@
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
 import type {
 	CanInsertCommandMenuParams,

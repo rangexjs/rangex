@@ -3,6 +3,7 @@ import type { ConfigureLineHandlerParams } from "./ConfigureLineHandler-types";
 import { handleDragMenuState } from "./HandleDragMenuState";
 import { handleLineDragStart } from "./HandleLineDragStart";
 import { handleLineHover } from "./HandleLineHover";
+import { handleTurnInto } from "./HandleTurnInto";
 
 export const configureLineHandler = ({
 	editorPort,
@@ -36,6 +37,12 @@ export const configureLineHandler = ({
 		getCurrentLine,
 	});
 
+	const turnIntoCleanup = handleTurnInto({
+		editorPort,
+		editorAPI,
+		getCurrentLine,
+	});
+
 	return () => {
 		editorPort.popover.unmount();
 
@@ -43,5 +50,6 @@ export const configureLineHandler = ({
 		deleteCleanup();
 		insertRootLineCleanup();
 		dragStartCleanup();
+		turnIntoCleanup();
 	};
 };

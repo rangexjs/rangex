@@ -5,8 +5,8 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
+import { componentsName } from "#ports";
 import {
-	componentsName,
 	createElementNameSelector,
 	todoCheckboxElementName,
 } from "../../../Constants";

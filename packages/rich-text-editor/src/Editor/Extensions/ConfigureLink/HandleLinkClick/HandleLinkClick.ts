@@ -3,7 +3,7 @@ import {
 	inlineNestedContextName,
 	isEditorNode,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import { getStateFromLink } from "../_Utilities";
 import type {
 	HandleLinkClickParams,

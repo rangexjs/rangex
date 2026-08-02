@@ -1,7 +1,9 @@
 import type { LineHandlerUIPort, TurnIntoAvailability } from "#adapters";
+import { componentsName } from "#ports";
 import type { MenuItem } from "../_Utilities";
 
 interface CreateTurnIntoItemsParams {
+	uiPort: LineHandlerUIPort;
 	turnInto: TurnIntoAvailability;
 }
 
@@ -12,27 +14,28 @@ interface CreateTurnIntoItemsParams {
  * functions become available as turn-into targets.
  */
 const createTurnIntoItems = ({
+	uiPort,
 	turnInto,
 }: CreateTurnIntoItemsParams): MenuItem[] => {
 	const items: MenuItem[] = [];
 
-	if (turnInto.blockQuote) {
+	if (turnInto[componentsName.blockQuote]) {
 		items.push({
 			type: "button",
 			label: "Blockquote",
 			icon: "BlockQuote",
 			checked: () => undefined,
-			onClick: () => undefined,
+			onClick: () => uiPort.emitTurnInto(componentsName.blockQuote),
 		});
 	}
 
-	if (turnInto.codeBlock) {
+	if (turnInto[componentsName.codeBlock]) {
 		items.push({
 			type: "button",
 			label: "Codeblock",
 			icon: "CodeBlock",
 			checked: () => undefined,
-			onClick: () => undefined,
+			onClick: () => uiPort.emitTurnInto(componentsName.codeBlock),
 		});
 	}
 
@@ -54,7 +57,7 @@ export const createLineDragMenuItems = ({
 }: CreateLineDragMenuItemsParams): MenuItem[] => {
 	const items: MenuItem[] = [];
 
-	const turnIntoItems = createTurnIntoItems({ turnInto });
+	const turnIntoItems = createTurnIntoItems({ uiPort, turnInto });
 
 	if (turnIntoItems.length) {
 		items.push({

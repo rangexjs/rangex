@@ -1,4 +1,10 @@
-export const componentsName = {
+export const inlineComponentsName = {
+	link: "link",
+	mention: "mention",
+	templateVariable: "template-variable",
+} as const;
+
+export const blockComponentsName = {
 	accordionItem: "accordion-item",
 	audio: "audio",
 	blockQuote: "block-quote",
@@ -6,13 +12,15 @@ export const componentsName = {
 	embed: "embed",
 	emptyMedia: "empty-media",
 	image: "image",
-	link: "link",
 	list: "list",
-	mention: "mention",
 	table: "table",
-	templateVariable: "template-variable",
 	todoList: "todo-list",
 	video: "video",
+} as const;
+
+export const componentsName = {
+	...inlineComponentsName,
+	...blockComponentsName,
 } as const;
 
 export const dataPartName = `data-part-name`;

@@ -6,7 +6,8 @@ import {
 	createContentLine,
 	createDetachedContext,
 } from "rich-text-area";
-import { blockAlignAttr, componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
+import { blockAlignAttr } from "../../../Constants";
 import type {
 	CreateEmptyMediaComponentResult,
 	HandleEmptyMediaInsertionParams,

@@ -1,3 +1,4 @@
+import { componentsName } from "#ports";
 import { LineHandler } from "#ui-extensions";
 import {
 	createOverlayMount,
@@ -14,6 +15,7 @@ import type {
 	OnCanDeleteUpdateFn,
 	OnCanDuplicateUpdateFn,
 	OnDragStartFn,
+	OnTurnIntoFn,
 	OnTurnIntoUpdateFn,
 	TurnIntoAvailability,
 	UpdateLineHandlerStateParams,
@@ -22,7 +24,10 @@ import type {
 export class LineHandlerAdapter {
 	#popoverOverlayMount: OverlayMount;
 
-	#turnInto: TurnIntoAvailability = { blockQuote: false, codeBlock: false };
+	#turnInto: TurnIntoAvailability = {
+		[componentsName.blockQuote]: false,
+		[componentsName.codeBlock]: false,
+	};
 	#canDelete = true;
 	#canDuplicate = true;
 
@@ -30,6 +35,7 @@ export class LineHandlerAdapter {
 	#onDuplicateListeners: Set<OnDuplicateFn> = new Set();
 	#onInsertRootLineListeners: Set<OnInsertRootLineFn> = new Set();
 	#onDragStartListeners: Set<OnDragStartFn> = new Set();
+	#onTurnIntoListeners: Set<OnTurnIntoFn> = new Set();
 	#turnIntoListeners: Set<OnTurnIntoUpdateFn> = new Set();
 	#canDeleteListeners: Set<OnCanDeleteUpdateFn> = new Set();
 	#canDuplicateListeners: Set<OnCanDuplicateUpdateFn> = new Set();
@@ -135,6 +141,12 @@ export class LineHandlerAdapter {
 					listener(dragEvent);
 				}
 			},
+
+			emitTurnInto: (name) => {
+				for (const listener of adapter.#onTurnIntoListeners) {
+					listener(name);
+				}
+			},
 		};
 
 		return this.#uiPort;
@@ -168,6 +180,11 @@ export class LineHandlerAdapter {
 			onDragStart: (callback) => {
 				adapter.#onDragStartListeners.add(callback);
 				return () => adapter.#onDragStartListeners.delete(callback);
+			},
+
+			onTurnInto: (callback) => {
+				adapter.#onTurnIntoListeners.add(callback);
+				return () => adapter.#onTurnIntoListeners.delete(callback);
 			},
 		};
 

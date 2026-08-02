@@ -9,7 +9,7 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import { syntaxHighlighter } from "../../../Libs";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
 import {

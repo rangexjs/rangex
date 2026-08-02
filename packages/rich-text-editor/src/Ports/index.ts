@@ -1,5 +1,6 @@
 export * from "./AdapterBus";
 export * from "./CommandMenu";
+export * from "./ComponentsName";
 export * from "./ErrorHandling";
 export * from "./Extensions";
 export * from "./OverlayHost";

@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import type { HandleListToolbarButtonStateParams } from "./HandleListToolbarButtonState-types";
 
 export const handleListToolbarButtonState = ({

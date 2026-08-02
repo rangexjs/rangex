@@ -4,8 +4,8 @@ import {
 	createBlockNestedContextTextHolder,
 	createTable,
 } from "rich-text-area";
+import { componentsName } from "#ports";
 import { getCSSText } from "../../../_Utilities";
-import { componentsName } from "../../../Constants";
 import { createTableStorage } from "../../../Storage";
 import type {
 	CreateTableComponentParams,

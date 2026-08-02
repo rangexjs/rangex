@@ -9,7 +9,7 @@ import {
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import { createListStorage } from "../../../Storage";
 import type {
 	CreateListLineParams,

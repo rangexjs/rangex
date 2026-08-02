@@ -1,4 +1,4 @@
-import type { CreateAdapterConstructor } from "#ports";
+import type { BlockComponentName, CreateAdapterConstructor } from "#ports";
 import type {
 	DeletePort,
 	DuplicatePort,
@@ -12,10 +12,12 @@ export type LineHandlerAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
 }>;
 
-export interface TurnIntoAvailability {
-	blockQuote: boolean;
-	codeBlock: boolean;
-}
+export type TurnableComponentName = Extract<
+	BlockComponentName,
+	"block-quote" | "code-block"
+>;
+
+export type TurnIntoAvailability = Record<TurnableComponentName, boolean>;
 
 export interface LineHandlerState {
 	turnInto?: TurnIntoAvailability;
@@ -41,9 +43,11 @@ export interface LineHandlerUIPort {
 	emitDuplicate(): void;
 	emitInsertRootLine(position: InsertRootLinePosition): void;
 	emitDragStart(dragEvent: DragEvent): void;
+	emitTurnInto(name: TurnableComponentName): void;
 }
 
 export type OnDragStartFn = (dragEvent: DragEvent) => void;
+export type OnTurnIntoFn = (name: TurnableComponentName) => void;
 
 export interface LineHandlerEditorPort
 	extends DeletePort,
@@ -52,4 +56,5 @@ export interface LineHandlerEditorPort
 	readonly popover: EditorOverlayMount;
 	updateState(params: UpdateLineHandlerStateParams): void;
 	onDragStart(callback: OnDragStartFn): () => void;
+	onTurnInto(callback: OnTurnIntoFn): () => void;
 }

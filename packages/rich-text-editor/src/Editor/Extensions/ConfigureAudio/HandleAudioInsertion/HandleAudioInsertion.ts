@@ -4,7 +4,8 @@ import {
 	createBlockNestedContextTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import { blockAlignAttr, componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
+import { blockAlignAttr } from "../../../Constants";
 import type { HandleAudioInsertionParams } from "./HandleAudioInsertion-types";
 
 const createAudioLine = ({ src }: { src: string }) => {
