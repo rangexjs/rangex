@@ -1,4 +1,10 @@
-import { createUniqueId, onMount } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	onCleanup,
+	onMount,
+} from "solid-js";
 import type { LineHandlerUIPort } from "#adapters";
 import { Icon } from "../../../Icon";
 import { LineButton, Menu } from "../_Utilities";
@@ -10,13 +16,15 @@ interface LineDragProps {
 }
 
 /**
- * The drag-handle button and its Delete/Duplicate menu, entirely self-contained — the adapter
- * only ever sees `emitDelete`/`emitDuplicate`/`emitDragStart`, never this popover's element.
- * `commandfor`/`command="toggle-popover"` makes the button its implicit CSS anchor, so
+ * The drag-handle button and its Turn Into/Delete/Duplicate menu, entirely self-contained — the
+ * adapter only ever sees `emitDelete`/`emitDuplicate`/`emitDragStart`, never this popover's
+ * element. `commandfor`/`command="toggle-popover"` makes the button its implicit CSS anchor, so
  * `position-area` alone is enough to place the menu, no `source`/JS positioning needed.
  * Uses this extension's own {@link Menu} — a local copy of the MenuBar dropdown menu, not a
- * shared import — for Delete/Duplicate, so submenu support is available for free if a future
- * entry needs one.
+ * shared import — for Delete/Duplicate, so submenu support is available for free (used by Turn
+ * Into). The item list is rebuilt from `uiPort`'s pushed state on every update, so entries
+ * invalid for the currently hovered line — and the "Turn Into" submenu itself, when nothing is
+ * valid — drop out entirely rather than showing disabled.
  */
 export const LineDrag = (props: LineDragProps) => {
 	const uiPort = props.uiPort;
@@ -25,17 +33,39 @@ export const LineDrag = (props: LineDragProps) => {
 
 	let menuElement: HTMLDivElement | undefined;
 
+	const [turnInto, setTurnInto] = createSignal(uiPort.turnInto);
+	const [canDelete, setCanDelete] = createSignal(uiPort.canDelete);
+	const [canDuplicate, setCanDuplicate] = createSignal(uiPort.canDuplicate);
+
 	onMount(() => {
 		if (menuElement) {
 			props.popoverRef?.(menuElement);
 		}
+
+		const unsubscribeTurnInto = uiPort.onTurnIntoUpdate(setTurnInto);
+		const unsubscribeCanDelete = uiPort.onCanDeleteUpdate(setCanDelete);
+		const unsubscribeCanDuplicate =
+			uiPort.onCanDuplicateUpdate(setCanDuplicate);
+
+		onCleanup(() => {
+			unsubscribeTurnInto();
+			unsubscribeCanDelete();
+			unsubscribeCanDuplicate();
+		});
 	});
 
 	const onDragStart = (event: DragEvent) => {
 		uiPort.emitDragStart(event);
 	};
 
-	const items = createLineDragMenuItems({ uiPort });
+	const items = createMemo(() =>
+		createLineDragMenuItems({
+			uiPort,
+			turnInto: turnInto(),
+			canDelete: canDelete(),
+			canDuplicate: canDuplicate(),
+		}),
+	);
 
 	return (
 		<span>
@@ -53,7 +83,7 @@ export const LineDrag = (props: LineDragProps) => {
 				ref={menuElement}
 				mainPopoverId={popoverId}
 				popoverId={popoverId}
-				items={items}
+				items={items()}
 			/>
 		</span>
 	);

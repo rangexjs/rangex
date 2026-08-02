@@ -1,43 +1,6 @@
-import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createHTMLLayout,
-	createNestedEditable,
-	nestedEditableName,
-	nestedEditableRoleSelector,
-} from "rich-text-area";
-import { componentsName } from "../../../Constants";
-import { createBlockQuoteStorage } from "../../../Storage";
-import type {
-	CreateBlockQuoteLineResult,
-	HandleBlockQuoteInsertionParams,
-} from "./HandleBlockQuoteInsertion-types";
-
-const createBlockQuoteLine = (): CreateBlockQuoteLineResult => {
-	const nestedEditable = createNestedEditable({
-		content: { type: "default" },
-		display: "block multi-line",
-	});
-
-	const blockNestedContextLine = createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.blockQuote,
-			content: { type: "styled-block" },
-			customStorage: createBlockQuoteStorage(),
-			childNodes: [
-				createHTMLLayout({
-					localName: "blockquote",
-					childNodes: [nestedEditable],
-				}),
-			],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-
-	return blockNestedContextLine;
-};
+import { nestedEditableName, nestedEditableRoleSelector } from "rich-text-area";
+import { createBlockQuote } from "../../_Utilities";
+import type { HandleBlockQuoteInsertionParams } from "./HandleBlockQuoteInsertion-types";
 
 export const handleBlockQuoteInsertion = ({
 	editorPort,
@@ -45,7 +8,7 @@ export const handleBlockQuoteInsertion = ({
 	blockComponentPlacement,
 }: HandleBlockQuoteInsertionParams) => {
 	const unsubscribe = editorPort.onInsertRequest(() => {
-		const blockQuoteLine = createBlockQuoteLine();
+		const blockQuoteLine = createBlockQuote({});
 
 		const nestedEditable = blockQuoteLine.$$querySelector(
 			nestedEditableRoleSelector,

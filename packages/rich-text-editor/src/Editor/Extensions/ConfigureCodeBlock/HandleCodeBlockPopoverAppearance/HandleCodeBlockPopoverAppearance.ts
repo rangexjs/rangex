@@ -1,9 +1,9 @@
 import { componentsName } from "../../../Constants";
+import { toUILanguage, toUITheme } from "../../../Libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "../../../Storage";
-import { toUILanguage, toUITheme } from "../_Utilities";
 import type { HandleCodeBlockPopoverAppearanceParams } from "./HandleCodeBlockPopoverAppearance-types";
 
 /**

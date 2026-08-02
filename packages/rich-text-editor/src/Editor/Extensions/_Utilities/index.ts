@@ -1,4 +1,5 @@
 export * from "./BlockAlign";
+export * from "./CreateComponents";
 export * from "./CreateUploadSVG";
 export * from "./HandleBlockAlignState";
 export * from "./HandleBlockDelete";

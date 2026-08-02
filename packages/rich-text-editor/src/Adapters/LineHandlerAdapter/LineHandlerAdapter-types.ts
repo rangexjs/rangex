@@ -12,8 +12,31 @@ export type LineHandlerAdapterConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
 }>;
 
+export interface TurnIntoAvailability {
+	blockQuote: boolean;
+	codeBlock: boolean;
+}
+
+export interface LineHandlerState {
+	turnInto?: TurnIntoAvailability;
+	canDelete?: boolean;
+	canDuplicate?: boolean;
+}
+
+export interface UpdateLineHandlerStateParams extends LineHandlerState {}
+
+export type OnTurnIntoUpdateFn = (turnInto: TurnIntoAvailability) => void;
+export type OnCanDeleteUpdateFn = (canDelete: boolean) => void;
+export type OnCanDuplicateUpdateFn = (canDuplicate: boolean) => void;
+
 export interface LineHandlerUIPort {
 	readonly popover: UIOverlayMount;
+	readonly turnInto: TurnIntoAvailability;
+	onTurnIntoUpdate(callback: OnTurnIntoUpdateFn): () => void;
+	readonly canDelete: boolean;
+	onCanDeleteUpdate(callback: OnCanDeleteUpdateFn): () => void;
+	readonly canDuplicate: boolean;
+	onCanDuplicateUpdate(callback: OnCanDuplicateUpdateFn): () => void;
 	emitDelete(): void;
 	emitDuplicate(): void;
 	emitInsertRootLine(position: InsertRootLinePosition): void;
@@ -27,5 +50,6 @@ export interface LineHandlerEditorPort
 		DuplicatePort,
 		InsertRootLinePort {
 	readonly popover: EditorOverlayMount;
+	updateState(params: UpdateLineHandlerStateParams): void;
 	onDragStart(callback: OnDragStartFn): () => void;
 }

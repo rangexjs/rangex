@@ -1,5 +1,10 @@
-import type { CodeBlockLanguage, CodeBlockTheme } from "#adapters";
-import type { BundledLangKeys, BundledThemeKeys } from "../../../../Libs";
+import type {
+	BundledLangKeys,
+	BundledThemeKeys,
+} from "./SyntaxHighlighter-types";
+
+type CodeBlockLanguage = string;
+type CodeBlockTheme = string;
 
 const labelToShikiLang = {
 	TypeScript: "typescript",

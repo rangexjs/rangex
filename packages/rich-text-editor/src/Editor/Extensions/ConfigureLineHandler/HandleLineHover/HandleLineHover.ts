@@ -25,6 +25,7 @@ import type {
 export const handleLineHover = ({
 	editorPort,
 	editorAPI,
+	onLineChange,
 }: HandleLineHoverParams): HandleLineHoverResult => {
 	const { element: popover } = editorPort.popover;
 	const { rootEditable } = editorAPI;
@@ -50,6 +51,7 @@ export const handleLineHover = ({
 			}
 
 			currentLine = null;
+			onLineChange(null);
 			popover.hidePopover();
 		}, 100);
 	};
@@ -104,6 +106,7 @@ export const handleLineHover = ({
 				}
 
 				currentLine = line;
+				onLineChange(line);
 
 				popover.hidePopover();
 				popover.showPopover({ source: currentLine });

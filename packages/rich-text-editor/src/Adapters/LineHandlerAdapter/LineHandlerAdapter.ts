@@ -11,16 +11,28 @@ import type {
 	LineHandlerAdapterConstructorParams,
 	LineHandlerEditorPort,
 	LineHandlerUIPort,
+	OnCanDeleteUpdateFn,
+	OnCanDuplicateUpdateFn,
 	OnDragStartFn,
+	OnTurnIntoUpdateFn,
+	TurnIntoAvailability,
+	UpdateLineHandlerStateParams,
 } from "./LineHandlerAdapter-types";
 
 export class LineHandlerAdapter {
 	#popoverOverlayMount: OverlayMount;
 
+	#turnInto: TurnIntoAvailability = { blockQuote: false, codeBlock: false };
+	#canDelete = true;
+	#canDuplicate = true;
+
 	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 	#onDuplicateListeners: Set<OnDuplicateFn> = new Set();
 	#onInsertRootLineListeners: Set<OnInsertRootLineFn> = new Set();
 	#onDragStartListeners: Set<OnDragStartFn> = new Set();
+	#turnIntoListeners: Set<OnTurnIntoUpdateFn> = new Set();
+	#canDeleteListeners: Set<OnCanDeleteUpdateFn> = new Set();
+	#canDuplicateListeners: Set<OnCanDuplicateUpdateFn> = new Set();
 
 	#uiPort: LineHandlerUIPort | null = null;
 	#editorPort: LineHandlerEditorPort | null = null;
@@ -35,12 +47,69 @@ export class LineHandlerAdapter {
 		});
 	}
 
+	#updateState({
+		turnInto,
+		canDelete,
+		canDuplicate,
+	}: UpdateLineHandlerStateParams) {
+		if (turnInto !== undefined) {
+			this.#turnInto = turnInto;
+
+			for (const listener of this.#turnIntoListeners) {
+				listener(turnInto);
+			}
+		}
+
+		if (canDelete !== undefined) {
+			this.#canDelete = canDelete;
+
+			for (const listener of this.#canDeleteListeners) {
+				listener(canDelete);
+			}
+		}
+
+		if (canDuplicate !== undefined) {
+			this.#canDuplicate = canDuplicate;
+
+			for (const listener of this.#canDuplicateListeners) {
+				listener(canDuplicate);
+			}
+		}
+	}
+
 	get uiPort(): LineHandlerUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
 			get popover() {
 				return adapter.#popoverOverlayMount.uiOverlayMount;
+			},
+
+			get turnInto() {
+				return adapter.#turnInto;
+			},
+
+			onTurnIntoUpdate: (callback) => {
+				adapter.#turnIntoListeners.add(callback);
+				return () => adapter.#turnIntoListeners.delete(callback);
+			},
+
+			get canDelete() {
+				return adapter.#canDelete;
+			},
+
+			onCanDeleteUpdate: (callback) => {
+				adapter.#canDeleteListeners.add(callback);
+				return () => adapter.#canDeleteListeners.delete(callback);
+			},
+
+			get canDuplicate() {
+				return adapter.#canDuplicate;
+			},
+
+			onCanDuplicateUpdate: (callback) => {
+				adapter.#canDuplicateListeners.add(callback);
+				return () => adapter.#canDuplicateListeners.delete(callback);
 			},
 
 			emitDelete: () => {
@@ -78,6 +147,8 @@ export class LineHandlerAdapter {
 			get popover() {
 				return adapter.#popoverOverlayMount.editorOverlayMount;
 			},
+
+			updateState: (params) => adapter.#updateState(params),
 
 			onDelete: (callback) => {
 				adapter.#onDeleteListeners.add(callback);
