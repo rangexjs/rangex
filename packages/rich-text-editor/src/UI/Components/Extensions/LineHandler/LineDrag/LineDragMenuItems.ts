@@ -112,7 +112,7 @@ export const createLineDragMenuItems = ({
 		items.push({
 			type: "button",
 			label: "Duplicate",
-			icon: "CopySimple",
+			icon: "Duplicate",
 			checked: () => undefined,
 			onClick: () => uiPort.emitDuplicate(),
 		});
