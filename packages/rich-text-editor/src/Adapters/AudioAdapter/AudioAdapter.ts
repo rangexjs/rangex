@@ -1,4 +1,4 @@
-import type { AdapterBus, MediaResolveParams } from "#ports";
+import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
 import { AudioPopover } from "#ui-extensions";
 import {
 	type BlockAlignValue,
@@ -79,6 +79,10 @@ export class AudioAdapter {
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });
+	}
+
+	get id() {
+		return adapterIds.audio;
 	}
 
 	#updateState({

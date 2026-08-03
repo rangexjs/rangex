@@ -1,6 +1,5 @@
 import { EmojiAdapter, type EmojiItems } from "#adapters";
 import { configureEmoji } from "#editor-extensions";
-import { extensionsName } from "#ports";
 import { createExtension } from "../_Utilities";
 
 const defaultItems: EmojiItems = [
@@ -131,8 +130,7 @@ const defaultItems: EmojiItems = [
 	{ emoji: "🔗", name: "link" },
 ];
 
-export const Emoji = createExtension({
-	name: extensionsName.emoji,
+export const Emoji = createExtension<typeof EmojiAdapter>({
 	defaultSettings: {
 		items: defaultItems,
 	},

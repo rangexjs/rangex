@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	FontFamilyOption,
 	FormattingActionState,
@@ -146,6 +147,10 @@ export class FormattingAdapter {
 		this.#defaultLineSpacing = defaultLineSpacing;
 		this.#defaultTextAlign = defaultTextAlign;
 		this.#fontFamilyOptions = fontFamilyOptions;
+	}
+
+	get id() {
+		return adapterIds.formatting;
 	}
 
 	#updateState({

@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	ReadOnlyAdapterConstructorParams,
 	ReadOnlyEditorPort,
@@ -14,6 +15,10 @@ export class ReadOnlyAdapter {
 
 	constructor(...params: ReadOnlyAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.readOnly;
 	}
 
 	#toolbarButtonListeners: Set<ReadOnlyUpdateToolbarButtonFn> = new Set();

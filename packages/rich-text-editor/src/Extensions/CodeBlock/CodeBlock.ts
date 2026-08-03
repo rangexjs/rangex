@@ -4,7 +4,7 @@ import {
 	type CodeBlockTheme,
 } from "#adapters";
 import { configureCodeBlock } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import { CodeBlockToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
@@ -47,8 +47,7 @@ const defaultThemes: CodeBlockTheme[] = [
 	"Tokyo Night",
 ];
 
-export const CodeBlock = createExtension({
-	name: extensionsName.codeBlock,
+export const CodeBlock = createExtension<typeof CodeBlockAdapter>({
 	defaultSettings: {
 		languages: defaultLanguages,
 		themes: defaultThemes,

@@ -1,41 +1,12 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createList,
 	type ListLocalName,
 	listName,
 	listRoleSelector,
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
-import { createListStorage } from "../../../Storage";
-import type {
-	CreateListLineParams,
-	CreateListLineResult,
-	HandleListInsertionParams,
-} from "./HandleListInsertion-types";
-
-const createListLine = ({
-	localName,
-	lineType,
-}: CreateListLineParams): CreateListLineResult => {
-	const list = createList({ localName, lineType });
-
-	const blockNestedContextLine = createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.list,
-			content: { type: "list" },
-			customStorage: createListStorage(),
-			childNodes: [list],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-
-	return blockNestedContextLine;
-};
+import { createList } from "../../_Utilities";
+import type { HandleListInsertionParams } from "./HandleListInsertion-types";
 
 export const handleListInsertion = ({
 	editorPort,
@@ -50,7 +21,7 @@ export const handleListInsertion = ({
 			} as const
 		)[type];
 
-		const listLine = createListLine({
+		const listLine = createList({
 			localName,
 			lineType: "multi-line",
 		});

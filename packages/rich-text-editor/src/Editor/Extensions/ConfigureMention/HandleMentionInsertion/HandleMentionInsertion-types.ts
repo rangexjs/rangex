@@ -1,4 +1,4 @@
-import type { EditorAPI, InlineNestedContext } from "rich-text-area";
+import type { EditorAPI } from "rich-text-area";
 import type { MentionEditorPort } from "#adapters";
 
 export interface RemoveMentionQueryTextResult {
@@ -8,13 +8,6 @@ export interface RemoveMentionQueryTextResult {
 export interface RemoveMentionQueryTextParams {
 	editorAPI: EditorAPI;
 }
-
-export interface CreateMentionComponentParams {
-	userId: string;
-	name: string;
-}
-
-export interface CreateMentionComponentResult extends InlineNestedContext {}
 
 export interface HandleMentionInsertionParams {
 	editorPort: MentionEditorPort;

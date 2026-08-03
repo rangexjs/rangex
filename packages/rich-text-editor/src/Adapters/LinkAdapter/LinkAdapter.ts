@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { LinkPopover } from "#ui-extensions";
 import {
 	createOverlayMount,
@@ -72,6 +73,10 @@ export class LinkAdapter {
 			component: LinkPopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.link;
 	}
 
 	#updateState({

@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	FindReplaceAdapterConstructorParams,
 	FindReplaceCriteria,
@@ -41,6 +42,10 @@ export class FindReplaceAdapter {
 
 	constructor(...params: FindReplaceAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.findReplace;
 	}
 
 	#updateState({ results }: UpdateFindReplaceStateParams) {

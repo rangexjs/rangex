@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { EmojiPopover } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
@@ -34,6 +35,10 @@ export class EmojiAdapter {
 			component: EmojiPopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.emoji;
 	}
 
 	#computeFilteredItems() {

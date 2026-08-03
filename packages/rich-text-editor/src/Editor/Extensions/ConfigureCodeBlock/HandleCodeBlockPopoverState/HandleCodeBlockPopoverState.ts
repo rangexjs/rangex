@@ -4,11 +4,11 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
+import { toHighlighterLang, toHighlighterTheme } from "#libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "../../../Storage";
-import { toHighlighterLang, toHighlighterTheme } from "../_Utilities";
 import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopoverState-types";
 
 /**

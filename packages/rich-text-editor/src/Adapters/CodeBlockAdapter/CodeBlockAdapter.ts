@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { CodeBlockPopover } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
@@ -56,6 +57,10 @@ export class CodeBlockAdapter {
 			component: CodeBlockPopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.codeBlock;
 	}
 
 	#updateState({

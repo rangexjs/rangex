@@ -1,6 +1,6 @@
 import { SymbolsAdapter, type SymbolsItems } from "#adapters";
 import { configureSymbols } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import { SymbolsToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
@@ -107,8 +107,7 @@ const defaultItems: SymbolsItems = [
 	"😶",
 ];
 
-export const Symbols = createExtension({
-	name: extensionsName.symbols,
+export const Symbols = createExtension<typeof SymbolsAdapter>({
 	defaultSettings: {
 		items: defaultItems,
 	},

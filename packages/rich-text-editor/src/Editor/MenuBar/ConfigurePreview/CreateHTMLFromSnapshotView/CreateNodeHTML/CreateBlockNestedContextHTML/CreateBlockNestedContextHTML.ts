@@ -1,4 +1,4 @@
-import { componentsName } from "../../../../../Constants";
+import { componentsName } from "#ports";
 import { setAttributes } from "../_Utilities";
 import { highlightCodeBlock } from "./CodeBlock";
 import type {

@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	TodoListAdapterConstructorParams,
 	TodoListEditorPort,
@@ -13,6 +14,10 @@ export class TodoListAdapter {
 
 	constructor(...params: TodoListAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.todoList;
 	}
 
 	#toolbarButtonListeners: Set<TodoListUpdateToolbarButtonFn> = new Set();

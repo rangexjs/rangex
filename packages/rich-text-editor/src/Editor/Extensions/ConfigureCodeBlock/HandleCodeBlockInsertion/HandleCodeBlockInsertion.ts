@@ -1,76 +1,11 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createDetachedContext,
-	createHTMLLayout,
-	createList,
 	listName,
 	listRoleSelector,
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
-import { createCodeBlockStorage } from "../../../Storage";
-import { toHighlighterLang } from "../_Utilities";
-import type {
-	CreateCodeBlockLineParams,
-	CreateCodeBlockLineResult,
-	HandleCodeBlockInsertionParams,
-} from "./HandleCodeBlockInsertion-types";
-
-const createCodeBlockComponent = ({
-	language,
-}: CreateCodeBlockLineParams): CreateCodeBlockLineResult => {
-	const list = createList({
-		localName: "ol",
-		lineType: "single-line",
-		createPreLayout: ({ nestedEditable }) => [
-			createHTMLLayout({
-				localName: "div",
-				childNodes: [
-					createDetachedContext({
-						localName: "span",
-						shadowTree: [document.createTextNode("0")],
-					}),
-					nestedEditable({
-						allowedComponents: [],
-						allowedContentLineLocalNames: [],
-						allowedContentLineStyleAttrNames: [],
-						allowedGlyphFormatterInlineTags: [],
-						allowedGlyphFormatterStyleAttrNames: [],
-					}),
-				],
-			}),
-		],
-	});
-
-	const blockNestedContextLine = createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.codeBlock,
-			content: { type: "list" },
-			customStorage: createCodeBlockStorage({
-				lang: toHighlighterLang(language) ?? "typescript",
-				theme: { light: "light-plus", dark: "dark-plus" },
-			}),
-			childNodes: [
-				createHTMLLayout({
-					localName: "pre",
-					childNodes: [
-						createHTMLLayout({
-							localName: "code",
-							childNodes: [list],
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-
-	return blockNestedContextLine;
-};
+import { createCodeBlock } from "../../_Utilities";
+import type { HandleCodeBlockInsertionParams } from "./HandleCodeBlockInsertion-types";
 
 export const handleCodeBlockInsertion = ({
 	editorPort,
@@ -78,7 +13,7 @@ export const handleCodeBlockInsertion = ({
 	blockComponentPlacement,
 }: HandleCodeBlockInsertionParams) => {
 	const unsubscribe = editorPort.onInsertRequest(({ language }) => {
-		const codeBlockLine = createCodeBlockComponent({ language });
+		const codeBlockLine = createCodeBlock({ language });
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);
 

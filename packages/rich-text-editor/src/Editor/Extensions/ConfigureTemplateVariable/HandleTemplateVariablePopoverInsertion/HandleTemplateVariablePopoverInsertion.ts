@@ -4,7 +4,7 @@ import {
 	createInlineNestedContext,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import {
 	createTemplateVariableStorage,
 	ensureNodeRootStorage,

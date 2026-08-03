@@ -1,14 +1,13 @@
 import { UndoRedoAdapter } from "#adapters";
 import { configureUndoRedo } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import {
 	HistoryBackToolbarButton,
 	HistoryForwardToolbarButton,
 } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
-export const UndoRedo = createExtension({
-	name: extensionsName.undoRedo,
+export const UndoRedo = createExtension<typeof UndoRedoAdapter>({
 	defaultSettings: {},
 	createAdapter: (settings, options) => new UndoRedoAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

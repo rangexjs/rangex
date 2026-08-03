@@ -1,42 +1,5 @@
-import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createHTMLLayout,
-} from "rich-text-area";
-import { blockAlignAttr, componentsName } from "../../../Constants";
+import { createAudio } from "../../_Utilities";
 import type { HandleAudioInsertionParams } from "./HandleAudioInsertion-types";
-
-const createAudioLine = ({ src }: { src: string }) => {
-	return createBlockNestedContextLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.audio,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "audio",
-							domAttrs: {
-								src,
-								controls: "",
-							},
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-};
 
 /**
  * Inserts a real audio block at the caret whenever `onMediaResolve` reports a resolved audio
@@ -57,7 +20,7 @@ export const handleAudioInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createAudioLine({ src })],
+			lines: [createAudio({ src })],
 			breakBeforeInsert: false,
 		});
 

@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { MentionPopover } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
@@ -35,6 +36,10 @@ export class MentionAdapter {
 			component: MentionPopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.mention;
 	}
 
 	#computeFilteredItems() {

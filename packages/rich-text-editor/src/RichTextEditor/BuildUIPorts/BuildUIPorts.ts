@@ -1,103 +1,156 @@
-import {
-	AccordionItemAdapter,
-	BlockQuoteAdapter,
-	CodeBlockAdapter,
-	EmptyMediaAdapter,
-	FindReplaceAdapter,
-	FormattingAdapter,
-	LinkAdapter,
-	ListAdapter,
-	ReadOnlyAdapter,
-	SymbolsAdapter,
-	TableAdapter,
-	TemplateVariableAdapter,
-	TodoListAdapter,
-	UndoRedoAdapter,
+import type {
+	AccordionItemUIPort,
+	AudioUIPort,
+	BlockQuoteUIPort,
+	CodeBlockUIPort,
+	CommandMenuUIPort,
+	EmbedUIPort,
+	EmojiUIPort,
+	EmptyMediaUIPort,
+	FindReplaceUIPort,
+	FormattingUIPort,
+	ImageUIPort,
+	LineHandlerUIPort,
+	LinkUIPort,
+	ListUIPort,
+	MentionUIPort,
+	ReadOnlyUIPort,
+	SymbolsUIPort,
+	TableUIPort,
+	TemplateVariableUIPort,
+	TodoListUIPort,
+	UndoRedoUIPort,
+	VideoUIPort,
 } from "#adapters";
+import { adapterIds } from "#ports";
 import type { UIPortsContextValue } from "#ui";
 import type { BuildUIPortsParams } from "./BuildUIPorts-types";
 
 /**
- * Resolves each constructed Adapter instance's concrete class to fill in `UIPortsContextValue` —
- * `instanceof` has to run against the raw Adapter (built here, before `RichTextEditor` narrows it
- * down to `uiExtensions`), not against `adapter.uiPort`, which is a plain object literal with no
- * connection to the Adapter's own class hierarchy.
+ * Routes each Adapter by its `id` (see `Ports/AdapterIds`) instead of `instanceof` against its
+ * concrete class — matching a class forces a bundler to keep it even for extensions the consumer
+ * never opted into, defeating tree-shaking. Only type-only `XxxUIPort` imports are needed for the
+ * cast below (erased at build time), no Adapter class value import at all.
+ *
+ * TypeScript can't narrow `adapter`'s type from an `id` equality check here — `unique symbol`
+ * identity doesn't survive from an Adapter's own (different) module into this one for a plain
+ * instance field — so each branch casts explicitly instead of relying on control-flow narrowing.
  */
 export const buildUIPorts = ({
 	adapters,
 }: BuildUIPortsParams): UIPortsContextValue => {
 	const uiPorts: UIPortsContextValue = {
 		accordionItemUIPort: null,
-		linkUIPort: null,
-		readOnlyUIPort: null,
-		undoRedoUIPort: null,
-		symbolsUIPort: null,
-		findReplaceUIPort: null,
-		formattingUIPort: null,
+		audioUIPort: null,
 		blockQuoteUIPort: null,
 		codeBlockUIPort: null,
+		commandMenuUIPort: null,
+		embedUIPort: null,
+		emojiUIPort: null,
 		emptyMediaUIPort: null,
+		findReplaceUIPort: null,
+		formattingUIPort: null,
+		imageUIPort: null,
+		lineHandlerUIPort: null,
+		linkUIPort: null,
 		listUIPort: null,
+		mentionUIPort: null,
+		readOnlyUIPort: null,
+		symbolsUIPort: null,
 		tableUIPort: null,
 		templateVariableUIPort: null,
 		todoListUIPort: null,
+		undoRedoUIPort: null,
+		videoUIPort: null,
 	};
 
 	for (const adapter of adapters) {
-		if (adapter instanceof AccordionItemAdapter) {
-			uiPorts.accordionItemUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.accordionItem) {
+			uiPorts.accordionItemUIPort = adapter.uiPort as AccordionItemUIPort;
 		}
 
-		if (adapter instanceof LinkAdapter) {
-			uiPorts.linkUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.audio) {
+			uiPorts.audioUIPort = adapter.uiPort as AudioUIPort;
 		}
 
-		if (adapter instanceof ReadOnlyAdapter) {
-			uiPorts.readOnlyUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.blockQuote) {
+			uiPorts.blockQuoteUIPort = adapter.uiPort as BlockQuoteUIPort;
 		}
 
-		if (adapter instanceof UndoRedoAdapter) {
-			uiPorts.undoRedoUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.codeBlock) {
+			uiPorts.codeBlockUIPort = adapter.uiPort as CodeBlockUIPort;
 		}
 
-		if (adapter instanceof SymbolsAdapter) {
-			uiPorts.symbolsUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.commandMenu) {
+			uiPorts.commandMenuUIPort = adapter.uiPort as CommandMenuUIPort;
 		}
 
-		if (adapter instanceof FindReplaceAdapter) {
-			uiPorts.findReplaceUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.embed) {
+			uiPorts.embedUIPort = adapter.uiPort as EmbedUIPort;
 		}
 
-		if (adapter instanceof FormattingAdapter) {
-			uiPorts.formattingUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.emoji) {
+			uiPorts.emojiUIPort = adapter.uiPort as EmojiUIPort;
 		}
 
-		if (adapter instanceof BlockQuoteAdapter) {
-			uiPorts.blockQuoteUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.emptyMedia) {
+			uiPorts.emptyMediaUIPort = adapter.uiPort as EmptyMediaUIPort;
 		}
 
-		if (adapter instanceof CodeBlockAdapter) {
-			uiPorts.codeBlockUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.findReplace) {
+			uiPorts.findReplaceUIPort = adapter.uiPort as FindReplaceUIPort;
 		}
 
-		if (adapter instanceof EmptyMediaAdapter) {
-			uiPorts.emptyMediaUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.formatting) {
+			uiPorts.formattingUIPort = adapter.uiPort as FormattingUIPort;
 		}
 
-		if (adapter instanceof ListAdapter) {
-			uiPorts.listUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.image) {
+			uiPorts.imageUIPort = adapter.uiPort as ImageUIPort;
 		}
 
-		if (adapter instanceof TableAdapter) {
-			uiPorts.tableUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.lineHandler) {
+			uiPorts.lineHandlerUIPort = adapter.uiPort as LineHandlerUIPort;
 		}
 
-		if (adapter instanceof TemplateVariableAdapter) {
-			uiPorts.templateVariableUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.link) {
+			uiPorts.linkUIPort = adapter.uiPort as LinkUIPort;
 		}
 
-		if (adapter instanceof TodoListAdapter) {
-			uiPorts.todoListUIPort = adapter.uiPort;
+		if (adapter.id === adapterIds.list) {
+			uiPorts.listUIPort = adapter.uiPort as ListUIPort;
+		}
+
+		if (adapter.id === adapterIds.mention) {
+			uiPorts.mentionUIPort = adapter.uiPort as MentionUIPort;
+		}
+
+		if (adapter.id === adapterIds.readOnly) {
+			uiPorts.readOnlyUIPort = adapter.uiPort as ReadOnlyUIPort;
+		}
+
+		if (adapter.id === adapterIds.symbols) {
+			uiPorts.symbolsUIPort = adapter.uiPort as SymbolsUIPort;
+		}
+
+		if (adapter.id === adapterIds.table) {
+			uiPorts.tableUIPort = adapter.uiPort as TableUIPort;
+		}
+
+		if (adapter.id === adapterIds.templateVariable) {
+			uiPorts.templateVariableUIPort = adapter.uiPort as TemplateVariableUIPort;
+		}
+
+		if (adapter.id === adapterIds.todoList) {
+			uiPorts.todoListUIPort = adapter.uiPort as TodoListUIPort;
+		}
+
+		if (adapter.id === adapterIds.undoRedo) {
+			uiPorts.undoRedoUIPort = adapter.uiPort as UndoRedoUIPort;
+		}
+
+		if (adapter.id === adapterIds.video) {
+			uiPorts.videoUIPort = adapter.uiPort as VideoUIPort;
 		}
 	}
 

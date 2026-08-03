@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	BlockQuoteAdapterConstructorParams,
 	BlockQuoteEditorPort,
@@ -13,6 +14,10 @@ export class BlockQuoteAdapter {
 
 	constructor(...params: BlockQuoteAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.blockQuote;
 	}
 
 	#toolbarButtonListeners: Set<BlockQuoteUpdateToolbarButtonFn> = new Set();

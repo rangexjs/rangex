@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	UndoRedoAdapterConstructorParams,
 	UndoRedoEditorPort,
@@ -15,6 +16,10 @@ export class UndoRedoAdapter {
 
 	constructor(...params: UndoRedoAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.undoRedo;
 	}
 
 	#historyForwardToolbarButton: UndoRedoToolbarButtonState = {

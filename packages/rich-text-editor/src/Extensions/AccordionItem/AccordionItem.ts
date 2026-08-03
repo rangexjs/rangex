@@ -1,11 +1,10 @@
 import { AccordionItemAdapter } from "#adapters";
 import { configureAccordionItem } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import { CustomComponentToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
-export const AccordionItem = createExtension({
-	name: extensionsName.accordionItem,
+export const AccordionItem = createExtension<typeof AccordionItemAdapter>({
 	defaultSettings: {},
 	createAdapter: (settings, options) =>
 		new AccordionItemAdapter(settings, options),

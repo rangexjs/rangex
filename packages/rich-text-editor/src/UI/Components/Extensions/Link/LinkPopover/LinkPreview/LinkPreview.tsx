@@ -54,7 +54,7 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 					class="btn-neutral-solid rounded-sm p-1"
 					on:click={onUnwrap}
 				>
-					<Icon name="Trash" class="size-4" />
+					<Icon name="Export" class="size-4" />
 				</button>
 			</div>
 		</div>

@@ -1,11 +1,10 @@
 import { BlockQuoteAdapter } from "#adapters";
 import { configureBlockQuote } from "#editor-extensions";
-import { extensionsName, toolbarButtonsName } from "#ports";
+import { toolbarButtonsName } from "#ports";
 import { BlockQuoteToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
-export const BlockQuote = createExtension({
-	name: extensionsName.blockQuote,
+export const BlockQuote = createExtension<typeof BlockQuoteAdapter>({
 	defaultSettings: {},
 	createAdapter: (settings, options) =>
 		new BlockQuoteAdapter(settings, options),

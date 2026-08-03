@@ -2,58 +2,18 @@ import {
 	contentLineName,
 	contentLineRoleSelector,
 	createContentLine,
-	createFormattableTexts,
-	createHTMLLayout,
-	createInlineNestedContext,
-	createNestedEditable,
 } from "rich-text-area";
 import { assertNever } from "#ports";
-import { componentsName } from "../../../Constants";
-import { createLinkStorage } from "../../../Storage";
+import { createLink } from "../../_Utilities";
 import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
 import type {
 	AnchorPopoverToLinkParams,
-	CreateLinkComponentParams,
-	CreateLinkComponentResult,
 	HandleLinkInsertionParams,
 	InsertAtCaretParams,
 	OnInsertCallback,
 	SetSelectionToLinkEndParams,
 	WrapWithLinkParams,
 } from "./HandleLinkInsertion-types";
-
-const createLinkComponent = ({
-	text,
-	href,
-	target,
-}: CreateLinkComponentParams): CreateLinkComponentResult => {
-	const inlineNestedContext = createInlineNestedContext({
-		componentName: componentsName.link,
-		content: { type: "linked-characters" },
-		customStorage: createLinkStorage(),
-		childNodes: [
-			createHTMLLayout({
-				localName: "a",
-				domAttrs: { href, target },
-				childNodes: [
-					createNestedEditable({
-						content: { type: "linked-characters", unwrap: "if-empty" },
-						allowedComponents: [],
-						display: "inline",
-						childNodes: [
-							createContentLine({
-								localName: "span",
-								childNodes: [...createFormattableTexts({ data: text })],
-							}),
-						],
-					}),
-				],
-			}),
-		],
-	});
-
-	return inlineNestedContext;
-};
 
 /**
  * Collapses the selection to the end of the link's content so the caret lands inside the link after insertion.
@@ -108,7 +68,7 @@ const insertAtCaret = ({
 	href,
 	target,
 }: InsertAtCaretParams) => {
-	const link = createLinkComponent({ text, href, target });
+	const link = createLink({ text, href, target });
 
 	internals.currentLink = link;
 
@@ -180,7 +140,7 @@ const wrapWithLink = ({
 			toOffset: endOffset,
 		});
 
-		const link = createLinkComponent({ text: plainText, href, target });
+		const link = createLink({ text: plainText, href, target });
 
 		internals.currentLink = link;
 

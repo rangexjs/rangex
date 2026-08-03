@@ -7,7 +7,7 @@ import {
 	inlineNestedContextRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import {
 	ensureNodeRootStorage,
 	ensureTemplateVariableRootStorage,

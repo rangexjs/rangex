@@ -46,6 +46,10 @@
 		"#editor-extensions": {
 			"types": "./src/Editor/Extensions/index.ts",
 			"default": "./src/Editor/Extensions/index"
+		},
+		"#libs": {
+			"types": "./src/Libs/index.ts",
+			"default": "./src/Libs/index"
 		}
 	},
 	"files": [

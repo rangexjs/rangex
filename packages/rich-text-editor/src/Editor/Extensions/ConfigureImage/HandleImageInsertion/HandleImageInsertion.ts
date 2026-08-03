@@ -1,49 +1,5 @@
-import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createHTMLLayout,
-} from "rich-text-area";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	objectFitAttr,
-} from "../../../Constants";
+import { createImage } from "../../_Utilities";
 import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
-
-const createImageLine = ({ src }: { src: string }) => {
-	return createBlockNestedContextLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.image,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "img",
-							domAttrs: {
-								src,
-								alt: "",
-								[objectFitAttr.name]: objectFitAttr.value.cover,
-								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
-							},
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-};
 
 /**
  * Inserts a real image block at the caret whenever `onMediaResolve` reports a resolved image
@@ -64,7 +20,7 @@ export const handleImageInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createImageLine({ src })],
+			lines: [createImage({ src })],
 			breakBeforeInsert: false,
 		});
 

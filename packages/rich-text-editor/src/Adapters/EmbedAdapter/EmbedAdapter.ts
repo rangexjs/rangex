@@ -1,4 +1,4 @@
-import type { AdapterBus, MediaResolveParams } from "#ports";
+import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
 import { EmbedPopover } from "#ui-extensions";
 import {
 	type BlockAlignValue,
@@ -71,6 +71,10 @@ export class EmbedAdapter {
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });
+	}
+
+	get id() {
+		return adapterIds.embed;
 	}
 
 	#updateState({

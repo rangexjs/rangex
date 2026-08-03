@@ -4,11 +4,7 @@ import type {
 	List,
 	RootEditable,
 } from "rich-text-area";
-import type {
-	BundledLangKeys,
-	BundledThemeKeys,
-	ThemedCodeLines,
-} from "../../../Libs";
+import type { BundledLangKeys, BundledThemeKeys, ThemedCodeLines } from "#libs";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {

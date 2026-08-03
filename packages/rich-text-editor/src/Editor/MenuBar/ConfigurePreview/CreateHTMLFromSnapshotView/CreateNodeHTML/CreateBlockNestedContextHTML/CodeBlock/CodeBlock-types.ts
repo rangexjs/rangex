@@ -1,8 +1,4 @@
-import type {
-	DualTheme,
-	ThemeBackgrounds,
-	ThemedCodeLines,
-} from "../../../../../../Libs";
+import type { DualTheme, ThemeBackgrounds, ThemedCodeLines } from "#libs";
 
 export interface ApplyTokenSpansParams {
 	codeBlockEl: HTMLElement;

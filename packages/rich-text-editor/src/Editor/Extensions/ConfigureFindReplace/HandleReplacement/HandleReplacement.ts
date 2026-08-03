@@ -1,5 +1,5 @@
 import { createFormattableTexts } from "rich-text-area";
-import { componentsName } from "../../../Constants";
+import { componentsName } from "#ports";
 import type { HandleReplacementParams } from "./HandleReplacement-types";
 
 /** Performs single or bulk text replacement in response to replace actions. */

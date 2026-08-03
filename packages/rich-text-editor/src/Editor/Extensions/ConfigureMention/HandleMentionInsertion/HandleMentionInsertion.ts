@@ -1,15 +1,7 @@
-import {
-	createContentLine,
-	createFormattableTexts,
-	createInlineNestedContext,
-	createNestedEditable,
-} from "rich-text-area";
-import { componentsName } from "../../../Constants";
-import { createMentionStorage } from "../../../Storage";
+import { createContentLine } from "rich-text-area";
+import { createMention } from "../../_Utilities";
 import { getMentionQuery } from "../_Utilities";
 import type {
-	CreateMentionComponentParams,
-	CreateMentionComponentResult,
 	HandleMentionInsertionParams,
 	RemoveMentionQueryTextParams,
 	RemoveMentionQueryTextResult,
@@ -43,34 +35,6 @@ const removeMentionQueryText = ({
 	return { queryFound: true };
 };
 
-const createMentionComponent = ({
-	userId,
-	name,
-}: CreateMentionComponentParams): CreateMentionComponentResult => {
-	const data = `@${name}`;
-
-	const inlineNestedContext = createInlineNestedContext({
-		componentName: componentsName.mention,
-		content: { type: "custom" },
-		customStorage: createMentionStorage({ userId }),
-		editState: "false",
-		childNodes: [
-			createNestedEditable({
-				content: { type: "default" },
-				display: "inline",
-				childNodes: [
-					createContentLine({
-						localName: "span",
-						childNodes: [...createFormattableTexts({ data })],
-					}),
-				],
-			}),
-		],
-	});
-
-	return inlineNestedContext;
-};
-
 /**
  * Subscribes to mention selection and inserts the mention component at the cursor.
  * On select, strips the @query text first, then re-reads the cursor position (now pointing
@@ -94,7 +58,7 @@ export const handleMentionInsertion = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const mention = createMentionComponent({ userId: id, name });
+		const mention = createMention({ userId: id, name });
 
 		editorAPI.insertNode({
 			fromNode: fromText,

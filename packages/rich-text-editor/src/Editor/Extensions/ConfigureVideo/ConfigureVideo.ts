@@ -1,4 +1,4 @@
-import { componentsName } from "../../Constants";
+import { componentsName } from "#ports";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import {
 	handleBlockAlignState,

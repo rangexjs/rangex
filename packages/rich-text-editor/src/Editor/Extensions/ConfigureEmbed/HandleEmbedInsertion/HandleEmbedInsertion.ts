@@ -1,60 +1,5 @@
-import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
-	createHTMLLayout,
-} from "rich-text-area";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-} from "../../../Constants";
+import { createEmbed } from "../../_Utilities";
 import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
-
-// Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are
-// fixed rather than user-configurable so every embed gets a sane default policy.
-// `allow-same-origin` alongside `allow-scripts` is safe here specifically because the
-// iframe's origin is always the third-party provider's, never ours; the sandbox-escape
-// concern that combination is usually flagged for only applies to same-origin content.
-const embedSandbox =
-	"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation";
-const embedAllow =
-	"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write";
-
-const createEmbedLine = ({ src }: { src: string }) => {
-	return createBlockNestedContextLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
-			componentName: componentsName.embed,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "iframe",
-							domAttrs: {
-								src,
-								title: "Embedded content",
-								sandbox: embedSandbox,
-								allow: embedAllow,
-								loading: "lazy",
-								[aspectRatioAttr.name]: aspectRatioAttr.value["16-9"],
-							},
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-	});
-};
 
 /**
  * Inserts a real embed block at the caret whenever `onMediaResolve` reports a resolved embed
@@ -75,7 +20,7 @@ export const handleEmbedInsertion = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [createEmbedLine({ src })],
+			lines: [createEmbed({ src })],
 			breakBeforeInsert: false,
 		});
 

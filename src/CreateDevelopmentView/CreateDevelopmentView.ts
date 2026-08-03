@@ -3,12 +3,14 @@ import {
 	Audio,
 	BlockQuote,
 	CodeBlock,
+	CommandMenu,
 	Embed,
 	Emoji,
 	EmptyMedia,
 	FindReplace,
 	Formatting,
 	Image,
+	LineHandler,
 	Link,
 	List,
 	Mention,
@@ -65,6 +67,8 @@ export const createDevelopmentView = () => {
 			FindReplace(),
 			AccordionItem(),
 			ReadOnly(),
+			CommandMenu(),
+			LineHandler(),
 		],
 	});
 
@@ -92,6 +96,8 @@ export const createDevelopmentView = () => {
 			FindReplace(),
 			AccordionItem(),
 			ReadOnly(),
+			CommandMenu(),
+			LineHandler(),
 		],
 	});
 
