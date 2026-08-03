@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { AccordionItemId } from "../../Constants";
 import type { accordionItemStorageVersion } from "./AccordionItemStorage";
 
@@ -18,7 +18,7 @@ export interface EnsureAccordionItemStorageResult
 	extends AccordionItemStorage {}
 
 export interface EnsureNodeAccordionItemStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeAccordionItemStorageResult

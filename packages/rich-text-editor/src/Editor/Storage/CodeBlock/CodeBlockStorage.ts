@@ -61,16 +61,16 @@ export const ensureCodeBlockStorage = ({
 };
 
 export const ensureNodeCodeBlockStorage = ({
-	blockNestedContext,
+	blockComponent,
 	fallbacks,
 }: EnsureNodeCodeBlockStorageParams): EnsureNodeCodeBlockStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureCodeBlockStorage({
 		storage: $$customStorage,
 		fallbacks,
 	});
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

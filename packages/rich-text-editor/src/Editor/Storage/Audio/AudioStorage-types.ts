@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { AudioId } from "../../Constants";
 import type { audioStorageVersion } from "./AudioStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureAudioStorageParams {
 export interface EnsureAudioStorageResult extends AudioStorage {}
 
 export interface EnsureNodeAudioStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeAudioStorageResult extends AudioStorage {}

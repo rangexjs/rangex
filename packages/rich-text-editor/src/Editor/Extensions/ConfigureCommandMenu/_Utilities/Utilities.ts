@@ -1,5 +1,5 @@
 import { componentsName } from "#ports";
-import { getClosestBlockNestedContext } from "../../../NodeQuery";
+import { getClosestBlockComponent } from "../../../NodeQuery";
 import type {
 	CanInsertCommandMenuParams,
 	GetCommandMenuQueryParams,
@@ -9,12 +9,12 @@ import type {
 export const canInsertCommandMenu = ({
 	fromText,
 }: CanInsertCommandMenuParams) => {
-	const blockNestedContext = getClosestBlockNestedContext({
+	const blockComponent = getClosestBlockComponent({
 		fromNode: fromText,
 		componentName: componentsName.codeBlock,
 	});
 
-	const canInsert = !blockNestedContext;
+	const canInsert = !blockComponent;
 
 	return canInsert;
 };

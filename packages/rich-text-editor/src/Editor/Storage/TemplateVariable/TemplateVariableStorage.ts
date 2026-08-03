@@ -70,16 +70,16 @@ export const ensureTemplateVariableStorage = ({
 };
 
 export const ensureNodeTemplateVariableStorage = ({
-	inlineNestedContext,
+	inlineComponent,
 	fallbacks,
 }: EnsureNodeTemplateVariableStorageParams): EnsureNodeTemplateVariableStorageResult => {
-	const { $$customStorage } = inlineNestedContext;
+	const { $$customStorage } = inlineComponent;
 
 	const storage = ensureTemplateVariableStorage({
 		storage: $$customStorage,
 		fallbacks,
 	});
-	inlineNestedContext.$$customStorage = storage;
+	inlineComponent.$$customStorage = storage;
 
 	return storage;
 };

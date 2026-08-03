@@ -8,8 +8,9 @@ export const handleAccordionItemInsertion = ({
 	blockComponentPlacement,
 }: HandleAccordionItemInsertionParams) => {
 	const unsubscribe = editorPort.onInsertRequest(() => {
-		const { blockNestedContextLine, summaryNestedEditable } =
-			createAccordionItem({});
+		const { blockComponentLine, summaryNestedEditable } = createAccordionItem(
+			{},
+		);
 
 		const trailingLine = createContentLine({
 			localName: "p",
@@ -17,7 +18,7 @@ export const handleAccordionItemInsertion = ({
 		});
 
 		blockComponentPlacement.insertBySelection({
-			lines: [blockNestedContextLine, trailingLine],
+			lines: [blockComponentLine, trailingLine],
 			shouldReplaceContentLineIfEmpty: true,
 		});
 

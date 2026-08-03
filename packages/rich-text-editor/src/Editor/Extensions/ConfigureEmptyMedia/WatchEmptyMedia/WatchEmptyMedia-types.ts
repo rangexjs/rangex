@@ -1,4 +1,4 @@
-import type { BlockNestedContext, EditorAPI } from "rich-text-area";
+import type { BlockComponent, EditorAPI } from "rich-text-area";
 import type { EmptyMediaEditorPort, MediaResolveDetail } from "#adapters";
 
 export interface WatchEmptyMediaParams {
@@ -18,7 +18,7 @@ export interface ResolveMediaSrcParams {
 export type ResolveMediaSrcResult = Promise<string | null>;
 
 export interface FinalizeResolveParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 	type: MediaResolveDetail["type"];
 	src: string;
 }

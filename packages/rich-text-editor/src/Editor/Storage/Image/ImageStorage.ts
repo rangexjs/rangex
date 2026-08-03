@@ -46,12 +46,12 @@ export const ensureImageStorage = ({
 };
 
 export const ensureNodeImageStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeImageStorageParams): EnsureNodeImageStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureImageStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

@@ -1,6 +1,6 @@
 import {
-	blockNestedContextName,
-	blockNestedContextRoleSelector,
+	blockComponentName,
+	blockComponentRoleSelector,
 	htmlLayoutName,
 	isEditorNode,
 	listChildNodesChangeEventType,
@@ -25,15 +25,13 @@ export const handleTodoListCheckboxState = ({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
 			for (const list of lists) {
-				const blockNestedContext = list.$$closest(
-					blockNestedContextRoleSelector,
-				);
+				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
-				if (blockNestedContext?.$$editorRole !== blockNestedContextName) {
+				if (blockComponent?.$$editorRole !== blockComponentName) {
 					continue;
 				}
 
-				if (blockNestedContext.$$componentName !== componentsName.todoList) {
+				if (blockComponent.$$componentName !== componentsName.todoList) {
 					continue;
 				}
 

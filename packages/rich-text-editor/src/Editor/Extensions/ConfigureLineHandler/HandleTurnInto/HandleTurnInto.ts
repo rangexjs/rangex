@@ -1,4 +1,4 @@
-import { blockNestedContextLineName } from "rich-text-area";
+import { blockComponentLineName } from "rich-text-area";
 import { componentsName } from "#ports";
 import {
 	createAccordionItem,
@@ -19,7 +19,7 @@ const createBlockComponent = ({
 }: CreateBlockComponentParams): CreateBlockComponentResult => {
 	const blockComponent = {
 		[componentsName.accordionItem]: () =>
-			createAccordionItem({ childNodes }).blockNestedContextLine,
+			createAccordionItem({ childNodes }).blockComponentLine,
 		[componentsName.blockQuote]: () => createBlockQuote({ childNodes }),
 		[componentsName.codeBlock]: () =>
 			createCodeBlock({ language: "typescript", childNodes }),
@@ -41,11 +41,11 @@ export const handleTurnInto = ({
 	const unsubscribe = editorPort.onTurnInto((turnIntoName) => {
 		const currentLine = getCurrentLine();
 
-		if (currentLine?.$$editorRole !== blockNestedContextLineName) {
+		if (currentLine?.$$editorRole !== blockComponentLineName) {
 			return;
 		}
 
-		editorAPI.replaceNestedContextTop(currentLine, (extractedLines) => {
+		editorAPI.replaceComponentTop(currentLine, (extractedLines) => {
 			const blockComponent = createBlockComponent({
 				name: turnIntoName,
 				childNodes: extractedLines,

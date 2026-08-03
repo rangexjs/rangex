@@ -52,12 +52,12 @@ export const ensureAccordionItemStorage = ({
 };
 
 export const ensureNodeAccordionItemStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeAccordionItemStorageParams): EnsureNodeAccordionItemStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureAccordionItemStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

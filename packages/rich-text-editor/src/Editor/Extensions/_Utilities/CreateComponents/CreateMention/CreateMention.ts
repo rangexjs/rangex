@@ -1,7 +1,7 @@
 import {
 	createContentLine,
 	createFormattableTexts,
-	createInlineNestedContext,
+	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -17,7 +17,7 @@ export const createMention = ({
 }: CreateMentionParams): CreateMentionResult => {
 	const data = `@${name}`;
 
-	return createInlineNestedContext({
+	return createInlineComponent({
 		componentName: componentsName.mention,
 		content: { type: "custom" },
 		customStorage: createMentionStorage({ userId }),

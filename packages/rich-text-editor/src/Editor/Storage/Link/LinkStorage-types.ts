@@ -1,4 +1,4 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 import type { LinkId } from "../../Constants";
 import type { linkStorageVersion } from "./LinkStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureLinkStorageParams {
 export interface EnsureLinkStorageResult extends LinkStorage {}
 
 export interface EnsureNodeLinkStorageParams {
-	inlineNestedContext: InlineNestedContext;
+	inlineComponent: InlineComponent;
 }
 
 export interface EnsureNodeLinkStorageResult extends LinkStorage {}

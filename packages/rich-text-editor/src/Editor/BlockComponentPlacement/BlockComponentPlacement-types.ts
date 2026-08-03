@@ -1,5 +1,5 @@
 import type {
-	BlockNestedContextLine,
+	BlockComponentLine,
 	ContentFlowNode,
 	EditorAPI,
 	EditorNode,
@@ -61,7 +61,7 @@ export interface WrapParams {
 	fromOffset: number;
 	toNode: ContentFlowNode;
 	toOffset: number;
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 	target: WrapTarget;
 }
 
@@ -78,7 +78,7 @@ export type CanWrapBySelectionFn = (
 ) => CanWrapBySelectionResult;
 
 export interface WrapBySelectionParams {
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 	target: WrapTarget;
 }
 

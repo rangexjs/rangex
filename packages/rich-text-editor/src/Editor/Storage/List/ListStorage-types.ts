@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { ListId } from "../../Constants";
 import type { listStorageVersion } from "./ListStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureListStorageParams {
 export interface EnsureListStorageResult extends ListStorage {}
 
 export interface EnsureNodeListStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeListStorageResult extends ListStorage {}

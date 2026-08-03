@@ -15,7 +15,7 @@ import type {
  *
  * - `"wrap"` — the selection spans multiple points. At least one
  *   InlineWrappableSegment whose closest ScopedEditable allows the link
- *   component must exist and must contain no InlineNestedContext.
+ *   component must exist and must contain no InlineComponent.
  */
 export const getLinkInsertionMode = ({
 	editorAPI,
@@ -77,11 +77,11 @@ export const getLinkInsertionMode = ({
 			continue;
 		}
 
-		const inlineNestedContexts =
-			inlineWrappableSegment.getInlineNestedContextListInSegment();
+		const inlineComponents =
+			inlineWrappableSegment.getInlineComponentListInSegment();
 
-		// Insertion is not allowed if the segment contains InlineNestedContext
-		if (inlineNestedContexts.length) {
+		// Insertion is not allowed if the segment contains InlineComponent
+		if (inlineComponents.length) {
 			continue;
 		}
 

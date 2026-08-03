@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createHTMLLayout,
 	createNestedEditable,
 } from "rich-text-area";
@@ -21,9 +21,9 @@ export const createBlockQuote = ({
 		childNodes,
 	});
 
-	return createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+	return createBlockComponentLine({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.blockQuote,
 			content: { type: "styled-block" },
 			customStorage: createBlockQuoteStorage(),
@@ -34,6 +34,6 @@ export const createBlockQuote = ({
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

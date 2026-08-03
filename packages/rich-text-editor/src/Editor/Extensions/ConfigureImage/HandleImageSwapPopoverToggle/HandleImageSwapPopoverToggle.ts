@@ -48,7 +48,7 @@ export const handleImageSwapPopoverToggle = ({
 			return;
 		}
 
-		const figure = getImageFigure({ blockNestedContext: currentBlock });
+		const figure = getImageFigure({ blockComponent: currentBlock });
 
 		internals.currentImageFigure = figure;
 

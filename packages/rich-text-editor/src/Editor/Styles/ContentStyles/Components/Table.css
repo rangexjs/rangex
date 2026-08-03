@@ -1,4 +1,4 @@
-[data-rx-editor-role="block-nested-context"] {
+[data-rx-editor-role="block-component"] {
 	&[data-rx-component-name="table"] {
 		padding: 6px 0px;
 	}

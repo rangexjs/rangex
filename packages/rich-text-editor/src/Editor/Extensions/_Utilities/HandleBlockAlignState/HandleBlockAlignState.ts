@@ -23,7 +23,7 @@ export const handleBlockAlignState = ({
 			throw new Error("ParentElement not supposed to be null.");
 		}
 
-		setBlockAlign({ blockNestedContextLine: $$parentElement, align });
+		setBlockAlign({ blockComponentLine: $$parentElement, align });
 		port.setAlign(align);
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();

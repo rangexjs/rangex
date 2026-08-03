@@ -46,12 +46,12 @@ export const ensureTableStorage = ({
 };
 
 export const ensureNodeTableStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeTableStorageParams): EnsureNodeTableStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureTableStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

@@ -28,19 +28,19 @@ export const handleImagePopoverAppearance = ({
 			top: "100%",
 			right: "100%",
 		},
-		shouldShow({ blockNestedContext }) {
-			return blockNestedContext.$$componentName === componentsName.image;
+		shouldShow({ blockComponent }) {
+			return blockComponent.$$componentName === componentsName.image;
 		},
-		onShow({ blockNestedContext }) {
-			const { $$parentElement } = blockNestedContext;
+		onShow({ blockComponent }) {
+			const { $$parentElement } = blockComponent;
 
 			if (!$$parentElement) {
 				throw new Error("ParentElement not supposed to be null.");
 			}
 
-			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+			const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
-			const figure = getImageFigure({ blockNestedContext });
+			const figure = getImageFigure({ blockComponent });
 			const img = getImageImg({ figure });
 
 			const objectFit = getImageObjectFit({ img });
@@ -57,7 +57,7 @@ export const handleImagePopoverAppearance = ({
 			});
 
 			editorPort.popover.element.hidePopover();
-			editorPort.popover.element.showPopover({ source: blockNestedContext });
+			editorPort.popover.element.showPopover({ source: blockComponent });
 		},
 		onClose() {
 			editorPort.popover.element.hidePopover();

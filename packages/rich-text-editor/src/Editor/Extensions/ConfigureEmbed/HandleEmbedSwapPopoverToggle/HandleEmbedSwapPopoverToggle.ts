@@ -48,7 +48,7 @@ export const handleEmbedSwapPopoverToggle = ({
 			return;
 		}
 
-		const figure = getEmbedFigure({ blockNestedContext: currentBlock });
+		const figure = getEmbedFigure({ blockComponent: currentBlock });
 
 		internals.currentEmbedFigure = figure;
 

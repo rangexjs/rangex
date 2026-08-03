@@ -1,4 +1,4 @@
-import type { EditorAPI, InlineNestedContext } from "rich-text-area";
+import type { EditorAPI, InlineComponent } from "rich-text-area";
 import type {
 	TemplateVariableEditorPort,
 	TemplateVariableKind,
@@ -18,7 +18,7 @@ export interface CreateTemplateVariableComponentParams {
 }
 
 export interface CreateTemplateVariableComponentResult
-	extends InlineNestedContext {}
+	extends InlineComponent {}
 
 export interface HandleTemplateVariablePopoverInsertionParams {
 	editorPort: TemplateVariableEditorPort;

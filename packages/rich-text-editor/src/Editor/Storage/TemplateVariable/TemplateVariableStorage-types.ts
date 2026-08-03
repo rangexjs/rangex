@@ -1,4 +1,4 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 import type { TemplateVariableKind } from "#adapters";
 import type {
 	TemplateVariableId,
@@ -45,7 +45,7 @@ export interface EnsureTemplateVariableStorageResult
 	extends TemplateVariableStorage {}
 
 export interface EnsureNodeTemplateVariableStorageParams {
-	inlineNestedContext: InlineNestedContext;
+	inlineComponent: InlineComponent;
 	fallbacks: TemplateVariableStorageFallbacks;
 }
 

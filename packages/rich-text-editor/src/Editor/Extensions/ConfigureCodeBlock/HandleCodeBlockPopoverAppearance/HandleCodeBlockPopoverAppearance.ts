@@ -23,12 +23,12 @@ export const handleCodeBlockPopoverAppearance = ({
 			top: "100%",
 			right: "100%",
 		},
-		shouldShow({ blockNestedContext }) {
-			return blockNestedContext.$$componentName === componentsName.codeBlock;
+		shouldShow({ blockComponent }) {
+			return blockComponent.$$componentName === componentsName.codeBlock;
 		},
-		onShow({ blockNestedContext }) {
+		onShow({ blockComponent }) {
 			const { lang, theme } = ensureNodeCodeBlockStorage({
-				blockNestedContext,
+				blockComponent,
 				fallbacks: codeBlockStorageFallbacks,
 			});
 
@@ -39,7 +39,7 @@ export const handleCodeBlockPopoverAppearance = ({
 			});
 
 			editorPort.popover.element.hidePopover();
-			editorPort.popover.element.showPopover({ source: blockNestedContext });
+			editorPort.popover.element.showPopover({ source: blockComponent });
 		},
 		onClose() {
 			editorPort.popover.element.hidePopover();

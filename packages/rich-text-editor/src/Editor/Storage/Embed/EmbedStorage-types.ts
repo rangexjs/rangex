@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { EmbedId } from "../../Constants";
 import type { embedStorageVersion } from "./EmbedStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureEmbedStorageParams {
 export interface EnsureEmbedStorageResult extends EmbedStorage {}
 
 export interface EnsureNodeEmbedStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeEmbedStorageResult extends EmbedStorage {}

@@ -1,4 +1,4 @@
-import type { BlockNestedContextLine } from "rich-text-area";
+import type { BlockComponentLine } from "rich-text-area";
 import type { LineHandlerEditorPort } from "#adapters";
 import type { OnLineChangeFn } from "../HandleLineHover";
 
@@ -6,9 +6,9 @@ export interface HandleContentLineParams {
 	editorPort: LineHandlerEditorPort;
 }
 
-export interface HandleBlockNestedContextLineParams {
+export interface HandleBlockComponentLineParams {
 	editorPort: LineHandlerEditorPort;
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 }
 
 export interface HandleDragMenuStateParams {

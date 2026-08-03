@@ -1,5 +1,5 @@
 import type {
-	BlockNestedContextLine,
+	BlockComponentLine,
 	Line,
 	ListLineType,
 	ListLocalName,
@@ -11,4 +11,4 @@ export interface CreateListParams {
 	childNodes?: Line[];
 }
 
-export type CreateListResult = BlockNestedContextLine;
+export type CreateListResult = BlockComponentLine;

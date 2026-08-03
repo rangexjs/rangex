@@ -46,12 +46,12 @@ export const ensureListStorage = ({
 };
 
 export const ensureNodeListStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeListStorageParams): EnsureNodeListStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureListStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

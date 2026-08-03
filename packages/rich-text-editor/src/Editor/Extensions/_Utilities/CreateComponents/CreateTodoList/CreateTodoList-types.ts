@@ -1,7 +1,7 @@
-import type { BlockNestedContextLine, Line } from "rich-text-area";
+import type { BlockComponentLine, Line } from "rich-text-area";
 
 export interface CreateTodoListParams {
 	childNodes?: Line[];
 }
 
-export type CreateTodoListResult = BlockNestedContextLine;
+export type CreateTodoListResult = BlockComponentLine;

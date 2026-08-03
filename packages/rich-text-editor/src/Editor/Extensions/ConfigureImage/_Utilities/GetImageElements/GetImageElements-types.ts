@@ -1,7 +1,7 @@
-import type { BlockNestedContext, HTMLLayout } from "rich-text-area";
+import type { BlockComponent, HTMLLayout } from "rich-text-area";
 
 export interface GetImageFigureParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export type GetImageFigureResult = HTMLLayout;

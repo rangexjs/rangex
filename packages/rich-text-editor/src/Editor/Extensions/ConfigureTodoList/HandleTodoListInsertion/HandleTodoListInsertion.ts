@@ -22,7 +22,7 @@ export const handleTodoListInsertion = ({
 		}
 
 		blockComponentPlacement.wrapBySelection({
-			blockNestedContextLine: todoListLine,
+			blockComponentLine: todoListLine,
 			target: list,
 		});
 

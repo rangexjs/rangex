@@ -1,18 +1,18 @@
 import type {
 	EditorAPI,
 	EditorSelection,
-	InlineNestedContext,
+	InlineComponent,
 } from "rich-text-area";
 import type { LinkEditorPort } from "#adapters";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface SetSelectionToLinkEndParams {
-	link: InlineNestedContext;
+	link: InlineComponent;
 	selection: EditorSelection;
 }
 
 export interface AnchorPopoverToLinkParams {
-	link: InlineNestedContext;
+	link: InlineComponent;
 	editorPort: LinkEditorPort;
 }
 

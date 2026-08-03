@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -13,12 +13,12 @@ import {
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
-	return createBlockNestedContextLine({
+	return createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.video,
 			content: { type: "custom" },
 			editState: "false",
@@ -41,6 +41,6 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

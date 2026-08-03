@@ -1,4 +1,4 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 
 export interface CreateLinkParams {
 	text: string;
@@ -6,4 +6,4 @@ export interface CreateLinkParams {
 	target: string;
 }
 
-export type CreateLinkResult = InlineNestedContext;
+export type CreateLinkResult = InlineComponent;

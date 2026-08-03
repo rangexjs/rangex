@@ -101,7 +101,7 @@ const insertAtCaret = ({
 };
 
 /**
- * Wraps each valid segment in the selection with a link, skipping any that already contain an InlineNestedContext.
+ * Wraps each valid segment in the selection with a link, skipping any that already contain an InlineComponent.
  */
 const wrapWithLink = ({
 	editorPort,
@@ -123,10 +123,10 @@ const wrapWithLink = ({
 	});
 
 	for (const inlineWrappableSegment of inlineWrappableSegments) {
-		const inlineNestedContextsInSegment =
-			inlineWrappableSegment.getInlineNestedContextListInSegment();
+		const inlineComponentsInSegment =
+			inlineWrappableSegment.getInlineComponentListInSegment();
 
-		if (inlineNestedContextsInSegment.length) {
+		if (inlineComponentsInSegment.length) {
 			continue;
 		}
 

@@ -1,4 +1,4 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 import type { TemplateVariableKind } from "#adapters";
 
 export interface CreateTemplateVariableParams {
@@ -6,4 +6,4 @@ export interface CreateTemplateVariableParams {
 	displayText: string;
 }
 
-export type CreateTemplateVariableResult = InlineNestedContext;
+export type CreateTemplateVariableResult = InlineComponent;

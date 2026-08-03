@@ -1,9 +1,9 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { AudioEditorPort } from "#adapters";
 import type { AudioInternals } from "../ConfigureAudio-types";
 
 export interface HandleAudioSwapPopoverToggleParams {
 	editorPort: AudioEditorPort;
-	getCurrentBlock: () => BlockNestedContext | null;
+	getCurrentBlock: () => BlockComponent | null;
 	internals: AudioInternals;
 }

@@ -1,8 +1,8 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 
 export interface CreateMentionParams {
 	userId: string;
 	name: string;
 }
 
-export type CreateMentionResult = InlineNestedContext;
+export type CreateMentionResult = InlineComponent;

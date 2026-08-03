@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { BundledLangKeys, DualTheme } from "#libs";
 import type { CodeBlockId } from "../../Constants";
 import type { codeBlockStorageVersion } from "./CodeBlockStorage";
@@ -26,7 +26,7 @@ export interface EnsureCodeBlockStorageParams {
 export interface EnsureCodeBlockStorageResult extends CodeBlockStorage {}
 
 export interface EnsureNodeCodeBlockStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 	fallbacks: CodeBlockStorageFallbacks;
 }
 

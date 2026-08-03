@@ -30,19 +30,19 @@ export const handleAudioPopoverAppearance = ({
 			top: "100%",
 			right: "100%",
 		},
-		shouldShow({ blockNestedContext }) {
-			return blockNestedContext.$$componentName === componentsName.audio;
+		shouldShow({ blockComponent }) {
+			return blockComponent.$$componentName === componentsName.audio;
 		},
-		onShow({ blockNestedContext }) {
-			const { $$parentElement } = blockNestedContext;
+		onShow({ blockComponent }) {
+			const { $$parentElement } = blockComponent;
 
 			if (!$$parentElement) {
 				throw new Error("ParentElement not supposed to be null.");
 			}
 
-			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+			const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
-			const figure = getAudioFigure({ blockNestedContext });
+			const figure = getAudioFigure({ blockComponent });
 			const audio = getAudioElement({ figure });
 
 			const caption = getAudioCaption({ figure });
@@ -63,7 +63,7 @@ export const handleAudioPopoverAppearance = ({
 			});
 
 			editorPort.popover.element.hidePopover();
-			editorPort.popover.element.showPopover({ source: blockNestedContext });
+			editorPort.popover.element.showPopover({ source: blockComponent });
 		},
 		onClose() {
 			editorPort.popover.element.hidePopover();

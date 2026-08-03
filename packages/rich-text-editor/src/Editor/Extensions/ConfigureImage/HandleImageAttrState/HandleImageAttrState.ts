@@ -24,7 +24,7 @@ export const handleImageAttrState = ({
 				return;
 			}
 
-			const figure = getImageFigure({ blockNestedContext: currentBlock });
+			const figure = getImageFigure({ blockComponent: currentBlock });
 			const img = getImageImg({ figure });
 
 			if (objectFit !== undefined) {

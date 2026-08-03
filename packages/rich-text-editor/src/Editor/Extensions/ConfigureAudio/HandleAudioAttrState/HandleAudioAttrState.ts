@@ -26,7 +26,7 @@ export const handleAudioAttrState = ({
 				return;
 			}
 
-			const figure = getAudioFigure({ blockNestedContext: currentBlock });
+			const figure = getAudioFigure({ blockComponent: currentBlock });
 			const audio = getAudioElement({ figure });
 
 			if (title !== undefined) {

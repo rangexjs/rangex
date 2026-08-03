@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -19,12 +19,12 @@ const embedAllow =
 	"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write";
 
 export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
-	return createBlockNestedContextLine({
+	return createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.embed,
 			content: { type: "custom" },
 			editState: "false",
@@ -49,6 +49,6 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

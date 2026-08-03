@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createDetachedContext,
 	createHTMLLayout,
 	createList,
@@ -42,9 +42,9 @@ export const createCodeBlock = ({
 		],
 	});
 
-	return createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+	return createBlockComponentLine({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({
@@ -63,6 +63,6 @@ export const createCodeBlock = ({
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

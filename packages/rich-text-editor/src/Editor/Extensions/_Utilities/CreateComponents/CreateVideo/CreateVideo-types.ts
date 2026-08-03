@@ -1,7 +1,7 @@
-import type { BlockNestedContextLine } from "rich-text-area";
+import type { BlockComponentLine } from "rich-text-area";
 
 export interface CreateVideoParams {
 	src: string;
 }
 
-export type CreateVideoResult = BlockNestedContextLine;
+export type CreateVideoResult = BlockComponentLine;

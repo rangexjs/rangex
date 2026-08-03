@@ -11,7 +11,7 @@ import table from "../Components/Table.css?inline";
 import templateVariable from "../Components/TemplateVariable.css?inline";
 import todoList from "../Components/TodoList.css?inline";
 import video from "../Components/Video.css?inline";
-import blockNestedContextLine from "../EditorElements/BlockNestedContextLine.css?inline";
+import blockComponentLine from "../EditorElements/BlockComponentLine.css?inline";
 import contentLine from "../EditorElements/ContentLine.css?inline";
 import glyphFormatter from "../EditorElements/GlyphFormatter.css?inline";
 import fontStyles from "../FontStyles.css?inline";
@@ -31,7 +31,7 @@ export const getContentStyles = () => {
 		link +
 		list +
 		todoList +
-		blockNestedContextLine +
+		blockComponentLine +
 		mention +
 		table +
 		templateVariable +

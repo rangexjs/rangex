@@ -33,19 +33,19 @@ export const handleVideoPopoverAppearance = ({
 			top: "100%",
 			right: "100%",
 		},
-		shouldShow({ blockNestedContext }) {
-			return blockNestedContext.$$componentName === componentsName.video;
+		shouldShow({ blockComponent }) {
+			return blockComponent.$$componentName === componentsName.video;
 		},
-		onShow({ blockNestedContext }) {
-			const { $$parentElement } = blockNestedContext;
+		onShow({ blockComponent }) {
+			const { $$parentElement } = blockComponent;
 
 			if (!$$parentElement) {
 				throw new Error("ParentElement not supposed to be null.");
 			}
 
-			const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+			const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
-			const figure = getVideoFigure({ blockNestedContext });
+			const figure = getVideoFigure({ blockComponent });
 			const video = getVideoElement({ figure });
 
 			const objectFit = getVideoObjectFit({ video });
@@ -72,7 +72,7 @@ export const handleVideoPopoverAppearance = ({
 			});
 
 			editorPort.popover.element.hidePopover();
-			editorPort.popover.element.showPopover({ source: blockNestedContext });
+			editorPort.popover.element.showPopover({ source: blockComponent });
 		},
 		onClose() {
 			editorPort.popover.element.hidePopover();

@@ -48,12 +48,12 @@ export const ensureBlockQuoteStorage = ({
 };
 
 export const ensureNodeBlockQuoteStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeBlockQuoteStorageParams): EnsureNodeBlockQuoteStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureBlockQuoteStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

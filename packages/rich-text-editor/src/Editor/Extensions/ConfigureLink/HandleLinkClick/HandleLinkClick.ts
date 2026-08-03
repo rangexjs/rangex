@@ -1,6 +1,6 @@
 import {
-	inlineNestedContextAttrName,
-	inlineNestedContextName,
+	inlineComponentAttrName,
+	inlineComponentName,
 	isEditorNode,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -56,7 +56,7 @@ export const handleLinkClick = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== inlineNestedContextName) {
+				if (currentTarget.$$editorRole !== inlineComponentName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
@@ -70,7 +70,7 @@ export const handleLinkClick = ({
 		},
 
 		when({ element }) {
-			const { dataComponentName } = inlineNestedContextAttrName;
+			const { dataComponentName } = inlineComponentAttrName;
 
 			const matched = element.matches(
 				`[${dataComponentName}="${componentsName.link}"]`,

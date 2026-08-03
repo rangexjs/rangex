@@ -1,9 +1,9 @@
 import {
-	type BlockNestedContext,
-	blockNestedContextName,
+	type BlockComponent,
+	blockComponentName,
 	contentLineName,
 	contentLineRoleSelector,
-	inlineNestedContextAttrName,
+	inlineComponentAttrName,
 	isContentLineText,
 	isEditorNode,
 	listName,
@@ -11,7 +11,7 @@ import {
 } from "rich-text-area";
 import { syntaxHighlighter } from "#libs";
 import { componentsName } from "#ports";
-import { getClosestBlockNestedContext } from "../../../NodeQuery";
+import { getClosestBlockComponent } from "../../../NodeQuery";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
@@ -36,12 +36,12 @@ const watchCodeBlocks = ({
 	rootEditable,
 	onCodeChange,
 }: WatchCodeBlocksParams) => {
-	const { dataComponentName } = inlineNestedContextAttrName;
+	const { dataComponentName } = inlineComponentAttrName;
 
 	const selector =
 		`[${dataComponentName}="${componentsName.codeBlock}"]` as const;
 
-	const trackedCodeBlocks = new Set<BlockNestedContext>();
+	const trackedCodeBlocks = new Set<BlockComponent>();
 
 	const codeChangeObserver = new MutationObserver((mutations) => {
 		for (const { target } of mutations) {
@@ -53,16 +53,16 @@ const watchCodeBlocks = ({
 				continue;
 			}
 
-			const blockNestedContext = getClosestBlockNestedContext({
+			const blockComponent = getClosestBlockComponent({
 				fromNode: target,
 				componentName: componentsName.codeBlock,
 			});
 
-			if (!blockNestedContext) {
-				throw new Error("BlockNestedContext can't be null.");
+			if (!blockComponent) {
+				throw new Error("BlockComponent can't be null.");
 			}
 
-			onCodeChange({ blockNestedContext });
+			onCodeChange({ blockComponent });
 		}
 	});
 
@@ -71,18 +71,18 @@ const watchCodeBlocks = ({
 
 		if (
 			!queriedCodeBlocks.every(
-				(codeBlock) => codeBlock.$$editorRole === blockNestedContextName,
+				(codeBlock) => codeBlock.$$editorRole === blockComponentName,
 			)
 		) {
 			throw new Error("CodeBlock's type is invalid.");
 		}
 
-		const containedCodeBlocks = new Set<BlockNestedContext>(queriedCodeBlocks);
+		const containedCodeBlocks = new Set<BlockComponent>(queriedCodeBlocks);
 
 		const addedCodeBlocks = containedCodeBlocks.difference(trackedCodeBlocks);
 
 		for (const codeBlock of addedCodeBlocks) {
-			onCodeChange({ blockNestedContext: codeBlock });
+			onCodeChange({ blockComponent: codeBlock });
 
 			codeChangeObserver.observe(codeBlock, {
 				subtree: true,
@@ -223,14 +223,14 @@ const applyTokenColors = ({
 const updateCodeBlockColors = async ({
 	editorAPI,
 	cssHighlightManager,
-	blockNestedContext,
+	blockComponent,
 }: UpdateCodeBlockColorsParams) => {
 	const { lang, theme } = ensureNodeCodeBlockStorage({
-		blockNestedContext,
+		blockComponent,
 		fallbacks: codeBlockStorageFallbacks,
 	});
 
-	const list = blockNestedContext.$$querySelector(listRoleSelector);
+	const list = blockComponent.$$querySelector(listRoleSelector);
 
 	if (list?.$$editorRole !== listName) {
 		throw new Error("List's type is invalid.");
@@ -249,8 +249,8 @@ const updateCodeBlockColors = async ({
 	const fgLight = foregrounds[theme.light];
 	const fgDark = foregrounds[theme.dark];
 
-	blockNestedContext.style.background = `light-dark(${bgLight}, ${bgDark})`;
-	blockNestedContext.style.setProperty(
+	blockComponent.style.background = `light-dark(${bgLight}, ${bgDark})`;
+	blockComponent.style.setProperty(
 		"--rx-line-number-color",
 		`light-dark(${fgLight}, ${fgDark})`,
 	);
@@ -269,20 +269,20 @@ export class CodeHighlighter {
 
 		shadowRoot.adoptedStyleSheets.push(this.#cssHighlightManager.cssStyleSheet);
 
-		const onCodeChange = ({ blockNestedContext }: OnCodeChangeParams) => {
+		const onCodeChange = ({ blockComponent }: OnCodeChangeParams) => {
 			updateCodeBlockColors({
 				editorAPI: this.#editorAPI,
 				cssHighlightManager: this.#cssHighlightManager,
-				blockNestedContext,
+				blockComponent,
 			});
 		};
 
 		watchCodeBlocks({ rootEditable, onCodeChange });
 	}
 
-	update({ blockNestedContext, lang, theme }: CodeHighlighterUpdateParams) {
+	update({ blockComponent, lang, theme }: CodeHighlighterUpdateParams) {
 		const customStorage = ensureNodeCodeBlockStorage({
-			blockNestedContext,
+			blockComponent,
 			fallbacks: codeBlockStorageFallbacks,
 		});
 		customStorage.lang = lang;
@@ -291,7 +291,7 @@ export class CodeHighlighter {
 		updateCodeBlockColors({
 			editorAPI: this.#editorAPI,
 			cssHighlightManager: this.#cssHighlightManager,
-			blockNestedContext,
+			blockComponent,
 		});
 	}
 }

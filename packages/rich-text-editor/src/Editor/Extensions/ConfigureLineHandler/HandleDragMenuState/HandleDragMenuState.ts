@@ -1,12 +1,12 @@
 import {
-	blockNestedContextLineName,
-	blockNestedContextName,
-	blockNestedContextRoleSelector,
+	blockComponentLineName,
+	blockComponentName,
+	blockComponentRoleSelector,
 	contentLineName,
 } from "rich-text-area";
 import { assertNever, type BlockComponentName, componentsName } from "#ports";
 import type {
-	HandleBlockNestedContextLineParams,
+	HandleBlockComponentLineParams,
 	HandleContentLineParams,
 	HandleDragMenuStateParams,
 	HandleDragMenuStateResult,
@@ -27,19 +27,19 @@ const handleContentLine = ({ editorPort }: HandleContentLineParams) => {
 	});
 };
 
-const handleBlockNestedContextLine = ({
+const handleBlockComponentLine = ({
 	editorPort,
-	blockNestedContextLine,
-}: HandleBlockNestedContextLineParams) => {
-	const blockNestedContext = blockNestedContextLine.$$querySelector(
-		blockNestedContextRoleSelector,
+	blockComponentLine,
+}: HandleBlockComponentLineParams) => {
+	const blockComponent = blockComponentLine.$$querySelector(
+		blockComponentRoleSelector,
 	);
 
-	if (blockNestedContext?.$$editorRole !== blockNestedContextName) {
-		throw new Error("BlockNestedContext's type is invalid.");
+	if (blockComponent?.$$editorRole !== blockComponentName) {
+		throw new Error("BlockComponent's type is invalid.");
 	}
 
-	const { $$componentName } = blockNestedContext;
+	const { $$componentName } = blockComponent;
 
 	const isVisible = (name: BlockComponentName) => $$componentName !== name;
 
@@ -60,7 +60,7 @@ const handleBlockNestedContextLine = ({
 /**
  * Builds the `onLineChange` callback forwarded into {@link handleLineHover}. Whenever the
  * hovered line changes, recomputes which "Turn Into" targets are valid for it and pushes the
- * result through `editorPort.updateState` — `false` both when there's no `BlockNestedContext`
+ * result through `editorPort.updateState` — `false` both when there's no `BlockComponent`
  * at all (a plain `ContentLine`, or no line hovered) and when the target matches the line's own
  * current component, since turning a component into what it already is is a no-op.
  */
@@ -77,10 +77,10 @@ export const handleDragMenuState = ({
 			return;
 		}
 
-		if (line.$$editorRole === blockNestedContextLineName) {
-			handleBlockNestedContextLine({
+		if (line.$$editorRole === blockComponentLineName) {
+			handleBlockComponentLine({
 				editorPort,
-				blockNestedContextLine: line,
+				blockComponentLine: line,
 			});
 			return;
 		}

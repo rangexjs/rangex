@@ -22,7 +22,7 @@ export const handleCodeBlockInsertion = ({
 		}
 
 		blockComponentPlacement.wrapBySelection({
-			blockNestedContextLine: codeBlockLine,
+			blockComponentLine: codeBlockLine,
 			target: list,
 		});
 

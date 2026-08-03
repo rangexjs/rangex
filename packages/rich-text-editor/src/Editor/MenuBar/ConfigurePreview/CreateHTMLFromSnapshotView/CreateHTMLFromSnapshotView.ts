@@ -2,16 +2,16 @@ import type { EditorNodeView } from "rich-text-area";
 import {
 	basicTextName,
 	beamTextName,
-	blockNestedContextLineName,
-	blockNestedContextName,
-	blockNestedContextTextHolderName,
-	blockNestedContextTextName,
+	blockComponentLineName,
+	blockComponentName,
+	blockComponentTextHolderName,
+	blockComponentTextName,
 	contentLineName,
 	detachedContextName,
 	glyphFormatterName,
 	htmlLayoutName,
-	inlineNestedContextName,
-	inlineNestedContextTextName,
+	inlineComponentName,
+	inlineComponentTextName,
 	listItemName,
 	listName,
 	mathMLLayoutName,
@@ -37,16 +37,16 @@ import type {
 import {
 	createBasicTextHTML,
 	createBeamTextHTML,
-	createBlockNestedContextHTML,
-	createBlockNestedContextLineHTML,
-	createBlockNestedContextTextHolderHTML,
-	createBlockNestedContextTextHTML,
+	createBlockComponentHTML,
+	createBlockComponentLineHTML,
+	createBlockComponentTextHolderHTML,
+	createBlockComponentTextHTML,
 	createContentLineHTML,
 	createDetachedContextHTML,
 	createGlyphFormatterHTML,
 	createHTMLLayoutHTML,
-	createInlineNestedContextHTML,
-	createInlineNestedContextTextHTML,
+	createInlineComponentHTML,
+	createInlineComponentTextHTML,
 	createListHTML,
 	createListItemHTML,
 	createMathMLLayoutHTML,
@@ -81,15 +81,15 @@ export const createHTMLFromSnapshotView = ({
 			return createOneVisualUnitTextHTML({ oneVisualUnitTextView: node });
 		}
 
-		if (node.type === inlineNestedContextTextName) {
-			return createInlineNestedContextTextHTML({
-				inlineNestedContextTextView: node,
+		if (node.type === inlineComponentTextName) {
+			return createInlineComponentTextHTML({
+				inlineComponentTextView: node,
 			});
 		}
 
-		if (node.type === blockNestedContextTextName) {
-			return createBlockNestedContextTextHTML({
-				blockNestedContextTextView: node,
+		if (node.type === blockComponentTextName) {
+			return createBlockComponentTextHTML({
+				blockComponentTextView: node,
 			});
 		}
 
@@ -119,30 +119,30 @@ export const createHTMLFromSnapshotView = ({
 			return createContentLineHTML({ contentLineView: node, childNodes });
 		}
 
-		if (node.type === inlineNestedContextName) {
-			return createInlineNestedContextHTML({
-				inlineNestedContextView: node,
+		if (node.type === inlineComponentName) {
+			return createInlineComponentHTML({
+				inlineComponentView: node,
 				childNodes,
 			});
 		}
 
-		if (node.type === blockNestedContextLineName) {
-			return createBlockNestedContextLineHTML({
-				blockNestedContextLineView: node,
+		if (node.type === blockComponentLineName) {
+			return createBlockComponentLineHTML({
+				blockComponentLineView: node,
 				childNodes,
 			});
 		}
 
-		if (node.type === blockNestedContextTextHolderName) {
-			return createBlockNestedContextTextHolderHTML({
-				blockNestedContextTextHolderView: node,
+		if (node.type === blockComponentTextHolderName) {
+			return createBlockComponentTextHolderHTML({
+				blockComponentTextHolderView: node,
 				childNodes,
 			});
 		}
 
-		if (node.type === blockNestedContextName) {
-			return createBlockNestedContextHTML({
-				blockNestedContextView: node,
+		if (node.type === blockComponentName) {
+			return createBlockComponentHTML({
+				blockComponentView: node,
 				childNodes,
 				pendingTasks,
 			});

@@ -31,7 +31,7 @@
 	text-decoration: underline line-through;
 }
 
-[data-rx-editor-role="inline-nested-context"] {
+[data-rx-editor-role="inline-component"] {
 	&:where([data-rx-interactive-within-context-selection="true"]) {
 		background: light-dark(
 			color(from var(--color-blue-500) srgb r g b / 0.1),
@@ -51,7 +51,7 @@
 	}
 }
 
-[data-rx-editor-role="block-nested-context"] {
+[data-rx-editor-role="block-component"] {
 	&:where([data-rx-interactive-spanning-boundary-selection="true"])
 		> [data-rx-editor-role="table"] {
 		box-shadow: 0 0 0 3px

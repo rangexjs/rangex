@@ -32,11 +32,11 @@ export const handleCodeBlockPopoverState = ({
 			return;
 		}
 		const storage = ensureNodeCodeBlockStorage({
-			blockNestedContext: currentCodeBlock,
+			blockComponent: currentCodeBlock,
 			fallbacks: codeBlockStorageFallbacks,
 		});
 		codeHighlighter.update({
-			blockNestedContext: currentCodeBlock,
+			blockComponent: currentCodeBlock,
 			lang,
 			theme: storage.theme,
 		});
@@ -54,11 +54,11 @@ export const handleCodeBlockPopoverState = ({
 				return;
 			}
 			const storage = ensureNodeCodeBlockStorage({
-				blockNestedContext: currentCodeBlock,
+				blockComponent: currentCodeBlock,
 				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
-				blockNestedContext: currentCodeBlock,
+				blockComponent: currentCodeBlock,
 				lang: storage.lang,
 				theme: { ...storage.theme, light: highlighterLightTheme },
 			});
@@ -77,11 +77,11 @@ export const handleCodeBlockPopoverState = ({
 				return;
 			}
 			const storage = ensureNodeCodeBlockStorage({
-				blockNestedContext: currentCodeBlock,
+				blockComponent: currentCodeBlock,
 				fallbacks: codeBlockStorageFallbacks,
 			});
 			codeHighlighter.update({
-				blockNestedContext: currentCodeBlock,
+				blockComponent: currentCodeBlock,
 				lang: storage.lang,
 				theme: { ...storage.theme, dark: highlighterDarkTheme },
 			});

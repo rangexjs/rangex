@@ -49,13 +49,13 @@ export const ensureMentionStorage = ({
 };
 
 export const ensureNodeMentionStorage = ({
-	inlineNestedContext,
+	inlineComponent,
 	fallbacks,
 }: EnsureNodeMentionStorageParams): EnsureNodeMentionStorageResult => {
-	const { $$customStorage } = inlineNestedContext;
+	const { $$customStorage } = inlineComponent;
 
 	const storage = ensureMentionStorage({ storage: $$customStorage, fallbacks });
-	inlineNestedContext.$$customStorage = storage;
+	inlineComponent.$$customStorage = storage;
 
 	return storage;
 };

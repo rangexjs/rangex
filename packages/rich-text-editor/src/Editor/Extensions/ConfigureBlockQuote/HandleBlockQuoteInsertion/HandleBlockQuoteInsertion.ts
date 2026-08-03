@@ -19,7 +19,7 @@ export const handleBlockQuoteInsertion = ({
 		}
 
 		blockComponentPlacement.wrapBySelection({
-			blockNestedContextLine: blockQuoteLine,
+			blockComponentLine: blockQuoteLine,
 			target: nestedEditable,
 		});
 

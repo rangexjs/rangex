@@ -3,8 +3,8 @@ import {
 	contentLineRoleSelector,
 	createContentLine,
 	createFormattableTexts,
-	inlineNestedContextName,
-	inlineNestedContextRoleSelector,
+	inlineComponentName,
+	inlineComponentRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -26,13 +26,11 @@ const updateAllTemplateVariableNodes = ({
 	rootEditable,
 	storage,
 }: UpdateAllTemplateVariableNodesParams) => {
-	const nodes = rootEditable.$$querySelectorAll(
-		inlineNestedContextRoleSelector,
-	);
+	const nodes = rootEditable.$$querySelectorAll(inlineComponentRoleSelector);
 
 	for (const node of nodes) {
-		if (node.$$editorRole !== inlineNestedContextName) {
-			throw new Error("Expected an InlineNestedContext node.");
+		if (node.$$editorRole !== inlineComponentName) {
+			throw new Error("Expected an InlineComponent node.");
 		}
 
 		if (node.$$componentName !== componentsName.templateVariable) {

@@ -1,6 +1,6 @@
 import {
-	type BlockNestedContext,
-	blockNestedContextName,
+	type BlockComponent,
+	blockComponentName,
 	isEditorNode,
 } from "rich-text-area";
 import { getBlockAlign } from "../BlockAlign";
@@ -9,25 +9,25 @@ import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppea
 const MIN_CONTAINER_WIDTH = 300;
 
 interface CalcFlexBasisParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 	deltaPx: number;
 	handleSide: "left" | "right";
 	dragStartWidth: number;
 }
 
 const calcFlexBasis = ({
-	blockNestedContext,
+	blockComponent,
 	deltaPx,
 	handleSide,
 	dragStartWidth,
 }: CalcFlexBasisParams): string => {
-	const { $$parentElement } = blockNestedContext;
+	const { $$parentElement } = blockComponent;
 
 	if (!$$parentElement) {
 		throw new Error("ParentElement not supposed to be null.");
 	}
 
-	const align = getBlockAlign({ blockNestedContextLine: $$parentElement });
+	const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
 	const isSameCorner =
 		(align === "left" && handleSide === "left") ||
@@ -45,7 +45,7 @@ const calcFlexBasis = ({
 		(align === "right" && handleSide === "left");
 
 	if (isOppositeCorner || align === "center") {
-		const rect = blockNestedContext.getBoundingClientRect();
+		const rect = blockComponent.getBoundingClientRect();
 		const numFlexBasis = rect.width + deltaPx;
 		const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
 
@@ -66,7 +66,7 @@ export const handleBlockResizeAppearance = ({
 	editorAPI,
 	componentName,
 }: HandleBlockResizeAppearanceParams) => {
-	let currentBlock: BlockNestedContext | null = null;
+	let currentBlock: BlockComponent | null = null;
 	let dragStartWidth: number | null = null;
 	let hideTimeoutId = NaN;
 
@@ -99,7 +99,7 @@ export const handleBlockResizeAppearance = ({
 	);
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockNestedContextName,
+		when: ({ element }) => element.$$editorRole === blockComponentName,
 		eventListener: {
 			type: "pointerenter",
 			listener(event) {
@@ -109,7 +109,7 @@ export const handleBlockResizeAppearance = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== blockNestedContextName) {
+				if (currentTarget.$$editorRole !== blockComponentName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
@@ -133,7 +133,7 @@ export const handleBlockResizeAppearance = ({
 	});
 
 	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockNestedContextName,
+		when: ({ element }) => element.$$editorRole === blockComponentName,
 		eventListener: {
 			type: "pointerleave",
 			listener: scheduleHide,
@@ -149,7 +149,7 @@ export const handleBlockResizeAppearance = ({
 			dragStartWidth ??= currentBlock.getBoundingClientRect().width;
 
 			const flexBasis = calcFlexBasis({
-				blockNestedContext: currentBlock,
+				blockComponent: currentBlock,
 				deltaPx,
 				handleSide: side,
 				dragStartWidth,
