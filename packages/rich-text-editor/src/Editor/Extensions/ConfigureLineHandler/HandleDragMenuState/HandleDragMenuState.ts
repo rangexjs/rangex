@@ -23,6 +23,7 @@ const handleContentLine = ({ editorPort }: HandleContentLineParams) => {
 		},
 		canDelete: true,
 		canDuplicate: true,
+		canUnwrap: false,
 	});
 };
 
@@ -52,6 +53,7 @@ const handleBlockNestedContextLine = ({
 		},
 		canDelete: true,
 		canDuplicate: true,
+		canUnwrap: true,
 	});
 };
 

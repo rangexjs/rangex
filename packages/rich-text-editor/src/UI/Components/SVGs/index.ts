@@ -19,6 +19,7 @@ export * from "./CopySimple";
 export * from "./DotsSixVertical";
 export * from "./DotsThreeHorizontal";
 export * from "./Duplicate";
+export * from "./Export";
 export * from "./FileArrowDown";
 export * from "./FileArrowUp";
 export * from "./FileAudio";

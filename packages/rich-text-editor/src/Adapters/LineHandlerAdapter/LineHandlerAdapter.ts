@@ -6,6 +6,7 @@ import {
 	type OnDeleteFn,
 	type OnDuplicateFn,
 	type OnInsertRootLineFn,
+	type OnUnwrapFn,
 	type OverlayMount,
 } from "../_Utilities";
 import type {
@@ -14,6 +15,7 @@ import type {
 	LineHandlerUIPort,
 	OnCanDeleteUpdateFn,
 	OnCanDuplicateUpdateFn,
+	OnCanUnwrapUpdateFn,
 	OnDragStartFn,
 	OnTurnIntoFn,
 	OnTurnIntoUpdateFn,
@@ -33,15 +35,18 @@ export class LineHandlerAdapter {
 	};
 	#canDelete = true;
 	#canDuplicate = true;
+	#canUnwrap = false;
 
 	#onDeleteListeners: Set<OnDeleteFn> = new Set();
 	#onDuplicateListeners: Set<OnDuplicateFn> = new Set();
 	#onInsertRootLineListeners: Set<OnInsertRootLineFn> = new Set();
 	#onDragStartListeners: Set<OnDragStartFn> = new Set();
 	#onTurnIntoListeners: Set<OnTurnIntoFn> = new Set();
+	#onUnwrapListeners: Set<OnUnwrapFn> = new Set();
 	#turnIntoListeners: Set<OnTurnIntoUpdateFn> = new Set();
 	#canDeleteListeners: Set<OnCanDeleteUpdateFn> = new Set();
 	#canDuplicateListeners: Set<OnCanDuplicateUpdateFn> = new Set();
+	#canUnwrapListeners: Set<OnCanUnwrapUpdateFn> = new Set();
 
 	#uiPort: LineHandlerUIPort | null = null;
 	#editorPort: LineHandlerEditorPort | null = null;
@@ -60,6 +65,7 @@ export class LineHandlerAdapter {
 		turnInto,
 		canDelete,
 		canDuplicate,
+		canUnwrap,
 	}: UpdateLineHandlerStateParams) {
 		if (turnInto !== undefined) {
 			this.#turnInto = turnInto;
@@ -82,6 +88,14 @@ export class LineHandlerAdapter {
 
 			for (const listener of this.#canDuplicateListeners) {
 				listener(canDuplicate);
+			}
+		}
+
+		if (canUnwrap !== undefined) {
+			this.#canUnwrap = canUnwrap;
+
+			for (const listener of this.#canUnwrapListeners) {
+				listener(canUnwrap);
 			}
 		}
 	}
@@ -121,6 +135,15 @@ export class LineHandlerAdapter {
 				return () => adapter.#canDuplicateListeners.delete(callback);
 			},
 
+			get canUnwrap() {
+				return adapter.#canUnwrap;
+			},
+
+			onCanUnwrapUpdate: (callback) => {
+				adapter.#canUnwrapListeners.add(callback);
+				return () => adapter.#canUnwrapListeners.delete(callback);
+			},
+
 			emitDelete: () => {
 				for (const listener of adapter.#onDeleteListeners) {
 					listener();
@@ -148,6 +171,12 @@ export class LineHandlerAdapter {
 			emitTurnInto: (name) => {
 				for (const listener of adapter.#onTurnIntoListeners) {
 					listener(name);
+				}
+			},
+
+			emitUnwrap: () => {
+				for (const listener of adapter.#onUnwrapListeners) {
+					listener();
 				}
 			},
 		};
@@ -188,6 +217,11 @@ export class LineHandlerAdapter {
 			onTurnInto: (callback) => {
 				adapter.#onTurnIntoListeners.add(callback);
 				return () => adapter.#onTurnIntoListeners.delete(callback);
+			},
+
+			onUnwrap: (callback) => {
+				adapter.#onUnwrapListeners.add(callback);
+				return () => adapter.#onUnwrapListeners.delete(callback);
 			},
 		};
 

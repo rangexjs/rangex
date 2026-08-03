@@ -1,8 +1,13 @@
-import { handleInsertRootLine, handleLineDelete } from "../_Utilities";
+import {
+	handleBlockLineDuplication,
+	handleInsertRootLine,
+	handleLineDelete,
+} from "../_Utilities";
 import type { ConfigureLineHandlerParams } from "./ConfigureLineHandler-types";
 import { handleDragMenuState } from "./HandleDragMenuState";
 import { handleLineDragStart } from "./HandleLineDragStart";
 import { handleLineHover } from "./HandleLineHover";
+import { handleLineUnwrap } from "./HandleLineUnwrap";
 import { handleTurnInto } from "./HandleTurnInto";
 
 export const configureLineHandler = ({
@@ -17,12 +22,6 @@ export const configureLineHandler = ({
 		editorPort,
 		editorAPI,
 		onLineChange,
-	});
-
-	const deleteCleanup = handleLineDelete({
-		port: editorPort,
-		editorAPI,
-		getCurrentLine,
 	});
 
 	const insertRootLineCleanup = handleInsertRootLine({
@@ -43,13 +42,33 @@ export const configureLineHandler = ({
 		getCurrentLine,
 	});
 
+	const lineUnwrapCleanup = handleLineUnwrap({
+		editorPort,
+		editorAPI,
+		getCurrentLine,
+	});
+
+	const duplicateCleanup = handleBlockLineDuplication({
+		port: editorPort,
+		editorAPI,
+		getBlockLine: getCurrentLine,
+	});
+
+	const deleteCleanup = handleLineDelete({
+		port: editorPort,
+		editorAPI,
+		getCurrentLine,
+	});
+
 	return () => {
 		editorPort.popover.unmount();
 
 		hoverCleanup();
-		deleteCleanup();
 		insertRootLineCleanup();
 		dragStartCleanup();
 		turnIntoCleanup();
+		lineUnwrapCleanup();
+		duplicateCleanup();
+		deleteCleanup();
 	};
 };

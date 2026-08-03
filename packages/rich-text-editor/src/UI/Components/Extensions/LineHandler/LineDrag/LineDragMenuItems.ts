@@ -77,6 +77,7 @@ export interface CreateLineDragMenuItemsParams {
 	turnInto: TurnIntoAvailability;
 	canDelete: boolean;
 	canDuplicate: boolean;
+	canUnwrap: boolean;
 }
 
 export const createLineDragMenuItems = ({
@@ -84,6 +85,7 @@ export const createLineDragMenuItems = ({
 	turnInto,
 	canDelete,
 	canDuplicate,
+	canUnwrap,
 }: CreateLineDragMenuItemsParams): MenuItem[] => {
 	const items: MenuItem[] = [];
 
@@ -95,6 +97,16 @@ export const createLineDragMenuItems = ({
 			label: "Turn Into",
 			icon: "Swap",
 			items: turnIntoItems,
+		});
+	}
+
+	if (canUnwrap) {
+		items.push({
+			type: "button",
+			label: "Unwrap",
+			icon: "Export",
+			checked: () => undefined,
+			onClick: () => uiPort.emitUnwrap(),
 		});
 	}
 

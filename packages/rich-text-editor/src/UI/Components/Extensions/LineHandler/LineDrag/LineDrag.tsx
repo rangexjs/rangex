@@ -36,6 +36,7 @@ export const LineDrag = (props: LineDragProps) => {
 	const [turnInto, setTurnInto] = createSignal(uiPort.turnInto);
 	const [canDelete, setCanDelete] = createSignal(uiPort.canDelete);
 	const [canDuplicate, setCanDuplicate] = createSignal(uiPort.canDuplicate);
+	const [canUnwrap, setCanUnwrap] = createSignal(uiPort.canUnwrap);
 
 	onMount(() => {
 		if (menuElement) {
@@ -46,11 +47,13 @@ export const LineDrag = (props: LineDragProps) => {
 		const unsubscribeCanDelete = uiPort.onCanDeleteUpdate(setCanDelete);
 		const unsubscribeCanDuplicate =
 			uiPort.onCanDuplicateUpdate(setCanDuplicate);
+		const unsubscribeCanUnwrap = uiPort.onCanUnwrapUpdate(setCanUnwrap);
 
 		onCleanup(() => {
 			unsubscribeTurnInto();
 			unsubscribeCanDelete();
 			unsubscribeCanDuplicate();
+			unsubscribeCanUnwrap();
 		});
 	});
 
@@ -64,6 +67,7 @@ export const LineDrag = (props: LineDragProps) => {
 			turnInto: turnInto(),
 			canDelete: canDelete(),
 			canDuplicate: canDuplicate(),
+			canUnwrap: canUnwrap(),
 		}),
 	);
 

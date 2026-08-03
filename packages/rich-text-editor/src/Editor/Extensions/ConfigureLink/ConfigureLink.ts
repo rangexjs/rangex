@@ -1,10 +1,10 @@
+import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureLinkParams, LinkInternals } from "./ConfigureLink-types";
 import { handleLinkClick } from "./HandleLinkClick";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkPopoverClose } from "./HandleLinkPopoverClose";
 import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
-import { handleLinkUnwrap } from "./HandleLinkUnwrap";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
 export const configureLink = ({
@@ -41,10 +41,10 @@ export const configureLink = ({
 		internals,
 	});
 
-	const linkUnwrapCleanup = handleLinkUnwrap({
-		editorPort,
+	const linkUnwrapCleanup = handleComponentUnwrap({
+		port: editorPort,
 		editorAPI,
-		internals,
+		getComponent: () => internals.currentLink,
 	});
 
 	const linkPopoverCloseCleanup = handleLinkPopoverClose({
