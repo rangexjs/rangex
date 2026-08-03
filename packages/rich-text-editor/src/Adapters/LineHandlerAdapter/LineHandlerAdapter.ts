@@ -1,4 +1,4 @@
-import { componentsName } from "#ports";
+import { adapterIds, componentsName } from "#ports";
 import { LineHandler } from "#ui-extensions";
 import {
 	createOverlayMount,
@@ -59,6 +59,10 @@ export class LineHandlerAdapter {
 			component: LineHandler,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.lineHandler;
 	}
 
 	#updateState({

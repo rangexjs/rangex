@@ -1,5 +1,5 @@
 import type { CommandMenuItemValue } from "#ports";
-import { commandMenuItemsLabel } from "#ports";
+import { adapterIds, commandMenuItemsLabel } from "#ports";
 import type {
 	CommandMenuAdapterConstructorParams,
 	CommandMenuEditorPort,
@@ -29,6 +29,10 @@ export class CommandMenuAdapter {
 		this.#items = items;
 		this.#allowedItems = items;
 		this.#filteredItems = new Set(items);
+	}
+
+	get id() {
+		return adapterIds.commandMenu;
 	}
 
 	#computeFilteredItems() {

@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	AccordionItemAdapterConstructorParams,
 	AccordionItemEditorPort,
@@ -11,15 +12,19 @@ import type {
 export class AccordionItemAdapter {
 	#toolbarButton: AccordionItemToolbarButtonState = { disabled: true };
 
-	constructor(...params: AccordionItemAdapterConstructorParams) {
-		const [_settings, _options] = params;
-	}
-
 	#toolbarButtonListeners: Set<AccordionItemUpdateToolbarButtonFn> = new Set();
 	#onInsertRequestListeners: Set<AccordionItemOnInsertRequestFn> = new Set();
 
 	#uiPort: AccordionItemUIPort | null = null;
 	#editorPort: AccordionItemEditorPort | null = null;
+
+	constructor(...params: AccordionItemAdapterConstructorParams) {
+		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.accordionItem;
+	}
 
 	#updateState({ toolbarButton }: UpdateAccordionItemStateParams) {
 		if (toolbarButton !== undefined) {

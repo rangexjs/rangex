@@ -1,5 +1,5 @@
 import type { AdapterBus } from "#ports";
-import { renderComponent } from "#ports";
+import { adapterIds, renderComponent } from "#ports";
 import { EmptyMediaSlot } from "#ui-extensions";
 import type {
 	AttachEmptyMediaParams,
@@ -34,6 +34,10 @@ export class EmptyMediaAdapter {
 		const [_settings, { adapterBus }] = params;
 
 		this.#adapterBus = adapterBus;
+	}
+
+	get id() {
+		return adapterIds.emptyMedia;
 	}
 
 	#getElementState(element: HTMLElement): EmptyMediaElementState {

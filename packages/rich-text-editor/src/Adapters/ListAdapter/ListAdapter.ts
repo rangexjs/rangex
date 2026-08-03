@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	ListAdapterConstructorParams,
 	ListEditorPort,
@@ -15,6 +16,10 @@ export class ListAdapter {
 
 	constructor(...params: ListAdapterConstructorParams) {
 		const [_settings, _options] = params;
+	}
+
+	get id() {
+		return adapterIds.list;
 	}
 
 	#unorderedListToolbarButton: ListToolbarButtonState = { disabled: true };

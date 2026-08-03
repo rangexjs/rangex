@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { TemplateVariablePopover } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
@@ -52,6 +53,10 @@ export class TemplateVariableAdapter {
 			component: TemplateVariablePopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.templateVariable;
 	}
 
 	#computeFilteredItems() {

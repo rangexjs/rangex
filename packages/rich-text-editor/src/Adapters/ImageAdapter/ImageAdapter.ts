@@ -1,4 +1,4 @@
-import type { AdapterBus, MediaResolveParams } from "#ports";
+import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
 import { ImagePopover } from "#ui-extensions";
 import {
 	type BlockAlignValue,
@@ -75,6 +75,10 @@ export class ImageAdapter {
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });
+	}
+
+	get id() {
+		return adapterIds.image;
 	}
 
 	#updateState({

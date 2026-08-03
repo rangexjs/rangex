@@ -1,4 +1,4 @@
-import type { AdapterBus, MediaResolveParams } from "#ports";
+import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
 import { VideoPopover } from "#ui-extensions";
 import {
 	type BlockAlignValue,
@@ -90,6 +90,10 @@ export class VideoAdapter {
 		});
 
 		this.#blockResize = createBlockResize({ overlayHost });
+	}
+
+	get id() {
+		return adapterIds.video;
 	}
 
 	#updateState({

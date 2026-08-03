@@ -58,3 +58,14 @@ An Adapter with its own popover (`LinkAdapter`, `MentionAdapter`) builds one `cr
 **Note:** Adapters have so far been designed UI-first — the adapter's shape follows what the UI component needs to render and subscribe to, and `editorPort` is the narrower slice carved out afterward for the Editor side. Keep that direction in mind when building a new one: start from what the UI needs, then narrow down to `editorPort`.
 
 `LinkAdapter`/`MentionAdapter` are the reference pattern, not a one-off for those two features. The older per-feature mechanisms still driving every not-yet-migrated feature — `ToolbarButtonsStateManager`, `ToolbarButtonsActionManager`, the `PopoverControllers`, and their kind — are slated to become Adapters themselves. When one of them migrates, model its Adapter on `LinkAdapter`/`MentionAdapter` rather than inventing a new shape.
+
+## Every Adapter needs an `id`
+
+Every Adapter class exposes a `get id()` getter, placed right after the constructor, returning its entry from `Ports/AdapterIds/AdapterIds.ts` (e.g. `get id() { return adapterIds.link; }`). This is how `RichTextEditor/BuildUIPorts/BuildUIPorts.ts` picks an Adapter out of a plain array without importing its concrete class (an `instanceof` check would force a bundler to keep that class even when the consumer never opted into the extension, defeating tree-shaking).
+
+Adding a new Adapter means all of the following, not just the Adapter class itself:
+1. Add its id to `adapterIds` in `Ports/AdapterIds/AdapterIds.ts`.
+2. Add the `get id()` getter on the new Adapter class.
+3. Add the class to the `Adapter` union in `Adapters/_Utilities/Utilities-types.ts`.
+4. Add its `uiPort` type to `AdapterUIPorts` in that same file (`UIPortsContextValue` maps off this — nothing to touch in `UI/Components/App/App.tsx` itself).
+5. Add its `if (adapter.id === adapterIds.xxx) { uiPorts.xxxUIPort = adapter.uiPort as XxxUIPort; }` block to `BuildUIPorts.ts`, alphabetized alongside the rest.

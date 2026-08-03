@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import { TableQuickActionsPopover } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
@@ -109,6 +110,10 @@ export class TableAdapter {
 			component: TableQuickActionsPopover,
 			props: { uiPort: this.uiPort },
 		});
+	}
+
+	get id() {
+		return adapterIds.table;
 	}
 
 	#updateState({

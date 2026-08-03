@@ -1,3 +1,5 @@
+import type { Adapter } from "#adapters";
+
 export interface BuildUIPortsParams {
-	adapters: unknown[];
+	adapters: Adapter[];
 }

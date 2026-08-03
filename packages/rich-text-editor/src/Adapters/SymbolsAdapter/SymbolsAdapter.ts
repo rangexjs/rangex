@@ -1,3 +1,4 @@
+import { adapterIds } from "#ports";
 import type {
 	SymbolsAdapterConstructorParams,
 	SymbolsEditorPort,
@@ -23,6 +24,10 @@ export class SymbolsAdapter {
 		const [settings] = params;
 
 		this.#items = settings.items;
+	}
+
+	get id() {
+		return adapterIds.symbols;
 	}
 
 	#updateState({ toolbarButton }: UpdateSymbolsStateParams) {
