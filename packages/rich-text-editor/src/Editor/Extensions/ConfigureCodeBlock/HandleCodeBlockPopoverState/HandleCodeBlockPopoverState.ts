@@ -4,7 +4,7 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
-import { toHighlighterLang, toHighlighterTheme } from "../../../Libs";
+import { toHighlighterLang, toHighlighterTheme } from "#libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,

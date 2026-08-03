@@ -1,4 +1,4 @@
-import type { BundledLangKeys, DualTheme } from "../../../../Libs";
+import type { BundledLangKeys, DualTheme } from "#libs";
 
 export interface CreateHighlightedCodeParams {
 	code: string;

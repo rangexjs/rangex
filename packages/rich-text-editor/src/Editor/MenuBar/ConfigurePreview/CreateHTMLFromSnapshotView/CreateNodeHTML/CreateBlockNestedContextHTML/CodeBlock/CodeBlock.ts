@@ -1,5 +1,5 @@
 import { contentLineRoleSelector } from "rich-text-area";
-import { syntaxHighlighter } from "../../../../../../Libs";
+import { syntaxHighlighter } from "#libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureCodeBlockStorage,

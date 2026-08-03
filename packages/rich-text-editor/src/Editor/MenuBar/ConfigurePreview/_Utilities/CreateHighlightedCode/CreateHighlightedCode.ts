@@ -1,4 +1,4 @@
-import { syntaxHighlighter } from "../../../../Libs";
+import { syntaxHighlighter } from "#libs";
 import type {
 	CreateHighlightedCodeParams,
 	CreateHighlightedCodeResult,

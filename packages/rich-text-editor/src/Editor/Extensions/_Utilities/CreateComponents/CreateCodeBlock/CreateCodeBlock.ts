@@ -6,8 +6,8 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
+import { toHighlighterLang } from "#libs";
 import { componentsName } from "#ports";
-import { toHighlighterLang } from "../../../../Libs/SyntaxHighlighter";
 import { createCodeBlockStorage } from "../../../../Storage";
 import type {
 	CreateCodeBlockParams,

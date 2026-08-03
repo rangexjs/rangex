@@ -6,6 +6,8 @@ This package uses **Ports → Adapters → Extensions** for every feature — ev
 
 ### The tiers
 
+**`Libs/`** — standalone, feature-agnostic library wrappers with no dependency on any tier besides `#ports` (e.g. `SyntaxHighlighter`, wrapping Shiki behind a Worker). Not part of the Ports → Adapters → Extensions pipeline — just shared infrastructure any tier can pull in via `#libs`.
+
 **`Ports/`** — cross-cutting contract types with no feature-specific implementation.
 - `Ports/Extensions/` — the generic `Extension`/`ExtensionDefinition`/`ExtensionComponents`/`UIExtension` shapes `createExtension` produces, plus `ExtensionsName` — the single constant every extension's `name` must come from (`extensionsName.link`, never the literal `"link"`).
 - `Ports/ToolbarButtons/` — `ToolbarButtonsName` (every toolbar button's name/value) and `ToolbarButtonsLayout` (the row/group array `RichTextEditor`'s `toolbarButtons` param takes).
@@ -53,6 +55,7 @@ Cross-tier imports must go through the `package.json` `imports` field, never a r
 | `#adapters` | `src/Adapters/index.ts` |
 | `#editor` | `src/Editor/index.ts` |
 | `#editor-extensions` | `src/Editor/Extensions/index.ts` |
+| `#libs` | `src/Libs/index.ts` |
 | `#ui-extensions` | `src/UI/Components/Extensions/index.ts` |
 | `#ui` | `src/UI/index.ts` |
 

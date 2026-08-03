@@ -9,8 +9,8 @@ import {
 	listName,
 	listRoleSelector,
 } from "rich-text-area";
+import { syntaxHighlighter } from "#libs";
 import { componentsName } from "#ports";
-import { syntaxHighlighter } from "../../../Libs";
 import { getClosestBlockNestedContext } from "../../../NodeQuery";
 import {
 	codeBlockStorageFallbacks,

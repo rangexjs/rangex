@@ -1,5 +1,5 @@
 import { createSnapshotView } from "rich-text-area";
-import type { DualTheme } from "../../Libs";
+import type { DualTheme } from "#libs";
 import { createHighlightedCode, createHost, formatHTML } from "./_Utilities";
 import type {
 	ConfigurePreviewParams,
