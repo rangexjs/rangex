@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -13,12 +13,12 @@ import {
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
-	return createBlockNestedContextLine({
+	return createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.image,
 			content: { type: "custom" },
 			editState: "false",
@@ -41,6 +41,6 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

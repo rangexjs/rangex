@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -9,12 +9,12 @@ import { blockAlignAttr } from "../../../../Constants";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
-	return createBlockNestedContextLine({
+	return createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.audio,
 			content: { type: "custom" },
 			editState: "false",
@@ -35,6 +35,6 @@ export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

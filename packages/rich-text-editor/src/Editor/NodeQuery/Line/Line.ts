@@ -1,5 +1,5 @@
 import {
-	blockNestedContextLineName,
+	blockComponentLineName,
 	contentLineName,
 	type EditorNode,
 } from "rich-text-area";
@@ -26,7 +26,7 @@ export const getClosestBlockLevelLine = ({
 			}
 		}
 
-		if (currentNode.$$editorRole === blockNestedContextLineName) {
+		if (currentNode.$$editorRole === blockComponentLineName) {
 			return currentNode;
 		}
 

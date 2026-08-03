@@ -23,7 +23,7 @@ export const handleEmbedAttrState = ({
 				return;
 			}
 
-			const figure = getEmbedFigure({ blockNestedContext: currentBlock });
+			const figure = getEmbedFigure({ blockComponent: currentBlock });
 			const iframe = getEmbedIframe({ figure });
 
 			if (aspectRatio !== undefined) {

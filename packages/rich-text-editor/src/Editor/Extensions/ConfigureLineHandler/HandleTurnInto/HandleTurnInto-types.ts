@@ -1,4 +1,4 @@
-import type { BlockNestedContextLine, EditorAPI, Line } from "rich-text-area";
+import type { BlockComponentLine, EditorAPI, Line } from "rich-text-area";
 import type { LineHandlerEditorPort, TurnableComponentName } from "#adapters";
 import type { GetCurrentLineFn } from "../../_Utilities";
 
@@ -7,7 +7,7 @@ export interface CreateBlockComponentParams {
 	childNodes: Line[];
 }
 
-export type CreateBlockComponentResult = BlockNestedContextLine;
+export type CreateBlockComponentResult = BlockComponentLine;
 
 export interface HandleTurnIntoParams {
 	editorPort: LineHandlerEditorPort;

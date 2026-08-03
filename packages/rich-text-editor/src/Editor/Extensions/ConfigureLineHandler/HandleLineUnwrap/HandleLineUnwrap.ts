@@ -1,15 +1,15 @@
 import {
-	blockNestedContextLineName,
-	blockNestedContextName,
-	blockNestedContextRoleSelector,
+	blockComponentLineName,
+	blockComponentName,
+	blockComponentRoleSelector,
 } from "rich-text-area";
 import { handleComponentUnwrap } from "../../_Utilities";
 import type { HandleLineUnwrapParams } from "./HandleLineUnwrap-types";
 
 /**
- * Turns the current line's `BlockNestedContext` "into Text" — unwraps its component, leaving
+ * Turns the current line's `BlockComponent` "into Text" — unwraps its component, leaving
  * its content as a plain `ContentLine`. A no-op when the current line isn't a
- * `BlockNestedContextLine` at all.
+ * `BlockComponentLine` at all.
  */
 export const handleLineUnwrap = ({
 	editorPort,
@@ -22,19 +22,19 @@ export const handleLineUnwrap = ({
 		getComponent: () => {
 			const currentLine = getCurrentLine();
 
-			if (currentLine?.$$editorRole !== blockNestedContextLineName) {
+			if (currentLine?.$$editorRole !== blockComponentLineName) {
 				return null;
 			}
 
-			const blockNestedContext = currentLine.$$querySelector(
-				blockNestedContextRoleSelector,
+			const blockComponent = currentLine.$$querySelector(
+				blockComponentRoleSelector,
 			);
 
-			if (blockNestedContext?.$$editorRole !== blockNestedContextName) {
+			if (blockComponent?.$$editorRole !== blockComponentName) {
 				return null;
 			}
 
-			return blockNestedContext;
+			return blockComponent;
 		},
 	});
 };

@@ -1,4 +1,4 @@
-[data-rx-editor-role="inline-nested-context"] {
+[data-rx-editor-role="inline-component"] {
 	&:where([data-rx-component-name="template-variable"]) {
 		padding: 2px 4px;
 		background-color: light-dark(

@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { VideoId } from "../../Constants";
 import type { videoStorageVersion } from "./VideoStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureVideoStorageParams {
 export interface EnsureVideoStorageResult extends VideoStorage {}
 
 export interface EnsureNodeVideoStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeVideoStorageResult extends VideoStorage {}

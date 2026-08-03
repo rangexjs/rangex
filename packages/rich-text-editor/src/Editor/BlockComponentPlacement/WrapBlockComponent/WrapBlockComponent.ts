@@ -6,7 +6,7 @@ export const wrapBlockComponent = ({
 	fromOffset,
 	toNode,
 	toOffset,
-	blockNestedContextLine,
+	blockComponentLine,
 	target,
 }: WrapBlockComponentParams) => {
 	const blockWrappableSegment = editorAPI.getBlockWrappableSegment({
@@ -22,5 +22,5 @@ export const wrapBlockComponent = ({
 		);
 	}
 
-	blockWrappableSegment.wrapInto({ blockNestedContextLine, target });
+	blockWrappableSegment.wrapInto({ blockComponentLine, target });
 };

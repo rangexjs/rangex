@@ -46,12 +46,12 @@ export const ensureAudioStorage = ({
 };
 
 export const ensureNodeAudioStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeAudioStorageParams): EnsureNodeAudioStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureAudioStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

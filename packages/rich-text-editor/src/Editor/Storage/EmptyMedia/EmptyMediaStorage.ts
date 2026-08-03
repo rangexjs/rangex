@@ -48,12 +48,12 @@ export const ensureEmptyMediaStorage = ({
 };
 
 export const ensureNodeEmptyMediaStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeEmptyMediaStorageParams): EnsureNodeEmptyMediaStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureEmptyMediaStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

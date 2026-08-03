@@ -24,7 +24,7 @@ export const handleCaptionState = ({
 				return;
 			}
 
-			const figure = getFigure({ blockNestedContext: currentBlock });
+			const figure = getFigure({ blockComponent: currentBlock });
 
 			setCaptionEnabled({ figure, enabled });
 			port.setCaption(getCaption({ figure }));
@@ -43,7 +43,7 @@ export const handleCaptionState = ({
 				return;
 			}
 
-			const figure = getFigure({ blockNestedContext: currentBlock });
+			const figure = getFigure({ blockComponent: currentBlock });
 
 			setCaptionPosition({ figure, position });
 			port.setCaption(getCaption({ figure }));

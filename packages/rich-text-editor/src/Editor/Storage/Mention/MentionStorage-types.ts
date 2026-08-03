@@ -1,4 +1,4 @@
-import type { InlineNestedContext } from "rich-text-area";
+import type { InlineComponent } from "rich-text-area";
 import type { MentionId } from "../../Constants";
 
 import type { mentionStorageVersion } from "./MentionStorage";
@@ -27,7 +27,7 @@ export interface EnsureMentionStorageParams {
 export interface EnsureMentionStorageResult extends MentionStorage {}
 
 export interface EnsureNodeMentionStorageParams {
-	inlineNestedContext: InlineNestedContext;
+	inlineComponent: InlineComponent;
 	fallbacks: MentionStorageFallbacks;
 }
 

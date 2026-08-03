@@ -46,12 +46,12 @@ export const ensureVideoStorage = ({
 };
 
 export const ensureNodeVideoStorage = ({
-	blockNestedContext,
+	blockComponent,
 }: EnsureNodeVideoStorageParams): EnsureNodeVideoStorageResult => {
-	const { $$customStorage } = blockNestedContext;
+	const { $$customStorage } = blockComponent;
 
 	const storage = ensureVideoStorage({ storage: $$customStorage });
-	blockNestedContext.$$customStorage = storage;
+	blockComponent.$$customStorage = storage;
 
 	return storage;
 };

@@ -1,4 +1,4 @@
-[data-rx-editor-role="inline-nested-context"] {
+[data-rx-editor-role="inline-component"] {
 	&:where([data-rx-component-name="mention"]) {
 		padding-inline: 2px;
 		border-radius: 2px;

@@ -50,7 +50,7 @@ export const handleVideoSwapPopoverToggle = ({
 			return;
 		}
 
-		const figure = getVideoFigure({ blockNestedContext: currentBlock });
+		const figure = getVideoFigure({ blockComponent: currentBlock });
 
 		internals.currentVideoFigure = figure;
 

@@ -466,28 +466,28 @@
 				]
 			},
 			{
-				"type": "block-nested-context-line",
+				"type": "block-component-line",
 				"uniqueId": "1775063946604-444270437",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775063946604-2886776114",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775063946604-1879795384",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-nested-context",
+						"type": "block-component",
 						"uniqueId": "1775063946604-2400164156",
 						"customStorage": null,
 						"componentName": "list",
@@ -797,14 +797,14 @@
 						]
 					},
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775063946604-3110130047",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775063946604-3610312797",
 								"customStorage": null
 							}
@@ -1214,28 +1214,28 @@
 				]
 			},
 			{
-				"type": "block-nested-context-line",
+				"type": "block-component-line",
 				"uniqueId": "1781688269462-3728213933",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1781688269462-2790586432",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1781688269462-1383520472",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-nested-context",
+						"type": "block-component",
 						"uniqueId": "1781688269462-3645237881",
 						"customStorage": {
 							"id": "code-block",
@@ -1795,14 +1795,14 @@
 						]
 					},
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1781688269462-3497941053",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1781688269462-3978125981",
 								"customStorage": null
 							}
@@ -2029,7 +2029,7 @@
 						"data": "Inline components like mentions "
 					},
 					{
-						"type": "inline-nested-context",
+						"type": "inline-component",
 						"uniqueId": "1775225597944-268516961",
 						"componentName": "mention",
 						"content": { "type": "custom" },
@@ -2117,7 +2117,7 @@
 						"data": ", "
 					},
 					{
-						"type": "inline-nested-context",
+						"type": "inline-component",
 						"uniqueId": "1775228059095-2486641961",
 						"componentName": "template-variable",
 						"content": { "type": "custom" },
@@ -2209,7 +2209,7 @@
 						"data": " and links ("
 					},
 					{
-						"type": "inline-nested-context",
+						"type": "inline-component",
 						"uniqueId": "1775222919958-2096662793",
 						"componentName": "link",
 						"content": { "type": "linked-characters" },
@@ -2315,28 +2315,28 @@
 				]
 			},
 			{
-				"type": "block-nested-context-line",
+				"type": "block-component-line",
 				"uniqueId": "1775220984333-721090918",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775220984333-2349859281",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775220984333-1984057168",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-nested-context",
+						"type": "block-component",
 						"uniqueId": "1775220984333-2040675692",
 						"customStorage": null,
 						"componentName": "block-quote",
@@ -2479,14 +2479,14 @@
 						]
 					},
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775220984333-795992861",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775220984333-1172051099",
 								"customStorage": null
 							}
@@ -2538,28 +2538,28 @@
 				]
 			},
 			{
-				"type": "block-nested-context-line",
+				"type": "block-component-line",
 				"uniqueId": "1775064442498-2051837890",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775064442497-1703117999",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775064442497-2995981925",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-nested-context",
+						"type": "block-component",
 						"uniqueId": "1775064442497-3527053772",
 						"customStorage": null,
 						"componentName": "table",
@@ -3848,14 +3848,14 @@
 						]
 					},
 					{
-						"type": "block-nested-context-text-holder",
+						"type": "block-component-text-holder",
 						"uniqueId": "1775064442498-3640753750",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-nested-context-text",
+								"type": "block-component-text",
 								"uniqueId": "1775064442498-1134462127",
 								"customStorage": null
 							}

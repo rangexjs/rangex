@@ -7,16 +7,16 @@ import type {
 } from "./GetVideoElements-types";
 
 export const getVideoFigure = ({
-	blockNestedContext,
+	blockComponent,
 }: GetVideoFigureParams): GetVideoFigureResult => {
-	const [figure] = blockNestedContext.$$children;
+	const [figure] = blockComponent.$$children;
 
 	if (
 		!figure ||
 		figure.$$editorRole !== htmlLayoutName ||
 		figure.$$localName !== "figure"
 	) {
-		throw new Error("BlockNestedContext's first child must be the figure.");
+		throw new Error("BlockComponent's first child must be the figure.");
 	}
 
 	return figure;

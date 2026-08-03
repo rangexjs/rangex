@@ -1,5 +1,5 @@
 import type {
-	BlockNestedContextLine,
+	BlockComponentLine,
 	ContentFlowNode,
 	EditorAPI,
 	List,
@@ -12,6 +12,6 @@ export interface WrapBlockComponentParams {
 	fromOffset: number;
 	toNode: ContentFlowNode;
 	toOffset: number;
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 	target: NestedEditable | List;
 }

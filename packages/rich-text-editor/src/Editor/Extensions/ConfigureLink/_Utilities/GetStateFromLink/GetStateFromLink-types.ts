@@ -1,9 +1,9 @@
-import type { EditorAPI, InlineNestedContext } from "rich-text-area";
+import type { EditorAPI, InlineComponent } from "rich-text-area";
 import type { LinkState } from "#adapters";
 
 export interface GetStateFromLinkParams {
 	editorAPI: EditorAPI;
-	link: InlineNestedContext;
+	link: InlineComponent;
 }
 
 export interface GetStateFromLinkResult extends LinkState {}

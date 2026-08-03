@@ -1,4 +1,4 @@
-[data-rx-editor-role="block-nested-context"] {
+[data-rx-editor-role="block-component"] {
 	&:where([data-rx-component-name="block-quote"]) {
 		width: 100%;
 

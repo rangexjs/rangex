@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -32,9 +32,9 @@ export const createTable = ({
 		},
 	});
 
-	return createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+	return createBlockComponentLine({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.table,
 			content: { type: "custom" },
 			customStorage: createTableStorage(),
@@ -42,6 +42,6 @@ export const createTable = ({
 			shouldSelectBeforeRemove: true,
 			childNodes: [table],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

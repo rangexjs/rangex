@@ -1,5 +1,5 @@
 import type {
-	BlockNestedContext,
+	BlockComponent,
 	EditorAPI,
 	List,
 	RootEditable,
@@ -8,7 +8,7 @@ import type { BundledLangKeys, BundledThemeKeys, ThemedCodeLines } from "#libs";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export type OnCodeChangeFn = (params: OnCodeChangeParams) => void;
@@ -36,7 +36,7 @@ export interface ApplyTokenColorsParams {
 export interface UpdateCodeBlockColorsParams {
 	editorAPI: EditorAPI;
 	cssHighlightManager: CSSHighlightManager;
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface CodeHighlighterConstructorParams {
@@ -44,7 +44,7 @@ export interface CodeHighlighterConstructorParams {
 }
 
 export interface CodeHighlighterUpdateParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 	lang: BundledLangKeys;
 	theme: { light: BundledThemeKeys; dark: BundledThemeKeys };
 }

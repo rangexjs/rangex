@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createList as createEngineList,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -19,14 +19,14 @@ export const createList = ({
 		itemsChildNodes: childNodes?.map((line) => [line]),
 	});
 
-	return createBlockNestedContextLine({
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+	return createBlockComponentLine({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.list,
 			content: { type: "list" },
 			customStorage: createListStorage(),
 			childNodes: [list],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 };

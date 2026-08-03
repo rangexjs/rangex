@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { TableId } from "../../Constants";
 import type { tableStorageVersion } from "./TableStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureTableStorageParams {
 export interface EnsureTableStorageResult extends TableStorage {}
 
 export interface EnsureNodeTableStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeTableStorageResult extends TableStorage {}

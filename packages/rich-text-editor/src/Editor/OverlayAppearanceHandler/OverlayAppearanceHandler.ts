@@ -1,6 +1,6 @@
 import {
-	type BlockNestedContext,
-	blockNestedContextName,
+	type BlockComponent,
+	blockComponentName,
 	isEditorNode,
 } from "rich-text-area";
 import type {
@@ -30,9 +30,9 @@ export const createOverlayAppearanceHandler = ({
 }: CreateOverlayAppearanceHandlerParams): CreateOverlayAppearanceHandlerResult => {
 	const registrations = new Set<OverlayRegistration>();
 
-	const findRegistration = (blockNestedContext: BlockNestedContext) => {
+	const findRegistration = (blockComponent: BlockComponent) => {
 		for (const registration of registrations) {
-			if (registration.shouldShow({ blockNestedContext })) {
+			if (registration.shouldShow({ blockComponent })) {
 				return registration;
 			}
 		}
@@ -40,9 +40,9 @@ export const createOverlayAppearanceHandler = ({
 		return null;
 	};
 
-	const findCurrentRegistration = (blockNestedContext: BlockNestedContext) => {
+	const findCurrentRegistration = (blockComponent: BlockComponent) => {
 		for (const registration of registrations) {
-			if (registration.currentBlock === blockNestedContext) {
+			if (registration.currentBlock === blockComponent) {
 				return registration;
 			}
 		}
@@ -63,7 +63,7 @@ export const createOverlayAppearanceHandler = ({
 				return;
 			}
 
-			registration.onClose({ blockNestedContext: currentBlock });
+			registration.onClose({ blockComponent: currentBlock });
 		}, 100);
 	};
 
@@ -73,7 +73,7 @@ export const createOverlayAppearanceHandler = ({
 
 	const showPopover = (
 		registration: OverlayRegistration,
-		blockNestedContext: BlockNestedContext,
+		blockComponent: BlockComponent,
 	) => {
 		registration.pointerOver = true;
 		cancelHide(registration);
@@ -82,14 +82,14 @@ export const createOverlayAppearanceHandler = ({
 		registration.popover.style.inset = "auto";
 		Object.assign(registration.popover.style, registration.position);
 
-		if (registration.currentBlock === blockNestedContext) {
+		if (registration.currentBlock === blockComponent) {
 			return;
 		}
 
 		// currentBlock is assigned before onShow fires — unlike the old handler this forks
 		// from — so a getCurrentBlock() closure read from inside onShow already reports the
 		// new block, not the previous one.
-		registration.currentBlock = blockNestedContext;
+		registration.currentBlock = blockComponent;
 
 		// Only push fresh state when the block actually changes — not on every
 		// re-entry into the block that's already showing, which would stomp any
@@ -97,11 +97,11 @@ export const createOverlayAppearanceHandler = ({
 		// alt text draft) with the last-saved value. onShow itself is responsible for
 		// toggling the popover open (`hidePopover()` then `showPopover({ source })`) once
 		// its state push is done.
-		registration.onShow({ blockNestedContext });
+		registration.onShow({ blockComponent });
 	};
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockNestedContextName,
+		when: ({ element }) => element.$$editorRole === blockComponentName,
 		eventListener: {
 			type: "pointerenter",
 			listener(event) {
@@ -111,7 +111,7 @@ export const createOverlayAppearanceHandler = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== blockNestedContextName) {
+				if (currentTarget.$$editorRole !== blockComponentName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
@@ -127,7 +127,7 @@ export const createOverlayAppearanceHandler = ({
 	});
 
 	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockNestedContextName,
+		when: ({ element }) => element.$$editorRole === blockComponentName,
 		eventListener: {
 			type: "pointerleave",
 			listener(event) {
@@ -137,7 +137,7 @@ export const createOverlayAppearanceHandler = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== blockNestedContextName) {
+				if (currentTarget.$$editorRole !== blockComponentName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 

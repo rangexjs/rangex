@@ -68,7 +68,7 @@ export const createBlockComponentPlacement = ({
 			fromOffset,
 			toNode,
 			toOffset,
-			blockNestedContextLine,
+			blockComponentLine,
 			target,
 		}) {
 			wrapBlockComponent({
@@ -77,7 +77,7 @@ export const createBlockComponentPlacement = ({
 				fromOffset,
 				toNode,
 				toOffset,
-				blockNestedContextLine,
+				blockComponentLine,
 				target,
 			});
 		},
@@ -98,7 +98,7 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		wrapBySelection({ blockNestedContextLine, target }) {
+		wrapBySelection({ blockComponentLine, target }) {
 			const selection = editorAPI.getEditorSelection();
 
 			const { fromText, fromOffset, toText, toOffset } =
@@ -110,7 +110,7 @@ export const createBlockComponentPlacement = ({
 				fromOffset,
 				toNode: toText,
 				toOffset,
-				blockNestedContextLine,
+				blockComponentLine,
 				target,
 			});
 		},

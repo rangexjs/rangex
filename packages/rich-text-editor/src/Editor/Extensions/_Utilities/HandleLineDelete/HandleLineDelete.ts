@@ -2,9 +2,9 @@ import type { HandleLineDeleteParams } from "./HandleLineDelete-types";
 
 /**
  * Deletes the `Line` `getCurrentLine` currently resolves to, regardless of whether it's a
- * `ContentLine` or a `BlockNestedContextLine` — both are removed the same way, by clearing
+ * `ContentLine` or a `BlockComponentLine` — both are removed the same way, by clearing
  * their full child range. This is the line-level counterpart to `HandleBlockDelete`, which
- * only knows how to delete a `BlockNestedContext`'s own line; once every block-level popover
+ * only knows how to delete a `BlockComponent`'s own line; once every block-level popover
  * (Image, Video, ...) delegates deletion to `LineHandler` instead of its own Delete button,
  * `HandleBlockDelete` goes away in favor of this.
  */

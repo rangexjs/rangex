@@ -7,7 +7,7 @@ import type {
 /**
  * Tracks which top-level `Line` the pointer is currently over, keeping the popover anchored
  * to it. Only `RootEditable`'s direct children qualify — a `Line` nested inside a
- * `BlockNestedContext` (e.g. a collapsible's content) never gets one.
+ * `BlockComponent` (e.g. a collapsible's content) never gets one.
  *
  * The popover is mounted outside `RootEditable`'s own DOM subtree (a top-layer popover in the
  * shared overlay container), so even though it's positioned to visually sit inside

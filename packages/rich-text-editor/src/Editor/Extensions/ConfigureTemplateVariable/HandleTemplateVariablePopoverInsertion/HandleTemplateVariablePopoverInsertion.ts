@@ -1,7 +1,7 @@
 import {
 	createContentLine,
 	createFormattableTexts,
-	createInlineNestedContext,
+	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -58,7 +58,7 @@ const createTemplateVariableComponent = ({
 	type,
 	displayText,
 }: CreateTemplateVariableComponentParams): CreateTemplateVariableComponentResult => {
-	return createInlineNestedContext({
+	return createInlineComponent({
 		componentName: componentsName.templateVariable,
 		content: { type: "custom" },
 		editState: "false",

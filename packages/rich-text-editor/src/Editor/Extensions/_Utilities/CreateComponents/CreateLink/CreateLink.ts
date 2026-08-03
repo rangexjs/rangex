@@ -2,7 +2,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	createHTMLLayout,
-	createInlineNestedContext,
+	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -14,7 +14,7 @@ export const createLink = ({
 	href,
 	target,
 }: CreateLinkParams): CreateLinkResult => {
-	return createInlineNestedContext({
+	return createInlineComponent({
 		componentName: componentsName.link,
 		content: { type: "linked-characters" },
 		customStorage: createLinkStorage(),

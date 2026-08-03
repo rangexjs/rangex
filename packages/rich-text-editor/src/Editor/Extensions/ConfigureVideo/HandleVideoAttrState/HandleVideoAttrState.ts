@@ -38,7 +38,7 @@ export const handleVideoAttrState = ({
 				return;
 			}
 
-			const figure = getVideoFigure({ blockNestedContext: currentBlock });
+			const figure = getVideoFigure({ blockComponent: currentBlock });
 			const video = getVideoElement({ figure });
 
 			if (objectFit !== undefined) {

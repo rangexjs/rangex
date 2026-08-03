@@ -1,15 +1,15 @@
-import type { BlockNestedContextLine } from "rich-text-area";
+import type { BlockComponentLine } from "rich-text-area";
 import type { blockAlignAttr } from "../../../Constants";
 
 export type BlockAlignValue = keyof typeof blockAlignAttr.value;
 
 export interface GetBlockAlignParams {
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 }
 
 export type GetBlockAlignResult = BlockAlignValue;
 
 export interface SetBlockAlignParams {
-	blockNestedContextLine: BlockNestedContextLine;
+	blockComponentLine: BlockComponentLine;
 	align: BlockAlignValue;
 }

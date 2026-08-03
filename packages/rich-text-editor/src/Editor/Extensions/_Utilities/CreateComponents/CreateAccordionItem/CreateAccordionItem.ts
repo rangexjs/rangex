@@ -1,8 +1,8 @@
 import {
 	createBeamText,
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createContentLine,
 	createDetachedContext,
 	createHTMLLayout,
@@ -40,12 +40,12 @@ export const createAccordionItem = ({
 	const svg = createUploadSVG({ svgMarkup: CaretCircleLeft });
 	svg.setAttribute("part", "chevron");
 
-	const blockNestedContextLine = createBlockNestedContextLine({
+	const blockComponentLine = createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.accordionItem,
 			content: { type: "custom" },
 			customStorage: createAccordionItemStorage(),
@@ -65,8 +65,8 @@ export const createAccordionItem = ({
 				}),
 			],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 
-	return { blockNestedContextLine, summaryNestedEditable };
+	return { blockComponentLine, summaryNestedEditable };
 };

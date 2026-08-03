@@ -33,7 +33,7 @@ export const handleListInsertion = ({
 		}
 
 		blockComponentPlacement.wrapBySelection({
-			blockNestedContextLine: listLine,
+			blockComponentLine: listLine,
 			target: list,
 		});
 

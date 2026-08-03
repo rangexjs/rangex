@@ -1,6 +1,6 @@
 import {
-	blockNestedContextName,
-	blockNestedContextRoleSelector,
+	blockComponentName,
+	blockComponentRoleSelector,
 	detachedContextName,
 	detachedContextRoleSelector,
 	listChildNodesChangeEventType,
@@ -13,15 +13,13 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
 			for (const list of lists) {
-				const blockNestedContext = list.$$closest(
-					blockNestedContextRoleSelector,
-				);
+				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
-				if (blockNestedContext?.$$editorRole !== blockNestedContextName) {
+				if (blockComponent?.$$editorRole !== blockComponentName) {
 					continue;
 				}
 
-				if (blockNestedContext.$$componentName !== componentsName.codeBlock) {
+				if (blockComponent.$$componentName !== componentsName.codeBlock) {
 					continue;
 				}
 

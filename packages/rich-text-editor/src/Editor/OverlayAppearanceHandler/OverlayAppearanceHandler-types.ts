@@ -1,12 +1,12 @@
-import type { BlockNestedContext, EditorAPI } from "rich-text-area";
+import type { BlockComponent, EditorAPI } from "rich-text-area";
 
 export interface OnOverlayShowParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 /**
  * Determines whether this registration owns a given hovered block, and if so, whether
- * its popover should appear for it. Called for every hovered block-nested-context
+ * its popover should appear for it. Called for every hovered block-component
  * regardless of component type, so implementations must narrow by the block's own
  * component type before doing anything type-specific.
  */
@@ -15,7 +15,7 @@ export type OnOverlayShouldShowFn = (params: OnOverlayShowParams) => boolean;
 /**
  * Called once when a new block takes over the registration — the place to push that
  * block's current state into the popover, then toggle it open itself (`hidePopover()`
- * followed by `showPopover({ source: blockNestedContext })`), since the handler no
+ * followed by `showPopover({ source: blockComponent })`), since the handler no
  * longer does this on the registrant's behalf.
  */
 export type OnOverlayShowFn = (params: OnOverlayShowParams) => void;
@@ -27,7 +27,7 @@ export type OnOverlayShowFn = (params: OnOverlayShowParams) => void;
  */
 export type OnOverlayCloseFn = (params: OnOverlayShowParams) => void;
 
-type CurrentBlock = BlockNestedContext | null;
+type CurrentBlock = BlockComponent | null;
 
 export interface OverlayRegistration {
 	popover: HTMLDivElement;

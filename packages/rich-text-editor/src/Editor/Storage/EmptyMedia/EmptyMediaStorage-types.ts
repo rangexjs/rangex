@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { EmptyMediaId } from "../../Constants";
 import type { emptyMediaStorageVersion } from "./EmptyMediaStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureEmptyMediaStorageParams {
 export interface EnsureEmptyMediaStorageResult extends EmptyMediaStorage {}
 
 export interface EnsureNodeEmptyMediaStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeEmptyMediaStorageResult extends EmptyMediaStorage {}

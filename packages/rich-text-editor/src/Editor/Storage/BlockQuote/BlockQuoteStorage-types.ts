@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { BlockQuoteId } from "../../Constants";
 import type { blockQuoteStorageVersion } from "./BlockQuoteStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureBlockQuoteStorageParams {
 export interface EnsureBlockQuoteStorageResult extends BlockQuoteStorage {}
 
 export interface EnsureNodeBlockQuoteStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeBlockQuoteStorageResult extends BlockQuoteStorage {}

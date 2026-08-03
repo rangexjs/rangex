@@ -1,7 +1,7 @@
 import {
-	type BlockNestedContext,
-	blockNestedContextAttrName,
-	blockNestedContextName,
+	type BlockComponent,
+	blockComponentAttrName,
+	blockComponentName,
 	detachedContextName,
 	isEditorNode,
 } from "rich-text-area";
@@ -12,7 +12,7 @@ import {
 	transformEmbedUrl,
 	uploadMediaFile,
 } from "../../../_Utilities";
-import { getClosestBlockNestedContext } from "../../../NodeQuery";
+import { getClosestBlockComponent } from "../../../NodeQuery";
 import type {
 	FinalizeResolveParams,
 	ResolveMediaSrcParams,
@@ -22,10 +22,10 @@ import type {
 } from "./WatchEmptyMedia-types";
 
 const emptyMediaSelector =
-	`[${blockNestedContextAttrName.dataComponentName}="${componentsName.emptyMedia}"]` as const;
+	`[${blockComponentAttrName.dataComponentName}="${componentsName.emptyMedia}"]` as const;
 
-const getMediaDetachedContext = (blockNestedContext: BlockNestedContext) => {
-	const detachedContext = blockNestedContext.$$firstChild;
+const getMediaDetachedContext = (blockComponent: BlockComponent) => {
+	const detachedContext = blockComponent.$$firstChild;
 
 	if (
 		detachedContext?.$$editorRole !== detachedContextName ||
@@ -95,7 +95,7 @@ const resolveMediaSrc = async ({
 };
 
 /**
- * Tracks `media` `BlockNestedContext`s added to the RootEditable, mounting the SolidJS picker
+ * Tracks `media` `BlockComponent`s added to the RootEditable, mounting the SolidJS picker
  * UI for each one via the adapter's `attach`/`detach`, and tearing it down once the block
  * disappears — either removed outright, or (once resolved) removed by `finalizeResolve` below.
  * RootEditable is always the source of truth: this watcher reacts to whatever's actually in
@@ -108,31 +108,31 @@ export const watchEmptyMedia = ({
 	const { shadowRoot, rootEditable } = editorAPI;
 	const host = shadowRoot.host;
 
-	const containersByBlock: Map<BlockNestedContext, HTMLElement> = new Map();
+	const containersByBlock: Map<BlockComponent, HTMLElement> = new Map();
 
 	/**
 	 * Removes the placeholder block via `removeNodesInRange` — replacing the old
 	 * `$$replaceWith` swap entirely — then forwards `{type, src}` onto `adapterBus`, without
-	 * `blockNestedContext`: it no longer exists in the tree by the time this fires. A future
+	 * `blockComponent`: it no longer exists in the tree by the time this fires. A future
 	 * Image/Video/Audio/Embed extension will subscribe via `adapterBus.onMediaResolve` and
 	 * call `editorAPI.insertNode` at the now-collapsed selection.
 	 */
 	const finalizeResolve = ({
-		blockNestedContext,
+		blockComponent,
 		type,
 		src,
 	}: FinalizeResolveParams) => {
-		const blockNestedContextLine = blockNestedContext.$$parentElement;
+		const blockComponentLine = blockComponent.$$parentElement;
 
-		if (!blockNestedContextLine) {
-			throw new Error("Media block's parent must be a BlockNestedContextLine.");
+		if (!blockComponentLine) {
+			throw new Error("Media block's parent must be a BlockComponentLine.");
 		}
 
 		editorAPI.removeNodesInRange({
-			fromNode: blockNestedContextLine,
+			fromNode: blockComponentLine,
 			fromOffset: 0,
-			toNode: blockNestedContextLine,
-			toOffset: blockNestedContextLine.$$childNodes.length,
+			toNode: blockComponentLine,
+			toOffset: blockComponentLine.$$childNodes.length,
 		});
 
 		editorAPI.getSnapshotTimeline().registerSnapshotBoundary();
@@ -152,18 +152,18 @@ export const watchEmptyMedia = ({
 				return;
 			}
 
-			const blockNestedContext = getClosestBlockNestedContext({
+			const blockComponent = getClosestBlockComponent({
 				fromNode: assignedSlot,
 				componentName: componentsName.emptyMedia,
 			});
 
-			if (!blockNestedContext) {
+			if (!blockComponent) {
 				return;
 			}
 
 			// The block might not be available anymore by the time `src` is resolved.
 			const isStillCurrent = () =>
-				containersByBlock.get(blockNestedContext) === element;
+				containersByBlock.get(blockComponent) === element;
 
 			if (detail.type === "embed") {
 				if (!isWellFormedUrl(detail.url)) {
@@ -176,7 +176,7 @@ export const watchEmptyMedia = ({
 
 				const src = transformEmbedUrl({ url: detail.url });
 
-				finalizeResolve({ blockNestedContext, type: "embed", src });
+				finalizeResolve({ blockComponent, type: "embed", src });
 				return;
 			}
 
@@ -217,17 +217,17 @@ export const watchEmptyMedia = ({
 				return;
 			}
 
-			finalizeResolve({ blockNestedContext, type: detail.type, src });
+			finalizeResolve({ blockComponent, type: detail.type, src });
 		},
 	);
 
-	const queryMediaBlocks = (): Set<BlockNestedContext> => {
+	const queryMediaBlocks = (): Set<BlockComponent> => {
 		const queriedMediaBlocks =
 			rootEditable.$$querySelectorAll(emptyMediaSelector);
 
 		if (
 			!queriedMediaBlocks.every(
-				(mediaBlock) => mediaBlock.$$editorRole === blockNestedContextName,
+				(mediaBlock) => mediaBlock.$$editorRole === blockComponentName,
 			)
 		) {
 			throw new Error("Media block's type is invalid.");
@@ -236,8 +236,8 @@ export const watchEmptyMedia = ({
 		return new Set(queriedMediaBlocks);
 	};
 
-	const attachMediaBlock = (blockNestedContext: BlockNestedContext) => {
-		const detachedContext = getMediaDetachedContext(blockNestedContext);
+	const attachMediaBlock = (blockComponent: BlockComponent) => {
+		const detachedContext = getMediaDetachedContext(blockComponent);
 
 		const element = document.createElement("div");
 
@@ -247,11 +247,11 @@ export const watchEmptyMedia = ({
 
 		editorPort.attach({ element });
 
-		containersByBlock.set(blockNestedContext, element);
+		containersByBlock.set(blockComponent, element);
 	};
 
-	const detachMediaBlock = (blockNestedContext: BlockNestedContext) => {
-		const element = containersByBlock.get(blockNestedContext);
+	const detachMediaBlock = (blockComponent: BlockComponent) => {
+		const element = containersByBlock.get(blockComponent);
 
 		if (!element) {
 			throw new Error("No tracked container for the given media block.");
@@ -260,13 +260,13 @@ export const watchEmptyMedia = ({
 		editorPort.detach({ element });
 		element.remove();
 
-		containersByBlock.delete(blockNestedContext);
+		containersByBlock.delete(blockComponent);
 	};
 
 	let tracked = queryMediaBlocks();
 
-	for (const blockNestedContext of tracked) {
-		attachMediaBlock(blockNestedContext);
+	for (const blockComponent of tracked) {
+		attachMediaBlock(blockComponent);
 	}
 
 	const mediaBlockObserver = new MutationObserver(() => {
@@ -275,12 +275,12 @@ export const watchEmptyMedia = ({
 		const addedMediaBlocks = containedMediaBlocks.difference(tracked);
 		const removedMediaBlocks = tracked.difference(containedMediaBlocks);
 
-		for (const blockNestedContext of addedMediaBlocks) {
-			attachMediaBlock(blockNestedContext);
+		for (const blockComponent of addedMediaBlocks) {
+			attachMediaBlock(blockComponent);
 		}
 
-		for (const blockNestedContext of removedMediaBlocks) {
-			detachMediaBlock(blockNestedContext);
+		for (const blockComponent of removedMediaBlocks) {
+			detachMediaBlock(blockComponent);
 		}
 
 		tracked = containedMediaBlocks;
@@ -292,8 +292,8 @@ export const watchEmptyMedia = ({
 		mediaBlockObserver.disconnect();
 		unsubscribeResolve();
 
-		for (const blockNestedContext of tracked) {
-			detachMediaBlock(blockNestedContext);
+		for (const blockComponent of tracked) {
+			detachMediaBlock(blockComponent);
 		}
 
 		tracked = new Set();

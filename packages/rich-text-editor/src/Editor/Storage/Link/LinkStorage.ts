@@ -46,12 +46,12 @@ export const ensureLinkStorage = ({
 };
 
 export const ensureNodeLinkStorage = ({
-	inlineNestedContext,
+	inlineComponent,
 }: EnsureNodeLinkStorageParams): EnsureNodeLinkStorageResult => {
-	const { $$customStorage } = inlineNestedContext;
+	const { $$customStorage } = inlineComponent;
 
 	const storage = ensureLinkStorage({ storage: $$customStorage });
-	inlineNestedContext.$$customStorage = storage;
+	inlineComponent.$$customStorage = storage;
 
 	return storage;
 };

@@ -50,7 +50,7 @@ export const handleAudioSwapPopoverToggle = ({
 			return;
 		}
 
-		const figure = getAudioFigure({ blockNestedContext: currentBlock });
+		const figure = getAudioFigure({ blockComponent: currentBlock });
 
 		internals.currentAudioFigure = figure;
 

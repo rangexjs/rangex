@@ -1,7 +1,7 @@
 import {
-	createBlockNestedContext,
-	createBlockNestedContextLine,
-	createBlockNestedContextTextHolder,
+	createBlockComponent,
+	createBlockComponentLine,
+	createBlockComponentTextHolder,
 	createDetachedContext,
 } from "rich-text-area";
 import { componentsName } from "#ports";
@@ -16,12 +16,12 @@ import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
  * Image/Video/Audio/Embed extension to insert the real component.
  */
 export const createEmptyMedia = (): CreateEmptyMediaResult => {
-	const blockNestedContextLine = createBlockNestedContextLine({
+	const blockComponentLine = createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
 		},
-		leftBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
-		blockNestedContext: createBlockNestedContext({
+		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+		blockComponent: createBlockComponent({
 			componentName: componentsName.emptyMedia,
 			content: { type: "custom" },
 			editState: "false",
@@ -29,8 +29,8 @@ export const createEmptyMedia = (): CreateEmptyMediaResult => {
 			shouldSelectBeforeRemove: true,
 			childNodes: [createDetachedContext({ localName: "slot" })],
 		}),
-		rightBlockNestedContextTextHolder: createBlockNestedContextTextHolder({}),
+		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 
-	return blockNestedContextLine;
+	return blockComponentLine;
 };

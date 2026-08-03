@@ -1,4 +1,4 @@
-import type { BlockNestedContext } from "rich-text-area";
+import type { BlockComponent } from "rich-text-area";
 import type { ImageId } from "../../Constants";
 import type { imageStorageVersion } from "./ImageStorage";
 
@@ -16,7 +16,7 @@ export interface EnsureImageStorageParams {
 export interface EnsureImageStorageResult extends ImageStorage {}
 
 export interface EnsureNodeImageStorageParams {
-	blockNestedContext: BlockNestedContext;
+	blockComponent: BlockComponent;
 }
 
 export interface EnsureNodeImageStorageResult extends ImageStorage {}
