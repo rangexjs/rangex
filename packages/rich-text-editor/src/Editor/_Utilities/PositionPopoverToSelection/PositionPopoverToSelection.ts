@@ -73,6 +73,7 @@ export const positionPopoverToSelection = ({
 		popoverRect.width / 2;
 
 	popover.style.cssText = "";
+	popover.style.positionAnchor = "auto";
 	popover.style.top = `calc(anchor(top) + ${topDistance}px)`;
 	popover.style.left = `calc(anchor(left) + ${leftDistance}px)`;
 };
