@@ -1,3 +1,4 @@
+export * from "./CreateOverlayController";
 export * from "./GetCSSText";
 export * from "./IsScopedEditableEmpty";
 export * from "./IsWellFormedUrl";

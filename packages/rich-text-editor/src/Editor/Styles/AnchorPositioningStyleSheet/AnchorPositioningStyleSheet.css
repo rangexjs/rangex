@@ -2,6 +2,10 @@ range-x::part(exposed) {
 	anchor-name: attr(data-rx-anchor-name type(<custom-ident>));
 }
 
+.hide-anchored {
+	display: none !important;
+}
+
 /*
 	Everything below can be removed once anchor-name supports cross tree-scopes
 	https://issues.chromium.org/issues/450830785

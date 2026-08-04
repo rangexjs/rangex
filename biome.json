@@ -5,12 +5,14 @@
 	},
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"html": { "formatter": { "enabled": true } },
+	"css": { "formatter": { "enabled": true }, "linter": { "enabled": true } },
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"preset": "recommended",
 			"complexity": {
 				"useSimplifiedLogicExpression": "warn",
+				"noImportantStyles": "off",
 				"noUselessThisAlias": "off"
 			},
 			"correctness": {

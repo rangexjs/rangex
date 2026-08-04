@@ -1,4 +1,5 @@
 import type { Line } from "rich-text-area";
+import { createAnchoredOverlayController } from "../../../_Utilities";
 import type {
 	HandleLineHoverParams,
 	HandleLineHoverResult,
@@ -16,6 +17,9 @@ export const handleLineHover = ({
 }: HandleLineHoverParams): HandleLineHoverResult => {
 	const { element: anchoredOverlay } = editorPort.anchoredOverlay;
 	const { rootEditable } = editorAPI;
+	const overlayController = createAnchoredOverlayController({
+		element: anchoredOverlay,
+	});
 
 	let currentLine: Line | null = null;
 	let pointerOver = false;
@@ -41,7 +45,7 @@ export const handleLineHover = ({
 			currentLine = null;
 			lastPointerPosition = null;
 			onLineChange(null);
-			anchoredOverlay.style.display = "none";
+			overlayController.hide();
 		}, 100);
 	};
 
@@ -100,8 +104,11 @@ export const handleLineHover = ({
 
 		hideNestedPopovers();
 
-		anchoredOverlay.style.positionAnchor = line.$$anchorName;
-		anchoredOverlay.style.display = "";
+		overlayController.show(line, {
+			position: "absolute",
+			top: "anchor(top)",
+			right: "calc(anchor(left) + 8px)",
+		});
 	};
 
 	const updateLineAtPoint = (clientX: number, clientY: number) => {

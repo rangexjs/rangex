@@ -21,8 +21,8 @@ export const createOverlayMount = <Props extends object>({
 	let localUnmount: (() => void) | null = null;
 
 	const uiOverlayMount: UIOverlayMount = {
-		setElement: (popoverElement) => {
-			element = popoverElement;
+		setElement: (overlayElement) => {
+			element = overlayElement;
 		},
 	};
 

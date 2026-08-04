@@ -18,13 +18,8 @@ export const LineHandler = (props: LineHandlerProps) => {
 	return (
 		<div
 			ref={(el) => uiPort.anchoredOverlay.setElement(el)}
-			class="absolute z-10 mr-2 hidden items-center gap-0.5 bg-transparent sm:flex"
-			style={{
-				display: "none",
-				top: "anchor(top)",
-				right: "anchor(left)",
-				transition: "top 200ms ease-out",
-			}}
+			class="z-10 hidden items-center gap-0.5 bg-transparent sm:flex"
+			style={{ transition: "top 200ms ease-out" }}
 		>
 			<LineButton
 				title="Insert line below (Alt: insert above)"
