@@ -1,4 +1,5 @@
 import {
+	anchorPositioningStyleSheet,
 	configureCustomStyles,
 	configurePreview,
 	configureSettings,
@@ -54,6 +55,7 @@ export class RichTextEditor extends HTMLElement {
 			extensions: uiExtensions,
 			uiPorts,
 			overlayHost,
+			externalStyleSheet: anchorPositioningStyleSheet,
 		});
 
 		shadowRoot.append(this.#richTextEditorUI);

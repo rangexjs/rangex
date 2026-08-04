@@ -1,0 +1,35 @@
+range-x::part(exposed) {
+	anchor-name: attr(data-rx-anchor-name type(<custom-ident>));
+}
+
+/*
+	Everything below can be removed once anchor-name supports cross tree-scopes
+	https://issues.chromium.org/issues/450830785
+*/
+range-x::part(position-anchor) {
+	position-anchor: attr(data-rx-position-anchor type(<custom-ident>));
+}
+
+range-x::part(top) {
+	top: attr(data-rx-top type(*));
+}
+
+range-x::part(right) {
+	right: attr(data-rx-right type(*));
+}
+
+range-x::part(bottom) {
+	bottom: attr(data-rx-bottom type(*));
+}
+
+range-x::part(left) {
+	left: attr(data-rx-left type(*));
+}
+
+range-x::part(width) {
+	width: attr(data-rx-width type(*));
+}
+
+range-x::part(height) {
+	height: attr(data-rx-height type(*));
+}
