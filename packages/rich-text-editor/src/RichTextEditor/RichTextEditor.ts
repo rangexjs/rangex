@@ -60,7 +60,7 @@ export class RichTextEditor extends HTMLElement {
 
 		shadowRoot.append(this.#richTextEditorUI);
 
-		// configure must run after the mount above — e.g. LinkEditorPort.popover throws until its element exists.
+		// configure must run after the mount above — e.g. LinkEditorPort.anchoredOverlay throws until its element exists.
 		for (const { extension, adapter } of extensionAdapters) {
 			const configure = extension.configure as ErasedConfigureExtensionFn;
 			const cleanup = configure({ adapter, editorAPI });

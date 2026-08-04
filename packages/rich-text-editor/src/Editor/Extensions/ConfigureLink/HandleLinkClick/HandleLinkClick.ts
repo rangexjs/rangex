@@ -18,24 +18,20 @@ const openLinkPopover = ({
 	editorAPI,
 	internals,
 	link,
+	anchorController,
 }: OpenLinkPopoverParams) => {
-	editorPort.popover.unmount();
-
 	internals.currentLink = link;
 
 	const state = getStateFromLink({ link, editorAPI });
 
 	editorPort.updateState({ view: "preview", mode: "modify", ...state });
 
-	editorPort.popover.mount();
-
-	const popover = editorPort.popover.element;
-
-	popover.style.cssText = "";
-	popover.style.marginTop = "8px";
-	popover.style.positionArea = "center bottom";
-
-	popover.showPopover({ source: link });
+	anchorController.show(link, {
+		clear: true,
+		position: "absolute",
+		"justify-self": "anchor-center",
+		top: "calc(anchor(bottom) + 8px)",
+	});
 };
 
 /**
@@ -45,6 +41,7 @@ export const handleLinkClick = ({
 	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: HandleLinkClickParams) => {
 	const unsubscribe = editorAPI.registerDOMEvent({
 		eventListener: {
@@ -65,6 +62,7 @@ export const handleLinkClick = ({
 					editorAPI,
 					internals,
 					link: currentTarget,
+					anchorController,
 				});
 			},
 		},

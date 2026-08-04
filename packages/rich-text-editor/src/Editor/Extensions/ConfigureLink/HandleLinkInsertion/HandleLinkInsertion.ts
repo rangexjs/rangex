@@ -7,10 +7,9 @@ import { assertNever } from "#ports";
 import { createLink } from "../../_Utilities";
 import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
 import type {
-	AnchorPopoverToLinkParams,
+	AnchorToLinkParams,
 	HandleLinkInsertionParams,
 	InsertAtCaretParams,
-	OnInsertCallback,
 	SetSelectionToLinkEndParams,
 	WrapWithLinkParams,
 } from "./HandleLinkInsertion-types";
@@ -37,24 +36,15 @@ const setSelectionToLinkEnd = ({
 };
 
 /**
- * Unmounts then re-mounts the popover anchored to the link — required by the Popover API spec
- * when changing the source, and a fresh mount is also the simplest way to guarantee the previous
- * insert-mode instance is gone before the modify-mode one takes its place.
+ * Anchors the popover to the link.
  */
-const anchorPopoverToLink = ({
-	link,
-	editorPort,
-}: AnchorPopoverToLinkParams) => {
-	editorPort.popover.unmount();
-	editorPort.popover.mount();
-
-	const popover = editorPort.popover.element;
-
-	popover.style.cssText = "";
-	popover.style.marginTop = "8px";
-	popover.style.positionArea = "center bottom";
-
-	popover.showPopover({ source: link });
+const anchorToLink = ({ link, anchorController }: AnchorToLinkParams) => {
+	anchorController.show(link, {
+		clear: true,
+		position: "absolute",
+		"justify-self": "anchor-center",
+		top: "calc(anchor(bottom) + 8px)",
+	});
 };
 
 /**
@@ -67,6 +57,7 @@ const insertAtCaret = ({
 	text,
 	href,
 	target,
+	anchorController,
 }: InsertAtCaretParams) => {
 	const link = createLink({ text, href, target });
 
@@ -93,7 +84,7 @@ const insertAtCaret = ({
 
 	editorPort.updateState(state);
 
-	anchorPopoverToLink({ link, editorPort });
+	anchorToLink({ link, anchorController });
 
 	editorAPI.focus();
 
@@ -109,6 +100,7 @@ const wrapWithLink = ({
 	internals,
 	href,
 	target,
+	anchorController,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -178,7 +170,7 @@ const wrapWithLink = ({
 
 	editorPort.updateState(state);
 
-	anchorPopoverToLink({ link: internals.currentLink, editorPort });
+	anchorToLink({ link: internals.currentLink, anchorController });
 
 	editorAPI.focus();
 
@@ -192,8 +184,9 @@ export const handleLinkInsertion = ({
 	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: HandleLinkInsertionParams) => {
-	const callback: OnInsertCallback = ({ text, url, isNewTab }) => {
+	const unsubscribe = editorPort.onInsert(({ text, url, isNewTab }) => {
 		if (internals.currentLink) {
 			console.log("Link should have been unsigned.");
 			return;
@@ -217,19 +210,25 @@ export const handleLinkInsertion = ({
 				text: filledText,
 				href: url,
 				target,
+				anchorController,
 			});
 			return;
 		}
 
 		if (linkInsertMode === "wrap") {
-			wrapWithLink({ editorPort, internals, editorAPI, href: url, target });
+			wrapWithLink({
+				editorPort,
+				internals,
+				editorAPI,
+				href: url,
+				target,
+				anchorController,
+			});
 			return;
 		}
 
 		assertNever(linkInsertMode);
-	};
-
-	const unsubscribe = editorPort.onInsert(callback);
+	});
 
 	return () => {
 		unsubscribe();

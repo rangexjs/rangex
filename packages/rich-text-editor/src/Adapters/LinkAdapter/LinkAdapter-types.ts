@@ -58,7 +58,7 @@ export type LinkUpdateURLFn = (value: LinkURL) => void;
 export type LinkUpdateToggleButtonsFn = (value: LinkToggleButtons) => void;
 
 export interface LinkUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly toolbarButton: LinkToolbarButtonState;
 	readonly view: LinkView;
 	readonly mode: LinkMode;
@@ -92,7 +92,7 @@ export type LinkOnInsertFn = (params: EmitInsertParams) => void;
 export type LinkOnModifyFn = (params: EmitModifyParams) => void;
 
 export interface LinkEditorPort extends UnwrapPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	updateState(params: LinkState): void;
 	onToolbarClick(callback: LinkOnToolbarClickFn): () => void;
 	onViewChange(callback: LinkOnViewChangeFn): () => void;

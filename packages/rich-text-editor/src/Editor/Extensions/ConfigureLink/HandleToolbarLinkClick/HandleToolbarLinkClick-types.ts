@@ -1,9 +1,11 @@
 import type { EditorAPI } from "rich-text-area";
 import type { LinkEditorPort } from "#adapters";
+import type { AnchoredOverlayController } from "../../../_Utilities";
 
 export interface OpenAtCaretParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface GetDisplayTextInfoParams {
@@ -18,14 +20,17 @@ export interface GetDisplayTextInfoResult {
 export interface OpenForWrapParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface OpenLinkPopoverParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface HandleToolbarLinkClickParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }

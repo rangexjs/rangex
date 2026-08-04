@@ -11,28 +11,28 @@ import type {
  * Resets `internals.currentLink`/`selection.highlight` and hides the popover.
  */
 const closePopover = ({
-	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: ClosePopoverParams) => {
 	const selection = editorAPI.getEditorSelection();
 	selection.highlight = false;
 	internals.currentLink = null;
-	editorPort.popover.unmount();
+	anchorController.hide();
 };
 
 /**
  * Closes the popover whenever the selection moves outside the current link or becomes non-collapsed.
  */
 const closeOnSelectionChange = ({
-	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: CloseOnSelectionChangeParams) => {
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			if (!editorPort.popover.isMounted) {
+			if (!anchorController.isOpen) {
 				return;
 			}
 
@@ -59,7 +59,7 @@ const closeOnSelectionChange = ({
 				}
 			}
 
-			closePopover({ editorPort, editorAPI, internals });
+			closePopover({ editorAPI, internals, anchorController });
 		},
 	});
 };
@@ -71,13 +71,14 @@ const handleLinkPopoverCancel = ({
 	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: HandleLinkPopoverCancelParams) => {
 	return editorPort.onCancel(() => {
 		if (internals.currentLink) {
 			return;
 		}
 
-		closePopover({ editorPort, editorAPI, internals });
+		closePopover({ editorAPI, internals, anchorController });
 	});
 };
 
@@ -85,20 +86,20 @@ const handleLinkPopoverCancel = ({
  * Dismisses the popover and returns focus to the editor when the user presses Escape while it's open.
  */
 const restoreFocusOnEscape = ({
-	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: RestoreFocusOnEscapeParams) => {
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
 
-		if (!editorPort.popover.isMounted) {
+		if (!anchorController.isOpen) {
 			return;
 		}
 
-		closePopover({ editorPort, editorAPI, internals });
+		closePopover({ editorAPI, internals, anchorController });
 
 		editorAPI.focus();
 	};
@@ -115,21 +116,23 @@ export const handleLinkPopoverClose = ({
 	editorPort,
 	editorAPI,
 	internals,
+	anchorController,
 }: HandleLinkPopoverCloseParams) => {
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 	const unsubscribeCancel = handleLinkPopoverCancel({
 		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 	const unsubscribeEscape = restoreFocusOnEscape({
-		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 
 	return () => {
