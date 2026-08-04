@@ -130,7 +130,7 @@ export const CommandMenu = () => {
 		const shadowRoot = anchoredEl.getRootNode();
 
 		if (!(shadowRoot instanceof ShadowRoot)) {
-			throw new Error("PopoverEl supposed to be inside a ShadowRoot.");
+			throw new Error("AnchorElement supposed to be inside a ShadowRoot.");
 		}
 
 		const { activeElement } = shadowRoot;

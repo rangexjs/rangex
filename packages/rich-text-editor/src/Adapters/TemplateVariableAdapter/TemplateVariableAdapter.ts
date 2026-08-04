@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { TemplateVariablePopover } from "#ui-extensions";
+import { TemplateVariableSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	TemplateVariableAdapterConstructorParams,
@@ -7,7 +7,7 @@ import type {
 	TemplateVariableOnInsertRequestFn,
 	TemplateVariableOnSelectFn,
 	TemplateVariableOnUpdateRequestFn,
-	TemplateVariablePopoverItems,
+	TemplateVariableSuggestionItems,
 	TemplateVariableToolbarButtonState,
 	TemplateVariableUIPort,
 	TemplateVariableUpdateFilteredItemsFn,
@@ -16,7 +16,7 @@ import type {
 	UpdateTemplateVariableStateParams,
 } from "./TemplateVariableAdapter-types";
 
-const ALL_ITEMS: TemplateVariablePopoverItems = [
+const ALL_ITEMS: TemplateVariableSuggestionItems = [
 	{ kind: "full-name", label: "{{FullName}}" },
 	{ kind: "first-name", label: "{{FirstName}}" },
 	{ kind: "last-name", label: "{{LastName}}" },
@@ -32,7 +32,7 @@ export class TemplateVariableAdapter {
 		options: { firstName: null, lastName: null, email: null, date: null },
 	};
 	#query = "";
-	#filteredItems: TemplateVariablePopoverItems = [];
+	#filteredItems: TemplateVariableSuggestionItems = [];
 	#isOpen = false;
 
 	#toolbarButtonListeners: Set<TemplateVariableUpdateToolbarButtonFn> =
@@ -53,7 +53,7 @@ export class TemplateVariableAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: TemplateVariablePopover,
+			component: TemplateVariableSuggestions,
 			props: { uiPort: this.uiPort },
 		});
 	}

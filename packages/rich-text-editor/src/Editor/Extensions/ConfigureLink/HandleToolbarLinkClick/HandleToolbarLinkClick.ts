@@ -8,7 +8,7 @@ import type {
 	HandleToolbarLinkClickParams,
 	OpenAtCaretParams,
 	OpenForWrapParams,
-	OpenLinkPopoverParams,
+	OpenLinkOverlayParams,
 } from "./HandleToolbarLinkClick-types";
 
 /**
@@ -117,11 +117,11 @@ const openForWrap = ({
 /**
  * Delegates to openAtCaret or openForWrap based on the insertion mode, or bails if insertion is not allowed.
  */
-const openLinkPopover = ({
+const openLinkOverlay = ({
 	editorPort,
 	editorAPI,
 	anchorController,
-}: OpenLinkPopoverParams) => {
+}: OpenLinkOverlayParams) => {
 	const linkInsertionMode = getLinkInsertionMode({ editorAPI });
 
 	if (!linkInsertionMode) {
@@ -151,7 +151,7 @@ export const handleToolbarLinkClick = ({
 	anchorController,
 }: HandleToolbarLinkClickParams) => {
 	const unsubscribe = editorPort.onToolbarClick(() => {
-		openLinkPopover({ editorPort, editorAPI, anchorController });
+		openLinkOverlay({ editorPort, editorAPI, anchorController });
 	});
 
 	return () => {

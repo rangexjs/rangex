@@ -1,2 +1,2 @@
-export * from "./TemplateVariablePopover";
+export * from "./TemplateVariableSuggestions";
 export * from "./TemplateVariableToolbarButton";

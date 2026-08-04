@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { EmojiPopover } from "#ui-extensions";
+import { EmojiSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	EmojiAdapterConstructorParams,
@@ -35,7 +35,7 @@ export class EmojiAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: EmojiPopover,
+			component: EmojiSuggestions,
 			props: { uiPort: this.uiPort },
 		});
 	}

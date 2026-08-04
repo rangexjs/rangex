@@ -1,9 +1,9 @@
 import { createAnchoredOverlayController } from "../../_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
 import { handleTemplateVariableInsertion } from "./HandleTemplateVariableInsertion";
-import { handleTemplateVariablePopoverAppearance } from "./HandleTemplateVariablePopoverAppearance";
-import { handleTemplateVariablePopoverClose } from "./HandleTemplateVariablePopoverClose";
-import { handleTemplateVariablePopoverInsertion } from "./HandleTemplateVariablePopoverInsertion";
+import { handleTemplateVariableOverlayAppearance } from "./HandleTemplateVariableOverlayAppearance";
+import { handleTemplateVariableOverlayClose } from "./HandleTemplateVariableOverlayClose";
+import { handleTemplateVariableOverlayInsertion } from "./HandleTemplateVariableOverlayInsertion";
 import { handleTemplateVariableToolbarButtonState } from "./HandleTemplateVariableToolbarButtonState";
 import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
 
@@ -35,18 +35,18 @@ export const configureTemplateVariable = ({
 		editorAPI,
 	});
 
-	const popoverInsertionCleanup = handleTemplateVariablePopoverInsertion({
+	const overlayInsertionCleanup = handleTemplateVariableOverlayInsertion({
 		editorPort,
 		editorAPI,
 	});
 
 	// Close must be subscribed before appearance — both listen to selection changes and close must fire first
-	const popoverCloseCleanup = handleTemplateVariablePopoverClose({
+	const overlayCloseCleanup = handleTemplateVariableOverlayClose({
 		editorAPI,
 		anchorController,
 	});
 
-	const popoverAppearanceCleanup = handleTemplateVariablePopoverAppearance({
+	const overlayAppearanceCleanup = handleTemplateVariableOverlayAppearance({
 		editorPort,
 		editorAPI,
 		anchorController,
@@ -58,8 +58,8 @@ export const configureTemplateVariable = ({
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 		updateCleanup();
-		popoverInsertionCleanup();
-		popoverCloseCleanup();
-		popoverAppearanceCleanup();
+		overlayInsertionCleanup();
+		overlayCloseCleanup();
+		overlayAppearanceCleanup();
 	};
 };

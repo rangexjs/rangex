@@ -23,7 +23,7 @@ export interface OpenForWrapParams {
 	anchorController: AnchoredOverlayController;
 }
 
-export interface OpenLinkPopoverParams {
+export interface OpenLinkOverlayParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	anchorController: AnchoredOverlayController;

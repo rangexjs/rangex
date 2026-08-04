@@ -1,2 +1,2 @@
-export * from "./LinkPopover";
+export * from "./LinkCard";
 export * from "./LinkToolbarButton";

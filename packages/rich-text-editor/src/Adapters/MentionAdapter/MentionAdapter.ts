@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { MentionPopover } from "#ui-extensions";
+import { MentionSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	MentionAdapterConstructorParams,
@@ -36,7 +36,7 @@ export class MentionAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: MentionPopover,
+			component: MentionSuggestions,
 			props: { uiPort: this.uiPort },
 		});
 	}

@@ -4,7 +4,7 @@ import type { ConfigureLinkParams, LinkInternals } from "./ConfigureLink-types";
 import { handleLinkClick } from "./HandleLinkClick";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkModification } from "./HandleLinkModification";
-import { handleLinkPopoverClose } from "./HandleLinkPopoverClose";
+import { handleLinkOverlayClose } from "./HandleLinkOverlayClose";
 import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
@@ -57,7 +57,7 @@ export const configureLink = ({
 		getComponent: () => internals.currentLink,
 	});
 
-	const linkPopoverCloseCleanup = handleLinkPopoverClose({
+	const linkOverlayCloseCleanup = handleLinkOverlayClose({
 		editorPort,
 		editorAPI,
 		internals,
@@ -73,6 +73,6 @@ export const configureLink = ({
 		linkInsertionCleanup();
 		linkModificationCleanup();
 		linkUnwrapCleanup();
-		linkPopoverCloseCleanup();
+		linkOverlayCloseCleanup();
 	};
 };

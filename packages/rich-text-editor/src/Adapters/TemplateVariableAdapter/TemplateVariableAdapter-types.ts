@@ -13,12 +13,12 @@ export type TemplateVariableKind =
 	| "email"
 	| "date";
 
-export interface TemplateVariablePopoverItem {
+export interface TemplateVariableSuggestionItem {
 	kind: TemplateVariableKind;
 	label: string;
 }
 
-export type TemplateVariablePopoverItems = TemplateVariablePopoverItem[];
+export type TemplateVariableSuggestionItems = TemplateVariableSuggestionItem[];
 
 export interface TemplateVariableOptions {
 	firstName: string | null;
@@ -53,14 +53,14 @@ export type TemplateVariableUpdateToolbarButtonFn = (
 	value: TemplateVariableToolbarButtonState,
 ) => void;
 export type TemplateVariableUpdateFilteredItemsFn = (
-	value: TemplateVariablePopoverItems,
+	value: TemplateVariableSuggestionItems,
 ) => void;
 export type TemplateVariableUpdateIsOpenFn = (value: boolean) => void;
 
 export interface TemplateVariableUIPort {
 	readonly anchoredOverlay: UIOverlayMount;
 	readonly toolbarButton: TemplateVariableToolbarButtonState;
-	readonly filteredItems: TemplateVariablePopoverItems;
+	readonly filteredItems: TemplateVariableSuggestionItems;
 	onToolbarButtonUpdate(
 		callback: TemplateVariableUpdateToolbarButtonFn,
 	): () => void;
@@ -71,7 +71,7 @@ export interface TemplateVariableUIPort {
 	onIsOpenUpdate(callback: TemplateVariableUpdateIsOpenFn): () => void;
 	emitInsertRequest(params: TemplateVariableInsertRequestParams): void;
 	emitUpdateRequest(params: TemplateVariableUpdateRequestParams): void;
-	emitSelect(item: TemplateVariablePopoverItem): void;
+	emitSelect(item: TemplateVariableSuggestionItem): void;
 }
 
 export type TemplateVariableOnInsertRequestFn = (
@@ -81,13 +81,13 @@ export type TemplateVariableOnUpdateRequestFn = (
 	params: TemplateVariableUpdateRequestParams,
 ) => void;
 export type TemplateVariableOnSelectFn = (
-	item: TemplateVariablePopoverItem,
+	item: TemplateVariableSuggestionItem,
 ) => void;
 
 export interface TemplateVariableEditorPort {
 	readonly anchoredOverlay: EditorOverlayMount;
 	readonly toolbarButton: TemplateVariableToolbarButtonState;
-	readonly filteredItems: TemplateVariablePopoverItems;
+	readonly filteredItems: TemplateVariableSuggestionItems;
 	updateState(params: UpdateTemplateVariableStateParams): void;
 	onInsertRequest(callback: TemplateVariableOnInsertRequestFn): () => void;
 	onUpdateRequest(callback: TemplateVariableOnUpdateRequestFn): () => void;

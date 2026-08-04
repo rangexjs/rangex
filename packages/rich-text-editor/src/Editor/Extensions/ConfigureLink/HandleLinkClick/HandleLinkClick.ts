@@ -7,19 +7,19 @@ import { componentsName } from "#ports";
 import { getStateFromLink } from "../_Utilities";
 import type {
 	HandleLinkClickParams,
-	OpenLinkPopoverParams,
+	OpenLinkOverlayParams,
 } from "./HandleLinkClick-types";
 
 /**
  * Opens the popover in preview mode anchored to the clicked link.
  */
-const openLinkPopover = ({
+const openLinkOverlay = ({
 	editorPort,
 	editorAPI,
 	internals,
 	link,
 	anchorController,
-}: OpenLinkPopoverParams) => {
+}: OpenLinkOverlayParams) => {
 	internals.currentLink = link;
 
 	const state = getStateFromLink({ link, editorAPI });
@@ -57,7 +57,7 @@ export const handleLinkClick = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				openLinkPopover({
+				openLinkOverlay({
 					editorPort,
 					editorAPI,
 					internals,

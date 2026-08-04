@@ -1,8 +1,8 @@
 import { createAnchoredOverlayController } from "../../_Utilities";
 import type { ConfigureMentionParams } from "./ConfigureMention-types";
 import { handleMentionInsertion } from "./HandleMentionInsertion";
-import { handlePopoverAppearance } from "./HandlePopoverAppearance";
-import { handlePopoverClose } from "./HandlePopoverClose";
+import { handleOverlayAppearance } from "./HandleOverlayAppearance";
+import { handleOverlayClose } from "./HandleOverlayClose";
 import { loadMentionItems } from "./LoadMentionItems";
 
 export const configureMention = ({
@@ -25,14 +25,14 @@ export const configureMention = ({
 		editorAPI,
 	});
 
-	// handlePopoverClose must be subscribed before handlePopoverAppearance — both listen to
+	// handleOverlayClose must be subscribed before handleOverlayAppearance — both listen to
 	// editorSelectionChangeEventType, and close must fire first to hide before appearance re-evaluates.
-	const popoverCloseCleanup = handlePopoverClose({
+	const overlayCloseCleanup = handleOverlayClose({
 		editorAPI,
 		anchorController,
 	});
 
-	const popoverAppearanceCleanup = handlePopoverAppearance({
+	const overlayAppearanceCleanup = handleOverlayAppearance({
 		editorPort,
 		editorAPI,
 		anchorController,
@@ -42,7 +42,7 @@ export const configureMention = ({
 		editorPort.anchoredOverlay.unmount();
 
 		mentionInsertionCleanup();
-		popoverCloseCleanup();
-		popoverAppearanceCleanup();
+		overlayCloseCleanup();
+		overlayAppearanceCleanup();
 	};
 };

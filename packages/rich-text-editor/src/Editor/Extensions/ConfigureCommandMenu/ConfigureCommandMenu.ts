@@ -1,8 +1,8 @@
 import { createAnchoredOverlayController } from "../../_Utilities";
 import type { ConfigureCommandMenuParams } from "./ConfigureCommandMenu-types";
 import { handleBeforeSelect } from "./HandleBeforeSelect";
-import { handlePopoverAppearance } from "./HandlePopoverAppearance";
-import { handlePopoverClose } from "./HandlePopoverClose";
+import { handleOverlayAppearance } from "./HandleOverlayAppearance";
+import { handleOverlayClose } from "./HandleOverlayClose";
 
 export const configureCommandMenu = ({
 	editorPort,
@@ -15,14 +15,14 @@ export const configureCommandMenu = ({
 		},
 	});
 
-	// handlePopoverClose must be subscribed before handlePopoverAppearance — both listen to
+	// handleOverlayClose must be subscribed before handleOverlayAppearance — both listen to
 	// editorSelectionChangeEventType, and close must fire first to hide before appearance re-evaluates.
-	const popoverCloseCleanup = handlePopoverClose({
+	const overlayCloseCleanup = handleOverlayClose({
 		editorAPI,
 		anchorController,
 	});
 
-	const popoverAppearanceCleanup = handlePopoverAppearance({
+	const overlayAppearanceCleanup = handleOverlayAppearance({
 		editorPort,
 		editorAPI,
 		anchorController,
@@ -34,8 +34,8 @@ export const configureCommandMenu = ({
 	});
 
 	return () => {
-		popoverCloseCleanup();
-		popoverAppearanceCleanup();
+		overlayCloseCleanup();
+		overlayAppearanceCleanup();
 		beforeSelectCleanup();
 	};
 };
