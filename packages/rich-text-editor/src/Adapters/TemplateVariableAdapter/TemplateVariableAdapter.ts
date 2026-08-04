@@ -25,7 +25,7 @@ const ALL_ITEMS: TemplateVariablePopoverItems = [
 ];
 
 export class TemplateVariableAdapter {
-	#anchoredOverlayMount: OverlayMount;
+	#overlayMount: OverlayMount;
 
 	#toolbarButton: TemplateVariableToolbarButtonState = {
 		disabled: true,
@@ -51,7 +51,7 @@ export class TemplateVariableAdapter {
 	constructor(...params: TemplateVariableAdapterConstructorParams) {
 		const [_settings, { overlayHost }] = params;
 
-		this.#anchoredOverlayMount = createOverlayMount({
+		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: TemplateVariablePopover,
 			props: { uiPort: this.uiPort },
@@ -105,7 +105,7 @@ export class TemplateVariableAdapter {
 
 		this.#uiPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.uiOverlayMount;
+				return adapter.#overlayMount.uiOverlayMount;
 			},
 
 			get toolbarButton() {
@@ -162,7 +162,7 @@ export class TemplateVariableAdapter {
 
 		this.#editorPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.editorOverlayMount;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			get toolbarButton() {

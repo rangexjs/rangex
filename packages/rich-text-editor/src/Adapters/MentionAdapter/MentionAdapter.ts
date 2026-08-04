@@ -15,7 +15,7 @@ import type {
 } from "./MentionAdapter-types";
 
 export class MentionAdapter {
-	#anchoredOverlayMount: OverlayMount;
+	#overlayMount: OverlayMount;
 	#items: MentionItems = [];
 	#query = "";
 	#filteredItems: MentionItems = [];
@@ -34,7 +34,7 @@ export class MentionAdapter {
 	constructor(...params: MentionAdapterConstructorParams) {
 		const [_settings, { overlayHost }] = params;
 
-		this.#anchoredOverlayMount = createOverlayMount({
+		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: MentionPopover,
 			props: { uiPort: this.uiPort },
@@ -99,7 +99,7 @@ export class MentionAdapter {
 
 		this.#uiPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.uiOverlayMount;
+				return adapter.#overlayMount.uiOverlayMount;
 			},
 
 			get filteredItems() {
@@ -135,7 +135,7 @@ export class MentionAdapter {
 
 		this.#editorPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.editorOverlayMount;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			get filteredItems() {

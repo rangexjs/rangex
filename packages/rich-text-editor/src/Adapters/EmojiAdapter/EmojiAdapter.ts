@@ -15,7 +15,7 @@ import type {
 const MAX_RESULTS = 8;
 
 export class EmojiAdapter {
-	#anchoredOverlayMount: OverlayMount;
+	#overlayMount: OverlayMount;
 	#items: EmojiItems;
 	#query = "";
 	#filteredItems: EmojiItems = [];
@@ -33,7 +33,7 @@ export class EmojiAdapter {
 
 		this.#items = settings.items;
 
-		this.#anchoredOverlayMount = createOverlayMount({
+		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: EmojiPopover,
 			props: { uiPort: this.uiPort },
@@ -77,7 +77,7 @@ export class EmojiAdapter {
 
 		this.#uiPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.uiOverlayMount;
+				return adapter.#overlayMount.uiOverlayMount;
 			},
 
 			get filteredItems() {
@@ -113,7 +113,7 @@ export class EmojiAdapter {
 
 		this.#editorPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.editorOverlayMount;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			get filteredItems() {

@@ -24,7 +24,7 @@ import type {
 } from "./LineHandlerAdapter-types";
 
 export class LineHandlerAdapter {
-	#anchoredOverlayMount: OverlayMount;
+	#overlayMount: OverlayMount;
 
 	#turnInto: TurnIntoAvailability = {
 		[componentsName.accordionItem]: false,
@@ -54,7 +54,7 @@ export class LineHandlerAdapter {
 	constructor(...params: LineHandlerAdapterConstructorParams) {
 		const [_settings, { overlayHost }] = params;
 
-		this.#anchoredOverlayMount = createOverlayMount({
+		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: LineHandler,
 			props: { uiPort: this.uiPort },
@@ -109,7 +109,7 @@ export class LineHandlerAdapter {
 
 		this.#uiPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.uiOverlayMount;
+				return adapter.#overlayMount.uiOverlayMount;
 			},
 
 			get turnInto() {
@@ -193,7 +193,7 @@ export class LineHandlerAdapter {
 
 		this.#editorPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.editorOverlayMount;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			updateState: (params) => adapter.#updateState(params),

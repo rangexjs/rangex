@@ -30,7 +30,7 @@ import type {
 } from "./LinkAdapter-types";
 
 export class LinkAdapter {
-	#anchoredOverlayMount: OverlayMount;
+	#overlayMount: OverlayMount;
 	#toolbarButton: LinkToolbarButtonState = {
 		checked: false,
 		disabled: true,
@@ -68,7 +68,7 @@ export class LinkAdapter {
 	constructor(...params: LinkAdapterConstructorParams) {
 		const [_settings, { overlayHost }] = params;
 
-		this.#anchoredOverlayMount = createOverlayMount({
+		this.#overlayMount = createOverlayMount({
 			overlayHost,
 			component: LinkPopover,
 			props: { uiPort: this.uiPort },
@@ -141,7 +141,7 @@ export class LinkAdapter {
 
 		this.#uiPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.uiOverlayMount;
+				return adapter.#overlayMount.uiOverlayMount;
 			},
 
 			get toolbarButton() {
@@ -245,7 +245,7 @@ export class LinkAdapter {
 
 		this.#editorPort ??= {
 			get anchoredOverlay() {
-				return adapter.#anchoredOverlayMount.editorOverlayMount;
+				return adapter.#overlayMount.editorOverlayMount;
 			},
 
 			updateState: (params) => adapter.#updateState(params),
