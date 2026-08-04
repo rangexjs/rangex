@@ -29,13 +29,13 @@ import type {
 	VideoUpdateAutoplayFn,
 	VideoUpdateCaptionFn,
 	VideoUpdateControlsFn,
-	VideoUpdateIsOpenFn,
+	VideoUpdateIsQuickActionsOpenFn,
+	VideoUpdateIsSwapCardOpenFn,
 	VideoUpdateLoopFn,
 	VideoUpdateMutedFn,
 	VideoUpdateObjectFitFn,
 	VideoUpdatePosterFn,
 	VideoUpdateSwapCheckStateFn,
-	VideoUpdateSwapIsOpenFn,
 	VideoUpdateTitleFn,
 } from "./VideoAdapter-types";
 
@@ -56,8 +56,8 @@ export class VideoAdapter {
 	#loop = false;
 	#muted = false;
 	#swapCheckState: VideoSwapCheckState = { status: "idle" };
-	#isOpen = false;
-	#swapIsOpen = false;
+	#isQuickActionsOpen = false;
+	#isSwapCardOpen = false;
 
 	#alignListeners: Set<VideoUpdateAlignFn> = new Set();
 	#objectFitListeners: Set<VideoUpdateObjectFitFn> = new Set();
@@ -70,8 +70,9 @@ export class VideoAdapter {
 	#loopListeners: Set<VideoUpdateLoopFn> = new Set();
 	#mutedListeners: Set<VideoUpdateMutedFn> = new Set();
 	#swapCheckStateListeners: Set<VideoUpdateSwapCheckStateFn> = new Set();
-	#isOpenListeners: Set<VideoUpdateIsOpenFn> = new Set();
-	#swapIsOpenListeners: Set<VideoUpdateSwapIsOpenFn> = new Set();
+	#isQuickActionsOpenListeners: Set<VideoUpdateIsQuickActionsOpenFn> =
+		new Set();
+	#isSwapCardOpenListeners: Set<VideoUpdateIsSwapCardOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
@@ -120,8 +121,8 @@ export class VideoAdapter {
 		loop,
 		muted,
 		swapCheckState,
-		isOpen,
-		swapIsOpen,
+		isQuickActionsOpen,
+		isSwapCardOpen,
 	}: UpdateVideoStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -211,19 +212,19 @@ export class VideoAdapter {
 			}
 		}
 
-		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+		if (isQuickActionsOpen !== undefined) {
+			this.#isQuickActionsOpen = isQuickActionsOpen;
 
-			for (const listener of this.#isOpenListeners) {
-				listener(this.#isOpen);
+			for (const listener of this.#isQuickActionsOpenListeners) {
+				listener(this.#isQuickActionsOpen);
 			}
 		}
 
-		if (swapIsOpen !== undefined) {
-			this.#swapIsOpen = swapIsOpen;
+		if (isSwapCardOpen !== undefined) {
+			this.#isSwapCardOpen = isSwapCardOpen;
 
-			for (const listener of this.#swapIsOpenListeners) {
-				listener(this.#swapIsOpen);
+			for (const listener of this.#isSwapCardOpenListeners) {
+				listener(this.#isSwapCardOpen);
 			}
 		}
 	}
@@ -288,12 +289,8 @@ export class VideoAdapter {
 				return adapter.#swapCheckState;
 			},
 
-			get isOpen() {
-				return adapter.#isOpen;
-			},
-
-			get swapIsOpen() {
-				return adapter.#swapIsOpen;
+			get isSwapCardOpen() {
+				return adapter.#isSwapCardOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -351,14 +348,14 @@ export class VideoAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
-			onIsOpenUpdate: (callback) => {
-				adapter.#isOpenListeners.add(callback);
-				return () => adapter.#isOpenListeners.delete(callback);
+			onIsQuickActionsOpenUpdate: (callback) => {
+				adapter.#isQuickActionsOpenListeners.add(callback);
+				return () => adapter.#isQuickActionsOpenListeners.delete(callback);
 			},
 
-			onSwapIsOpenUpdate: (callback) => {
-				adapter.#swapIsOpenListeners.add(callback);
-				return () => adapter.#swapIsOpenListeners.delete(callback);
+			onIsSwapCardOpenUpdate: (callback) => {
+				adapter.#isSwapCardOpenListeners.add(callback);
+				return () => adapter.#isSwapCardOpenListeners.delete(callback);
 			},
 
 			emitAlignChange: (align) => {

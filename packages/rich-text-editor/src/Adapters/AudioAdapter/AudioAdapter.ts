@@ -22,11 +22,11 @@ import type {
 	AudioUpdateAutoplayFn,
 	AudioUpdateCaptionFn,
 	AudioUpdateControlsFn,
-	AudioUpdateIsOpenFn,
+	AudioUpdateIsQuickActionsOpenFn,
+	AudioUpdateIsSwapCardOpenFn,
 	AudioUpdateLoopFn,
 	AudioUpdateMutedFn,
 	AudioUpdateSwapCheckStateFn,
-	AudioUpdateSwapIsOpenFn,
 	AudioUpdateTitleFn,
 	OnAudioAttrChangeFn,
 	OnAudioSwapFn,
@@ -48,8 +48,8 @@ export class AudioAdapter {
 	#loop = false;
 	#muted = false;
 	#swapCheckState: AudioSwapCheckState = { status: "idle" };
-	#isOpen = false;
-	#swapIsOpen = false;
+	#isQuickActionsOpen = false;
+	#isSwapCardOpen = false;
 
 	#alignListeners: Set<AudioUpdateAlignFn> = new Set();
 	#captionListeners: Set<AudioUpdateCaptionFn> = new Set();
@@ -59,8 +59,9 @@ export class AudioAdapter {
 	#loopListeners: Set<AudioUpdateLoopFn> = new Set();
 	#mutedListeners: Set<AudioUpdateMutedFn> = new Set();
 	#swapCheckStateListeners: Set<AudioUpdateSwapCheckStateFn> = new Set();
-	#isOpenListeners: Set<AudioUpdateIsOpenFn> = new Set();
-	#swapIsOpenListeners: Set<AudioUpdateSwapIsOpenFn> = new Set();
+	#isQuickActionsOpenListeners: Set<AudioUpdateIsQuickActionsOpenFn> =
+		new Set();
+	#isSwapCardOpenListeners: Set<AudioUpdateIsSwapCardOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
@@ -106,8 +107,8 @@ export class AudioAdapter {
 		loop,
 		muted,
 		swapCheckState,
-		isOpen,
-		swapIsOpen,
+		isQuickActionsOpen,
+		isSwapCardOpen,
 	}: UpdateAudioStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -173,19 +174,19 @@ export class AudioAdapter {
 			}
 		}
 
-		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+		if (isQuickActionsOpen !== undefined) {
+			this.#isQuickActionsOpen = isQuickActionsOpen;
 
-			for (const listener of this.#isOpenListeners) {
-				listener(this.#isOpen);
+			for (const listener of this.#isQuickActionsOpenListeners) {
+				listener(this.#isQuickActionsOpen);
 			}
 		}
 
-		if (swapIsOpen !== undefined) {
-			this.#swapIsOpen = swapIsOpen;
+		if (isSwapCardOpen !== undefined) {
+			this.#isSwapCardOpen = isSwapCardOpen;
 
-			for (const listener of this.#swapIsOpenListeners) {
-				listener(this.#swapIsOpen);
+			for (const listener of this.#isSwapCardOpenListeners) {
+				listener(this.#isSwapCardOpen);
 			}
 		}
 	}
@@ -238,12 +239,8 @@ export class AudioAdapter {
 				return adapter.#swapCheckState;
 			},
 
-			get isOpen() {
-				return adapter.#isOpen;
-			},
-
-			get swapIsOpen() {
-				return adapter.#swapIsOpen;
+			get isSwapCardOpen() {
+				return adapter.#isSwapCardOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -286,14 +283,14 @@ export class AudioAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
-			onIsOpenUpdate: (callback) => {
-				adapter.#isOpenListeners.add(callback);
-				return () => adapter.#isOpenListeners.delete(callback);
+			onIsQuickActionsOpenUpdate: (callback) => {
+				adapter.#isQuickActionsOpenListeners.add(callback);
+				return () => adapter.#isQuickActionsOpenListeners.delete(callback);
 			},
 
-			onSwapIsOpenUpdate: (callback) => {
-				adapter.#swapIsOpenListeners.add(callback);
-				return () => adapter.#swapIsOpenListeners.delete(callback);
+			onIsSwapCardOpenUpdate: (callback) => {
+				adapter.#isSwapCardOpenListeners.add(callback);
+				return () => adapter.#isSwapCardOpenListeners.delete(callback);
 			},
 
 			emitAlignChange: (align) => {

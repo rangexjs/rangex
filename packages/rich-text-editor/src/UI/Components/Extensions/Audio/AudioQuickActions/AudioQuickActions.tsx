@@ -31,7 +31,9 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 	const [autoplay, setAutoplay] = createSignal(uiPort.autoplay);
 	const [loop, setLoop] = createSignal(uiPort.loop);
 	const [muted, setMuted] = createSignal(uiPort.muted);
-	const [swapIsOpen, setSwapIsOpen] = createSignal(uiPort.swapIsOpen);
+	const [isSwapCardOpen, setIsSwapCardOpen] = createSignal(
+		uiPort.isSwapCardOpen,
+	);
 
 	const [titleModel, titleControls] = createTextFieldController({
 		defaultValue: uiPort.title,
@@ -69,10 +71,12 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 			titleModel.setValue(value);
 			setCommittedTitle(value);
 		});
-		const unsubscribeSwapIsOpen = uiPort.onSwapIsOpenUpdate(setSwapIsOpen);
+		const unsubscribeIsSwapCardOpen =
+			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
 		// The main overlay closing (or reopening over a different audio) doesn't automatically
 		// close these native nested popovers — they're independent top-layer elements.
-		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+		const unsubscribeIsQuickActionsOpen =
+			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {
 			unsubscribeAlign();
@@ -82,8 +86,8 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 			unsubscribeLoop();
 			unsubscribeMuted();
 			unsubscribeTitle();
-			unsubscribeSwapIsOpen();
-			unsubscribeIsOpen();
+			unsubscribeIsSwapCardOpen();
+			unsubscribeIsQuickActionsOpen();
 		});
 	});
 
@@ -123,7 +127,7 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 			<button
 				type="button"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				data-is-checked={swapIsOpen()}
+				data-is-checked={isSwapCardOpen()}
 				title="Swap"
 				on:click={() => uiPort.emitToggleSwap()}
 			>

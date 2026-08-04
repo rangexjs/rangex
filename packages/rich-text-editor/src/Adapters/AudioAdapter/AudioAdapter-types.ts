@@ -30,8 +30,8 @@ export interface AudioState {
 	loop?: boolean;
 	muted?: boolean;
 	swapCheckState?: AudioSwapCheckState;
-	isOpen?: boolean;
-	swapIsOpen?: boolean;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
 export interface UpdateAudioStateParams extends AudioState {}
@@ -58,8 +58,8 @@ export type AudioUpdateAutoplayFn = (value: boolean) => void;
 export type AudioUpdateLoopFn = (value: boolean) => void;
 export type AudioUpdateMutedFn = (value: boolean) => void;
 export type AudioUpdateSwapCheckStateFn = (value: AudioSwapCheckState) => void;
-export type AudioUpdateIsOpenFn = (value: boolean) => void;
-export type AudioUpdateSwapIsOpenFn = (value: boolean) => void;
+export type AudioUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type AudioUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface AudioUIPort {
 	readonly quickActionsOverlay: UIOverlayMount;
@@ -73,8 +73,7 @@ export interface AudioUIPort {
 	readonly loop: boolean;
 	readonly muted: boolean;
 	readonly swapCheckState: AudioSwapCheckState;
-	readonly isOpen: boolean;
-	readonly swapIsOpen: boolean;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: AudioUpdateAlignFn): () => void;
 	onCaptionUpdate(callback: AudioUpdateCaptionFn): () => void;
 	onTitleUpdate(callback: AudioUpdateTitleFn): () => void;
@@ -83,8 +82,10 @@ export interface AudioUIPort {
 	onLoopUpdate(callback: AudioUpdateLoopFn): () => void;
 	onMutedUpdate(callback: AudioUpdateMutedFn): () => void;
 	onSwapCheckStateUpdate(callback: AudioUpdateSwapCheckStateFn): () => void;
-	onIsOpenUpdate(callback: AudioUpdateIsOpenFn): () => void;
-	onSwapIsOpenUpdate(callback: AudioUpdateSwapIsOpenFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: AudioUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: AudioUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;

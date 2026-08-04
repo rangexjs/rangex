@@ -22,9 +22,9 @@ import type {
 	EmbedUpdateAlignFn,
 	EmbedUpdateAspectRatioFn,
 	EmbedUpdateCaptionFn,
-	EmbedUpdateIsOpenFn,
+	EmbedUpdateIsQuickActionsOpenFn,
+	EmbedUpdateIsSwapCardOpenFn,
 	EmbedUpdateSwapCheckStateFn,
-	EmbedUpdateSwapIsOpenFn,
 	EmbedUpdateTitleFn,
 	OnEmbedAttrChangeFn,
 	OnEmbedSwapFn,
@@ -43,16 +43,17 @@ export class EmbedAdapter {
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#title = "";
 	#swapCheckState: EmbedSwapCheckState = { status: "idle" };
-	#isOpen = false;
-	#swapIsOpen = false;
+	#isQuickActionsOpen = false;
+	#isSwapCardOpen = false;
 
 	#alignListeners: Set<EmbedUpdateAlignFn> = new Set();
 	#aspectRatioListeners: Set<EmbedUpdateAspectRatioFn> = new Set();
 	#captionListeners: Set<EmbedUpdateCaptionFn> = new Set();
 	#titleListeners: Set<EmbedUpdateTitleFn> = new Set();
 	#swapCheckStateListeners: Set<EmbedUpdateSwapCheckStateFn> = new Set();
-	#isOpenListeners: Set<EmbedUpdateIsOpenFn> = new Set();
-	#swapIsOpenListeners: Set<EmbedUpdateSwapIsOpenFn> = new Set();
+	#isQuickActionsOpenListeners: Set<EmbedUpdateIsQuickActionsOpenFn> =
+		new Set();
+	#isSwapCardOpenListeners: Set<EmbedUpdateIsSwapCardOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
@@ -95,8 +96,8 @@ export class EmbedAdapter {
 		caption,
 		title,
 		swapCheckState,
-		isOpen,
-		swapIsOpen,
+		isQuickActionsOpen,
+		isSwapCardOpen,
 	}: UpdateEmbedStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -138,19 +139,19 @@ export class EmbedAdapter {
 			}
 		}
 
-		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+		if (isQuickActionsOpen !== undefined) {
+			this.#isQuickActionsOpen = isQuickActionsOpen;
 
-			for (const listener of this.#isOpenListeners) {
-				listener(this.#isOpen);
+			for (const listener of this.#isQuickActionsOpenListeners) {
+				listener(this.#isQuickActionsOpen);
 			}
 		}
 
-		if (swapIsOpen !== undefined) {
-			this.#swapIsOpen = swapIsOpen;
+		if (isSwapCardOpen !== undefined) {
+			this.#isSwapCardOpen = isSwapCardOpen;
 
-			for (const listener of this.#swapIsOpenListeners) {
-				listener(this.#swapIsOpen);
+			for (const listener of this.#isSwapCardOpenListeners) {
+				listener(this.#isSwapCardOpen);
 			}
 		}
 	}
@@ -191,12 +192,8 @@ export class EmbedAdapter {
 				return adapter.#swapCheckState;
 			},
 
-			get isOpen() {
-				return adapter.#isOpen;
-			},
-
-			get swapIsOpen() {
-				return adapter.#swapIsOpen;
+			get isSwapCardOpen() {
+				return adapter.#isSwapCardOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -224,14 +221,14 @@ export class EmbedAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
-			onIsOpenUpdate: (callback) => {
-				adapter.#isOpenListeners.add(callback);
-				return () => adapter.#isOpenListeners.delete(callback);
+			onIsQuickActionsOpenUpdate: (callback) => {
+				adapter.#isQuickActionsOpenListeners.add(callback);
+				return () => adapter.#isQuickActionsOpenListeners.delete(callback);
 			},
 
-			onSwapIsOpenUpdate: (callback) => {
-				adapter.#swapIsOpenListeners.add(callback);
-				return () => adapter.#swapIsOpenListeners.delete(callback);
+			onIsSwapCardOpenUpdate: (callback) => {
+				adapter.#isSwapCardOpenListeners.add(callback);
+				return () => adapter.#isSwapCardOpenListeners.delete(callback);
 			},
 
 			emitAlignChange: (align) => {

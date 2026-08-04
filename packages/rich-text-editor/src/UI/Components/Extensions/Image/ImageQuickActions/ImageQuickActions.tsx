@@ -51,7 +51,9 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 	const [objectFit, setObjectFit] = createSignal(uiPort.objectFit);
 	const [aspectRatio, setAspectRatio] = createSignal(uiPort.aspectRatio);
 	const [caption, setCaption] = createSignal(uiPort.caption);
-	const [swapIsOpen, setSwapIsOpen] = createSignal(uiPort.swapIsOpen);
+	const [isSwapCardOpen, setIsSwapCardOpen] = createSignal(
+		uiPort.isSwapCardOpen,
+	);
 
 	const [altModel, altControls] = createTextFieldController({
 		defaultValue: uiPort.altText,
@@ -87,10 +89,12 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 			altModel.setValue(value);
 			setCommittedAltText(value);
 		});
-		const unsubscribeSwapIsOpen = uiPort.onSwapIsOpenUpdate(setSwapIsOpen);
+		const unsubscribeIsSwapCardOpen =
+			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
 		// The main overlay closing (or reopening over a different image) doesn't automatically
 		// close these native nested popovers — they're independent top-layer elements.
-		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+		const unsubscribeIsQuickActionsOpen =
+			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {
 			unsubscribeAlign();
@@ -98,8 +102,8 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 			unsubscribeAspectRatio();
 			unsubscribeCaption();
 			unsubscribeAltText();
-			unsubscribeSwapIsOpen();
-			unsubscribeIsOpen();
+			unsubscribeIsSwapCardOpen();
+			unsubscribeIsQuickActionsOpen();
 		});
 	});
 
@@ -133,7 +137,7 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 			<button
 				type="button"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				data-is-checked={swapIsOpen()}
+				data-is-checked={isSwapCardOpen()}
 				title="Swap"
 				on:click={() => uiPort.emitToggleSwap()}
 			>

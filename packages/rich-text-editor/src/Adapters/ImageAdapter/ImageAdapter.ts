@@ -24,10 +24,10 @@ import type {
 	ImageUpdateAltTextFn,
 	ImageUpdateAspectRatioFn,
 	ImageUpdateCaptionFn,
-	ImageUpdateIsOpenFn,
+	ImageUpdateIsQuickActionsOpenFn,
+	ImageUpdateIsSwapCardOpenFn,
 	ImageUpdateObjectFitFn,
 	ImageUpdateSwapCheckStateFn,
-	ImageUpdateSwapIsOpenFn,
 	OnImageAttrChangeFn,
 	OnImageSwapFn,
 	OnImageToggleSwapFn,
@@ -46,8 +46,8 @@ export class ImageAdapter {
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#altText = "";
 	#swapCheckState: ImageSwapCheckState = { status: "idle" };
-	#isOpen = false;
-	#swapIsOpen = false;
+	#isQuickActionsOpen = false;
+	#isSwapCardOpen = false;
 
 	#alignListeners: Set<ImageUpdateAlignFn> = new Set();
 	#objectFitListeners: Set<ImageUpdateObjectFitFn> = new Set();
@@ -55,8 +55,9 @@ export class ImageAdapter {
 	#captionListeners: Set<ImageUpdateCaptionFn> = new Set();
 	#altTextListeners: Set<ImageUpdateAltTextFn> = new Set();
 	#swapCheckStateListeners: Set<ImageUpdateSwapCheckStateFn> = new Set();
-	#isOpenListeners: Set<ImageUpdateIsOpenFn> = new Set();
-	#swapIsOpenListeners: Set<ImageUpdateSwapIsOpenFn> = new Set();
+	#isQuickActionsOpenListeners: Set<ImageUpdateIsQuickActionsOpenFn> =
+		new Set();
+	#isSwapCardOpenListeners: Set<ImageUpdateIsSwapCardOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
@@ -100,8 +101,8 @@ export class ImageAdapter {
 		caption,
 		altText,
 		swapCheckState,
-		isOpen,
-		swapIsOpen,
+		isQuickActionsOpen,
+		isSwapCardOpen,
 	}: UpdateImageStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -151,19 +152,19 @@ export class ImageAdapter {
 			}
 		}
 
-		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+		if (isQuickActionsOpen !== undefined) {
+			this.#isQuickActionsOpen = isQuickActionsOpen;
 
-			for (const listener of this.#isOpenListeners) {
-				listener(this.#isOpen);
+			for (const listener of this.#isQuickActionsOpenListeners) {
+				listener(this.#isQuickActionsOpen);
 			}
 		}
 
-		if (swapIsOpen !== undefined) {
-			this.#swapIsOpen = swapIsOpen;
+		if (isSwapCardOpen !== undefined) {
+			this.#isSwapCardOpen = isSwapCardOpen;
 
-			for (const listener of this.#swapIsOpenListeners) {
-				listener(this.#swapIsOpen);
+			for (const listener of this.#isSwapCardOpenListeners) {
+				listener(this.#isSwapCardOpen);
 			}
 		}
 	}
@@ -208,12 +209,8 @@ export class ImageAdapter {
 				return adapter.#swapCheckState;
 			},
 
-			get isOpen() {
-				return adapter.#isOpen;
-			},
-
-			get swapIsOpen() {
-				return adapter.#swapIsOpen;
+			get isSwapCardOpen() {
+				return adapter.#isSwapCardOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -246,14 +243,14 @@ export class ImageAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
-			onIsOpenUpdate: (callback) => {
-				adapter.#isOpenListeners.add(callback);
-				return () => adapter.#isOpenListeners.delete(callback);
+			onIsQuickActionsOpenUpdate: (callback) => {
+				adapter.#isQuickActionsOpenListeners.add(callback);
+				return () => adapter.#isQuickActionsOpenListeners.delete(callback);
 			},
 
-			onSwapIsOpenUpdate: (callback) => {
-				adapter.#swapIsOpenListeners.add(callback);
-				return () => adapter.#swapIsOpenListeners.delete(callback);
+			onIsSwapCardOpenUpdate: (callback) => {
+				adapter.#isSwapCardOpenListeners.add(callback);
+				return () => adapter.#isSwapCardOpenListeners.delete(callback);
 			},
 
 			emitAlignChange: (align) => {

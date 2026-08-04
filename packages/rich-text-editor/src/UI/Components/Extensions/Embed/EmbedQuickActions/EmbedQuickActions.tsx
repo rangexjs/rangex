@@ -43,7 +43,9 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 	const [align, setAlign] = createSignal(uiPort.align);
 	const [aspectRatio, setAspectRatio] = createSignal(uiPort.aspectRatio);
 	const [caption, setCaption] = createSignal(uiPort.caption);
-	const [swapIsOpen, setSwapIsOpen] = createSignal(uiPort.swapIsOpen);
+	const [isSwapCardOpen, setIsSwapCardOpen] = createSignal(
+		uiPort.isSwapCardOpen,
+	);
 
 	const [titleModel, titleControls] = createTextFieldController({
 		defaultValue: uiPort.title,
@@ -78,18 +80,20 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 			titleModel.setValue(value);
 			setCommittedTitle(value);
 		});
-		const unsubscribeSwapIsOpen = uiPort.onSwapIsOpenUpdate(setSwapIsOpen);
+		const unsubscribeIsSwapCardOpen =
+			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
 		// The main overlay closing (or reopening over a different embed) doesn't automatically
 		// close these native nested popovers — they're independent top-layer elements.
-		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+		const unsubscribeIsQuickActionsOpen =
+			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {
 			unsubscribeAlign();
 			unsubscribeAspectRatio();
 			unsubscribeCaption();
 			unsubscribeTitle();
-			unsubscribeSwapIsOpen();
-			unsubscribeIsOpen();
+			unsubscribeIsSwapCardOpen();
+			unsubscribeIsQuickActionsOpen();
 		});
 	});
 
@@ -123,7 +127,7 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 			<button
 				type="button"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				data-is-checked={swapIsOpen()}
+				data-is-checked={isSwapCardOpen()}
 				title="Swap"
 				on:click={() => uiPort.emitToggleSwap()}
 			>

@@ -31,8 +31,8 @@ export interface ImageState {
 	caption?: CaptionState;
 	altText?: string;
 	swapCheckState?: ImageSwapCheckState;
-	isOpen?: boolean;
-	swapIsOpen?: boolean;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
 export interface UpdateImageStateParams extends ImageState {}
@@ -57,8 +57,8 @@ export type ImageUpdateAspectRatioFn = (value: ImageAspectRatioValue) => void;
 export type ImageUpdateCaptionFn = (value: CaptionState) => void;
 export type ImageUpdateAltTextFn = (value: string) => void;
 export type ImageUpdateSwapCheckStateFn = (value: ImageSwapCheckState) => void;
-export type ImageUpdateIsOpenFn = (value: boolean) => void;
-export type ImageUpdateSwapIsOpenFn = (value: boolean) => void;
+export type ImageUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type ImageUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface ImageUIPort {
 	readonly quickActionsOverlay: UIOverlayMount;
@@ -70,16 +70,17 @@ export interface ImageUIPort {
 	readonly caption: CaptionState;
 	readonly altText: string;
 	readonly swapCheckState: ImageSwapCheckState;
-	readonly isOpen: boolean;
-	readonly swapIsOpen: boolean;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: ImageUpdateAlignFn): () => void;
 	onObjectFitUpdate(callback: ImageUpdateObjectFitFn): () => void;
 	onAspectRatioUpdate(callback: ImageUpdateAspectRatioFn): () => void;
 	onCaptionUpdate(callback: ImageUpdateCaptionFn): () => void;
 	onAltTextUpdate(callback: ImageUpdateAltTextFn): () => void;
 	onSwapCheckStateUpdate(callback: ImageUpdateSwapCheckStateFn): () => void;
-	onIsOpenUpdate(callback: ImageUpdateIsOpenFn): () => void;
-	onSwapIsOpenUpdate(callback: ImageUpdateSwapIsOpenFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: ImageUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: ImageUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;

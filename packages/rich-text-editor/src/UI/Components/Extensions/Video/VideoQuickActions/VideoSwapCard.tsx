@@ -66,7 +66,7 @@ export const VideoSwapCard = (props: VideoSwapCardProps) => {
 	});
 
 	onMount(() => {
-		const unsubscribe = props.uiPort.onSwapIsOpenUpdate((value) => {
+		const unsubscribe = props.uiPort.onIsSwapCardOpenUpdate((value) => {
 			if (value) {
 				return;
 			}

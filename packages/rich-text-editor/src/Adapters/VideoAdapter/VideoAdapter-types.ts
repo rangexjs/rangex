@@ -36,8 +36,8 @@ export interface VideoState {
 	loop?: boolean;
 	muted?: boolean;
 	swapCheckState?: VideoSwapCheckState;
-	isOpen?: boolean;
-	swapIsOpen?: boolean;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
 export interface UpdateVideoStateParams extends VideoState {}
@@ -67,8 +67,8 @@ export type VideoUpdateAutoplayFn = (value: boolean) => void;
 export type VideoUpdateLoopFn = (value: boolean) => void;
 export type VideoUpdateMutedFn = (value: boolean) => void;
 export type VideoUpdateSwapCheckStateFn = (value: VideoSwapCheckState) => void;
-export type VideoUpdateIsOpenFn = (value: boolean) => void;
-export type VideoUpdateSwapIsOpenFn = (value: boolean) => void;
+export type VideoUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type VideoUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface VideoUIPort {
 	readonly quickActionsOverlay: UIOverlayMount;
@@ -85,8 +85,7 @@ export interface VideoUIPort {
 	readonly loop: boolean;
 	readonly muted: boolean;
 	readonly swapCheckState: VideoSwapCheckState;
-	readonly isOpen: boolean;
-	readonly swapIsOpen: boolean;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: VideoUpdateAlignFn): () => void;
 	onObjectFitUpdate(callback: VideoUpdateObjectFitFn): () => void;
 	onAspectRatioUpdate(callback: VideoUpdateAspectRatioFn): () => void;
@@ -98,8 +97,10 @@ export interface VideoUIPort {
 	onLoopUpdate(callback: VideoUpdateLoopFn): () => void;
 	onMutedUpdate(callback: VideoUpdateMutedFn): () => void;
 	onSwapCheckStateUpdate(callback: VideoUpdateSwapCheckStateFn): () => void;
-	onIsOpenUpdate(callback: VideoUpdateIsOpenFn): () => void;
-	onSwapIsOpenUpdate(callback: VideoUpdateSwapIsOpenFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: VideoUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: VideoUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;

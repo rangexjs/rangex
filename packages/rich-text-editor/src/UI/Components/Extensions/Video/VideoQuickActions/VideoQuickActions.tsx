@@ -55,7 +55,9 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 	const [autoplay, setAutoplay] = createSignal(uiPort.autoplay);
 	const [loop, setLoop] = createSignal(uiPort.loop);
 	const [muted, setMuted] = createSignal(uiPort.muted);
-	const [swapIsOpen, setSwapIsOpen] = createSignal(uiPort.swapIsOpen);
+	const [isSwapCardOpen, setIsSwapCardOpen] = createSignal(
+		uiPort.isSwapCardOpen,
+	);
 
 	const [posterModel, posterControls] = createTextFieldController({
 		defaultValue: uiPort.poster,
@@ -107,10 +109,12 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 			titleModel.setValue(value);
 			setCommittedTitle(value);
 		});
-		const unsubscribeSwapIsOpen = uiPort.onSwapIsOpenUpdate(setSwapIsOpen);
+		const unsubscribeIsSwapCardOpen =
+			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
 		// The main overlay closing (or reopening over a different video) doesn't automatically
 		// close these native nested popovers — they're independent top-layer elements.
-		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+		const unsubscribeIsQuickActionsOpen =
+			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {
 			unsubscribeAlign();
@@ -123,8 +127,8 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 			unsubscribeMuted();
 			unsubscribePoster();
 			unsubscribeTitle();
-			unsubscribeSwapIsOpen();
-			unsubscribeIsOpen();
+			unsubscribeIsSwapCardOpen();
+			unsubscribeIsQuickActionsOpen();
 		});
 	});
 
@@ -176,7 +180,7 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 			<button
 				type="button"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				data-is-checked={swapIsOpen()}
+				data-is-checked={isSwapCardOpen()}
 				title="Swap"
 				on:click={() => uiPort.emitToggleSwap()}
 			>

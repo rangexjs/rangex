@@ -27,8 +27,8 @@ export interface EmbedState {
 	caption?: CaptionState;
 	title?: string;
 	swapCheckState?: EmbedSwapCheckState;
-	isOpen?: boolean;
-	swapIsOpen?: boolean;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
 export interface UpdateEmbedStateParams extends EmbedState {}
@@ -42,8 +42,8 @@ export type EmbedUpdateAspectRatioFn = (value: EmbedAspectRatioValue) => void;
 export type EmbedUpdateCaptionFn = (value: CaptionState) => void;
 export type EmbedUpdateTitleFn = (value: string) => void;
 export type EmbedUpdateSwapCheckStateFn = (value: EmbedSwapCheckState) => void;
-export type EmbedUpdateIsOpenFn = (value: boolean) => void;
-export type EmbedUpdateSwapIsOpenFn = (value: boolean) => void;
+export type EmbedUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type EmbedUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface EmbedUIPort {
 	readonly quickActionsOverlay: UIOverlayMount;
@@ -54,15 +54,16 @@ export interface EmbedUIPort {
 	readonly caption: CaptionState;
 	readonly title: string;
 	readonly swapCheckState: EmbedSwapCheckState;
-	readonly isOpen: boolean;
-	readonly swapIsOpen: boolean;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: EmbedUpdateAlignFn): () => void;
 	onAspectRatioUpdate(callback: EmbedUpdateAspectRatioFn): () => void;
 	onCaptionUpdate(callback: EmbedUpdateCaptionFn): () => void;
 	onTitleUpdate(callback: EmbedUpdateTitleFn): () => void;
 	onSwapCheckStateUpdate(callback: EmbedUpdateSwapCheckStateFn): () => void;
-	onIsOpenUpdate(callback: EmbedUpdateIsOpenFn): () => void;
-	onSwapIsOpenUpdate(callback: EmbedUpdateSwapIsOpenFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: EmbedUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: EmbedUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;

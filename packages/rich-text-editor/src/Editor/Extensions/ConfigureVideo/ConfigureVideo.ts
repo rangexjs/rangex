@@ -43,17 +43,18 @@ export const configureVideo = ({
 	const anchorController = createAnchoredOverlayController({
 		element: editorPort.quickActionsOverlay.element,
 		options: {
-			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+			onToggle: (isQuickActionsOpen) =>
+				editorPort.updateState({ isQuickActionsOpen }),
 		},
 	});
 
 	const swapAnchorController = createAnchoredOverlayController({
 		element: editorPort.swapCardOverlay.element,
 		options: {
-			onToggle: (swapIsOpen) => {
-				editorPort.updateState({ swapIsOpen });
+			onToggle: (isSwapCardOpen) => {
+				editorPort.updateState({ isSwapCardOpen });
 
-				if (!swapIsOpen) {
+				if (!isSwapCardOpen) {
 					internals.currentVideoFigure = null;
 				}
 			},
