@@ -7,8 +7,8 @@ export interface ConfigureVideoParams {
 }
 
 /**
- * Tracks which video the swap popover is currently targeting — set when the edit popover's
- * Swap button opens it, read when Update is clicked. The swap popover isn't tied to
+ * Tracks which video the swap overlay is currently targeting — set when the quick-actions'
+ * Swap button opens it, read when Update is clicked. The swap overlay isn't tied to
  * {@link OverlayAppearanceHandler}'s hover-driven current-block tracking, so this is its own
  * source of truth.
  */

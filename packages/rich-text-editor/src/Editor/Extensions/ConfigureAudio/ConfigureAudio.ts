@@ -1,8 +1,8 @@
 import { componentsName } from "#ports";
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import {
 	handleBlockAlignState,
-	handleBlockDelete,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 } from "../_Utilities";
@@ -18,9 +18,9 @@ import type {
 } from "./ConfigureAudio-types";
 import { handleAudioAttrState } from "./HandleAudioAttrState";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
-import { handleAudioPopoverAppearance } from "./HandleAudioPopoverAppearance";
+import { handleAudioQuickActionsOverlayAppearance } from "./HandleAudioQuickActionsOverlayAppearance";
 import { handleAudioSwap } from "./HandleAudioSwap";
-import { handleAudioSwapPopoverToggle } from "./HandleAudioSwapPopoverToggle";
+import { handleAudioSwapCardOverlayToggle } from "./HandleAudioSwapCardOverlayToggle";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
 // src/Editor/_Utilities) instead of going through any upload endpoint or blob
@@ -36,13 +36,39 @@ export const configureAudio = ({
 		editorAPI,
 	});
 
-	editorPort.popover.mount();
+	editorPort.quickActionsOverlay.mount();
+	editorPort.swapCardOverlay.mount();
 	editorPort.blockResize.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.quickActionsOverlay.element,
+		options: {
+			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+		},
+	});
+
+	const swapAnchorController = createAnchoredOverlayController({
+		element: editorPort.swapCardOverlay.element,
+		options: {
+			onToggle: (swapIsOpen) => {
+				editorPort.updateState({ swapIsOpen });
+
+				if (!swapIsOpen) {
+					internals.currentAudioFigure = null;
+				}
+			},
+		},
+	});
 
 	const insertionCleanup = handleAudioInsertion({ editorPort, editorAPI });
 
-	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleAudioPopoverAppearance({ editorPort, overlayAppearanceHandler });
+	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
+		handleAudioQuickActionsOverlayAppearance({
+			editorPort,
+			overlayAppearanceHandler,
+			anchorController,
+			swapAnchorController,
+		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
 		blockResize: editorPort.blockResize,
@@ -72,33 +98,33 @@ export const configureAudio = ({
 		setCaptionPosition: setAudioCaptionPosition,
 	});
 
-	const swapPopoverToggleCleanup = handleAudioSwapPopoverToggle({
+	const swapCardOverlayToggleCleanup = handleAudioSwapCardOverlayToggle({
 		editorPort,
 		getCurrentBlock,
 		internals,
+		swapAnchorController,
 	});
 
-	const swapCleanup = handleAudioSwap({ editorPort, editorAPI, internals });
-
-	const deleteCleanup = handleBlockDelete({
-		port: editorPort,
+	const swapCleanup = handleAudioSwap({
+		editorPort,
 		editorAPI,
-		getCurrentBlock,
+		internals,
+		swapAnchorController,
 	});
 
 	return () => {
 		overlayAppearanceHandler.cleanup();
-		editorPort.popover.unmount();
+		editorPort.quickActionsOverlay.unmount();
+		editorPort.swapCardOverlay.unmount();
 		editorPort.blockResize.unmount();
 
 		insertionCleanup();
-		popoverAppearanceCleanup();
+		overlayAppearanceCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapPopoverToggleCleanup();
+		swapCardOverlayToggleCleanup();
 		swapCleanup();
-		deleteCleanup();
 	};
 };

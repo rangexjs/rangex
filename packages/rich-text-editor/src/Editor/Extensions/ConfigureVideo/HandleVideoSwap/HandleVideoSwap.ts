@@ -83,6 +83,7 @@ export const handleVideoSwap = ({
 	editorPort,
 	editorAPI,
 	internals,
+	swapAnchorController,
 }: HandleVideoSwapParams) => {
 	const unsubscribeSwap = editorPort.onSwap(async (params) => {
 		const { currentVideoFigure } = internals;
@@ -130,7 +131,7 @@ export const handleVideoSwap = ({
 
 		applyVideoSrc({ figure: currentVideoFigure, src, editorAPI });
 		editorPort.updateState({ swapCheckState: { status: "idle" } });
-		editorPort.swapPopover.element.hidePopover();
+		swapAnchorController.hide();
 	});
 
 	return () => {

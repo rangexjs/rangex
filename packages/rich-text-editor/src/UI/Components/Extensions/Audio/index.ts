@@ -1,1 +1,1 @@
-export * from "./AudioPopover";
+export * from "./AudioQuickActions";

@@ -1,5 +1,5 @@
 import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
-import { AudioPopover } from "#ui-extensions";
+import { AudioQuickActions, AudioSwapCard } from "#ui-extensions";
 import {
 	type BlockAlignValue,
 	type BlockResize,
@@ -10,7 +10,6 @@ import {
 	type OnAlignChangeFn,
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
-	type OnDeleteFn,
 	type OverlayMount,
 } from "../_Utilities";
 import type {
@@ -23,20 +22,23 @@ import type {
 	AudioUpdateAutoplayFn,
 	AudioUpdateCaptionFn,
 	AudioUpdateControlsFn,
+	AudioUpdateIsOpenFn,
 	AudioUpdateLoopFn,
 	AudioUpdateMutedFn,
 	AudioUpdateSwapCheckStateFn,
+	AudioUpdateSwapIsOpenFn,
 	AudioUpdateTitleFn,
 	OnAudioAttrChangeFn,
 	OnAudioSwapFn,
+	OnAudioToggleSwapFn,
 	UpdateAudioStateParams,
 } from "./AudioAdapter-types";
 
 export class AudioAdapter {
 	#adapterBus: AdapterBus;
-	#overlayMount: OverlayMount;
+	#quickActionsOverlayMount: OverlayMount;
+	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
-	#swapPopoverElement: HTMLDivElement | null = null;
 
 	#align: BlockAlignValue = "center";
 	#caption: CaptionState = { enabled: false, position: "below" };
@@ -46,6 +48,8 @@ export class AudioAdapter {
 	#loop = false;
 	#muted = false;
 	#swapCheckState: AudioSwapCheckState = { status: "idle" };
+	#isOpen = false;
+	#swapIsOpen = false;
 
 	#alignListeners: Set<AudioUpdateAlignFn> = new Set();
 	#captionListeners: Set<AudioUpdateCaptionFn> = new Set();
@@ -55,13 +59,15 @@ export class AudioAdapter {
 	#loopListeners: Set<AudioUpdateLoopFn> = new Set();
 	#mutedListeners: Set<AudioUpdateMutedFn> = new Set();
 	#swapCheckStateListeners: Set<AudioUpdateSwapCheckStateFn> = new Set();
+	#isOpenListeners: Set<AudioUpdateIsOpenFn> = new Set();
+	#swapIsOpenListeners: Set<AudioUpdateSwapIsOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onAudioAttrChangeListeners: Set<OnAudioAttrChangeFn> = new Set();
 	#onSwapListeners: Set<OnAudioSwapFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onToggleSwapListeners: Set<OnAudioToggleSwapFn> = new Set();
 
 	#uiPort: AudioUIPort | null = null;
 	#editorPort: AudioEditorPort | null = null;
@@ -72,9 +78,15 @@ export class AudioAdapter {
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("audio");
 
-		this.#overlayMount = createOverlayMount({
+		this.#quickActionsOverlayMount = createOverlayMount({
 			overlayHost,
-			component: AudioPopover,
+			component: AudioQuickActions,
+			props: { uiPort: this.uiPort },
+		});
+
+		this.#swapCardOverlayMount = createOverlayMount({
+			overlayHost,
+			component: AudioSwapCard,
 			props: { uiPort: this.uiPort },
 		});
 
@@ -94,6 +106,8 @@ export class AudioAdapter {
 		loop,
 		muted,
 		swapCheckState,
+		isOpen,
+		swapIsOpen,
 	}: UpdateAudioStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -158,20 +172,34 @@ export class AudioAdapter {
 				listener(this.#swapCheckState);
 			}
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
+
+		if (swapIsOpen !== undefined) {
+			this.#swapIsOpen = swapIsOpen;
+
+			for (const listener of this.#swapIsOpenListeners) {
+				listener(this.#swapIsOpen);
+			}
+		}
 	}
 
 	get uiPort(): AudioUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
-				return adapter.#overlayMount.uiOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.uiOverlayMount;
 			},
 
-			swapPopover: {
-				setElement: (element) => {
-					adapter.#swapPopoverElement = element;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.uiOverlayMount;
 			},
 
 			get blockResize() {
@@ -208,6 +236,14 @@ export class AudioAdapter {
 
 			get swapCheckState() {
 				return adapter.#swapCheckState;
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			get swapIsOpen() {
+				return adapter.#swapIsOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -250,6 +286,16 @@ export class AudioAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
+			onSwapIsOpenUpdate: (callback) => {
+				adapter.#swapIsOpenListeners.add(callback);
+				return () => adapter.#swapIsOpenListeners.delete(callback);
+			},
+
 			emitAlignChange: (align) => {
 				for (const listener of adapter.#onAlignChangeListeners) {
 					listener(align);
@@ -280,8 +326,8 @@ export class AudioAdapter {
 				}
 			},
 
-			emitDelete: () => {
-				for (const listener of adapter.#onDeleteListeners) {
+			emitToggleSwap: () => {
+				for (const listener of adapter.#onToggleSwapListeners) {
 					listener();
 				}
 			},
@@ -294,18 +340,12 @@ export class AudioAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				return adapter.#overlayMount.editorOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.editorOverlayMount;
 			},
 
-			swapPopover: {
-				get element() {
-					if (!adapter.#swapPopoverElement) {
-						throw new Error("Swap popover element wasn't set.");
-					}
-
-					return adapter.#swapPopoverElement;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.editorOverlayMount;
 			},
 
 			get blockResize() {
@@ -343,9 +383,9 @@ export class AudioAdapter {
 				return () => adapter.#onSwapListeners.delete(callback);
 			},
 
-			onDelete: (callback) => {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onToggleSwap: (callback) => {
+				adapter.#onToggleSwapListeners.add(callback);
+				return () => adapter.#onToggleSwapListeners.delete(callback);
 			},
 
 			onMediaResolve: (callback: (params: MediaResolveParams) => void) =>

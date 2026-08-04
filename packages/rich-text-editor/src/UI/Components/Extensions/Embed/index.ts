@@ -1,1 +1,1 @@
-export * from "./EmbedPopover";
+export * from "./EmbedQuickActions";

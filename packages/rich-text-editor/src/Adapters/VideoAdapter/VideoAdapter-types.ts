@@ -5,7 +5,6 @@ import type {
 	CaptionPort,
 	CaptionPosition,
 	CaptionState,
-	DeletePort,
 	EditorBlockResize,
 	EditorOverlayMount,
 	UIBlockResize,
@@ -25,7 +24,7 @@ export type VideoSwapCheckState =
 	| { status: "uploading"; progress: number }
 	| { status: "error"; message: string };
 
-export interface VideoPopoverState {
+export interface VideoState {
 	align?: BlockAlignValue;
 	objectFit?: VideoObjectFitValue;
 	aspectRatio?: VideoAspectRatioValue;
@@ -37,9 +36,11 @@ export interface VideoPopoverState {
 	loop?: boolean;
 	muted?: boolean;
 	swapCheckState?: VideoSwapCheckState;
+	isOpen?: boolean;
+	swapIsOpen?: boolean;
 }
 
-export interface UpdateVideoStateParams extends VideoPopoverState {}
+export interface UpdateVideoStateParams extends VideoState {}
 
 export interface VideoEmitSwapURLParams {
 	source: "url";
@@ -66,14 +67,12 @@ export type VideoUpdateAutoplayFn = (value: boolean) => void;
 export type VideoUpdateLoopFn = (value: boolean) => void;
 export type VideoUpdateMutedFn = (value: boolean) => void;
 export type VideoUpdateSwapCheckStateFn = (value: VideoSwapCheckState) => void;
-
-export interface VideoUISwapPopover {
-	setElement: (element: HTMLDivElement) => void;
-}
+export type VideoUpdateIsOpenFn = (value: boolean) => void;
+export type VideoUpdateSwapIsOpenFn = (value: boolean) => void;
 
 export interface VideoUIPort {
-	readonly popover: UIOverlayMount;
-	readonly swapPopover: VideoUISwapPopover;
+	readonly quickActionsOverlay: UIOverlayMount;
+	readonly swapCardOverlay: UIOverlayMount;
 	readonly blockResize: UIBlockResize;
 	readonly align: BlockAlignValue;
 	readonly objectFit: VideoObjectFitValue;
@@ -86,6 +85,8 @@ export interface VideoUIPort {
 	readonly loop: boolean;
 	readonly muted: boolean;
 	readonly swapCheckState: VideoSwapCheckState;
+	readonly isOpen: boolean;
+	readonly swapIsOpen: boolean;
 	onAlignUpdate(callback: VideoUpdateAlignFn): () => void;
 	onObjectFitUpdate(callback: VideoUpdateObjectFitFn): () => void;
 	onAspectRatioUpdate(callback: VideoUpdateAspectRatioFn): () => void;
@@ -97,16 +98,14 @@ export interface VideoUIPort {
 	onLoopUpdate(callback: VideoUpdateLoopFn): () => void;
 	onMutedUpdate(callback: VideoUpdateMutedFn): () => void;
 	onSwapCheckStateUpdate(callback: VideoUpdateSwapCheckStateFn): () => void;
+	onIsOpenUpdate(callback: VideoUpdateIsOpenFn): () => void;
+	onSwapIsOpenUpdate(callback: VideoUpdateSwapIsOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;
 	emitVideoAttrChange(params: VideoAttrChange): void;
 	emitSwap(params: VideoEmitSwapParams): void;
-	emitDelete(): void;
-}
-
-export interface VideoEditorSwapPopover {
-	readonly element: HTMLDivElement;
+	emitToggleSwap(): void;
 }
 
 export interface VideoAttrChange {
@@ -122,16 +121,15 @@ export interface VideoAttrChange {
 
 export type OnVideoAttrChangeFn = (params: VideoAttrChange) => void;
 export type OnVideoSwapFn = (params: VideoEmitSwapParams) => void;
+export type OnVideoToggleSwapFn = () => void;
 
-export interface VideoEditorPort
-	extends BlockAlignPort,
-		CaptionPort,
-		DeletePort {
-	readonly popover: EditorOverlayMount;
-	readonly swapPopover: VideoEditorSwapPopover;
+export interface VideoEditorPort extends BlockAlignPort, CaptionPort {
+	readonly quickActionsOverlay: EditorOverlayMount;
+	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
 	updateState(params: UpdateVideoStateParams): void;
 	onVideoAttrChange(callback: OnVideoAttrChangeFn): () => void;
 	onSwap(callback: OnVideoSwapFn): () => void;
+	onToggleSwap(callback: OnVideoToggleSwapFn): () => void;
 	onMediaResolve(callback: (params: MediaResolveParams) => void): () => void;
 }

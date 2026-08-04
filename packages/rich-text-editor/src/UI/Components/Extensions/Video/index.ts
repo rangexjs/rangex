@@ -1,1 +1,1 @@
-export * from "./VideoPopover";
+export * from "./VideoQuickActions";

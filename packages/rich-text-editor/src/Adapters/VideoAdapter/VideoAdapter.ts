@@ -1,5 +1,5 @@
 import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
-import { VideoPopover } from "#ui-extensions";
+import { VideoQuickActions, VideoSwapCard } from "#ui-extensions";
 import {
 	type BlockAlignValue,
 	type BlockResize,
@@ -10,12 +10,12 @@ import {
 	type OnAlignChangeFn,
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
-	type OnDeleteFn,
 	type OverlayMount,
 } from "../_Utilities";
 import type {
 	OnVideoAttrChangeFn,
 	OnVideoSwapFn,
+	OnVideoToggleSwapFn,
 	UpdateVideoStateParams,
 	VideoAdapterConstructorParams,
 	VideoAspectRatioValue,
@@ -29,19 +29,21 @@ import type {
 	VideoUpdateAutoplayFn,
 	VideoUpdateCaptionFn,
 	VideoUpdateControlsFn,
+	VideoUpdateIsOpenFn,
 	VideoUpdateLoopFn,
 	VideoUpdateMutedFn,
 	VideoUpdateObjectFitFn,
 	VideoUpdatePosterFn,
 	VideoUpdateSwapCheckStateFn,
+	VideoUpdateSwapIsOpenFn,
 	VideoUpdateTitleFn,
 } from "./VideoAdapter-types";
 
 export class VideoAdapter {
 	#adapterBus: AdapterBus;
-	#overlayMount: OverlayMount;
+	#quickActionsOverlayMount: OverlayMount;
+	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
-	#swapPopoverElement: HTMLDivElement | null = null;
 
 	#align: BlockAlignValue = "center";
 	#objectFit: VideoObjectFitValue = "cover";
@@ -54,6 +56,8 @@ export class VideoAdapter {
 	#loop = false;
 	#muted = false;
 	#swapCheckState: VideoSwapCheckState = { status: "idle" };
+	#isOpen = false;
+	#swapIsOpen = false;
 
 	#alignListeners: Set<VideoUpdateAlignFn> = new Set();
 	#objectFitListeners: Set<VideoUpdateObjectFitFn> = new Set();
@@ -66,13 +70,15 @@ export class VideoAdapter {
 	#loopListeners: Set<VideoUpdateLoopFn> = new Set();
 	#mutedListeners: Set<VideoUpdateMutedFn> = new Set();
 	#swapCheckStateListeners: Set<VideoUpdateSwapCheckStateFn> = new Set();
+	#isOpenListeners: Set<VideoUpdateIsOpenFn> = new Set();
+	#swapIsOpenListeners: Set<VideoUpdateSwapIsOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onVideoAttrChangeListeners: Set<OnVideoAttrChangeFn> = new Set();
 	#onSwapListeners: Set<OnVideoSwapFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onToggleSwapListeners: Set<OnVideoToggleSwapFn> = new Set();
 
 	#uiPort: VideoUIPort | null = null;
 	#editorPort: VideoEditorPort | null = null;
@@ -83,9 +89,15 @@ export class VideoAdapter {
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("video");
 
-		this.#overlayMount = createOverlayMount({
+		this.#quickActionsOverlayMount = createOverlayMount({
 			overlayHost,
-			component: VideoPopover,
+			component: VideoQuickActions,
+			props: { uiPort: this.uiPort },
+		});
+
+		this.#swapCardOverlayMount = createOverlayMount({
+			overlayHost,
+			component: VideoSwapCard,
 			props: { uiPort: this.uiPort },
 		});
 
@@ -108,6 +120,8 @@ export class VideoAdapter {
 		loop,
 		muted,
 		swapCheckState,
+		isOpen,
+		swapIsOpen,
 	}: UpdateVideoStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -196,20 +210,34 @@ export class VideoAdapter {
 				listener(this.#swapCheckState);
 			}
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
+
+		if (swapIsOpen !== undefined) {
+			this.#swapIsOpen = swapIsOpen;
+
+			for (const listener of this.#swapIsOpenListeners) {
+				listener(this.#swapIsOpen);
+			}
+		}
 	}
 
 	get uiPort(): VideoUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
-				return adapter.#overlayMount.uiOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.uiOverlayMount;
 			},
 
-			swapPopover: {
-				setElement: (element) => {
-					adapter.#swapPopoverElement = element;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.uiOverlayMount;
 			},
 
 			get blockResize() {
@@ -258,6 +286,14 @@ export class VideoAdapter {
 
 			get swapCheckState() {
 				return adapter.#swapCheckState;
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			get swapIsOpen() {
+				return adapter.#swapIsOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -315,6 +351,16 @@ export class VideoAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
+			onSwapIsOpenUpdate: (callback) => {
+				adapter.#swapIsOpenListeners.add(callback);
+				return () => adapter.#swapIsOpenListeners.delete(callback);
+			},
+
 			emitAlignChange: (align) => {
 				for (const listener of adapter.#onAlignChangeListeners) {
 					listener(align);
@@ -345,8 +391,8 @@ export class VideoAdapter {
 				}
 			},
 
-			emitDelete: () => {
-				for (const listener of adapter.#onDeleteListeners) {
+			emitToggleSwap: () => {
+				for (const listener of adapter.#onToggleSwapListeners) {
 					listener();
 				}
 			},
@@ -359,18 +405,12 @@ export class VideoAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				return adapter.#overlayMount.editorOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.editorOverlayMount;
 			},
 
-			swapPopover: {
-				get element() {
-					if (!adapter.#swapPopoverElement) {
-						throw new Error("Swap popover element wasn't set.");
-					}
-
-					return adapter.#swapPopoverElement;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.editorOverlayMount;
 			},
 
 			get blockResize() {
@@ -408,9 +448,9 @@ export class VideoAdapter {
 				return () => adapter.#onSwapListeners.delete(callback);
 			},
 
-			onDelete: (callback) => {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onToggleSwap: (callback) => {
+				adapter.#onToggleSwapListeners.add(callback);
+				return () => adapter.#onToggleSwapListeners.delete(callback);
 			},
 
 			onMediaResolve: (callback: (params: MediaResolveParams) => void) =>

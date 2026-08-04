@@ -37,6 +37,7 @@ export const handleEmbedSwap = ({
 	editorPort,
 	editorAPI,
 	internals,
+	swapAnchorController,
 }: HandleEmbedSwapParams) => {
 	const unsubscribeSwap = editorPort.onSwap((params) => {
 		const { currentEmbedFigure } = internals;
@@ -54,7 +55,7 @@ export const handleEmbedSwap = ({
 
 		applyEmbedSrc({ figure: currentEmbedFigure, src, editorAPI });
 		editorPort.updateState({ swapCheckState: { status: "idle" } });
-		editorPort.swapPopover.element.hidePopover();
+		swapAnchorController.hide();
 	});
 
 	return () => {
