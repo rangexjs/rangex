@@ -1,22 +1,22 @@
 import type { EditorAPI } from "rich-text-area";
-import type { EmojiEditorPort } from "#adapters";
+import type { AnchoredOverlayController } from "../../../_Utilities";
 
 export interface CloseOnSelectionChangeParams {
-	editorPort: EmojiEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface CloseOnEditorBlurParams {
-	editorPort: EmojiEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	editorPort: EmojiEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface HandlePopoverCloseParams {
-	editorPort: EmojiEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }

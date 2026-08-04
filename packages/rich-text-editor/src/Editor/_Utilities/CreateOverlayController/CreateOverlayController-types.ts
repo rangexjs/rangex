@@ -1,5 +1,12 @@
+export type OnAnchoredOverlayToggleFn = (isOpen: boolean) => void;
+
+export interface AnchoredOverlayControllerOptions {
+	onToggle?: OnAnchoredOverlayToggleFn;
+}
+
 export interface CreateAnchoredOverlayControllerParams {
 	element: HTMLElement;
+	options?: AnchoredOverlayControllerOptions;
 }
 
 export type AnchorPositionField =
@@ -19,6 +26,8 @@ export type AnchorStyleOptions = Partial<
 };
 
 export interface AnchoredOverlayController {
+	readonly element: HTMLElement;
+	readonly isOpen: boolean;
 	show(anchorElement: Element, styleOptions: AnchorStyleOptions): void;
 	hide(): void;
 }

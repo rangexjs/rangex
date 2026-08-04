@@ -8,18 +8,21 @@ import type {
 	EmojiOnSelectFn,
 	EmojiUIPort,
 	EmojiUpdateFilteredItemsFn,
+	EmojiUpdateIsOpenFn,
 	UpdateEmojiStateParams,
 } from "./EmojiAdapter-types";
 
 const MAX_RESULTS = 8;
 
 export class EmojiAdapter {
-	#overlayMount: OverlayMount;
+	#anchoredOverlayMount: OverlayMount;
 	#items: EmojiItems;
 	#query = "";
 	#filteredItems: EmojiItems = [];
+	#isOpen = false;
 
 	#filteredItemsListeners: Set<EmojiUpdateFilteredItemsFn> = new Set();
+	#isOpenListeners: Set<EmojiUpdateIsOpenFn> = new Set();
 	#onSelectListeners: Set<EmojiOnSelectFn> = new Set();
 
 	#uiPort: EmojiUIPort | null = null;
@@ -30,7 +33,7 @@ export class EmojiAdapter {
 
 		this.#items = settings.items;
 
-		this.#overlayMount = createOverlayMount({
+		this.#anchoredOverlayMount = createOverlayMount({
 			overlayHost,
 			component: EmojiPopover,
 			props: { uiPort: this.uiPort },
@@ -54,10 +57,18 @@ export class EmojiAdapter {
 		}
 	}
 
-	#updateState({ query }: UpdateEmojiStateParams) {
+	#updateState({ query, isOpen }: UpdateEmojiStateParams) {
 		if (query !== undefined) {
 			this.#query = query;
 			this.#computeFilteredItems();
+		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
 		}
 	}
 
@@ -65,8 +76,8 @@ export class EmojiAdapter {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
-				return adapter.#overlayMount.uiOverlayMount;
+			get anchoredOverlay() {
+				return adapter.#anchoredOverlayMount.uiOverlayMount;
 			},
 
 			get filteredItems() {
@@ -76,6 +87,15 @@ export class EmojiAdapter {
 			onFilteredItemsUpdate: (callback) => {
 				adapter.#filteredItemsListeners.add(callback);
 				return () => adapter.#filteredItemsListeners.delete(callback);
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
 			},
 
 			emitSelect: (item) => {
@@ -92,8 +112,8 @@ export class EmojiAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				return adapter.#overlayMount.editorOverlayMount;
+			get anchoredOverlay() {
+				return adapter.#anchoredOverlayMount.editorOverlayMount;
 			},
 
 			get filteredItems() {

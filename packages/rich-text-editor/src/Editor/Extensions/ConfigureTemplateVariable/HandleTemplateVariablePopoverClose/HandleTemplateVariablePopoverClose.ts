@@ -13,19 +13,19 @@ import type {
  * Returns focus to the editor when the user presses Escape inside the popover.
  */
 const restoreFocusOnEscape = ({
-	editorPort,
 	editorAPI,
+	anchorController,
 }: RestoreFocusOnEscapeParams) => {
 	const listener = (event: KeyboardEvent) => {
 		if (event.key !== "Escape") {
 			return;
 		}
 
-		if (!editorPort.popover.isMounted) {
+		if (!anchorController.isOpen) {
 			return;
 		}
 
-		editorPort.popover.unmount();
+		anchorController.hide();
 
 		editorAPI.focus();
 	};
@@ -39,17 +39,17 @@ const restoreFocusOnEscape = ({
  * Hides the popover whenever the editor selection changes.
  */
 const closeOnSelectionChange = ({
-	editorPort,
 	editorAPI,
+	anchorController,
 }: CloseOnSelectionChangeParams) => {
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			if (!editorPort.popover.isMounted) {
+			if (!anchorController.isOpen) {
 				return;
 			}
 
-			editorPort.popover.unmount();
+			anchorController.hide();
 		},
 	});
 };
@@ -58,28 +58,28 @@ const closeOnSelectionChange = ({
  * Hides the popover when the editor loses focus.
  */
 const closeOnEditorBlur = ({
-	editorPort,
 	editorAPI,
+	anchorController,
 }: CloseOnEditorBlurParams) => {
 	return editorAPI.subscribeEditorEvent({
 		type: selectionOutEventType,
 		callback: () => {
-			if (!editorPort.popover.isMounted) {
+			if (!anchorController.isOpen) {
 				return;
 			}
 
-			const popover = editorPort.popover.element;
-			const root = popover.getRootNode();
+			const { element } = anchorController;
+			const root = element.getRootNode();
 
 			if (!(root instanceof ShadowRoot)) {
-				throw new Error("Popover root is not a ShadowRoot.");
+				throw new Error("Overlay root is not a ShadowRoot.");
 			}
 
-			if (popover.contains(root.activeElement)) {
+			if (element.contains(root.activeElement)) {
 				return;
 			}
 
-			editorPort.popover.unmount();
+			anchorController.hide();
 		},
 	});
 };
@@ -88,18 +88,21 @@ const closeOnEditorBlur = ({
  * Wires up all popover close behaviors: selection-driven close, editor blur close, and Escape key handling.
  */
 export const handleTemplateVariablePopoverClose = ({
-	editorPort,
 	editorAPI,
+	anchorController,
 }: HandleTemplateVariablePopoverCloseParams) => {
 	const unsubscribeSelectionChange = closeOnSelectionChange({
-		editorPort,
 		editorAPI,
+		anchorController,
 	});
 	const unsubscribeEditorBlur = closeOnEditorBlur({
-		editorPort,
 		editorAPI,
+		anchorController,
 	});
-	const unsubscribeEscape = restoreFocusOnEscape({ editorPort, editorAPI });
+	const unsubscribeEscape = restoreFocusOnEscape({
+		editorAPI,
+		anchorController,
+	});
 
 	return () => {
 		unsubscribeSelectionChange();

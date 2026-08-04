@@ -1,22 +1,22 @@
 import type { EditorAPI } from "rich-text-area";
-import type { CommandMenuEditorPort } from "#adapters";
+import type { AnchoredOverlayController } from "../../../_Utilities";
 
 export interface CloseOnSelectionChangeParams {
-	editorPort: CommandMenuEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface CloseOnEditorBlurParams {
-	editorPort: CommandMenuEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface RestoreFocusOnEscapeParams {
-	editorPort: CommandMenuEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface HandlePopoverCloseParams {
-	editorPort: CommandMenuEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }

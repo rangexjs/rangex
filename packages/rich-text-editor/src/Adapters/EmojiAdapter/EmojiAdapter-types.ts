@@ -17,23 +17,27 @@ export type EmojiAdapterConstructorParams =
 
 export interface EmojiState {
 	query?: string;
+	isOpen?: boolean;
 }
 
 export interface UpdateEmojiStateParams extends EmojiState {}
 
 export type EmojiUpdateFilteredItemsFn = (value: EmojiItems) => void;
+export type EmojiUpdateIsOpenFn = (value: boolean) => void;
 
 export interface EmojiUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly filteredItems: EmojiItems;
 	onFilteredItemsUpdate(callback: EmojiUpdateFilteredItemsFn): () => void;
+	readonly isOpen: boolean;
+	onIsOpenUpdate(callback: EmojiUpdateIsOpenFn): () => void;
 	emitSelect(item: EmojiSuggestionItem): void;
 }
 
 export type EmojiOnSelectFn = (item: EmojiSuggestionItem) => void;
 
 export interface EmojiEditorPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	readonly filteredItems: EmojiItems;
 	updateState(params: UpdateEmojiStateParams): void;
 	onSelect(callback: EmojiOnSelectFn): () => void;

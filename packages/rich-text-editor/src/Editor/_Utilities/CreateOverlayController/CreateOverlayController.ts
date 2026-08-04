@@ -12,10 +12,23 @@ const hideAnchoredClass = "hide-anchored";
  */
 export const createAnchoredOverlayController = ({
 	element,
+	options = {},
 }: CreateAnchoredOverlayControllerParams): AnchoredOverlayController => {
+	const { onToggle } = options;
+
 	element.classList.add(hideAnchoredClass);
 
+	let isOpen = false;
+
 	return {
+		get element() {
+			return element;
+		},
+
+		get isOpen() {
+			return isOpen;
+		},
+
 		show: (anchorElement, { clear, ...style }: AnchorStyleOptions) => {
 			const anchorName = anchorElement.getAttribute(dataAnchorName);
 
@@ -35,9 +48,14 @@ export const createAnchoredOverlayController = ({
 
 			element.style.setProperty("position-anchor", anchorName);
 			element.classList.remove(hideAnchoredClass);
+			isOpen = true;
+			onToggle?.(isOpen);
 		},
+
 		hide: () => {
 			element.classList.add(hideAnchoredClass);
+			isOpen = false;
+			onToggle?.(isOpen);
 		},
 	};
 };

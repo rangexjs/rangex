@@ -1,3 +1,4 @@
+import { createAnchoredOverlayController } from "../../_Utilities";
 import type { ConfigureEmojiParams } from "./ConfigureEmoji-types";
 import { handleEmojiAutoComplete } from "./HandleEmojiAutoComplete";
 import { handleEmojiInsertion } from "./HandleEmojiInsertion";
@@ -8,6 +9,15 @@ export const configureEmoji = ({
 	editorPort,
 	editorAPI,
 }: ConfigureEmojiParams) => {
+	editorPort.anchoredOverlay.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.anchoredOverlay.element,
+		options: {
+			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+		},
+	});
+
 	const emojiInsertionCleanup = handleEmojiInsertion({
 		editorPort,
 		editorAPI,
@@ -18,8 +28,8 @@ export const configureEmoji = ({
 	// 2. autoComplete — inserts emoji for a completed :<name>: shortcode
 	// 3. appearance  — shows the popover for a partial :query
 	const popoverCloseCleanup = handlePopoverClose({
-		editorPort,
 		editorAPI,
+		anchorController,
 	});
 
 	const emojiAutoCompleteCleanup = handleEmojiAutoComplete({
@@ -30,9 +40,12 @@ export const configureEmoji = ({
 	const popoverAppearanceCleanup = handlePopoverAppearance({
 		editorPort,
 		editorAPI,
+		anchorController,
 	});
 
 	return () => {
+		editorPort.anchoredOverlay.unmount();
+
 		emojiInsertionCleanup();
 		popoverCloseCleanup();
 		emojiAutoCompleteCleanup();

@@ -6,6 +6,7 @@ import type {
 	CommandMenuOnBeforeSelectFn,
 	CommandMenuUIPort,
 	CommandMenuUpdateFilteredItemsFn,
+	CommandMenuUpdateIsOpenFn,
 	UpdateCommandMenuStateParams,
 } from "./CommandMenuAdapter-types";
 
@@ -14,11 +15,13 @@ export class CommandMenuAdapter {
 	#allowedItems: CommandMenuItemValue[];
 	#query = "";
 	#filteredItems: Set<CommandMenuItemValue>;
+	#isOpen = false;
 
 	#filteredItemsListeners: Set<CommandMenuUpdateFilteredItemsFn> = new Set();
+	#isOpenListeners: Set<CommandMenuUpdateIsOpenFn> = new Set();
 	#onBeforeSelectListeners: Set<CommandMenuOnBeforeSelectFn> = new Set();
 
-	#popover: HTMLDivElement | null = null;
+	#anchoredOverlay: HTMLDivElement | null = null;
 
 	#uiPort: CommandMenuUIPort | null = null;
 	#editorPort: CommandMenuEditorPort | null = null;
@@ -51,7 +54,7 @@ export class CommandMenuAdapter {
 		}
 	}
 
-	#updateState({ allowedItems, query }: UpdateCommandMenuStateParams) {
+	#updateState({ allowedItems, query, isOpen }: UpdateCommandMenuStateParams) {
 		let dirty = false;
 
 		if (allowedItems !== undefined) {
@@ -66,6 +69,14 @@ export class CommandMenuAdapter {
 
 		if (dirty) {
 			this.#computeFilteredItems();
+		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
 		}
 	}
 
@@ -86,8 +97,17 @@ export class CommandMenuAdapter {
 				return () => adapter.#filteredItemsListeners.delete(callback);
 			},
 
-			setPopover: (element) => {
-				adapter.#popover = element;
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
+			setAnchoredOverlay: (element) => {
+				adapter.#anchoredOverlay = element;
 			},
 
 			emitBeforeSelect: () => {
@@ -104,12 +124,12 @@ export class CommandMenuAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				if (!adapter.#popover) {
-					throw new Error("Popover wasn't set.");
+			get anchoredOverlay() {
+				if (!adapter.#anchoredOverlay) {
+					throw new Error("AnchoredOverlay wasn't set.");
 				}
 
-				return adapter.#popover;
+				return adapter.#anchoredOverlay;
 			},
 
 			get filteredItems() {

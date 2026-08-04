@@ -35,6 +35,7 @@ export interface TemplateVariableToolbarButtonState {
 export interface TemplateVariableState {
 	toolbarButton?: TemplateVariableToolbarButtonState;
 	query?: string;
+	isOpen?: boolean;
 }
 
 export interface UpdateTemplateVariableStateParams
@@ -54,9 +55,10 @@ export type TemplateVariableUpdateToolbarButtonFn = (
 export type TemplateVariableUpdateFilteredItemsFn = (
 	value: TemplateVariablePopoverItems,
 ) => void;
+export type TemplateVariableUpdateIsOpenFn = (value: boolean) => void;
 
 export interface TemplateVariableUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly toolbarButton: TemplateVariableToolbarButtonState;
 	readonly filteredItems: TemplateVariablePopoverItems;
 	onToolbarButtonUpdate(
@@ -65,6 +67,8 @@ export interface TemplateVariableUIPort {
 	onFilteredItemsUpdate(
 		callback: TemplateVariableUpdateFilteredItemsFn,
 	): () => void;
+	readonly isOpen: boolean;
+	onIsOpenUpdate(callback: TemplateVariableUpdateIsOpenFn): () => void;
 	emitInsertRequest(params: TemplateVariableInsertRequestParams): void;
 	emitUpdateRequest(params: TemplateVariableUpdateRequestParams): void;
 	emitSelect(item: TemplateVariablePopoverItem): void;
@@ -81,7 +85,7 @@ export type TemplateVariableOnSelectFn = (
 ) => void;
 
 export interface TemplateVariableEditorPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	readonly toolbarButton: TemplateVariableToolbarButtonState;
 	readonly filteredItems: TemplateVariablePopoverItems;
 	updateState(params: UpdateTemplateVariableStateParams): void;

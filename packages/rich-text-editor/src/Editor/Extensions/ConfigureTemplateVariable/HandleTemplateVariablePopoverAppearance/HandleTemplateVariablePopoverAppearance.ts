@@ -3,7 +3,7 @@ import {
 	type EditorSelectionChangeCallbackFn,
 	editorSelectionChangeEventType,
 } from "rich-text-area";
-import { positionPopoverToSelection } from "../../../_Utilities";
+import { positionToSelection } from "../../../_Utilities";
 import {
 	canInsertTemplateVariable,
 	getTemplateVariableQuery,
@@ -17,6 +17,7 @@ import type { HandleTemplateVariablePopoverAppearanceParams } from "./HandleTemp
 export const handleTemplateVariablePopoverAppearance = ({
 	editorPort,
 	editorAPI,
+	anchorController,
 }: HandleTemplateVariablePopoverAppearanceParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -60,11 +61,9 @@ export const handleTemplateVariablePopoverAppearance = ({
 			return;
 		}
 
-		editorPort.popover.mount();
-
-		positionPopoverToSelection({
+		positionToSelection({
 			editorAPI,
-			popover: editorPort.popover.element,
+			controller: anchorController,
 			topMargin: 8,
 		});
 	};

@@ -1,3 +1,4 @@
+import { createAnchoredOverlayController } from "../../_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
 import { handleTemplateVariableInsertion } from "./HandleTemplateVariableInsertion";
 import { handleTemplateVariablePopoverAppearance } from "./HandleTemplateVariablePopoverAppearance";
@@ -10,6 +11,15 @@ export const configureTemplateVariable = ({
 	editorPort,
 	editorAPI,
 }: ConfigureTemplateVariableParams) => {
+	editorPort.anchoredOverlay.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.anchoredOverlay.element,
+		options: {
+			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+		},
+	});
+
 	const toolbarButtonStateCleanup = handleTemplateVariableToolbarButtonState({
 		editorPort,
 		editorAPI,
@@ -32,16 +42,19 @@ export const configureTemplateVariable = ({
 
 	// Close must be subscribed before appearance — both listen to selection changes and close must fire first
 	const popoverCloseCleanup = handleTemplateVariablePopoverClose({
-		editorPort,
 		editorAPI,
+		anchorController,
 	});
 
 	const popoverAppearanceCleanup = handleTemplateVariablePopoverAppearance({
 		editorPort,
 		editorAPI,
+		anchorController,
 	});
 
 	return () => {
+		editorPort.anchoredOverlay.unmount();
+
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 		updateCleanup();

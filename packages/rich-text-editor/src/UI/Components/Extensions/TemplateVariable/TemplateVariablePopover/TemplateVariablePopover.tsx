@@ -1,10 +1,4 @@
-import {
-	createSignal,
-	createUniqueId,
-	For,
-	onCleanup,
-	onMount,
-} from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
 import type {
 	TemplateVariablePopoverItem,
 	TemplateVariablePopoverItems,
@@ -12,7 +6,6 @@ import type {
 } from "#adapters";
 
 interface TemplateVariableItemProps {
-	popoverId: string;
 	item: TemplateVariablePopoverItem;
 	onSelect: () => void;
 }
@@ -23,8 +16,6 @@ const TemplateVariableItem = (props: TemplateVariableItemProps) => {
 			<button
 				type="button"
 				class="flex w-full items-center rounded-sm px-2 py-1.5 text-left font-mono text-sm hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200 dark:active:bg-neutral-700 dark:focus:bg-neutral-800 dark:hover:bg-neutral-800"
-				commandfor={props.popoverId}
-				command="hide-popover"
 				on:pointerdown={(event) => event.preventDefault()}
 				on:click={props.onSelect}
 			>
@@ -45,9 +36,9 @@ export const TemplateVariablePopover = (
 
 	const [filteredItems, setFilteredItems] =
 		createSignal<TemplateVariablePopoverItems>(uiPort.filteredItems);
+	const [isOpen, setIsOpen] = createSignal(uiPort.isOpen);
 
-	const popoverId = createUniqueId();
-	let popoverEl: HTMLDivElement | undefined;
+	let anchoredEl: HTMLDivElement | undefined;
 	let listEl: HTMLUListElement | undefined;
 
 	const getNeighborButton = (
@@ -92,7 +83,11 @@ export const TemplateVariablePopover = (
 	// We should refactor once it has full browser support (+2yrs support on safari)
 	// https://open-ui.org/components/beforefocus.explainer/
 	const onKeyDown = (event: KeyboardEvent) => {
-		if (!popoverEl?.matches(":popover-open")) {
+		if (!anchoredEl) {
+			throw new Error("AnchorElement not supposed to be undefined.");
+		}
+
+		if (!isOpen()) {
 			return;
 		}
 
@@ -107,7 +102,7 @@ export const TemplateVariablePopover = (
 		event.preventDefault();
 		event.stopPropagation();
 
-		const shadowRoot = popoverEl.getRootNode();
+		const shadowRoot = anchoredEl.getRootNode();
 
 		if (!(shadowRoot instanceof ShadowRoot)) {
 			throw new Error("PopoverEl supposed to be inside a ShadowRoot.");
@@ -122,13 +117,15 @@ export const TemplateVariablePopover = (
 	};
 
 	onMount(() => {
-		const unsubscribe = uiPort.onFilteredItemsUpdate((value) =>
+		const unsubscribeFilteredItems = uiPort.onFilteredItemsUpdate((value) =>
 			setFilteredItems(value),
 		);
+		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(setIsOpen);
 		document.addEventListener("keydown", onKeyDown, { capture: true });
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeFilteredItems();
+			unsubscribeIsOpen();
 			document.removeEventListener("keydown", onKeyDown, { capture: true });
 		});
 	});
@@ -136,18 +133,15 @@ export const TemplateVariablePopover = (
 	return (
 		<div
 			ref={(el) => {
-				popoverEl = el;
-				uiPort.popover.setElement(el);
+				anchoredEl = el;
+				uiPort.anchoredOverlay.setElement(el);
 			}}
-			id={popoverId}
-			popover="manual"
-			class="scrollbar-thin max-h-[min(100%,360px)] min-w-40 max-w-56 rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+			class="scrollbar-thin z-20 max-h-[min(100%,360px)] min-w-40 max-w-56 overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={filteredItems()}>
 					{(item) => (
 						<TemplateVariableItem
-							popoverId={popoverId}
 							item={item}
 							onSelect={() => uiPort.emitSelect(item)}
 						/>
