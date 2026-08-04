@@ -36,7 +36,7 @@ export const CommandMenu = () => {
 	const { commandMenuUIPort } = useUIPortsContext();
 
 	if (!commandMenuUIPort) {
-		throw new Error("CommandMenuUIPort can't be null.");
+		return null;
 	}
 
 	const staticEntries = buildCommandMenuActions({
