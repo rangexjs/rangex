@@ -5,33 +5,21 @@ import type {
 } from "./HandleLineHover-types";
 
 /**
- * Tracks which top-level `Line` the pointer is currently over, keeping the popover anchored
- * to it. Only `RootEditable`'s direct children qualify — a `Line` nested inside a
- * `BlockComponent` (e.g. a collapsible's content) never gets one.
- *
- * The popover is mounted outside `RootEditable`'s own DOM subtree (a top-layer popover in the
- * shared overlay container), so even though it's positioned to visually sit inside
- * `RootEditable`'s padding, moving the pointer onto it still fires `RootEditable`'s
- * `pointerleave` natively — CSS position never enters into it, only DOM containment does.
- * Hiding therefore mirrors {@link createOverlayAppearanceHandler}: leaving a line schedules a
- * short delayed hide instead of hiding immediately, and the popover itself is tracked via
- * `pointerOver` too — entering it cancels the pending hide, so moving from the line onto the
- * popover never closes it. If a nested popover (e.g. the drag-handle's Delete/Duplicate menu)
- * is still open when the delayed hide fires, it's left alone — checked via `:popover-open`
- * directly on the DOM rather than through any port, since the adapter has no notion of nested
- * popovers. Relocating to a *different* line on `pointerenter` always takes over immediately,
- * closing whatever's open, no delay.
+ * Tracks which top-level `Line` the pointer is hovering and keeps the line-handler overlay
+ * shown and anchored to it — only `RootEditable`'s direct children qualify, so a `Line` nested
+ * inside a `BlockComponent` never gets one.
  */
 export const handleLineHover = ({
 	editorPort,
 	editorAPI,
 	onLineChange,
 }: HandleLineHoverParams): HandleLineHoverResult => {
-	const { element: popover } = editorPort.popover;
+	const { element: anchoredOverlay } = editorPort.anchoredOverlay;
 	const { rootEditable } = editorAPI;
 
 	let currentLine: Line | null = null;
 	let pointerOver = false;
+	let lastPointerPosition: { clientX: number; clientY: number } | null = null;
 	let hideTimeoutId: ReturnType<typeof setTimeout>;
 
 	const cancelHide = () => {
@@ -46,14 +34,92 @@ export const handleLineHover = ({
 		cancelHide();
 
 		hideTimeoutId = setTimeout(() => {
-			if (popover.querySelector(":popover-open")) {
+			if (anchoredOverlay.querySelector(":popover-open")) {
 				return;
 			}
 
 			currentLine = null;
+			lastPointerPosition = null;
 			onLineChange(null);
-			popover.hidePopover();
+			anchoredOverlay.style.display = "none";
 		}, 100);
+	};
+
+	const registerScrollListeners = (
+		element: Element,
+		listener: () => void,
+		signal: AbortSignal,
+	) => {
+		let root = element.getRootNode();
+
+		while (true) {
+			root.addEventListener("scroll", listener, { capture: true, signal });
+
+			if (!(root instanceof ShadowRoot)) {
+				break;
+			}
+
+			root = root.host.getRootNode();
+		}
+
+		if (root !== document) {
+			document.addEventListener("scroll", listener, { capture: true, signal });
+		}
+	};
+
+	const findLineAtPoint = (clientX: number, clientY: number): Line | null => {
+		const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
+			shadowRoots: [editorAPI.shadowRoot],
+		});
+
+		if (!caretPosition) {
+			return null;
+		}
+
+		const { offsetNode } = caretPosition;
+
+		const line = rootEditable.$$childNodes.find((line) =>
+			line.contains(offsetNode),
+		);
+
+		return line ?? null;
+	};
+
+	const hideNestedPopovers = () => {
+		const openPopovers =
+			anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
+
+		for (const openPopover of openPopovers) {
+			openPopover.hidePopover();
+		}
+	};
+
+	const relocateTo = (line: Line) => {
+		currentLine = line;
+		onLineChange(line);
+
+		hideNestedPopovers();
+
+		anchoredOverlay.style.positionAnchor = line.$$anchorName;
+		anchoredOverlay.style.display = "";
+	};
+
+	const updateLineAtPoint = (clientX: number, clientY: number) => {
+		const line = findLineAtPoint(clientX, clientY);
+
+		if (!line) {
+			scheduleHide();
+			return;
+		}
+
+		pointerOver = true;
+		cancelHide();
+
+		if (currentLine === line) {
+			return;
+		}
+
+		relocateTo(line);
 	};
 
 	const unsubscribeEnter = editorAPI.registerDOMEvent({
@@ -72,44 +138,11 @@ export const handleLineHover = ({
 		eventListener: {
 			type: "pointermove",
 			listener: (event) => {
-				const { clientX, clientY } = event;
-
-				const caretPosition = document.caretPositionFromPoint(
-					clientX,
-					clientY,
-					{
-						shadowRoots: [editorAPI.shadowRoot],
-					},
-				);
-
-				if (!caretPosition) {
-					scheduleHide();
-					return;
-				}
-
-				const { offsetNode } = caretPosition;
-
-				const line = rootEditable.$$childNodes.find((line) =>
-					line.contains(offsetNode),
-				);
-
-				if (!line) {
-					scheduleHide();
-					return;
-				}
-
-				pointerOver = true;
-				cancelHide();
-
-				if (currentLine === line) {
-					return;
-				}
-
-				currentLine = line;
-				onLineChange(line);
-
-				popover.hidePopover();
-				popover.showPopover({ source: currentLine });
+				lastPointerPosition = {
+					clientX: event.clientX,
+					clientY: event.clientY,
+				};
+				updateLineAtPoint(event.clientX, event.clientY);
 			},
 		},
 	});
@@ -125,25 +158,36 @@ export const handleLineHover = ({
 		},
 	});
 
-	const popoverAbortController = new AbortController();
+	const abortController = new AbortController();
+	const { signal } = abortController;
 
-	popover.addEventListener(
+	anchoredOverlay.addEventListener(
 		"pointerenter",
 		() => {
 			pointerOver = true;
 			cancelHide();
 		},
-		{ signal: popoverAbortController.signal },
+		{ signal },
 	);
 
-	popover.addEventListener(
+	anchoredOverlay.addEventListener(
 		"pointerleave",
 		() => {
 			pointerOver = false;
 			scheduleHide();
 		},
-		{ signal: popoverAbortController.signal },
+		{ signal },
 	);
+
+	const onScroll = () => {
+		if (!lastPointerPosition) {
+			return;
+		}
+
+		updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
+	};
+
+	registerScrollListeners(anchoredOverlay, onScroll, signal);
 
 	return {
 		getCurrentLine: () => currentLine,
@@ -151,7 +195,7 @@ export const handleLineHover = ({
 			unsubscribeEnter();
 			unsubscribeMove();
 			unsubscribeLeave();
-			popoverAbortController.abort();
+			abortController.abort();
 			cancelHide();
 		},
 	};

@@ -12,7 +12,6 @@ import { createLineDragMenuItems } from "./LineDragMenuItems";
 
 interface LineDragProps {
 	uiPort: LineHandlerUIPort;
-	popoverRef?: (element: HTMLDivElement) => void;
 }
 
 /**
@@ -31,18 +30,12 @@ export const LineDrag = (props: LineDragProps) => {
 
 	const popoverId = createUniqueId();
 
-	let menuElement: HTMLDivElement | undefined;
-
 	const [turnInto, setTurnInto] = createSignal(uiPort.turnInto);
 	const [canDelete, setCanDelete] = createSignal(uiPort.canDelete);
 	const [canDuplicate, setCanDuplicate] = createSignal(uiPort.canDuplicate);
 	const [canUnwrap, setCanUnwrap] = createSignal(uiPort.canUnwrap);
 
 	onMount(() => {
-		if (menuElement) {
-			props.popoverRef?.(menuElement);
-		}
-
 		const unsubscribeTurnInto = uiPort.onTurnIntoUpdate(setTurnInto);
 		const unsubscribeCanDelete = uiPort.onCanDeleteUpdate(setCanDelete);
 		const unsubscribeCanDuplicate =
@@ -83,12 +76,7 @@ export const LineDrag = (props: LineDragProps) => {
 				<Icon name="DotsSixVertical" class="size-3" />
 			</LineButton>
 
-			<Menu
-				ref={menuElement}
-				mainPopoverId={popoverId}
-				popoverId={popoverId}
-				items={items()}
-			/>
+			<Menu mainPopoverId={popoverId} popoverId={popoverId} items={items()} />
 		</span>
 	);
 };

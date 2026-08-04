@@ -14,7 +14,7 @@ export const configureLineHandler = ({
 	editorPort,
 	editorAPI,
 }: ConfigureLineHandlerParams) => {
-	editorPort.popover.mount();
+	editorPort.anchoredOverlay.mount();
 
 	const onLineChange = handleDragMenuState({ editorPort });
 
@@ -61,7 +61,7 @@ export const configureLineHandler = ({
 	});
 
 	return () => {
-		editorPort.popover.unmount();
+		editorPort.anchoredOverlay.unmount();
 
 		hoverCleanup();
 		insertRootLineCleanup();
