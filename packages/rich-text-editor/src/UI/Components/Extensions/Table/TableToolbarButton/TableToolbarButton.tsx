@@ -148,7 +148,7 @@ export const TableToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="auto"
-				class="absolute top-[anchor(bottom)] mt-1 rounded-sm bg-white p-1 shadow-md [justify-self:anchor-center] dark:bg-neutral-900"
+				class="absolute mt-1 rounded-sm bg-white p-1 shadow-md [position-area:center_bottom] dark:bg-neutral-900"
 				on:toggle={onPopoverToggle}
 			>
 				<div
