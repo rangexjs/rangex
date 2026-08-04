@@ -84,6 +84,7 @@ export const handleImageSwap = ({
 	editorPort,
 	editorAPI,
 	internals,
+	swapAnchorController,
 }: HandleImageSwapParams) => {
 	const unsubscribeSwap = editorPort.onSwap(async (params) => {
 		const { currentImageFigure } = internals;
@@ -131,7 +132,7 @@ export const handleImageSwap = ({
 
 		applyImageSrc({ figure: currentImageFigure, src, editorAPI });
 		editorPort.updateState({ swapCheckState: { status: "idle" } });
-		editorPort.swapPopover.element.hidePopover();
+		swapAnchorController.hide();
 	});
 
 	return () => {

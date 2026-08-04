@@ -21,7 +21,6 @@ import {
 	OptionDropdown,
 	type OptionDropdownOption,
 } from "../../_Utilities";
-import { ImageSwapPopover } from "./ImageSwapPopover";
 
 const objectFitOptions: OptionDropdownOption<ImageObjectFitValue>[] = [
 	{ label: "Cover", value: "cover" },
@@ -41,17 +40,18 @@ const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
 	{ id: "below", node: "Below" },
 ];
 
-interface ImagePopoverProps {
+interface ImageQuickActionsProps {
 	uiPort: ImageUIPort;
 }
 
-export const ImagePopover = (props: ImagePopoverProps) => {
+export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 	const uiPort = props.uiPort;
 
 	const [align, setAlign] = createSignal(uiPort.align);
 	const [objectFit, setObjectFit] = createSignal(uiPort.objectFit);
 	const [aspectRatio, setAspectRatio] = createSignal(uiPort.aspectRatio);
 	const [caption, setCaption] = createSignal(uiPort.caption);
+	const [swapIsOpen, setSwapIsOpen] = createSignal(uiPort.swapIsOpen);
 
 	const [altModel, altControls] = createTextFieldController({
 		defaultValue: uiPort.altText,
@@ -63,29 +63,9 @@ export const ImagePopover = (props: ImagePopoverProps) => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
-	let swapPopover: HTMLDivElement | undefined;
 
-	onMount(() => {
-		const unsubscribeAlign = uiPort.onAlignUpdate(setAlign);
-		const unsubscribeObjectFit = uiPort.onObjectFitUpdate(setObjectFit);
-		const unsubscribeAspectRatio = uiPort.onAspectRatioUpdate(setAspectRatio);
-		const unsubscribeCaption = uiPort.onCaptionUpdate(setCaption);
-		const unsubscribeAltText = uiPort.onAltTextUpdate((value) => {
-			altModel.setValue(value);
-			setCommittedAltText(value);
-		});
-
-		onCleanup(() => {
-			unsubscribeAlign();
-			unsubscribeObjectFit();
-			unsubscribeAspectRatio();
-			unsubscribeCaption();
-			unsubscribeAltText();
-		});
-	});
-
-	const onBeforeToggle = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover, swapPopover];
+	const closeNestedPopovers = () => {
+		const nestedPopovers = [blockAlignPopover, optionsPopover];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -97,6 +77,31 @@ export const ImagePopover = (props: ImagePopoverProps) => {
 			}
 		}
 	};
+
+	onMount(() => {
+		const unsubscribeAlign = uiPort.onAlignUpdate(setAlign);
+		const unsubscribeObjectFit = uiPort.onObjectFitUpdate(setObjectFit);
+		const unsubscribeAspectRatio = uiPort.onAspectRatioUpdate(setAspectRatio);
+		const unsubscribeCaption = uiPort.onCaptionUpdate(setCaption);
+		const unsubscribeAltText = uiPort.onAltTextUpdate((value) => {
+			altModel.setValue(value);
+			setCommittedAltText(value);
+		});
+		const unsubscribeSwapIsOpen = uiPort.onSwapIsOpenUpdate(setSwapIsOpen);
+		// The main overlay closing (or reopening over a different image) doesn't automatically
+		// close these native nested popovers — they're independent top-layer elements.
+		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+
+		onCleanup(() => {
+			unsubscribeAlign();
+			unsubscribeObjectFit();
+			unsubscribeAspectRatio();
+			unsubscribeCaption();
+			unsubscribeAltText();
+			unsubscribeSwapIsOpen();
+			unsubscribeIsOpen();
+		});
+	});
 
 	const optionsPopoverId = createUniqueId();
 
@@ -114,10 +119,8 @@ export const ImagePopover = (props: ImagePopoverProps) => {
 
 	return (
 		<div
-			ref={(el) => uiPort.popover.setElement(el)}
-			popover="manual"
-			class="items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs open:flex dark:border-neutral-700 dark:bg-neutral-900"
-			on:beforetoggle={onBeforeToggle}
+			ref={(el) => uiPort.quickActionsOverlay.setElement(el)}
+			class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<BlockAlign
 				value={align()}
@@ -127,20 +130,14 @@ export const ImagePopover = (props: ImagePopoverProps) => {
 				}}
 			/>
 
-			<ImageSwapPopover
-				uiPort={uiPort}
-				popoverRef={(el) => {
-					swapPopover = el;
-				}}
-			/>
-
 			<button
 				type="button"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				title="Delete"
-				on:click={() => uiPort.emitDelete()}
+				data-is-checked={swapIsOpen()}
+				title="Swap"
+				on:click={() => uiPort.emitToggleSwap()}
 			>
-				<Icon name="Trash" class="size-4" />
+				<Icon name="Swap" class="size-4" />
 			</button>
 
 			<span>

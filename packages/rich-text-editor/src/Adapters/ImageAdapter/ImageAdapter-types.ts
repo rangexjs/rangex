@@ -5,7 +5,6 @@ import type {
 	CaptionPort,
 	CaptionPosition,
 	CaptionState,
-	DeletePort,
 	EditorBlockResize,
 	EditorOverlayMount,
 	UIBlockResize,
@@ -25,16 +24,18 @@ export type ImageSwapCheckState =
 	| { status: "uploading"; progress: number }
 	| { status: "error"; message: string };
 
-export interface ImagePopoverState {
+export interface ImageState {
 	align?: BlockAlignValue;
 	objectFit?: ImageObjectFitValue;
 	aspectRatio?: ImageAspectRatioValue;
 	caption?: CaptionState;
 	altText?: string;
 	swapCheckState?: ImageSwapCheckState;
+	isOpen?: boolean;
+	swapIsOpen?: boolean;
 }
 
-export interface UpdateImageStateParams extends ImagePopoverState {}
+export interface UpdateImageStateParams extends ImageState {}
 
 export interface ImageEmitSwapURLParams {
 	source: "url";
@@ -56,14 +57,12 @@ export type ImageUpdateAspectRatioFn = (value: ImageAspectRatioValue) => void;
 export type ImageUpdateCaptionFn = (value: CaptionState) => void;
 export type ImageUpdateAltTextFn = (value: string) => void;
 export type ImageUpdateSwapCheckStateFn = (value: ImageSwapCheckState) => void;
-
-export interface ImageUISwapPopover {
-	setElement: (element: HTMLDivElement) => void;
-}
+export type ImageUpdateIsOpenFn = (value: boolean) => void;
+export type ImageUpdateSwapIsOpenFn = (value: boolean) => void;
 
 export interface ImageUIPort {
-	readonly popover: UIOverlayMount;
-	readonly swapPopover: ImageUISwapPopover;
+	readonly quickActionsOverlay: UIOverlayMount;
+	readonly swapCardOverlay: UIOverlayMount;
 	readonly blockResize: UIBlockResize;
 	readonly align: BlockAlignValue;
 	readonly objectFit: ImageObjectFitValue;
@@ -71,22 +70,22 @@ export interface ImageUIPort {
 	readonly caption: CaptionState;
 	readonly altText: string;
 	readonly swapCheckState: ImageSwapCheckState;
+	readonly isOpen: boolean;
+	readonly swapIsOpen: boolean;
 	onAlignUpdate(callback: ImageUpdateAlignFn): () => void;
 	onObjectFitUpdate(callback: ImageUpdateObjectFitFn): () => void;
 	onAspectRatioUpdate(callback: ImageUpdateAspectRatioFn): () => void;
 	onCaptionUpdate(callback: ImageUpdateCaptionFn): () => void;
 	onAltTextUpdate(callback: ImageUpdateAltTextFn): () => void;
 	onSwapCheckStateUpdate(callback: ImageUpdateSwapCheckStateFn): () => void;
+	onIsOpenUpdate(callback: ImageUpdateIsOpenFn): () => void;
+	onSwapIsOpenUpdate(callback: ImageUpdateSwapIsOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;
 	emitImageAttrChange(params: ImageAttrChange): void;
 	emitSwap(params: ImageEmitSwapParams): void;
-	emitDelete(): void;
-}
-
-export interface ImageEditorSwapPopover {
-	readonly element: HTMLDivElement;
+	emitToggleSwap(): void;
 }
 
 export interface ImageAttrChange {
@@ -97,16 +96,15 @@ export interface ImageAttrChange {
 
 export type OnImageAttrChangeFn = (params: ImageAttrChange) => void;
 export type OnImageSwapFn = (params: ImageEmitSwapParams) => void;
+export type OnImageToggleSwapFn = () => void;
 
-export interface ImageEditorPort
-	extends BlockAlignPort,
-		CaptionPort,
-		DeletePort {
-	readonly popover: EditorOverlayMount;
-	readonly swapPopover: ImageEditorSwapPopover;
+export interface ImageEditorPort extends BlockAlignPort, CaptionPort {
+	readonly quickActionsOverlay: EditorOverlayMount;
+	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
 	updateState(params: UpdateImageStateParams): void;
 	onImageAttrChange(callback: OnImageAttrChangeFn): () => void;
 	onSwap(callback: OnImageSwapFn): () => void;
+	onToggleSwap(callback: OnImageToggleSwapFn): () => void;
 	onMediaResolve(callback: (params: MediaResolveParams) => void): () => void;
 }

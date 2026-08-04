@@ -1,5 +1,5 @@
 import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
-import { ImagePopover } from "#ui-extensions";
+import { ImageQuickActions, ImageSwapCard } from "#ui-extensions";
 import {
 	type BlockAlignValue,
 	type BlockResize,
@@ -10,7 +10,6 @@ import {
 	type OnAlignChangeFn,
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
-	type OnDeleteFn,
 	type OverlayMount,
 } from "../_Utilities";
 import type {
@@ -25,18 +24,21 @@ import type {
 	ImageUpdateAltTextFn,
 	ImageUpdateAspectRatioFn,
 	ImageUpdateCaptionFn,
+	ImageUpdateIsOpenFn,
 	ImageUpdateObjectFitFn,
 	ImageUpdateSwapCheckStateFn,
+	ImageUpdateSwapIsOpenFn,
 	OnImageAttrChangeFn,
 	OnImageSwapFn,
+	OnImageToggleSwapFn,
 	UpdateImageStateParams,
 } from "./ImageAdapter-types";
 
 export class ImageAdapter {
 	#adapterBus: AdapterBus;
-	#overlayMount: OverlayMount;
+	#quickActionsOverlayMount: OverlayMount;
+	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
-	#swapPopoverElement: HTMLDivElement | null = null;
 
 	#align: BlockAlignValue = "center";
 	#objectFit: ImageObjectFitValue = "cover";
@@ -44,6 +46,8 @@ export class ImageAdapter {
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#altText = "";
 	#swapCheckState: ImageSwapCheckState = { status: "idle" };
+	#isOpen = false;
+	#swapIsOpen = false;
 
 	#alignListeners: Set<ImageUpdateAlignFn> = new Set();
 	#objectFitListeners: Set<ImageUpdateObjectFitFn> = new Set();
@@ -51,13 +55,15 @@ export class ImageAdapter {
 	#captionListeners: Set<ImageUpdateCaptionFn> = new Set();
 	#altTextListeners: Set<ImageUpdateAltTextFn> = new Set();
 	#swapCheckStateListeners: Set<ImageUpdateSwapCheckStateFn> = new Set();
+	#isOpenListeners: Set<ImageUpdateIsOpenFn> = new Set();
+	#swapIsOpenListeners: Set<ImageUpdateSwapIsOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onImageAttrChangeListeners: Set<OnImageAttrChangeFn> = new Set();
 	#onSwapListeners: Set<OnImageSwapFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onToggleSwapListeners: Set<OnImageToggleSwapFn> = new Set();
 
 	#uiPort: ImageUIPort | null = null;
 	#editorPort: ImageEditorPort | null = null;
@@ -68,9 +74,15 @@ export class ImageAdapter {
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("image");
 
-		this.#overlayMount = createOverlayMount({
+		this.#quickActionsOverlayMount = createOverlayMount({
 			overlayHost,
-			component: ImagePopover,
+			component: ImageQuickActions,
+			props: { uiPort: this.uiPort },
+		});
+
+		this.#swapCardOverlayMount = createOverlayMount({
+			overlayHost,
+			component: ImageSwapCard,
 			props: { uiPort: this.uiPort },
 		});
 
@@ -88,6 +100,8 @@ export class ImageAdapter {
 		caption,
 		altText,
 		swapCheckState,
+		isOpen,
+		swapIsOpen,
 	}: UpdateImageStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -136,20 +150,34 @@ export class ImageAdapter {
 				listener(this.#swapCheckState);
 			}
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
+
+		if (swapIsOpen !== undefined) {
+			this.#swapIsOpen = swapIsOpen;
+
+			for (const listener of this.#swapIsOpenListeners) {
+				listener(this.#swapIsOpen);
+			}
+		}
 	}
 
 	get uiPort(): ImageUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
-				return adapter.#overlayMount.uiOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.uiOverlayMount;
 			},
 
-			swapPopover: {
-				setElement: (element) => {
-					adapter.#swapPopoverElement = element;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.uiOverlayMount;
 			},
 
 			get blockResize() {
@@ -178,6 +206,14 @@ export class ImageAdapter {
 
 			get swapCheckState() {
 				return adapter.#swapCheckState;
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			get swapIsOpen() {
+				return adapter.#swapIsOpen;
 			},
 
 			onAlignUpdate: (callback) => {
@@ -210,6 +246,16 @@ export class ImageAdapter {
 				return () => adapter.#swapCheckStateListeners.delete(callback);
 			},
 
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
+			onSwapIsOpenUpdate: (callback) => {
+				adapter.#swapIsOpenListeners.add(callback);
+				return () => adapter.#swapIsOpenListeners.delete(callback);
+			},
+
 			emitAlignChange: (align) => {
 				for (const listener of adapter.#onAlignChangeListeners) {
 					listener(align);
@@ -240,8 +286,8 @@ export class ImageAdapter {
 				}
 			},
 
-			emitDelete: () => {
-				for (const listener of adapter.#onDeleteListeners) {
+			emitToggleSwap: () => {
+				for (const listener of adapter.#onToggleSwapListeners) {
 					listener();
 				}
 			},
@@ -254,18 +300,12 @@ export class ImageAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				return adapter.#overlayMount.editorOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.editorOverlayMount;
 			},
 
-			swapPopover: {
-				get element() {
-					if (!adapter.#swapPopoverElement) {
-						throw new Error("Swap popover element wasn't set.");
-					}
-
-					return adapter.#swapPopoverElement;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.editorOverlayMount;
 			},
 
 			get blockResize() {
@@ -303,9 +343,9 @@ export class ImageAdapter {
 				return () => adapter.#onSwapListeners.delete(callback);
 			},
 
-			onDelete: (callback) => {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onToggleSwap: (callback) => {
+				adapter.#onToggleSwapListeners.add(callback);
+				return () => adapter.#onToggleSwapListeners.delete(callback);
 			},
 
 			onMediaResolve: (callback: (params: MediaResolveParams) => void) =>

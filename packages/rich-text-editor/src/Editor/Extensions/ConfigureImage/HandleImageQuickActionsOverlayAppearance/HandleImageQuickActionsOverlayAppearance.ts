@@ -8,26 +8,24 @@ import {
 	getImageImg,
 	getImageObjectFit,
 } from "../_Utilities";
-import type { HandleImagePopoverAppearanceParams } from "./HandleImagePopoverAppearance-types";
+import type { HandleImageQuickActionsOverlayAppearanceParams } from "./HandleImageQuickActionsOverlayAppearance-types";
 
 /**
- * Registers the image popover with {@link OverlayAppearanceHandler}, pushing the block's
- * current alignment into the popover just before it appears. Returns the registration's
+ * Registers the image overlay with {@link OverlayAppearanceHandler}, pushing the block's
+ * current alignment into the overlay just before it appears. Returns the registration's
  * `getCurrentBlock`, threaded to every other image handler that needs to know which image
- * block the popover is currently open over.
+ * block the overlay is currently open over.
  */
-export const handleImagePopoverAppearance = ({
+export const handleImageQuickActionsOverlayAppearance = ({
 	editorPort,
 	overlayAppearanceHandler,
-}: HandleImagePopoverAppearanceParams) => {
+	anchorController,
+	swapAnchorController,
+}: HandleImageQuickActionsOverlayAppearanceParams) => {
 	return overlayAppearanceHandler.registerComponent({
-		popover: editorPort.popover.element,
-		position: {
-			margin: "4px",
-			positionArea: "top right",
-			top: "100%",
-			right: "100%",
-		},
+		popover: editorPort.quickActionsOverlay.element,
+		extraElements: [editorPort.swapCardOverlay.element],
+		position: {},
 		shouldShow({ blockComponent }) {
 			return blockComponent.$$componentName === componentsName.image;
 		},
@@ -56,11 +54,16 @@ export const handleImagePopoverAppearance = ({
 				altText,
 			});
 
-			editorPort.popover.element.hidePopover();
-			editorPort.popover.element.showPopover({ source: blockComponent });
+			anchorController.show(blockComponent, {
+				clear: true,
+				position: "absolute",
+				top: "calc(anchor(top) + 4px)",
+				right: "calc(anchor(right) + 4px)",
+			});
 		},
 		onClose() {
-			editorPort.popover.element.hidePopover();
+			anchorController.hide();
+			swapAnchorController.hide();
 		},
 	});
 };
