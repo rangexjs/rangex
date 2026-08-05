@@ -6,7 +6,10 @@ import {
 	createList,
 } from "rich-text-area";
 import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
-import { createTodoCheckboxStorage } from "../../../../Storage";
+import {
+	createTodoCheckboxStorage,
+	createTodoListStorage,
+} from "../../../../Storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -37,6 +40,7 @@ export const createTodoList = ({
 		blockComponent: createBlockComponent({
 			componentName: componentsName.todoList,
 			content: { type: "list" },
+			customStorage: createTodoListStorage(),
 			childNodes: [list],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
