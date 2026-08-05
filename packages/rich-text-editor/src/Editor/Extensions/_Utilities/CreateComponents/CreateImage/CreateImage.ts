@@ -10,6 +10,7 @@ import {
 	blockAlignAttr,
 	objectFitAttr,
 } from "../../../../Constants";
+import { createImageStorage } from "../../../../Storage";
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
@@ -21,6 +22,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 		blockComponent: createBlockComponent({
 			componentName: componentsName.image,
 			content: { type: "custom" },
+			customStorage: createImageStorage(),
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
