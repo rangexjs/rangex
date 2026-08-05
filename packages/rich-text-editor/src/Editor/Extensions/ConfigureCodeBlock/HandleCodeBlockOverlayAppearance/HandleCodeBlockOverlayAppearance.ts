@@ -18,7 +18,6 @@ export const handleCodeBlockOverlayAppearance = ({
 }: HandleCodeBlockOverlayAppearanceParams) => {
 	return overlayAppearanceHandler.registerComponent({
 		popover: editorPort.anchoredOverlay.element,
-		position: {},
 		shouldShow({ blockComponent }) {
 			return blockComponent.$$componentName === componentsName.codeBlock;
 		},

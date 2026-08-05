@@ -27,7 +27,6 @@ export const handleAudioQuickActionsOverlayAppearance = ({
 	return overlayAppearanceHandler.registerComponent({
 		popover: editorPort.quickActionsOverlay.element,
 		extraElements: [editorPort.swapCardOverlay.element],
-		position: {},
 		shouldShow({ blockComponent }) {
 			return blockComponent.$$componentName === componentsName.audio;
 		},

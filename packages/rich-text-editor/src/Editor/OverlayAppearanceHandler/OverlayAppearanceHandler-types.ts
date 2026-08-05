@@ -32,8 +32,6 @@ type CurrentBlock = BlockComponent | null;
 
 export interface OverlayRegistration {
 	popover: HTMLDivElement;
-	// remove soon
-	position?: Partial<CSSStyleDeclaration>;
 	shouldShow: OnOverlayShouldShowFn;
 	onShow: OnOverlayShowFn;
 	onClose: OnOverlayCloseFn;
@@ -47,7 +45,6 @@ export interface OverlayRegistration {
 export interface RegisterOverlayParams {
 	popover: HTMLDivElement;
 	extraElements?: HTMLElement[];
-	position: Partial<CSSStyleDeclaration>;
 	shouldShow: OnOverlayShouldShowFn;
 	onShow: OnOverlayShowFn;
 	onClose: OnOverlayCloseFn;
