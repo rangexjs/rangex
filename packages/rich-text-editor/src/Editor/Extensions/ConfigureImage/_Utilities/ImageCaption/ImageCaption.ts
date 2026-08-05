@@ -91,7 +91,7 @@ export const setImageCaptionEnabled = ({
 			createContentLine({
 				localName: "p",
 				structuredStyle: { textAlign },
-				childNodes: [createBeamText()],
+				childNodes: [createBeamText({})],
 			}),
 		],
 	});

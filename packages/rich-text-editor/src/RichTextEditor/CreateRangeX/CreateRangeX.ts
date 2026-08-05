@@ -21,7 +21,7 @@ export const createRangeX = ({ storedSnapshot }: CreateRangeXParams) => {
 						childNodes: [
 							createContentLine({
 								localName: "p",
-								childNodes: [createBeamText()],
+								childNodes: [createBeamText({})],
 							}),
 						],
 					}),

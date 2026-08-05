@@ -14,7 +14,7 @@ export const handleAccordionItemInsertion = ({
 
 		const trailingLine = createContentLine({
 			localName: "p",
-			childNodes: [createBeamText()],
+			childNodes: [createBeamText({})],
 		});
 
 		blockComponentPlacement.insertBySelection({
