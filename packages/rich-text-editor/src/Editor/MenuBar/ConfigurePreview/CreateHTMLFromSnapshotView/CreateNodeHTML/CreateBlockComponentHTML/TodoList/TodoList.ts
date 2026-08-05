@@ -4,7 +4,7 @@ import type { ResolveTodoListParams } from "./TodoList-types";
 
 export const resolveTodoList = async ({
 	todoListEl,
-	customStorage,
+	storageMap,
 }: ResolveTodoListParams) => {
 	const todoCheckboxes = todoListEl.querySelectorAll(todoCheckboxPart.attr);
 
@@ -13,11 +13,14 @@ export const resolveTodoList = async ({
 			throw new Error("TodoCheckbox's type is invalid.");
 		}
 
+		const storage = storageMap.get(todoCheckbox);
+
 		const { checked } = ensureTodoCheckboxStorage({
-			storage: customStorage,
+			storage,
 			fallbacks: { checked: false },
 		});
 
 		todoCheckbox.checked = checked;
+		todoCheckbox.style.pointerEvents = "none";
 	}
 };

@@ -1,4 +1,5 @@
 import type { DualTheme, ThemeBackgrounds, ThemedCodeLines } from "#libs";
+import type { StorageMap } from "../../../CreateHTMLFromSnapshotView-types";
 
 export interface ApplyTokenSpansParams {
 	codeBlockEl: HTMLElement;
@@ -10,7 +11,7 @@ export interface ApplyTokenSpansParams {
 
 export interface ResolveCodeBlockParams {
 	codeBlockEl: HTMLElement;
-	customStorage: unknown;
+	storageMap: StorageMap;
 }
 
 export type ResolveCodeBlockResult = Promise<void>;

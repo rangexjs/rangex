@@ -70,10 +70,12 @@ export const applyTokenSpans = ({
 
 export const resolveCodeBlock = async ({
 	codeBlockEl,
-	customStorage,
+	storageMap,
 }: ResolveCodeBlockParams): ResolveCodeBlockResult => {
+	const storage = storageMap.get(codeBlockEl);
+
 	const { lang, theme } = ensureCodeBlockStorage({
-		storage: customStorage,
+		storage,
 		fallbacks: codeBlockStorageFallbacks,
 	});
 

@@ -23,11 +23,11 @@ export const createBlockComponentHTML = ({
 	storageMap.set(el, customStorage);
 
 	if (componentName === componentsName.codeBlock) {
-		pendingTasks.push(resolveCodeBlock({ codeBlockEl: el, customStorage }));
+		pendingTasks.push(resolveCodeBlock({ codeBlockEl: el, storageMap }));
 	}
 
 	if (componentName === componentsName.todoList) {
-		pendingTasks.push(resolveTodoList({ todoListEl: el, customStorage }));
+		pendingTasks.push(resolveTodoList({ todoListEl: el, storageMap }));
 	}
 
 	return el;

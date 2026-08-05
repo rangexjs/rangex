@@ -1,6 +1,8 @@
+import type { StorageMap } from "../../../CreateHTMLFromSnapshotView-types";
+
 export interface ResolveTodoListParams {
 	todoListEl: HTMLElement;
-	customStorage: unknown;
+	storageMap: StorageMap;
 }
 
 export type ResolveTodoListResult = Promise<void>;
