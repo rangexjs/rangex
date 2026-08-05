@@ -89,6 +89,7 @@ export interface TableState {
 	verticalAlignment?: TableVerticalAlignmentState;
 	cellResizing?: TableCellResizingState;
 	clearContents?: TableClearContentsState;
+	isOpen?: boolean;
 }
 
 export interface UpdateTableStateParams extends TableState {}
@@ -112,9 +113,10 @@ export type TableUpdateCellResizingFn = (value: TableCellResizingState) => void;
 export type TableUpdateClearContentsFn = (
 	value: TableClearContentsState,
 ) => void;
+export type TableUpdateIsOpenFn = (value: boolean) => void;
 
 export interface TableUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly toolbarButton: TableToolbarButtonState;
 	readonly sectionType: TableSectionTypeState;
 	readonly mergeSplit: TableMergeSplitState;
@@ -133,6 +135,7 @@ export interface TableUIPort {
 	): () => void;
 	onCellResizingUpdate(callback: TableUpdateCellResizingFn): () => void;
 	onClearContentsUpdate(callback: TableUpdateClearContentsFn): () => void;
+	onIsOpenUpdate(callback: TableUpdateIsOpenFn): () => void;
 	emitInsertRequest(params: TableInsertRequestParams): void;
 	emitSectionType(action: TableSectionTypeAction): void;
 	emitMergeSplit(action: TableMergeSplitAction): void;
@@ -155,7 +158,7 @@ export type TableOnCellResizingFn = (action: TableCellResizingAction) => void;
 export type TableOnClearContentsFn = () => void;
 
 export interface TableEditorPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	updateState(params: UpdateTableStateParams): void;
 	onInsertRequest(callback: TableOnInsertRequestFn): () => void;
 	onSectionType(callback: TableOnSectionTypeFn): () => void;

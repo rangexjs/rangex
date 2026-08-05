@@ -1,12 +1,17 @@
-import type { EditorAPI } from "rich-text-area";
-import type { TableEditorPort } from "#adapters";
+import type { EditorAPI, TableCell } from "rich-text-area";
+import type { AnchoredOverlayController } from "../../../_Utilities";
 
-export interface SyncPopoverVisibilityParams {
-	popover: HTMLElement;
+export interface PositionToTableCellParams {
+	tableCell: TableCell;
+	anchorController: AnchoredOverlayController;
+}
+
+export interface SyncOverlayVisibilityParams {
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }
 
 export interface HandleTableQuickActionsButtonVisibilityParams {
-	editorPort: TableEditorPort;
 	editorAPI: EditorAPI;
+	anchorController: AnchoredOverlayController;
 }

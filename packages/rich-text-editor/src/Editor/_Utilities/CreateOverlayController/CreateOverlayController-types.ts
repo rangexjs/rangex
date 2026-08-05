@@ -18,6 +18,7 @@ export type AnchorPositionField =
 	| "left"
 	| "width"
 	| "height"
+	| "align-self"
 	| "justify-self";
 
 export type AnchorStyleOptions = Partial<

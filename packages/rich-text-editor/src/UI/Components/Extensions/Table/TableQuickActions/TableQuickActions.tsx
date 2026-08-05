@@ -133,13 +133,11 @@ const Menu = (props: MenuProps) => {
 	);
 };
 
-interface TableQuickActionsPopoverProps {
+interface TableQuickActionsProps {
 	uiPort: TableUIPort;
 }
 
-export const TableQuickActionsPopover = (
-	props: TableQuickActionsPopoverProps,
-) => {
+export const TableQuickActions = (props: TableQuickActionsProps) => {
 	const uiPort = props.uiPort;
 
 	const [sectionType, setSectionType] = createSignal<TableSectionTypeState>(
@@ -166,6 +164,16 @@ export const TableQuickActionsPopover = (
 
 	let subMenu: HTMLDivElement | undefined;
 
+	const closeNestedPopovers = () => {
+		if (!subMenu) {
+			throw new Error("SubMenu can't be undefined.");
+		}
+
+		if (subMenu.matches(":popover-open")) {
+			subMenu.hidePopover();
+		}
+	};
+
 	onMount(() => {
 		const unsubscribeSectionType = uiPort.onSectionTypeUpdate(setSectionType);
 		const unsubscribeMergeSplit = uiPort.onMergeSplitUpdate(setMergeSplit);
@@ -178,6 +186,9 @@ export const TableQuickActionsPopover = (
 			uiPort.onCellResizingUpdate(setCellResizing);
 		const unsubscribeClearContents =
 			uiPort.onClearContentsUpdate(setClearContents);
+		// The overlay closing doesn't automatically close this native nested popover —
+		// it's an independent top-layer element.
+		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {
 			unsubscribeSectionType();
@@ -187,6 +198,7 @@ export const TableQuickActionsPopover = (
 			unsubscribeVerticalAlignment();
 			unsubscribeCellResizing();
 			unsubscribeClearContents();
+			unsubscribeIsOpen();
 		});
 	});
 
@@ -201,24 +213,10 @@ export const TableQuickActionsPopover = (
 		uiPort,
 	});
 
-	const onBeforeToggle = () => {
-		if (!subMenu) {
-			throw new Error("SubMenu can't be undefined.");
-		}
-
-		const isOpen = subMenu.matches(":popover-open");
-
-		if (isOpen) {
-			subMenu.hidePopover();
-		}
-	};
-
 	return (
 		<div
-			ref={(el) => uiPort.popover.setElement(el)}
-			popover="manual"
-			class="overflow-hidden bg-transparent"
-			on:beforetoggle={onBeforeToggle}
+			ref={(el) => uiPort.anchoredOverlay.setElement(el)}
+			class="z-20 inline-flex justify-center overflow-visible bg-transparent"
 		>
 			<div class="group size-3 leading-0 transition-all hover:size-5 [&:has(+_[popover]:popover-open)]:size-5">
 				<button

@@ -1,2 +1,2 @@
-export * from "./TableQuickActionsPopover";
+export * from "./TableQuickActions";
 export * from "./TableToolbarButton";

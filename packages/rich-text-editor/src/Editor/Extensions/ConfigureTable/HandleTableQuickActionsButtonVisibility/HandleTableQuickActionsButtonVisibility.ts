@@ -8,22 +8,39 @@ import {
 import { getCommonTableCellFromSelection } from "../_Utilities";
 import type {
 	HandleTableQuickActionsButtonVisibilityParams,
-	SyncPopoverVisibilityParams,
+	PositionToTableCellParams,
+	SyncOverlayVisibilityParams,
 } from "./HandleTableQuickActionsButtonVisibility-types";
 
+const positionToTableCell = ({
+	tableCell,
+	anchorController,
+}: PositionToTableCellParams) => {
+	// CSS hack in order to anchor to the center of the TableCell's border-box
+	const width = 20;
+
+	anchorController.show(tableCell, {
+		clear: true,
+		position: "absolute",
+		"align-self": "anchor-center",
+		width: `${width}px`,
+		right: `calc(anchor(right) - ${width / 2}px)`,
+	});
+};
+
 /**
- * Hides the popover unconditionally, then re-shows it anchored to the relevant cell.
- * Multi-cell table selection takes priority — the popover is anchored to `$$focusTableCell`
+ * Hides the overlay unconditionally, then re-shows it anchored to the relevant cell.
+ * Multi-cell table selection takes priority — the overlay is anchored to `$$focusTableCell`
  * and returns early. If no table selection is active, falls back to the common TableCell
  * of the cursor selection, if one exists.
  */
-const syncPopoverVisibility = ({
-	popover,
+const syncOverlayVisibility = ({
 	editorAPI,
-}: SyncPopoverVisibilityParams) => {
+	anchorController,
+}: SyncOverlayVisibilityParams) => {
 	const { rootEditable } = editorAPI;
 
-	popover.hidePopover();
+	anchorController.hide();
 
 	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
 
@@ -44,51 +61,47 @@ const syncPopoverVisibility = ({
 			);
 		}
 
-		popover.showPopover({ source: $$focusTableCell });
+		positionToTableCell({ tableCell: $$focusTableCell, anchorController });
+
 		return;
 	}
 
 	const tableCell = getCommonTableCellFromSelection({ editorAPI });
 
 	if (tableCell) {
-		popover.showPopover({ source: tableCell });
+		positionToTableCell({ tableCell, anchorController });
 	}
 };
 
 /**
- * Subscribes to editor events to keep the quick-actions popover anchored to the
+ * Subscribes to editor events to keep the quick-actions overlay anchored to the
  * relevant TableCell. Three event types drive visibility: `editorSelectionChange`
  * covers a caret or range inside a single cell; `tableSelectionChange` covers
  * multi-cell table selections; `tableStructureChange` keeps the anchor up to date
  * when rows or columns are inserted or deleted.
  */
 export const handleTableQuickActionsButtonVisibility = ({
-	editorPort,
 	editorAPI,
+	anchorController,
 }: HandleTableQuickActionsButtonVisibilityParams) => {
-	const { element: popover } = editorPort.popover;
-
-	popover.style.positionArea = "center";
-	popover.style.left = "100%";
-
 	const unsubscribeSelection = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			syncPopoverVisibility({ popover, editorAPI });
+			syncOverlayVisibility({ editorAPI, anchorController });
 		},
 	});
 
 	const unsubscribeTableSelection = editorAPI.subscribeEditorEvent({
 		type: tableSelectionChangeEventType,
 		callback: () => {
-			syncPopoverVisibility({ popover, editorAPI });
+			syncOverlayVisibility({ editorAPI, anchorController });
 		},
 	});
 
 	const unsubscribeTableStructure = editorAPI.subscribeEditorEvent({
 		type: tableStructureChangeEventType,
 		callback: () => {
-			syncPopoverVisibility({ popover, editorAPI });
+			syncOverlayVisibility({ editorAPI, anchorController });
 		},
 	});
 

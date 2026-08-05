@@ -1,3 +1,4 @@
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { createBlockComponentPlacement } from "../../BlockComponentPlacement";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableInsertion } from "./HandleTableInsertion";
@@ -12,7 +13,14 @@ export const configureTable = ({
 }: ConfigureTableParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	editorPort.popover.mount();
+	editorPort.anchoredOverlay.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.anchoredOverlay.element,
+		options: {
+			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+		},
+	});
 
 	const toolbarButtonStateCleanup = handleTableToolbarButtonState({
 		editorPort,
@@ -22,8 +30,8 @@ export const configureTable = ({
 
 	const quickActionsVisibilityCleanup = handleTableQuickActionsButtonVisibility(
 		{
-			editorPort,
 			editorAPI,
+			anchorController,
 		},
 	);
 
@@ -42,7 +50,7 @@ export const configureTable = ({
 	});
 
 	return () => {
-		editorPort.popover.unmount();
+		editorPort.anchoredOverlay.unmount();
 
 		toolbarButtonStateCleanup();
 		quickActionsVisibilityCleanup();
