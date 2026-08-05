@@ -5,11 +5,7 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import {
-	elementNameAttr,
-	todoCheckboxElementName,
-} from "../../../../Constants";
+import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -27,7 +23,7 @@ export const createTodoList = ({
 				localName: "input",
 				domAttrs: {
 					type: "checkbox",
-					[elementNameAttr]: todoCheckboxElementName,
+					[dataPartName]: todoCheckboxPart.name,
 				},
 			}),
 			nestedEditable({}),

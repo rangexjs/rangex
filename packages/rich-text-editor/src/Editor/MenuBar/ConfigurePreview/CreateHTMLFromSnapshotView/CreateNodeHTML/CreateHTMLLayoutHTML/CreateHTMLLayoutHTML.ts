@@ -1,7 +1,4 @@
-import {
-	isElementNameMatch,
-	todoCheckboxElementName,
-} from "../../../../../Constants";
+import { isPartNameMatch, todoCheckboxPart } from "#ports";
 import { setAttributes } from "../_Utilities";
 import type {
 	CreateHTMLLayoutHTMLParams,
@@ -19,7 +16,7 @@ export const createHTMLLayoutHTML = ({
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
 
-	if (isElementNameMatch(todoCheckboxElementName, el)) {
+	if (isPartNameMatch(todoCheckboxPart.name, el)) {
 		applyTodoCheckboxOutput({ el, view: htmlLayoutView });
 	}
 

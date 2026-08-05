@@ -5,18 +5,12 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import {
-	createElementNameSelector,
-	todoCheckboxElementName,
-} from "../../../Constants";
+import { componentsName, todoCheckboxPart } from "#ports";
 import {
 	ensureNodeTodoCheckboxStorage,
 	todoCheckboxStorageFallbacks,
 } from "../../../Storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
-
-const todoCheckboxSelector = createElementNameSelector(todoCheckboxElementName);
 
 export const handleTodoListCheckboxState = ({
 	editorAPI,
@@ -36,7 +30,7 @@ export const handleTodoListCheckboxState = ({
 				}
 
 				for (const listItem of list.$$children) {
-					const todoCheckbox = listItem.$$querySelector(todoCheckboxSelector);
+					const todoCheckbox = listItem.$$querySelector(todoCheckboxPart.attr);
 
 					if (!todoCheckbox) {
 						throw new Error("TodoCheckbox wasn't found.");
@@ -56,7 +50,7 @@ export const handleTodoListCheckboxState = ({
 	});
 
 	const unsubscribeChange = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.matches(todoCheckboxSelector),
+		when: ({ element }) => element.matches(todoCheckboxPart.attr),
 		eventListener: {
 			type: "change",
 			listener: (event) => {

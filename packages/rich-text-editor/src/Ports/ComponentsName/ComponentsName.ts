@@ -1,3 +1,5 @@
+import type { PartName } from "./ComponentsName-types";
+
 export const inlineComponentsName = {
 	link: "link",
 	mention: "mention",
@@ -32,4 +34,17 @@ export const createPart = <Name extends string>(name: Name) => {
 	} as const;
 
 	return part;
+};
+
+export const todoCheckboxName = "todo-checkbox";
+
+export const todoCheckboxPart = createPart("todo-checkbox");
+
+export const isPartNameMatch = <Name extends PartName>(
+	name: Name,
+	element: Element,
+) => {
+	const value = element.getAttribute(dataPartName);
+
+	return value === name;
 };

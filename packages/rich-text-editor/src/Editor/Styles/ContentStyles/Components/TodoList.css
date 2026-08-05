@@ -14,7 +14,7 @@
 				grid-template-columns: min-content 1fr;
 				gap: 8px;
 
-				& > [data-name="todo-checkbox"] {
+				& > [data-part-name="todo-checkbox"] {
 					appearance: none;
 					cursor: pointer;
 					width: 16px;
