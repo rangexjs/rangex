@@ -7,12 +7,16 @@ import type {
 export const createTableSectionHTML = ({
 	tableSectionView,
 	childNodes,
+	storageMap,
 }: CreateTableSectionHTMLParams): CreateTableSectionHTMLResult => {
-	const { namespaceURI, localName, attributes } = tableSectionView;
+	const { namespaceURI, localName, attributes, customStorage } =
+		tableSectionView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

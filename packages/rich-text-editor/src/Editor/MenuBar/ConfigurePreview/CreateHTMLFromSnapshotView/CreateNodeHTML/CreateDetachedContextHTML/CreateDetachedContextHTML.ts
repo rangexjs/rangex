@@ -45,8 +45,10 @@ const elementViewToElement = (elementView: ElementView): Element | null => {
 
 export const createDetachedContextHTML = ({
 	detachedContextView,
+	storageMap,
 }: CreateDetachedContextHTMLParams): CreateDetachedContextHTMLResult => {
-	const { namespaceURI, localName, attributes } = detachedContextView;
+	const { namespaceURI, localName, attributes, customStorage } =
+		detachedContextView;
 
 	if (localName === "slot") {
 		return null;
@@ -65,6 +67,8 @@ export const createDetachedContextHTML = ({
 			shadowRoot.append(childNode);
 		}
 	}
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

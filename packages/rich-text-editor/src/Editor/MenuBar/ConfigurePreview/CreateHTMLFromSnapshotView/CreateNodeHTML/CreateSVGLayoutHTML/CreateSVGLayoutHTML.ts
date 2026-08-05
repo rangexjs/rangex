@@ -7,12 +7,15 @@ import type {
 export const createSVGLayoutHTML = ({
 	svgLayoutView,
 	childNodes,
+	storageMap,
 }: CreateSVGLayoutHTMLParams): CreateSVGLayoutHTMLResult => {
-	const { namespaceURI, localName, attributes } = svgLayoutView;
+	const { namespaceURI, localName, attributes, customStorage } = svgLayoutView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

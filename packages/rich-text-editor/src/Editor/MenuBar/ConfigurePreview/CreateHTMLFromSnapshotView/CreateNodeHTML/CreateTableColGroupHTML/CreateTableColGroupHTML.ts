@@ -7,12 +7,16 @@ import type {
 export const createTableColGroupHTML = ({
 	tableColGroupView,
 	childNodes,
+	storageMap,
 }: CreateTableColGroupHTMLParams): CreateTableColGroupHTMLResult => {
-	const { namespaceURI, localName, attributes } = tableColGroupView;
+	const { namespaceURI, localName, attributes, customStorage } =
+		tableColGroupView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

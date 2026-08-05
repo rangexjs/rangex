@@ -32,6 +32,7 @@ import type {
 	CreateHTMLFromSnapshotViewParams,
 	CreateHTMLFromSnapshotViewResult,
 	PendingTasks,
+	StorageMap,
 	ToDOMResult,
 } from "./CreateHTMLFromSnapshotView-types";
 import {
@@ -65,20 +66,24 @@ import {
 export const createHTMLFromSnapshotView = ({
 	snapshotView,
 }: CreateHTMLFromSnapshotViewParams): CreateHTMLFromSnapshotViewResult => {
+	const storageMap: StorageMap = new Map();
 	const pendingTasks: PendingTasks = [];
 
 	const toDOM = (node: EditorNodeView): ToDOMResult => {
 		// Text leaf nodes — no children to process
 		if (node.type === beamTextName) {
-			return createBeamTextHTML({ beamTextView: node });
+			return createBeamTextHTML({ beamTextView: node, storageMap });
 		}
 
 		if (node.type === basicTextName) {
-			return createBasicTextHTML({ basicTextView: node });
+			return createBasicTextHTML({ basicTextView: node, storageMap });
 		}
 
 		if (node.type === oneVisualUnitTextName) {
-			return createOneVisualUnitTextHTML({ oneVisualUnitTextView: node });
+			return createOneVisualUnitTextHTML({
+				oneVisualUnitTextView: node,
+				storageMap,
+			});
 		}
 
 		if (node.type === inlineComponentTextName) {
@@ -95,11 +100,18 @@ export const createHTMLFromSnapshotView = ({
 
 		// Self-contained nodes that manage their own children
 		if (node.type === glyphFormatterName) {
-			return createGlyphFormatterHTML({ glyphFormatterView: node, toDOM });
+			return createGlyphFormatterHTML({
+				glyphFormatterView: node,
+				toDOM,
+				storageMap,
+			});
 		}
 
 		if (node.type === detachedContextName) {
-			return createDetachedContextHTML({ detachedContextView: node });
+			return createDetachedContextHTML({
+				detachedContextView: node,
+				storageMap,
+			});
 		}
 
 		// Element nodes: resolve children first, then dispatch
@@ -108,21 +120,34 @@ export const createHTMLFromSnapshotView = ({
 			.filter((child) => child !== null);
 
 		if (node.type === rootEditableName) {
-			return createRootEditableHTML({ rootEditableView: node, childNodes });
+			return createRootEditableHTML({
+				rootEditableView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === nestedEditableName) {
-			return createNestedEditableHTML({ nestedEditableView: node, childNodes });
+			return createNestedEditableHTML({
+				nestedEditableView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === contentLineName) {
-			return createContentLineHTML({ contentLineView: node, childNodes });
+			return createContentLineHTML({
+				contentLineView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === inlineComponentName) {
 			return createInlineComponentHTML({
 				inlineComponentView: node,
 				childNodes,
+				storageMap,
 			});
 		}
 
@@ -130,6 +155,7 @@ export const createHTMLFromSnapshotView = ({
 			return createBlockComponentLineHTML({
 				blockComponentLineView: node,
 				childNodes,
+				storageMap,
 			});
 		}
 
@@ -137,6 +163,7 @@ export const createHTMLFromSnapshotView = ({
 			return createBlockComponentTextHolderHTML({
 				blockComponentTextHolderView: node,
 				childNodes,
+				storageMap,
 			});
 		}
 
@@ -145,51 +172,76 @@ export const createHTMLFromSnapshotView = ({
 				blockComponentView: node,
 				childNodes,
 				pendingTasks,
+				storageMap,
 			});
 		}
 
 		if (node.type === htmlLayoutName) {
-			return createHTMLLayoutHTML({ htmlLayoutView: node, childNodes });
+			return createHTMLLayoutHTML({
+				htmlLayoutView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === svgLayoutName) {
-			return createSVGLayoutHTML({ svgLayoutView: node, childNodes });
+			return createSVGLayoutHTML({
+				svgLayoutView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === mathMLLayoutName) {
-			return createMathMLLayoutHTML({ mathMLLayoutView: node, childNodes });
+			return createMathMLLayoutHTML({
+				mathMLLayoutView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === listName) {
-			return createListHTML({ listView: node, childNodes });
+			return createListHTML({ listView: node, childNodes, storageMap });
 		}
 
 		if (node.type === listItemName) {
-			return createListItemHTML({ listItemView: node, childNodes });
+			return createListItemHTML({ listItemView: node, childNodes, storageMap });
 		}
 
 		if (node.type === tableName) {
-			return createTableHTML({ tableView: node, childNodes });
+			return createTableHTML({ tableView: node, childNodes, storageMap });
 		}
 
 		if (node.type === tableSectionName) {
-			return createTableSectionHTML({ tableSectionView: node, childNodes });
+			return createTableSectionHTML({
+				tableSectionView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === tableRowName) {
-			return createTableRowHTML({ tableRowView: node, childNodes });
+			return createTableRowHTML({ tableRowView: node, childNodes, storageMap });
 		}
 
 		if (node.type === tableCellName) {
-			return createTableCellHTML({ tableCellView: node, childNodes });
+			return createTableCellHTML({
+				tableCellView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === tableColGroupName) {
-			return createTableColGroupHTML({ tableColGroupView: node, childNodes });
+			return createTableColGroupHTML({
+				tableColGroupView: node,
+				childNodes,
+				storageMap,
+			});
 		}
 
 		if (node.type === tableColName) {
-			return createTableColHTML({ tableColView: node, childNodes });
+			return createTableColHTML({ tableColView: node, childNodes, storageMap });
 		}
 
 		return assertNever(node);

@@ -7,12 +7,15 @@ import type {
 export const createTableColHTML = ({
 	tableColView,
 	childNodes,
+	storageMap,
 }: CreateTableColHTMLParams): CreateTableColHTMLResult => {
-	const { namespaceURI, localName, attributes } = tableColView;
+	const { namespaceURI, localName, attributes, customStorage } = tableColView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

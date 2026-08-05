@@ -7,12 +7,15 @@ import type {
 export const createHTMLLayoutHTML = ({
 	htmlLayoutView,
 	childNodes,
+	storageMap,
 }: CreateHTMLLayoutHTMLParams): CreateHTMLLayoutHTMLResult => {
-	const { namespaceURI, localName, attributes } = htmlLayoutView;
+	const { namespaceURI, localName, attributes, customStorage } = htmlLayoutView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

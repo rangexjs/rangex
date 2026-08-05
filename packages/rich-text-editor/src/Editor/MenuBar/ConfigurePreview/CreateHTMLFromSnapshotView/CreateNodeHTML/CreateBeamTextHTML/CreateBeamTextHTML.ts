@@ -5,6 +5,12 @@ import type {
 
 export const createBeamTextHTML = ({
 	beamTextView,
+	storageMap,
 }: CreateBeamTextHTMLParams): CreateBeamTextHTMLResult => {
-	return document.createTextNode(beamTextView.data);
+	const { data, customStorage } = beamTextView;
+	const text = document.createTextNode(data);
+
+	storageMap.set(text, customStorage);
+
+	return text;
 };

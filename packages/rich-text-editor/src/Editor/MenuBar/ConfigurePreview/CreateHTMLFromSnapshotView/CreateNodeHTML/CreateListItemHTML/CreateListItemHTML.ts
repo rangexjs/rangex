@@ -7,12 +7,15 @@ import type {
 export const createListItemHTML = ({
 	listItemView,
 	childNodes,
+	storageMap,
 }: CreateListItemHTMLParams): CreateListItemHTMLResult => {
-	const { namespaceURI, localName, attributes } = listItemView;
+	const { namespaceURI, localName, attributes, customStorage } = listItemView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

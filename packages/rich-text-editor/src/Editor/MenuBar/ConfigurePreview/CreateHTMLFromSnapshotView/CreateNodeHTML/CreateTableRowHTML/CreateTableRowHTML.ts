@@ -7,12 +7,15 @@ import type {
 export const createTableRowHTML = ({
 	tableRowView,
 	childNodes,
+	storageMap,
 }: CreateTableRowHTMLParams): CreateTableRowHTMLResult => {
-	const { namespaceURI, localName, attributes } = tableRowView;
+	const { namespaceURI, localName, attributes, customStorage } = tableRowView;
 	const el = document.createElementNS(namespaceURI, localName);
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

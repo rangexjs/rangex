@@ -10,8 +10,9 @@ import type {
 export const createGlyphFormatterHTML = ({
 	glyphFormatterView,
 	toDOM,
+	storageMap,
 }: CreateGlyphFormatterHTMLParams): CreateGlyphFormatterHTMLResult => {
-	const { namespaceURI, localName, attributes, childNodes } =
+	const { namespaceURI, localName, attributes, childNodes, customStorage } =
 		glyphFormatterView;
 	const el = document.createElementNS(namespaceURI, localName);
 
@@ -53,6 +54,8 @@ export const createGlyphFormatterHTML = ({
 			el.append(childNode);
 		}
 	}
+
+	storageMap.set(el, customStorage);
 
 	return el;
 };

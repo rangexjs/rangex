@@ -5,6 +5,12 @@ import type {
 
 export const createBasicTextHTML = ({
 	basicTextView,
+	storageMap,
 }: CreateBasicTextHTMLParams): CreateBasicTextHTMLResult => {
-	return document.createTextNode(basicTextView.data);
+	const { data, customStorage } = basicTextView;
+	const text = document.createTextNode(data);
+
+	storageMap.set(text, customStorage);
+
+	return text;
 };
