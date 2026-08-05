@@ -1,1 +1,1 @@
-export * from "./ImagePopover";
+export * from "./ImageQuickActions";

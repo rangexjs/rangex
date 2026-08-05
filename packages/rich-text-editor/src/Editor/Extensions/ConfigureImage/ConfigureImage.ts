@@ -1,8 +1,8 @@
 import { componentsName } from "#ports";
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import {
 	handleBlockAlignState,
-	handleBlockDelete,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 } from "../_Utilities";
@@ -18,9 +18,9 @@ import type {
 } from "./ConfigureImage-types";
 import { handleImageAttrState } from "./HandleImageAttrState";
 import { handleImageInsertion } from "./HandleImageInsertion";
-import { handleImagePopoverAppearance } from "./HandleImagePopoverAppearance";
+import { handleImageQuickActionsOverlayAppearance } from "./HandleImageQuickActionsOverlayAppearance";
 import { handleImageSwap } from "./HandleImageSwap";
-import { handleImageSwapPopoverToggle } from "./HandleImageSwapPopoverToggle";
+import { handleImageSwapCardOverlayToggle } from "./HandleImageSwapCardOverlayToggle";
 
 // TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
 // src/Editor/_Utilities) instead of going through any upload endpoint or blob
@@ -36,13 +36,40 @@ export const configureImage = ({
 		editorAPI,
 	});
 
-	editorPort.popover.mount();
+	editorPort.quickActionsOverlay.mount();
+	editorPort.swapCardOverlay.mount();
 	editorPort.blockResize.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.quickActionsOverlay.element,
+		options: {
+			onToggle: (isQuickActionsOpen) =>
+				editorPort.updateState({ isQuickActionsOpen }),
+		},
+	});
+
+	const swapAnchorController = createAnchoredOverlayController({
+		element: editorPort.swapCardOverlay.element,
+		options: {
+			onToggle: (isSwapCardOpen) => {
+				editorPort.updateState({ isSwapCardOpen });
+
+				if (!isSwapCardOpen) {
+					internals.currentImageFigure = null;
+				}
+			},
+		},
+	});
 
 	const insertionCleanup = handleImageInsertion({ editorPort, editorAPI });
 
-	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleImagePopoverAppearance({ editorPort, overlayAppearanceHandler });
+	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
+		handleImageQuickActionsOverlayAppearance({
+			editorPort,
+			overlayAppearanceHandler,
+			anchorController,
+			swapAnchorController,
+		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
 		blockResize: editorPort.blockResize,
@@ -72,33 +99,33 @@ export const configureImage = ({
 		setCaptionPosition: setImageCaptionPosition,
 	});
 
-	const swapPopoverToggleCleanup = handleImageSwapPopoverToggle({
+	const swapCardOverlayToggleCleanup = handleImageSwapCardOverlayToggle({
 		editorPort,
 		getCurrentBlock,
 		internals,
+		swapAnchorController,
 	});
 
-	const swapCleanup = handleImageSwap({ editorPort, editorAPI, internals });
-
-	const deleteCleanup = handleBlockDelete({
-		port: editorPort,
+	const swapCleanup = handleImageSwap({
+		editorPort,
 		editorAPI,
-		getCurrentBlock,
+		internals,
+		swapAnchorController,
 	});
 
 	return () => {
 		overlayAppearanceHandler.cleanup();
-		editorPort.popover.unmount();
+		editorPort.quickActionsOverlay.unmount();
+		editorPort.swapCardOverlay.unmount();
 		editorPort.blockResize.unmount();
 
 		insertionCleanup();
-		popoverAppearanceCleanup();
+		overlayAppearanceCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapPopoverToggleCleanup();
+		swapCardOverlayToggleCleanup();
 		swapCleanup();
-		deleteCleanup();
 	};
 };

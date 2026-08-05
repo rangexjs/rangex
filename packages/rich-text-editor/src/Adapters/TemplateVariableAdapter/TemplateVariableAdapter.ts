@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { TemplateVariablePopover } from "#ui-extensions";
+import { TemplateVariableSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	TemplateVariableAdapterConstructorParams,
@@ -7,15 +7,16 @@ import type {
 	TemplateVariableOnInsertRequestFn,
 	TemplateVariableOnSelectFn,
 	TemplateVariableOnUpdateRequestFn,
-	TemplateVariablePopoverItems,
+	TemplateVariableSuggestionItems,
 	TemplateVariableToolbarButtonState,
 	TemplateVariableUIPort,
 	TemplateVariableUpdateFilteredItemsFn,
+	TemplateVariableUpdateIsOpenFn,
 	TemplateVariableUpdateToolbarButtonFn,
 	UpdateTemplateVariableStateParams,
 } from "./TemplateVariableAdapter-types";
 
-const ALL_ITEMS: TemplateVariablePopoverItems = [
+const ALL_ITEMS: TemplateVariableSuggestionItems = [
 	{ kind: "full-name", label: "{{FullName}}" },
 	{ kind: "first-name", label: "{{FirstName}}" },
 	{ kind: "last-name", label: "{{LastName}}" },
@@ -31,12 +32,14 @@ export class TemplateVariableAdapter {
 		options: { firstName: null, lastName: null, email: null, date: null },
 	};
 	#query = "";
-	#filteredItems: TemplateVariablePopoverItems = [];
+	#filteredItems: TemplateVariableSuggestionItems = [];
+	#isOpen = false;
 
 	#toolbarButtonListeners: Set<TemplateVariableUpdateToolbarButtonFn> =
 		new Set();
 	#filteredItemsListeners: Set<TemplateVariableUpdateFilteredItemsFn> =
 		new Set();
+	#isOpenListeners: Set<TemplateVariableUpdateIsOpenFn> = new Set();
 
 	#onInsertRequestListeners: Set<TemplateVariableOnInsertRequestFn> = new Set();
 	#onUpdateRequestListeners: Set<TemplateVariableOnUpdateRequestFn> = new Set();
@@ -50,7 +53,7 @@ export class TemplateVariableAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: TemplateVariablePopover,
+			component: TemplateVariableSuggestions,
 			props: { uiPort: this.uiPort },
 		});
 	}
@@ -70,7 +73,11 @@ export class TemplateVariableAdapter {
 		}
 	}
 
-	#updateState({ toolbarButton, query }: UpdateTemplateVariableStateParams) {
+	#updateState({
+		toolbarButton,
+		query,
+		isOpen,
+	}: UpdateTemplateVariableStateParams) {
 		if (toolbarButton !== undefined) {
 			this.#toolbarButton = toolbarButton;
 
@@ -83,13 +90,21 @@ export class TemplateVariableAdapter {
 			this.#query = query;
 			this.#computeFilteredItems();
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
 	}
 
 	get uiPort(): TemplateVariableUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.uiOverlayMount;
 			},
 
@@ -109,6 +124,15 @@ export class TemplateVariableAdapter {
 			onFilteredItemsUpdate: (callback) => {
 				adapter.#filteredItemsListeners.add(callback);
 				return () => adapter.#filteredItemsListeners.delete(callback);
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
 			},
 
 			emitInsertRequest: (params) => {
@@ -137,7 +161,7 @@ export class TemplateVariableAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.editorOverlayMount;
 			},
 

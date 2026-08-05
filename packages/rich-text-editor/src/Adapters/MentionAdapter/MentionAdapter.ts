@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { MentionPopover } from "#ui-extensions";
+import { MentionSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	MentionAdapterConstructorParams,
@@ -8,6 +8,7 @@ import type {
 	MentionOnSelectFn,
 	MentionUIPort,
 	MentionUpdateFilteredItemsFn,
+	MentionUpdateIsOpenFn,
 	MentionUpdateItemsFn,
 	MentionUpdateQueryFn,
 	UpdateMentionStateParams,
@@ -18,10 +19,12 @@ export class MentionAdapter {
 	#items: MentionItems = [];
 	#query = "";
 	#filteredItems: MentionItems = [];
+	#isOpen = false;
 
 	#itemsListeners: Set<MentionUpdateItemsFn> = new Set();
 	#queryListeners: Set<MentionUpdateQueryFn> = new Set();
 	#filteredItemsListeners: Set<MentionUpdateFilteredItemsFn> = new Set();
+	#isOpenListeners: Set<MentionUpdateIsOpenFn> = new Set();
 
 	#onSelectListeners: Set<MentionOnSelectFn> = new Set();
 
@@ -33,7 +36,7 @@ export class MentionAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: MentionPopover,
+			component: MentionSuggestions,
 			props: { uiPort: this.uiPort },
 		});
 	}
@@ -57,7 +60,7 @@ export class MentionAdapter {
 		}
 	}
 
-	#updateState({ items, query }: UpdateMentionStateParams) {
+	#updateState({ items, query, isOpen }: UpdateMentionStateParams) {
 		let dirty = false;
 
 		if (items !== undefined) {
@@ -81,13 +84,21 @@ export class MentionAdapter {
 		if (dirty) {
 			this.#computeFilteredItems();
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
 	}
 
 	get uiPort(): MentionUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.uiOverlayMount;
 			},
 
@@ -98,6 +109,15 @@ export class MentionAdapter {
 			onFilteredItemsUpdate: (callback) => {
 				adapter.#filteredItemsListeners.add(callback);
 				return () => adapter.#filteredItemsListeners.delete(callback);
+			},
+
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
 			},
 
 			emitSelect: (item) => {
@@ -114,7 +134,7 @@ export class MentionAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.editorOverlayMount;
 			},
 

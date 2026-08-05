@@ -5,7 +5,6 @@ import type {
 	CaptionPort,
 	CaptionPosition,
 	CaptionState,
-	DeletePort,
 	EditorBlockResize,
 	EditorOverlayMount,
 	UIBlockResize,
@@ -22,15 +21,17 @@ export type EmbedSwapCheckState =
 	| { status: "idle" }
 	| { status: "error"; message: string };
 
-export interface EmbedPopoverState {
+export interface EmbedState {
 	align?: BlockAlignValue;
 	aspectRatio?: EmbedAspectRatioValue;
 	caption?: CaptionState;
 	title?: string;
 	swapCheckState?: EmbedSwapCheckState;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
-export interface UpdateEmbedStateParams extends EmbedPopoverState {}
+export interface UpdateEmbedStateParams extends EmbedState {}
 
 export interface EmbedEmitSwapParams {
 	url: string;
@@ -41,35 +42,34 @@ export type EmbedUpdateAspectRatioFn = (value: EmbedAspectRatioValue) => void;
 export type EmbedUpdateCaptionFn = (value: CaptionState) => void;
 export type EmbedUpdateTitleFn = (value: string) => void;
 export type EmbedUpdateSwapCheckStateFn = (value: EmbedSwapCheckState) => void;
-
-export interface EmbedUISwapPopover {
-	setElement: (element: HTMLDivElement) => void;
-}
+export type EmbedUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type EmbedUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface EmbedUIPort {
-	readonly popover: UIOverlayMount;
-	readonly swapPopover: EmbedUISwapPopover;
+	readonly quickActionsOverlay: UIOverlayMount;
+	readonly swapCardOverlay: UIOverlayMount;
 	readonly blockResize: UIBlockResize;
 	readonly align: BlockAlignValue;
 	readonly aspectRatio: EmbedAspectRatioValue;
 	readonly caption: CaptionState;
 	readonly title: string;
 	readonly swapCheckState: EmbedSwapCheckState;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: EmbedUpdateAlignFn): () => void;
 	onAspectRatioUpdate(callback: EmbedUpdateAspectRatioFn): () => void;
 	onCaptionUpdate(callback: EmbedUpdateCaptionFn): () => void;
 	onTitleUpdate(callback: EmbedUpdateTitleFn): () => void;
 	onSwapCheckStateUpdate(callback: EmbedUpdateSwapCheckStateFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: EmbedUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: EmbedUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;
 	emitEmbedAttrChange(params: EmbedAttrChange): void;
 	emitSwap(params: EmbedEmitSwapParams): void;
-	emitDelete(): void;
-}
-
-export interface EmbedEditorSwapPopover {
-	readonly element: HTMLDivElement;
+	emitToggleSwap(): void;
 }
 
 export interface EmbedAttrChange {
@@ -79,16 +79,15 @@ export interface EmbedAttrChange {
 
 export type OnEmbedAttrChangeFn = (params: EmbedAttrChange) => void;
 export type OnEmbedSwapFn = (params: EmbedEmitSwapParams) => void;
+export type OnEmbedToggleSwapFn = () => void;
 
-export interface EmbedEditorPort
-	extends BlockAlignPort,
-		CaptionPort,
-		DeletePort {
-	readonly popover: EditorOverlayMount;
-	readonly swapPopover: EmbedEditorSwapPopover;
+export interface EmbedEditorPort extends BlockAlignPort, CaptionPort {
+	readonly quickActionsOverlay: EditorOverlayMount;
+	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
 	updateState(params: UpdateEmbedStateParams): void;
 	onEmbedAttrChange(callback: OnEmbedAttrChangeFn): () => void;
 	onSwap(callback: OnEmbedSwapFn): () => void;
+	onToggleSwap(callback: OnEmbedToggleSwapFn): () => void;
 	onMediaResolve(callback: (params: MediaResolveParams) => void): () => void;
 }

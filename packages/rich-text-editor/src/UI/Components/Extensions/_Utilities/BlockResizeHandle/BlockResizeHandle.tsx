@@ -93,8 +93,7 @@ export const BlockResizeHandle = (props: BlockResizeHandleProps) => {
 	return (
 		<div
 			ref={(el) => props.uiBlockResize.setElement(el)}
-			popover="manual"
-			class="pointer-events-none h-[anchor-size(height)] w-[anchor-size(width)] overflow-visible border-none bg-transparent p-0 [position-area:center]"
+			class="pointer-events-none overflow-visible border-none bg-transparent"
 		>
 			<Handle uiBlockResize={props.uiBlockResize} side="left" />
 			<Handle uiBlockResize={props.uiBlockResize} side="right" />

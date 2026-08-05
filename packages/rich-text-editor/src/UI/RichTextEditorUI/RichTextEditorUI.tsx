@@ -11,6 +11,19 @@ import {
 } from "../MenuBarButtonsStateManager";
 import type { RichTextEditorUIConstructorParams } from "./RichTextEditorUI-types";
 
+const tailwindStyleSheet = new CSSStyleSheet();
+tailwindStyleSheet.replaceSync(inlineTailwind);
+
+if (import.meta.hot) {
+	import.meta.hot.accept("../global.css?inline", (module) => {
+		if (!module) {
+			throw new Error("Module can't be undefined.");
+		}
+
+		tailwindStyleSheet.replaceSync(module.default);
+	});
+}
+
 export class RichTextEditorUI extends HTMLElement {
 	#shadowRoot;
 	#toolbarButtons;
@@ -27,11 +40,9 @@ export class RichTextEditorUI extends HTMLElement {
 		extensions,
 		uiPorts,
 		overlayHost,
+		externalStyleSheet,
 	}: RichTextEditorUIConstructorParams) {
 		super();
-
-		const style = document.createElement("style");
-		style.textContent = inlineTailwind;
 
 		if (import.meta.hot) {
 			import.meta.hot.accept("../global.css?inline", (module) => {
@@ -39,12 +50,17 @@ export class RichTextEditorUI extends HTMLElement {
 					throw new Error("Module can't be undefined.");
 				}
 
-				style.textContent = module.default;
+				tailwindStyleSheet.replaceSync(module.default);
 			});
 		}
 
 		this.#shadowRoot = this.attachShadow({ mode: "open" });
-		this.#shadowRoot.append(style);
+
+		this.#shadowRoot.adoptedStyleSheets.push(tailwindStyleSheet);
+		if (externalStyleSheet) {
+			this.#shadowRoot.adoptedStyleSheets.push(externalStyleSheet);
+		}
+
 		this.#toolbarButtons = toolbarButtons;
 		this.#richTextArea = richTextArea;
 		this.#extensions = extensions;

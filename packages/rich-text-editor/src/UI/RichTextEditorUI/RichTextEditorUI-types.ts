@@ -7,4 +7,5 @@ export interface RichTextEditorUIConstructorParams {
 	extensions: UIExtension[];
 	uiPorts: UIPortsContextValue;
 	overlayHost: OverlayHost;
+	externalStyleSheet?: CSSStyleSheet;
 }

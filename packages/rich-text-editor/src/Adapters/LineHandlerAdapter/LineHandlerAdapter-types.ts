@@ -35,7 +35,7 @@ export type OnCanDuplicateUpdateFn = (canDuplicate: boolean) => void;
 export type OnCanUnwrapUpdateFn = (canUnwrap: boolean) => void;
 
 export interface LineHandlerUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly turnInto: TurnIntoAvailability;
 	onTurnIntoUpdate(callback: OnTurnIntoUpdateFn): () => void;
 	readonly canDelete: boolean;
@@ -60,7 +60,7 @@ export interface LineHandlerEditorPort
 		DuplicatePort,
 		InsertRootLinePort,
 		UnwrapPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	updateState(params: UpdateLineHandlerStateParams): void;
 	onDragStart(callback: OnDragStartFn): () => void;
 	onTurnInto(callback: OnTurnIntoFn): () => void;

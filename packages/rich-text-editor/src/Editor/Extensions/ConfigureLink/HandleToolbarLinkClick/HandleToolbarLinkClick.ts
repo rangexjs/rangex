@@ -1,6 +1,6 @@
 import { caretAnchorName } from "rich-text-area";
 import { assertNever } from "#ports";
-import { positionPopoverToSelection } from "../../../_Utilities";
+import { positionToSelection } from "../../../_Utilities";
 import { getLinkInsertionMode } from "../_Utilities";
 import type {
 	GetDisplayTextInfoParams,
@@ -8,13 +8,17 @@ import type {
 	HandleToolbarLinkClickParams,
 	OpenAtCaretParams,
 	OpenForWrapParams,
-	OpenLinkPopoverParams,
+	OpenLinkOverlayParams,
 } from "./HandleToolbarLinkClick-types";
 
 /**
  * Opens the popover anchored to the caret anchor — used when the selection is collapsed, so there is no range to position against.
  */
-const openAtCaret = ({ editorPort, editorAPI }: OpenAtCaretParams) => {
+const openAtCaret = ({
+	editorPort,
+	editorAPI,
+	anchorController,
+}: OpenAtCaretParams) => {
 	const { shadowRoot } = editorAPI;
 
 	const caretAnchor = shadowRoot.querySelector(caretAnchorName);
@@ -36,15 +40,12 @@ const openAtCaret = ({ editorPort, editorAPI }: OpenAtCaretParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	editorPort.popover.mount();
-
-	const popover = editorPort.popover.element;
-
-	popover.style.cssText = "";
-	popover.style.marginTop = "8px";
-	popover.style.positionArea = "center bottom";
-
-	popover.showPopover({ source: caretAnchor });
+	anchorController.show(caretAnchor, {
+		clear: true,
+		position: "absolute",
+		"justify-self": "anchor-center",
+		top: "calc(anchor(bottom) + 8px)",
+	});
 };
 
 /**
@@ -81,7 +82,11 @@ const getDisplayTextInfo = ({
 /**
  * Opens the popover positioned to the selection with pre-filled display text — used when the selection is non-collapsed.
  */
-const openForWrap = ({ editorPort, editorAPI }: OpenForWrapParams) => {
+const openForWrap = ({
+	editorPort,
+	editorAPI,
+	anchorController,
+}: OpenForWrapParams) => {
 	// Blur the editor before opening the popover so focus passes cleanly to it
 	if (document.activeElement instanceof HTMLElement) {
 		document.activeElement.blur();
@@ -97,11 +102,11 @@ const openForWrap = ({ editorPort, editorAPI }: OpenForWrapParams) => {
 		toggleButtons: { isNewTab: false },
 	});
 
-	editorPort.popover.mount();
-
-	const popover = editorPort.popover.element;
-
-	positionPopoverToSelection({ editorAPI, popover, topMargin: 10 });
+	positionToSelection({
+		editorAPI,
+		controller: anchorController,
+		topMargin: 10,
+	});
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -112,7 +117,11 @@ const openForWrap = ({ editorPort, editorAPI }: OpenForWrapParams) => {
 /**
  * Delegates to openAtCaret or openForWrap based on the insertion mode, or bails if insertion is not allowed.
  */
-const openLinkPopover = ({ editorPort, editorAPI }: OpenLinkPopoverParams) => {
+const openLinkOverlay = ({
+	editorPort,
+	editorAPI,
+	anchorController,
+}: OpenLinkOverlayParams) => {
 	const linkInsertionMode = getLinkInsertionMode({ editorAPI });
 
 	if (!linkInsertionMode) {
@@ -121,12 +130,12 @@ const openLinkPopover = ({ editorPort, editorAPI }: OpenLinkPopoverParams) => {
 	}
 
 	if (linkInsertionMode === "insert") {
-		openAtCaret({ editorPort, editorAPI });
+		openAtCaret({ editorPort, editorAPI, anchorController });
 		return;
 	}
 
 	if (linkInsertionMode === "wrap") {
-		openForWrap({ editorPort, editorAPI });
+		openForWrap({ editorPort, editorAPI, anchorController });
 		return;
 	}
 
@@ -139,9 +148,10 @@ const openLinkPopover = ({ editorPort, editorAPI }: OpenLinkPopoverParams) => {
 export const handleToolbarLinkClick = ({
 	editorPort,
 	editorAPI,
+	anchorController,
 }: HandleToolbarLinkClickParams) => {
 	const unsubscribe = editorPort.onToolbarClick(() => {
-		openLinkPopover({ editorPort, editorAPI });
+		openLinkOverlay({ editorPort, editorAPI, anchorController });
 	});
 
 	return () => {

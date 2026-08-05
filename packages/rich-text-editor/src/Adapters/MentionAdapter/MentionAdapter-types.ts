@@ -17,6 +17,7 @@ export type MentionItems = MentionSuggestionItem[];
 export interface MentionState {
 	items?: MentionItems;
 	query?: string;
+	isOpen?: boolean;
 }
 
 export interface UpdateMentionStateParams extends MentionState {}
@@ -24,11 +25,14 @@ export interface UpdateMentionStateParams extends MentionState {}
 export type MentionUpdateItemsFn = (value: MentionItems) => void;
 export type MentionUpdateQueryFn = (value: string) => void;
 export type MentionUpdateFilteredItemsFn = (value: MentionItems) => void;
+export type MentionUpdateIsOpenFn = (value: boolean) => void;
 
 export interface MentionUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly filteredItems: MentionItems;
 	onFilteredItemsUpdate(callback: MentionUpdateFilteredItemsFn): () => void;
+	readonly isOpen: boolean;
+	onIsOpenUpdate(callback: MentionUpdateIsOpenFn): () => void;
 	emitSelect(item: MentionSuggestionItem): void;
 }
 
@@ -40,7 +44,7 @@ export interface MentionSelectParams {
 export type MentionOnSelectFn = (params: MentionSelectParams) => void;
 
 export interface MentionEditorPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	readonly filteredItems: MentionItems;
 	updateState(params: MentionState): void;
 	onSelect(callback: MentionOnSelectFn): () => void;

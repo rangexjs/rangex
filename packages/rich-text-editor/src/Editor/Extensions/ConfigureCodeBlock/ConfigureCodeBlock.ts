@@ -1,10 +1,11 @@
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { createBlockComponentPlacement } from "../../BlockComponentPlacement";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
 import { handleCodeBlockInsertion } from "./HandleCodeBlockInsertion";
-import { handleCodeBlockPopoverAppearance } from "./HandleCodeBlockPopoverAppearance";
-import { handleCodeBlockPopoverState } from "./HandleCodeBlockPopoverState";
+import { handleCodeBlockOverlayAppearance } from "./HandleCodeBlockOverlayAppearance";
+import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
 import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButtonState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
@@ -18,7 +19,14 @@ export const configureCodeBlock = ({
 	});
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
 
-	editorPort.popover.mount();
+	editorPort.anchoredOverlay.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.anchoredOverlay.element,
+		options: {
+			onToggle: (isOpen) => editorPort.updateState({ isOpen }),
+		},
+	});
 
 	const toolbarButtonStateCleanup = handleCodeBlockToolbarButtonState({
 		editorPort,
@@ -34,13 +42,14 @@ export const configureCodeBlock = ({
 
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
-	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleCodeBlockPopoverAppearance({
+	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
+		handleCodeBlockOverlayAppearance({
 			editorPort,
 			overlayAppearanceHandler,
+			anchorController,
 		});
 
-	const popoverStateCleanup = handleCodeBlockPopoverState({
+	const overlayStateCleanup = handleCodeBlockOverlayState({
 		editorPort,
 		editorAPI,
 		codeHighlighter,
@@ -49,12 +58,12 @@ export const configureCodeBlock = ({
 
 	return () => {
 		overlayAppearanceHandler.cleanup();
-		editorPort.popover.unmount();
+		editorPort.anchoredOverlay.unmount();
 
 		toolbarButtonStateCleanup();
 		insertionCleanup();
 		lineNumbersCleanup();
-		popoverStateCleanup();
-		popoverAppearanceCleanup();
+		overlayStateCleanup();
+		overlayAppearanceCleanup();
 	};
 };

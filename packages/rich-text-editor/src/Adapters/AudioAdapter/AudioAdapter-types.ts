@@ -5,7 +5,6 @@ import type {
 	CaptionPort,
 	CaptionPosition,
 	CaptionState,
-	DeletePort,
 	EditorBlockResize,
 	EditorOverlayMount,
 	UIBlockResize,
@@ -22,7 +21,7 @@ export type AudioSwapCheckState =
 	| { status: "uploading"; progress: number }
 	| { status: "error"; message: string };
 
-export interface AudioPopoverState {
+export interface AudioState {
 	align?: BlockAlignValue;
 	caption?: CaptionState;
 	title?: string;
@@ -31,9 +30,11 @@ export interface AudioPopoverState {
 	loop?: boolean;
 	muted?: boolean;
 	swapCheckState?: AudioSwapCheckState;
+	isQuickActionsOpen?: boolean;
+	isSwapCardOpen?: boolean;
 }
 
-export interface UpdateAudioStateParams extends AudioPopoverState {}
+export interface UpdateAudioStateParams extends AudioState {}
 
 export interface AudioEmitSwapURLParams {
 	source: "url";
@@ -57,14 +58,12 @@ export type AudioUpdateAutoplayFn = (value: boolean) => void;
 export type AudioUpdateLoopFn = (value: boolean) => void;
 export type AudioUpdateMutedFn = (value: boolean) => void;
 export type AudioUpdateSwapCheckStateFn = (value: AudioSwapCheckState) => void;
-
-export interface AudioUISwapPopover {
-	setElement: (element: HTMLDivElement) => void;
-}
+export type AudioUpdateIsQuickActionsOpenFn = (value: boolean) => void;
+export type AudioUpdateIsSwapCardOpenFn = (value: boolean) => void;
 
 export interface AudioUIPort {
-	readonly popover: UIOverlayMount;
-	readonly swapPopover: AudioUISwapPopover;
+	readonly quickActionsOverlay: UIOverlayMount;
+	readonly swapCardOverlay: UIOverlayMount;
 	readonly blockResize: UIBlockResize;
 	readonly align: BlockAlignValue;
 	readonly caption: CaptionState;
@@ -74,6 +73,7 @@ export interface AudioUIPort {
 	readonly loop: boolean;
 	readonly muted: boolean;
 	readonly swapCheckState: AudioSwapCheckState;
+	readonly isSwapCardOpen: boolean;
 	onAlignUpdate(callback: AudioUpdateAlignFn): () => void;
 	onCaptionUpdate(callback: AudioUpdateCaptionFn): () => void;
 	onTitleUpdate(callback: AudioUpdateTitleFn): () => void;
@@ -82,16 +82,16 @@ export interface AudioUIPort {
 	onLoopUpdate(callback: AudioUpdateLoopFn): () => void;
 	onMutedUpdate(callback: AudioUpdateMutedFn): () => void;
 	onSwapCheckStateUpdate(callback: AudioUpdateSwapCheckStateFn): () => void;
+	onIsQuickActionsOpenUpdate(
+		callback: AudioUpdateIsQuickActionsOpenFn,
+	): () => void;
+	onIsSwapCardOpenUpdate(callback: AudioUpdateIsSwapCardOpenFn): () => void;
 	emitAlignChange(align: BlockAlignValue): void;
 	emitCaptionEnabledChange(enabled: boolean): void;
 	emitCaptionPositionChange(position: CaptionPosition): void;
 	emitAudioAttrChange(params: AudioAttrChange): void;
 	emitSwap(params: AudioEmitSwapParams): void;
-	emitDelete(): void;
-}
-
-export interface AudioEditorSwapPopover {
-	readonly element: HTMLDivElement;
+	emitToggleSwap(): void;
 }
 
 export interface AudioAttrChange {
@@ -104,16 +104,15 @@ export interface AudioAttrChange {
 
 export type OnAudioAttrChangeFn = (params: AudioAttrChange) => void;
 export type OnAudioSwapFn = (params: AudioEmitSwapParams) => void;
+export type OnAudioToggleSwapFn = () => void;
 
-export interface AudioEditorPort
-	extends BlockAlignPort,
-		CaptionPort,
-		DeletePort {
-	readonly popover: EditorOverlayMount;
-	readonly swapPopover: AudioEditorSwapPopover;
+export interface AudioEditorPort extends BlockAlignPort, CaptionPort {
+	readonly quickActionsOverlay: EditorOverlayMount;
+	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
 	updateState(params: UpdateAudioStateParams): void;
 	onAudioAttrChange(callback: OnAudioAttrChangeFn): () => void;
 	onSwap(callback: OnAudioSwapFn): () => void;
+	onToggleSwap(callback: OnAudioToggleSwapFn): () => void;
 	onMediaResolve(callback: (params: MediaResolveParams) => void): () => void;
 }

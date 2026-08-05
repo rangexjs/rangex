@@ -1,9 +1,10 @@
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureLinkParams, LinkInternals } from "./ConfigureLink-types";
 import { handleLinkClick } from "./HandleLinkClick";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkModification } from "./HandleLinkModification";
-import { handleLinkPopoverClose } from "./HandleLinkPopoverClose";
+import { handleLinkOverlayClose } from "./HandleLinkOverlayClose";
 import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
@@ -13,6 +14,12 @@ export const configureLink = ({
 }: ConfigureLinkParams) => {
 	const internals: LinkInternals = { currentLink: null };
 
+	editorPort.anchoredOverlay.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.anchoredOverlay.element,
+	});
+
 	const toolbarButtonStateCleanup = handleLinkToolbarButtonState({
 		editorPort,
 		editorAPI,
@@ -21,18 +28,21 @@ export const configureLink = ({
 	const toolbarLinkClickCleanup = handleToolbarLinkClick({
 		editorPort,
 		editorAPI,
+		anchorController,
 	});
 
 	const linkClickCleanup = handleLinkClick({
 		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 
 	const linkInsertionCleanup = handleLinkInsertion({
 		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 
 	const linkModificationCleanup = handleLinkModification({
@@ -47,19 +57,22 @@ export const configureLink = ({
 		getComponent: () => internals.currentLink,
 	});
 
-	const linkPopoverCloseCleanup = handleLinkPopoverClose({
+	const linkOverlayCloseCleanup = handleLinkOverlayClose({
 		editorPort,
 		editorAPI,
 		internals,
+		anchorController,
 	});
 
 	return () => {
+		editorPort.anchoredOverlay.unmount();
+
 		toolbarButtonStateCleanup();
 		toolbarLinkClickCleanup();
 		linkClickCleanup();
 		linkInsertionCleanup();
 		linkModificationCleanup();
 		linkUnwrapCleanup();
-		linkPopoverCloseCleanup();
+		linkOverlayCloseCleanup();
 	};
 };

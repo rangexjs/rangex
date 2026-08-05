@@ -1,5 +1,5 @@
 import { type AdapterBus, adapterIds, type MediaResolveParams } from "#ports";
-import { EmbedPopover } from "#ui-extensions";
+import { EmbedQuickActions, EmbedSwapCard } from "#ui-extensions";
 import {
 	type BlockAlignValue,
 	type BlockResize,
@@ -10,7 +10,6 @@ import {
 	type OnAlignChangeFn,
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
-	type OnDeleteFn,
 	type OverlayMount,
 } from "../_Utilities";
 import type {
@@ -23,37 +22,45 @@ import type {
 	EmbedUpdateAlignFn,
 	EmbedUpdateAspectRatioFn,
 	EmbedUpdateCaptionFn,
+	EmbedUpdateIsQuickActionsOpenFn,
+	EmbedUpdateIsSwapCardOpenFn,
 	EmbedUpdateSwapCheckStateFn,
 	EmbedUpdateTitleFn,
 	OnEmbedAttrChangeFn,
 	OnEmbedSwapFn,
+	OnEmbedToggleSwapFn,
 	UpdateEmbedStateParams,
 } from "./EmbedAdapter-types";
 
 export class EmbedAdapter {
 	#adapterBus: AdapterBus;
-	#overlayMount: OverlayMount;
+	#quickActionsOverlayMount: OverlayMount;
+	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
-	#swapPopoverElement: HTMLDivElement | null = null;
 
 	#align: BlockAlignValue = "center";
 	#aspectRatio: EmbedAspectRatioValue = "16-9";
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#title = "";
 	#swapCheckState: EmbedSwapCheckState = { status: "idle" };
+	#isQuickActionsOpen = false;
+	#isSwapCardOpen = false;
 
 	#alignListeners: Set<EmbedUpdateAlignFn> = new Set();
 	#aspectRatioListeners: Set<EmbedUpdateAspectRatioFn> = new Set();
 	#captionListeners: Set<EmbedUpdateCaptionFn> = new Set();
 	#titleListeners: Set<EmbedUpdateTitleFn> = new Set();
 	#swapCheckStateListeners: Set<EmbedUpdateSwapCheckStateFn> = new Set();
+	#isQuickActionsOpenListeners: Set<EmbedUpdateIsQuickActionsOpenFn> =
+		new Set();
+	#isSwapCardOpenListeners: Set<EmbedUpdateIsSwapCardOpenFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
 	#onEmbedAttrChangeListeners: Set<OnEmbedAttrChangeFn> = new Set();
 	#onSwapListeners: Set<OnEmbedSwapFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteFn> = new Set();
+	#onToggleSwapListeners: Set<OnEmbedToggleSwapFn> = new Set();
 
 	#uiPort: EmbedUIPort | null = null;
 	#editorPort: EmbedEditorPort | null = null;
@@ -64,9 +71,15 @@ export class EmbedAdapter {
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("embed");
 
-		this.#overlayMount = createOverlayMount({
+		this.#quickActionsOverlayMount = createOverlayMount({
 			overlayHost,
-			component: EmbedPopover,
+			component: EmbedQuickActions,
+			props: { uiPort: this.uiPort },
+		});
+
+		this.#swapCardOverlayMount = createOverlayMount({
+			overlayHost,
+			component: EmbedSwapCard,
 			props: { uiPort: this.uiPort },
 		});
 
@@ -83,6 +96,8 @@ export class EmbedAdapter {
 		caption,
 		title,
 		swapCheckState,
+		isQuickActionsOpen,
+		isSwapCardOpen,
 	}: UpdateEmbedStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -123,20 +138,34 @@ export class EmbedAdapter {
 				listener(this.#swapCheckState);
 			}
 		}
+
+		if (isQuickActionsOpen !== undefined) {
+			this.#isQuickActionsOpen = isQuickActionsOpen;
+
+			for (const listener of this.#isQuickActionsOpenListeners) {
+				listener(this.#isQuickActionsOpen);
+			}
+		}
+
+		if (isSwapCardOpen !== undefined) {
+			this.#isSwapCardOpen = isSwapCardOpen;
+
+			for (const listener of this.#isSwapCardOpenListeners) {
+				listener(this.#isSwapCardOpen);
+			}
+		}
 	}
 
 	get uiPort(): EmbedUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
-				return adapter.#overlayMount.uiOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.uiOverlayMount;
 			},
 
-			swapPopover: {
-				setElement: (element) => {
-					adapter.#swapPopoverElement = element;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.uiOverlayMount;
 			},
 
 			get blockResize() {
@@ -163,6 +192,10 @@ export class EmbedAdapter {
 				return adapter.#swapCheckState;
 			},
 
+			get isSwapCardOpen() {
+				return adapter.#isSwapCardOpen;
+			},
+
 			onAlignUpdate: (callback) => {
 				adapter.#alignListeners.add(callback);
 				return () => adapter.#alignListeners.delete(callback);
@@ -186,6 +219,16 @@ export class EmbedAdapter {
 			onSwapCheckStateUpdate: (callback) => {
 				adapter.#swapCheckStateListeners.add(callback);
 				return () => adapter.#swapCheckStateListeners.delete(callback);
+			},
+
+			onIsQuickActionsOpenUpdate: (callback) => {
+				adapter.#isQuickActionsOpenListeners.add(callback);
+				return () => adapter.#isQuickActionsOpenListeners.delete(callback);
+			},
+
+			onIsSwapCardOpenUpdate: (callback) => {
+				adapter.#isSwapCardOpenListeners.add(callback);
+				return () => adapter.#isSwapCardOpenListeners.delete(callback);
 			},
 
 			emitAlignChange: (align) => {
@@ -218,8 +261,8 @@ export class EmbedAdapter {
 				}
 			},
 
-			emitDelete: () => {
-				for (const listener of adapter.#onDeleteListeners) {
+			emitToggleSwap: () => {
+				for (const listener of adapter.#onToggleSwapListeners) {
 					listener();
 				}
 			},
@@ -232,18 +275,12 @@ export class EmbedAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
-				return adapter.#overlayMount.editorOverlayMount;
+			get quickActionsOverlay() {
+				return adapter.#quickActionsOverlayMount.editorOverlayMount;
 			},
 
-			swapPopover: {
-				get element() {
-					if (!adapter.#swapPopoverElement) {
-						throw new Error("Swap popover element wasn't set.");
-					}
-
-					return adapter.#swapPopoverElement;
-				},
+			get swapCardOverlay() {
+				return adapter.#swapCardOverlayMount.editorOverlayMount;
 			},
 
 			get blockResize() {
@@ -281,9 +318,9 @@ export class EmbedAdapter {
 				return () => adapter.#onSwapListeners.delete(callback);
 			},
 
-			onDelete: (callback) => {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onToggleSwap: (callback) => {
+				adapter.#onToggleSwapListeners.add(callback);
+				return () => adapter.#onToggleSwapListeners.delete(callback);
 			},
 
 			onMediaResolve: (callback: (params: MediaResolveParams) => void) =>

@@ -83,6 +83,7 @@ export const handleAudioSwap = ({
 	editorPort,
 	editorAPI,
 	internals,
+	swapAnchorController,
 }: HandleAudioSwapParams) => {
 	const unsubscribeSwap = editorPort.onSwap(async (params) => {
 		const { currentAudioFigure } = internals;
@@ -130,7 +131,7 @@ export const handleAudioSwap = ({
 
 		applyAudioSrc({ figure: currentAudioFigure, src, editorAPI });
 		editorPort.updateState({ swapCheckState: { status: "idle" } });
-		editorPort.swapPopover.element.hidePopover();
+		swapAnchorController.hide();
 	});
 
 	return () => {

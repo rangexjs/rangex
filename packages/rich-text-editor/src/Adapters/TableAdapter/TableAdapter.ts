@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { TableQuickActionsPopover } from "#ui-extensions";
+import { TableQuickActions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	TableAdapterConstructorParams,
@@ -24,6 +24,7 @@ import type {
 	TableUpdateCellTypeFn,
 	TableUpdateClearContentsFn,
 	TableUpdateInsertDeleteFn,
+	TableUpdateIsOpenFn,
 	TableUpdateMergeSplitFn,
 	TableUpdateSectionTypeFn,
 	TableUpdateToolbarButtonFn,
@@ -80,6 +81,7 @@ export class TableAdapter {
 	};
 
 	#clearContents: TableClearContentsState = { disabled: true };
+	#isOpen = false;
 
 	#toolbarButtonListeners: Set<TableUpdateToolbarButtonFn> = new Set();
 	#sectionTypeListeners: Set<TableUpdateSectionTypeFn> = new Set();
@@ -89,6 +91,7 @@ export class TableAdapter {
 	#verticalAlignmentListeners: Set<TableUpdateVerticalAlignmentFn> = new Set();
 	#cellResizingListeners: Set<TableUpdateCellResizingFn> = new Set();
 	#clearContentsListeners: Set<TableUpdateClearContentsFn> = new Set();
+	#isOpenListeners: Set<TableUpdateIsOpenFn> = new Set();
 
 	#onInsertRequestListeners: Set<TableOnInsertRequestFn> = new Set();
 	#onSectionTypeListeners: Set<TableOnSectionTypeFn> = new Set();
@@ -107,7 +110,7 @@ export class TableAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: TableQuickActionsPopover,
+			component: TableQuickActions,
 			props: { uiPort: this.uiPort },
 		});
 	}
@@ -125,6 +128,7 @@ export class TableAdapter {
 		verticalAlignment,
 		cellResizing,
 		clearContents,
+		isOpen,
 	}: UpdateTableStateParams) {
 		if (toolbarButton !== undefined) {
 			this.#toolbarButton = toolbarButton;
@@ -189,13 +193,21 @@ export class TableAdapter {
 				listener(this.#clearContents);
 			}
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
 	}
 
 	get uiPort(): TableUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.uiOverlayMount;
 			},
 
@@ -271,6 +283,11 @@ export class TableAdapter {
 				return () => adapter.#clearContentsListeners.delete(callback);
 			},
 
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
 			emitInsertRequest: (params) => {
 				for (const listener of adapter.#onInsertRequestListeners) {
 					listener(params);
@@ -327,7 +344,7 @@ export class TableAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.editorOverlayMount;
 			},
 

@@ -21,6 +21,7 @@ export interface CodeBlockState {
 	language?: CodeBlockLanguage;
 	lightTheme?: CodeBlockTheme;
 	darkTheme?: CodeBlockTheme;
+	isOpen?: boolean;
 }
 
 export interface UpdateCodeBlockStateParams extends CodeBlockState {}
@@ -35,9 +36,10 @@ export type CodeBlockUpdateToolbarButtonFn = (
 export type CodeBlockUpdateLanguageFn = (value: CodeBlockLanguage) => void;
 export type CodeBlockUpdateLightThemeFn = (value: CodeBlockTheme) => void;
 export type CodeBlockUpdateDarkThemeFn = (value: CodeBlockTheme) => void;
+export type CodeBlockUpdateIsOpenFn = (value: boolean) => void;
 
 export interface CodeBlockUIPort {
-	readonly popover: UIOverlayMount;
+	readonly anchoredOverlay: UIOverlayMount;
 	readonly toolbarButton: CodeBlockToolbarButtonState;
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
@@ -48,6 +50,7 @@ export interface CodeBlockUIPort {
 	onLanguageUpdate(callback: CodeBlockUpdateLanguageFn): () => void;
 	onLightThemeUpdate(callback: CodeBlockUpdateLightThemeFn): () => void;
 	onDarkThemeUpdate(callback: CodeBlockUpdateDarkThemeFn): () => void;
+	onIsOpenUpdate(callback: CodeBlockUpdateIsOpenFn): () => void;
 	emitInsertRequest(params: CodeBlockInsertRequestParams): void;
 	emitCopy(): void;
 	emitLanguageChange(language: CodeBlockLanguage): void;
@@ -64,7 +67,7 @@ export type OnCodeBlockLightThemeChangeFn = (theme: CodeBlockTheme) => void;
 export type OnCodeBlockDarkThemeChangeFn = (theme: CodeBlockTheme) => void;
 
 export interface CodeBlockEditorPort {
-	readonly popover: EditorOverlayMount;
+	readonly anchoredOverlay: EditorOverlayMount;
 	updateState(params: UpdateCodeBlockStateParams): void;
 	onInsertRequest(callback: OnCodeBlockInsertRequestFn): () => void;
 	onCopy(callback: OnCodeBlockCopyFn): () => void;

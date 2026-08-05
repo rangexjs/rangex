@@ -3,6 +3,7 @@ import {
 	blockComponentName,
 	isEditorNode,
 } from "rich-text-area";
+import { createAnchoredOverlayController } from "../../../_Utilities";
 import { getBlockAlign } from "../BlockAlign";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";
 
@@ -70,10 +71,15 @@ export const handleBlockResizeAppearance = ({
 	let dragStartWidth: number | null = null;
 	let hideTimeoutId = NaN;
 
+	const anchorController = createAnchoredOverlayController({
+		element: blockResize.element,
+	});
+
 	const scheduleHide = () => {
 		clearTimeout(hideTimeoutId);
 		hideTimeoutId = setTimeout(() => {
-			blockResize.element.hidePopover();
+			anchorController.hide();
+			currentBlock = null;
 		}, 100);
 	};
 
@@ -88,15 +94,6 @@ export const handleBlockResizeAppearance = ({
 	blockResize.element.addEventListener("pointerleave", scheduleHide, {
 		signal,
 	});
-	blockResize.element.addEventListener(
-		"toggle",
-		(event) => {
-			if (event.newState === "closed") {
-				currentBlock = null;
-			}
-		},
-		{ signal },
-	);
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
 		when: ({ element }) => element.$$editorRole === blockComponentName,
@@ -126,8 +123,13 @@ export const handleBlockResizeAppearance = ({
 
 				currentBlock = currentTarget;
 
-				blockResize.element.hidePopover();
-				blockResize.element.showPopover({ source: currentTarget });
+				anchorController.show(currentTarget, {
+					clear: true,
+					position: "absolute",
+					"position-area": "center",
+					width: "anchor-size(width)",
+					height: "anchor-size(height)",
+				});
 			},
 		},
 	});

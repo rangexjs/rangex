@@ -1,1 +1,1 @@
-export * from "./EmojiPopover";
+export * from "./EmojiSuggestions";

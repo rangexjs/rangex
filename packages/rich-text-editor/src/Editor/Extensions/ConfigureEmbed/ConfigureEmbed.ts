@@ -1,8 +1,8 @@
 import { componentsName } from "#ports";
+import { createAnchoredOverlayController } from "../../_Utilities";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import {
 	handleBlockAlignState,
-	handleBlockDelete,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 } from "../_Utilities";
@@ -18,9 +18,9 @@ import type {
 } from "./ConfigureEmbed-types";
 import { handleEmbedAttrState } from "./HandleEmbedAttrState";
 import { handleEmbedInsertion } from "./HandleEmbedInsertion";
-import { handleEmbedPopoverAppearance } from "./HandleEmbedPopoverAppearance";
+import { handleEmbedQuickActionsOverlayAppearance } from "./HandleEmbedQuickActionsOverlayAppearance";
 import { handleEmbedSwap } from "./HandleEmbedSwap";
-import { handleEmbedSwapPopoverToggle } from "./HandleEmbedSwapPopoverToggle";
+import { handleEmbedSwapCardOverlayToggle } from "./HandleEmbedSwapCardOverlayToggle";
 
 export const configureEmbed = ({
 	editorPort,
@@ -31,13 +31,40 @@ export const configureEmbed = ({
 		editorAPI,
 	});
 
-	editorPort.popover.mount();
+	editorPort.quickActionsOverlay.mount();
+	editorPort.swapCardOverlay.mount();
 	editorPort.blockResize.mount();
+
+	const anchorController = createAnchoredOverlayController({
+		element: editorPort.quickActionsOverlay.element,
+		options: {
+			onToggle: (isQuickActionsOpen) =>
+				editorPort.updateState({ isQuickActionsOpen }),
+		},
+	});
+
+	const swapAnchorController = createAnchoredOverlayController({
+		element: editorPort.swapCardOverlay.element,
+		options: {
+			onToggle: (isSwapCardOpen) => {
+				editorPort.updateState({ isSwapCardOpen });
+
+				if (!isSwapCardOpen) {
+					internals.currentEmbedFigure = null;
+				}
+			},
+		},
+	});
 
 	const insertionCleanup = handleEmbedInsertion({ editorPort, editorAPI });
 
-	const { getCurrentBlock, cleanup: popoverAppearanceCleanup } =
-		handleEmbedPopoverAppearance({ editorPort, overlayAppearanceHandler });
+	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
+		handleEmbedQuickActionsOverlayAppearance({
+			editorPort,
+			overlayAppearanceHandler,
+			anchorController,
+			swapAnchorController,
+		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
 		blockResize: editorPort.blockResize,
@@ -67,33 +94,33 @@ export const configureEmbed = ({
 		setCaptionPosition: setEmbedCaptionPosition,
 	});
 
-	const swapPopoverToggleCleanup = handleEmbedSwapPopoverToggle({
+	const swapCardOverlayToggleCleanup = handleEmbedSwapCardOverlayToggle({
 		editorPort,
 		getCurrentBlock,
 		internals,
+		swapAnchorController,
 	});
 
-	const swapCleanup = handleEmbedSwap({ editorPort, editorAPI, internals });
-
-	const deleteCleanup = handleBlockDelete({
-		port: editorPort,
+	const swapCleanup = handleEmbedSwap({
+		editorPort,
 		editorAPI,
-		getCurrentBlock,
+		internals,
+		swapAnchorController,
 	});
 
 	return () => {
 		overlayAppearanceHandler.cleanup();
-		editorPort.popover.unmount();
+		editorPort.quickActionsOverlay.unmount();
+		editorPort.swapCardOverlay.unmount();
 		editorPort.blockResize.unmount();
 
 		insertionCleanup();
-		popoverAppearanceCleanup();
+		overlayAppearanceCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		attrStateCleanup();
 		captionStateCleanup();
-		swapPopoverToggleCleanup();
+		swapCardOverlayToggleCleanup();
 		swapCleanup();
-		deleteCleanup();
 	};
 };

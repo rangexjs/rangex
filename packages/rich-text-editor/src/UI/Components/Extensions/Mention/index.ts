@@ -1,1 +1,1 @@
-export * from "./MentionPopover";
+export * from "./MentionSuggestions";

@@ -1,10 +1,4 @@
-import {
-	createSignal,
-	createUniqueId,
-	For,
-	onCleanup,
-	onMount,
-} from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
 import type { CommandMenuUIPort } from "#adapters";
 import { type CommandMenuItemValue, commandMenuItemsLabel } from "#ports";
 import { useUIPortsContext } from "../App";
@@ -14,7 +8,6 @@ import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 
 interface CommandMenuItemProps {
 	entry: CommandMenuItemEntry;
-	popoverId: string;
 	commandMenuUIPort: CommandMenuUIPort;
 }
 
@@ -29,8 +22,6 @@ const CommandMenuItem = (props: CommandMenuItemProps) => {
 			<button
 				type="button"
 				class="flex w-full items-center gap-2 rounded-sm px-3 py-1.5 text-left text-sm hover:bg-neutral-100 hover:transition-colors focus:bg-neutral-100 active:bg-neutral-200 dark:active:bg-neutral-700 dark:focus:bg-neutral-800 dark:hover:bg-neutral-800"
-				commandfor={props.popoverId}
-				command="hide-popover"
 				on:pointerdown={(event) => event.preventDefault()}
 				onClick={onSelect}
 			>
@@ -45,7 +36,7 @@ export const CommandMenu = () => {
 	const { commandMenuUIPort } = useUIPortsContext();
 
 	if (!commandMenuUIPort) {
-		throw new Error("CommandMenuUIPort can't be null.");
+		return null;
 	}
 
 	const staticEntries = buildCommandMenuActions({
@@ -58,21 +49,23 @@ export const CommandMenu = () => {
 	const [filteredEntries, setFilteredEntries] = createSignal(
 		computeFilteredEntries(commandMenuUIPort.filteredItems),
 	);
+	const [isOpen, setIsOpen] = createSignal(commandMenuUIPort.isOpen);
 
 	onMount(() => {
-		const unsubscribe = commandMenuUIPort.onFilteredItemsUpdate(
+		const unsubscribeFilteredItems = commandMenuUIPort.onFilteredItemsUpdate(
 			(filteredItems) => {
 				setFilteredEntries(computeFilteredEntries(filteredItems));
 			},
 		);
+		const unsubscribeIsOpen = commandMenuUIPort.onIsOpenUpdate(setIsOpen);
 
 		onCleanup(() => {
-			unsubscribe();
+			unsubscribeFilteredItems();
+			unsubscribeIsOpen();
 		});
 	});
 
-	const popoverId = createUniqueId();
-	let popoverEl: HTMLDivElement | undefined;
+	let anchoredEl: HTMLDivElement | undefined;
 	let listEl: HTMLUListElement | undefined;
 
 	const getNeighborButton = (
@@ -115,7 +108,11 @@ export const CommandMenu = () => {
 	};
 
 	const onKeyDown = (event: KeyboardEvent) => {
-		if (!popoverEl?.matches(":popover-open")) {
+		if (!anchoredEl) {
+			throw new Error("AnchorElement not supposed to be undefined.");
+		}
+
+		if (!isOpen()) {
 			return;
 		}
 
@@ -130,10 +127,10 @@ export const CommandMenu = () => {
 		event.preventDefault();
 		event.stopPropagation();
 
-		const shadowRoot = popoverEl.getRootNode();
+		const shadowRoot = anchoredEl.getRootNode();
 
 		if (!(shadowRoot instanceof ShadowRoot)) {
-			throw new Error("PopoverEl supposed to be inside a ShadowRoot.");
+			throw new Error("AnchorElement supposed to be inside a ShadowRoot.");
 		}
 
 		const { activeElement } = shadowRoot;
@@ -155,19 +152,16 @@ export const CommandMenu = () => {
 	return (
 		<div
 			ref={(element) => {
-				popoverEl = element;
-				commandMenuUIPort.setPopover(element);
+				anchoredEl = element;
+				commandMenuUIPort.setAnchoredOverlay(element);
 			}}
-			id={popoverId}
-			popover="manual"
-			class="scrollbar-thin max-h-[min(100%,360px)] min-w-48 max-w-64 rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+			class="scrollbar-thin z-20 max-h-[min(100%,360px)] min-w-48 max-w-64 overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={filteredEntries()}>
 					{(entry) => (
 						<CommandMenuItem
 							entry={entry}
-							popoverId={popoverId}
 							commandMenuUIPort={commandMenuUIPort}
 						/>
 					)}

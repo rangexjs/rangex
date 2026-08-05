@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { LinkPopover } from "#ui-extensions";
+import { LinkCard } from "#ui-extensions";
 import {
 	createOverlayMount,
 	type OnUnwrapFn,
@@ -70,7 +70,7 @@ export class LinkAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: LinkPopover,
+			component: LinkCard,
 			props: { uiPort: this.uiPort },
 		});
 	}
@@ -140,7 +140,7 @@ export class LinkAdapter {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.uiOverlayMount;
 			},
 
@@ -244,7 +244,7 @@ export class LinkAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.editorOverlayMount;
 			},
 
