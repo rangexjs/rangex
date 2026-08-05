@@ -9,19 +9,19 @@ import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "../../../Storage";
-import type { HandleCodeBlockPopoverStateParams } from "./HandleCodeBlockPopoverState-types";
+import type { HandleCodeBlockOverlayStateParams } from "./HandleCodeBlockOverlayState-types";
 
 /**
- * Wires the popover's language/theme/copy actions to the engine.
+ * Wires the overlay's language/theme/copy actions to the engine.
  * Reads the active code block from the shared {@link OverlayAppearanceHandler} —
- * set whenever the popover opens over a new block.
+ * set whenever the overlay opens over a new block.
  */
-export const handleCodeBlockPopoverState = ({
+export const handleCodeBlockOverlayState = ({
 	editorPort,
 	editorAPI,
 	getCurrentBlock,
 	codeHighlighter,
-}: HandleCodeBlockPopoverStateParams) => {
+}: HandleCodeBlockOverlayStateParams) => {
 	const unsubscribeLanguageChange = editorPort.onLanguageChange((language) => {
 		const currentCodeBlock = getCurrentBlock();
 		if (!currentCodeBlock) {

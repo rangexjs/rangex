@@ -1,2 +1,2 @@
-export * from "./CodeBlockPopover";
+export * from "./CodeBlockQuickActions";
 export * from "./CodeBlockToolbarButton";

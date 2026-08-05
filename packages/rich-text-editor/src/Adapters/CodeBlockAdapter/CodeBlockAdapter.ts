@@ -1,5 +1,5 @@
 import { adapterIds } from "#ports";
-import { CodeBlockPopover } from "#ui-extensions";
+import { CodeBlockQuickActions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
 import type {
 	CodeBlockAdapterConstructorParams,
@@ -10,6 +10,7 @@ import type {
 	CodeBlockToolbarButtonState,
 	CodeBlockUIPort,
 	CodeBlockUpdateDarkThemeFn,
+	CodeBlockUpdateIsOpenFn,
 	CodeBlockUpdateLanguageFn,
 	CodeBlockUpdateLightThemeFn,
 	CodeBlockUpdateToolbarButtonFn,
@@ -32,10 +33,13 @@ export class CodeBlockAdapter {
 	#lightTheme = "Light+";
 	#darkTheme = "Dark+";
 
+	#isOpen = false;
+
 	#toolbarButtonListeners: Set<CodeBlockUpdateToolbarButtonFn> = new Set();
 	#languageListeners: Set<CodeBlockUpdateLanguageFn> = new Set();
 	#lightThemeListeners: Set<CodeBlockUpdateLightThemeFn> = new Set();
 	#darkThemeListeners: Set<CodeBlockUpdateDarkThemeFn> = new Set();
+	#isOpenListeners: Set<CodeBlockUpdateIsOpenFn> = new Set();
 
 	#onInsertRequestListeners: Set<OnCodeBlockInsertRequestFn> = new Set();
 	#onCopyListeners: Set<OnCodeBlockCopyFn> = new Set();
@@ -54,7 +58,7 @@ export class CodeBlockAdapter {
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,
-			component: CodeBlockPopover,
+			component: CodeBlockQuickActions,
 			props: { uiPort: this.uiPort },
 		});
 	}
@@ -68,6 +72,7 @@ export class CodeBlockAdapter {
 		language,
 		lightTheme,
 		darkTheme,
+		isOpen,
 	}: UpdateCodeBlockStateParams) {
 		if (toolbarButton !== undefined) {
 			this.#toolbarButton = toolbarButton;
@@ -100,13 +105,21 @@ export class CodeBlockAdapter {
 				listener(this.#darkTheme);
 			}
 		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
+			}
+		}
 	}
 
 	get uiPort(): CodeBlockUIPort {
 		const adapter = this;
 
 		this.#uiPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.uiOverlayMount;
 			},
 
@@ -154,6 +167,11 @@ export class CodeBlockAdapter {
 				return () => adapter.#darkThemeListeners.delete(callback);
 			},
 
+			onIsOpenUpdate: (callback) => {
+				adapter.#isOpenListeners.add(callback);
+				return () => adapter.#isOpenListeners.delete(callback);
+			},
+
 			emitInsertRequest: (params: CodeBlockInsertRequestParams) => {
 				for (const listener of adapter.#onInsertRequestListeners) {
 					listener(params);
@@ -192,7 +210,7 @@ export class CodeBlockAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
-			get popover() {
+			get anchoredOverlay() {
 				return adapter.#overlayMount.editorOverlayMount;
 			},
 

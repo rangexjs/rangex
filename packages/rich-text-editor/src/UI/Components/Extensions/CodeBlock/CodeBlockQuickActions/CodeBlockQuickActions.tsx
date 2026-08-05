@@ -3,11 +3,11 @@ import type { CodeBlockUIPort } from "#adapters";
 import { Icon } from "../../../Icon";
 import { OptionDropdown } from "../../_Utilities";
 
-interface CodeBlockPopoverProps {
+interface CodeBlockQuickActionsProps {
 	uiPort: CodeBlockUIPort;
 }
 
-export const CodeBlockPopover = (props: CodeBlockPopoverProps) => {
+export const CodeBlockQuickActions = (props: CodeBlockQuickActionsProps) => {
 	const uiPort = props.uiPort;
 
 	const languageOptions = uiPort.languages.map((language) => ({
@@ -29,19 +29,7 @@ export const CodeBlockPopover = (props: CodeBlockPopoverProps) => {
 
 	let optionsPopover: HTMLDivElement | undefined;
 
-	onMount(() => {
-		const unsubscribeLanguage = uiPort.onLanguageUpdate(setLanguage);
-		const unsubscribeLightTheme = uiPort.onLightThemeUpdate(setLightTheme);
-		const unsubscribeDarkTheme = uiPort.onDarkThemeUpdate(setDarkTheme);
-
-		onCleanup(() => {
-			unsubscribeLanguage();
-			unsubscribeLightTheme();
-			unsubscribeDarkTheme();
-		});
-	});
-
-	const onBeforeToggle = () => {
+	const closeNestedPopovers = () => {
 		if (!optionsPopover) {
 			throw new Error("OptionsPopover shouldn't be undefined.");
 		}
@@ -50,6 +38,22 @@ export const CodeBlockPopover = (props: CodeBlockPopoverProps) => {
 			optionsPopover.hidePopover();
 		}
 	};
+
+	onMount(() => {
+		const unsubscribeLanguage = uiPort.onLanguageUpdate(setLanguage);
+		const unsubscribeLightTheme = uiPort.onLightThemeUpdate(setLightTheme);
+		const unsubscribeDarkTheme = uiPort.onDarkThemeUpdate(setDarkTheme);
+		// The overlay closing (or reopening over a different code block) doesn't automatically
+		// close this native nested popover — it's an independent top-layer element.
+		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
+
+		onCleanup(() => {
+			unsubscribeLanguage();
+			unsubscribeLightTheme();
+			unsubscribeDarkTheme();
+			unsubscribeIsOpen();
+		});
+	});
 
 	const onCopyClick = (() => {
 		let timeoutId = NaN;
@@ -63,10 +67,8 @@ export const CodeBlockPopover = (props: CodeBlockPopoverProps) => {
 
 	return (
 		<div
-			ref={(el) => uiPort.popover.setElement(el)}
-			popover="manual"
-			class="items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs open:flex dark:border-neutral-700 dark:bg-neutral-900"
-			on:beforetoggle={onBeforeToggle}
+			ref={(el) => uiPort.anchoredOverlay.setElement(el)}
+			class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<button
 				type="button"
