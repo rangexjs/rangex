@@ -2,6 +2,20 @@ import type { EditorAPI, Line } from "rich-text-area";
 import type { LineHandlerEditorPort } from "#adapters";
 import type { GetCurrentLineFn } from "../../_Utilities";
 
+export interface CollectShadowRootsParams {
+	editorAPI: EditorAPI;
+}
+
+export type CollectShadowRootsResult = ShadowRoot[];
+
+export interface FindLineAtPointParams {
+	editorAPI: EditorAPI;
+	clientX: number;
+	clientY: number;
+}
+
+export type FindLineAtPointResult = Line | null;
+
 export type OnLineChangeFn = (line: Line | null) => void;
 
 export interface HandleLineHoverParams {

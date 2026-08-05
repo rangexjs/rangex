@@ -1,9 +1,87 @@
 import type { Line } from "rich-text-area";
 import { createAnchoredOverlayController } from "../../../_Utilities";
 import type {
+	CollectShadowRootsParams,
+	CollectShadowRootsResult,
+	FindLineAtPointParams,
+	FindLineAtPointResult,
 	HandleLineHoverParams,
 	HandleLineHoverResult,
 } from "./HandleLineHover-types";
+
+/**
+ * Collects ShadowRoots upwards from {@link editorAPI}'s ShadowRoot.
+ */
+const collectShadowRoots = ({
+	editorAPI,
+}: CollectShadowRootsParams): CollectShadowRootsResult => {
+	const shadowRoots: ShadowRoot[] = [];
+
+	let current = editorAPI.shadowRoot;
+
+	while (true) {
+		shadowRoots.push(current);
+
+		const root = current.host.getRootNode();
+
+		if (root instanceof ShadowRoot) {
+			current = root;
+			continue;
+		}
+
+		break;
+	}
+
+	return shadowRoots;
+};
+
+/**
+ * Finds the Line based on clientX/clientY.
+ */
+const findLineAtPoint = ({
+	editorAPI,
+	clientX,
+	clientY,
+}: FindLineAtPointParams): FindLineAtPointResult => {
+	const { shadowRoot, rootEditable } = editorAPI;
+	const rangeXHost = shadowRoot.host;
+
+	const shadowRoots = collectShadowRoots({ editorAPI });
+
+	const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
+		shadowRoots,
+	});
+
+	if (!caretPosition) {
+		return null;
+	}
+
+	const { offsetNode } = caretPosition;
+
+	const line = rootEditable.$$childNodes.find((line) =>
+		line.contains(offsetNode),
+	);
+
+	if (line) {
+		return line;
+	}
+
+	const slottedElement = [...rangeXHost.children].find((child) =>
+		child.contains(offsetNode),
+	);
+
+	const assignedSlot = slottedElement?.assignedSlot;
+
+	if (!assignedSlot) {
+		return null;
+	}
+
+	const assignedLine = rootEditable.$$childNodes.find((line) =>
+		line.contains(assignedSlot),
+	);
+
+	return assignedLine ?? null;
+};
 
 /**
  * Tracks which top-level `Line` the pointer is hovering and keeps the line-handler overlay
@@ -49,46 +127,6 @@ export const handleLineHover = ({
 		}, 100);
 	};
 
-	const registerScrollListeners = (
-		element: Element,
-		listener: () => void,
-		signal: AbortSignal,
-	) => {
-		let root = element.getRootNode();
-
-		while (true) {
-			root.addEventListener("scroll", listener, { capture: true, signal });
-
-			if (!(root instanceof ShadowRoot)) {
-				break;
-			}
-
-			root = root.host.getRootNode();
-		}
-
-		if (root !== document) {
-			document.addEventListener("scroll", listener, { capture: true, signal });
-		}
-	};
-
-	const findLineAtPoint = (clientX: number, clientY: number): Line | null => {
-		const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
-			shadowRoots: [editorAPI.shadowRoot],
-		});
-
-		if (!caretPosition) {
-			return null;
-		}
-
-		const { offsetNode } = caretPosition;
-
-		const line = rootEditable.$$childNodes.find((line) =>
-			line.contains(offsetNode),
-		);
-
-		return line ?? null;
-	};
-
 	const hideNestedPopovers = () => {
 		const openPopovers =
 			anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
@@ -112,7 +150,7 @@ export const handleLineHover = ({
 	};
 
 	const updateLineAtPoint = (clientX: number, clientY: number) => {
-		const line = findLineAtPoint(clientX, clientY);
+		const line = findLineAtPoint({ editorAPI, clientX, clientY });
 
 		if (!line) {
 			scheduleHide();
@@ -194,7 +232,13 @@ export const handleLineHover = ({
 		updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
 	};
 
-	registerScrollListeners(anchoredOverlay, onScroll, signal);
+	const shadowRoots = collectShadowRoots({ editorAPI });
+
+	const roots = [document, ...shadowRoots];
+
+	for (const root of roots) {
+		root.addEventListener("scroll", onScroll, { capture: true, signal });
+	}
 
 	return {
 		getCurrentLine: () => currentLine,
