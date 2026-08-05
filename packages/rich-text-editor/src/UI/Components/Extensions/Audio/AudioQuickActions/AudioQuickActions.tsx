@@ -73,8 +73,6 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 		});
 		const unsubscribeIsSwapCardOpen =
 			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
-		// The main overlay closing (or reopening over a different audio) doesn't automatically
-		// close these native nested popovers — they're independent top-layer elements.
 		const unsubscribeIsQuickActionsOpen =
 			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 

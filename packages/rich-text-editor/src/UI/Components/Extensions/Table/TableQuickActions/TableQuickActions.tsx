@@ -186,8 +186,6 @@ export const TableQuickActions = (props: TableQuickActionsProps) => {
 			uiPort.onCellResizingUpdate(setCellResizing);
 		const unsubscribeClearContents =
 			uiPort.onClearContentsUpdate(setClearContents);
-		// The overlay closing doesn't automatically close this native nested popover —
-		// it's an independent top-layer element.
 		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {

@@ -111,8 +111,6 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 		});
 		const unsubscribeIsSwapCardOpen =
 			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
-		// The main overlay closing (or reopening over a different video) doesn't automatically
-		// close these native nested popovers — they're independent top-layer elements.
 		const unsubscribeIsQuickActionsOpen =
 			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 

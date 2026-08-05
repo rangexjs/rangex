@@ -43,8 +43,6 @@ export const CodeBlockQuickActions = (props: CodeBlockQuickActionsProps) => {
 		const unsubscribeLanguage = uiPort.onLanguageUpdate(setLanguage);
 		const unsubscribeLightTheme = uiPort.onLightThemeUpdate(setLightTheme);
 		const unsubscribeDarkTheme = uiPort.onDarkThemeUpdate(setDarkTheme);
-		// The overlay closing (or reopening over a different code block) doesn't automatically
-		// close this native nested popover — it's an independent top-layer element.
 		const unsubscribeIsOpen = uiPort.onIsOpenUpdate(closeNestedPopovers);
 
 		onCleanup(() => {

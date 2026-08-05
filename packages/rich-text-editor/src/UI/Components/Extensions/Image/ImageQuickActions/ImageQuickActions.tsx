@@ -91,8 +91,6 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 		});
 		const unsubscribeIsSwapCardOpen =
 			uiPort.onIsSwapCardOpenUpdate(setIsSwapCardOpen);
-		// The main overlay closing (or reopening over a different image) doesn't automatically
-		// close these native nested popovers — they're independent top-layer elements.
 		const unsubscribeIsQuickActionsOpen =
 			uiPort.onIsQuickActionsOpenUpdate(closeNestedPopovers);
 
