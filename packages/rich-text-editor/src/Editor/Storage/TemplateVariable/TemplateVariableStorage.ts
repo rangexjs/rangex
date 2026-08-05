@@ -1,4 +1,5 @@
 import { templateVariableId, templateVariableRootId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateTemplateVariableRootStorageResult,
 	CreateTemplateVariableStorageParams,
@@ -25,27 +26,17 @@ export const templateVariableKeys = [
 
 export const isTemplateVariableStorage = (
 	storage: unknown,
-): storage is TemplateVariableStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === templateVariableId &&
-	"version" in storage &&
-	storage.version === templateVariableStorageVersion;
+): storage is TemplateVariableStorage => {
+	return isStorage(storage, {
+		id: templateVariableId,
+		version: templateVariableStorageVersion,
+	});
+};
 
 export const validateTemplateVariableStorage = (
 	storage: unknown,
 ): storage is TemplateVariableStorage => {
-	const isValid = isTemplateVariableStorage(storage);
-
-	if (!isValid) {
-		console.warn(
-			"validateTemplateVariableStorage: unexpected data shape",
-			storage,
-		);
-	}
-
-	return isValid;
+	return validateStorage(storage, isTemplateVariableStorage);
 };
 
 export const createTemplateVariableStorage = ({
@@ -86,27 +77,17 @@ export const ensureNodeTemplateVariableStorage = ({
 
 export const isTemplateVariableRootStorage = (
 	storage: unknown,
-): storage is TemplateVariableRootStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === templateVariableRootId &&
-	"version" in storage &&
-	storage.version === templateVariableRootStorageVersion;
+): storage is TemplateVariableRootStorage => {
+	return isStorage(storage, {
+		id: templateVariableRootId,
+		version: templateVariableRootStorageVersion,
+	});
+};
 
 export const validateTemplateVariableRootStorage = (
 	storage: unknown,
 ): storage is TemplateVariableRootStorage => {
-	const isValid = isTemplateVariableRootStorage(storage);
-
-	if (!isValid) {
-		console.warn(
-			"validateTemplateVariableRootStorage: unexpected data shape",
-			storage,
-		);
-	}
-
-	return isValid;
+	return validateStorage(storage, isTemplateVariableRootStorage);
 };
 
 export const createTemplateVariableRootStorage =

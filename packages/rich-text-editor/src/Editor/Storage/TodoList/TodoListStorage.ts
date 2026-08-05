@@ -1,4 +1,5 @@
 import { todoCheckboxId, todoListId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateTodoCheckboxStorageParams,
 	CreateTodoCheckboxStorageResult,
@@ -21,24 +22,17 @@ export const todoListStorageVersion = 1 as const;
 
 export const isTodoListStorage = (
 	storage: unknown,
-): storage is TodoListStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === todoListId &&
-	"version" in storage &&
-	storage.version === todoListStorageVersion;
+): storage is TodoListStorage => {
+	return isStorage(storage, {
+		id: todoListId,
+		version: todoListStorageVersion,
+	});
+};
 
 export const validateTodoListStorage = (
 	storage: unknown,
 ): storage is TodoListStorage => {
-	const isValid = isTodoListStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateTodoListStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isTodoListStorage);
 };
 
 export const createTodoListStorage = (): CreateTodoListStorageResult => ({
@@ -72,24 +66,17 @@ export const todoCheckboxStorageVersion = 1 as const;
 
 export const isTodoCheckboxStorage = (
 	storage: unknown,
-): storage is TodoCheckboxStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === todoCheckboxId &&
-	"version" in storage &&
-	storage.version === todoCheckboxStorageVersion;
+): storage is TodoCheckboxStorage => {
+	return isStorage(storage, {
+		id: todoCheckboxId,
+		version: todoCheckboxStorageVersion,
+	});
+};
 
 export const validateTodoCheckboxStorage = (
 	storage: unknown,
 ): storage is TodoCheckboxStorage => {
-	const isValid = isTodoCheckboxStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateTodoCheckboxStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isTodoCheckboxStorage);
 };
 
 export const todoCheckboxStorageFallbacks: TodoCheckboxStorageFallbacks = {

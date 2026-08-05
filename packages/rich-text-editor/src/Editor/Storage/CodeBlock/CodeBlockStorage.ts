@@ -1,4 +1,5 @@
 import { codeBlockId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CodeBlockStorage,
 	CodeBlockStorageFallbacks,
@@ -14,24 +15,17 @@ export const codeBlockStorageVersion = 1 as const;
 
 export const isCodeBlockStorage = (
 	storage: unknown,
-): storage is CodeBlockStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === codeBlockId &&
-	"version" in storage &&
-	storage.version === codeBlockStorageVersion;
+): storage is CodeBlockStorage => {
+	return isStorage(storage, {
+		id: codeBlockId,
+		version: codeBlockStorageVersion,
+	});
+};
 
 export const validateCodeBlockStorage = (
 	storage: unknown,
 ): storage is CodeBlockStorage => {
-	const isValid = isCodeBlockStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateCodeBlockStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isCodeBlockStorage);
 };
 
 export const codeBlockStorageFallbacks: CodeBlockStorageFallbacks = {

@@ -1,4 +1,5 @@
 import { audioId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	AudioStorage,
 	CreateAudioStorageResult,
@@ -10,24 +11,14 @@ import type {
 
 export const audioStorageVersion = 1 as const;
 
-export const isAudioStorage = (storage: unknown): storage is AudioStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === audioId &&
-	"version" in storage &&
-	storage.version === audioStorageVersion;
+export const isAudioStorage = (storage: unknown): storage is AudioStorage => {
+	return isStorage(storage, { id: audioId, version: audioStorageVersion });
+};
 
 export const validateAudioStorage = (
 	storage: unknown,
 ): storage is AudioStorage => {
-	const isValid = isAudioStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateAudioStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isAudioStorage);
 };
 
 export const createAudioStorage = (): CreateAudioStorageResult => ({
