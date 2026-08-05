@@ -10,7 +10,6 @@ import {
 import { componentsName } from "#ports";
 import {
 	ensureNodeRootStorage,
-	ensureTemplateVariableRootStorage,
 	validateTemplateVariableStorage,
 } from "../../../Storage";
 import {
@@ -76,7 +75,7 @@ export const handleTemplateVariableUpdate = ({
 		const { rootEditable } = editorAPI;
 
 		const rootStorage = ensureNodeRootStorage({ rootEditable });
-		const storage = ensureTemplateVariableRootStorage({ rootStorage });
+		const { templateVariable: storage } = rootStorage;
 
 		if (options.firstName !== undefined) {
 			storage.firstName = options.firstName;

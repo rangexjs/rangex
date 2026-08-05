@@ -1,23 +1,7 @@
 import type { InlineComponent } from "rich-text-area";
 import type { TemplateVariableKind } from "#adapters";
-import type {
-	TemplateVariableId,
-	TemplateVariableRootId,
-} from "../../Constants";
-import type { RootStorage } from "../Root";
-import type {
-	templateVariableKeys,
-	templateVariableRootStorageVersion,
-	templateVariableStorageVersion,
-} from "./TemplateVariableStorage";
-
-type TemplateVariableValue = string | null;
-
-export type TemplateVariableKeys = (typeof templateVariableKeys)[number];
-
-type TemplateVariableValues = {
-	[K in TemplateVariableKeys]: TemplateVariableValue;
-};
+import type { TemplateVariableId } from "../../Constants";
+import type { templateVariableStorageVersion } from "./TemplateVariableStorage";
 
 export interface TemplateVariableStorage {
 	id: TemplateVariableId;
@@ -51,19 +35,3 @@ export interface EnsureNodeTemplateVariableStorageParams {
 
 export interface EnsureNodeTemplateVariableStorageResult
 	extends TemplateVariableStorage {}
-
-// Shared store on RootEditable — single source of truth for all variable values.
-export interface TemplateVariableRootStorage extends TemplateVariableValues {
-	id: TemplateVariableRootId;
-	version: typeof templateVariableRootStorageVersion;
-}
-
-export interface CreateTemplateVariableRootStorageResult
-	extends TemplateVariableRootStorage {}
-
-export interface EnsureTemplateVariableRootStorageParams {
-	rootStorage: RootStorage;
-}
-
-export interface EnsureTemplateVariableRootStorageResult
-	extends TemplateVariableRootStorage {}

@@ -12,7 +12,6 @@ import type {
 	rootId,
 	tableId,
 	templateVariableId,
-	templateVariableRootId,
 	todoCheckboxId,
 	todoListId,
 	videoId,
@@ -31,7 +30,6 @@ export type MentionId = typeof mentionId;
 export type RootId = typeof rootId;
 export type TableId = typeof tableId;
 export type TemplateVariableId = typeof templateVariableId;
-export type TemplateVariableRootId = typeof templateVariableRootId;
 export type TodoCheckboxId = typeof todoCheckboxId;
 export type TodoListId = typeof todoListId;
 export type VideoId = typeof videoId;

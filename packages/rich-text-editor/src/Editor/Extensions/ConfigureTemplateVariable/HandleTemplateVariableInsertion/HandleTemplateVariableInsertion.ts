@@ -1,8 +1,5 @@
 import { createContentLine } from "rich-text-area";
-import {
-	ensureNodeRootStorage,
-	ensureTemplateVariableRootStorage,
-} from "../../../Storage";
+import { ensureNodeRootStorage } from "../../../Storage";
 import { createTemplateVariable } from "../../_Utilities";
 import { resolveTemplateVariableDisplayText } from "../_Utilities";
 import type { HandleTemplateVariableInsertionParams } from "./HandleTemplateVariableInsertion-types";
@@ -15,10 +12,10 @@ export const handleTemplateVariableInsertion = ({
 		const { rootEditable } = editorAPI;
 
 		const rootStorage = ensureNodeRootStorage({ rootEditable });
-		const storage = ensureTemplateVariableRootStorage({ rootStorage });
+
 		const displayText = resolveTemplateVariableDisplayText({
 			type: kind,
-			storage,
+			storage: rootStorage.templateVariable,
 		});
 
 		const templateVariable = createTemplateVariable({
