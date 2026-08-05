@@ -8,9 +8,9 @@ export interface ApplyTokenSpansParams {
 	theme: DualTheme;
 }
 
-export interface HighlightCodeBlockParams {
+export interface ResolveCodeBlockParams {
 	codeBlockEl: HTMLElement;
 	customStorage: unknown;
 }
 
-export type HighlightCodeBlockResult = Promise<void>;
+export type ResolveCodeBlockResult = Promise<void>;

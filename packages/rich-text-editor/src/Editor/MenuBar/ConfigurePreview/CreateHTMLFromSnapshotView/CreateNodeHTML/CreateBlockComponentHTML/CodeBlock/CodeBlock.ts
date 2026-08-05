@@ -6,8 +6,8 @@ import {
 } from "../../../../../../Storage";
 import type {
 	ApplyTokenSpansParams,
-	HighlightCodeBlockParams,
-	HighlightCodeBlockResult,
+	ResolveCodeBlockParams,
+	ResolveCodeBlockResult,
 } from "./CodeBlock-types";
 
 export const applyTokenSpans = ({
@@ -68,10 +68,10 @@ export const applyTokenSpans = ({
 	}
 };
 
-export const highlightCodeBlock = async ({
+export const resolveCodeBlock = async ({
 	codeBlockEl,
 	customStorage,
-}: HighlightCodeBlockParams): HighlightCodeBlockResult => {
+}: ResolveCodeBlockParams): ResolveCodeBlockResult => {
 	const { lang, theme } = ensureCodeBlockStorage({
 		storage: customStorage,
 		fallbacks: codeBlockStorageFallbacks,

@@ -1,10 +1,8 @@
-import { isPartNameMatch, todoCheckboxPart } from "#ports";
 import { setAttributes } from "../_Utilities";
 import type {
 	CreateHTMLLayoutHTMLParams,
 	CreateHTMLLayoutHTMLResult,
 } from "./CreateHTMLLayoutHTML-types";
-import { applyTodoCheckboxOutput } from "./TodoCheckbox";
 
 export const createHTMLLayoutHTML = ({
 	htmlLayoutView,
@@ -15,10 +13,6 @@ export const createHTMLLayoutHTML = ({
 
 	setAttributes({ element: el, attributes });
 	el.append(...childNodes);
-
-	if (isPartNameMatch(todoCheckboxPart.name, el)) {
-		applyTodoCheckboxOutput({ el, view: htmlLayoutView });
-	}
 
 	return el;
 };
