@@ -6,6 +6,7 @@ import {
 	createList,
 } from "rich-text-area";
 import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
+import { createTodoCheckboxStorage } from "../../../../Storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -21,6 +22,7 @@ export const createTodoList = ({
 		createPreLayout: ({ nestedEditable }) => [
 			createHTMLLayout({
 				localName: "input",
+				customStorage: createTodoCheckboxStorage({ checked: false }),
 				domAttrs: {
 					type: "checkbox",
 					[dataPartName]: todoCheckboxPart.name,

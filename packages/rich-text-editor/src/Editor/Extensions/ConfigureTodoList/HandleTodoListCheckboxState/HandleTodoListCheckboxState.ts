@@ -40,10 +40,16 @@ export const handleTodoListCheckboxState = ({
 						throw new Error("TodoCheckbox's type is invalid.");
 					}
 
-					ensureNodeTodoCheckboxStorage({
+					if (!(todoCheckbox instanceof HTMLInputElement)) {
+						throw new Error("TodoCheckbox's type is invalid.");
+					}
+
+					const storage = ensureNodeTodoCheckboxStorage({
 						htmlLayout: todoCheckbox,
 						fallbacks: todoCheckboxStorageFallbacks,
 					});
+
+					todoCheckbox.checked = storage.checked;
 				}
 			}
 		},
@@ -60,11 +66,11 @@ export const handleTodoListCheckboxState = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (!(currentTarget instanceof HTMLInputElement)) {
+				if (currentTarget.$$editorRole !== htmlLayoutName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				if (currentTarget.$$editorRole !== htmlLayoutName) {
+				if (!(currentTarget instanceof HTMLInputElement)) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
@@ -72,6 +78,7 @@ export const handleTodoListCheckboxState = ({
 					htmlLayout: currentTarget,
 					fallbacks: todoCheckboxStorageFallbacks,
 				});
+
 				storage.checked = currentTarget.checked;
 			},
 		},
