@@ -1,5 +1,6 @@
 import { createSnapshotView } from "rich-text-area";
 import type { DualTheme } from "#libs";
+import { createHTMLFromSnapshotView } from "../../CreateHTMLFromSnapshotView";
 import { createHighlightedCode, createHost, formatHTML } from "./_Utilities";
 import type {
 	ConfigurePreviewParams,
@@ -12,7 +13,6 @@ import type {
 	CreateSnapshotParams,
 	CreateSnapshotTextParams,
 } from "./ConfigurePreview-types";
-import { createHTMLFromSnapshotView } from "./CreateHTMLFromSnapshotView";
 
 const theme: DualTheme = { light: "light-plus", dark: "dark-plus" };
 

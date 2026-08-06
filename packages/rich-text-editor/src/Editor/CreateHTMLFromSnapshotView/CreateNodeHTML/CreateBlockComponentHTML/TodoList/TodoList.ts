@@ -1,5 +1,5 @@
 import { todoCheckboxPart } from "#ports";
-import { ensureTodoCheckboxStorage } from "../../../../../../Storage";
+import { ensureTodoCheckboxStorage } from "../../../../Storage";
 import type { ResolveTodoListParams } from "./TodoList-types";
 
 export const resolveTodoList = async ({

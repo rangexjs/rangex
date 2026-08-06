@@ -27,7 +27,7 @@ import {
 	tableSectionName,
 } from "rich-text-area";
 import { assertNever } from "#ports";
-import { getStyleSheetTexts } from "../../../Styles";
+import { getStyleSheetTexts } from "../Styles";
 import type {
 	CreateHTMLFromSnapshotViewParams,
 	CreateHTMLFromSnapshotViewResult,

@@ -3,7 +3,7 @@ import { syntaxHighlighter } from "#libs";
 import {
 	codeBlockStorageFallbacks,
 	ensureCodeBlockStorage,
-} from "../../../../../../Storage";
+} from "../../../../Storage";
 import type {
 	ApplyTokenSpansParams,
 	ResolveCodeBlockParams,
