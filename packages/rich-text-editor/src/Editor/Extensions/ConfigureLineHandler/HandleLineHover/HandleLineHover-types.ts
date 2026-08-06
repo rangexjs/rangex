@@ -16,6 +16,15 @@ export interface FindLineAtPointParams {
 
 export type FindLineAtPointResult = Line | null;
 
+export interface IsPointInsideElementParams {
+	editorAPI: EditorAPI;
+	element: Element;
+	clientX: number;
+	clientY: number;
+}
+
+export type IsPointInsideElementResult = boolean;
+
 export type OnLineChangeFn = (line: Line | null) => void;
 
 export interface HandleLineHoverParams {

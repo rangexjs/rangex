@@ -7,6 +7,8 @@ import type {
 	FindLineAtPointResult,
 	HandleLineHoverParams,
 	HandleLineHoverResult,
+	IsPointInsideElementParams,
+	IsPointInsideElementResult,
 } from "./HandleLineHover-types";
 
 /**
@@ -33,6 +35,29 @@ const collectShadowRoots = ({
 	}
 
 	return shadowRoots;
+};
+
+/**
+ * Whether the point's underlying node (via `caretPositionFromPoint`, piercing shadow roots) falls
+ * inside {@link element}.
+ */
+const isPointInsideElement = ({
+	editorAPI,
+	element,
+	clientX,
+	clientY,
+}: IsPointInsideElementParams): IsPointInsideElementResult => {
+	const shadowRoots = collectShadowRoots({ editorAPI });
+
+	const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
+		shadowRoots,
+	});
+
+	if (!caretPosition) {
+		return false;
+	}
+
+	return element.contains(caretPosition.offsetNode);
 };
 
 /**
@@ -94,13 +119,11 @@ export const handleLineHover = ({
 	onLineChange,
 }: HandleLineHoverParams): HandleLineHoverResult => {
 	const { element: anchoredOverlay } = editorPort.anchoredOverlay;
-	const { rootEditable } = editorAPI;
 	const overlayController = createAnchoredOverlayController({
 		element: anchoredOverlay,
 	});
 
 	let currentLine: Line | null = null;
-	let pointerOver = false;
 	let lastPointerPosition: { clientX: number; clientY: number } | null = null;
 	let hideTimeoutId: ReturnType<typeof setTimeout>;
 
@@ -109,10 +132,6 @@ export const handleLineHover = ({
 	};
 
 	const scheduleHide = () => {
-		if (pointerOver) {
-			return;
-		}
-
 		cancelHide();
 
 		hideTimeoutId = setTimeout(() => {
@@ -151,77 +170,66 @@ export const handleLineHover = ({
 
 	const updateLineAtPoint = (clientX: number, clientY: number) => {
 		const line = findLineAtPoint({ editorAPI, clientX, clientY });
+		const hasOpenPopover =
+			anchoredOverlay.querySelector(":popover-open") !== null;
 
-		if (!line) {
+		if (line && currentLine !== line && !hasOpenPopover) {
+			relocateTo(line);
+		}
+
+		const insideRootEditable = line !== null;
+		const insideLineHandler = isPointInsideElement({
+			editorAPI,
+			element: anchoredOverlay,
+			clientX,
+			clientY,
+		});
+
+		const keepOpen = insideRootEditable || insideLineHandler || hasOpenPopover;
+
+		if (keepOpen) {
+			cancelHide();
+		} else {
 			scheduleHide();
-			return;
 		}
-
-		pointerOver = true;
-		cancelHide();
-
-		if (currentLine === line) {
-			return;
-		}
-
-		relocateTo(line);
 	};
-
-	const unsubscribeEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) => element === rootEditable,
-		eventListener: {
-			type: "pointerenter",
-			listener: () => {
-				pointerOver = true;
-				cancelHide();
-			},
-		},
-	});
-
-	const unsubscribeMove = editorAPI.registerDOMEvent({
-		when: ({ element }) => element === rootEditable,
-		eventListener: {
-			type: "pointermove",
-			listener: (event) => {
-				lastPointerPosition = {
-					clientX: event.clientX,
-					clientY: event.clientY,
-				};
-				updateLineAtPoint(event.clientX, event.clientY);
-			},
-		},
-	});
-
-	const unsubscribeLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) => element === rootEditable,
-		eventListener: {
-			type: "pointerleave",
-			listener: () => {
-				pointerOver = false;
-				scheduleHide();
-			},
-		},
-	});
 
 	const abortController = new AbortController();
 	const { signal } = abortController;
 
-	anchoredOverlay.addEventListener(
-		"pointerenter",
-		() => {
-			pointerOver = true;
-			cancelHide();
-		},
-		{ signal },
-	);
+	const watchPopoverClose = () => {
+		anchoredOverlay.addEventListener(
+			"toggle",
+			(event) => {
+				if (!(event instanceof ToggleEvent) || event.newState !== "closed") {
+					return;
+				}
 
-	anchoredOverlay.addEventListener(
-		"pointerleave",
-		() => {
-			pointerOver = false;
-			scheduleHide();
+				if (!lastPointerPosition) {
+					return;
+				}
+
+				updateLineAtPoint(
+					lastPointerPosition.clientX,
+					lastPointerPosition.clientY,
+				);
+			},
+			{ capture: true, signal },
+		);
+	};
+
+	watchPopoverClose();
+
+	document.addEventListener(
+		"pointermove",
+		(event) => {
+			const { clientX, clientY } = event;
+
+			lastPointerPosition = { clientX, clientY };
+
+			updateLineAtPoint(clientX, clientY);
 		},
-		{ signal },
+		{ capture: true, signal },
 	);
 
 	const onScroll = () => {
@@ -243,9 +251,6 @@ export const handleLineHover = ({
 	return {
 		getCurrentLine: () => currentLine,
 		cleanup: () => {
-			unsubscribeEnter();
-			unsubscribeMove();
-			unsubscribeLeave();
 			abortController.abort();
 			cancelHide();
 		},
