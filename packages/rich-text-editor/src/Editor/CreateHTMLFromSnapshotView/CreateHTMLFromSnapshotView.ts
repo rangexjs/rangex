@@ -27,7 +27,7 @@ import {
 	tableSectionName,
 } from "rich-text-area";
 import { assertNever } from "#ports";
-import { getStyleSheetTexts } from "../Styles";
+import { getStyleSheetText } from "../Styles";
 import type {
 	CreateHTMLFromSnapshotViewParams,
 	CreateHTMLFromSnapshotViewResult,
@@ -253,10 +253,10 @@ export const createHTMLFromSnapshotView = ({
 		throw new Error("RootEditable must produce an HTMLElement.");
 	}
 
-	const { contentStyleSheetText } = getStyleSheetTexts();
+	const styleSheetText = getStyleSheetText({ rxStyle: false });
 
 	const style = document.createElement("style");
-	style.textContent = snapshotView.styles + contentStyleSheetText;
+	style.textContent = snapshotView.styles + styleSheetText;
 
 	const settled = Promise.allSettled(pendingTasks).then(() => undefined);
 

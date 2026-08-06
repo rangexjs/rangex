@@ -29,7 +29,6 @@ details {
 	}
 
 	& > summary [data-rx-editor-role="detached-context"]::part(chevron) {
-		cursor: pointer;
 		transition: rotate 300ms;
 	}
 
@@ -45,7 +44,6 @@ details {
 		cursor: pointer;
 
 		& > [data-rx-editor-role="nested-editable"] {
-			cursor: text;
 			width: 100%;
 		}
 

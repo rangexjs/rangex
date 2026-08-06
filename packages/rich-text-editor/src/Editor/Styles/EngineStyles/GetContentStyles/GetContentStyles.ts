@@ -1,4 +1,6 @@
-import colors from "../Colors.css?inline";
+import colors from "../Base/Colors.css?inline";
+import globalContentStyles from "../Base/EngineGlobalStyles.css?inline";
+import fontStyles from "../Base/FontStyles.css?inline";
 import accordionItem from "../Components/AccordionItem.css?inline";
 import blockQuote from "../Components/BlockQuote.css?inline";
 import codeBlock from "../Components/CodeBlock.css?inline";
@@ -14,8 +16,6 @@ import video from "../Components/Video.css?inline";
 import blockComponentLine from "../EditorElements/BlockComponentLine.css?inline";
 import contentLine from "../EditorElements/ContentLine.css?inline";
 import glyphFormatter from "../EditorElements/GlyphFormatter.css?inline";
-import fontStyles from "../FontStyles.css?inline";
-import globalContentStyles from "../GlobalContentStyles.css?inline";
 
 export const getContentStyles = () => {
 	const styles =
