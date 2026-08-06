@@ -37,8 +37,8 @@
 
 						&::before {
 							content: "✓";
-							font-family: "Inter", sans-serif;
-							font-size: 14px;
+							font-family: system-ui, sans-serif;
+							font-size: 12px;
 							font-weight: 600;
 							color: transparent;
 							line-height: 1;
