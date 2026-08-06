@@ -249,11 +249,10 @@ const updateCodeBlockColors = async ({
 	const fgLight = foregrounds[theme.light];
 	const fgDark = foregrounds[theme.dark];
 
-	blockComponent.style.background = `light-dark(${bgLight}, ${bgDark})`;
-	blockComponent.style.setProperty(
-		"--rx-line-number-color",
-		`light-dark(${fgLight}, ${fgDark})`,
-	);
+	blockComponent.style.setProperty("--bg-light", bgLight);
+	blockComponent.style.setProperty("--bg-dark", bgDark);
+	blockComponent.style.setProperty("--fg-light", fgLight);
+	blockComponent.style.setProperty("--fg-dark", fgDark);
 
 	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines, theme });
 };

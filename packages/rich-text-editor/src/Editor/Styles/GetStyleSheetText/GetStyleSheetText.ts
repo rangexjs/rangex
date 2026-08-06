@@ -1,6 +1,7 @@
 import {
 	AccordionItem,
 	AccordionItemRx,
+	AttributeStyles,
 	BlockComponentLine,
 	BlockQuote,
 	CodeBlock,
@@ -25,7 +26,7 @@ import InteractiveStyles from "../InteractiveStyles.css?inline";
 import type { GetStyleSheetTextParams } from "./GetStyleSheetText-types";
 
 export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
-	const baseText = Colors + FontStyles + EngineGlobalStyles;
+	const baseText = AttributeStyles + Colors + FontStyles + EngineGlobalStyles;
 
 	const componentText =
 		AccordionItem +

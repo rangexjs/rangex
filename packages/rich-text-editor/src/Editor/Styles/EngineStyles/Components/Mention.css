@@ -1,12 +1,12 @@
 [data-rx-editor-role="inline-component"] {
 	&:where([data-rx-component-name="mention"]) {
-		padding-inline: 2px;
+		padding: 2px 4px;
 		border-radius: 2px;
 		background-color: light-dark(
 			color(from var(--color-primary-500) srgb r g b / 0.2),
-			color(from var(--color-primary-500) srgb r g b / 0.3)
+			color(from var(--color-primary-500) srgb r g b / 0.2)
 		);
 		color: var(--color-primary-500);
-		font-weight: 500;
+		font-weight: 600;
 	}
 }

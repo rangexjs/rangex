@@ -1,5 +1,15 @@
-[data-rx-editor-role="block-component"] {
-	&[data-rx-component-name="list"] {
-		width: 100%;
+[data-rx-editor-role="block-component-line"] {
+	&:has([data-rx-component-name="list"]) {
+		margin-block: 8px;
+	}
+
+	[data-rx-editor-role="block-component"] {
+		&[data-rx-component-name="list"] {
+			width: 100%;
+		}
+
+		& > :where(ul, ol) {
+			margin: 0;
+		}
 	}
 }
