@@ -16,7 +16,7 @@ Editor logic is fully separated from content: the output of RangeX is pure HTML 
 
 The topmost `ScopedEditable` that is editable. Walking up the tree from any node, the highest `ScopedEditable` where the editable condition still holds is the `EditingRoot`.
 
-A `NestedEditable` with `contenteditable="true"` nested inside a `NestedContext` with `contenteditable="false"` becomes its own `EditingRoot` — the non-editable ancestor stops the upward walk.
+A `NestedEditable` with `contenteditable="true"` nested inside a `Component` with `contenteditable="false"` becomes its own `EditingRoot` — the non-editable ancestor stops the upward walk.
 
 ```html
 <div contenteditable="false">
@@ -44,7 +44,7 @@ The topmost `contenteditable="false"` ancestor of a non-editable node. It is the
 </div>
 ```
 
-Relevant in selection validation (section 8): when the selection anchor is inside a `Non-EditingRoot`, the focus is constrained to stay within the same non-editable boundary. Also relevant to `$$isCrossable` on `NestedContext` nodes — crossing into a component's content is only possible when the component is fully editable (not inside a `Non-EditingRoot`).
+Relevant in selection validation (section 8): when the selection anchor is inside a `Non-EditingRoot`, the focus is constrained to stay within the same non-editable boundary. Also relevant to `$$isCrossable` on `Component` nodes — crossing into a component's content is only possible when the component is fully editable (not inside a `Non-EditingRoot`).
 
 ### Outermost X
 
@@ -65,18 +65,18 @@ The shallowest `X` descendant within a given scope — the first `X` encountered
 </div>
 ```
 
-This term is used throughout the schema rules — for example, "each outermost `NestedEditable` inside a `BlockNestedContext` must have `$content.type = "default"`" means the rule applies to the direct-child `NestedEditable`s of the `BlockNestedContext`, not to any `NestedEditable`s nested deeper inside them.
+This term is used throughout the schema rules — for example, "each outermost `NestedEditable` inside a `BlockComponent` must have `$content.type = "default"`" means the rule applies to the direct-child `NestedEditable`s of the `BlockComponent`, not to any `NestedEditable`s nested deeper inside them.
 
 ### EditorArea
 
-The set of all `ContentFlowNode`s within a `ScopedEditable`. A `NestedContext` itself belongs to the `EditorArea`, but its descendants do not — unless they are inside a `NestedEditable` within it.
+The set of all `ContentFlowNode`s within a `ScopedEditable`. A `Component` itself belongs to the `EditorArea`, but its descendants do not — unless they are inside a `NestedEditable` within it.
 
 ```html
 <!-- EditorArea: root-editable -->
 <root-editable>
 	<content-line>                  <!-- ✓ ContentFlowNode -->
 		#BasicText                  <!-- ✓ ContentFlowNode -->
-		<inline-nested-context>     <!-- ✓ ContentFlowNode (the NestedContext itself is included) -->
+		<inline-component>     <!-- ✓ ContentFlowNode (the Component itself is included) -->
 
 			<!-- ✗ not part of this EditorArea (LayoutUnit descendants are excluded) -->
 			<html-layout>
@@ -86,7 +86,7 @@ The set of all `ContentFlowNode`s within a `ScopedEditable`. A `NestedContext` i
 				</nested-editable>
 			</html-layout>
 
-		</inline-nested-context>
+		</inline-component>
 	</content-line>
 </root-editable>
 ```
@@ -99,19 +99,19 @@ A group of `EditorArea`s that share the same `EditingRoot`.
 <!-- EditorZone A (EditingRoot = root-editable) -->
 <root-editable contenteditable="true">
 	<content-line>
-		<inline-nested-context contenteditable="inherit">
+		<inline-component contenteditable="inherit">
 			<!-- EditorZone A: "inherit" → same EditingRoot as root-editable -->
 			<nested-editable contenteditable="true">
 				<content-line>#ContentLineChild</content-line>
 			</nested-editable>
-		</inline-nested-context>
+		</inline-component>
 
-		<inline-nested-context contenteditable="false">
+		<inline-component contenteditable="false">
 			<!-- EditorZone B: "false" → different EditingRoot -->
 			<nested-editable contenteditable="true">
 				<content-line>#ContentLineChild</content-line>
 			</nested-editable>
-		</inline-nested-context>
+		</inline-component>
 	</content-line>
 </root-editable>
 ```
@@ -187,22 +187,22 @@ type EditorElement =
   | ScopedEditable
   | Line
   | GlyphFormatter
-  | NestedContext
-  | BlockNestedContextTextHolder
+  | Component
+  | BlockComponentTextHolder
   | LayoutUnit
   | DetachedContext
 
 type ScopedEditable = RootEditable | NestedEditable
-type Line           = ContentLine | BlockNestedContextLine
-type NestedContext  = InlineNestedContext | BlockNestedContext
+type Line           = ContentLine | BlockComponentLine
+type Component  = InlineComponent | BlockComponent
 type LayoutUnit     =
   | HTMLLayout | SVGLayout | MathMLLayout
   | List | ListItem
   | Table | TableSection | TableRow | TableCell | TableCol | TableColGroup
 
 // Text categories
-type EditorText         = BeamText | BasicText | OneVisualUnitText | NestedContextText
-type NestedContextText  = InlineNestedContextText | BlockNestedContextText
+type EditorText         = BeamText | BasicText | OneVisualUnitText | ComponentText
+type ComponentText  = InlineComponentText | BlockComponentText
 
 // Cross-cutting categories
 
@@ -210,22 +210,25 @@ type NestedContextText  = InlineNestedContextText | BlockNestedContextText
 type ContentFlowNode = Exclude<EditorNode, LayoutUnit | DetachedContext>
 
 /** Elements that carry an EditState (contenteditable logic). */
-type EditStateElement = ScopedEditable | NestedContext | List
+type EditStateElement = ScopedEditable | Component | List
+
+/** The Line-level anchor of a nested component: an InlineComponent, or the BlockComponentLine of a BlockComponent. */
+type ComponentTop = InlineComponent | BlockComponentLine
 
 /** Elements that support StructuredStyle (CSS properties via API). */
 type StructuredStyleElement = ContentLine | GlyphFormatter
 
 /** ContentFlowNodes where a boundary-point selection is meaningful. */
-type SelectableNode = EditorText | NestedContext
+type SelectableNode = EditorText | Component
 
 /** Texts that can carry inline formatting (children of GlyphFormatter). */
 type FormattableText = BasicText | OneVisualUnitText
 
 /** SelectableNodes where the offset within the node matters. */
-type RangeSensitiveNode = FormattableText | NestedContext
+type RangeSensitiveNode = FormattableText | Component
 
 /** SelectableNodes where the offset has no impact. */
-type RangeNeutralNode = BeamText | NestedContextText
+type RangeNeutralNode = BeamText | ComponentText
 
 // Utility collections
 type FilledContentLineChild = Exclude<ContentLineChild, BeamText>
@@ -258,7 +261,7 @@ Every EditorNode exposes the following traversal properties. All types are narro
 ```ts
 type RootEditableParent  = null
 type RootEditableSibling = null
-type RootEditableChild   = ContentLine | BlockNestedContextLine
+type RootEditableChild   = ContentLine | BlockComponentLine
 ```
 
 The top-level container for all editor content. Every `EditorNode` tree lives under exactly one `RootEditable`. It owns one `LiveBoundaryPoints` instance — analogous to how `document` owns the `Selection API`.
@@ -275,7 +278,7 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 
 - **`$$contentLineLocalNamesStyle`** *(get/set)* — `{ p, h1, h2, h3, h4, h5, h6 }` where each key maps to a `ContentLineStructuredStyle`. This is the **default style** applied to a block `ContentLine` when no explicit style is defined on it. Setting this does not override styles already set on existing lines — it only affects lines whose style is unset. `"span"` ContentLines (inline context) are not covered by this mapping and carry no default styles.
 
-- **`$$allowedComponents`** *(get/set)* — `string[] | null`. Whitelist of allowed component names (the string identifier of an `InlineNestedContext` or `BlockNestedContext`). When a component is not in the list, inserting it causes it to be **unwrapped** by the schema — the component element is removed and only its text content is kept. `null` = all components allowed.
+- **`$$allowedComponents`** *(get/set)* — `string[] | null`. Whitelist of allowed component names (the string identifier of an `InlineComponent` or `BlockComponent`). When a component is not in the list, inserting it causes it to be **unwrapped** by the schema — the component element is removed and only its text content is kept. `null` = all components allowed.
 
 - **`$$allowedContentLineLocalNames`** *(get/set)* — `BlockContentLineLocalName[] | null`. Restricts which block `ContentLine` localNames (`"p"`, `"h1"`–`"h6"`) are valid in this editable. Violations are schema-enforced. `null` = all allowed. `"span"` ContentLines in inline NestedEditables are never subject to this constraint.
 
@@ -285,9 +288,9 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 
 - **`$$allowedGlyphFormatterInlineTags`** *(get/set)* — `GlyphFormatterInlineTag[] | null`. Restricts which inline format tags (e.g. `"strong"`, `"em"`) may be applied. `null` = all allowed.
 
-- **`$$prepend(...lines)`** — inserts `ContentLine | BlockNestedContextLine` nodes at the beginning of the `RootEditable`.
+- **`$$prepend(...lines)`** — inserts `ContentLine | BlockComponentLine` nodes at the beginning of the `RootEditable`.
 
-- **`$$append(...lines)`** — inserts `ContentLine | BlockNestedContextLine` nodes at the end of the `RootEditable`.
+- **`$$append(...lines)`** — inserts `ContentLine | BlockComponentLine` nodes at the end of the `RootEditable`.
 
 ### NestedEditable
 
@@ -296,16 +299,16 @@ The top-level container for all editor content. Every `EditorNode` tree lives un
 - **Category:** `ScopedEditable`
 
 ```ts
-type NestedEditableParent  = InlineNestedContext | BlockNestedContext | LayoutUnit
+type NestedEditableParent  = InlineComponent | BlockComponent | LayoutUnit
 type NestedEditableSibling = NestedEditable | LayoutUnit | DetachedContext
-type NestedEditableChild   = ContentLine | BlockNestedContextLine
+type NestedEditableChild   = ContentLine | BlockComponentLine
 ```
 
 An editable region nested inside a component. Unlike `RootEditable`, it has a parent and can be placed inline or as a block.
 
-**`$display`** — `"block multi-line" | "block single-line" | "inline"`. In addition to the block variants available on `RootEditable`, `NestedEditable` can also be `"inline"` when it lives inside an `InlineNestedContext`.
+**`$display`** — `"block multi-line" | "block single-line" | "inline"`. In addition to the block variants available on `RootEditable`, `NestedEditable` can also be `"inline"` when it lives inside an `InlineComponent`.
 
-**`$editState`** — `"true" | "false" | "inherit"`. The `"inherit"` value means the editable state follows the parent's resolved state. This is the typical value for `NestedEditable`s inside components — the parent `InlineNestedContext` or `BlockNestedContext` controls editability.
+**`$editState`** — `"true" | "false" | "inherit"`. The `"inherit"` value means the editable state follows the parent's resolved state. This is the typical value for `NestedEditable`s inside components — the parent `InlineComponent` or `BlockComponent` controls editability.
 
 **`$content`** — describes the semantic role of this editable region:
 
@@ -323,7 +326,7 @@ An editable region nested inside a component. Unlike `RootEditable`, it has a pa
 
 - **`$$content`** *(readonly)* — the `NestedEditableContent` object describing this editable's role.
 - **`$$display`** *(readonly)* — the display mode. Set at construction time.
-- **`$$prepend(...children)`** / **`$$append(...children)`** — insert `ContentLine | BlockNestedContextLine` nodes.
+- **`$$prepend(...children)`** / **`$$append(...children)`** — insert `ContentLine | BlockComponentLine` nodes.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `NestedEditable | LayoutUnit | DetachedContext` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
 - **`$$remove()`** — remove this node from its parent.
@@ -336,14 +339,14 @@ An editable region nested inside a component. Unlike `RootEditable`, it has a pa
 
 ```ts
 type ContentLineParent  = RootEditable | NestedEditable
-type ContentLineSibling = ContentLine | BlockNestedContextLine
+type ContentLineSibling = ContentLine | BlockComponentLine
 type ContentLineChild   =
   | BeamText
   | GlyphFormatter
   | BasicText
   | OneVisualUnitText
-  | InlineNestedContext
-  | InlineNestedContextText
+  | InlineComponent
+  | InlineComponentText
 ```
 
 The main content container. Every paragraph, heading, or single-line of text lives in a `ContentLine`. Its `localName` maps directly to the HTML tag used in the DOM and in serialized output.
@@ -368,11 +371,11 @@ These are the only CSS properties settable on a `ContentLine` via the API. Appli
 
 - **`$$localName`** *(readonly)* — `ContentLineLocalName`: `"p"` | `"h1"`–`"h6"` for block ContentLines, `"span"` for inline ContentLines.
 - **`$$display`** *(readonly)* — `"block"` or `"inline"`.
-- **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockNestedContextLine` nodes adjacent to this one.
+- **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockComponentLine` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
 - **`$$remove()`** — remove this node from its parent.
 
-> Note: `ContentLine` has no `$$append`/`$$prepend`. Its inline children (text nodes, `GlyphFormatter`s, `InlineNestedContext`s) are managed through the editor API (`insertNode`, `updateSelectionStyles`, `wrapInto`), not via direct child manipulation.
+> Note: `ContentLine` has no `$$append`/`$$prepend`. Its inline children (text nodes, `GlyphFormatter`s, `InlineComponent`s) are managed through the editor API (`insertNode`, `updateSelectionStyles`, `wrapInto`), not via direct child manipulation.
 
 ### GlyphFormatter
 
@@ -382,7 +385,7 @@ These are the only CSS properties settable on a `ContentLine` via the API. Appli
 
 ```ts
 type GlyphFormatterParent  = ContentLine
-type GlyphFormatterSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineNestedContext
+type GlyphFormatterSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineComponent
 type GlyphFormatterChild   = BasicText | OneVisualUnitText
 ```
 
@@ -422,16 +425,16 @@ Set via `rootEditableFrom: { type: "node", glyphFormatterInlineTagsOrder: [...] 
 
 `GlyphFormatter` has no node-specific public methods. Consumers never manipulate it directly — all formatting is applied and read through `updateSelectionStyles` and the `selectionStylesChange` event on the `EditorAPI`.
 
-### InlineNestedContext
+### InlineComponent
 
 - **HTML element:** `span`
-- **`data-editor-role`:** `inline-nested-context`
-- **Category:** `NestedContext`
+- **`data-editor-role`:** `inline-component`
+- **Category:** `Component`
 
 ```ts
-type InlineNestedContextParent  = ContentLine
-type InlineNestedContextSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineNestedContextText
-type InlineNestedContextChild   = NestedEditable | LayoutUnit | DetachedContext
+type InlineComponentParent  = ContentLine
+type InlineComponentSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineComponentText
+type InlineComponentChild   = NestedEditable | LayoutUnit | DetachedContext
 ```
 
 The inline component primitive. Used to build any inline component — mentions, links, template variables, spoilers, embeds, etc. Lives directly inside a `ContentLine`.
@@ -440,9 +443,9 @@ The inline component primitive. Used to build any inline component — mentions,
 - `"custom"` — general purpose inline component. Can contain zero or more `NestedEditable` nodes, each with `$content.type: "default"` and `$display: "inline"`.
 - `"linked-characters"` — the component's identity is tied to its text (e.g. a resolved mention). Must contain exactly one `NestedEditable` with `$content: { type: "linked-characters", unwrap: ... }` and `$display: "inline"`.
 
-**`$editState`** — `"false" | "inherit"`. The `InlineNestedContext` itself is never the editable root — editability is delegated to its `NestedEditable` children. `"inherit"` means the children's editability follows the parent `ContentLine`'s editable state.
+**`$editState`** — `"false" | "inherit"`. The `InlineComponent` itself is never the editable root — editability is delegated to its `NestedEditable` children. `"inherit"` means the children's editability follows the parent `ContentLine`'s editable state.
 
-**`InlineNestedContextText` sentinels** — An `InlineNestedContextText` is automatically inserted on any side of the `InlineNestedContext` that has no sibling. This gives the caret a valid text boundary point to land on adjacent to the component during navigation.
+**`InlineComponentText` sentinels** — An `InlineComponentText` is automatically inserted on any side of the `InlineComponent` that has no sibling. This gives the caret a valid text boundary point to land on adjacent to the component during navigation.
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
@@ -450,7 +453,7 @@ The inline component primitive. Used to build any inline component — mentions,
 - **`$$content`** *(readonly)* — the content type of this component.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — when `true`, the component is selected as a unit before being removed (e.g. on backspace/delete), giving the user visual feedback before deletion.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — when `true`, navigating the caret into the component selects it as a whole unit rather than entering it.
-- **`$$isFullyEditable`** *(readonly)* — `true` when the `InlineNestedContext` itself is editable (`$isEditStateEditable`) **and** every direct `NestedEditable` child is also editable. Both conditions must hold.
+- **`$$isFullyEditable`** *(readonly)* — `true` when the `InlineComponent` itself is editable (`$isEditStateEditable`) **and** every direct `NestedEditable` child is also editable. Both conditions must hold.
 - **`$$isCrossable`** *(readonly)* — `true` when `$content.type === "linked-characters"` and `$isFullyEditable` is `true`. Controls what happens when the caret is **outside** the component and a deletion key (backspace/delete) is pressed toward it:
   - `false` — the component is treated as an atomic unit; the entire component is removed in one operation.
   - `true` — the editor crosses into the component's content and removes characters one by one, as if the component boundary were transparent.
@@ -459,25 +462,25 @@ The inline component primitive. Used to build any inline component — mentions,
 - **`$$unwrap()`** — dismantles the component and reinserts its inline content into the parent `ContentLine`.
 - **`$$prepend(...children)`** / **`$$append(...children)`** — insert `NestedEditable | LayoutUnit | DetachedContext` children.
 
-### BlockNestedContext
+### BlockComponent
 
 - **HTML element:** `div`
-- **`data-editor-role`:** `block-nested-context`
-- **Category:** `NestedContext`
+- **`data-editor-role`:** `block-component`
+- **Category:** `Component`
 
 ```ts
-type BlockNestedContextParent  = BlockNestedContextLine
-type BlockNestedContextSibling = BlockNestedContextTextHolder
-type BlockNestedContextChild   = NestedEditable | LayoutUnit | DetachedContext
+type BlockComponentParent  = BlockComponentLine
+type BlockComponentSibling = BlockComponentTextHolder
+type BlockComponentChild   = NestedEditable | LayoutUnit | DetachedContext
 ```
 
-The block component primitive. Used to build any block-level component — codeblocks, blockquotes, collapsibles, etc. Unlike `InlineNestedContext`, a `BlockNestedContext` never sits directly inside a `ContentLine` — it always lives inside a `BlockNestedContextLine`, flanked by a `BlockNestedContextTextHolder` on each side:
+The block component primitive. Used to build any block-level component — codeblocks, blockquotes, collapsibles, etc. Unlike `InlineComponent`, a `BlockComponent` never sits directly inside a `ContentLine` — it always lives inside a `BlockComponentLine`, flanked by a `BlockComponentTextHolder` on each side:
 
 ```html
-<div data-editor-role="block-nested-context-line">
-	<span data-editor-role="block-nested-context-text-holder">#BlockNestedContextText</span>
-	<div  data-editor-role="block-nested-context">...</div>
-	<span data-editor-role="block-nested-context-text-holder">#BlockNestedContextText</span>
+<div data-editor-role="block-component-line">
+	<span data-editor-role="block-component-text-holder">#BlockComponentText</span>
+	<div  data-editor-role="block-component">...</div>
+	<span data-editor-role="block-component-text-holder">#BlockComponentText</span>
 </div>
 ```
 
@@ -486,66 +489,66 @@ The block component primitive. Used to build any block-level component — codeb
 - `{ type: "list" }` — must contain exactly one `List`. No other `NestedEditable` outside the `List`.
 - `{ type: "styled-block" }` — must contain exactly one `NestedEditable` with `$content.type: "default"`.
 
-**`$editState`** — `"false" | "inherit"`. Same semantics as `InlineNestedContext` — the component itself is never the editable root; editability is delegated to its `NestedEditable` children.
+**`$editState`** — `"false" | "inherit"`. Same semantics as `InlineComponent` — the component itself is never the editable root; editability is delegated to its `NestedEditable` children.
 
-**`$$isCrossable`** — `true` when `$content.type` is `"list"` or `"styled-block"` and `$isFullyEditable` is `true`. Same deletion semantics as on `InlineNestedContext`: when the caret is outside and a deletion key is pressed toward it, `false` removes the entire component atomically; `true` crosses into the content and removes characters one by one. When the caret is already inside, deletion always operates character by character.
+**`$$isCrossable`** — `true` when `$content.type` is `"list"` or `"styled-block"` and `$isFullyEditable` is `true`. Same deletion semantics as on `InlineComponent`: when the caret is outside and a deletion key is pressed toward it, `false` removes the entire component atomically; `true` crosses into the content and removes characters one by one. When the caret is already inside, deletion always operates character by character.
 
-**Public API** (inherits `DOMPublicPropsBase` and `NestedContextPublicProps`):
+**Public API** (inherits `DOMPublicPropsBase` and `ComponentPublicProps`):
 
 - **`$$componentName`** *(readonly)* — string identifier for this component type.
 - **`$$content`** *(readonly)* — the content type.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — select the component as a unit before removal.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — select as a unit when the caret navigates into it.
-- **`$$isFullyEditable`** *(readonly)* — `true` when the `BlockNestedContext` itself and all direct `NestedEditable` children are editable.
+- **`$$isFullyEditable`** *(readonly)* — `true` when the `BlockComponent` itself and all direct `NestedEditable` children are editable.
 - **`$$isCrossable`** *(readonly)* — see above.
 - **`$$unwrap()`** — dismantles the component and reinserts its `Line` children into the parent `ScopedEditable`.
 - **`$$prepend(...children)`** / **`$$append(...children)`** — insert `NestedEditable | LayoutUnit | DetachedContext` children.
 
-### BlockNestedContextLine
+### BlockComponentLine
 
 - **HTML element:** `div`
-- **`data-editor-role`:** `block-nested-context-line`
+- **`data-editor-role`:** `block-component-line`
 - **Category:** `Line`
 
 ```ts
-type BlockNestedContextLineParent  = RootEditable | NestedEditable
-type BlockNestedContextLineSibling = ContentLine | BlockNestedContextLine
-type BlockNestedContextLineChild   = BlockNestedContextTextHolder | BlockNestedContext
+type BlockComponentLineParent  = RootEditable | NestedEditable
+type BlockComponentLineSibling = ContentLine | BlockComponentLine
+type BlockComponentLineChild   = BlockComponentTextHolder | BlockComponent
 ```
 
 The wrapper `Line` for a block component. Sits at the same level as `ContentLine` — a direct child of a `ScopedEditable`. It has a fixed internal structure that is always:
 
 ```html
-<div data-editor-role="block-nested-context-line">
-	<span data-editor-role="block-nested-context-text-holder">#BlockNestedContextText</span>
-	<div  data-editor-role="block-nested-context">...</div>
-	<span data-editor-role="block-nested-context-text-holder">#BlockNestedContextText</span>
+<div data-editor-role="block-component-line">
+	<span data-editor-role="block-component-text-holder">#BlockComponentText</span>
+	<div  data-editor-role="block-component">...</div>
+	<span data-editor-role="block-component-text-holder">#BlockComponentText</span>
 </div>
 ```
 
-Consumers never construct this structure manually — it is created automatically by `createBlockNestedContextLine`, which also creates the two `BlockNestedContextTextHolder`s.
+Consumers never construct this structure manually — it is created automatically by `createBlockComponentLine`, which also creates the two `BlockComponentTextHolder`s.
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockNestedContextLine` nodes adjacent to this one.
+- **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `ContentLine | BlockComponentLine` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
 - **`$$remove()`** — remove this node from its parent.
 
 > Note: no `$$append`/`$$prepend` — the internal structure is fixed and managed by the framework.
 
-### BlockNestedContextTextHolder
+### BlockComponentTextHolder
 
 - **HTML element:** `span`
-- **`data-editor-role`:** `block-nested-context-text-holder`
+- **`data-editor-role`:** `block-component-text-holder`
 - **Category:** standalone (part of `EditorElement`)
 
 ```ts
-type BlockNestedContextTextHolderParent  = BlockNestedContextLine
-type BlockNestedContextTextHolderSibling = BlockNestedContext
-type BlockNestedContextTextHolderChild   = BlockNestedContextText
+type BlockComponentTextHolderParent  = BlockComponentLine
+type BlockComponentTextHolderSibling = BlockComponent
+type BlockComponentTextHolderChild   = BlockComponentText
 ```
 
-A structural sentinel element. Always contains exactly one `BlockNestedContextText`, and exists purely to give the caret valid text boundary points on either side of the `BlockNestedContext` — analogous to the role `InlineNestedContextText` plays around an `InlineNestedContext`.
+A structural sentinel element. Always contains exactly one `BlockComponentText`, and exists purely to give the caret valid text boundary points on either side of the `BlockComponent` — analogous to the role `InlineComponentText` plays around an `InlineComponent`.
 
 Consumers never interact with this node directly. It is created and managed entirely by the framework.
 
@@ -558,19 +561,20 @@ Consumers never interact with this node directly. It is created and managed enti
 - **Category:** standalone (part of `EditorElement`, excluded from `ContentFlowNode`)
 
 ```ts
-type DetachedContextParent  = InlineNestedContext | BlockNestedContext | LayoutUnit
+type DetachedContextParent  = InlineComponent | BlockComponent | LayoutUnit
 type DetachedContextSibling = NestedEditable | LayoutUnit | DetachedContext
 type DetachedContextChild   = never
 ```
 
-The schema-free escape hatch. Its `EditorNode` child type is `never` — from the schema's perspective it has no children. Instead, it owns a **shadow DOM** (`$$shadowRoot`) where schema rules are not enforced. The consumer can freely manipulate the DOM structure inside it using standard DOM APIs (`.appendChild`, `.remove`, etc.) and place any content: `Element`, `Text`, or `Comment` nodes — MathML, video, iframes, dialogs, popovers, whatever the use case requires.
+The schema-free escape hatch. Its `EditorNode` child type is `never` — from the schema's perspective it has no children. Instead, unless `$$localName` is `"slot"`, it owns a **shadow DOM** — exposed through the standard `shadowRoot` property `DetachedContext` inherits from `HTMLElement` — where schema rules are not enforced. The consumer can freely manipulate the DOM structure inside it using standard DOM APIs (`.appendChild`, `.remove`, etc.) and place any content: `Element`, `Text`, or `Comment` nodes — MathML, video, iframes, dialogs, popovers, whatever the use case requires.
 
 No EditorNodes, no `LiveBoundaryPoints`, no editor interaction logic applies inside the shadow DOM. Useful for content that should render visually inside the editor but sit entirely outside its editing model.
+
+A `"slot"` element can't host a shadow root, so a slot-based `DetachedContext` has no shadow DOM at all — its native `shadowRoot` property is always `null`.
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
 - **`$$localName`** *(readonly)* — `"div"`, `"span"`, or `"slot"`.
-- **`$$shadowRoot`** *(readonly)* — the `ShadowRoot` where consumer DOM content lives. Manipulate this directly with standard DOM APIs.
 - **`$$before(...siblings)`** / **`$$after(...siblings)`** — insert `NestedEditable | LayoutUnit | DetachedContext` nodes adjacent to this one.
 - **`$$replaceWith(...replacements)`** — replace this node in the tree.
 - **`$$remove()`** — remove this node from its parent.
@@ -589,7 +593,7 @@ All text nodes are DOM `Text` nodes extended in-place. They share the same base 
 
 ```ts
 type BasicTextParent  = ContentLine | GlyphFormatter
-type BasicTextSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineNestedContext
+type BasicTextSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineComponent
 ```
 
 The primary carrier of editable text. Holds one or more single-code-point characters (e.g. `"hello"`). It cannot hold multi-code-point glyphs such as surrogate pairs, emoji, or grapheme clusters — those each live in their own `OneVisualUnitText` node.
@@ -608,7 +612,7 @@ The primary carrier of editable text. Holds one or more single-code-point charac
 
 ```ts
 type OneVisualUnitTextParent  = ContentLine | GlyphFormatter
-type OneVisualUnitTextSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineNestedContext
+type OneVisualUnitTextSibling = GlyphFormatter | BasicText | OneVisualUnitText | InlineComponent
 ```
 
 The opposite of `BasicText`: holds exactly one multi-code-point glyph — a surrogate pair, emoji, or grapheme cluster (e.g. `"😊"`). This ensures navigation can jump the entire glyph atomically rather than landing inside it. Each such glyph gets its own node.
@@ -638,18 +642,18 @@ Fully managed by the engine — automatically inserted and removed as the `Conte
 
 ---
 
-### InlineNestedContextText
+### InlineComponentText
 
 - **DOM type:** `Text`
-- **`data-editor-role`:** `inline-nested-context-text`
-- **Categories:** `EditorText`, `NestedContextText`, `RangeNeutralNode`
+- **`data-editor-role`:** `inline-component-text`
+- **Categories:** `EditorText`, `ComponentText`, `RangeNeutralNode`
 
 ```ts
-type InlineNestedContextTextParent  = ContentLine
-type InlineNestedContextTextSibling = InlineNestedContext
+type InlineComponentTextParent  = ContentLine
+type InlineComponentTextSibling = InlineComponent
 ```
 
-A sentinel automatically inserted on any side of an `InlineNestedContext` where there is no sibling, or where the sibling is another `InlineNestedContext`. Gives the caret a valid text boundary point to land on adjacent to the component during navigation. As a `RangeNeutralNode`, its offset has no impact on selection.
+A sentinel automatically inserted on any side of an `InlineComponent` where there is no sibling, or where the sibling is another `InlineComponent`. Gives the caret a valid text boundary point to land on adjacent to the component during navigation. As a `RangeNeutralNode`, its offset has no impact on selection.
 
 Fully managed by the engine — consumers never create or manipulate it directly.
 
@@ -657,18 +661,18 @@ Fully managed by the engine — consumers never create or manipulate it directly
 
 ---
 
-### BlockNestedContextText
+### BlockComponentText
 
 - **DOM type:** `Text`
-- **`data-editor-role`:** `block-nested-context-text`
-- **Categories:** `EditorText`, `NestedContextText`, `RangeNeutralNode`
+- **`data-editor-role`:** `block-component-text`
+- **Categories:** `EditorText`, `ComponentText`, `RangeNeutralNode`
 
 ```ts
-type BlockNestedContextTextParent  = BlockNestedContextTextHolder
-type BlockNestedContextTextSibling = null
+type BlockComponentTextParent  = BlockComponentTextHolder
+type BlockComponentTextSibling = null
 ```
 
-The sole child of a `BlockNestedContextTextHolder`. Gives the caret valid text boundary points on either side of the `BlockNestedContext` inside a `BlockNestedContextLine`. As a `RangeNeutralNode`, its offset has no impact on selection.
+The sole child of a `BlockComponentTextHolder`. Gives the caret valid text boundary points on either side of the `BlockComponent` inside a `BlockComponentLine`. As a `RangeNeutralNode`, its offset has no impact on selection.
 
 Fully managed by the engine — consumers never create or manipulate it directly.
 
@@ -678,7 +682,7 @@ Fully managed by the engine — consumers never create or manipulate it directly
 
 ### LayoutUnit
 
-`LayoutUnit` is a category of EditorNodes used to build structure inside a `NestedContext` (or inside another `LayoutUnit`). Unlike other EditorNode categories, `LayoutUnit` nodes are **not** `ContentFlowNode`s — `LiveBoundaryPoints` cannot point into them.
+`LayoutUnit` is a category of EditorNodes used to build structure inside a `Component` (or inside another `LayoutUnit`). Unlike other EditorNode categories, `LayoutUnit` nodes are **not** `ContentFlowNode`s — `LiveBoundaryPoints` cannot point into them.
 
 `LayoutUnit` members:
 
@@ -691,7 +695,7 @@ Fully managed by the engine — consumers never create or manipulate it directly
 Base parent/sibling/child types (shared by all `LayoutUnit`s unless specialized below):
 
 ```ts
-type LayoutUnitParent  = InlineNestedContext | BlockNestedContext | LayoutUnit
+type LayoutUnitParent  = InlineComponent | BlockComponent | LayoutUnit
 type LayoutUnitSibling = NestedEditable | LayoutUnit | DetachedContext
 type LayoutUnitChild   = NestedEditable | LayoutUnit | DetachedContext
 ```
@@ -707,12 +711,12 @@ type LayoutUnitChild   = NestedEditable | LayoutUnit | DetachedContext
 - **Category:** `LayoutUnit`
 
 ```ts
-type HTMLLayoutParent  = LayoutUnitParent  // InlineNestedContext | BlockNestedContext | LayoutUnit
+type HTMLLayoutParent  = LayoutUnitParent  // InlineComponent | BlockComponent | LayoutUnit
 type HTMLLayoutSibling = LayoutUnitSibling
 type HTMLLayoutChild   = LayoutUnitChild
 ```
 
-A wrapper for any standard HTML element (`blockquote`, `figure`, `details`, `button`, etc.) placed inside a `NestedContext`. Use `HTMLLayout` for any HTML structural or interactive element that is not a list or table.
+A wrapper for any standard HTML element (`blockquote`, `figure`, `details`, `button`, etc.) placed inside a `Component`. Use `HTMLLayout` for any HTML structural or interactive element that is not a list or table.
 
 **Public API:**
 
@@ -740,7 +744,7 @@ type SVGLayoutSibling = LayoutUnitSibling
 type SVGLayoutChild   = LayoutUnitChild
 ```
 
-A wrapper for any SVG element inside a `NestedContext`. The editor wraps the element but does not interpret SVG content.
+A wrapper for any SVG element inside a `Component`. The editor wraps the element but does not interpret SVG content.
 
 **Public API:** same shape as `HTMLLayout` — `$$localName`, `$$replaceWith`, `$$before`, `$$after`, `$$prepend`, `$$append`, `$$remove`.
 
@@ -758,7 +762,7 @@ type MathMLLayoutSibling = LayoutUnitSibling
 type MathMLLayoutChild   = LayoutUnitChild
 ```
 
-A wrapper for any MathML element inside a `NestedContext`. Same shape as `HTMLLayout`.
+A wrapper for any MathML element inside a `Component`. Same shape as `HTMLLayout`.
 
 **Public API:** same shape as `HTMLLayout` — `$$localName`, `$$replaceWith`, `$$before`, `$$after`, `$$prepend`, `$$append`, `$$remove`.
 
@@ -1018,8 +1022,8 @@ All factory functions are imported from the package root:
 import {
   createRootEditable, createNestedEditable, createContentLine,
   createGlyphFormatter, createHTMLLayout, createSVGLayout, createMathMLLayout,
-  createInlineNestedContext, createBlockNestedContext,
-  createBlockNestedContextLine, createBlockNestedContextTextHolder,
+  createInlineComponent, createBlockComponent,
+  createBlockComponentLine, createBlockComponentTextHolder,
   createDetachedContext, createList, createTable, createFormattableTexts, createBeamText,
 
 } from "rich-text-area";
@@ -1035,7 +1039,7 @@ These parameters appear on most factories:
 `ScopedEditable` factories (`createRootEditable`, `createNestedEditable`) additionally share:
 
 - **`display`** — structural role (required):
-  - `"block multi-line"` — block-level, multiple lines allowed, `BlockNestedContextLine` allowed as child
+  - `"block multi-line"` — block-level, multiple lines allowed, `BlockComponentLine` allowed as child
   - `"block single-line"` — block-level, must have exactly one block `ContentLine`
   - `"inline"` — inline-level, must have exactly one inline `ContentLine`
 - **`editState`** — see per-factory
@@ -1065,7 +1069,7 @@ Creates a `RootEditable`. This is the top-level container passed to `new RangeX(
 | `allowedGlyphFormatterStyleAttrNames` | `GlyphFormatterStyleAttrName[] \| null` | No | See Common parameters |
 | `allowedGlyphFormatterInlineTags` | `GlyphFormatterInlineTag[] \| null` | No | See Common parameters |
 | `domAttrs` | `DOMAttrs` | No | Initial HTML attributes |
-| `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | Initial child nodes |
+| `childNodes` | `(ContentLine \| BlockComponentLine)[]` | No | Initial child nodes |
 
 ```ts
 const rootEditable = createRootEditable({
@@ -1089,7 +1093,7 @@ const rootEditable = createRootEditable({
 
 ### `createNestedEditable(params)`
 
-Creates a `NestedEditable` — the editable content area inside a `NestedContext` or `LayoutUnit`.
+Creates a `NestedEditable` — the editable content area inside a `Component` or `LayoutUnit`.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
@@ -1099,7 +1103,7 @@ Creates a `NestedEditable` — the editable content area inside a `NestedContext
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `allowedComponents` … | (same as createRootEditable) | No | |
 | `domAttrs` | `DOMAttrs` | No | |
-| `childNodes` | `(ContentLine \| BlockNestedContextLine)[]` | No | |
+| `childNodes` | `(ContentLine \| BlockComponentLine)[]` | No | |
 
 ---
 
@@ -1112,7 +1116,7 @@ Creates a `ContentLine`. An empty `ContentLine` must always have a `BeamText` ch
 | `localName` | `ContentLineLocalName` | Yes | `"p"` \| `"h1"`…`"h6"` for block contexts; `"span"` for inline contexts |
 | `structuredStyle` | `Partial<ContentLineStructuredStyle>` | No | Initial CSS values. Valid properties: `lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent` |
 | `domAttrs` | `DOMAttrs` | No | |
-| `childNodes` | `ContentLineChild[]` | No | `BeamText \| GlyphFormatter \| BasicText \| OneVisualUnitText \| InlineNestedContext \| InlineNestedContextText` |
+| `childNodes` | `ContentLineChild[]` | No | `BeamText \| GlyphFormatter \| BasicText \| OneVisualUnitText \| InlineComponent \| InlineComponentText` |
 
 ```ts
 // empty block line (inside ScopedEditable with display: "block multi-line" or "block single-line")
@@ -1166,14 +1170,14 @@ createContentLine({ childNodes: [createBeamText({})] })
 
 ---
 
-### `createInlineNestedContext(params)`
+### `createInlineComponent(params)`
 
-Creates an `InlineNestedContext` — an inline component inside a `ContentLine` (e.g. mention, link, template variable).
+Creates an `InlineComponent` — an inline component inside a `ContentLine` (e.g. mention, link, template variable).
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `componentName` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
-| `content` | `InlineNestedContextContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
+| `content` | `InlineComponentContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | If `true`, the component is selected before deletion (gives consumer a chance to intercept) |
@@ -1183,14 +1187,14 @@ Creates an `InlineNestedContext` — an inline component inside a `ContentLine` 
 
 ---
 
-### `createBlockNestedContext(params)`
+### `createBlockComponent(params)`
 
-Creates a `BlockNestedContext` — a block-level component container (e.g. codeblock, blockquote). Must be placed inside a `BlockNestedContextLine`.
+Creates a `BlockComponent` — a block-level component container (e.g. codeblock, blockquote). Must be placed inside a `BlockComponentLine`.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `componentName` | `string` | Yes | Component type identifier |
-| `content` | `BlockNestedContextContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
+| `content` | `BlockComponentContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
 | `shouldSelectBeforeRemove` | `boolean` | No | |
@@ -1200,23 +1204,23 @@ Creates a `BlockNestedContext` — a block-level component container (e.g. codeb
 
 ---
 
-### `createBlockNestedContextTextHolder(params)` / `createBlockNestedContextLine(params)`
+### `createBlockComponentTextHolder(params)` / `createBlockComponentLine(params)`
 
-These two are always used together. A `BlockNestedContextLine` has a fixed 3-child structure — left holder, `BlockNestedContext`, right holder — and all three must be pre-created and passed explicitly:
+These two are always used together. A `BlockComponentLine` has a fixed 3-child structure — left holder, `BlockComponent`, right holder — and all three must be pre-created and passed explicitly:
 
 ```ts
-const left  = createBlockNestedContextTextHolder({});
-const right = createBlockNestedContextTextHolder({});
-const bnc   = createBlockNestedContext({ componentName: "codeblock", content: { type: "custom" }, editState: "inherit" });
+const left  = createBlockComponentTextHolder({});
+const right = createBlockComponentTextHolder({});
+const bnc   = createBlockComponent({ componentName: "codeblock", content: { type: "custom" }, editState: "inherit" });
 
-const line = createBlockNestedContextLine({
-  leftBlockNestedContextTextHolder:  left,
-  blockNestedContext:                bnc,
-  rightBlockNestedContextTextHolder: right,
+const line = createBlockComponentLine({
+  leftBlockComponentTextHolder:  left,
+  blockComponent:                bnc,
+  rightBlockComponentTextHolder: right,
 });
 ```
 
-`createBlockNestedContextTextHolder` takes only `domAttrs?`. `createBlockNestedContextLine` takes `domAttrs?` plus the three required children above.
+`createBlockComponentTextHolder` takes only `domAttrs?`. `createBlockComponentLine` takes `domAttrs?` plus the three required children above.
 
 ---
 
@@ -1269,7 +1273,7 @@ Creates a `DetachedContext` — the schema-free escape hatch with its own shadow
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `localName` | `"div" \| "span" \| "slot"` | No | Defaults to `"div"` |
-| `shadowTree` | `(Element \| Comment \| Text)[]` | No | Initial content appended into `$$shadowRoot` |
+| `shadowTree` | `(Element \| Comment \| Text)[]` | No | Initial content appended into the shadow root. Ignored if `localName` is `"slot"` — a slot has no shadow root to append into. |
 | `domAttrs` | `DOMAttrs` | No | |
 
 ---
@@ -1284,19 +1288,19 @@ All type guards are exported from `"rich-text-area"`. They accept an `EditorNode
 |---|---|
 | `isEditorNode(target)` | Any value with `$EDITOR_ROLE` symbol — use as the entry-point check before others |
 | `isScopedEditable(node)` | `"root-editable"` or `"nested-editable"` |
-| `isLine(node)` | `"content-line"` or `"block-nested-context-line"` |
-| `isNestedContext(node)` | `"inline-nested-context"` or `"block-nested-context"` |
+| `isLine(node)` | `"content-line"` or `"block-component-line"` |
+| `isComponent(node)` | `"inline-component"` or `"block-component"` |
 | `isLayoutUnit(node)` | `"html-layout"`, `"svg-layout"`, `"math-ml-layout"`, `"list"`, `"list-item"`, `"table"`, `"table-cell"`, `"table-col"`, `"table-col-group"`, `"table-row"`, `"table-section"` |
-| `isEditorElement(node)` | `ScopedEditable`, `Line`, `"glyph-formatter"`, `NestedContext`, `"block-nested-context-text-holder"`, `LayoutUnit`, `"detached-context"` |
-| `isEditorText(node)` | `"basic-text"`, `"one-visual-unit-text"`, `"beam-text"`, `"inline-nested-context-text"`, `"block-nested-context-text"` |
-| `isNestedContextText(node)` | `"inline-nested-context-text"` or `"block-nested-context-text"` |
+| `isEditorElement(node)` | `ScopedEditable`, `Line`, `"glyph-formatter"`, `Component`, `"block-component-text-holder"`, `LayoutUnit`, `"detached-context"` |
+| `isEditorText(node)` | `"basic-text"`, `"one-visual-unit-text"`, `"beam-text"`, `"inline-component-text"`, `"block-component-text"` |
+| `isComponentText(node)` | `"inline-component-text"` or `"block-component-text"` |
 | `isContentFlowNode(node)` | Any `EditorNode` except `LayoutUnit` and `DetachedContext` |
-| `isEditStateElement(node)` | `ScopedEditable`, `NestedContext`, or `"list"` |
-| `isSelectableNode(node)` | `EditorText` or `NestedContext` |
+| `isEditStateElement(node)` | `ScopedEditable`, `Component`, or `"list"` |
+| `isSelectableNode(node)` | `EditorText` or `Component` |
 | `isFormattableText(node)` | `"basic-text"` or `"one-visual-unit-text"` |
-| `isRangeSensitiveNode(node)` | `FormattableText` or `NestedContext` |
+| `isRangeSensitiveNode(node)` | `FormattableText` or `Component` |
 | `isRangeSensitiveText(node)` | `"basic-text"` or `"one-visual-unit-text"` (same as `isFormattableText`) |
-| `isRangeNeutralNode(node)` | `"beam-text"`, `"inline-nested-context-text"`, `"block-nested-context-text"` |
+| `isRangeNeutralNode(node)` | `"beam-text"`, `"inline-component-text"`, `"block-component-text"` |
 | `isStructuredStyleElement(node)` | `"content-line"` or `"glyph-formatter"` |
 | `isFilledContentLineChild(node)` | Valid `ContentLine` child, excluding `BeamText` |
 | `isContentLineText(node)` | `EditorText` that is a valid `ContentLine` child |
@@ -1317,7 +1321,7 @@ In addition to the `DOMPublicPropsBase` props shared by all nodes (see [section 
 | `$$querySelectorAll(selector)` | All descendant `EditorElement`s matching selector, as an array |
 | `$$anchorName` | CSS anchor name for this element — use with CSS `anchor()` to position UI relative to it |
 
-Role selector constants exported from `"rich-text-area"` (e.g. `contentLineRoleSelector`, `glyphFormatterRoleSelector`, `inlineNestedContextRoleSelector`) are CSS selector strings for use with `$$closest` / `$$querySelector` / `$$querySelectorAll`.
+Role selector constants exported from `"rich-text-area"` (e.g. `contentLineRoleSelector`, `glyphFormatterRoleSelector`, `inlineComponentRoleSelector`) are CSS selector strings for use with `$$closest` / `$$querySelector` / `$$querySelectorAll`.
 
 ### Walking patterns
 
@@ -1327,7 +1331,7 @@ Role selector constants exported from `"rich-text-area"` (e.g. `contentLineRoleS
 
 ```ts
 for (const child of rootEditable.$$childNodes) {
-  // typed as ContentLine | BlockNestedContextLine
+  // typed as ContentLine | BlockComponentLine
   if (child.$$editorRole === contentLineName) {
     // work with ContentLine
   }
@@ -1377,10 +1381,10 @@ Each node type has typed `Parent`, `Sibling`, and `Child` constraints, shown as 
 
 ```ts
 type ContentLineParent  = RootEditable | NestedEditable
-type ContentLineSibling = ContentLine | BlockNestedContextLine
+type ContentLineSibling = ContentLine | BlockComponentLine
 type ContentLineChild   = BeamText | GlyphFormatter | BasicText
-                        | OneVisualUnitText | InlineNestedContext
-                        | InlineNestedContextText
+                        | OneVisualUnitText | InlineComponent
+                        | InlineComponentText
 ```
 
 The `$$`-prefixed mutation methods on each node use these types as their parameter types — TypeScript prevents inserting a structurally invalid node at compile time.
@@ -1390,11 +1394,11 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 **At mutation time** — all structural changes inside a `RootEditable` must go through the `$$`-prefixed mutation methods, which route through `UpdateStructure` internally. Direct DOM manipulation (`appendChild`, `removeChild`, etc.) bypasses the schema and must not be used.
 **At insertion time** — additional invariants are enforced each time a node is inserted into a `RootEditable`:
 
-- Every `ContentFlowNode` must have at least one child so `LiveBoundaryPoints` always has a valid text node to point into. This is validated at insertion time and the engine never auto-injects children — the caller is always responsible. The one exception is `InlineNestedContextText` sentinels: the engine auto-manages these around `InlineNestedContext` nodes on insertion (see [`InlineNestedContext` in section 4](#inlinenestedcontext)).
+- Every `ContentFlowNode` must have at least one child so `LiveBoundaryPoints` always has a valid text node to point into. This is validated at insertion time and the engine never auto-injects children — the caller is always responsible. The one exception is `InlineComponentText` sentinels: the engine auto-manages these around `InlineComponent` nodes on insertion (see [`InlineComponent` in section 4](#inlinecomponent)).
 
 **Post-mutation normalization** — after each mutation pipeline completes, the engine runs a normalization pass that silently corrects `$$allowed*` violations. No error is thrown; disallowed content is adjusted automatically:
 
-- `$$allowedComponents` — a `NestedContext` whose `$$componentName` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
+- `$$allowedComponents` — a `Component` whose `$$componentName` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
 - `$$allowedContentLineLocalNames` — a block `ContentLine` with a `localName` not in the list has its tag changed to `"p"`. Inline `"span"` ContentLines are not subject to this normalization.
 - `$$allowedContentLineStyleAttrNames` — style attributes on a `ContentLine` not in the list are removed
 - `$$allowedGlyphFormatterStyleAttrNames` — style attributes on a `GlyphFormatter` not in the list are removed
@@ -1411,24 +1415,24 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 
 | `$display` | Allowed children | Required `ContentLine.localName` |
 |---|---|---|
-| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockNestedContextLine`) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
+| `"block multi-line"` | One or more `Line` nodes (`ContentLine` or `BlockComponentLine`) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
 | `"block single-line"` | Exactly one `ContentLine` (block layout) | `BlockContentLineLocalName` (`"p"` \| `"h1"`–`"h6"`) |
 | `"inline"` | Exactly one `ContentLine` (inline layout) | `"span"` |
 
 ### Content types
 
-`InlineNestedContext` and `BlockNestedContext` have a `$content.type` that constrains their inner structure:
+`InlineComponent` and `BlockComponent` have a `$content.type` that constrains their inner structure:
 
-**`InlineNestedContext.$content.type`:**
+**`InlineComponent.$content.type`:**
 
 | Value | Rule |
 |---|---|
 | `"custom"` | Zero or more outermost `NestedEditable`s; each must have `$content.type = "default"` and `$display = "inline"` |
 | `"linked-characters"` | Exactly one outermost `NestedEditable` with `$content.type = "linked-characters"` and `$display = "inline"` |
 
-An `InlineNestedContextText` sentinel is always inserted on any side of an `InlineNestedContext` that has no sibling.
+An `InlineComponentText` sentinel is always inserted on any side of an `InlineComponent` that has no sibling.
 
-**`BlockNestedContext.$content.type`:**
+**`BlockComponent.$content.type`:**
 
 | Value | Rule |
 |---|---|
@@ -1440,9 +1444,9 @@ An `InlineNestedContextText` sentinel is always inserted on any side of an `Inli
 
 **`ContentLine`:** Empty → must contain a `BeamText`. Non-empty → must contain a `FilledContentLineChild` (any `ContentLineChild` except `BeamText`).
 
-**`BlockNestedContextLine`:** Fixed structure: `[BlockNestedContextTextHolder, BlockNestedContext, BlockNestedContextTextHolder]`.
+**`BlockComponentLine`:** Fixed structure: `[BlockComponentTextHolder, BlockComponent, BlockComponentTextHolder]`.
 
-**`BlockNestedContextTextHolder`:** Must contain a `BlockNestedContextText`.
+**`BlockComponentTextHolder`:** Must contain a `BlockComponentText`.
 
 **`List`:** `$lineType` determines the `$display` of the outermost `NestedEditable` in each `ListItem` — `"multi-line"` → `"block multi-line"`, `"single-line"` → `"block single-line"`. The outermost `NestedEditable`'s `$editState` must be `"inherit"`.
 
@@ -1576,8 +1580,8 @@ These are useful for checking whether a range spans across line boundaries.
 |---|---|---|
 | `isSameContentLine` | `boolean` | `true` when both endpoints' closest `ContentLine` ancestor is the same node — regardless of whether that `ContentLine` is block or inline |
 | `isSameBlockContentLine` | `boolean` | `true` when both endpoints resolve to the same block-level `ContentLine`. Walks up past inline `ContentLine`s (inside inline `NestedEditable`s) to find the nearest block `ContentLine`. For example, two endpoints in different inline `NestedEditable`s both contained by the same block `ContentLine` return `true`. |
-| `isSameBlockNestedContextLine` | `boolean` | `true` when both endpoints are within the same `BlockNestedContextLine` |
-| `isSameBlockLine` | `boolean` | `true` when both endpoints are within the same block-level `Line` — either a block `ContentLine` or a `BlockNestedContextLine` |
+| `isSameBlockComponentLine` | `boolean` | `true` when both endpoints are within the same `BlockComponentLine` |
+| `isSameBlockLine` | `boolean` | `true` when both endpoints are within the same block-level `Line` — either a block `ContentLine` or a `BlockComponentLine` |
 
 #### `containsRangeSensitiveNode`
 
@@ -1585,7 +1589,7 @@ These are useful for checking whether a range spans across line boundaries.
 range.containsRangeSensitiveNode // → boolean
 ```
 
-`true` when at least one `RangeSensitiveNode` (`BasicText`, `OneVisualUnitText`, or `NestedContext`) falls — even partially — between the start and end boundary points. "Partially" means even a single Unicode code point of a `BasicText` being within the range is enough to return `true`. Conversely, if the range spans only `RangeNeutralNode`s (e.g. only `InlineNestedContextText` sentinels between two `InlineNestedContext`s), this returns `false`.
+`true` when at least one `RangeSensitiveNode` (`BasicText`, `OneVisualUnitText`, or `Component`) falls — even partially — between the start and end boundary points. "Partially" means even a single Unicode code point of a `BasicText` being within the range is enough to return `true`. Conversely, if the range spans only `RangeNeutralNode`s (e.g. only `InlineComponentText` sentinels between two `InlineComponent`s), this returns `false`.
 
 #### `isSinglePoint`
 
@@ -1595,9 +1599,9 @@ range.isSinglePoint // → boolean
 
 `true` when both of the following hold:
 - `containsRangeSensitiveNode` is `false`
-- The start and end are in the same line (`isSameContentLine || isSameBlockNestedContextLine`)
+- The start and end are in the same line (`isSameContentLine || isSameBlockComponentLine`)
 
-**This is not the same as `collapsed`.** A range can span across `RangeNeutralNode`s (`BeamText`, `InlineNestedContextText`, `BlockNestedContextText`) on the same line and still be `isSinglePoint` — because those nodes carry no meaningful range content. In contrast, `collapsed` requires both endpoints to be the exact same text node at the exact same offset.
+**This is not the same as `collapsed`.** A range can span across `RangeNeutralNode`s (`BeamText`, `InlineComponentText`, `BlockComponentText`) on the same line and still be `isSinglePoint` — because those nodes carry no meaningful range content. In contrast, `collapsed` requires both endpoints to be the exact same text node at the exact same offset.
 
 #### Methods
 
@@ -1765,8 +1769,9 @@ Use `document.createElementNS(node.namespaceURI, node.localName)` to recreate an
 *Text node:*
 ```ts
 {
-  type: string;   // e.g. "basic-text", "beam-text"
-  data: string;   // the text content
+  type: string;               // e.g. "basic-text", "beam-text"
+  customStorage: any;         // value from $$customStorage on the live node
+  data: string;               // the text content
 }
 ```
 
@@ -1813,14 +1818,16 @@ This mirrors what the serialized HTML output would look like (`<strong><em>hello
 
 `DetachedContextView` has `childNodes: NodeView[]` — a generic tree of `{ type: "element" | "text" | "comment", ... }` nodes. This reflects the schema-free shadow DOM content, which has no editor-specific type information.
 
-To render a `DetachedContextView`, call `attachShadow({ mode: "open" })` on the host element and append the materialized `childNodes` into the shadow root — not the element's light DOM:
+To render a `DetachedContextView`, call `attachShadow({ mode: "open" })` on the host element and append the materialized `childNodes` into the shadow root — not the element's light DOM. Skip this when `localName` is `"slot"`: a `slot` element can't host a shadow root, and its `childNodes` is always empty:
 
 ```ts
 const el = document.createElementNS(node.namespaceURI, node.localName);
 // set attributes...
-const shadowRoot = el.attachShadow({ mode: "open" });
-for (const child of node.childNodes) {
-  shadowRoot.append(materialize(child)); // materialize: NodeView → Node
+if (node.localName !== "slot") {
+  const shadowRoot = el.attachShadow({ mode: "open" });
+  for (const child of node.childNodes) {
+    shadowRoot.append(materialize(child)); // materialize: NodeView → Node
+  }
 }
 ```
 
@@ -1965,7 +1972,7 @@ callback: () => void
 
 ```ts
 const unregister = editorAPI.registerDOMEvent({
-  when: ({ element }) => isNestedContext(element),  // fires only on NestedContext nodes (inline or block)
+  when: ({ element }) => isComponent(element),  // fires only on Component nodes (inline or block)
   eventListener: {
     type: "click",
     listener: (event) => {
@@ -2251,7 +2258,7 @@ interface FindReplaceMatchedRange {
 |---|---|
 | `get matchedRanges` | Returns a `FindReplaceMatchedRange[]` in DOM order — one entry per match. Each entry includes the native `Range` (useful for identifying which CSS Highlight range was clicked), the `FormattableText` boundary points (use these with `EditorRange` for scrolling), and the match's position within the scanned segment text. The array is a snapshot — it does not update as the DOM changes. |
 
-**`segmentText`, `matchStart`, `matchEnd`:** the scanner processes each `ContentLine` as one or more segments, split at `InlineNestedContext` boundaries (text cannot be matched across an inline component). `segmentText` is the full plain-text string of the segment, and `matchStart`/`matchEnd` are the match's character offsets within it.
+**`segmentText`, `matchStart`, `matchEnd`:** the scanner processes each `ContentLine` as one or more segments, split at `InlineComponent` boundaries (text cannot be matched across an inline component). `segmentText` is the full plain-text string of the segment, and `matchStart`/`matchEnd` are the match's character offsets within it.
 
 **Forcing an immediate read:** by default, mutations are delivered to `FindReplace` asynchronously (via `MutationObserver`). If you need to read `matchedRanges` synchronously after a DOM mutation and get up-to-date results, call `forceRescan()` first.
 
@@ -2287,7 +2294,7 @@ replaceAll(params: {
 
 `content` is a `FilledContentLineChild[]` — the same node types that can appear as direct children of a `ContentLine`. The nodes are cloned before insertion; the originals are not consumed.
 
-`retainedComponents` is an optional list of component names (`InlineNestedContext.$$componentName`). When a match fully covers the content of a component whose name is in this list, the component shell is preserved and only its inner content is replaced. Without this option, a full-content replacement removes the component wrapper entirely and inserts the replacement as plain content. Defaults to `[]` (no components retained).
+`retainedComponents` is an optional list of component names (`InlineComponent.$$componentName`). When a match fully covers the content of a component whose name is in this list, the component shell is preserved and only its inner content is replaced. Without this option, a full-content replacement removes the component wrapper entirely and inserts the replacement as plain content. Defaults to `[]` (no components retained).
 
 ---
 
@@ -2396,7 +2403,7 @@ All three parameters are optional and can be combined freely in a single call. S
 
 **`styles`** applies `StructuredStyleValue`s to `ContentLine`s and `GlyphFormatter`s in the selection. The 5 ContentLine properties (`lineHeight`, `paddingBlock`, `paddingInline`, `textAlign`, `textIndent`) target the line elements; the 8 GlyphFormatter properties target the text elements. Both can appear in the same `styles` object.
 
-Both `localName` and ContentLine `styles` only target **block-level `ContentLine`s** — `ContentLine`s with `$display: "inline"` (those nested inside `InlineNestedContext`s) are excluded from line formatting.
+Both `localName` and ContentLine `styles` only target **block-level `ContentLine`s** — `ContentLine`s with `$display: "inline"` (those nested inside `InlineComponent`s) are excluded from line formatting.
 
 **`inlineTags`** toggles inline tags on `GlyphFormatter`s in the selection:
 - `true` — apply the tag
@@ -2672,6 +2679,24 @@ editorAPI.replaceCustomStyles(`
 
 ---
 
+### External drag
+
+#### `startExternalDrag(event)`
+
+```ts
+startExternalDrag(event: DragEvent): void
+```
+
+Starts a drag operation on the `RootEditable` using a `DragEvent` that did not originate from the `RootEditable` itself (for example, `dragstart` on an element outside the editor). This lets consumers drag external content (a sidebar item, a file, a custom drag handle) into the editor by forwarding the `DragEvent` to this method, reusing the same drag-start handling the editor applies to its own internal drags.
+
+```ts
+externalElement.addEventListener("dragstart", (event) => {
+  editorAPI.startExternalDrag(event);
+});
+```
+
+---
+
 ### Content mutations
 
 All mutation methods operate on `ContentFlowNode` boundary points (`fromNode`/`fromOffset`, `toNode`/`toOffset`). They auto-normalize to DOM order where relevant and require that the boundary points fall within an editable zone (`EditState = "editable"`). If the boundary points are invalid, a descriptive error is thrown.
@@ -2696,7 +2721,7 @@ Inserts one or more `Line[]` nodes into the editor at the given **collapsed** bo
 
 Every line after the first always has its own preceding line break — `breakBeforeInsert` only affects the first.
 
-`BlockNestedContextLine`s in the array always split the current line and insert as a new block, regardless of `breakBeforeInsert`.
+`BlockComponentLine`s in the array always split the current line and insert as a new block, regardless of `breakBeforeInsert`.
 
 After insertion, `LiveBoundaryPoints` is collapsed to the end of the inserted content. 
 
@@ -2751,7 +2776,7 @@ getPlainText(params: {
 
 Extracts the plain text content of the given range as a single string. Crosses `GlyphFormatter` wrappers and text node boundaries transparently — formatting is ignored, only character data is returned. The boundary points are auto-normalized to DOM order.
 
-**Prefer this over `.textContent`:** the native `.textContent` on editor elements includes `InlineNestedContextText` and `BlockNestedContextText` sentinel nodes, which are structural placeholders and not part of the user-visible content. `getPlainText` filters these out and returns only the actual editable characters.
+**Prefer this over `.textContent`:** the native `.textContent` on editor elements includes `InlineComponentText` and `BlockComponentText` sentinel nodes, which are structural placeholders and not part of the user-visible content. `getPlainText` filters these out and returns only the actual editable characters.
 
 This is the bulk read path: call it once to get a full string for a range. For character-by-character scanning adjacent to a boundary point, use `createPlainTextScanner` instead.
 
@@ -2777,7 +2802,7 @@ interface PlainTextScanStep {
 
 `data` accumulates as you step — after `n` steps, `data` holds the full `n`-character prefix (forward) or suffix (backward) scanned so far.
 
-**Scope:** The scanner stays within a single block `ContentLine`. It crosses `GlyphFormatter` wrappers and `BasicText`/`OneVisualUnitText` node boundaries, but **stops at `InlineNestedContext` boundaries** — it will not enter or cross an inline component.
+**Scope:** The scanner stays within a single block `ContentLine`. It crosses `GlyphFormatter` wrappers and `BasicText`/`OneVisualUnitText` node boundaries, but **stops at `InlineComponent` boundaries** — it will not enter or cross an inline component.
 
 **`fromNode` resolution:** If `fromNode` resolves to a non-`FormattableText` (e.g. `BeamText`), the returned scanner is an empty generator that yields nothing.
 
@@ -2819,7 +2844,7 @@ getBlockWrappableSegment(params: {
 
 Resolves a `BlockWrappableSegment` for the given range — the set of contiguous top-level `Line` nodes inside a shared `"block multi-line"` `ScopedEditable` that spans the selection. Returns `null` only when the `RootEditable` has `$display === "block single-line"`, because in that case no `ScopedEditable` ancestor with `$display === "block multi-line"` exists. In a multi-line editor the function always resolves a segment, using the innermost `"block multi-line"` `ScopedEditable` that contains both boundary points (which may be a `NestedEditable` if the selection is inside one).
 
-The start/end lines returned by the segment are always **direct children** of the enclosing `ScopedEditable` — not arbitrarily deep descendants. If `fromNode` is nested inside a `BlockNestedContext`, the segment resolves to the `BlockNestedContextLine` that contains it.
+The start/end lines returned by the segment are always **direct children** of the enclosing `ScopedEditable` — not arbitrarily deep descendants. If `fromNode` is nested inside a `BlockComponent`, the segment resolves to the `BlockComponentLine` that contains it.
 
 The boundary points are auto-normalized to DOM order. Requires that both points are in an editable zone.
 
@@ -2833,14 +2858,14 @@ class BlockWrappableSegment {
   // Returns the ScopedEditable that is the direct parent of both lines.
   getCommonScopedEditable(): ScopedEditable
 
-  // Returns a segment for the parent context, or null if there is no outer BlockNestedContext.
+  // Returns a segment for the parent context, or null if there is no outer BlockComponent.
   getUpperSegment(): BlockWrappableSegment | null
 
   // Moves the selected lines into the given block component.
-  // blockNestedContextLine — the container BlockNestedContextLine
+  // blockComponentLine — the container BlockComponentLine
   // target — the NestedEditable or List that will receive the selected lines
   wrapInto(params: {
-    blockNestedContextLine: BlockNestedContextLine;
+    blockComponentLine: BlockComponentLine;
     target: NestedEditable | List;
   }): void
 }
@@ -2890,17 +2915,17 @@ const segment = editorAPI.getBlockWrappableSegment({
 });
 
 if (segment) {
-  const leftHolder = createBlockNestedContextTextHolder();
-  const rightHolder = createBlockNestedContextTextHolder();
+  const leftHolder = createBlockComponentTextHolder();
+  const rightHolder = createBlockComponentTextHolder();
   const nestedEditable = createNestedEditable({ display: "block multi-line", /* ... */ });
-  const blockNestedContext = createBlockNestedContext({ childNodes: [nestedEditable], /* ... */ });
-  const blockNestedContextLine = createBlockNestedContextLine({
-    leftBlockNestedContextTextHolder: leftHolder,
-    blockNestedContext,
-    rightBlockNestedContextTextHolder: rightHolder,
+  const blockComponent = createBlockComponent({ childNodes: [nestedEditable], /* ... */ });
+  const blockComponentLine = createBlockComponentLine({
+    leftBlockComponentTextHolder: leftHolder,
+    blockComponent,
+    rightBlockComponentTextHolder: rightHolder,
   });
 
-  segment.wrapInto({ blockNestedContextLine, target: nestedEditable });
+  segment.wrapInto({ blockComponentLine, target: nestedEditable });
 }
 ```
 
@@ -2932,32 +2957,32 @@ The boundary points are auto-normalized to DOM order. Requires editable zone val
 class InlineWrappableSegment {
   // Returns the text-level boundary points for this segment.
   getBoundaryPoints(): {
-    startText: FormattableText | InlineNestedContextText;
+    startText: FormattableText | InlineComponentText;
     startOffset: number;
-    endText: FormattableText | InlineNestedContextText;
+    endText: FormattableText | InlineComponentText;
     endOffset: number;
   }
 
   // Returns the block ContentLine that contains this segment.
   getContentLine(): ContentLine
 
-  // Returns a segment for the surrounding InlineNestedContext, or null if not inside one.
+  // Returns a segment for the surrounding InlineComponent, or null if not inside one.
   getUpperSegment(): InlineWrappableSegment | null
 
-  // Returns all InlineNestedContexts that are fully contained within this segment.
-  getInlineNestedContextListInSegment(): InlineNestedContext[]
+  // Returns all InlineComponents that are fully contained within this segment.
+  getInlineComponentListInSegment(): InlineComponent[]
 
   // Moves the selected text into the given inline component.
-  // inlineNestedContext — the container element
+  // inlineComponent — the container element
   // target — the NestedEditable that will receive the selected text
   wrapInto(params: {
-    inlineNestedContext: InlineNestedContext;
+    inlineComponent: InlineComponent;
     target: NestedEditable;
   }): void
 }
 ```
 
-**`getUpperSegment()`** walks up one level to the outer `InlineNestedContext` and returns a segment whose boundary points sit at the edges of that outer context (the `InlineNestedContextText` sentinels adjacent to it). Returns `null` when the segment is already at the top level of the block `ContentLine` (no enclosing `InlineNestedContext`).
+**`getUpperSegment()`** walks up one level to the outer `InlineComponent` and returns a segment whose boundary points sit at the edges of that outer context (the `InlineComponentText` sentinels adjacent to it). Returns `null` when the segment is already at the top level of the block `ContentLine` (no enclosing `InlineComponent`).
 
 Use this when a component must always wrap at the **topmost** level of the `ContentLine`. For example: the user has a selection inside a "link" component and wants to add a "comment" component — but "comment" is designed to always sit at the top level, never nested inside other inline components. In that case, call `getUpperSegment()` repeatedly until it returns `null`, then wrap that outermost segment with the comment:
 
@@ -2969,7 +2994,7 @@ while (upper !== null) {
   upper = segment.getUpperSegment();
 }
 // segment is now at the topmost level of the ContentLine
-segment.wrapInto({ inlineNestedContext: commentContext, target: commentEditable });
+segment.wrapInto({ inlineComponent: commentContext, target: commentEditable });
 ```
 
 **Example — wrapping selection into a link:**
@@ -2983,12 +3008,52 @@ const segments = editorAPI.getInlineWrappableSegments({
 });
 
 for (const segment of segments) {
-  const inlineNestedContext = createInlineNestedContext({ /* ... */ });
+  const inlineComponent = createInlineComponent({ /* ... */ });
   const nestedEditable = createNestedEditable({ /* ... */ });
-  inlineNestedContext.$$append(nestedEditable);
+  inlineComponent.$$append(nestedEditable);
 
-  segment.wrapInto({ inlineNestedContext, target: nestedEditable });
+  segment.wrapInto({ inlineComponent, target: nestedEditable });
 }
+```
+
+---
+
+### Replacing a component
+
+#### `replaceComponentTop(fromComponentTop, callback)`
+
+```ts
+replaceComponentTop<TComponentTop extends ComponentTop>(
+  fromComponentTop: TComponentTop,
+  callback: (extractedLines: Line[]) => TComponentTop,
+): void
+```
+
+Replaces a `ComponentTop` (an `InlineComponent` or a `BlockComponentLine`) with a different `ComponentTop`, while preserving the `Line`s nested inside it. Use this to convert between the inline and block forms of a nested component (e.g. promoting an inline code span into a block codeblock, or the reverse) without losing its content.
+
+- `fromComponentTop` — the `ComponentTop` to replace. Must be contained by the `RootEditable`.
+- `callback` — receives `extractedLines`, the `Line`s that were nested inside `fromComponentTop`, and must return the new `ComponentTop` to install in its place.
+
+After replacement, `LiveBoundaryPoints` is collapsed to the end of the newly inserted `ComponentTop`.
+
+```ts
+editorAPI.replaceComponentTop(inlineCodeComponent, (extractedLines) => {
+  const nestedEditable = createNestedEditable({
+    content: { type: "default" },
+    display: "block multi-line",
+    childNodes: extractedLines,
+  });
+
+  return createBlockComponentLine({
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      componentName: "codeblock",
+      content: { type: "custom" },
+      childNodes: [nestedEditable],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
+});
 ```
 
 ---
