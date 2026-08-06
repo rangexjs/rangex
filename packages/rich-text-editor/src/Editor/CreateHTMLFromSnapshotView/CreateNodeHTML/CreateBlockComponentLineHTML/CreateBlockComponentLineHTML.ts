@@ -1,3 +1,4 @@
+import { isEmptyMediaStorage } from "../../../Storage";
 import { setAttributes } from "../_Utilities";
 import type {
 	CreateBlockComponentLineHTMLParams,
@@ -17,6 +18,18 @@ export const createBlockComponentLineHTML = ({
 	el.append(...childNodes);
 
 	storageMap.set(el, customStorage);
+
+	const blockNestedContext = [...el.childNodes].at(1);
+
+	if (!blockNestedContext) {
+		throw new Error("BlockNestedContext can't be undefined.");
+	}
+
+	const storage = storageMap.get(blockNestedContext);
+
+	if (isEmptyMediaStorage(storage)) {
+		return null;
+	}
 
 	return el;
 };

@@ -10,4 +10,4 @@ export interface CreateBlockComponentLineHTMLParams {
 	storageMap: StorageMap;
 }
 
-export type CreateBlockComponentLineHTMLResult = HTMLElement;
+export type CreateBlockComponentLineHTMLResult = HTMLElement | null;
