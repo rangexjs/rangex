@@ -6,6 +6,9 @@ export const handleTableInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleTableInsertionParams) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
 	const unsubscribe = editorPort.onInsertRequest(({ row, column }) => {
 		const table = createTable({ rows: row, cols: column });
 
@@ -14,17 +17,13 @@ export const handleTableInsertion = ({
 			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
-
-		const selection = editorAPI.getEditorSelection();
 
 		selection.setBoundaryPoints({
 			fromNode: table,
-			fromOffset: table.childNodes.length,
+			fromOffset: table.$$childNodes.length,
 			toNode: table,
-			toOffset: table.childNodes.length,
+			toOffset: table.$$childNodes.length,
 		});
 
 		editorAPI.focus();

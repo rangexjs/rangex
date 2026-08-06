@@ -1,5 +1,6 @@
 import { componentsName } from "#ports";
 import { createAnchoredOverlayController } from "../../_Utilities";
+import { createBlockComponentPlacement } from "../../BlockComponentPlacement";
 import { createOverlayAppearanceHandler } from "../../OverlayAppearanceHandler";
 import {
 	handleBlockAlignState,
@@ -35,6 +36,7 @@ export const configureVideo = ({
 	const overlayAppearanceHandler = createOverlayAppearanceHandler({
 		editorAPI,
 	});
+	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	editorPort.quickActionsOverlay.mount();
 	editorPort.swapCardOverlay.mount();
@@ -61,7 +63,11 @@ export const configureVideo = ({
 		},
 	});
 
-	const insertionCleanup = handleVideoInsertion({ editorPort, editorAPI });
+	const insertionCleanup = handleVideoInsertion({
+		editorPort,
+		editorAPI,
+		blockComponentPlacement,
+	});
 
 	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
 		handleVideoQuickActionsOverlayAppearance({

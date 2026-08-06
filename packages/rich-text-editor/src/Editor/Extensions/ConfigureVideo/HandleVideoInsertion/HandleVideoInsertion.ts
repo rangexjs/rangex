@@ -8,24 +8,36 @@ import type { HandleVideoInsertionParams } from "./HandleVideoInsertion-types";
 export const handleVideoInsertion = ({
 	editorPort,
 	editorAPI,
+	blockComponentPlacement,
 }: HandleVideoInsertionParams) => {
-	return editorPort.onMediaResolve(({ type, src }) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = editorPort.onMediaResolve(({ type, src }) => {
 		if (type !== "video") {
 			return;
 		}
 
-		const selection = editorAPI.getEditorSelection();
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+		const video = createVideo({ src });
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createVideo({ src })],
-			breakBeforeInsert: false,
+		blockComponentPlacement.insertBySelection({
+			lines: [video],
+			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
+
+		selection.setBoundaryPoints({
+			fromNode: video,
+			fromOffset: video.$$childNodes.length,
+			toNode: video,
+			toOffset: video.$$childNodes.length,
+		});
+
+		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

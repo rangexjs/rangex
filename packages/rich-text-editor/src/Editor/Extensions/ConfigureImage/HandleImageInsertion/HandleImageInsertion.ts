@@ -8,24 +8,36 @@ import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
 export const handleImageInsertion = ({
 	editorPort,
 	editorAPI,
+	blockComponentPlacement,
 }: HandleImageInsertionParams) => {
-	return editorPort.onMediaResolve(({ type, src }) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = editorPort.onMediaResolve(({ type, src }) => {
 		if (type !== "image") {
 			return;
 		}
 
-		const selection = editorAPI.getEditorSelection();
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+		const image = createImage({ src });
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createImage({ src })],
-			breakBeforeInsert: false,
+		blockComponentPlacement.insertBySelection({
+			lines: [image],
+			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
+
+		selection.setBoundaryPoints({
+			fromNode: image,
+			fromOffset: image.$$childNodes.length,
+			toNode: image,
+			toOffset: image.$$childNodes.length,
+		});
+
+		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

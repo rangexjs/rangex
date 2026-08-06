@@ -8,24 +8,36 @@ import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
 export const handleEmbedInsertion = ({
 	editorPort,
 	editorAPI,
+	blockComponentPlacement,
 }: HandleEmbedInsertionParams) => {
-	return editorPort.onMediaResolve(({ type, src }) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = editorPort.onMediaResolve(({ type, src }) => {
 		if (type !== "embed") {
 			return;
 		}
 
-		const selection = editorAPI.getEditorSelection();
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+		const embed = createEmbed({ src });
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createEmbed({ src })],
-			breakBeforeInsert: false,
+		blockComponentPlacement.insertBySelection({
+			lines: [embed],
+			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
+
+		selection.setBoundaryPoints({
+			fromNode: embed,
+			fromOffset: embed.$$childNodes.length,
+			toNode: embed,
+			toOffset: embed.$$childNodes.length,
+		});
+
+		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

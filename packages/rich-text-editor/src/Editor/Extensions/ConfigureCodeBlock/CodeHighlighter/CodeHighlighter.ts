@@ -126,7 +126,7 @@ const getCodeLines = ({
 			fromNode: contentLine,
 			fromOffset: 0,
 			toNode: contentLine,
-			toOffset: contentLine.childNodes.length,
+			toOffset: contentLine.$$childNodes.length,
 		});
 
 		codeLines.push(plainText);
