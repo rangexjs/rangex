@@ -1,5 +1,6 @@
 import { componentsName } from "#ports";
 import { setAttributes } from "../_Utilities";
+import { resolveAccordionItem } from "./AccordionItem";
 import { resolveCodeBlock } from "./CodeBlock";
 import type {
 	CreateBlockComponentHTMLParams,
@@ -21,6 +22,10 @@ export const createBlockComponentHTML = ({
 	el.append(...childNodes);
 
 	storageMap.set(el, customStorage);
+
+	if (componentName === componentsName.accordionItem) {
+		pendingTasks.push(resolveAccordionItem({ accordionItemEl: el }));
+	}
 
 	if (componentName === componentsName.codeBlock) {
 		pendingTasks.push(resolveCodeBlock({ codeBlockEl: el, storageMap }));
