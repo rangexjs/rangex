@@ -15,6 +15,8 @@ import {
 	Link,
 	List,
 	Mention,
+	RootEditable,
+	RootEditableRx,
 	Table,
 	TemplateVariable,
 	TodoList,
@@ -42,7 +44,8 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		TodoList +
 		Video;
 
-	const editorElementText = BlockComponentLine + ContentLine + GlyphFormatter;
+	const editorElementText =
+		BlockComponentLine + ContentLine + GlyphFormatter + RootEditable;
 
 	const styleSheetText = baseText + componentText + editorElementText;
 
@@ -50,7 +53,9 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		return styleSheetText;
 	}
 
-	const rxStyleSheetText = AccordionItemRx + CaretAnchorRx + InteractiveStyles;
+	const componentRxText = AccordionItemRx + RootEditableRx;
+
+	const rxStyleSheetText = componentRxText + CaretAnchorRx + InteractiveStyles;
 
 	return styleSheetText + rxStyleSheetText;
 };

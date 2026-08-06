@@ -1,0 +1,10 @@
+[data-rx-editor-role="root-editable"] {
+	padding-block: 16px;
+	padding-inline: 20px;
+
+	@media (min-width: 640px) {
+		padding-inline: 60px;
+	}
+
+	outline: none;
+}

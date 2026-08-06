@@ -29,6 +29,8 @@ details {
 	}
 
 	& > summary [data-rx-editor-role="detached-context"]::part(chevron) {
+		height: 20px;
+		width: 20px;
 		transition: rotate 300ms;
 	}
 

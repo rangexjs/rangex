@@ -1,0 +1,5 @@
+[data-rx-editor-role="root-editable"] {
+	font-family: "Inter", sans-serif;
+
+	color: light-dark(black, white);
+}
