@@ -1,5 +1,5 @@
 [data-rx-editor-role="inline-component"] {
-	&:where([data-rx-interactive-within-context-selection="true"]) {
+	&:where([data-rx-interactive-within-component-selection="true"]) {
 		background: light-dark(
 			color(from var(--color-blue-500) srgb r g b / 0.1),
 			color(from var(--color-blue-400) srgb r g b / 0.15)
