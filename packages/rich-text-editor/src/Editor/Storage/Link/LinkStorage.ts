@@ -1,4 +1,5 @@
 import { linkId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateLinkStorageResult,
 	EnsureLinkStorageParams,
@@ -10,24 +11,14 @@ import type {
 
 export const linkStorageVersion = 1 as const;
 
-export const isLinkStorage = (storage: unknown): storage is LinkStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === linkId &&
-	"version" in storage &&
-	storage.version === linkStorageVersion;
+export const isLinkStorage = (storage: unknown): storage is LinkStorage => {
+	return isStorage(storage, { id: linkId, version: linkStorageVersion });
+};
 
 export const validateLinkStorage = (
 	storage: unknown,
 ): storage is LinkStorage => {
-	const isValid = isLinkStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateLinkStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isLinkStorage);
 };
 
 export const createLinkStorage = (): CreateLinkStorageResult => ({

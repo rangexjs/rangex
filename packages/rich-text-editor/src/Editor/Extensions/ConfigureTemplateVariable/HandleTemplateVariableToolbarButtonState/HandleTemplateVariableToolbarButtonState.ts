@@ -1,10 +1,7 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#ports";
 import { getClosestScopedEditable } from "../../../NodeQuery";
-import {
-	ensureNodeRootStorage,
-	ensureTemplateVariableRootStorage,
-} from "../../../Storage";
+import { ensureNodeRootStorage } from "../../../Storage";
 import { storageToOptions } from "../_Utilities";
 import type { HandleTemplateVariableToolbarButtonStateParams } from "./HandleTemplateVariableToolbarButtonState-types";
 
@@ -32,12 +29,11 @@ export const handleTemplateVariableToolbarButtonState = ({
 				$$allowedComponents.includes(componentsName.templateVariable);
 
 			const rootStorage = ensureNodeRootStorage({ rootEditable });
-			const storage = ensureTemplateVariableRootStorage({ rootStorage });
 
 			editorPort.updateState({
 				toolbarButton: {
 					disabled: !canInsert,
-					options: storageToOptions({ storage }),
+					options: storageToOptions({ storage: rootStorage.templateVariable }),
 				},
 			});
 		},

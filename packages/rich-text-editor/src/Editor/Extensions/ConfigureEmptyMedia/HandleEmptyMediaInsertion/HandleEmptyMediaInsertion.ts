@@ -1,4 +1,3 @@
-import { createBeamText, createContentLine } from "rich-text-area";
 import { createEmptyMedia } from "../../_Utilities";
 import type { HandleEmptyMediaInsertionParams } from "./HandleEmptyMediaInsertion-types";
 
@@ -7,30 +6,24 @@ export const handleEmptyMediaInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleEmptyMediaInsertionParams) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
 	const unsubscribe = editorPort.onInsertRequest(() => {
 		const emptyMediaLine = createEmptyMedia();
 
-		const trailingLine = createContentLine({
-			localName: "p",
-			childNodes: [createBeamText()],
-		});
-
 		blockComponentPlacement.insertBySelection({
-			lines: [emptyMediaLine, trailingLine],
+			lines: [emptyMediaLine],
 			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
 
-		const selection = editorAPI.getEditorSelection();
-
 		selection.setBoundaryPoints({
-			fromNode: trailingLine,
-			fromOffset: 0,
-			toNode: trailingLine,
-			toOffset: 0,
+			fromNode: emptyMediaLine,
+			fromOffset: emptyMediaLine.$$childNodes.length,
+			toNode: emptyMediaLine,
+			toOffset: emptyMediaLine.$$childNodes.length,
 		});
 
 		editorAPI.focus();

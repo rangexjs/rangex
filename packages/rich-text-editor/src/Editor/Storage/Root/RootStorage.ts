@@ -1,4 +1,5 @@
 import { rootId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateRootStorageResult,
 	EnsureNodeRootStorageParams,
@@ -10,30 +11,32 @@ import type {
 
 export const rootStorageVersion = 1 as const;
 
-export const isRootStorage = (storage: unknown): storage is RootStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === rootId &&
-	"version" in storage &&
-	storage.version === rootStorageVersion;
+export const templateVariableKeys = [
+	"firstName",
+	"lastName",
+	"email",
+	"date",
+] as const;
+
+export const isRootStorage = (storage: unknown): storage is RootStorage => {
+	return isStorage(storage, { id: rootId, version: rootStorageVersion });
+};
 
 export const validateRootStorage = (
 	storage: unknown,
 ): storage is RootStorage => {
-	const isValid = isRootStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateRootStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isRootStorage);
 };
 
 export const createRootStorage = (): CreateRootStorageResult => ({
 	id: rootId,
 	version: rootStorageVersion,
-	templateVariable: {},
+	templateVariable: {
+		firstName: null,
+		lastName: null,
+		email: null,
+		date: null,
+	},
 });
 
 export const ensureRootStorage = ({

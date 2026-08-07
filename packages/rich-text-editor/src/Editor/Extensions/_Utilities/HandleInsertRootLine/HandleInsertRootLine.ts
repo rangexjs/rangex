@@ -22,7 +22,7 @@ export const handleInsertRootLine = ({
 
 		const contentLine = createContentLine({
 			localName: "p",
-			childNodes: [createBeamText()],
+			childNodes: [createBeamText({})],
 		});
 
 		({

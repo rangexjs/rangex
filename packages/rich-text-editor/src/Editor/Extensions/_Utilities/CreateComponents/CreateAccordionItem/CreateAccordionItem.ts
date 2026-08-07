@@ -25,7 +25,7 @@ export const createAccordionItem = ({
 		content: { type: "default" },
 		display: "block single-line",
 		childNodes: [
-			createContentLine({ localName: "p", childNodes: [createBeamText()] }),
+			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],
 	});
 
@@ -33,7 +33,7 @@ export const createAccordionItem = ({
 		content: { type: "default" },
 		display: "block multi-line",
 		childNodes: childNodes ?? [
-			createContentLine({ localName: "p", childNodes: [createBeamText()] }),
+			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],
 	});
 

@@ -1,4 +1,5 @@
 import { mentionId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateMentionStorageParams,
 	CreateMentionStorageResult,
@@ -11,24 +12,16 @@ import type {
 
 export const mentionStorageVersion = 1 as const;
 
-export const isMentionStorage = (storage: unknown): storage is MentionStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === mentionId &&
-	"version" in storage &&
-	storage.version === mentionStorageVersion;
+export const isMentionStorage = (
+	storage: unknown,
+): storage is MentionStorage => {
+	return isStorage(storage, { id: mentionId, version: mentionStorageVersion });
+};
 
 export const validateMentionStorage = (
 	storage: unknown,
 ): storage is MentionStorage => {
-	const isValid = isMentionStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateMentionStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isMentionStorage);
 };
 
 export const createMentionStorage = ({

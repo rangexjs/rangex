@@ -41,19 +41,46 @@ const handleBlockComponentLine = ({
 
 	const { $$componentName } = blockComponent;
 
-	const isVisible = (name: BlockComponentName) => $$componentName !== name;
+	const { accordionItem, blockQuote, codeBlock, list, todoList } =
+		componentsName;
+
+	const turnableComponents: BlockComponentName[] = [
+		accordionItem,
+		blockQuote,
+		codeBlock,
+		list,
+		todoList,
+	];
+
+	const isVisible = (name: BlockComponentName) =>
+		$$componentName !== name &&
+		turnableComponents.includes(
+			$$componentName as (typeof turnableComponents)[number],
+		);
+
+	const unwrappableComponents: BlockComponentName[] = [
+		accordionItem,
+		blockQuote,
+		codeBlock,
+		list,
+		todoList,
+	];
+
+	const canUnwrap = unwrappableComponents.some(
+		(name) => name === $$componentName,
+	);
 
 	editorPort.updateState({
 		turnInto: {
-			[componentsName.accordionItem]: isVisible(componentsName.accordionItem),
-			[componentsName.blockQuote]: isVisible(componentsName.blockQuote),
-			[componentsName.codeBlock]: isVisible(componentsName.codeBlock),
-			[componentsName.list]: isVisible(componentsName.list),
-			[componentsName.todoList]: isVisible(componentsName.todoList),
+			[accordionItem]: isVisible(accordionItem),
+			[blockQuote]: isVisible(blockQuote),
+			[codeBlock]: isVisible(codeBlock),
+			[list]: isVisible(list),
+			[todoList]: isVisible(todoList),
 		},
 		canDelete: true,
 		canDuplicate: true,
-		canUnwrap: true,
+		canUnwrap,
 	});
 };
 

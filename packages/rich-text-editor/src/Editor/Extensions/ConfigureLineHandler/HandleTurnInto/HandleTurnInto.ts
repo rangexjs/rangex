@@ -1,4 +1,8 @@
-import { blockComponentLineName } from "rich-text-area";
+import {
+	blockComponentLineName,
+	createBeamText,
+	createContentLine,
+} from "rich-text-area";
 import { componentsName } from "#ports";
 import {
 	createAccordionItem,
@@ -46,9 +50,22 @@ export const handleTurnInto = ({
 		}
 
 		editorAPI.replaceComponentTop(currentLine, (extractedLines) => {
+			const childNodes = [...extractedLines];
+
+			if (!childNodes.length) {
+				console.warn("TurnInto target has no Lines.");
+
+				childNodes.push(
+					createContentLine({
+						localName: "p",
+						childNodes: [createBeamText({})],
+					}),
+				);
+			}
+
 			const blockComponent = createBlockComponent({
 				name: turnIntoName,
-				childNodes: extractedLines,
+				childNodes,
 			});
 
 			return blockComponent;

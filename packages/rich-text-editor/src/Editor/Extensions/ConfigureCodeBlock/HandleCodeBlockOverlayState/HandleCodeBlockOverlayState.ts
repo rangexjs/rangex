@@ -115,7 +115,7 @@ export const handleCodeBlockOverlayState = ({
 					fromNode: contentLine,
 					fromOffset: 0,
 					toNode: contentLine,
-					toOffset: contentLine.childNodes.length,
+					toOffset: contentLine.$$childNodes.length,
 				}),
 			);
 		}

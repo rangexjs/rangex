@@ -1,4 +1,5 @@
 import { imageId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateImageStorageResult,
 	EnsureImageStorageParams,
@@ -10,24 +11,14 @@ import type {
 
 export const imageStorageVersion = 1 as const;
 
-export const isImageStorage = (storage: unknown): storage is ImageStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === imageId &&
-	"version" in storage &&
-	storage.version === imageStorageVersion;
+export const isImageStorage = (storage: unknown): storage is ImageStorage => {
+	return isStorage(storage, { id: imageId, version: imageStorageVersion });
+};
 
 export const validateImageStorage = (
 	storage: unknown,
 ): storage is ImageStorage => {
-	const isValid = isImageStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateImageStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isImageStorage);
 };
 
 export const createImageStorage = (): CreateImageStorageResult => ({

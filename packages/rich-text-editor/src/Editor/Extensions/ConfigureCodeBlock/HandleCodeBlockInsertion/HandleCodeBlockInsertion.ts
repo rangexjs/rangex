@@ -12,6 +12,9 @@ export const handleCodeBlockInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleCodeBlockInsertionParams) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
 	const unsubscribe = editorPort.onInsertRequest(({ language }) => {
 		const codeBlockLine = createCodeBlock({ language });
 
@@ -40,17 +43,13 @@ export const handleCodeBlockInsertion = ({
 			throw new Error("NestedEditable's type is invalid.");
 		}
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
-
-		const selection = editorAPI.getEditorSelection();
 
 		selection.setBoundaryPoints({
 			fromNode: nestedEditable,
-			fromOffset: nestedEditable.childNodes.length,
+			fromOffset: nestedEditable.$$childNodes.length,
 			toNode: nestedEditable,
-			toOffset: nestedEditable.childNodes.length,
+			toOffset: nestedEditable.$$childNodes.length,
 		});
 
 		editorAPI.focus();

@@ -1,0 +1,18 @@
+[data-rx-editor-role="root-editable"] {
+	padding-block: 16px;
+	padding-inline: 20px;
+
+	@media (min-width: 640px) {
+		padding-inline: 60px;
+	}
+
+	outline: none;
+
+	&:focus {
+		box-shadow: inset 0 0 4px -2px
+			light-dark(
+				color(from var(--color-neutral-500) srgb r g b / 0.84),
+				color(from var(--color-neutral-400) srgb r g b / 0.84)
+			);
+	}
+}

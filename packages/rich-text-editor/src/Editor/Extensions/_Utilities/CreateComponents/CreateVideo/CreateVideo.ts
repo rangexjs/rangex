@@ -10,6 +10,7 @@ import {
 	blockAlignAttr,
 	objectFitAttr,
 } from "../../../../Constants";
+import { createVideoStorage } from "../../../../Storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
@@ -21,6 +22,7 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 		blockComponent: createBlockComponent({
 			componentName: componentsName.video,
 			content: { type: "custom" },
+			customStorage: createVideoStorage(),
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,

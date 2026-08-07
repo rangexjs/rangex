@@ -1,4 +1,5 @@
 import { tableId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateTableStorageResult,
 	EnsureNodeTableStorageParams,
@@ -10,24 +11,14 @@ import type {
 
 export const tableStorageVersion = 1 as const;
 
-export const isTableStorage = (storage: unknown): storage is TableStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === tableId &&
-	"version" in storage &&
-	storage.version === tableStorageVersion;
+export const isTableStorage = (storage: unknown): storage is TableStorage => {
+	return isStorage(storage, { id: tableId, version: tableStorageVersion });
+};
 
 export const validateTableStorage = (
 	storage: unknown,
 ): storage is TableStorage => {
-	const isValid = isTableStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateTableStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isTableStorage);
 };
 
 export const createTableStorage = (): CreateTableStorageResult => ({

@@ -8,24 +8,36 @@ import type { HandleAudioInsertionParams } from "./HandleAudioInsertion-types";
 export const handleAudioInsertion = ({
 	editorPort,
 	editorAPI,
+	blockComponentPlacement,
 }: HandleAudioInsertionParams) => {
-	return editorPort.onMediaResolve(({ type, src }) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = editorPort.onMediaResolve(({ type, src }) => {
 		if (type !== "audio") {
 			return;
 		}
 
-		const selection = editorAPI.getEditorSelection();
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+		const audio = createAudio({ src });
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createAudio({ src })],
-			breakBeforeInsert: false,
+		blockComponentPlacement.insertBySelection({
+			lines: [audio],
+			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
+
+		selection.setBoundaryPoints({
+			fromNode: audio,
+			fromOffset: audio.$$childNodes.length,
+			toNode: audio,
+			toOffset: audio.$$childNodes.length,
+		});
+
+		editorAPI.focus();
 	});
+
+	return () => {
+		unsubscribe();
+	};
 };

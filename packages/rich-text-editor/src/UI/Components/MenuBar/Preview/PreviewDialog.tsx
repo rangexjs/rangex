@@ -78,14 +78,14 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 			snapshot: content.getSnapshot,
 		};
 
-		const textResolvers: Partial<Record<PreviewTab, () => string>> = {
+		const textResolvers: Partial<Record<PreviewTab, () => Promise<string>>> = {
 			html: content.getHTMLText,
 			json: content.getJSONText,
 			snapshot: content.getSnapshotText,
 		};
 
 		const element = await resolvers[tab]();
-		const text = textResolvers[tab]?.() ?? null;
+		const text = (await textResolvers[tab]?.()) ?? null;
 		setResolvedContent((current) => ({ ...current, [tab]: { element, text } }));
 	};
 

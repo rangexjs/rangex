@@ -33,3 +33,7 @@ export const createPart = <Name extends string>(name: Name) => {
 
 	return part;
 };
+
+export const todoCheckboxName = "todo-checkbox";
+
+export const todoCheckboxPart = createPart("todo-checkbox");

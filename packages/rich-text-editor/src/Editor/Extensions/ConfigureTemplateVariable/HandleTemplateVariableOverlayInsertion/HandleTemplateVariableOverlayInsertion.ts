@@ -8,7 +8,6 @@ import { componentsName } from "#ports";
 import {
 	createTemplateVariableStorage,
 	ensureNodeRootStorage,
-	ensureTemplateVariableRootStorage,
 } from "../../../Storage";
 import {
 	getTemplateVariableQuery,
@@ -104,10 +103,10 @@ export const handleTemplateVariableOverlayInsertion = ({
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
 		const rootStorage = ensureNodeRootStorage({ rootEditable });
-		const storage = ensureTemplateVariableRootStorage({ rootStorage });
+
 		const displayText = resolveTemplateVariableDisplayText({
 			type: kind,
-			storage,
+			storage: rootStorage.templateVariable,
 		});
 
 		const templateVariable = createTemplateVariableComponent({

@@ -11,5 +11,5 @@ export * from "./Mention/index";
 export * from "./Root/index";
 export * from "./Table/index";
 export * from "./TemplateVariable/index";
-export * from "./TodoCheckbox/index";
+export * from "./TodoList/index";
 export * from "./Video/index";

@@ -1,0 +1,20 @@
+::highlight(range-x-editor-selection) {
+	background-color: light-dark(
+		var(--color-primary-100),
+		var(--color-primary-900)
+	);
+}
+
+::highlight(range-x-find-replace) {
+	background-color: light-dark(
+		color(from var(--color-yellow-400) srgb r g b / 0.5),
+		color(from var(--color-yellow-400) srgb r g b / 0.5)
+	);
+}
+
+::highlight(range-x-current-find-replace) {
+	background-color: light-dark(
+		color(from var(--color-orange-600) srgb r g b / 0.5),
+		color(from var(--color-orange-600) srgb r g b / 0.5)
+	);
+}

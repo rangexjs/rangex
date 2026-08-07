@@ -5,11 +5,12 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
-import { componentsName } from "#ports";
+import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
+import { blockAlignAttr } from "../../../../Constants";
 import {
-	elementNameAttr,
-	todoCheckboxElementName,
-} from "../../../../Constants";
+	createTodoCheckboxStorage,
+	createTodoListStorage,
+} from "../../../../Storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -25,9 +26,10 @@ export const createTodoList = ({
 		createPreLayout: ({ nestedEditable }) => [
 			createHTMLLayout({
 				localName: "input",
+				customStorage: createTodoCheckboxStorage({ checked: false }),
 				domAttrs: {
 					type: "checkbox",
-					[elementNameAttr]: todoCheckboxElementName,
+					[dataPartName]: todoCheckboxPart.name,
 				},
 			}),
 			nestedEditable({}),
@@ -35,10 +37,14 @@ export const createTodoList = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.todoList,
 			content: { type: "list" },
+			customStorage: createTodoListStorage(),
 			childNodes: [list],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

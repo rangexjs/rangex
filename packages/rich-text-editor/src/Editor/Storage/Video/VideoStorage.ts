@@ -1,4 +1,5 @@
 import { videoId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateVideoStorageResult,
 	EnsureNodeVideoStorageParams,
@@ -10,24 +11,14 @@ import type {
 
 export const videoStorageVersion = 1 as const;
 
-export const isVideoStorage = (storage: unknown): storage is VideoStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === videoId &&
-	"version" in storage &&
-	storage.version === videoStorageVersion;
+export const isVideoStorage = (storage: unknown): storage is VideoStorage => {
+	return isStorage(storage, { id: videoId, version: videoStorageVersion });
+};
 
 export const validateVideoStorage = (
 	storage: unknown,
 ): storage is VideoStorage => {
-	const isValid = isVideoStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateVideoStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isVideoStorage);
 };
 
 export const createVideoStorage = (): CreateVideoStorageResult => ({

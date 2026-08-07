@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { componentsName } from "#ports";
 import { aspectRatioAttr, blockAlignAttr } from "../../../../Constants";
+import { createEmbedStorage } from "../../../../Storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
 // Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are
@@ -27,6 +28,7 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 		blockComponent: createBlockComponent({
 			componentName: componentsName.embed,
 			content: { type: "custom" },
+			customStorage: createEmbedStorage(),
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,

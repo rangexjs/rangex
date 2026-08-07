@@ -1,4 +1,5 @@
 import { listId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	CreateListStorageResult,
 	EnsureListStorageParams,
@@ -10,24 +11,14 @@ import type {
 
 export const listStorageVersion = 1 as const;
 
-export const isListStorage = (storage: unknown): storage is ListStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === listId &&
-	"version" in storage &&
-	storage.version === listStorageVersion;
+export const isListStorage = (storage: unknown): storage is ListStorage => {
+	return isStorage(storage, { id: listId, version: listStorageVersion });
+};
 
 export const validateListStorage = (
 	storage: unknown,
 ): storage is ListStorage => {
-	const isValid = isListStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateListStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isListStorage);
 };
 
 export const createListStorage = (): CreateListStorageResult => ({

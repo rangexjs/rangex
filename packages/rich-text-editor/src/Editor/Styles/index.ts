@@ -1,2 +1,2 @@
 export * from "./AnchorPositioningStyleSheet";
-export * from "./GetStyleSheetTexts";
+export * from "./GetStyleSheetText";

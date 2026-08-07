@@ -11,6 +11,6 @@ export const mentionId = "mention" as const;
 export const rootId = "root" as const;
 export const tableId = "table" as const;
 export const templateVariableId = "template-variable" as const;
-export const templateVariableRootId = "template-variable-root" as const;
 export const todoCheckboxId = "todo-checkbox" as const;
+export const todoListId = "todo-list" as const;
 export const videoId = "video" as const;

@@ -12,6 +12,9 @@ export const handleTodoListInsertion = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleTodoListInsertionParams) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+	const selection = editorAPI.getEditorSelection();
+
 	const unsubscribe = editorPort.onInsertRequest(() => {
 		const todoListLine = createTodoList({});
 
@@ -40,17 +43,13 @@ export const handleTodoListInsertion = ({
 			throw new Error("NestedEditable's type is invalid.");
 		}
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
-
 		snapshotTimeline.registerSnapshotBoundary();
-
-		const selection = editorAPI.getEditorSelection();
 
 		selection.setBoundaryPoints({
 			fromNode: nestedEditable,
-			fromOffset: nestedEditable.childNodes.length,
+			fromOffset: nestedEditable.$$childNodes.length,
 			toNode: nestedEditable,
-			toOffset: nestedEditable.childNodes.length,
+			toOffset: nestedEditable.$$childNodes.length,
 		});
 
 		editorAPI.focus();

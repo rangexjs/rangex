@@ -5,18 +5,12 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import {
-	createElementNameSelector,
-	todoCheckboxElementName,
-} from "../../../Constants";
+import { componentsName, todoCheckboxPart } from "#ports";
 import {
 	ensureNodeTodoCheckboxStorage,
 	todoCheckboxStorageFallbacks,
 } from "../../../Storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
-
-const todoCheckboxSelector = createElementNameSelector(todoCheckboxElementName);
 
 export const handleTodoListCheckboxState = ({
 	editorAPI,
@@ -36,7 +30,7 @@ export const handleTodoListCheckboxState = ({
 				}
 
 				for (const listItem of list.$$children) {
-					const todoCheckbox = listItem.$$querySelector(todoCheckboxSelector);
+					const todoCheckbox = listItem.$$querySelector(todoCheckboxPart.attr);
 
 					if (!todoCheckbox) {
 						throw new Error("TodoCheckbox wasn't found.");
@@ -46,17 +40,23 @@ export const handleTodoListCheckboxState = ({
 						throw new Error("TodoCheckbox's type is invalid.");
 					}
 
-					ensureNodeTodoCheckboxStorage({
+					if (!(todoCheckbox instanceof HTMLInputElement)) {
+						throw new Error("TodoCheckbox's type is invalid.");
+					}
+
+					const storage = ensureNodeTodoCheckboxStorage({
 						htmlLayout: todoCheckbox,
 						fallbacks: todoCheckboxStorageFallbacks,
 					});
+
+					todoCheckbox.checked = storage.checked;
 				}
 			}
 		},
 	});
 
 	const unsubscribeChange = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.matches(todoCheckboxSelector),
+		when: ({ element }) => element.matches(todoCheckboxPart.attr),
 		eventListener: {
 			type: "change",
 			listener: (event) => {
@@ -66,11 +66,11 @@ export const handleTodoListCheckboxState = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (!(currentTarget instanceof HTMLInputElement)) {
+				if (currentTarget.$$editorRole !== htmlLayoutName) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				if (currentTarget.$$editorRole !== htmlLayoutName) {
+				if (!(currentTarget instanceof HTMLInputElement)) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
@@ -78,6 +78,7 @@ export const handleTodoListCheckboxState = ({
 					htmlLayout: currentTarget,
 					fallbacks: todoCheckboxStorageFallbacks,
 				});
+
 				storage.checked = currentTarget.checked;
 			},
 		},

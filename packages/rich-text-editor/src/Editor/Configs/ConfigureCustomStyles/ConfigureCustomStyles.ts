@@ -1,13 +1,10 @@
-import { getStyleSheetTexts } from "../../Styles";
+import { getStyleSheetText } from "../../Styles";
 import type { ConfigureCustomStylesParams } from "./ConfigureCustomStyles-types";
 
 export const configureCustomStyles = ({
 	editorAPI,
 }: ConfigureCustomStylesParams) => {
-	const { contentStyleSheetText, interactiveStyleSheetText } =
-		getStyleSheetTexts();
+	const styleSheetText = getStyleSheetText({ rxStyle: true });
 
-	editorAPI.replaceCustomStyles(
-		contentStyleSheetText + interactiveStyleSheetText,
-	);
+	editorAPI.replaceCustomStyles(styleSheetText);
 };

@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { componentsName } from "#ports";
 import { blockAlignAttr } from "../../../../Constants";
+import { createEmptyMediaStorage } from "../../../../Storage";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
 
 /**
@@ -24,6 +25,7 @@ export const createEmptyMedia = (): CreateEmptyMediaResult => {
 		blockComponent: createBlockComponent({
 			componentName: componentsName.emptyMedia,
 			content: { type: "custom" },
+			customStorage: createEmptyMediaStorage(),
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,

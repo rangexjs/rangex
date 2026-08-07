@@ -1,4 +1,5 @@
 import { blockQuoteId } from "../../Constants";
+import { isStorage, validateStorage } from "../_Utilities";
 import type {
 	BlockQuoteStorage,
 	CreateBlockQuoteStorageResult,
@@ -12,24 +13,17 @@ export const blockQuoteStorageVersion = 1 as const;
 
 export const isBlockQuoteStorage = (
 	storage: unknown,
-): storage is BlockQuoteStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === blockQuoteId &&
-	"version" in storage &&
-	storage.version === blockQuoteStorageVersion;
+): storage is BlockQuoteStorage => {
+	return isStorage(storage, {
+		id: blockQuoteId,
+		version: blockQuoteStorageVersion,
+	});
+};
 
 export const validateBlockQuoteStorage = (
 	storage: unknown,
 ): storage is BlockQuoteStorage => {
-	const isValid = isBlockQuoteStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateBlockQuoteStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isBlockQuoteStorage);
 };
 
 export const createBlockQuoteStorage = (): CreateBlockQuoteStorageResult => ({
