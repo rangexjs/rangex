@@ -60,11 +60,11 @@ const handleBlockComponentLine = ({
 
 	editorPort.updateState({
 		turnInto: {
-			[componentsName.accordionItem]: isVisible(componentsName.accordionItem),
-			[componentsName.blockQuote]: isVisible(componentsName.blockQuote),
-			[componentsName.codeBlock]: isVisible(componentsName.codeBlock),
-			[componentsName.list]: isVisible(componentsName.list),
-			[componentsName.todoList]: isVisible(componentsName.todoList),
+			[accordionItem]: isVisible(accordionItem),
+			[blockQuote]: isVisible(blockQuote),
+			[codeBlock]: isVisible(codeBlock),
+			[list]: isVisible(list),
+			[todoList]: isVisible(todoList),
 		},
 		canDelete: true,
 		canDuplicate: true,
