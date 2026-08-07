@@ -1,7 +1,12 @@
 import { createSnapshotView } from "rich-text-area";
 import type { DualTheme } from "#libs";
 import { createHTMLFromSnapshotView } from "../../CreateHTMLFromSnapshotView";
-import { createHighlightedCode, createHost, formatHTML } from "./_Utilities";
+import {
+	createHighlightedCode,
+	createHost,
+	createTemplate,
+	formatHTML,
+} from "./_Utilities";
 import type {
 	ConfigurePreviewParams,
 	CreateHTMLParams,
@@ -24,15 +29,15 @@ const createRendered = ({ snapshotView }: CreateRenderedParams) => {
 
 const createHTML = async ({ snapshotView }: CreateHTMLParams) => {
 	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
-	const styleCode = formatHTML({ element: style });
-	const htmlCode = formatHTML({ element: rootElement });
+	const template = createTemplate({ children: [rootElement, style] });
+	const html = formatHTML({ element: template });
+	const htmlPre = await createHighlightedCode({
+		code: html,
+		lang: "html",
+		theme,
+	});
 
-	const [stylePre, htmlPre] = await Promise.all([
-		createHighlightedCode({ code: styleCode, lang: "html", theme }),
-		createHighlightedCode({ code: htmlCode, lang: "html", theme }),
-	]);
-
-	return createHost({ children: [htmlPre, stylePre] });
+	return createHost({ children: [htmlPre] });
 };
 
 const createJSON = async ({ snapshotView }: CreateJSONParams) => {
@@ -50,13 +55,17 @@ const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
 };
 
 const createHTMLText = ({ snapshotView }: CreateHTMLTextParams) => {
-	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
+	const { style, rootElement } = createHTMLFromSnapshotView({
+		snapshotView,
+	});
 	const root = document.createElement("div");
 	root.append(rootElement);
 	const htmlCode = root.getHTML({ serializableShadowRoots: true });
 	const styleCode = formatHTML({ element: style });
 
-	return `${htmlCode}\n\n${styleCode}`;
+	const templateHTML = `<template shadowrootmode="open">${htmlCode}\n\n${styleCode}</template>`;
+
+	return templateHTML;
 };
 
 const createJSONText = ({ snapshotView }: CreateJSONTextParams) =>
