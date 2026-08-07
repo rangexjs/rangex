@@ -1,0 +1,58 @@
+@keyframes range-included-outline {
+	from {
+		outline-width: 0px;
+	}
+
+	to {
+		outline-width: var(--outline-width);
+	}
+}
+
+[data-rx-editor-role="inline-component"],
+[data-rx-editor-role="block-component"] {
+	--theme-color: light-dark(var(--color-primary-500), var(--color-primary-600));
+	--shadow-color: color(from var(--theme-color) srgb r g b / 0.5);
+	--selection-color: color(from var(--theme-color) srgb r g b / 0.08);
+
+	&:where([data-rx-interactive-range-included-selection="true"]) {
+		position: relative;
+		outline-style: solid;
+		outline-color: var(--shadow-color);
+		animation-duration: 75ms;
+		animation-fill-mode: both;
+		animation-timing-function: linear;
+
+		&::selection {
+			background-color: transparent;
+		}
+
+		&::before {
+			content: "";
+			pointer-events: none;
+			position: absolute;
+			inset: 0;
+			background-color: var(--selection-color);
+		}
+
+		/* BlockComponents */
+		&:where(
+				[data-rx-component-name="audio"],
+				[data-rx-component-name="embed"],
+				[data-rx-component-name="empty-media"],
+				[data-rx-component-name="image"],
+				[data-rx-component-name="table"],
+				[data-rx-component-name="video"]
+			) {
+			--outline-width: 4px;
+			border-radius: 6px;
+			animation-name: range-included-outline;
+		}
+
+		/* InlineComponents */
+		&:where([data-rx-component-name="template-variable"]) {
+			--outline-width: 2px;
+			border-radius: 4px;
+			animation-name: range-included-outline;
+		}
+	}
+}

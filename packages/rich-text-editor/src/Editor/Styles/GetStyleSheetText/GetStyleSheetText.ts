@@ -6,6 +6,7 @@ import {
 	BlockQuote,
 	CodeBlock,
 	Colors,
+	ComponentRx,
 	ContentLine,
 	Embed,
 	EngineGlobalStyles,
@@ -21,12 +22,11 @@ import {
 	RootEditable,
 	RootEditableRx,
 	Table,
+	TableRx,
 	TemplateVariable,
 	TodoList,
 	Video,
 } from "../EngineStyles";
-// Temporary
-import InteractiveStyles from "../InteractiveStyles.css?inline";
 import type { GetStyleSheetTextParams } from "./GetStyleSheetText-types";
 
 export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
@@ -58,10 +58,12 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 
 	const rxStyleSheetText =
 		AccordionItemRx +
+		ComponentRx +
 		EngineGlobalStylesRx +
 		GlyphFormatterRx +
 		InternalElementsRx +
-		RootEditableRx;
+		RootEditableRx +
+		TableRx;
 
-	return styleSheetText + rxStyleSheetText + InteractiveStyles;
+	return styleSheetText + rxStyleSheetText;
 };
