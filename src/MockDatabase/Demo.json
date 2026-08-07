@@ -333,7 +333,7 @@
 			},
 			{
 				"type": "content-line",
-				"uniqueId": "1783526771509-1274854503",
+				"uniqueId": "1786115184484-1060627652",
 				"customStorage": null,
 				"localName": "p",
 				"styleAttrs": {},
@@ -368,14 +368,14 @@
 				"childNodes": [
 					{
 						"type": "beam-text",
-						"uniqueId": "1783526771509-4150333783",
+						"uniqueId": "1786115191537-3356821422",
 						"customStorage": null
 					}
 				]
 			},
 			{
 				"type": "content-line",
-				"uniqueId": "1775063928643-821335436",
+				"uniqueId": "1786115200341-30245645",
 				"customStorage": null,
 				"localName": "h2",
 				"styleAttrs": {},
@@ -410,13 +410,13 @@
 				"childNodes": [
 					{
 						"type": "one-visual-unit-text",
-						"uniqueId": "1775064073419-2854351894",
+						"uniqueId": "1786115191536-3213723339",
 						"customStorage": null,
 						"data": "🧠"
 					},
 					{
 						"type": "basic-text",
-						"uniqueId": "1775064073419-1228086026",
+						"uniqueId": "1786115191536-110844049",
 						"customStorage": null,
 						"data": " How It Works"
 					}
@@ -470,7 +470,7 @@
 				"uniqueId": "1775063946604-444270437",
 				"customStorage": null,
 				"styleAttrs": {},
-				"domAttrs": {},
+				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"type": "block-component-text-holder",
@@ -1215,28 +1215,28 @@
 			},
 			{
 				"type": "block-component-line",
-				"uniqueId": "1781688269462-3728213933",
+				"uniqueId": "1786016884054-3551074738",
 				"customStorage": null,
 				"styleAttrs": {},
-				"domAttrs": {},
+				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"type": "block-component-text-holder",
-						"uniqueId": "1781688269462-2790586432",
+						"uniqueId": "1786016884054-2665701978",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "block-component-text",
-								"uniqueId": "1781688269462-1383520472",
+								"uniqueId": "1786016884054-3910677417",
 								"customStorage": null
 							}
 						]
 					},
 					{
 						"type": "block-component",
-						"uniqueId": "1781688269462-3645237881",
+						"uniqueId": "1786016884054-1817990884",
 						"customStorage": {
 							"id": "code-block",
 							"version": 1,
@@ -1250,12 +1250,12 @@
 						"editState": "inherit",
 						"styleAttrs": {},
 						"domAttrs": {
-							"style": "background: light-dark(rgb(255, 255, 255), rgb(30, 30, 30)); --rx-line-number-color: light-dark(#000000, #D4D4D4);"
+							"style": "--bg-light: #FFFFFF; --bg-dark: #1E1E1E; --fg-light: #000000; --fg-dark: #D4D4D4;"
 						},
 						"childNodes": [
 							{
 								"type": "html-layout",
-								"uniqueId": "1781688269462-3431716640",
+								"uniqueId": "1786016884054-1288479028",
 								"customStorage": null,
 								"localName": "pre",
 								"styleAttrs": {},
@@ -1263,7 +1263,7 @@
 								"childNodes": [
 									{
 										"type": "html-layout",
-										"uniqueId": "1781688269462-1350932935",
+										"uniqueId": "1786016884054-3343365192",
 										"customStorage": null,
 										"localName": "code",
 										"styleAttrs": {},
@@ -1271,7 +1271,7 @@
 										"childNodes": [
 											{
 												"type": "list",
-												"uniqueId": "1781688269462-3531348420",
+												"uniqueId": "1786016884052-1355584872",
 												"customStorage": null,
 												"localName": "ol",
 												"lineType": "single-line",
@@ -1280,7 +1280,7 @@
 													"childNodes": [
 														{
 															"type": "html-layout",
-															"uniqueId": "1781649781070-3971248758",
+															"uniqueId": "1786016884052-1626337040",
 															"customStorage": null,
 															"localName": "div",
 															"styleAttrs": {},
@@ -1288,7 +1288,7 @@
 															"childNodes": [
 																{
 																	"type": "detached-context",
-																	"uniqueId": "1781649781069-938553948",
+																	"uniqueId": "1786016884052-3998826368",
 																	"customStorage": null,
 																	"localName": "span",
 																	"styleAttrs": {},
@@ -1297,14 +1297,14 @@
 																	"shadowTreeSnapshot": [
 																		{
 																			"type": "text",
-																			"shadowNodeId": "1781649781070-1939348091",
+																			"shadowNodeId": "1786016884052-2791803465",
 																			"data": "0"
 																		}
 																	]
 																},
 																{
 																	"type": "nested-editable",
-																	"uniqueId": "1781649781069-464097824",
+																	"uniqueId": "1786016884052-2405147764",
 																	"customStorage": null,
 																	"content": { "type": "list-item" },
 																	"display": "block single-line",
@@ -1328,14 +1328,14 @@
 												"childNodes": [
 													{
 														"type": "list-item",
-														"uniqueId": "1781688269462-362081632",
+														"uniqueId": "1786016884052-32503561",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
 																"type": "html-layout",
-																"uniqueId": "1781688269462-287478493",
+																"uniqueId": "1786016884052-1623460986",
 																"customStorage": null,
 																"localName": "div",
 																"styleAttrs": {},
@@ -1343,7 +1343,7 @@
 																"childNodes": [
 																	{
 																		"type": "detached-context",
-																		"uniqueId": "1781688269462-1337096396",
+																		"uniqueId": "1786016884052-184155714",
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
@@ -1352,14 +1352,14 @@
 																		"shadowTreeSnapshot": [
 																			{
 																				"type": "text",
-																				"shadowNodeId": "1783526745859-2811034467",
+																				"shadowNodeId": "1786114760869-1145429786",
 																				"data": "1"
 																			}
 																		]
 																	},
 																	{
 																		"type": "nested-editable",
-																		"uniqueId": "1781688269462-3969641259",
+																		"uniqueId": "1786016884052-562355703",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
 																		"display": "block single-line",
@@ -1374,7 +1374,7 @@
 																		"childNodes": [
 																			{
 																				"type": "content-line",
-																				"uniqueId": "1781688269462-3344703926",
+																				"uniqueId": "1786016884053-2636127388",
 																				"customStorage": null,
 																				"localName": "p",
 																				"styleAttrs": {},
@@ -1443,14 +1443,14 @@
 													},
 													{
 														"type": "list-item",
-														"uniqueId": "1781688269462-2556823544",
+														"uniqueId": "1786016884053-269350117",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
 																"type": "html-layout",
-																"uniqueId": "1781688269462-114247267",
+																"uniqueId": "1786016884053-2635543400",
 																"customStorage": null,
 																"localName": "div",
 																"styleAttrs": {},
@@ -1458,7 +1458,7 @@
 																"childNodes": [
 																	{
 																		"type": "detached-context",
-																		"uniqueId": "1781688269462-4216079690",
+																		"uniqueId": "1786016884053-2678066747",
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
@@ -1467,14 +1467,14 @@
 																		"shadowTreeSnapshot": [
 																			{
 																				"type": "text",
-																				"shadowNodeId": "1783526745859-3037041862",
+																				"shadowNodeId": "1786114760869-177643259",
 																				"data": "2"
 																			}
 																		]
 																	},
 																	{
 																		"type": "nested-editable",
-																		"uniqueId": "1781688269462-4169886376",
+																		"uniqueId": "1786016884053-2898544605",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
 																		"display": "block single-line",
@@ -1489,7 +1489,7 @@
 																		"childNodes": [
 																			{
 																				"type": "content-line",
-																				"uniqueId": "1781688269462-2325337190",
+																				"uniqueId": "1786016884053-4108660862",
 																				"customStorage": null,
 																				"localName": "p",
 																				"styleAttrs": {},
@@ -1558,14 +1558,14 @@
 													},
 													{
 														"type": "list-item",
-														"uniqueId": "1781688269462-3361668262",
+														"uniqueId": "1786016884053-2850379286",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
 																"type": "html-layout",
-																"uniqueId": "1781688269462-1060389947",
+																"uniqueId": "1786016884053-3612310960",
 																"customStorage": null,
 																"localName": "div",
 																"styleAttrs": {},
@@ -1573,7 +1573,7 @@
 																"childNodes": [
 																	{
 																		"type": "detached-context",
-																		"uniqueId": "1781688269462-699283467",
+																		"uniqueId": "1786016884053-307653695",
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
@@ -1582,14 +1582,14 @@
 																		"shadowTreeSnapshot": [
 																			{
 																				"type": "text",
-																				"shadowNodeId": "1783526745859-1764013343",
+																				"shadowNodeId": "1786114760869-2396280169",
 																				"data": "3"
 																			}
 																		]
 																	},
 																	{
 																		"type": "nested-editable",
-																		"uniqueId": "1781688269462-3438566269",
+																		"uniqueId": "1786016884053-867812226",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
 																		"display": "block single-line",
@@ -1604,7 +1604,7 @@
 																		"childNodes": [
 																			{
 																				"type": "content-line",
-																				"uniqueId": "1781688269462-4155964028",
+																				"uniqueId": "1786016884053-1266019191",
 																				"customStorage": null,
 																				"localName": "p",
 																				"styleAttrs": {},
@@ -1673,14 +1673,14 @@
 													},
 													{
 														"type": "list-item",
-														"uniqueId": "1781688269462-3571965909",
+														"uniqueId": "1786016884054-2612348950",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
 																"type": "html-layout",
-																"uniqueId": "1781688269462-3904677039",
+																"uniqueId": "1786016884054-564014001",
 																"customStorage": null,
 																"localName": "div",
 																"styleAttrs": {},
@@ -1688,7 +1688,7 @@
 																"childNodes": [
 																	{
 																		"type": "detached-context",
-																		"uniqueId": "1781688269462-1013669315",
+																		"uniqueId": "1786016884054-3550427531",
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
@@ -1697,14 +1697,14 @@
 																		"shadowTreeSnapshot": [
 																			{
 																				"type": "text",
-																				"shadowNodeId": "1783526745859-768962326",
+																				"shadowNodeId": "1786114760869-1584947227",
 																				"data": "4"
 																			}
 																		]
 																	},
 																	{
 																		"type": "nested-editable",
-																		"uniqueId": "1781688269462-558651646",
+																		"uniqueId": "1786016884054-2405790226",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
 																		"display": "block single-line",
@@ -1719,7 +1719,7 @@
 																		"childNodes": [
 																			{
 																				"type": "content-line",
-																				"uniqueId": "1781688269462-2084785421",
+																				"uniqueId": "1786016884054-2096568386",
 																				"customStorage": null,
 																				"localName": "p",
 																				"styleAttrs": {},
@@ -1796,14 +1796,14 @@
 					},
 					{
 						"type": "block-component-text-holder",
-						"uniqueId": "1781688269462-3497941053",
+						"uniqueId": "1786016884054-2298211291",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "block-component-text",
-								"uniqueId": "1781688269462-3978125981",
+								"uniqueId": "1786016884054-368561587",
 								"customStorage": null
 							}
 						]
@@ -1855,7 +1855,7 @@
 			},
 			{
 				"type": "content-line",
-				"uniqueId": "1775064291516-2389610461",
+				"uniqueId": "1786017016697-2357939676",
 				"customStorage": null,
 				"localName": "p",
 				"styleAttrs": {},
@@ -1890,7 +1890,7 @@
 				"childNodes": [
 					{
 						"type": "beam-text",
-						"uniqueId": "1775064291515-1780623029",
+						"uniqueId": "1786017016697-2398733791",
 						"customStorage": null
 					}
 				]
@@ -2319,7 +2319,7 @@
 				"uniqueId": "1775220984333-721090918",
 				"customStorage": null,
 				"styleAttrs": {},
-				"domAttrs": {},
+				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"type": "block-component-text-holder",
@@ -2542,7 +2542,7 @@
 				"uniqueId": "1775064442498-2051837890",
 				"customStorage": null,
 				"styleAttrs": {},
-				"domAttrs": {},
+				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"type": "block-component-text-holder",
@@ -2574,7 +2574,7 @@
 								"type": "table",
 								"uniqueId": "1775064442492-516081528",
 								"customStorage": null,
-								"colGroups": [307, 360, 333],
+								"colGroups": [333, 333, 334],
 								"rowGroups": [40, 40, 40, 40],
 								"minColWidth": 40,
 								"minRowHeight": 40,
@@ -2637,7 +2637,7 @@
 												"type": "table-col",
 												"uniqueId": "1775064442493-3578243339",
 												"customStorage": null,
-												"styleAttrs": { "width": "30.7%" },
+												"styleAttrs": { "width": "33.3%" },
 												"domAttrs": {},
 												"childNodes": []
 											},
@@ -2645,7 +2645,7 @@
 												"type": "table-col",
 												"uniqueId": "1775064442493-1707314693",
 												"customStorage": null,
-												"styleAttrs": { "width": "36%" },
+												"styleAttrs": { "width": "33.3%" },
 												"domAttrs": {},
 												"childNodes": []
 											},
@@ -2653,7 +2653,7 @@
 												"type": "table-col",
 												"uniqueId": "1775064442493-1789665557",
 												"customStorage": null,
-												"styleAttrs": { "width": "33.3%" },
+												"styleAttrs": { "width": "33.4%" },
 												"domAttrs": {},
 												"childNodes": []
 											}
