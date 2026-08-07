@@ -28,9 +28,9 @@ export interface PreviewContent {
 	getHTML: () => Promise<HTMLElement>;
 	getJSON: () => Promise<HTMLElement>;
 	getSnapshot: () => Promise<HTMLElement>;
-	getHTMLText: () => string;
-	getJSONText: () => string;
-	getSnapshotText: () => string;
+	getHTMLText: () => Promise<string>;
+	getJSONText: () => Promise<string>;
+	getSnapshotText: () => Promise<string>;
 }
 
 export interface PreviewMenuBarButtonState {

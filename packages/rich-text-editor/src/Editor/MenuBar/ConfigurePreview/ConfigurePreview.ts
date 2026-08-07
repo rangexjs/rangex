@@ -21,14 +21,20 @@ import type {
 
 const theme: DualTheme = { light: "light-plus", dark: "dark-plus" };
 
-const createRendered = ({ snapshotView }: CreateRenderedParams) => {
-	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
+const createRendered = async ({ snapshotView }: CreateRenderedParams) => {
+	const { style, rootElement, settled } = createHTMLFromSnapshotView({
+		snapshotView,
+	});
+	await settled;
 
 	return createHost({ children: [style, rootElement] });
 };
 
 const createHTML = async ({ snapshotView }: CreateHTMLParams) => {
-	const { style, rootElement } = createHTMLFromSnapshotView({ snapshotView });
+	const { style, rootElement, settled } = createHTMLFromSnapshotView({
+		snapshotView,
+	});
+	await settled;
 	const template = createTemplate({ children: [rootElement, style] });
 	const html = formatHTML({ element: template });
 	const htmlPre = await createHighlightedCode({
@@ -54,10 +60,11 @@ const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
 	return createHost({ children: [pre] });
 };
 
-const createHTMLText = ({ snapshotView }: CreateHTMLTextParams) => {
-	const { style, rootElement } = createHTMLFromSnapshotView({
+const createHTMLText = async ({ snapshotView }: CreateHTMLTextParams) => {
+	const { style, rootElement, settled } = createHTMLFromSnapshotView({
 		snapshotView,
 	});
+	await settled;
 	const root = document.createElement("div");
 	root.append(rootElement);
 	const htmlCode = root.getHTML({ serializableShadowRoots: true });
@@ -68,11 +75,12 @@ const createHTMLText = ({ snapshotView }: CreateHTMLTextParams) => {
 	return templateHTML;
 };
 
-const createJSONText = ({ snapshotView }: CreateJSONTextParams) =>
+const createJSONText = async ({ snapshotView }: CreateJSONTextParams) =>
 	JSON.stringify(snapshotView);
 
-const createSnapshotText = ({ storedSnapshot }: CreateSnapshotTextParams) =>
-	JSON.stringify(storedSnapshot);
+const createSnapshotText = async ({
+	storedSnapshot,
+}: CreateSnapshotTextParams) => JSON.stringify(storedSnapshot);
 
 /**
  * Returns one lazy getter per preview tab. Each getter builds its own DOM
@@ -84,7 +92,7 @@ const createPreviewContent = ({ editorAPI }: CreatePreviewContentParams) => {
 	const { snapshotView } = createSnapshotView({ storedSnapshot });
 
 	return {
-		getRendered: () => Promise.resolve(createRendered({ snapshotView })),
+		getRendered: () => createRendered({ snapshotView }),
 		getHTML: () => createHTML({ snapshotView }),
 		getJSON: () => createJSON({ snapshotView }),
 		getSnapshot: () => createSnapshot({ storedSnapshot }),
