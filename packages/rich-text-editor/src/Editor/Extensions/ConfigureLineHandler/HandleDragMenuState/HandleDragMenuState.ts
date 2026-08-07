@@ -41,7 +41,22 @@ const handleBlockComponentLine = ({
 
 	const { $$componentName } = blockComponent;
 
+	const { accordionItem, blockQuote, codeBlock, list, todoList } =
+		componentsName;
+
 	const isVisible = (name: BlockComponentName) => $$componentName !== name;
+
+	const unwrappableComponents: BlockComponentName[] = [
+		accordionItem,
+		blockQuote,
+		codeBlock,
+		list,
+		todoList,
+	];
+
+	const canUnwrap = unwrappableComponents.some(
+		(name) => name === $$componentName,
+	);
 
 	editorPort.updateState({
 		turnInto: {
@@ -53,7 +68,7 @@ const handleBlockComponentLine = ({
 		},
 		canDelete: true,
 		canDuplicate: true,
-		canUnwrap: true,
+		canUnwrap,
 	});
 };
 
