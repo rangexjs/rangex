@@ -6,6 +6,7 @@ import {
 	createNestedEditable,
 } from "rich-text-area";
 import { componentsName } from "#ports";
+import { blockAlignAttr } from "../../../../Constants";
 import { createBlockQuoteStorage } from "../../../../Storage";
 import type {
 	CreateBlockQuoteParams,
@@ -22,6 +23,9 @@ export const createBlockQuote = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.blockQuote,

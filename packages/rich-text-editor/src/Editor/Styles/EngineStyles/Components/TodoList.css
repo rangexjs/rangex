@@ -5,8 +5,6 @@
 
 	[data-rx-editor-role="block-component"] {
 		&:where([data-rx-component-name="todo-list"]) {
-			width: 100%;
-
 			& ul {
 				list-style-type: none;
 				margin-block: 0;

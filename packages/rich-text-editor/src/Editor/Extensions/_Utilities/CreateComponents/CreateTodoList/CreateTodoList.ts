@@ -6,6 +6,7 @@ import {
 	createList,
 } from "rich-text-area";
 import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
+import { blockAlignAttr } from "../../../../Constants";
 import {
 	createTodoCheckboxStorage,
 	createTodoListStorage,
@@ -36,6 +37,9 @@ export const createTodoList = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.todoList,

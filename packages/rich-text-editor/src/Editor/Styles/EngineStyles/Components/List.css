@@ -4,10 +4,6 @@
 	}
 
 	[data-rx-editor-role="block-component"] {
-		&[data-rx-component-name="list"] {
-			width: 100%;
-		}
-
 		& > :where(ul, ol) {
 			margin: 0;
 		}

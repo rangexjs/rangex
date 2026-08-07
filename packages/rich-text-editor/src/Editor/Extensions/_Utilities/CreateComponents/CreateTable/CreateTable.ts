@@ -6,6 +6,7 @@ import {
 } from "rich-text-area";
 import { componentsName } from "#ports";
 import { getCSSText } from "../../../../_Utilities";
+import { blockAlignAttr } from "../../../../Constants";
 import { createTableStorage } from "../../../../Storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
@@ -33,6 +34,9 @@ export const createTable = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.table,

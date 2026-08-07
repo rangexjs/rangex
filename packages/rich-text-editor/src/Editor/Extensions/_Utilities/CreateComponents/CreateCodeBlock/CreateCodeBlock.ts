@@ -8,6 +8,7 @@ import {
 } from "rich-text-area";
 import { toHighlighterLang } from "#libs";
 import { componentsName } from "#ports";
+import { blockAlignAttr } from "../../../../Constants";
 import { createCodeBlockStorage } from "../../../../Storage";
 import type {
 	CreateCodeBlockParams,
@@ -43,6 +44,9 @@ export const createCodeBlock = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.codeBlock,

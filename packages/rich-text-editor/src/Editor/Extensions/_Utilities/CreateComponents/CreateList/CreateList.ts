@@ -5,6 +5,7 @@ import {
 	createList as createEngineList,
 } from "rich-text-area";
 import { componentsName } from "#ports";
+import { blockAlignAttr } from "../../../../Constants";
 import { createListStorage } from "../../../../Storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
@@ -20,6 +21,9 @@ export const createList = ({
 	});
 
 	return createBlockComponentLine({
+		domAttrs: {
+			[blockAlignAttr.name]: blockAlignAttr.value.center,
+		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			componentName: componentsName.list,

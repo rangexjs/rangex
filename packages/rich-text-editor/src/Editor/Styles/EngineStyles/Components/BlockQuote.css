@@ -5,8 +5,6 @@
 
 	& [data-rx-editor-role="block-component"] {
 		&:where([data-rx-component-name="block-quote"]) {
-			width: 100%;
-
 			& blockquote {
 				margin: 0;
 				padding: 10px 14px;
