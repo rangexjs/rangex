@@ -13,22 +13,16 @@
 	}
 
 	thead {
-		td,
-		th {
-			background-color: light-dark(
-				var(--color-neutral-100),
-				var(--color-neutral-900)
-			);
-		}
+		background-color: light-dark(
+			var(--color-neutral-200),
+			var(--color-neutral-900)
+		);
 	}
 
 	tfoot {
-		td,
-		th {
-			background-color: light-dark(
-				var(--color-neutral-200),
-				var(--color-neutral-800)
-			);
-		}
+		background-color: light-dark(
+			var(--color-neutral-300),
+			var(--color-neutral-800)
+		);
 	}
 }
