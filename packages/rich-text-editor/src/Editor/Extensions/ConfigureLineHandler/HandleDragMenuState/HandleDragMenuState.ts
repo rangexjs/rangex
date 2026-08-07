@@ -44,7 +44,19 @@ const handleBlockComponentLine = ({
 	const { accordionItem, blockQuote, codeBlock, list, todoList } =
 		componentsName;
 
-	const isVisible = (name: BlockComponentName) => $$componentName !== name;
+	const turnableComponents: BlockComponentName[] = [
+		accordionItem,
+		blockQuote,
+		codeBlock,
+		list,
+		todoList,
+	];
+
+	const isVisible = (name: BlockComponentName) =>
+		$$componentName !== name &&
+		turnableComponents.includes(
+			$$componentName as (typeof turnableComponents)[number],
+		);
 
 	const unwrappableComponents: BlockComponentName[] = [
 		accordionItem,
