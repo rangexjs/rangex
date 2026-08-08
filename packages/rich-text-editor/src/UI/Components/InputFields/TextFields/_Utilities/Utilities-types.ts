@@ -1,4 +1,9 @@
 import type { Accessor, JSX, Setter } from "solid-js";
+import type { InputFieldErrorState, InputFieldState } from "../../_Utilities";
+
+export type TextFieldErrorState = InputFieldErrorState;
+
+export type TextFieldState = InputFieldState;
 
 export type TextFieldErrorVariant =
 	| "required"
@@ -19,15 +24,6 @@ export interface TextFieldErrorRestriction {
 	custom?: { isValid: (value: string) => boolean; message?: JSX.Element };
 	priority?: TextFieldErrorVariant[];
 	defaultMessage?: JSX.Element;
-}
-
-export interface TextFieldErrorState {
-	hasError: boolean;
-	message: JSX.Element;
-}
-
-export interface TextFieldState extends TextFieldErrorState {
-	isDirty: boolean;
 }
 
 export type OnStateChangeCallbackFn = (state: TextFieldState) => void;

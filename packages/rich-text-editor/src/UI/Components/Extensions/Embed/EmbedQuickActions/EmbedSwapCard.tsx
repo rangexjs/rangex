@@ -4,7 +4,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 
@@ -79,11 +78,7 @@ export const EmbedSwapCard = (props: EmbedSwapCardProps) => {
 			class="z-20 w-64 rounded-lg border border-neutral-200 bg-white p-3 shadow-sm dark:border-neutral-700 dark:bg-neutral-900"
 		>
 			<div class="mb-3">
-				<FormField
-					for={urlHandle.id}
-					showError={shouldShowError(urlHandle.state())}
-					errorMessage={urlHandle.state().message}
-				>
+				<FormField for={urlHandle.id} state={urlHandle.state()}>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"

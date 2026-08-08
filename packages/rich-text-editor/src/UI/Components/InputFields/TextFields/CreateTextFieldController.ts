@@ -5,11 +5,11 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
+import { showInputFieldError } from "../_Utilities";
 import {
 	getErrorState,
 	type HTMLTextFieldElement,
 	type StateChangeListeners,
-	shouldShowError,
 	type TextFieldControls,
 	type TextFieldErrorRestriction,
 	type TextFieldHandle,
@@ -53,7 +53,7 @@ export const createTextFieldController = <
 
 	const emitStateChange = () => {
 		const field = textField();
-		field?.setAttribute("data-invalid", `${shouldShowError(state)}`);
+		field?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
 
 		for (const listener of stateChangeListeners) {
 			listener(state);
@@ -137,7 +137,7 @@ export const createTextFieldController = <
 		const currentState = textFieldHandle.checkValidity();
 
 		// Always revalidate if the previous state was an error, but the new one is valid
-		if (shouldShowError(state) && !currentState.hasError) {
+		if (showInputFieldError(state) && !currentState.hasError) {
 			textFieldHandle.validate();
 			return;
 		}

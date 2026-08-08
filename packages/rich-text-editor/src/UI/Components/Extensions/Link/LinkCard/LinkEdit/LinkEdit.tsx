@@ -4,7 +4,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { ToggleButton } from "../../../../ToggleButton";
@@ -119,8 +118,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 					class="mb-2"
 					for={displayTextHandle.id}
 					label="Display Text"
-					showError={shouldShowError(displayTextHandle.state())}
-					errorMessage={displayTextHandle.state().message}
+					state={displayTextHandle.state()}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
@@ -139,8 +137,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 					class="mb-2"
 					for={urlHandle.id}
 					label="URL"
-					showError={shouldShowError(urlHandle.state())}
-					errorMessage={urlHandle.state().message}
+					state={urlHandle.state()}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField

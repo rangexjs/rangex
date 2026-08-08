@@ -20,7 +20,7 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
+	showInputFieldError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { Spinning } from "../../../Spinning";
@@ -128,7 +128,7 @@ export const FindReplaceToolbarButton = () => {
 
 	createEffect(() => {
 		setReplaceButtonDisabled(
-			totalResults() === 0 || shouldShowError(findHandle.state()),
+			totalResults() === 0 || showInputFieldError(findHandle.state()),
 		);
 	});
 
@@ -401,7 +401,7 @@ export const FindReplaceToolbarButton = () => {
 								class="absolute w-[anchor-size(width)] border border-red-400 bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom]"
 								classList={{
 									"pointer-events-none invisible": !(
-										shouldShowError(findHandle.state()) && hasFindFocus()
+										showInputFieldError(findHandle.state()) && hasFindFocus()
 									),
 								}}
 								style={{

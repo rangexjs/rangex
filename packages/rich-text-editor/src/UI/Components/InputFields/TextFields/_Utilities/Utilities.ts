@@ -3,7 +3,6 @@ import type {
 	TextFieldErrorRestriction,
 	TextFieldErrorState,
 	TextFieldErrorVariant,
-	TextFieldState,
 } from "./Utilities-types";
 
 const defaultPriority: TextFieldErrorVariant[] = [
@@ -100,11 +99,3 @@ export const getErrorState = (
 
 	return { hasError, message };
 };
-
-/**
- * A field's error should only surface once the user has interacted with
- * it — a required field that's merely empty on first render is invalid,
- * but not yet worth showing an error for.
- */
-export const shouldShowError = (state: TextFieldState): boolean =>
-	state.hasError && state.isDirty;

@@ -8,7 +8,6 @@ export type {
 	TextFieldState,
 	TextFieldStateHandle,
 } from "./_Utilities";
-export { shouldShowError } from "./_Utilities";
 export * from "./CreateTextFieldController";
 export * from "./CreateTextFieldState";
 export * from "./InputTextField";

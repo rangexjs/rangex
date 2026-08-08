@@ -9,7 +9,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 
@@ -174,11 +173,7 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 			</div>
 
 			<div class="mb-3" hidden={sourceTab() !== "url"}>
-				<FormField
-					for={urlHandle.id}
-					showError={shouldShowError(urlHandle.state())}
-					errorMessage={urlHandle.state().message}
-				>
+				<FormField for={urlHandle.id} state={urlHandle.state()}>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"

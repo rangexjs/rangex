@@ -4,7 +4,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { FixedPosModal } from "../../../_Utilities";
@@ -82,8 +81,7 @@ export const DateModal = (props: DateModalProps) => {
 				class="mb-4"
 				for={dateHandle.id}
 				label="Date"
-				showError={shouldShowError(dateHandle.state())}
-				errorMessage={dateHandle.state().message}
+				state={dateHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField

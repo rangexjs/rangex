@@ -1,16 +1,12 @@
 import type { Accessor, JSX, Setter } from "solid-js";
+import type { InputFieldErrorState, InputFieldState } from "../../_Utilities";
+
+export type CheckboxErrorState = InputFieldErrorState;
+
+export type CheckboxState = InputFieldState;
 
 export interface CheckboxErrorRestriction {
 	required?: { value: boolean; message?: JSX.Element };
-}
-
-export interface CheckboxErrorState {
-	hasError: boolean;
-	message: JSX.Element;
-}
-
-export interface CheckboxState extends CheckboxErrorState {
-	isDirty: boolean;
 }
 
 export type OnStateChangeCallbackFn = (state: CheckboxState) => void;

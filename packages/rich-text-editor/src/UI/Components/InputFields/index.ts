@@ -1,3 +1,4 @@
+export * from "./_Utilities";
 export type {
 	CheckboxControls,
 	CheckboxErrorRestriction,
@@ -10,7 +11,6 @@ export {
 	Checkbox,
 	createCheckboxController,
 	createCheckboxState,
-	shouldShowError as shouldShowCheckboxError,
 } from "./Checkbox";
 export * from "./FormField";
 export * from "./TextFields";

@@ -5,6 +5,7 @@ import {
 	onCleanup,
 	onMount,
 } from "solid-js";
+import { showInputFieldError } from "../_Utilities";
 import {
 	type CheckboxControls,
 	type CheckboxErrorRestriction,
@@ -12,7 +13,6 @@ import {
 	type CheckboxState,
 	getErrorState,
 	type StateChangeListeners,
-	shouldShowError,
 } from "./_Utilities";
 
 export interface CreateCheckboxControllerParams {
@@ -43,7 +43,7 @@ export const createCheckboxController = (
 
 	const emitStateChange = () => {
 		const field = checkbox();
-		field?.setAttribute("data-invalid", `${shouldShowError(state)}`);
+		field?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
 
 		for (const listener of stateChangeListeners) {
 			listener(state);

@@ -4,7 +4,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { FixedPosModal } from "../../../_Utilities";
@@ -73,8 +72,7 @@ export const NameModal = (props: NameModalProps) => {
 				class="mb-2"
 				for={firstNameHandle.id}
 				label="First name"
-				showError={shouldShowError(firstNameHandle.state())}
-				errorMessage={firstNameHandle.state().message}
+				state={firstNameHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
@@ -91,8 +89,7 @@ export const NameModal = (props: NameModalProps) => {
 				class="mb-4"
 				for={lastNameHandle.id}
 				label="Last name"
-				showError={shouldShowError(lastNameHandle.state())}
-				errorMessage={lastNameHandle.state().message}
+				state={lastNameHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField

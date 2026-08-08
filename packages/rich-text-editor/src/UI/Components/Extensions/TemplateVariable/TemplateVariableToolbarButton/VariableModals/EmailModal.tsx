@@ -4,7 +4,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { FixedPosModal } from "../../../_Utilities";
@@ -77,8 +76,7 @@ export const EmailModal = (props: EmailModalProps) => {
 				class="mb-4"
 				for={emailHandle.id}
 				label="Email"
-				showError={shouldShowError(emailHandle.state())}
-				errorMessage={emailHandle.state().message}
+				state={emailHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField

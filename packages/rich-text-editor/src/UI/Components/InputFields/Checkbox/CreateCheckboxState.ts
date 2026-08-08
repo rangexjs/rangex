@@ -33,7 +33,9 @@ export const createCheckboxState = (
 	};
 
 	const checkboxStateHandle: CheckboxStateHandle = {
-		id: handle.id,
+		get id() {
+			return handle.id;
+		},
 		checked,
 		setChecked: commitChecked,
 		state,

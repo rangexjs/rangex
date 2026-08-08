@@ -38,7 +38,9 @@ export const createTextFieldState = <TextField extends HTMLTextFieldElement>(
 	};
 
 	const textFieldStateHandle: TextFieldStateHandle = {
-		id: handle.id,
+		get id() {
+			return handle.id;
+		},
 		value,
 		setValue: commitValue,
 		state,

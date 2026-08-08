@@ -10,7 +10,6 @@ import {
 	createTextFieldState,
 	FormField,
 	InputTextField,
-	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 import type { EmptyMediaSlotProps } from "./EmptyMediaSlot-types";
@@ -408,8 +407,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				<FormField
 					for={urlHandle.id}
 					class={activeTab() === "upload" ? "hidden" : ""}
-					showError={shouldShowError(urlHandle.state())}
-					errorMessage={urlHandle.state().message}
+					state={urlHandle.state()}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
