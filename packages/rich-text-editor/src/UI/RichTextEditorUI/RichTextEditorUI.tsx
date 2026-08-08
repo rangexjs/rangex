@@ -1,5 +1,6 @@
 import { render } from "solid-js/web";
 import { App } from "../Components";
+import { createDialogOpenObserver } from "../DialogOpenObserver";
 import inlineTailwind from "../global.css?inline";
 import {
 	MenuBarActionManager,
@@ -33,6 +34,7 @@ export class RichTextEditorUI extends HTMLElement {
 	#dispose;
 	#menuBarActionManager = new MenuBarActionManager();
 	#menuBarButtonsStateManager = new MenuBarButtonsStateManager();
+	#dialogOpenCleanup;
 
 	constructor({
 		toolbarButtons,
@@ -66,6 +68,8 @@ export class RichTextEditorUI extends HTMLElement {
 		this.#extensions = extensions;
 		this.#uiPorts = uiPorts;
 
+		this.#dialogOpenCleanup = createDialogOpenObserver(this.#shadowRoot);
+
 		this.#dispose = render(
 			() => (
 				<App
@@ -97,6 +101,7 @@ export class RichTextEditorUI extends HTMLElement {
 	}
 
 	dispose() {
+		this.#dialogOpenCleanup();
 		this.#dispose();
 	}
 }
