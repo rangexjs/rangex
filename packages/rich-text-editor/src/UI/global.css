@@ -60,8 +60,42 @@
 	--color-primary-950: #001e37;
 }
 
-html:has(dialog[open]) {
-	scrollbar-gutter: stable;
+dialog {
+	--open-duration: 120ms;
+	transition: overlay, display, opacity, scale;
+	transition-duration: var(--open-duration);
+	transition-timing-function: ease-out;
+	transition-behavior: allow-discrete;
+
+	opacity: 0;
+	scale: 0.97;
+
+	&[open] {
+		opacity: 1;
+		scale: 1;
+
+		@starting-style {
+			opacity: 0.4;
+			scale: 0.97;
+		}
+	}
+
+	&::backdrop {
+		transition: overlay, display, background-color;
+		transition-duration: var(--open-duration);
+		transition-timing-function: ease-out;
+		transition-behavior: allow-discrete;
+
+		background-color: transparent;
+	}
+
+	&[open]::backdrop {
+		background-color: color(from var(--color-neutral-900) srgb r g b / 0.5);
+
+		@starting-style {
+			background-color: transparent;
+		}
+	}
 }
 
 button {
