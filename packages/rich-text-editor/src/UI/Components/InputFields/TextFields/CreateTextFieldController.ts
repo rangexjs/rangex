@@ -1,126 +1,172 @@
 import {
-	type Accessor,
 	createSignal,
 	createUniqueId,
 	mergeProps,
-	type Setter,
+	onCleanup,
+	onMount,
 } from "solid-js";
-import type {
-	HTMLTextFieldElement,
-	TextFieldControls,
-	TextFieldErrorRestriction,
-	TextFieldHandler,
-	TextFieldState,
-	ValueChangeListeners,
+import {
+	getErrorState,
+	type HTMLTextFieldElement,
+	type StateChangeListeners,
+	shouldShowError,
+	type TextFieldControls,
+	type TextFieldErrorRestriction,
+	type TextFieldHandle,
+	type TextFieldState,
 } from "./_Utilities";
 
-type OnValueChangeFn = (
-	operation: "add" | "delete",
-	callback: () => void,
-) => void;
-
-export interface TextFieldModel<TextField extends HTMLTextFieldElement>
-	extends TextFieldHandler<TextField> {
-	id: string;
-	value: Accessor<string>;
-	setValue: Setter<string>;
-	state: () => TextFieldState;
-	onValueChange: OnValueChangeFn;
-}
+export type ValidationOption = "change" | "input:dirty";
+export type ValidateOn = ValidationOption[];
 
 export interface CreateTextFieldControllerParams {
 	defaultValue?: string;
 	error?: TextFieldErrorRestriction;
-	validateOnChange?: boolean;
-	onValueChange?: (value: string) => void;
+	validateOn?: ValidateOn;
 }
 
 export type CreateTextFieldControllerResult<
 	TextField extends HTMLTextFieldElement,
-> = [TextFieldModel<TextField>, TextFieldControls<TextField>];
+> = [TextFieldHandle<TextField>, TextFieldControls<TextField>];
 
 export const createTextFieldController = <
 	TextField extends HTMLTextFieldElement,
 >(
 	props: CreateTextFieldControllerParams,
 ): CreateTextFieldControllerResult<TextField> => {
+	const defaultValidateOn: ValidateOn = [];
+
 	const finalProps = mergeProps(
-		{ defaultValue: "", error: {}, validateOnChange: false },
+		{ defaultValue: "", error: {}, validateOn: defaultValidateOn },
 		props,
 	);
 
 	const id = createUniqueId();
-	const [value, setValue] = createSignal(finalProps.defaultValue);
-	const [state, setState] = createSignal<TextFieldState>({
-		showError: false,
-		hasError: false,
-		message: null,
-	});
-	const [textFieldHandler, setTextFieldHandler] =
-		createSignal<TextFieldHandler<TextField>>();
+	const [textField, setTextField] = createSignal<TextField | null>(null);
 
-	const onStateChange = (state: TextFieldState) => {
-		setState(state);
+	let state: TextFieldState = {
+		isDirty: false,
+		...getErrorState(finalProps.defaultValue, finalProps.error),
 	};
 
-	const valueChangeListeners: ValueChangeListeners = new Set();
+	const stateChangeListeners: StateChangeListeners = new Set();
 
-	const onValueChange: OnValueChangeFn = (operation, callback) => {
-		valueChangeListeners[operation](callback);
+	const emitStateChange = () => {
+		const field = textField();
+		field?.setAttribute("data-invalid", `${shouldShowError(state)}`);
+
+		for (const listener of stateChangeListeners) {
+			listener(state);
+		}
 	};
 
-	const textFieldModel: TextFieldModel<TextField> = {
-		id,
-		value,
-		setValue,
-		state,
-		get textField() {
-			const handler = textFieldHandler();
+	const getTextField = () => {
+		const field = textField();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		if (!field) {
+			throw new Error("Can't access to the TextField before mount.");
+		}
 
-			return handler.textField;
+		return field;
+	};
+
+	const currentValue = () => textField()?.value ?? finalProps.defaultValue;
+
+	const textFieldHandle: TextFieldHandle<TextField> = {
+		get id() {
+			return id;
 		},
-		onValueChange,
-		validate: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		get element() {
+			const field = getTextField();
 
-			handler.validate();
+			return field;
 		},
-		reset: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		validate() {
+			state = {
+				isDirty: true,
+				...getErrorState(this.element.value, finalProps.error),
+			};
 
-			handler.reset();
+			emitStateChange();
 		},
-		checkValidity: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		reset() {
+			this.element.value = finalProps.defaultValue;
+			state = {
+				isDirty: false,
+				...getErrorState(this.element.value, finalProps.error),
+			};
 
-			return handler.checkValidity();
+			emitStateChange();
+		},
+
+		checkValidity() {
+			const { hasError, message } = getErrorState(
+				currentValue(),
+				finalProps.error,
+			);
+
+			return { hasError, message, isDirty: state.isDirty };
+		},
+
+		onStateChange(callback) {
+			callback(this.checkValidity());
+			stateChangeListeners.add(callback);
+
+			return () => stateChangeListeners.delete(callback);
 		},
 	};
 
 	const textFieldControls: TextFieldControls<TextField> = {
-		fieldValue: [value, setValue],
-		valueChangeListeners,
-		setTextFieldHandler,
-		error: props.error ?? {},
-		onStateChange,
-		validateOnChange: finalProps.validateOnChange,
+		id,
+		defaultValue: finalProps.defaultValue,
+		setTextField,
 	};
 
-	return [textFieldModel, textFieldControls];
+	const onChange = () => {
+		if (!finalProps.validateOn.includes("change")) {
+			return;
+		}
+
+		textFieldHandle.validate();
+	};
+
+	const onInput = () => {
+		const currentState = textFieldHandle.checkValidity();
+
+		// Always revalidate if the previous state was an error, but the new one is valid
+		if (shouldShowError(state) && !currentState.hasError) {
+			textFieldHandle.validate();
+			return;
+		}
+
+		if (!finalProps.validateOn.includes("input:dirty")) {
+			return;
+		}
+
+		if (!state.isDirty) {
+			return;
+		}
+
+		textFieldHandle.validate();
+	};
+
+	onMount(() => {
+		const abortController = new AbortController();
+		const { signal } = abortController;
+
+		const textField = getTextField();
+
+		textField.addEventListener("change", onChange, { signal });
+
+		textField.addEventListener("input", onInput, { signal });
+
+		onCleanup(() => {
+			abortController.abort();
+		});
+	});
+
+	return [textFieldHandle, textFieldControls];
 };

@@ -6,9 +6,10 @@ import {
 	type ContentSwitcherControls,
 } from "../../../ContentSwitcher";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 
@@ -40,7 +41,7 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 		});
 	});
 
-	const [urlModel, urlControls] = createTextFieldController({
+	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
@@ -71,8 +72,7 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 				return;
 			}
 
-			urlModel.reset();
-			urlModel.setValue("");
+			urlHandle.reset();
 			setSourceTab("upload");
 			setFiles(null);
 			setCheckState({ status: "idle" });
@@ -87,19 +87,24 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 		});
 	});
 
+	const onTabChange = (src: AudioSourceTab) => {
+		urlHandle.reset();
+		setSourceTab(src);
+	};
+
 	const onUpdateClick = (event: MouseEvent) => {
 		event.preventDefault();
 
 		const tab = sourceTab();
 
 		if (tab === "url") {
-			urlModel.validate();
+			urlHandle.validate();
 
-			if (urlModel.checkValidity().hasError) {
+			if (urlHandle.state().hasError) {
 				return;
 			}
 
-			props.uiPort.emitSwap({ source: "url", url: urlModel.value() });
+			props.uiPort.emitSwap({ source: "url", url: urlHandle.value() });
 			return;
 		}
 
@@ -149,7 +154,7 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 			<ContentSwitch
 				id={sourceTab()}
 				controls={sourceTabControls}
-				onChange={setSourceTab}
+				onChange={onTabChange}
 				disabled={isBusy()}
 				class="mb-3 rounded-sm"
 				commonButtonClass="py-1.5 text-xs font-medium"
@@ -170,14 +175,13 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 
 			<div class="mb-3" hidden={sourceTab() !== "url"}>
 				<FormField
-					for={urlModel.id}
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
+					for={urlHandle.id}
+					showError={shouldShowError(urlHandle.state())}
+					errorMessage={urlHandle.state().message}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
 							aria-label="URL"
 							placeholder="https://example.com/audio.mp3"
 							spellcheck={false}

@@ -1,4 +1,4 @@
-import type { JSX, Signal } from "solid-js";
+import type { Accessor, JSX, Setter } from "solid-js";
 
 export type TextFieldErrorVariant =
 	| "required"
@@ -27,25 +27,39 @@ export interface TextFieldErrorState {
 }
 
 export interface TextFieldState extends TextFieldErrorState {
-	showError: boolean;
+	isDirty: boolean;
 }
 
-export type ValueChangeListeners = Set<() => void>;
+export type OnStateChangeCallbackFn = (state: TextFieldState) => void;
+
+export type OnStateChangeFn = (callback: OnStateChangeCallbackFn) => () => void;
+
+export type StateChangeListeners = Set<OnStateChangeCallbackFn>;
 
 export type HTMLTextFieldElement = HTMLInputElement | HTMLTextAreaElement;
 
-export interface TextFieldHandler<TextField extends HTMLTextFieldElement> {
-	textField: TextField;
+export interface TextFieldHandle<TextField extends HTMLTextFieldElement> {
+	readonly id: string;
+	element: TextField;
 	validate: () => void;
 	reset: () => void;
 	checkValidity: () => TextFieldState;
+	onStateChange: OnStateChangeFn;
 }
 
 export interface TextFieldControls<TextField extends HTMLTextFieldElement> {
-	fieldValue: Signal<string>;
-	valueChangeListeners: ValueChangeListeners;
-	setTextFieldHandler: (params: TextFieldHandler<TextField>) => void;
-	error: TextFieldErrorRestriction;
-	onStateChange: (error: TextFieldState) => void;
-	validateOnChange: boolean;
+	id: string;
+	defaultValue: string;
+	setTextField: Setter<TextField | null>;
+}
+
+export interface TextFieldStateHandle {
+	readonly id: string;
+	value: Accessor<string>;
+	setValue: (value: string) => void;
+	state: Accessor<TextFieldState>;
+	validate: () => void;
+	reset: () => void;
+	checkValidity: () => TextFieldState;
+	onStateChange: OnStateChangeFn;
 }

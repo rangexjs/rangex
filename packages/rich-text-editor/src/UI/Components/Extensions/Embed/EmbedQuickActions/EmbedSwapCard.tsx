@@ -1,9 +1,10 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
 import type { EmbedUIPort } from "#adapters";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 
@@ -12,7 +13,7 @@ export interface EmbedSwapCardProps {
 }
 
 export const EmbedSwapCard = (props: EmbedSwapCardProps) => {
-	const [urlModel, urlControls] = createTextFieldController({
+	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
@@ -37,8 +38,7 @@ export const EmbedSwapCard = (props: EmbedSwapCardProps) => {
 				return;
 			}
 
-			urlModel.reset();
-			urlModel.setValue("");
+			urlHandle.reset();
 			setCheckState({ status: "idle" });
 		});
 
@@ -50,13 +50,13 @@ export const EmbedSwapCard = (props: EmbedSwapCardProps) => {
 	const onUpdateClick = (event: MouseEvent) => {
 		event.preventDefault();
 
-		urlModel.validate();
+		urlHandle.validate();
 
-		if (urlModel.checkValidity().hasError) {
+		if (urlHandle.state().hasError) {
 			return;
 		}
 
-		props.uiPort.emitSwap({ url: urlModel.value() });
+		props.uiPort.emitSwap({ url: urlHandle.value() });
 	};
 
 	let updateButtonRef: HTMLButtonElement | undefined;
@@ -80,14 +80,13 @@ export const EmbedSwapCard = (props: EmbedSwapCardProps) => {
 		>
 			<div class="mb-3">
 				<FormField
-					for={urlModel.id}
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
+					for={urlHandle.id}
+					showError={shouldShowError(urlHandle.state())}
+					errorMessage={urlHandle.state().message}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
 							aria-label="URL"
 							placeholder="https://example.com/embed"
 							spellcheck={false}

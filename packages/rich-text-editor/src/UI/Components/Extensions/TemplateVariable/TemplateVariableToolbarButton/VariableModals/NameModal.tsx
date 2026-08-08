@@ -1,9 +1,10 @@
 import { onCleanup, onMount } from "solid-js";
 import type { TemplateVariableUIPort } from "#adapters";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { FixedPosModal } from "../../../_Utilities";
@@ -15,13 +16,15 @@ interface NameModalProps {
 }
 
 export const NameModal = (props: NameModalProps) => {
-	const [firstNameModel, firstNameControls] = createTextFieldController({});
-	const [lastNameModel, lastNameControls] = createTextFieldController({});
+	const [firstNameHandle, firstNameControls] =
+		createTextFieldState<HTMLInputElement>({});
+	const [lastNameHandle, lastNameControls] =
+		createTextFieldState<HTMLInputElement>({});
 
 	onMount(() => {
 		const unsubscribe = props.uiPort.onToolbarButtonUpdate((state) => {
-			firstNameModel.setValue(state.options.firstName ?? "");
-			lastNameModel.setValue(state.options.lastName ?? "");
+			firstNameHandle.setValue(state.options.firstName ?? "");
+			lastNameHandle.setValue(state.options.lastName ?? "");
 		});
 
 		onCleanup(() => {
@@ -35,13 +38,13 @@ export const NameModal = (props: NameModalProps) => {
 		}
 
 		const { options } = props.uiPort.toolbarButton;
-		firstNameModel.setValue(options.firstName ?? "");
-		lastNameModel.setValue(options.lastName ?? "");
+		firstNameHandle.setValue(options.firstName ?? "");
+		lastNameHandle.setValue(options.lastName ?? "");
 	};
 
 	const updateTemplateVariable = () => {
-		const firstName = normalizeTemplateVariableValue(firstNameModel.value());
-		const lastName = normalizeTemplateVariableValue(lastNameModel.value());
+		const firstName = normalizeTemplateVariableValue(firstNameHandle.value());
+		const lastName = normalizeTemplateVariableValue(lastNameHandle.value());
 
 		props.uiPort.emitUpdateRequest({ options: { firstName, lastName } });
 	};
@@ -68,15 +71,14 @@ export const NameModal = (props: NameModalProps) => {
 		>
 			<FormField
 				class="mb-2"
-				for={firstNameModel.id}
+				for={firstNameHandle.id}
 				label="First name"
-				showError={firstNameModel.state().showError}
-				errorMessage={firstNameModel.state().message}
+				showError={shouldShowError(firstNameHandle.state())}
+				errorMessage={firstNameHandle.state().message}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
 						type="text"
-						id={firstNameModel.id}
 						placeholder="John"
 						spellcheck={false}
 						{...firstNameControls}
@@ -87,15 +89,14 @@ export const NameModal = (props: NameModalProps) => {
 
 			<FormField
 				class="mb-4"
-				for={lastNameModel.id}
+				for={lastNameHandle.id}
 				label="Last name"
-				showError={lastNameModel.state().showError}
-				errorMessage={lastNameModel.state().message}
+				showError={shouldShowError(lastNameHandle.state())}
+				errorMessage={lastNameHandle.state().message}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
 						type="text"
-						id={lastNameModel.id}
 						placeholder="Doe"
 						spellcheck={false}
 						{...lastNameControls}

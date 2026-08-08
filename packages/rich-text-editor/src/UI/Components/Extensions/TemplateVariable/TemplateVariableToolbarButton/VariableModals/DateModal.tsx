@@ -1,9 +1,10 @@
 import { onCleanup, onMount } from "solid-js";
 import type { TemplateVariableUIPort } from "#adapters";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../../InputFields";
 import { FixedPosModal } from "../../../_Utilities";
@@ -15,7 +16,7 @@ interface DateModalProps {
 }
 
 export const DateModal = (props: DateModalProps) => {
-	const [dateModel, dateControls] = createTextFieldController({
+	const [dateHandle, dateControls] = createTextFieldState<HTMLInputElement>({
 		error: {
 			patterns: [
 				{
@@ -28,7 +29,7 @@ export const DateModal = (props: DateModalProps) => {
 
 	onMount(() => {
 		const unsubscribe = props.uiPort.onToolbarButtonUpdate((state) => {
-			dateModel.setValue(state.options.date ?? "");
+			dateHandle.setValue(state.options.date ?? "");
 		});
 
 		onCleanup(() => {
@@ -41,18 +42,18 @@ export const DateModal = (props: DateModalProps) => {
 			return;
 		}
 
-		dateModel.setValue(props.uiPort.toolbarButton.options.date ?? "");
+		dateHandle.setValue(props.uiPort.toolbarButton.options.date ?? "");
 	};
 
 	const updateTemplateVariable = (event: MouseEvent) => {
-		dateModel.validate();
+		dateHandle.validate();
 
-		if (dateModel.state().hasError) {
+		if (dateHandle.state().hasError) {
 			event.preventDefault();
 			return;
 		}
 
-		const date = normalizeTemplateVariableValue(dateModel.value());
+		const date = normalizeTemplateVariableValue(dateHandle.value());
 
 		props.uiPort.emitUpdateRequest({ options: { date } });
 	};
@@ -79,15 +80,14 @@ export const DateModal = (props: DateModalProps) => {
 		>
 			<FormField
 				class="mb-4"
-				for={dateModel.id}
+				for={dateHandle.id}
 				label="Date"
-				showError={dateModel.state().showError}
-				errorMessage={dateModel.state().message}
+				showError={shouldShowError(dateHandle.state())}
+				errorMessage={dateHandle.state().message}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
 						type="text"
-						id={dateModel.id}
 						placeholder="2012-05-22"
 						spellcheck={false}
 						{...dateControls}

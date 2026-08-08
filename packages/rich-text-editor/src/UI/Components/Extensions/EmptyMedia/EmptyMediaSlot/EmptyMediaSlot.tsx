@@ -7,9 +7,10 @@ import {
 } from "../../../ContentSwitcher";
 import { Icon, type IconName } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 import type { EmptyMediaSlotProps } from "./EmptyMediaSlot-types";
@@ -192,7 +193,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	// needed to tell "left a child" apart from "left the dropzone entirely".
 	let dragDepth = 0;
 
-	const [urlModel, urlControls] = createTextFieldController({
+	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
@@ -213,8 +214,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 
 	const onTabChange = (tab: MediaTab) => {
 		setActiveTab(tab);
-		urlModel.reset();
-		urlModel.setValue("");
+		urlHandle.reset();
 	};
 
 	const onUploadFileChange = (event: Event) => {
@@ -260,13 +260,13 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		urlModel.validate();
+		urlHandle.validate();
 
-		if (urlModel.checkValidity().hasError) {
+		if (urlHandle.state().hasError) {
 			return;
 		}
 
-		onResolve({ type: tab, insertionType: "url", url: urlModel.value() });
+		onResolve({ type: tab, insertionType: "url", url: urlHandle.value() });
 	};
 
 	const onUrlKeyDown = (event: KeyboardEvent) => {
@@ -406,15 +406,14 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				</div>
 
 				<FormField
-					for={urlModel.id}
+					for={urlHandle.id}
 					class={activeTab() === "upload" ? "hidden" : ""}
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
+					showError={shouldShowError(urlHandle.state())}
+					errorMessage={urlHandle.state().message}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
 							aria-label="URL"
 							placeholder={urlPlaceholderByType[activeTab() as MediaType]}
 							spellcheck={false}

@@ -11,7 +11,7 @@ import {
 } from "../../../ContentSwitcher";
 import { Icon } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
@@ -55,13 +55,13 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 		uiPort.isSwapCardOpen,
 	);
 
-	const [altModel, altControls] = createTextFieldController({
+	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: uiPort.altText,
 	});
 
 	const [committedAltText, setCommittedAltText] = createSignal(uiPort.altText);
 
-	const isAltTextDirty = () => altModel.value() !== committedAltText();
+	const isAltTextDirty = () => altHandle.value() !== committedAltText();
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
@@ -86,7 +86,7 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 		const unsubscribeAspectRatio = uiPort.onAspectRatioUpdate(setAspectRatio);
 		const unsubscribeCaption = uiPort.onCaptionUpdate(setCaption);
 		const unsubscribeAltText = uiPort.onAltTextUpdate((value) => {
-			altModel.setValue(value);
+			altHandle.setValue(value);
 			setCommittedAltText(value);
 		});
 		const unsubscribeIsSwapCardOpen =
@@ -108,7 +108,7 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 	const optionsPopoverId = createUniqueId();
 
 	const onAltTextCommit = () => {
-		uiPort.emitImageAttrChange({ altText: altModel.value() });
+		uiPort.emitImageAttrChange({ altText: altHandle.value() });
 	};
 
 	const onAltTextKeyDown = (event: KeyboardEvent) => {
@@ -206,7 +206,7 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 					<div class="flex flex-col gap-1">
 						<div class="flex items-center justify-between">
 							<label
-								for={altModel.id}
+								for={altHandle.id}
 								class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
 							>
 								Alt text
@@ -224,7 +224,6 @@ export const ImageQuickActions = (props: ImageQuickActionsProps) => {
 						>
 							<InputTextField
 								type="text"
-								id={altModel.id}
 								placeholder="Describe the image"
 								spellcheck={false}
 								{...altControls}

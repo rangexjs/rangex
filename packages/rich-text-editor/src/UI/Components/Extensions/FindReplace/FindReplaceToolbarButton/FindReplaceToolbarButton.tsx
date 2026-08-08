@@ -4,6 +4,7 @@ import {
 	createSignal,
 	createUniqueId,
 	Index,
+	on,
 	onCleanup,
 	onMount,
 	Show,
@@ -16,9 +17,10 @@ import {
 	Checkbox,
 	type CheckboxControls,
 	createCheckboxController,
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	shouldShowError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { Spinning } from "../../../Spinning";
@@ -98,23 +100,26 @@ export const FindReplaceToolbarButton = () => {
 
 	/** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
 	const getSafePattern = () => {
-		findModel.validate();
+		findHandle.validate();
 
-		const findText = isValidPattern(findModel.value()) ? findModel.value() : "";
+		const findText = isValidPattern(findHandle.value())
+			? findHandle.value()
+			: "";
 
 		return getPattern(findText);
 	};
 
-	const [findModel, findControls] = createTextFieldController({
+	const [findHandle, findControls] = createTextFieldState<HTMLInputElement>({
 		error: {
 			custom: {
 				isValid: (value) => isValidPattern(value),
 				message: "Invalid regular expression.",
 			},
 		},
-		validateOnChange: true,
+		validateOn: ["change", "input:dirty"],
 	});
-	const [replaceModel, replaceControls] = createTextFieldController({});
+	const [replaceHandle, replaceControls] =
+		createTextFieldState<HTMLInputElement>({});
 	const [includeNonEditableContentModel, includeNonEditableContentControls] =
 		createCheckboxController({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
@@ -123,7 +128,7 @@ export const FindReplaceToolbarButton = () => {
 
 	createEffect(() => {
 		setReplaceButtonDisabled(
-			totalResults() === 0 || findModel.state().showError,
+			totalResults() === 0 || shouldShowError(findHandle.state()),
 		);
 	});
 
@@ -264,15 +269,21 @@ export const FindReplaceToolbarButton = () => {
 		findReplaceUIPort.emitStepForward();
 	};
 
-	findModel.onValueChange("add", () => {
-		setIsFindLoading(true);
+	createEffect(
+		on(
+			findHandle.value,
+			() => {
+				setIsFindLoading(true);
 
-		debounce(() => {
-			emitSearchChange();
+				debounce(() => {
+					emitSearchChange();
 
-			setIsFindLoading(false);
-		}, 250);
-	});
+					setIsFindLoading(false);
+				}, 250);
+			},
+			{ defer: true },
+		),
+	);
 
 	matchCaseModel.onCheckedChange("add", () => {
 		emitSearchChange();
@@ -295,11 +306,11 @@ export const FindReplaceToolbarButton = () => {
 	};
 
 	const replaceText = () => {
-		findReplaceUIPort.emitReplace({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplace({ replaceText: replaceHandle.value() });
 	};
 
 	const replaceAllText = () => {
-		findReplaceUIPort.emitReplaceAll({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplaceAll({ replaceText: replaceHandle.value() });
 	};
 
 	const checkboxFilterList: CheckboxFilterList = [
@@ -361,7 +372,7 @@ export const FindReplaceToolbarButton = () => {
 					>
 						<div class="flex items-center justify-between">
 							<FormField
-								for={findModel.id}
+								for={findHandle.id}
 								class="max-w-48 grow"
 								style={{
 									"anchor-name": findInputAnchorName,
@@ -388,14 +399,14 @@ export const FindReplaceToolbarButton = () => {
 								class="absolute w-[anchor-size(width)] border border-red-400 bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom]"
 								classList={{
 									"pointer-events-none invisible": !(
-										findModel.state().showError && hasFindFocus()
+										shouldShowError(findHandle.state()) && hasFindFocus()
 									),
 								}}
 								style={{
 									"position-anchor": findInputAnchorName,
 								}}
 							>
-								{findModel.state().message}
+								{findHandle.state().message}
 							</div>
 							<Show
 								when={!isFindLoading()}
@@ -430,7 +441,7 @@ export const FindReplaceToolbarButton = () => {
 							</span>
 						</div>
 						<div>
-							<FormField for={replaceModel.id} class="max-w-48 grow">
+							<FormField for={replaceHandle.id} class="max-w-48 grow">
 								<TextFieldWrapper
 									appearance="neutral-filled-underline"
 									size="medium"
