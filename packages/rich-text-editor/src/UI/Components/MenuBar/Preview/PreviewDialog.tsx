@@ -89,13 +89,17 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 		setResolvedContent((current) => ({ ...current, [tab]: { element, text } }));
 	};
 
-	const handleToggle = (e: ToggleEvent) => {
+	const handleBeforeToggle = (e: ToggleEvent) => {
 		if (e.newState === "open") {
 			setResolvedContent({});
 			props.menuBarButtonsStateManager.updateState({
 				preview: { content: null },
 			});
+		}
+	};
 
+	const handleToggle = (e: ToggleEvent) => {
+		if (e.newState === "open") {
 			props.menuBarActionManager.emitMenuBarChange({ type: "preview" });
 			handleTabChange(activeTab());
 		}
@@ -159,6 +163,7 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 		<dialog
 			id={props.dialogId}
 			closedby="any"
+			on:beforetoggle={handleBeforeToggle}
 			on:toggle={handleToggle}
 			class="inset-0 m-auto h-[min(100%,800px)] w-full max-w-7xl flex-col rounded-lg border border-neutral-300 bg-white p-2 shadow-md open:flex dark:border-neutral-700 dark:bg-neutral-900"
 		>
