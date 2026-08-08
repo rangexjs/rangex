@@ -98,6 +98,27 @@ dialog {
 	}
 }
 
+[popover] {
+	--open-duration: 80ms;
+	transition: overlay, display, opacity, scale;
+	transition-duration: var(--open-duration);
+	transition-timing-function: ease-out;
+	transition-behavior: allow-discrete;
+
+	opacity: 0;
+	scale: 0.95;
+
+	&:popover-open {
+		opacity: 1;
+		scale: 1;
+
+		@starting-style {
+			opacity: 0.4;
+			scale: 0.95;
+		}
+	}
+}
+
 button {
 	cursor: pointer;
 }
