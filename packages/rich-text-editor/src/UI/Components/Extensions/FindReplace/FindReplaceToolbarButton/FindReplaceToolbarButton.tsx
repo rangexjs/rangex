@@ -154,7 +154,7 @@ export const FindReplaceToolbarButton = () => {
 		Object.assign(currentTarget.style, {
 			top: "50%",
 			left: "50%",
-			transform: "translate(-50%, -50%)",
+			translate: "-50% -50%",
 		});
 	};
 
@@ -191,7 +191,7 @@ export const FindReplaceToolbarButton = () => {
 		Object.assign(currentTarget.style, {
 			top: "50%",
 			left: "50%",
-			transform: "translate(-50%, -50%)",
+			translate: "-50% -50%",
 		});
 	};
 
@@ -234,7 +234,7 @@ export const FindReplaceToolbarButton = () => {
 				Object.assign(popover.style, {
 					top: "",
 					left: "",
-					transform: `translate(${numX}px, ${numY}px)`,
+					translate: `${numX}px ${numY}px`,
 				});
 			},
 			{ signal },
