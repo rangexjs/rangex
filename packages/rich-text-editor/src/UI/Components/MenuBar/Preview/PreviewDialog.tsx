@@ -91,15 +91,13 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 
 	const handleToggle = (e: ToggleEvent) => {
 		if (e.newState === "open") {
-			props.menuBarActionManager.emitMenuBarChange({ type: "preview" });
-			handleTabChange(activeTab());
-		}
-
-		if (e.newState === "closed") {
 			setResolvedContent({});
 			props.menuBarButtonsStateManager.updateState({
 				preview: { content: null },
 			});
+
+			props.menuBarActionManager.emitMenuBarChange({ type: "preview" });
+			handleTabChange(activeTab());
 		}
 	};
 
