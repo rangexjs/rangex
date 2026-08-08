@@ -1,8 +1,5 @@
 export type {
 	HTMLTextFieldElement,
-	OnStateChangeCallbackFn,
-	OnStateChangeFn,
-	StateChangeListeners,
 	TextFieldControls,
 	TextFieldErrorRestriction,
 	TextFieldErrorState,

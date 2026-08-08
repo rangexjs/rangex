@@ -16,7 +16,7 @@ import { Icon } from "../../../Icon";
 import {
 	Checkbox,
 	type CheckboxControls,
-	createCheckboxController,
+	createCheckboxState,
 	createTextFieldState,
 	FormField,
 	InputTextField,
@@ -74,16 +74,16 @@ export const FindReplaceToolbarButton = () => {
 		});
 	});
 
-	const [useRegexModel, useRegexControls] = createCheckboxController({});
-	const [matchCaseModel, matchCaseControls] = createCheckboxController({});
-	const [wholeWordModel, wholeWordControls] = createCheckboxController({});
+	const [useRegexHandle, useRegexControls] = createCheckboxState({});
+	const [matchCaseHandle, matchCaseControls] = createCheckboxState({});
+	const [wholeWordHandle, wholeWordControls] = createCheckboxState({});
 
 	const getPattern = (findText: string) =>
 		buildFindReplacePattern({
 			findText,
-			matchCase: matchCaseModel.checked(),
-			useRegex: useRegexModel.checked(),
-			wholeWord: wholeWordModel.checked(),
+			matchCase: matchCaseHandle.checked(),
+			useRegex: useRegexHandle.checked(),
+			wholeWord: wholeWordHandle.checked(),
 		});
 
 	const isValidPattern = (value: string) => {
@@ -120,8 +120,8 @@ export const FindReplaceToolbarButton = () => {
 	});
 	const [replaceHandle, replaceControls] =
 		createTextFieldState<HTMLInputElement>({});
-	const [includeNonEditableContentModel, includeNonEditableContentControls] =
-		createCheckboxController({});
+	const [includeNonEditableContentHandle, includeNonEditableContentControls] =
+		createCheckboxState({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
 	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
@@ -166,7 +166,7 @@ export const FindReplaceToolbarButton = () => {
 		const pattern = getSafePattern();
 		const criteria = {
 			pattern,
-			includeNonEditableContent: includeNonEditableContentModel.checked(),
+			includeNonEditableContent: includeNonEditableContentHandle.checked(),
 		};
 
 		if (newState === "open") {
@@ -257,7 +257,7 @@ export const FindReplaceToolbarButton = () => {
 
 		findReplaceUIPort.emitSearchChange({
 			pattern,
-			includeNonEditableContent: includeNonEditableContentModel.checked(),
+			includeNonEditableContent: includeNonEditableContentHandle.checked(),
 		});
 	};
 
@@ -285,21 +285,23 @@ export const FindReplaceToolbarButton = () => {
 		),
 	);
 
-	matchCaseModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(matchCaseHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	wholeWordModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(wholeWordHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	useRegexModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(useRegexHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	includeNonEditableContentModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(includeNonEditableContentHandle.checked, () => emitSearchChange(), {
+			defer: true,
+		}),
+	);
 
 	const navigateToIndex = (index: number) => {
 		findReplaceUIPort.emitNavigateToIndex({ index });
