@@ -6,6 +6,7 @@ import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkOverlayClose } from "./HandleLinkOverlayClose";
 import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
+import { handleLinkViewChange } from "./HandleLinkViewChange";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
 export const configureLink = ({
@@ -64,6 +65,8 @@ export const configureLink = ({
 		anchorController,
 	});
 
+	const linkViewChangeCleanup = handleLinkViewChange({ editorPort });
+
 	return () => {
 		editorPort.anchoredOverlay.unmount();
 
@@ -74,5 +77,6 @@ export const configureLink = ({
 		linkModificationCleanup();
 		linkUnwrapCleanup();
 		linkOverlayCloseCleanup();
+		linkViewChangeCleanup();
 	};
 };

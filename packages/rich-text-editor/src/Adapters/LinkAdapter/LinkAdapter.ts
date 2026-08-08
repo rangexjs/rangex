@@ -198,17 +198,15 @@ export class LinkAdapter {
 				return () => adapter.#toggleButtonsListeners.delete(callback);
 			},
 
-			setView: (view) => adapter.#updateState({ view }),
-
 			emitToolbarClick: () => {
 				for (const listener of adapter.#onToolbarClickListeners) {
 					listener();
 				}
 			},
 
-			emitViewChange: () => {
+			emitViewChange: (view) => {
 				for (const listener of adapter.#onViewChangeListeners) {
-					listener(adapter.#view);
+					listener(view);
 				}
 			},
 

@@ -17,6 +17,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 	const uiPort = props.uiPort;
 
 	const [currentMode, setCurrentMode] = createSignal(uiPort.mode);
+	const [view, setView] = createSignal(uiPort.view);
 
 	const [displayTextHandle, displayTextControls] =
 		createTextFieldState<HTMLInputElement>({
@@ -45,7 +46,11 @@ export const LinkEdit = (props: LinkEditProps) => {
 		})[mode]();
 
 	onMount(() => {
-		const unsubscribeView = uiPort.onViewUpdate(() => urlHandle.reset());
+		const unsubscribeView = uiPort.onViewUpdate((state) => {
+			setView(state);
+			urlHandle.reset();
+			urlHandle.setValue(uiPort.url.inputValue);
+		});
 		const unsubscribeMode = uiPort.onModeUpdate((value) =>
 			setCurrentMode(value),
 		);
@@ -53,9 +58,9 @@ export const LinkEdit = (props: LinkEditProps) => {
 			displayTextHandle.setValue(state.inputValue);
 			setDisplayTextDisabled(state.disabled);
 		});
-		const unsubscribeUrl = uiPort.onUrlUpdate((state) =>
-			urlHandle.setValue(state.inputValue),
-		);
+		const unsubscribeUrl = uiPort.onUrlUpdate((state) => {
+			urlHandle.setValue(state.inputValue);
+		});
 		const unsubscribeToggleButtons = uiPort.onToggleButtonsUpdate((state) =>
 			setIsNewTab(state.isNewTab),
 		);
@@ -74,9 +79,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 	};
 
 	const onCancel = () => {
-		uiPort.setView("preview");
-
-		uiPort.emitViewChange();
+		uiPort.emitViewChange("preview");
 		uiPort.emitCancel();
 	};
 
@@ -92,9 +95,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 			? rawUrl
 			: `https://${rawUrl}`;
 
-		uiPort.setView("preview");
-
-		uiPort.emitViewChange();
+		uiPort.emitViewChange("preview");
 
 		const applyParams: EmitApplyParams = {
 			text: displayTextHandle.value(),
@@ -112,7 +113,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 	};
 
 	return (
-		<div>
+		<div classList={{ hidden: view() !== "edit" }}>
 			<div class="mb-3 space-y-2">
 				<FormField
 					class="mb-2"
