@@ -80,7 +80,7 @@ const MenuBase = (props: MenuBaseProps) => (
 		ref={props.ref}
 		id={props.popoverId}
 		popover="auto"
-		class="flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white p-1 shadow-xs dark:border-neutral-700 dark:bg-neutral-900 [&:popover-open]:flex"
+		class="flex-col gap-0.5 rounded-lg border border-neutral-200 bg-white p-1 shadow-xs [position-try:flip-inline] dark:border-neutral-700 dark:bg-neutral-900 [&:popover-open]:flex"
 		classList={{ [props.class]: true }}
 	>
 		<For each={props.items}>
@@ -104,7 +104,7 @@ const MenuBase = (props: MenuBaseProps) => (
 );
 
 const Submenu = (props: MenuProps) => (
-	<MenuBase {...props} class="[position-area:right_center]" />
+	<MenuBase {...props} class="[position-area:right_span-all]" />
 );
 
 export const Menu = (props: MenuProps) => (

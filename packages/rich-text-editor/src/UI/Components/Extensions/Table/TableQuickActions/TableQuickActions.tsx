@@ -110,7 +110,7 @@ const Menu = (props: MenuProps) => {
 			ref={props.ref}
 			id={props.popoverId}
 			popover="auto"
-			class="flex-col gap-0.5 rounded-lg border border-neutral-300 bg-white p-1 shadow-sm [position-area:right_center] dark:border-neutral-700 dark:bg-neutral-900 [&:popover-open]:flex"
+			class="flex-col gap-0.5 rounded-lg border border-neutral-300 bg-white p-1 shadow-sm [position-area:right_span-all] [position-try:flip-inline] dark:border-neutral-700 dark:bg-neutral-900 [&:popover-open]:flex"
 		>
 			<For each={props.items}>
 				{(item) => {
