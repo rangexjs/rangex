@@ -17,6 +17,7 @@ export const createAnchoredOverlayController = ({
 	const { onToggle } = options;
 
 	element.classList.add(hideAnchoredClass);
+	element.style.setProperty("position-visibility", "anchor-valid");
 
 	let isOpen = false;
 
