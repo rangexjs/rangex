@@ -26,14 +26,13 @@ export const handleEmojiAutoComplete = ({
 				return false;
 			}
 
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
+			const preColonBoundary = selection.getBoundaryPoints();
 
 			const range = new EditorRange({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
+				fromNode: preColonBoundary.fromText,
+				fromOffset: preColonBoundary.fromOffset,
+				toNode: preColonBoundary.toText,
+				toOffset: preColonBoundary.toOffset,
 			});
 
 			if (!range.isSinglePoint) {
@@ -46,6 +45,7 @@ export const handleEmojiAutoComplete = ({
 				editorAPI,
 				fromText: startText,
 				fromOffset: startOffset,
+				hasClosingColon: false,
 			});
 
 			if (!emojiQuery) {
@@ -58,21 +58,55 @@ export const handleEmojiAutoComplete = ({
 				return false;
 			}
 
-			// Remove the :<name> trigger text (the closing ':' is prevented from inserting)
-			editorAPI.removeNodesInRange({
+			// Materialize the closing ':' so the full shortcode (e.g. ":sob:") is what
+			// a single undo later restores.
+			editorAPI.insertNode({
 				fromNode: startText,
 				fromOffset: startOffset,
-				toNode: emojiQuery.toText,
-				toOffset: emojiQuery.toOffset,
+				lines: [
+					createContentLine({
+						localName: "p",
+						childNodes: [...createFormattableTexts({ data: ":" })],
+					}),
+				],
+				breakBeforeInsert: false,
+			});
+
+			// `emojiQuery`'s boundary points are stale after the insert above — re-scan.
+			const postColonBoundary = selection.getBoundaryPoints();
+
+			const closedEmojiQuery = getEmojiQuery({
+				editorAPI,
+				fromText: postColonBoundary.fromText,
+				fromOffset: postColonBoundary.fromOffset,
+				hasClosingColon: true,
+			});
+
+			if (!closedEmojiQuery) {
+				console.warn(
+					"handleEmojiAutoComplete: could not re-locate the :name: shortcode after inserting ':'.",
+				);
+				return true;
+			}
+
+			// Commit the completed shortcode as its own undo step before converting it.
+			snapshotTimeline.registerSnapshotBoundary();
+			editorAPI.flushEditorEvents();
+
+			// Remove the whole :<name>: trigger text
+			editorAPI.removeNodesInRange({
+				fromNode: postColonBoundary.fromText,
+				fromOffset: postColonBoundary.fromOffset,
+				toNode: closedEmojiQuery.toText,
+				toOffset: closedEmojiQuery.toOffset,
 			});
 
 			// Re-read cursor after removal, then insert the emoji character
-			const { fromText: newFromText, fromOffset: newFromOffset } =
-				selection.getBoundaryPoints();
+			const postRemovalBoundary = selection.getBoundaryPoints();
 
 			editorAPI.insertNode({
-				fromNode: newFromText,
-				fromOffset: newFromOffset,
+				fromNode: postRemovalBoundary.fromText,
+				fromOffset: postRemovalBoundary.fromOffset,
 				lines: [
 					createContentLine({
 						localName: "p",

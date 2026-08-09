@@ -16,7 +16,12 @@ const removeEmojiQueryText = ({
 
 	const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-	const emojiQuery = getEmojiQuery({ editorAPI, fromText, fromOffset });
+	const emojiQuery = getEmojiQuery({
+		editorAPI,
+		fromText,
+		fromOffset,
+		hasClosingColon: false,
+	});
 
 	if (!emojiQuery) {
 		return { queryFound: false };
