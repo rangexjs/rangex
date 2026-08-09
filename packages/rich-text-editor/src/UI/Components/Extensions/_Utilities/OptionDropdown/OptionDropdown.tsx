@@ -42,7 +42,7 @@ export const OptionDropdown = <Option extends string>(
 				command="toggle-popover"
 				class="flex w-full items-center justify-between gap-2 rounded-md border border-neutral-200 px-2 py-1 font-medium text-neutral-800 text-xs transition-colors hover:bg-neutral-50 active:border-neutral-300 dark:border-neutral-600 dark:text-neutral-100 dark:active:border-neutral-500 dark:hover:bg-neutral-800"
 				classList={{
-					"[&:has(~:popover-open)]:mb-px [&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-0": true,
+					"[&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-neutral-200 [&:has(~:popover-open)]:dark:border-b-neutral-700": true,
 				}}
 			>
 				<span class="truncate">{selectedLabel()}</span>
