@@ -398,7 +398,7 @@ export const FindReplaceToolbarButton = () => {
 							</FormField>
 							<div
 								role="alert"
-								class="absolute w-[anchor-size(width)] border border-red-400 bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom]"
+								class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
 								classList={{
 									"pointer-events-none invisible": !(
 										showInputFieldError(findHandle.state()) && hasFindFocus()
