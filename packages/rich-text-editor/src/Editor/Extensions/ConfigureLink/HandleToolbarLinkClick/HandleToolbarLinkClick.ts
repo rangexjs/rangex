@@ -40,11 +40,10 @@ const openAtCaret = ({
 		toggleButtons: { isNewTab: false },
 	});
 
-	anchorController.show(caretAnchor, {
-		clear: true,
-		position: "absolute",
-		"justify-self": "anchor-center",
-		top: "calc(anchor(bottom) + 8px)",
+	positionToSelection({
+		editorAPI,
+		controller: anchorController,
+		topMargin: 8,
 	});
 };
 

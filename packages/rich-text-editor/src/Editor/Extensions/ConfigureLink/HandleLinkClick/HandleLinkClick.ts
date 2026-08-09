@@ -28,9 +28,9 @@ const openLinkOverlay = ({
 
 	anchorController.show(link, {
 		clear: true,
-		position: "absolute",
-		"justify-self": "anchor-center",
-		top: "calc(anchor(bottom) + 8px)",
+		position: "fixed",
+		margin: "8px 0px 0px 0px",
+		"position-area": "center bottom",
 	});
 };
 

@@ -19,7 +19,8 @@ export type AnchorPositionField =
 	| "width"
 	| "height"
 	| "align-self"
-	| "justify-self";
+	| "justify-self"
+	| "margin";
 
 export type AnchorStyleOptions = Partial<
 	Record<AnchorPositionField, string>
