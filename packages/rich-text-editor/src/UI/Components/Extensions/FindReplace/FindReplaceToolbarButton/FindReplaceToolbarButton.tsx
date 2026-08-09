@@ -494,7 +494,7 @@ export const FindReplaceToolbarButton = () => {
 						</button>
 						<button
 							type="button"
-							class="btn-primary-outline rounded-sm px-3 py-1 text-sm"
+							class="btn-primary-outline rounded-sm px-3 py-1 font-medium text-sm"
 							on:click={() => replaceAllText()}
 							disabled={replaceDisabled()}
 						>
