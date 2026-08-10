@@ -54,7 +54,10 @@ export const FormField = (props: FormFieldProps) => {
 					<Show when={!showError()}>{props.description}</Show>
 				</p>
 				{/* Alert requires the description/error message to be separated */}
-				<p role="alert" class={`flex gap-1 text-red-600 dark:text-red-700 ${props.errorClass}`}>
+				<p
+					role="alert"
+					class={`flex gap-1 text-red-600 dark:text-red-700 ${props.errorClass}`}
+				>
 					<Show when={showError()}>
 						<Icon
 							name="WarningCircle"
