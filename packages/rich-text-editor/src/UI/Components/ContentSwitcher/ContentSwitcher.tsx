@@ -29,7 +29,7 @@ export const ContentSwitch = <Id extends string>(
 
 	return (
 		<div
-			class="flex border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
+			class="relative flex border border-neutral-200 bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-800"
 			classList={{ [props.class ?? ""]: true }}
 			style={{ "anchor-scope": contentSwitcherAnchor }}
 		>
