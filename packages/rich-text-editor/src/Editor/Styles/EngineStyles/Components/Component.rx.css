@@ -16,6 +16,7 @@
 
 	&:where([data-rx-interactive-range-included-selection="true"]) {
 		&:where(
+				[data-rx-component-name="accordion-item"],
 				[data-rx-component-name="audio"],
 				[data-rx-component-name="embed"],
 				[data-rx-component-name="empty-media"],
@@ -47,10 +48,12 @@
 
 		/* BlockComponents */
 		&:where(
+				[data-rx-component-name="accordion-item"],
 				[data-rx-component-name="audio"],
 				[data-rx-component-name="embed"],
 				[data-rx-component-name="empty-media"],
 				[data-rx-component-name="image"],
+				[data-rx-component-name="separator"],
 				[data-rx-component-name="table"],
 				[data-rx-component-name="video"]
 			) {
