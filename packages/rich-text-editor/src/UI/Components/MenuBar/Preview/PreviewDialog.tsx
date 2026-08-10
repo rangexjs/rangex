@@ -5,13 +5,13 @@ import type { MenuBarButtonsStateManager } from "../../../MenuBarButtonsStateMan
 import { Icon } from "../../Icon";
 import { Loading } from "./Loading";
 
-type PreviewTab = "rendered" | "html" | "json" | "snapshot";
+type PreviewTab = "rendered" | "html" | "snapshotView" | "storedSnapshot";
 
 const tabs: { label: string; value: PreviewTab }[] = [
 	{ label: "Rendered", value: "rendered" },
 	{ label: "HTML", value: "html" },
-	{ label: "JSON", value: "json" },
-	{ label: "Snapshot", value: "snapshot" },
+	{ label: "Snapshot View", value: "snapshotView" },
+	{ label: "Stored Snapshot", value: "storedSnapshot" },
 ];
 
 interface ResolvedTabContent {
@@ -74,14 +74,14 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 		const resolvers: Record<PreviewTab, () => Promise<HTMLElement>> = {
 			rendered: content.getRendered,
 			html: content.getHTML,
-			json: content.getJSON,
-			snapshot: content.getSnapshot,
+			snapshotView: content.getSnapshotView,
+			storedSnapshot: content.getStoredSnapshot,
 		};
 
 		const textResolvers: Partial<Record<PreviewTab, () => Promise<string>>> = {
 			html: content.getHTMLText,
-			json: content.getJSONText,
-			snapshot: content.getSnapshotText,
+			snapshotView: content.getSnapshotViewText,
+			storedSnapshot: content.getStoredSnapshotText,
 		};
 
 		const element = await resolvers[tab]();
@@ -89,17 +89,19 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 		setResolvedContent((current) => ({ ...current, [tab]: { element, text } }));
 	};
 
-	const handleToggle = (e: ToggleEvent) => {
+	const handleBeforeToggle = (e: ToggleEvent) => {
 		if (e.newState === "open") {
-			props.menuBarActionManager.emitMenuBarChange({ type: "preview" });
-			handleTabChange(activeTab());
-		}
-
-		if (e.newState === "closed") {
 			setResolvedContent({});
 			props.menuBarButtonsStateManager.updateState({
 				preview: { content: null },
 			});
+		}
+	};
+
+	const handleToggle = (e: ToggleEvent) => {
+		if (e.newState === "open") {
+			props.menuBarActionManager.emitMenuBarChange({ type: "preview" });
+			handleTabChange(activeTab());
 		}
 	};
 
@@ -132,8 +134,8 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 
 	const downloadMeta: DownloadMeta = {
 		html: { ext: "html", mime: "text/html" },
-		json: { ext: "json", mime: "application/json" },
-		snapshot: { ext: "json", mime: "application/json" },
+		snapshotView: { ext: "json", mime: "application/json" },
+		storedSnapshot: { ext: "json", mime: "application/json" },
 	};
 
 	const onDownloadClick = () => {
@@ -161,6 +163,7 @@ export const PreviewDialog = (props: PreviewDialogProps) => {
 		<dialog
 			id={props.dialogId}
 			closedby="any"
+			on:beforetoggle={handleBeforeToggle}
 			on:toggle={handleToggle}
 			class="inset-0 m-auto h-[min(100%,800px)] w-full max-w-7xl flex-col rounded-lg border border-neutral-300 bg-white p-2 shadow-md open:flex dark:border-neutral-700 dark:bg-neutral-900"
 		>

@@ -17,7 +17,7 @@ import type {
 const openAtCaret = ({
 	editorPort,
 	editorAPI,
-	anchorController,
+	popoverController,
 }: OpenAtCaretParams) => {
 	const { shadowRoot } = editorAPI;
 
@@ -40,11 +40,10 @@ const openAtCaret = ({
 		toggleButtons: { isNewTab: false },
 	});
 
-	anchorController.show(caretAnchor, {
-		clear: true,
-		position: "absolute",
-		"justify-self": "anchor-center",
-		top: "calc(anchor(bottom) + 8px)",
+	positionToSelection({
+		editorAPI,
+		controller: popoverController,
+		topMargin: 8,
 	});
 };
 
@@ -85,7 +84,7 @@ const getDisplayTextInfo = ({
 const openForWrap = ({
 	editorPort,
 	editorAPI,
-	anchorController,
+	popoverController,
 }: OpenForWrapParams) => {
 	// Blur the editor before opening the popover so focus passes cleanly to it
 	if (document.activeElement instanceof HTMLElement) {
@@ -104,7 +103,7 @@ const openForWrap = ({
 
 	positionToSelection({
 		editorAPI,
-		controller: anchorController,
+		controller: popoverController,
 		topMargin: 10,
 	});
 
@@ -120,7 +119,7 @@ const openForWrap = ({
 const openLinkOverlay = ({
 	editorPort,
 	editorAPI,
-	anchorController,
+	popoverController,
 }: OpenLinkOverlayParams) => {
 	const linkInsertionMode = getLinkInsertionMode({ editorAPI });
 
@@ -130,12 +129,12 @@ const openLinkOverlay = ({
 	}
 
 	if (linkInsertionMode === "insert") {
-		openAtCaret({ editorPort, editorAPI, anchorController });
+		openAtCaret({ editorPort, editorAPI, popoverController });
 		return;
 	}
 
 	if (linkInsertionMode === "wrap") {
-		openForWrap({ editorPort, editorAPI, anchorController });
+		openForWrap({ editorPort, editorAPI, popoverController });
 		return;
 	}
 
@@ -148,10 +147,10 @@ const openLinkOverlay = ({
 export const handleToolbarLinkClick = ({
 	editorPort,
 	editorAPI,
-	anchorController,
+	popoverController,
 }: HandleToolbarLinkClickParams) => {
 	const unsubscribe = editorPort.onToolbarClick(() => {
-		openLinkOverlay({ editorPort, editorAPI, anchorController });
+		openLinkOverlay({ editorPort, editorAPI, popoverController });
 	});
 
 	return () => {

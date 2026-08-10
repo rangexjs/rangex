@@ -1,8 +1,8 @@
 import type { EditorAPI } from "rich-text-area";
-import type { AnchoredOverlayController } from "../CreateOverlayController";
+import type { OverlayController } from "../CreateOverlayController";
 
 export interface PositionToSelectionParams {
 	editorAPI: EditorAPI;
-	controller: AnchoredOverlayController;
+	controller: OverlayController;
 	topMargin: number;
 }

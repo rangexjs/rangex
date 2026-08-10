@@ -6,12 +6,12 @@ import type {
 	VideoUIPort,
 } from "#adapters";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import { Icon } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
@@ -35,7 +35,7 @@ const aspectRatioOptions: OptionDropdownOption<VideoAspectRatioValue>[] = [
 	{ label: "16:9", value: "16-9" },
 ];
 
-const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
+const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];
@@ -59,21 +59,23 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 		uiPort.isSwapCardOpen,
 	);
 
-	const [posterModel, posterControls] = createTextFieldController({
-		defaultValue: uiPort.poster,
-	});
+	const [posterHandle, posterControls] = createTextFieldState<HTMLInputElement>(
+		{
+			defaultValue: uiPort.poster,
+		},
+	);
 
 	const [committedPoster, setCommittedPoster] = createSignal(uiPort.poster);
 
-	const isPosterDirty = () => posterModel.value() !== committedPoster();
+	const isPosterDirty = () => posterHandle.value() !== committedPoster();
 
-	const [titleModel, titleControls] = createTextFieldController({
+	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: uiPort.title,
 	});
 
 	const [committedTitle, setCommittedTitle] = createSignal(uiPort.title);
 
-	const isTitleDirty = () => titleModel.value() !== committedTitle();
+	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
@@ -102,11 +104,11 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 		const unsubscribeLoop = uiPort.onLoopUpdate(setLoop);
 		const unsubscribeMuted = uiPort.onMutedUpdate(setMuted);
 		const unsubscribePoster = uiPort.onPosterUpdate((value) => {
-			posterModel.setValue(value);
+			posterHandle.setValue(value);
 			setCommittedPoster(value);
 		});
 		const unsubscribeTitle = uiPort.onTitleUpdate((value) => {
-			titleModel.setValue(value);
+			titleHandle.setValue(value);
 			setCommittedTitle(value);
 		});
 		const unsubscribeIsSwapCardOpen =
@@ -133,7 +135,7 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 	const optionsPopoverId = createUniqueId();
 
 	const onPosterCommit = () => {
-		uiPort.emitVideoAttrChange({ poster: posterModel.value() });
+		uiPort.emitVideoAttrChange({ poster: posterHandle.value() });
 	};
 
 	const onPosterKeyDown = (event: KeyboardEvent) => {
@@ -145,7 +147,7 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 	};
 
 	const onTitleCommit = () => {
-		uiPort.emitVideoAttrChange({ title: titleModel.value() });
+		uiPort.emitVideoAttrChange({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
@@ -280,21 +282,20 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 					</div>
 
 					<div hidden={!caption().enabled}>
-						<ContentSwitch
+						<SegmentedControl
 							id={caption().position}
 							controls={captionPositionControls}
 							onChange={(value) => uiPort.emitCaptionPositionChange(value)}
+							appearance="primary-outline"
 							class="rounded-sm"
-							commonButtonClass="rounded-sm py-1.5 text-xs font-medium"
-							activeBoxShrink={-1}
-							activeBoxClass="rounded-sm shadow border border-primary-500/40"
+							commonButtonClass="rounded-sm py-1.5 font-medium text-xs"
 						/>
 					</div>
 
 					<div class="flex flex-col gap-1">
 						<div class="flex items-center justify-between">
 							<label
-								for={posterModel.id}
+								for={posterHandle.id}
 								class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
 							>
 								Poster
@@ -312,7 +313,6 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 						>
 							<InputTextField
 								type="text"
-								id={posterModel.id}
 								placeholder="https://example.com/poster.png"
 								spellcheck={false}
 								{...posterControls}
@@ -325,7 +325,7 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 					<div class="flex flex-col gap-1">
 						<div class="flex items-center justify-between">
 							<label
-								for={titleModel.id}
+								for={titleHandle.id}
 								class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
 							>
 								Title
@@ -343,7 +343,6 @@ export const VideoQuickActions = (props: VideoQuickActionsProps) => {
 						>
 							<InputTextField
 								type="text"
-								id={titleModel.id}
 								placeholder="Describe the video"
 								spellcheck={false}
 								{...titleControls}

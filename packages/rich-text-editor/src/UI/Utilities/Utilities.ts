@@ -1,3 +1,5 @@
+export const cn = (classes: string[]) => classes.join(" ");
+
 export const createDebounce = () => {
 	let id: number;
 

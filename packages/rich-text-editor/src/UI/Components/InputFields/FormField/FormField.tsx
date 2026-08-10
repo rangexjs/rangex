@@ -1,12 +1,12 @@
 import { createMemo, type JSX, Show } from "solid-js";
 import { Icon } from "../../Icon";
+import { type InputFieldState, showInputFieldError } from "../_Utilities";
 
 interface FormFieldProps {
 	for?: string;
 	label?: JSX.Element;
 	description?: JSX.Element;
-	showError?: boolean;
-	errorMessage?: JSX.Element;
+	state?: InputFieldState;
 	class?: string;
 	style?: JSX.CSSProperties;
 	labelClass?: string;
@@ -17,11 +17,15 @@ interface FormFieldProps {
 }
 
 export const FormField = (props: FormFieldProps) => {
+	const showError = createMemo(
+		() => !!props.state && showInputFieldError(props.state),
+	);
+
 	const isInfoContainerVisible = createMemo(
 		() =>
 			!!(
-				(props.showError && props.errorMessage) ||
-				(!props.showError && props.description)
+				(showError() && props.state?.message) ||
+				(!showError() && props.description)
 			),
 	);
 
@@ -47,16 +51,19 @@ export const FormField = (props: FormFieldProps) => {
 				}}
 			>
 				<p class={props.descriptionClass}>
-					<Show when={!props.showError}>{props.description}</Show>
+					<Show when={!showError()}>{props.description}</Show>
 				</p>
-				{/* Alert requires the description/errorMessage to be separated */}
-				<p role="alert" class={`flex gap-1 text-red-600 ${props.errorClass}`}>
-					<Show when={props.showError}>
+				{/* Alert requires the description/error message to be separated */}
+				<p
+					role="alert"
+					class={`flex gap-1 text-red-600 dark:text-red-700 ${props.errorClass}`}
+				>
+					<Show when={showError()}>
 						<Icon
 							name="WarningCircle"
 							class="mt-0.5 size-3 shrink-0 align-baseline"
 						/>
-						<span>{props.errorMessage}</span>
+						<span>{props.state?.message}</span>
 					</Show>
 				</p>
 			</div>

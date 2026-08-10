@@ -1,4 +1,4 @@
-import { createSnapshotView } from "rich-text-area";
+import { createSnapshotView as buildSnapshotView } from "rich-text-area";
 import type { DualTheme } from "#libs";
 import { createHTMLFromSnapshotView } from "../../CreateHTMLFromSnapshotView";
 import {
@@ -11,12 +11,12 @@ import type {
 	ConfigurePreviewParams,
 	CreateHTMLParams,
 	CreateHTMLTextParams,
-	CreateJSONParams,
-	CreateJSONTextParams,
 	CreatePreviewContentParams,
 	CreateRenderedParams,
-	CreateSnapshotParams,
-	CreateSnapshotTextParams,
+	CreateSnapshotViewParams,
+	CreateSnapshotViewTextParams,
+	CreateStoredSnapshotParams,
+	CreateStoredSnapshotTextParams,
 } from "./ConfigurePreview-types";
 
 const theme: DualTheme = { light: "light-plus", dark: "dark-plus" };
@@ -25,6 +25,8 @@ const createRendered = async ({ snapshotView }: CreateRenderedParams) => {
 	const { style, rootElement, settled } = createHTMLFromSnapshotView({
 		snapshotView,
 	});
+	// Temporary until we figure out how to manage the background/padding
+	rootElement.style.padding = "16px 24px";
 	await settled;
 
 	return createHost({ children: [style, rootElement] });
@@ -46,14 +48,18 @@ const createHTML = async ({ snapshotView }: CreateHTMLParams) => {
 	return createHost({ children: [htmlPre] });
 };
 
-const createJSON = async ({ snapshotView }: CreateJSONParams) => {
+const createSnapshotView = async ({
+	snapshotView,
+}: CreateSnapshotViewParams) => {
 	const code = JSON.stringify(snapshotView, null, 2);
 	const pre = await createHighlightedCode({ code, lang: "json", theme });
 
 	return createHost({ children: [pre] });
 };
 
-const createSnapshot = async ({ storedSnapshot }: CreateSnapshotParams) => {
+const createStoredSnapshot = async ({
+	storedSnapshot,
+}: CreateStoredSnapshotParams) => {
 	const code = JSON.stringify(storedSnapshot, null, 2);
 	const pre = await createHighlightedCode({ code, lang: "json", theme });
 
@@ -75,12 +81,13 @@ const createHTMLText = async ({ snapshotView }: CreateHTMLTextParams) => {
 	return templateHTML;
 };
 
-const createJSONText = async ({ snapshotView }: CreateJSONTextParams) =>
-	JSON.stringify(snapshotView);
+const createSnapshotViewText = async ({
+	snapshotView,
+}: CreateSnapshotViewTextParams) => JSON.stringify(snapshotView);
 
-const createSnapshotText = async ({
+const createStoredSnapshotText = async ({
 	storedSnapshot,
-}: CreateSnapshotTextParams) => JSON.stringify(storedSnapshot);
+}: CreateStoredSnapshotTextParams) => JSON.stringify(storedSnapshot);
 
 /**
  * Returns one lazy getter per preview tab. Each getter builds its own DOM
@@ -89,16 +96,16 @@ const createSnapshotText = async ({
  */
 const createPreviewContent = ({ editorAPI }: CreatePreviewContentParams) => {
 	const storedSnapshot = editorAPI.createStoredSnapshot();
-	const { snapshotView } = createSnapshotView({ storedSnapshot });
+	const { snapshotView } = buildSnapshotView({ storedSnapshot });
 
 	return {
 		getRendered: () => createRendered({ snapshotView }),
 		getHTML: () => createHTML({ snapshotView }),
-		getJSON: () => createJSON({ snapshotView }),
-		getSnapshot: () => createSnapshot({ storedSnapshot }),
+		getSnapshotView: () => createSnapshotView({ snapshotView }),
+		getStoredSnapshot: () => createStoredSnapshot({ storedSnapshot }),
 		getHTMLText: () => createHTMLText({ snapshotView }),
-		getJSONText: () => createJSONText({ snapshotView }),
-		getSnapshotText: () => createSnapshotText({ storedSnapshot }),
+		getSnapshotViewText: () => createSnapshotViewText({ snapshotView }),
+		getStoredSnapshotText: () => createStoredSnapshotText({ storedSnapshot }),
 	};
 };
 

@@ -40,6 +40,7 @@ export const handleOverlayAppearance = ({
 			editorAPI,
 			fromText: startText,
 			fromOffset: startOffset,
+			hasClosingColon: false,
 		});
 
 		if (!emojiQuery) {

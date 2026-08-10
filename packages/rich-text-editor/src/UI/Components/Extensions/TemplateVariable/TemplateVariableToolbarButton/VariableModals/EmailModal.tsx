@@ -1,7 +1,7 @@
 import { onCleanup, onMount } from "solid-js";
 import type { TemplateVariableUIPort } from "#adapters";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
 	TextFieldWrapper,
@@ -15,7 +15,7 @@ interface EmailModalProps {
 }
 
 export const EmailModal = (props: EmailModalProps) => {
-	const [emailModel, emailControls] = createTextFieldController({
+	const [emailHandle, emailControls] = createTextFieldState<HTMLInputElement>({
 		error: {
 			patterns: [{ value: /.+@.+\..+/, message: "Email's format is invalid." }],
 		},
@@ -23,7 +23,7 @@ export const EmailModal = (props: EmailModalProps) => {
 
 	onMount(() => {
 		const unsubscribe = props.uiPort.onToolbarButtonUpdate((state) => {
-			emailModel.setValue(state.options.email ?? "");
+			emailHandle.setValue(state.options.email ?? "");
 		});
 
 		onCleanup(() => {
@@ -36,18 +36,18 @@ export const EmailModal = (props: EmailModalProps) => {
 			return;
 		}
 
-		emailModel.setValue(props.uiPort.toolbarButton.options.email ?? "");
+		emailHandle.setValue(props.uiPort.toolbarButton.options.email ?? "");
 	};
 
 	const updateTemplateVariable = (event: MouseEvent) => {
-		emailModel.validate();
+		emailHandle.validate();
 
-		if (emailModel.state().hasError) {
+		if (emailHandle.state().hasError) {
 			event.preventDefault();
 			return;
 		}
 
-		const email = normalizeTemplateVariableValue(emailModel.value());
+		const email = normalizeTemplateVariableValue(emailHandle.value());
 
 		props.uiPort.emitUpdateRequest({ options: { email } });
 	};
@@ -74,15 +74,13 @@ export const EmailModal = (props: EmailModalProps) => {
 		>
 			<FormField
 				class="mb-4"
-				for={emailModel.id}
+				for={emailHandle.id}
 				label="Email"
-				showError={emailModel.state().showError}
-				errorMessage={emailModel.state().message}
+				state={emailHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
 						type="text"
-						id={emailModel.id}
 						placeholder="name@mail.com"
 						spellcheck={false}
 						{...emailControls}

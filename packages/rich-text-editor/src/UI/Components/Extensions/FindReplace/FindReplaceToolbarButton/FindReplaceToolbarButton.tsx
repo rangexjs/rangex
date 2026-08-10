@@ -4,6 +4,7 @@ import {
 	createSignal,
 	createUniqueId,
 	Index,
+	on,
 	onCleanup,
 	onMount,
 	Show,
@@ -15,10 +16,11 @@ import { Icon } from "../../../Icon";
 import {
 	Checkbox,
 	type CheckboxControls,
-	createCheckboxController,
-	createTextFieldController,
+	createCheckboxState,
+	createTextFieldState,
 	FormField,
 	InputTextField,
+	showInputFieldError,
 	TextFieldWrapper,
 } from "../../../InputFields";
 import { Spinning } from "../../../Spinning";
@@ -72,16 +74,16 @@ export const FindReplaceToolbarButton = () => {
 		});
 	});
 
-	const [useRegexModel, useRegexControls] = createCheckboxController({});
-	const [matchCaseModel, matchCaseControls] = createCheckboxController({});
-	const [wholeWordModel, wholeWordControls] = createCheckboxController({});
+	const [useRegexHandle, useRegexControls] = createCheckboxState({});
+	const [matchCaseHandle, matchCaseControls] = createCheckboxState({});
+	const [wholeWordHandle, wholeWordControls] = createCheckboxState({});
 
 	const getPattern = (findText: string) =>
 		buildFindReplacePattern({
 			findText,
-			matchCase: matchCaseModel.checked(),
-			useRegex: useRegexModel.checked(),
-			wholeWord: wholeWordModel.checked(),
+			matchCase: matchCaseHandle.checked(),
+			useRegex: useRegexHandle.checked(),
+			wholeWord: wholeWordHandle.checked(),
 		});
 
 	const isValidPattern = (value: string) => {
@@ -98,32 +100,35 @@ export const FindReplaceToolbarButton = () => {
 
 	/** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
 	const getSafePattern = () => {
-		findModel.validate();
+		findHandle.validate();
 
-		const findText = isValidPattern(findModel.value()) ? findModel.value() : "";
+		const findText = isValidPattern(findHandle.value())
+			? findHandle.value()
+			: "";
 
 		return getPattern(findText);
 	};
 
-	const [findModel, findControls] = createTextFieldController({
+	const [findHandle, findControls] = createTextFieldState<HTMLInputElement>({
 		error: {
 			custom: {
 				isValid: (value) => isValidPattern(value),
 				message: "Invalid regular expression.",
 			},
 		},
-		validateOnChange: true,
+		validateOn: ["change", "input:dirty"],
 	});
-	const [replaceModel, replaceControls] = createTextFieldController({});
-	const [includeNonEditableContentModel, includeNonEditableContentControls] =
-		createCheckboxController({});
+	const [replaceHandle, replaceControls] =
+		createTextFieldState<HTMLInputElement>({});
+	const [includeNonEditableContentHandle, includeNonEditableContentControls] =
+		createCheckboxState({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
 	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
 
 	createEffect(() => {
 		setReplaceButtonDisabled(
-			totalResults() === 0 || findModel.state().showError,
+			totalResults() === 0 || showInputFieldError(findHandle.state()),
 		);
 	});
 
@@ -149,7 +154,7 @@ export const FindReplaceToolbarButton = () => {
 		Object.assign(currentTarget.style, {
 			top: "50%",
 			left: "50%",
-			transform: "translate(-50%, -50%)",
+			translate: "-50% -50%",
 		});
 	};
 
@@ -161,7 +166,7 @@ export const FindReplaceToolbarButton = () => {
 		const pattern = getSafePattern();
 		const criteria = {
 			pattern,
-			includeNonEditableContent: includeNonEditableContentModel.checked(),
+			includeNonEditableContent: includeNonEditableContentHandle.checked(),
 		};
 
 		if (newState === "open") {
@@ -186,7 +191,7 @@ export const FindReplaceToolbarButton = () => {
 		Object.assign(currentTarget.style, {
 			top: "50%",
 			left: "50%",
-			transform: "translate(-50%, -50%)",
+			translate: "-50% -50%",
 		});
 	};
 
@@ -229,7 +234,7 @@ export const FindReplaceToolbarButton = () => {
 				Object.assign(popover.style, {
 					top: "",
 					left: "",
-					transform: `translate(${numX}px, ${numY}px)`,
+					translate: `${numX}px ${numY}px`,
 				});
 			},
 			{ signal },
@@ -252,7 +257,7 @@ export const FindReplaceToolbarButton = () => {
 
 		findReplaceUIPort.emitSearchChange({
 			pattern,
-			includeNonEditableContent: includeNonEditableContentModel.checked(),
+			includeNonEditableContent: includeNonEditableContentHandle.checked(),
 		});
 	};
 
@@ -264,42 +269,50 @@ export const FindReplaceToolbarButton = () => {
 		findReplaceUIPort.emitStepForward();
 	};
 
-	findModel.onValueChange("add", () => {
-		setIsFindLoading(true);
+	createEffect(
+		on(
+			findHandle.value,
+			() => {
+				setIsFindLoading(true);
 
-		debounce(() => {
-			emitSearchChange();
+				debounce(() => {
+					emitSearchChange();
 
-			setIsFindLoading(false);
-		}, 250);
-	});
+					setIsFindLoading(false);
+				}, 250);
+			},
+			{ defer: true },
+		),
+	);
 
-	matchCaseModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(matchCaseHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	wholeWordModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(wholeWordHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	useRegexModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(useRegexHandle.checked, () => emitSearchChange(), { defer: true }),
+	);
 
-	includeNonEditableContentModel.onCheckedChange("add", () => {
-		emitSearchChange();
-	});
+	createEffect(
+		on(includeNonEditableContentHandle.checked, () => emitSearchChange(), {
+			defer: true,
+		}),
+	);
 
 	const navigateToIndex = (index: number) => {
 		findReplaceUIPort.emitNavigateToIndex({ index });
 	};
 
 	const replaceText = () => {
-		findReplaceUIPort.emitReplace({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplace({ replaceText: replaceHandle.value() });
 	};
 
 	const replaceAllText = () => {
-		findReplaceUIPort.emitReplaceAll({ replaceText: replaceModel.value() });
+		findReplaceUIPort.emitReplaceAll({ replaceText: replaceHandle.value() });
 	};
 
 	const checkboxFilterList: CheckboxFilterList = [
@@ -361,7 +374,7 @@ export const FindReplaceToolbarButton = () => {
 					>
 						<div class="flex items-center justify-between">
 							<FormField
-								for={findModel.id}
+								for={findHandle.id}
 								class="max-w-48 grow"
 								style={{
 									"anchor-name": findInputAnchorName,
@@ -385,17 +398,17 @@ export const FindReplaceToolbarButton = () => {
 							</FormField>
 							<div
 								role="alert"
-								class="absolute w-[anchor-size(width)] border border-red-400 bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom]"
+								class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
 								classList={{
 									"pointer-events-none invisible": !(
-										findModel.state().showError && hasFindFocus()
+										showInputFieldError(findHandle.state()) && hasFindFocus()
 									),
 								}}
 								style={{
 									"position-anchor": findInputAnchorName,
 								}}
 							>
-								{findModel.state().message}
+								{findHandle.state().message}
 							</div>
 							<Show
 								when={!isFindLoading()}
@@ -430,7 +443,7 @@ export const FindReplaceToolbarButton = () => {
 							</span>
 						</div>
 						<div>
-							<FormField for={replaceModel.id} class="max-w-48 grow">
+							<FormField for={replaceHandle.id} class="max-w-48 grow">
 								<TextFieldWrapper
 									appearance="neutral-filled-underline"
 									size="medium"
@@ -481,7 +494,7 @@ export const FindReplaceToolbarButton = () => {
 						</button>
 						<button
 							type="button"
-							class="btn-primary-outline rounded-sm px-3 py-1 text-sm"
+							class="btn-primary-outline rounded-sm px-3 py-1 font-medium text-sm"
 							on:click={() => replaceAllText()}
 							disabled={replaceDisabled()}
 						>

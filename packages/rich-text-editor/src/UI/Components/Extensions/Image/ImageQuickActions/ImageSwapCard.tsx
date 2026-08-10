@@ -2,11 +2,11 @@ import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import type { ImageUIPort } from "#adapters";
 import { assertNever } from "#ports";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
 	TextFieldWrapper,
@@ -14,7 +14,7 @@ import {
 
 type ImageSourceTab = "upload" | "url";
 
-const sourceTabControls: ContentSwitcherControls<ImageSourceTab> = [
+const sourceTabControls: SegmentedControlControls<ImageSourceTab> = [
 	{ id: "upload", node: "Upload" },
 	{ id: "url", node: "URL" },
 ];
@@ -40,7 +40,7 @@ export const ImageSwapCard = (props: ImageSwapCardProps) => {
 		});
 	});
 
-	const [urlModel, urlControls] = createTextFieldController({
+	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
@@ -71,8 +71,7 @@ export const ImageSwapCard = (props: ImageSwapCardProps) => {
 				return;
 			}
 
-			urlModel.reset();
-			urlModel.setValue("");
+			urlHandle.reset();
 			setSourceTab("upload");
 			setFiles(null);
 			setCheckState({ status: "idle" });
@@ -87,19 +86,24 @@ export const ImageSwapCard = (props: ImageSwapCardProps) => {
 		});
 	});
 
+	const onTabChange = (src: ImageSourceTab) => {
+		urlHandle.reset();
+		setSourceTab(src);
+	};
+
 	const onUpdateClick = (event: MouseEvent) => {
 		event.preventDefault();
 
 		const tab = sourceTab();
 
 		if (tab === "url") {
-			urlModel.validate();
+			urlHandle.validate();
 
-			if (urlModel.checkValidity().hasError) {
+			if (urlHandle.state().hasError) {
 				return;
 			}
 
-			props.uiPort.emitSwap({ source: "url", url: urlModel.value() });
+			props.uiPort.emitSwap({ source: "url", url: urlHandle.value() });
 			return;
 		}
 
@@ -146,15 +150,14 @@ export const ImageSwapCard = (props: ImageSwapCardProps) => {
 		>
 			<input ref={fileInput} type="file" accept="image/*" class="hidden" />
 
-			<ContentSwitch
+			<SegmentedControl
 				id={sourceTab()}
 				controls={sourceTabControls}
-				onChange={setSourceTab}
+				onChange={onTabChange}
 				disabled={isBusy()}
+				appearance="primary-outline"
 				class="mb-3 rounded-sm"
-				commonButtonClass="py-1.5 text-xs font-medium"
-				activeBoxShrink={-1}
-				activeBoxClass="rounded-sm shadow border border-primary-500/40"
+				commonButtonClass="py-1.5 font-medium text-xs"
 			/>
 
 			<div class="mb-3" hidden={sourceTab() !== "upload"}>
@@ -169,15 +172,10 @@ export const ImageSwapCard = (props: ImageSwapCardProps) => {
 			</div>
 
 			<div class="mb-3" hidden={sourceTab() !== "url"}>
-				<FormField
-					for={urlModel.id}
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
-				>
+				<FormField for={urlHandle.id} state={urlHandle.state()}>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
 							aria-label="URL"
 							placeholder="https://example.com/image.png"
 							spellcheck={false}

@@ -9,7 +9,7 @@ import type { FormattingFontFamilyValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
@@ -54,8 +54,8 @@ export const FontFamilyToolbarButton = () => {
 	const [readOnly, setReadOnly] = createSignal(
 		!!readOnlyUIPort?.toolbarButton.checked,
 	);
-	const [inputModel, inputControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [fontFamilyHandle, fontFamilyControls] =
+		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
 				activeValues(),
 				formattingUIPort.defaultFontFamily,
@@ -69,7 +69,7 @@ export const FontFamilyToolbarButton = () => {
 			(state) => {
 				setButtonDisabled(state.disabled);
 				setActiveValues(state.values);
-				inputModel.setValue(
+				fontFamilyHandle.setValue(
 					getInputValueFromActiveValues(
 						state.values,
 						formattingUIPort.defaultFontFamily,
@@ -108,7 +108,7 @@ export const FontFamilyToolbarButton = () => {
 			return;
 		}
 
-		inputModel.setValue(normalizedValue);
+		fontFamilyHandle.setValue(normalizedValue);
 
 		const fontFamily: FormattingFontFamilyValue | null =
 			normalizedValue === formattingUIPort.defaultFontFamily
@@ -137,11 +137,11 @@ export const FontFamilyToolbarButton = () => {
 		);
 
 		if (!normalizedValue || normalizedValue === activeValue) {
-			inputModel.setValue(activeValue);
+			fontFamilyHandle.setValue(activeValue);
 			return;
 		}
 
-		inputModel.setValue(normalizedValue);
+		fontFamilyHandle.setValue(normalizedValue);
 
 		const fontFamily: FormattingFontFamilyValue | null =
 			normalizedValue === formattingUIPort.defaultFontFamily
@@ -211,7 +211,7 @@ export const FontFamilyToolbarButton = () => {
 					on:keydown={handleKeydown}
 					on:blur={handleBlur}
 					spellcheck={false}
-					{...inputControls}
+					{...fontFamilyControls}
 				/>
 			</TextFieldWrapper>
 			<ToolbarDropdown

@@ -2,10 +2,10 @@ import { EditorRange, editorSelectionChangeEventType } from "rich-text-area";
 import type {
 	CloseOnSelectionChangeParams,
 	CloseOverlayParams,
-	HandleLinkOverlayCancelParams,
-	HandleLinkOverlayCloseParams,
-	RestoreFocusOnEscapeParams,
-} from "./HandleLinkOverlayClose-types";
+	HandleOverlayCancelParams,
+	HandleOverlayCloseParams,
+	HandleOverlayUnwrapParams,
+} from "./HandleOverlayClose-types";
 
 /**
  * Resets `internals.currentLink`/`selection.highlight` and hides the popover.
@@ -13,12 +13,21 @@ import type {
 const closeOverlay = ({
 	editorAPI,
 	internals,
-	anchorController,
+	popoverController,
+	hideImmediately,
 }: CloseOverlayParams) => {
 	const selection = editorAPI.getEditorSelection();
 	selection.highlight = false;
 	internals.currentLink = null;
-	anchorController.hide();
+	popoverController.hide();
+
+	if (hideImmediately) {
+		const { element } = popoverController;
+		element.style.setProperty("transition", "none");
+		// Forces reflow so the open (and animated) popovers disappear immediately
+		element.offsetHeight;
+		element.style.removeProperty("transition");
+	}
 };
 
 /**
@@ -27,12 +36,12 @@ const closeOverlay = ({
 const closeOnSelectionChange = ({
 	editorAPI,
 	internals,
-	anchorController,
+	popoverController,
 }: CloseOnSelectionChangeParams) => {
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			if (!anchorController.isOpen) {
+			if (!popoverController.isOpen) {
 				return;
 			}
 
@@ -59,7 +68,12 @@ const closeOnSelectionChange = ({
 				}
 			}
 
-			closeOverlay({ editorAPI, internals, anchorController });
+			closeOverlay({
+				editorAPI,
+				internals,
+				popoverController,
+				hideImmediately: true,
+			});
 		},
 	});
 };
@@ -67,77 +81,75 @@ const closeOnSelectionChange = ({
 /**
  * Closes the popover on cancel only in insert mode — in modify mode the UI handles transitioning back to preview.
  */
-const handleLinkOverlayCancel = ({
+const handleOverlayUnwrap = ({
 	editorPort,
 	editorAPI,
 	internals,
-	anchorController,
-}: HandleLinkOverlayCancelParams) => {
+	popoverController,
+}: HandleOverlayUnwrapParams) => {
+	return editorPort.onUnwrap(() => {
+		closeOverlay({
+			editorAPI,
+			internals,
+			popoverController,
+			hideImmediately: true,
+		});
+	});
+};
+
+/**
+ * Closes the popover on cancel only in insert mode — in modify mode the UI handles transitioning back to preview.
+ */
+const handleOverlayCancel = ({
+	editorPort,
+	editorAPI,
+	internals,
+	popoverController,
+}: HandleOverlayCancelParams) => {
 	return editorPort.onCancel(() => {
 		if (internals.currentLink) {
 			return;
 		}
 
-		closeOverlay({ editorAPI, internals, anchorController });
+		closeOverlay({
+			editorAPI,
+			internals,
+			popoverController,
+			hideImmediately: true,
+		});
 	});
 };
 
 /**
- * Dismisses the popover and returns focus to the editor when the user presses Escape while it's open.
+ * Wires up all popover close behaviors: selection-driven close, editor blur close, cancel handling, and escape.
  */
-const restoreFocusOnEscape = ({
-	editorAPI,
-	internals,
-	anchorController,
-}: RestoreFocusOnEscapeParams) => {
-	const listener = (event: KeyboardEvent) => {
-		if (event.key !== "Escape") {
-			return;
-		}
-
-		if (!anchorController.isOpen) {
-			return;
-		}
-
-		closeOverlay({ editorAPI, internals, anchorController });
-
-		editorAPI.focus();
-	};
-
-	document.addEventListener("keydown", listener);
-
-	return () => document.removeEventListener("keydown", listener);
-};
-
-/**
- * Wires up all popover close behaviors: selection-driven close, cancel handling, and escape.
- */
-export const handleLinkOverlayClose = ({
+export const handleOverlayClose = ({
 	editorPort,
 	editorAPI,
 	internals,
-	anchorController,
-}: HandleLinkOverlayCloseParams) => {
+	popoverController,
+}: HandleOverlayCloseParams) => {
 	const unsubscribeSelectionChange = closeOnSelectionChange({
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
-	const unsubscribeCancel = handleLinkOverlayCancel({
+	const unsubscribeUnwrap = handleOverlayUnwrap({
 		editorPort,
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
-	const unsubscribeEscape = restoreFocusOnEscape({
+	const unsubscribeCancel = handleOverlayCancel({
+		editorPort,
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
 
 	return () => {
 		unsubscribeSelectionChange();
+		unsubscribeUnwrap();
 		unsubscribeCancel();
-		unsubscribeEscape();
 	};
 };

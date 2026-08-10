@@ -1,11 +1,10 @@
-import { type JSX, onMount, splitProps } from "solid-js";
+import { type JSX, splitProps } from "solid-js";
 import type { TextFieldControls } from "./_Utilities";
-import { createTextFieldStateManager } from "./CreateTextFieldStateManager";
 
 interface TextAreaProps
 	extends Omit<
 		JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,
-		"ref" | "value"
+		"ref" | "id" | "value"
 	> {}
 
 interface InputTextFieldProps
@@ -13,31 +12,14 @@ interface InputTextFieldProps
 		TextFieldControls<HTMLTextAreaElement> {}
 
 export const TextAreaField = (props: InputTextFieldProps) => {
-	const [textFieldControls, inputProps] = splitProps(props, [
-		"fieldValue",
-		"valueChangeListeners",
-		"setTextFieldHandler",
-		"error",
-		"onStateChange",
-		"validateOnChange",
-	]);
-
-	let internalTextArea: HTMLTextAreaElement;
-
-	const { value, onMountCallback, setTextFieldHandler } =
-		createTextFieldStateManager(textFieldControls);
-
-	onMount(() => {
-		onMountCallback(internalTextArea);
-	});
+	const [ref, inputProps] = splitProps(props, ["setTextField", "defaultValue"]);
 
 	return (
 		<textarea
 			ref={(textArea) => {
-				internalTextArea = textArea;
-				setTextFieldHandler(textArea);
+				ref.setTextField(textArea);
 			}}
-			value={value()}
+			value={ref.defaultValue}
 			{...inputProps}
 		/>
 	);

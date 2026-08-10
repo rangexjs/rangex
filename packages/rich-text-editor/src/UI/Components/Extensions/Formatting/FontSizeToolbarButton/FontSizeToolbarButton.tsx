@@ -9,7 +9,7 @@ import type { FormattingFontSizeValue } from "#adapters";
 import { useUIPortsContext } from "../../../App";
 import { Icon } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
@@ -71,8 +71,8 @@ export const FontSizeToolbarButton = () => {
 	const [readOnly, setReadOnly] = createSignal(
 		!!readOnlyUIPort?.toolbarButton.checked,
 	);
-	const [inputModel, inputControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [fontSizeHandle, fontSizeControls] =
+		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
 				activeValues(),
 				formattingUIPort.defaultFontSize,
@@ -85,7 +85,7 @@ export const FontSizeToolbarButton = () => {
 		const unsubscribeFontSize = formattingUIPort.onFontSizeUpdate((state) => {
 			setButtonDisabled(state.disabled);
 			setActiveValues(state.values);
-			inputModel.setValue(
+			fontSizeHandle.setValue(
 				getInputValueFromActiveValues(
 					state.values,
 					formattingUIPort.defaultFontSize,
@@ -144,7 +144,7 @@ export const FontSizeToolbarButton = () => {
 		);
 
 		if (!value || value === activeValue || /[^\d]/.test(value)) {
-			inputModel.setValue(activeValue);
+			fontSizeHandle.setValue(activeValue);
 			return;
 		}
 
@@ -240,7 +240,7 @@ export const FontSizeToolbarButton = () => {
 					on:keydown={handleKeydown}
 					on:blur={handleBlur}
 					spellcheck={false}
-					{...inputControls}
+					{...fontSizeControls}
 				/>
 			</TextFieldWrapper>
 			<ToolbarDropdown

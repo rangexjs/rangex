@@ -38,10 +38,10 @@ const setSelectionToLinkEnd = ({
 /**
  * Anchors the popover to the link.
  */
-const anchorToLink = ({ link, anchorController }: AnchorToLinkParams) => {
-	anchorController.show(link, {
+const anchorToLink = ({ link, popoverController }: AnchorToLinkParams) => {
+	popoverController.show(link, {
 		clear: true,
-		position: "absolute",
+		position: "fixed",
 		"justify-self": "anchor-center",
 		top: "calc(anchor(bottom) + 8px)",
 	});
@@ -57,7 +57,7 @@ const insertAtCaret = ({
 	text,
 	href,
 	target,
-	anchorController,
+	popoverController,
 }: InsertAtCaretParams) => {
 	const link = createLink({ text, href, target });
 
@@ -84,7 +84,7 @@ const insertAtCaret = ({
 
 	editorPort.updateState(state);
 
-	anchorToLink({ link, anchorController });
+	anchorToLink({ link, popoverController });
 
 	editorAPI.focus();
 
@@ -100,7 +100,7 @@ const wrapWithLink = ({
 	internals,
 	href,
 	target,
-	anchorController,
+	popoverController,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -170,7 +170,7 @@ const wrapWithLink = ({
 
 	editorPort.updateState(state);
 
-	anchorToLink({ link: internals.currentLink, anchorController });
+	anchorToLink({ link: internals.currentLink, popoverController });
 
 	editorAPI.focus();
 
@@ -184,7 +184,7 @@ export const handleLinkInsertion = ({
 	editorPort,
 	editorAPI,
 	internals,
-	anchorController,
+	popoverController,
 }: HandleLinkInsertionParams) => {
 	const unsubscribe = editorPort.onInsert(({ text, url, isNewTab }) => {
 		if (internals.currentLink) {
@@ -210,7 +210,7 @@ export const handleLinkInsertion = ({
 				text: filledText,
 				href: url,
 				target,
-				anchorController,
+				popoverController,
 			});
 			return;
 		}
@@ -222,7 +222,7 @@ export const handleLinkInsertion = ({
 				editorAPI,
 				href: url,
 				target,
-				anchorController,
+				popoverController,
 			});
 			return;
 		}

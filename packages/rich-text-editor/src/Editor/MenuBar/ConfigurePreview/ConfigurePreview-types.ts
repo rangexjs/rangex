@@ -9,11 +9,11 @@ export interface CreateHTMLParams {
 	snapshotView: SnapshotView;
 }
 
-export interface CreateJSONParams {
+export interface CreateSnapshotViewParams {
 	snapshotView: SnapshotView;
 }
 
-export interface CreateSnapshotParams {
+export interface CreateStoredSnapshotParams {
 	storedSnapshot: StoredSnapshot;
 }
 
@@ -21,11 +21,11 @@ export interface CreateHTMLTextParams {
 	snapshotView: SnapshotView;
 }
 
-export interface CreateJSONTextParams {
+export interface CreateSnapshotViewTextParams {
 	snapshotView: SnapshotView;
 }
 
-export interface CreateSnapshotTextParams {
+export interface CreateStoredSnapshotTextParams {
 	storedSnapshot: StoredSnapshot;
 }
 

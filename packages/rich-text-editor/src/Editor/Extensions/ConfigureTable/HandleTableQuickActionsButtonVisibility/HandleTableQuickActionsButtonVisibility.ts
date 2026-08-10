@@ -19,6 +19,12 @@ const positionToTableCell = ({
 	// CSS hack in order to anchor to the center of the TableCell's border-box
 	const width = 20;
 
+	const popover = anchorController.element.querySelector("[popover]");
+
+	if (!(popover instanceof HTMLElement)) {
+		throw new Error("Element supposed to contain a popover.");
+	}
+
 	anchorController.show(tableCell, {
 		clear: true,
 		position: "absolute",
@@ -26,6 +32,11 @@ const positionToTableCell = ({
 		width: `${width}px`,
 		right: `calc(anchor(right) - ${width / 2}px)`,
 	});
+
+	popover.style.setProperty("transition", "none");
+	// Forces reflow so the open (and animated) popovers disappear immediately
+	popover.offsetHeight;
+	popover.style.removeProperty("transition");
 };
 
 /**

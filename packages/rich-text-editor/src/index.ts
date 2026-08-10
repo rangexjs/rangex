@@ -14,6 +14,7 @@ export { Link } from "./Extensions/Link";
 export { List } from "./Extensions/List";
 export { Mention } from "./Extensions/Mention";
 export { ReadOnly } from "./Extensions/ReadOnly";
+export { Separator } from "./Extensions/Separator";
 export { Symbols } from "./Extensions/Symbols";
 export { Table } from "./Extensions/Table";
 export { TemplateVariable } from "./Extensions/TemplateVariable";

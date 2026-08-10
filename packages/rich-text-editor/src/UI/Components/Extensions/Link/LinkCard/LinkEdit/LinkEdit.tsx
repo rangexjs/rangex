@@ -1,7 +1,7 @@
 import { createSignal, onCleanup, onMount } from "solid-js";
 import type { EmitApplyParams, LinkMode, LinkUIPort } from "#adapters";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	FormField,
 	InputTextField,
 	TextFieldWrapper,
@@ -17,15 +17,17 @@ export const LinkEdit = (props: LinkEditProps) => {
 	const uiPort = props.uiPort;
 
 	const [currentMode, setCurrentMode] = createSignal(uiPort.mode);
+	const [view, setView] = createSignal(uiPort.view);
 
-	const [displayTextModel, displayTextControls] = createTextFieldController({
-		defaultValue: uiPort.displayText.inputValue,
-	});
+	const [displayTextHandle, displayTextControls] =
+		createTextFieldState<HTMLInputElement>({
+			defaultValue: uiPort.displayText.inputValue,
+		});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(
 		uiPort.displayText.disabled,
 	);
 
-	const [urlModel, urlControls] = createTextFieldController({
+	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: uiPort.url.inputValue,
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
@@ -44,17 +46,21 @@ export const LinkEdit = (props: LinkEditProps) => {
 		})[mode]();
 
 	onMount(() => {
-		const unsubscribeView = uiPort.onViewUpdate(() => urlModel.reset());
+		const unsubscribeView = uiPort.onViewUpdate((state) => {
+			setView(state);
+			urlHandle.reset();
+			urlHandle.setValue(uiPort.url.inputValue);
+		});
 		const unsubscribeMode = uiPort.onModeUpdate((value) =>
 			setCurrentMode(value),
 		);
 		const unsubscribeDisplayText = uiPort.onDisplayTextUpdate((state) => {
-			displayTextModel.setValue(state.inputValue);
+			displayTextHandle.setValue(state.inputValue);
 			setDisplayTextDisabled(state.disabled);
 		});
-		const unsubscribeUrl = uiPort.onUrlUpdate((state) =>
-			urlModel.setValue(state.inputValue),
-		);
+		const unsubscribeUrl = uiPort.onUrlUpdate((state) => {
+			urlHandle.setValue(state.inputValue);
+		});
 		const unsubscribeToggleButtons = uiPort.onToggleButtonsUpdate((state) =>
 			setIsNewTab(state.isNewTab),
 		);
@@ -73,32 +79,26 @@ export const LinkEdit = (props: LinkEditProps) => {
 	};
 
 	const onCancel = () => {
-		uiPort.setView("preview");
-
-		uiPort.emitViewChange();
+		uiPort.emitViewChange("preview");
 		uiPort.emitCancel();
 	};
 
 	const onApply = () => {
-		urlModel.validate();
+		urlHandle.validate();
 
-		const hasError = urlModel.checkValidity().hasError;
-
-		if (hasError) {
+		if (urlHandle.state().hasError) {
 			return;
 		}
 
-		const rawUrl = urlModel.value();
+		const rawUrl = urlHandle.value();
 		const normalizedUrl = allowedPrefixes.some((p) => rawUrl.startsWith(p))
 			? rawUrl
 			: `https://${rawUrl}`;
 
-		uiPort.setView("preview");
-
-		uiPort.emitViewChange();
+		uiPort.emitViewChange("preview");
 
 		const applyParams: EmitApplyParams = {
-			text: displayTextModel.value(),
+			text: displayTextHandle.value(),
 			url: normalizedUrl,
 			isNewTab: isNewTab(),
 		};
@@ -113,19 +113,17 @@ export const LinkEdit = (props: LinkEditProps) => {
 	};
 
 	return (
-		<div>
+		<div classList={{ hidden: view() !== "edit" }}>
 			<div class="mb-3 space-y-2">
 				<FormField
 					class="mb-2"
-					for={displayTextModel.id}
+					for={displayTextHandle.id}
 					label="Display Text"
-					showError={displayTextModel.state().showError}
-					errorMessage={displayTextModel.state().message}
+					state={displayTextHandle.state()}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={displayTextModel.id}
 							autofocus={true}
 							placeholder="Example"
 							spellcheck={false}
@@ -138,15 +136,13 @@ export const LinkEdit = (props: LinkEditProps) => {
 
 				<FormField
 					class="mb-2"
-					for={urlModel.id}
+					for={urlHandle.id}
 					label="URL"
-					showError={urlModel.state().showError}
-					errorMessage={urlModel.state().message}
+					state={urlHandle.state()}
 				>
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							id={urlModel.id}
 							placeholder="https://example.com"
 							spellcheck={false}
 							{...urlControls}

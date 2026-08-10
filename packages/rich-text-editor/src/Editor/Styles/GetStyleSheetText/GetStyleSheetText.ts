@@ -17,10 +17,12 @@ import {
 	Image,
 	InternalElementsRx,
 	Link,
+	LinkRx,
 	List,
 	Mention,
 	RootEditable,
 	RootEditableRx,
+	Separator,
 	Table,
 	TableRx,
 	TemplateVariable,
@@ -47,6 +49,7 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		List +
 		Mention +
 		RootEditable +
+		Separator +
 		Table +
 		TemplateVariable +
 		TodoList +
@@ -62,6 +65,7 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		EngineGlobalStylesRx +
 		GlyphFormatterRx +
 		InternalElementsRx +
+		LinkRx +
 		RootEditableRx +
 		TableRx;
 

@@ -71,14 +71,8 @@ export interface LinkUIPort {
 	onDisplayTextUpdate(callback: LinkUpdateDisplayTextFn): () => void;
 	onUrlUpdate(callback: LinkUpdateURLFn): () => void;
 	onToggleButtonsUpdate(callback: LinkUpdateToggleButtonsFn): () => void;
-	/**
-	 * Temporary — state changes should only ever come from the Editor. `LinkEdit`/`LinkPreview`
-	 * currently update `view` directly as a pre-Adapter-era shortcut; this is kept as-is during
-	 * the migration rather than rerouted through the Editor. Remove once that's fixed.
-	 */
-	setView(view: LinkView): void;
 	emitToolbarClick(): void;
-	emitViewChange(): void;
+	emitViewChange(view: LinkView): void;
 	emitCancel(): void;
 	emitInsert(params: EmitInsertParams): void;
 	emitModify(params: EmitModifyParams): void;

@@ -8,7 +8,7 @@ import {
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "../../Color";
 import { Icon } from "../Icon";
-import { createTextFieldController, InputTextField } from "../InputFields";
+import { createTextFieldState, InputTextField } from "../InputFields";
 import type {
 	ColorType,
 	ColorTypeControlsParams,
@@ -87,50 +87,52 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	const [colorType, setColorType] = createSignal<ColorType>("Hex");
 
-	const [hexModel, hexControls] = createTextFieldController<HTMLInputElement>({
+	const [hexHandle, hexControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: getHexValue(props.hsl),
 	});
 
-	const [rgbRedModel, rgbRedControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [rgbRedHandle, rgbRedControls] = createTextFieldState<HTMLInputElement>(
+		{
 			defaultValue: getRgbValue(props.hsl).r,
-		});
+		},
+	);
 
-	const [rgbGreenModel, rgbGreenControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [rgbGreenHandle, rgbGreenControls] =
+		createTextFieldState<HTMLInputElement>({
 			defaultValue: getRgbValue(props.hsl).g,
 		});
 
-	const [rgbBlueModel, rgbBlueControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [rgbBlueHandle, rgbBlueControls] =
+		createTextFieldState<HTMLInputElement>({
 			defaultValue: getRgbValue(props.hsl).b,
 		});
 
-	const [hslHueModel, hslHueControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [hslHueHandle, hslHueControls] = createTextFieldState<HTMLInputElement>(
+		{
 			defaultValue: getHslValue(props.hsl).h,
-		});
+		},
+	);
 
-	const [hslSatModel, hslSatControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [hslSatHandle, hslSatControls] = createTextFieldState<HTMLInputElement>(
+		{
 			defaultValue: getHslValue(props.hsl).s,
-		});
+		},
+	);
 
-	const [hslLightModel, hslLightControls] =
-		createTextFieldController<HTMLInputElement>({
+	const [hslLightHandle, hslLightControls] =
+		createTextFieldState<HTMLInputElement>({
 			defaultValue: getHslValue(props.hsl).l,
 		});
 
-	const [alphaModel, alphaControls] =
-		createTextFieldController<HTMLInputElement>({
-			defaultValue: getAlphaInPercentage(props.hsl.a),
-		});
+	const [alphaHandle, alphaControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getAlphaInPercentage(props.hsl.a),
+	});
 
 	const updateHexValue = () => {
-		const value = hexModel.value();
+		const value = hexHandle.value();
 
 		if (!ColorFormat.hex({ hex: value }).isValid()) {
-			hexModel.setValue(getHexValue(props.hsl));
+			hexHandle.setValue(getHexValue(props.hsl));
 			return;
 		}
 
@@ -162,15 +164,15 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 
 	const updateRgbInputs = (hsl: HslFormat) => {
 		const { r, g, b } = getRgbValue(hsl);
-		rgbRedModel.setValue(r);
-		rgbGreenModel.setValue(g);
-		rgbBlueModel.setValue(b);
+		rgbRedHandle.setValue(r);
+		rgbGreenHandle.setValue(g);
+		rgbBlueHandle.setValue(b);
 	};
 
 	const updateRgbValue = () => {
-		const red = rgbRedModel.value();
-		const green = rgbGreenModel.value();
-		const blue = rgbBlueModel.value();
+		const red = rgbRedHandle.value();
+		const green = rgbGreenHandle.value();
+		const blue = rgbBlueHandle.value();
 
 		if (!(red && green && blue)) {
 			updateRgbInputs(props.hsl);
@@ -218,15 +220,15 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	const updateHslInputs = (hsl: HslFormat) => {
 		const { h, s, l } = getHslValue(hsl);
 
-		hslHueModel.setValue(h);
-		hslSatModel.setValue(s);
-		hslLightModel.setValue(l);
+		hslHueHandle.setValue(h);
+		hslSatHandle.setValue(s);
+		hslLightHandle.setValue(l);
 	};
 
 	const updateHslValue = () => {
-		const hue = hslHueModel.value();
-		const sat = hslSatModel.value();
-		const light = hslLightModel.value();
+		const hue = hslHueHandle.value();
+		const sat = hslSatHandle.value();
+		const light = hslLightHandle.value();
 
 		if (!(hue && sat && light)) {
 			updateHslInputs(props.hsl);
@@ -271,10 +273,10 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	};
 
 	const updateAlphaValue = () => {
-		const value = alphaModel.value();
+		const value = alphaHandle.value();
 
 		if (!value) {
-			alphaModel.setValue(`${Math.floor(props.hsl.a * 100)}`);
+			alphaHandle.setValue(`${Math.floor(props.hsl.a * 100)}`);
 			return;
 		}
 
@@ -294,10 +296,10 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	};
 
 	createEffect(() => {
-		hexModel.setValue(getHexValue(props.hsl));
+		hexHandle.setValue(getHexValue(props.hsl));
 		updateRgbInputs(props.hsl);
 		updateHslInputs(props.hsl);
-		alphaModel.setValue(getAlphaInPercentage(props.hsl.a));
+		alphaHandle.setValue(getAlphaInPercentage(props.hsl.a));
 	});
 
 	const copyColorToClipboard = async () => {

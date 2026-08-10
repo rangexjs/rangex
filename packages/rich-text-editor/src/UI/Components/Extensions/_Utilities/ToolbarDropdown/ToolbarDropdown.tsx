@@ -1,8 +1,9 @@
 import { Index, type JSX, Show } from "solid-js";
-import { Icon } from "../../../Icon";
+import { Icon, type IconName } from "../../../Icon";
 
 export type ToolbarDropdownList = {
 	checked?: boolean;
+	icon?: IconName;
 	text: string;
 	button: JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 	settings?: JSX.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -44,6 +45,9 @@ export const ToolbarDropdown = (props: ToolbarDropdownProps) => {
 									[item().button.class ?? ""]: true,
 								}}
 							>
+								<Show when={item().icon}>
+									{(icon) => <Icon name={icon()} class="size-3 shrink-0" />}
+								</Show>
 								<span class="">{item().text}</span>
 							</button>
 							<Show when={item().settings}>

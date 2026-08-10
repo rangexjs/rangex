@@ -17,4 +17,5 @@ export const commandMenuItemsLabel: Record<CommandMenuItemValue, string> = {
 	[commandMenuItemsName.table]: "Table",
 	[commandMenuItemsName.media]: "Media",
 	[commandMenuItemsName.accordionItem]: "Accordion item",
+	[commandMenuItemsName.separator]: "Separator",
 };

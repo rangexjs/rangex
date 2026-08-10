@@ -5,12 +5,12 @@ import type {
 	EmbedUIPort,
 } from "#adapters";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import { Icon } from "../../../Icon";
 import {
-	createTextFieldController,
+	createTextFieldState,
 	InputTextField,
 	TextFieldWrapper,
 } from "../../../InputFields";
@@ -28,7 +28,7 @@ const aspectRatioOptions: OptionDropdownOption<EmbedAspectRatioValue>[] = [
 	{ label: "16:9", value: "16-9" },
 ];
 
-const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
+const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];
@@ -47,13 +47,13 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 		uiPort.isSwapCardOpen,
 	);
 
-	const [titleModel, titleControls] = createTextFieldController({
+	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: uiPort.title,
 	});
 
 	const [committedTitle, setCommittedTitle] = createSignal(uiPort.title);
 
-	const isTitleDirty = () => titleModel.value() !== committedTitle();
+	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
@@ -77,7 +77,7 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 		const unsubscribeAspectRatio = uiPort.onAspectRatioUpdate(setAspectRatio);
 		const unsubscribeCaption = uiPort.onCaptionUpdate(setCaption);
 		const unsubscribeTitle = uiPort.onTitleUpdate((value) => {
-			titleModel.setValue(value);
+			titleHandle.setValue(value);
 			setCommittedTitle(value);
 		});
 		const unsubscribeIsSwapCardOpen =
@@ -98,7 +98,7 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 	const optionsPopoverId = createUniqueId();
 
 	const onTitleCommit = () => {
-		uiPort.emitEmbedAttrChange({ title: titleModel.value() });
+		uiPort.emitEmbedAttrChange({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
@@ -173,21 +173,20 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 					</div>
 
 					<div hidden={!caption().enabled}>
-						<ContentSwitch
+						<SegmentedControl
 							id={caption().position}
 							controls={captionPositionControls}
 							onChange={(value) => uiPort.emitCaptionPositionChange(value)}
+							appearance="primary-outline"
 							class="rounded-sm"
-							commonButtonClass="rounded-sm py-1.5 text-xs font-medium"
-							activeBoxShrink={-1}
-							activeBoxClass="rounded-sm shadow border border-primary-500/40"
+							commonButtonClass="rounded-sm py-1.5 font-medium text-xs"
 						/>
 					</div>
 
 					<div class="flex flex-col gap-1">
 						<div class="flex items-center justify-between">
 							<label
-								for={titleModel.id}
+								for={titleHandle.id}
 								class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
 							>
 								Title
@@ -205,7 +204,6 @@ export const EmbedQuickActions = (props: EmbedQuickActionsProps) => {
 						>
 							<InputTextField
 								type="text"
-								id={titleModel.id}
 								placeholder="Describe this embed for screen readers"
 								spellcheck={false}
 								{...titleControls}

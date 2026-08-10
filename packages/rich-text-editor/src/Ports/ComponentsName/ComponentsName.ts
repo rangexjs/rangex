@@ -13,6 +13,7 @@ export const blockComponentsName = {
 	emptyMedia: "empty-media",
 	image: "image",
 	list: "list",
+	separator: "separator",
 	table: "table",
 	todoList: "todo-list",
 	video: "video",

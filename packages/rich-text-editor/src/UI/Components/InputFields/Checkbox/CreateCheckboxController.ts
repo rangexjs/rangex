@@ -1,119 +1,140 @@
 import {
-	type Accessor,
 	createSignal,
 	createUniqueId,
 	mergeProps,
-	type Setter,
+	onCleanup,
+	onMount,
 } from "solid-js";
-import type {
-	CheckboxControls,
-	CheckboxErrorRestriction,
-	CheckboxHandler,
-	CheckboxState,
-	CheckedChangeListeners,
+import { showInputFieldError } from "../_Utilities";
+import {
+	type CheckboxControls,
+	type CheckboxErrorRestriction,
+	type CheckboxHandle,
+	type CheckboxState,
+	getErrorState,
+	type StateChangeListeners,
 } from "./_Utilities";
 
-type OnCheckedChangeFn = (
-	operation: "add" | "delete",
-	callback: () => void,
-) => void;
-
-export interface CheckboxModel extends CheckboxHandler {
-	id: string;
-	checked: Accessor<boolean>;
-	setChecked: Setter<boolean>;
-	state: () => CheckboxState;
-	onCheckedChange: OnCheckedChangeFn;
-}
-
 export interface CreateCheckboxControllerParams {
-	defaultValue?: boolean;
+	defaultChecked?: boolean;
 	error?: CheckboxErrorRestriction;
 	validateOnChange?: boolean;
 }
 
-export type CreateCheckboxControllerResult = [CheckboxModel, CheckboxControls];
+export type CreateCheckboxControllerResult = [CheckboxHandle, CheckboxControls];
 
 export const createCheckboxController = (
 	props: CreateCheckboxControllerParams,
 ): CreateCheckboxControllerResult => {
 	const finalProps = mergeProps(
-		{ defaultValue: false, error: {}, validateOnChange: false },
+		{ defaultChecked: false, error: {}, validateOnChange: false },
 		props,
 	);
 
 	const id = createUniqueId();
-	const [checked, setChecked] = createSignal(finalProps.defaultValue);
-	const [state, setState] = createSignal<CheckboxState>({
-		showError: false,
-		hasError: false,
-		message: null,
-	});
-	const [textFieldHandler, setCheckboxHandler] =
-		createSignal<CheckboxHandler>();
+	const [checkbox, setCheckbox] = createSignal<HTMLInputElement | null>(null);
 
-	const onStateChange = (state: CheckboxState) => {
-		setState(state);
+	let state: CheckboxState = {
+		isDirty: false,
+		...getErrorState(finalProps.defaultChecked, finalProps.error),
 	};
 
-	const checkedChangeListeners: CheckedChangeListeners = new Set();
+	const stateChangeListeners: StateChangeListeners = new Set();
 
-	const onCheckedChange: OnCheckedChangeFn = (operation, callback) => {
-		checkedChangeListeners[operation](callback);
+	const emitStateChange = () => {
+		const field = checkbox();
+		field?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
+
+		for (const listener of stateChangeListeners) {
+			listener(state);
+		}
 	};
 
-	const checkboxModel: CheckboxModel = {
-		id,
-		checked,
-		setChecked,
-		state,
-		get checkbox() {
-			const handler = textFieldHandler();
+	const getCheckbox = () => {
+		const field = checkbox();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		if (!field) {
+			throw new Error("Can't access to the checkbox before mount.");
+		}
 
-			return handler.checkbox;
+		return field;
+	};
+
+	const currentChecked = () => checkbox()?.checked ?? finalProps.defaultChecked;
+
+	const checkboxHandle: CheckboxHandle = {
+		get id() {
+			return id;
 		},
-		onCheckedChange,
-		validate: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		get element() {
+			const field = getCheckbox();
 
-			handler.validate();
+			return field;
 		},
-		reset: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		validate() {
+			state = {
+				isDirty: true,
+				...getErrorState(this.element.checked, finalProps.error),
+			};
 
-			handler.reset();
+			emitStateChange();
 		},
-		checkValidity: () => {
-			const handler = textFieldHandler();
 
-			if (!handler) {
-				throw new Error("Handle can't be undefined.");
-			}
+		reset() {
+			this.element.checked = finalProps.defaultChecked;
+			state = {
+				isDirty: false,
+				...getErrorState(this.element.checked, finalProps.error),
+			};
 
-			return handler.checkValidity();
+			emitStateChange();
+		},
+
+		checkValidity() {
+			const { hasError, message } = getErrorState(
+				currentChecked(),
+				finalProps.error,
+			);
+
+			return { hasError, message, isDirty: state.isDirty };
+		},
+
+		onStateChange(callback) {
+			callback(this.checkValidity());
+			stateChangeListeners.add(callback);
+
+			return () => stateChangeListeners.delete(callback);
 		},
 	};
 
 	const checkboxControls: CheckboxControls = {
-		fieldChecked: [checked, setChecked],
-		checkedChangeListeners,
-		setCheckboxHandler,
-		error: props.error ?? {},
-		onStateChange,
-		validateOnChange: finalProps.validateOnChange,
+		id,
+		defaultChecked: finalProps.defaultChecked,
+		setCheckbox,
 	};
 
-	return [checkboxModel, checkboxControls];
+	const onChange = () => {
+		if (!finalProps.validateOnChange) {
+			return;
+		}
+
+		checkboxHandle.validate();
+	};
+
+	onMount(() => {
+		const abortController = new AbortController();
+		const { signal } = abortController;
+
+		const field = getCheckbox();
+
+		field.addEventListener("change", onChange, { signal });
+
+		onCleanup(() => {
+			abortController.abort();
+		});
+	});
+
+	return [checkboxHandle, checkboxControls];
 };

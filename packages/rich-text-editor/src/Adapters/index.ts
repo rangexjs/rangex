@@ -15,6 +15,7 @@ export * from "./LinkAdapter";
 export * from "./ListAdapter";
 export * from "./MentionAdapter";
 export * from "./ReadOnlyAdapter";
+export * from "./SeparatorAdapter";
 export * from "./SymbolsAdapter";
 export * from "./TableAdapter";
 export * from "./TemplateVariableAdapter";

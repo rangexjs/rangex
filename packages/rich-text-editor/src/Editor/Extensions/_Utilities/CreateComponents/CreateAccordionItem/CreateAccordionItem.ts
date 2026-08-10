@@ -49,6 +49,7 @@ export const createAccordionItem = ({
 			componentName: componentsName.accordionItem,
 			content: { type: "custom" },
 			customStorage: createAccordionItemStorage(),
+			shouldSelectBeforeRemove: true,
 			childNodes: [
 				createHTMLLayout({
 					localName: "details",

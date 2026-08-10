@@ -9,6 +9,7 @@ export * from "./Link/index";
 export * from "./List/index";
 export * from "./Mention/index";
 export * from "./Root/index";
+export * from "./Separator/index";
 export * from "./Table/index";
 export * from "./TemplateVariable/index";
 export * from "./TodoList/index";

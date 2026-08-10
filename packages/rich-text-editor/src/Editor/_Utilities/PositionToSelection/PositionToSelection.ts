@@ -52,13 +52,14 @@ export const positionToSelection = ({
 
 		controller.show(caretAnchor, {
 			clear: true,
-			position: "absolute",
+			position: "fixed",
+			margin: `${topMargin}px 0px 0px 0px`,
 			"position-area": "center bottom",
 		});
 		return;
 	}
 
-	controller.show(rootEditable, { clear: true, position: "absolute" });
+	controller.show(rootEditable, { clear: true, position: "fixed" });
 
 	const rootEditableRect = rootEditable.getBoundingClientRect();
 	const popoverRect = controller.element.getBoundingClientRect();
@@ -74,7 +75,6 @@ export const positionToSelection = ({
 		popoverRect.width / 2;
 
 	controller.show(rootEditable, {
-		position: "absolute",
 		top: `calc(anchor(top) + ${topDistance}px)`,
 		left: `calc(anchor(left) + ${leftDistance}px)`,
 	});
