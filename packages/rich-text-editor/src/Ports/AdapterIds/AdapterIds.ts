@@ -21,6 +21,7 @@ export const adapterIds = {
 	list: Symbol("list"),
 	mention: Symbol("mention"),
 	readOnly: Symbol("readOnly"),
+	separator: Symbol("separator"),
 	symbols: Symbol("symbols"),
 	table: Symbol("table"),
 	templateVariable: Symbol("templateVariable"),

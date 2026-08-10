@@ -10,6 +10,7 @@ import type {
 	listId,
 	mentionId,
 	rootId,
+	separatorId,
 	tableId,
 	templateVariableId,
 	todoCheckboxId,
@@ -28,6 +29,7 @@ export type LinkId = typeof linkId;
 export type ListId = typeof listId;
 export type MentionId = typeof mentionId;
 export type RootId = typeof rootId;
+export type SeparatorId = typeof separatorId;
 export type TableId = typeof tableId;
 export type TemplateVariableId = typeof templateVariableId;
 export type TodoCheckboxId = typeof todoCheckboxId;

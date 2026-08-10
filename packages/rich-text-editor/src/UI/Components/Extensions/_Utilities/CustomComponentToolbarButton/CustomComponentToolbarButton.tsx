@@ -11,11 +11,15 @@ import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const { accordionItemUIPort, readOnlyUIPort } = useUIPortsContext();
+	const { accordionItemUIPort, separatorUIPort, readOnlyUIPort } =
+		useUIPortsContext();
 
 	const [checked, setChecked] = createSignal(false);
 	const [accordionItemDisabled, setAccordionItemDisabled] = createSignal(
 		accordionItemUIPort?.toolbarButton.disabled ?? true,
+	);
+	const [separatorDisabled, setSeparatorDisabled] = createSignal(
+		separatorUIPort?.toolbarButton.disabled ?? true,
 	);
 	const [readOnly, setReadOnly] = createSignal(
 		!!readOnlyUIPort?.toolbarButton.checked,
@@ -27,19 +31,25 @@ export const CustomComponentToolbarButton = () => {
 				setAccordionItemDisabled(state.disabled);
 			},
 		);
+		const unsubscribeSeparator = separatorUIPort?.onToolbarButtonUpdate(
+			(state) => {
+				setSeparatorDisabled(state.disabled);
+			},
+		);
 		const unsubscribeReadOnly = readOnlyUIPort?.onToolbarButtonUpdate((state) =>
 			setReadOnly(state.checked),
 		);
 
 		onCleanup(() => {
 			unsubscribeAccordionItem?.();
+			unsubscribeSeparator?.();
 			unsubscribeReadOnly?.();
 		});
 	});
-	// The button itself is only disabled once every known custom-component uiPort's own
-	// toolbarButton is disabled — right now that's just accordionItemDisabled, AND-reduced
-	// with whichever other custom-component uiPorts get added here later.
-	const buttonDisabled = createMemo(() => accordionItemDisabled());
+
+	const buttonDisabled = createMemo(
+		() => accordionItemDisabled() && separatorDisabled(),
+	);
 
 	const disabled = createMemo(() => buttonDisabled() || readOnly());
 
@@ -56,11 +66,25 @@ export const CustomComponentToolbarButton = () => {
 
 		if (accordionItemUIPort) {
 			items.push({
+				icon: "CaretCircleRight",
 				text: "Accordion",
 				button: {
 					disabled: accordionItemDisabled(),
 					"on:click": () => {
 						accordionItemUIPort.emitInsertRequest();
+					},
+				},
+			});
+		}
+
+		if (separatorUIPort) {
+			items.push({
+				icon: "Separator",
+				text: "Separator",
+				button: {
+					disabled: separatorDisabled(),
+					"on:click": () => {
+						separatorUIPort.emitInsertRequest();
 					},
 				},
 			});

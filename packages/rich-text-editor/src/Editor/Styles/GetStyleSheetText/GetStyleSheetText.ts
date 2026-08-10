@@ -22,6 +22,7 @@ import {
 	Mention,
 	RootEditable,
 	RootEditableRx,
+	Separator,
 	Table,
 	TableRx,
 	TemplateVariable,
@@ -48,6 +49,7 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		List +
 		Mention +
 		RootEditable +
+		Separator +
 		Table +
 		TemplateVariable +
 		TodoList +

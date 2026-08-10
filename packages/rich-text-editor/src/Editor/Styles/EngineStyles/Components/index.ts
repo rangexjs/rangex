@@ -9,6 +9,7 @@ export { default as Link } from "./Link.css?inline";
 export { default as LinkRx } from "./Link.rx.css?inline";
 export { default as List } from "./List.css?inline";
 export { default as Mention } from "./Mention.css?inline";
+export { default as Separator } from "./Separator.css?inline";
 export { default as Table } from "./Table.css?inline";
 export { default as TableRx } from "./Table.rx.css?inline";
 export { default as TemplateVariable } from "./TemplateVariable.css?inline";

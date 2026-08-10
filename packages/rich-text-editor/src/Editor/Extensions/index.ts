@@ -14,6 +14,7 @@ export * from "./ConfigureLink";
 export * from "./ConfigureList";
 export * from "./ConfigureMention";
 export * from "./ConfigureReadOnly";
+export * from "./ConfigureSeparator";
 export * from "./ConfigureSymbols";
 export * from "./ConfigureTable";
 export * from "./ConfigureTemplateVariable";

@@ -8,6 +8,7 @@ export * from "./CreateImage";
 export * from "./CreateLink";
 export * from "./CreateList";
 export * from "./CreateMention";
+export * from "./CreateSeparator";
 export * from "./CreateTable";
 export * from "./CreateTemplateVariable";
 export * from "./CreateTodoList";

@@ -14,6 +14,7 @@ import type { Link } from "../Link";
 import type { List } from "../List";
 import type { Mention } from "../Mention";
 import type { ReadOnly } from "../ReadOnly";
+import type { Separator } from "../Separator";
 import type { Symbols } from "../Symbols";
 import type { Table } from "../Table";
 import type { TemplateVariable } from "../TemplateVariable";
@@ -37,6 +38,7 @@ export type ExtensionValue =
 	| ReturnType<typeof List>
 	| ReturnType<typeof Mention>
 	| ReturnType<typeof ReadOnly>
+	| ReturnType<typeof Separator>
 	| ReturnType<typeof Symbols>
 	| ReturnType<typeof Table>
 	| ReturnType<typeof TemplateVariable>

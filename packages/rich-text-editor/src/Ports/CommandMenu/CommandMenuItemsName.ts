@@ -14,6 +14,7 @@ export const commandMenuItemsName = {
 	table: "table",
 	media: "media",
 	accordionItem: "accordion-item",
+	separator: "separator",
 } as const;
 
 export type CommandMenuItemsName = typeof commandMenuItemsName;

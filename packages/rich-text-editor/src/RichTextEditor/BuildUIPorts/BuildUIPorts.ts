@@ -15,6 +15,7 @@ import type {
 	ListUIPort,
 	MentionUIPort,
 	ReadOnlyUIPort,
+	SeparatorUIPort,
 	SymbolsUIPort,
 	TableUIPort,
 	TemplateVariableUIPort,
@@ -56,6 +57,7 @@ export const buildUIPorts = ({
 		listUIPort: null,
 		mentionUIPort: null,
 		readOnlyUIPort: null,
+		separatorUIPort: null,
 		symbolsUIPort: null,
 		tableUIPort: null,
 		templateVariableUIPort: null,
@@ -127,6 +129,10 @@ export const buildUIPorts = ({
 
 		if (adapter.id === adapterIds.readOnly) {
 			uiPorts.readOnlyUIPort = adapter.uiPort as ReadOnlyUIPort;
+		}
+
+		if (adapter.id === adapterIds.separator) {
+			uiPorts.separatorUIPort = adapter.uiPort as SeparatorUIPort;
 		}
 
 		if (adapter.id === adapterIds.symbols) {

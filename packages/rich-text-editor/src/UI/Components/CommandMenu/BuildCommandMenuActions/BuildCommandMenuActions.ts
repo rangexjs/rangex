@@ -45,6 +45,7 @@ export const buildCommandMenuActions = ({
 		codeBlockUIPort,
 		tableUIPort,
 		accordionItemUIPort,
+		separatorUIPort,
 	} = useUIPortsContext();
 
 	const entries: CommandMenuItemEntry[] = [];
@@ -138,6 +139,16 @@ export const buildCommandMenuActions = ({
 			action: {
 				icon: "CaretCircleRight",
 				onSelect: () => accordionItemUIPort.emitInsertRequest(),
+			},
+		});
+	}
+
+	if (separatorUIPort) {
+		entries.push({
+			name: commandMenuItemsName.separator,
+			action: {
+				icon: "Separator",
+				onSelect: () => separatorUIPort.emitInsertRequest(),
 			},
 		});
 	}
