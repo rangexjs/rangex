@@ -26,11 +26,11 @@ export interface LanguageMenuBarButtonState {
 export interface PreviewContent {
 	getRendered: () => Promise<HTMLElement>;
 	getHTML: () => Promise<HTMLElement>;
-	getJSON: () => Promise<HTMLElement>;
-	getSnapshot: () => Promise<HTMLElement>;
+	getSnapshotView: () => Promise<HTMLElement>;
+	getStoredSnapshot: () => Promise<HTMLElement>;
 	getHTMLText: () => Promise<string>;
-	getJSONText: () => Promise<string>;
-	getSnapshotText: () => Promise<string>;
+	getSnapshotViewText: () => Promise<string>;
+	getStoredSnapshotText: () => Promise<string>;
 }
 
 export interface PreviewMenuBarButtonState {
