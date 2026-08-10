@@ -17,6 +17,7 @@ import {
 	Image,
 	InternalElementsRx,
 	Link,
+	LinkRx,
 	List,
 	Mention,
 	RootEditable,
@@ -62,6 +63,7 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		EngineGlobalStylesRx +
 		GlyphFormatterRx +
 		InternalElementsRx +
+		LinkRx +
 		RootEditableRx +
 		TableRx;
 
