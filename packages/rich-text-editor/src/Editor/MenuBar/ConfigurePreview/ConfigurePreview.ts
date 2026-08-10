@@ -25,6 +25,8 @@ const createRendered = async ({ snapshotView }: CreateRenderedParams) => {
 	const { style, rootElement, settled } = createHTMLFromSnapshotView({
 		snapshotView,
 	});
+	// Temporary until we figure out how to manage the background/padding
+	rootElement.style.padding = "16px 24px";
 	await settled;
 
 	return createHost({ children: [style, rootElement] });
