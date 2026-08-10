@@ -4,7 +4,7 @@ import type {
 	InlineComponent,
 } from "rich-text-area";
 import type { LinkEditorPort } from "#adapters";
-import type { AnchoredOverlayController } from "../../../_Utilities";
+import type { PopoverOverlayController } from "../../../_Utilities";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface SetSelectionToLinkEndParams {
@@ -14,7 +14,7 @@ export interface SetSelectionToLinkEndParams {
 
 export interface AnchorToLinkParams {
 	link: InlineComponent;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }
 
 export interface InsertAtCaretParams {
@@ -24,7 +24,7 @@ export interface InsertAtCaretParams {
 	text: string;
 	href: string;
 	target: string;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }
 
 export interface WrapWithLinkParams {
@@ -33,12 +33,12 @@ export interface WrapWithLinkParams {
 	internals: LinkInternals;
 	href: string;
 	target: string;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }
 
 export interface HandleLinkInsertionParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }

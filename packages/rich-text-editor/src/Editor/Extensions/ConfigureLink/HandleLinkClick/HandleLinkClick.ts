@@ -18,7 +18,7 @@ const openLinkOverlay = ({
 	editorAPI,
 	internals,
 	link,
-	anchorController,
+	popoverController,
 }: OpenLinkOverlayParams) => {
 	internals.currentLink = link;
 
@@ -26,7 +26,7 @@ const openLinkOverlay = ({
 
 	editorPort.updateState({ view: "preview", mode: "modify", ...state });
 
-	anchorController.show(link, {
+	popoverController.show(link, {
 		clear: true,
 		position: "fixed",
 		margin: "8px 0px 0px 0px",
@@ -41,7 +41,7 @@ export const handleLinkClick = ({
 	editorPort,
 	editorAPI,
 	internals,
-	anchorController,
+	popoverController,
 }: HandleLinkClickParams) => {
 	const unsubscribe = editorAPI.registerDOMEvent({
 		eventListener: {
@@ -62,7 +62,7 @@ export const handleLinkClick = ({
 					editorAPI,
 					internals,
 					link: currentTarget,
-					anchorController,
+					popoverController,
 				});
 			},
 		},

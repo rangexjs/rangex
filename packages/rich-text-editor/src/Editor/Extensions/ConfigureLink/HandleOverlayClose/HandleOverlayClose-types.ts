@@ -1,36 +1,38 @@
 import type { EditorAPI } from "rich-text-area";
 import type { LinkEditorPort } from "#adapters";
-import type { AnchoredOverlayController } from "../../../_Utilities";
+import type { PopoverOverlayController } from "../../../_Utilities";
 import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface CloseOverlayParams {
 	internals: LinkInternals;
 	editorAPI: EditorAPI;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
+	hideImmediately: boolean;
 }
 
 export interface CloseOnSelectionChangeParams {
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }
 
-export interface HandleLinkOverlayCancelParams {
+export interface HandleOverlayUnwrapParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
 }
 
-export interface RestoreFocusOnEscapeParams {
-	editorAPI: EditorAPI;
-	internals: LinkInternals;
-	anchorController: AnchoredOverlayController;
-}
-
-export interface HandleLinkOverlayCloseParams {
+export interface HandleOverlayCancelParams {
 	editorPort: LinkEditorPort;
 	editorAPI: EditorAPI;
 	internals: LinkInternals;
-	anchorController: AnchoredOverlayController;
+	popoverController: PopoverOverlayController;
+}
+
+export interface HandleOverlayCloseParams {
+	editorPort: LinkEditorPort;
+	editorAPI: EditorAPI;
+	internals: LinkInternals;
+	popoverController: PopoverOverlayController;
 }

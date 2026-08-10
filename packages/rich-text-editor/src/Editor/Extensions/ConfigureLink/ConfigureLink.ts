@@ -1,12 +1,12 @@
-import { createAnchoredOverlayController } from "../../_Utilities";
+import { createPopoverOverlayController } from "../../_Utilities";
 import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureLinkParams, LinkInternals } from "./ConfigureLink-types";
 import { handleLinkClick } from "./HandleLinkClick";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkModification } from "./HandleLinkModification";
-import { handleLinkOverlayClose } from "./HandleLinkOverlayClose";
 import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
 import { handleLinkViewChange } from "./HandleLinkViewChange";
+import { handleOverlayClose } from "./HandleOverlayClose";
 import { handleToolbarLinkClick } from "./HandleToolbarLinkClick";
 
 export const configureLink = ({
@@ -17,8 +17,12 @@ export const configureLink = ({
 
 	editorPort.anchoredOverlay.mount();
 
-	const anchorController = createAnchoredOverlayController({
+	const popoverController = createPopoverOverlayController({
 		element: editorPort.anchoredOverlay.element,
+		options: {
+			popover: "auto",
+			onToggle: (isOpen) => !isOpen && editorAPI.focus(),
+		},
 	});
 
 	const toolbarButtonStateCleanup = handleLinkToolbarButtonState({
@@ -29,21 +33,21 @@ export const configureLink = ({
 	const toolbarLinkClickCleanup = handleToolbarLinkClick({
 		editorPort,
 		editorAPI,
-		anchorController,
+		popoverController,
 	});
 
 	const linkClickCleanup = handleLinkClick({
 		editorPort,
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
 
 	const linkInsertionCleanup = handleLinkInsertion({
 		editorPort,
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
 
 	const linkModificationCleanup = handleLinkModification({
@@ -58,11 +62,11 @@ export const configureLink = ({
 		getComponent: () => internals.currentLink,
 	});
 
-	const linkOverlayCloseCleanup = handleLinkOverlayClose({
+	const overlayCloseCleanup = handleOverlayClose({
 		editorPort,
 		editorAPI,
 		internals,
-		anchorController,
+		popoverController,
 	});
 
 	const linkViewChangeCleanup = handleLinkViewChange({ editorPort });
@@ -76,7 +80,7 @@ export const configureLink = ({
 		linkInsertionCleanup();
 		linkModificationCleanup();
 		linkUnwrapCleanup();
-		linkOverlayCloseCleanup();
+		overlayCloseCleanup();
 		linkViewChangeCleanup();
 	};
 };
