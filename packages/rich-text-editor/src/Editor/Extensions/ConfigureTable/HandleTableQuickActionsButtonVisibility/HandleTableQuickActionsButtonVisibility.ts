@@ -25,10 +25,6 @@ const positionToTableCell = ({
 		throw new Error("Element supposed to contain a popover.");
 	}
 
-	popover.style.setProperty("transition", "none");
-	// Forces reflow so the open (and animated) popovers disappear immediately
-	popover.offsetHeight;
-
 	anchorController.show(tableCell, {
 		clear: true,
 		position: "absolute",
@@ -37,6 +33,9 @@ const positionToTableCell = ({
 		right: `calc(anchor(right) - ${width / 2}px)`,
 	});
 
+	popover.style.setProperty("transition", "none");
+	// Forces reflow so the open (and animated) popovers disappear immediately
+	popover.offsetHeight;
 	popover.style.removeProperty("transition");
 };
 
