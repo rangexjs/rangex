@@ -1,9 +1,9 @@
 import { createSignal, createUniqueId, onCleanup, onMount } from "solid-js";
 import type { AudioUIPort, CaptionPosition } from "#adapters";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import { Icon } from "../../../Icon";
 import {
 	createTextFieldState,
@@ -13,7 +13,7 @@ import {
 import { ToggleButton } from "../../../ToggleButton";
 import { BlockAlign } from "../../_Utilities";
 
-const captionPositionControls: ContentSwitcherControls<CaptionPosition> = [
+const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
 	{ id: "below", node: "Below" },
 ];
@@ -209,14 +209,13 @@ export const AudioQuickActions = (props: AudioQuickActionsProps) => {
 					</div>
 
 					<div hidden={!caption().enabled}>
-						<ContentSwitch
+						<SegmentedControl
 							id={caption().position}
 							controls={captionPositionControls}
 							onChange={(value) => uiPort.emitCaptionPositionChange(value)}
+							appearance="primary-outline"
 							class="rounded-sm"
-							commonButtonClass="rounded-sm py-1.5 text-xs font-medium"
-							activeBoxShrink={-1}
-							activeBoxClass="rounded-sm shadow border border-primary-500/40"
+							commonButtonClass="rounded-sm py-1.5 font-medium text-xs"
 						/>
 					</div>
 

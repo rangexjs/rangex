@@ -6,12 +6,9 @@ import {
 	type Setter,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "../../Color";
+import { SegmentedControl, type SegmentedControlControls } from "../_Utilities";
 import { ColorTypeControls } from "../ColorTypeControls";
 import { TransparentBackground } from "../ComplexSVGs";
-import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../ContentSwitcher";
 import { Icon, type IconName } from "../Icon";
 import { SpectrumColor } from "../SpectrumColor";
 import { getGridPaletteColors } from "./_Utilities";
@@ -196,7 +193,7 @@ interface ColorPanelProps {
 export const ColorPanel = (props: ColorPanelProps) => {
 	const [contentId, setContentId] = createSignal<ContentId>("Grid");
 
-	const controls: ContentSwitcherControls<ContentId> = [
+	const controls: SegmentedControlControls<ContentId> = [
 		{ id: "Grid", node: "Grid" },
 		{ id: "Spectrum", node: "Spectrum" },
 	];
@@ -227,14 +224,13 @@ export const ColorPanel = (props: ColorPanelProps) => {
 			classList={{ [props.class ?? ""]: true }}
 			style={{ "max-width": `${props.spectrumWidth}px` }}
 		>
-			<ContentSwitch
+			<SegmentedControl
 				id={contentId()}
 				controls={controls}
 				onChange={(id) => setContentId(id)}
+				appearance="primary-outline"
 				class="mb-4 rounded-sm"
-				commonButtonClass="py-2 text-sm text-neutral-600 font-semibold"
-				activeBoxShrink={-1}
-				activeBoxClass="rounded-sm shadow border border-primary-500/40"
+				commonButtonClass="py-2 font-semibold text-sm"
 			/>
 
 			<div class="mb-3">

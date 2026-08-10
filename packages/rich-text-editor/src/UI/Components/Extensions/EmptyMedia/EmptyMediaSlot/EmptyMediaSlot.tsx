@@ -2,9 +2,9 @@ import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import type { MediaResolveDetail, UploadState } from "#adapters";
 import type { MediaType } from "#ports";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import { Icon, type IconName } from "../../../Icon";
 import {
 	createTextFieldState,
@@ -90,8 +90,8 @@ const isFileDrag = (event: DragEvent) =>
 
 const getMediaTabControls = (
 	supportedMediaTypes: MediaType[],
-): ContentSwitcherControls<MediaTab> => {
-	const controls: ContentSwitcherControls<MediaTab> = [];
+): SegmentedControlControls<MediaTab> => {
+	const controls: SegmentedControlControls<MediaTab> = [];
 
 	if (
 		supportedMediaTypes.includes("image") ||
@@ -146,7 +146,7 @@ const getMediaTabControls = (
 
 /**
  * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
- * ContentSwitcher between an Upload tab (file picker) and one URL tab per media type. Never
+ * SegmentedControl between an Upload tab (file picker) and one URL tab per media type. Never
  * decides when it's "done": `uploadState` is read from `uiPort` and kept live via
  * subscription, and every capture just forwards through `uiPort.emitResolve` — the Editor
  * side owns uploading and resolution.
@@ -377,14 +377,13 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 					{errorMessage()}
 				</div>
 
-				<ContentSwitch
+				<SegmentedControl
 					id={activeTab()}
 					controls={mediaTabControls}
 					onChange={onTabChange}
-					class="rounded-sm"
-					commonButtonClass="py-1.5 text-xs font-medium inline-flex items-center justify-center "
-					activeBoxShrink={-1}
-					activeBoxClass="rounded-sm shadow border border-primary-500/40"
+					appearance="primary-outline"
+					class="rounded-sm border-solid"
+					commonButtonClass="inline-flex items-center justify-center py-1.5 font-medium text-xs"
 				/>
 
 				<div classList={{ hidden: activeTab() !== "upload" }}>

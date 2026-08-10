@@ -2,9 +2,9 @@ import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 import type { AudioUIPort } from "#adapters";
 import { assertNever } from "#ports";
 import {
-	ContentSwitch,
-	type ContentSwitcherControls,
-} from "../../../ContentSwitcher";
+	SegmentedControl,
+	type SegmentedControlControls,
+} from "../../../_Utilities";
 import {
 	createTextFieldState,
 	FormField,
@@ -14,7 +14,7 @@ import {
 
 type AudioSourceTab = "upload" | "url";
 
-const sourceTabControls: ContentSwitcherControls<AudioSourceTab> = [
+const sourceTabControls: SegmentedControlControls<AudioSourceTab> = [
 	{ id: "upload", node: "Upload" },
 	{ id: "url", node: "URL" },
 ];
@@ -150,15 +150,14 @@ export const AudioSwapCard = (props: AudioSwapCardProps) => {
 		>
 			<input ref={fileInput} type="file" accept="audio/*" class="hidden" />
 
-			<ContentSwitch
+			<SegmentedControl
 				id={sourceTab()}
 				controls={sourceTabControls}
 				onChange={onTabChange}
 				disabled={isBusy()}
+				appearance="primary-outline"
 				class="mb-3 rounded-sm"
-				commonButtonClass="py-1.5 text-xs font-medium"
-				activeBoxShrink={-1}
-				activeBoxClass="rounded-sm shadow border border-primary-500/40"
+				commonButtonClass="py-1.5 font-medium text-xs"
 			/>
 
 			<div class="mb-3" hidden={sourceTab() !== "upload"}>
