@@ -5,7 +5,6 @@ import { FindReplaceToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const FindReplace = createExtension<typeof FindReplaceAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) =>
 		new FindReplaceAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

@@ -9,11 +9,15 @@ import type {
 	EditorOverlayMount,
 	UIBlockResize,
 	UIOverlayMount,
+	UploadMediaFileFn,
 } from "../_Utilities";
 
-export type VideoAdapterConstructorParams = CreateAdapterConstructor<{
-	[index: string]: never;
-}>;
+export interface VideoSettings {
+	uploadFile: UploadMediaFileFn;
+}
+
+export type VideoAdapterConstructorParams =
+	CreateAdapterConstructor<VideoSettings>;
 
 export type VideoObjectFitValue = "cover" | "contain" | "fill";
 export type VideoAspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
@@ -128,6 +132,7 @@ export interface VideoEditorPort extends BlockAlignPort, CaptionPort {
 	readonly quickActionsOverlay: EditorOverlayMount;
 	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
+	readonly uploadFile: UploadMediaFileFn;
 	updateState(params: UpdateVideoStateParams): void;
 	onVideoAttrChange(callback: OnVideoAttrChangeFn): () => void;
 	onSwap(callback: OnVideoSwapFn): () => void;

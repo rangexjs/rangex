@@ -9,7 +9,7 @@ export interface EmojiSuggestionItem {
 export type EmojiItems = EmojiSuggestionItem[];
 
 export interface EmojiSettings {
-	items: EmojiItems;
+	items?: EmojiItems;
 }
 
 export type EmojiAdapterConstructorParams =

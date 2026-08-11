@@ -12,12 +12,9 @@ import type {
 export const createExtension = <Adapter extends AdapterBlueprint>(
 	definition: ExtensionDefinition<Adapter>,
 ) => {
-	return (settings?: Partial<GetSettings<Adapter>>): Extension<Adapter> => {
-		const mergedSettings = { ...definition.defaultSettings, ...settings };
-
+	return (settings: GetSettings<Adapter>): Extension<Adapter> => {
 		return {
-			createAdapter: (options) =>
-				definition.createAdapter(mergedSettings, options),
+			createAdapter: (options) => definition.createAdapter(settings, options),
 			configure: definition.configure,
 			components: definition.components,
 		};

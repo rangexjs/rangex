@@ -5,7 +5,6 @@ import { EmptyMediaToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const EmptyMedia = createExtension<typeof EmptyMediaAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) =>
 		new EmptyMediaAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

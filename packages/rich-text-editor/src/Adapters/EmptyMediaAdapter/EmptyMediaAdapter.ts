@@ -1,6 +1,7 @@
 import type { AdapterBus } from "#ports";
 import { adapterIds, renderComponent } from "#ports";
 import { EmptyMediaSlot } from "#ui-extensions";
+import type { UploadMediaFileFn } from "../_Utilities";
 import type {
 	AttachEmptyMediaParams,
 	DetachEmptyMediaParams,
@@ -18,6 +19,7 @@ import type {
 
 export class EmptyMediaAdapter {
 	#adapterBus: AdapterBus;
+	#uploadFile: UploadMediaFileFn;
 
 	#toolbarButton: EmptyMediaToolbarButtonState = { disabled: true };
 	#toolbarButtonListeners: Set<EmptyMediaUpdateToolbarButtonFn> = new Set();
@@ -31,8 +33,9 @@ export class EmptyMediaAdapter {
 	#editorPort: EmptyMediaEditorPort | null = null;
 
 	constructor(...params: EmptyMediaAdapterConstructorParams) {
-		const [_settings, { adapterBus }] = params;
+		const [{ uploadFile }, { adapterBus }] = params;
 
+		this.#uploadFile = uploadFile;
 		this.#adapterBus = adapterBus;
 	}
 
@@ -153,6 +156,10 @@ export class EmptyMediaAdapter {
 		const adapter = this;
 
 		this.#editorPort ??= {
+			get uploadFile() {
+				return adapter.#uploadFile;
+			},
+
 			updateState: (params) => adapter.#updateState(params),
 
 			updateElementState: ({ element, uploadState }) => {

@@ -1,4 +1,5 @@
 import { adapterIds } from "#ports";
+import { defaultSymbolsItems } from "./SymbolsAdapter-default";
 import type {
 	SymbolsAdapterConstructorParams,
 	SymbolsEditorPort,
@@ -21,9 +22,9 @@ export class SymbolsAdapter {
 	#editorPort: SymbolsEditorPort | null = null;
 
 	constructor(...params: SymbolsAdapterConstructorParams) {
-		const [settings] = params;
+		const [{ items = defaultSymbolsItems }] = params;
 
-		this.#items = settings.items;
+		this.#items = items;
 	}
 
 	get id() {

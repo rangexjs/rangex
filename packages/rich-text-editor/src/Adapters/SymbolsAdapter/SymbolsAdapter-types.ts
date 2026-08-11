@@ -3,7 +3,7 @@ import type { CreateAdapterConstructor } from "#ports";
 export type SymbolsItems = string[];
 
 export interface SymbolsSettings {
-	items: SymbolsItems;
+	items?: SymbolsItems;
 }
 
 export type SymbolsAdapterConstructorParams =

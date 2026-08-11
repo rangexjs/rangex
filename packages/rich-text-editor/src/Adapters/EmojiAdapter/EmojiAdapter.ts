@@ -1,6 +1,7 @@
 import { adapterIds } from "#ports";
 import { EmojiSuggestions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
+import { defaultEmojiItems } from "./EmojiAdapter-default";
 import type {
 	EmojiAdapterConstructorParams,
 	EmojiEditorPort,
@@ -29,9 +30,9 @@ export class EmojiAdapter {
 	#editorPort: EmojiEditorPort | null = null;
 
 	constructor(...params: EmojiAdapterConstructorParams) {
-		const [settings, { overlayHost }] = params;
+		const [{ items = defaultEmojiItems }, { overlayHost }] = params;
 
-		this.#items = settings.items;
+		this.#items = items;
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

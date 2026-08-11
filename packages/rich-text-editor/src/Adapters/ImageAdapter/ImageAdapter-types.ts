@@ -9,11 +9,15 @@ import type {
 	EditorOverlayMount,
 	UIBlockResize,
 	UIOverlayMount,
+	UploadMediaFileFn,
 } from "../_Utilities";
 
-export type ImageAdapterConstructorParams = CreateAdapterConstructor<{
-	[index: string]: never;
-}>;
+export interface ImageSettings {
+	uploadFile: UploadMediaFileFn;
+}
+
+export type ImageAdapterConstructorParams =
+	CreateAdapterConstructor<ImageSettings>;
 
 export type ImageObjectFitValue = "cover" | "contain" | "fill";
 export type ImageAspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
@@ -103,6 +107,7 @@ export interface ImageEditorPort extends BlockAlignPort, CaptionPort {
 	readonly quickActionsOverlay: EditorOverlayMount;
 	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
+	readonly uploadFile: UploadMediaFileFn;
 	updateState(params: UpdateImageStateParams): void;
 	onImageAttrChange(callback: OnImageAttrChangeFn): () => void;
 	onSwap(callback: OnImageSwapFn): () => void;

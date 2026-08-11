@@ -9,11 +9,15 @@ import type {
 	EditorOverlayMount,
 	UIBlockResize,
 	UIOverlayMount,
+	UploadMediaFileFn,
 } from "../_Utilities";
 
-export type AudioAdapterConstructorParams = CreateAdapterConstructor<{
-	[index: string]: never;
-}>;
+export interface AudioSettings {
+	uploadFile: UploadMediaFileFn;
+}
+
+export type AudioAdapterConstructorParams =
+	CreateAdapterConstructor<AudioSettings>;
 
 export type AudioSwapCheckState =
 	| { status: "idle" }
@@ -110,6 +114,7 @@ export interface AudioEditorPort extends BlockAlignPort, CaptionPort {
 	readonly quickActionsOverlay: EditorOverlayMount;
 	readonly swapCardOverlay: EditorOverlayMount;
 	readonly blockResize: EditorBlockResize;
+	readonly uploadFile: UploadMediaFileFn;
 	updateState(params: UpdateAudioStateParams): void;
 	onAudioAttrChange(callback: OnAudioAttrChangeFn): () => void;
 	onSwap(callback: OnAudioSwapFn): () => void;

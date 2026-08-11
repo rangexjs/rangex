@@ -10,7 +10,6 @@ import {
 	isWellFormedUrl,
 	probeMediaSrc,
 	transformEmbedUrl,
-	uploadMediaFile,
 } from "../../../_Utilities";
 import { getClosestBlockComponent } from "../../../NodeQuery";
 import type {
@@ -66,7 +65,7 @@ const resolveMediaSrc = async ({
 		uploadState: { status: "uploading", progress: 0 },
 	});
 
-	const src = await uploadMediaFile({
+	const src = await editorPort.uploadFile({
 		file: detail.file,
 		onProgress: (progress) => {
 			if (!isStillCurrent()) {

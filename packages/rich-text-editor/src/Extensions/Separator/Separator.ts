@@ -5,7 +5,6 @@ import { CustomComponentToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const Separator = createExtension<typeof SeparatorAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) => new SeparatorAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureSeparator({ editorPort: adapter.editorPort, editorAPI }),

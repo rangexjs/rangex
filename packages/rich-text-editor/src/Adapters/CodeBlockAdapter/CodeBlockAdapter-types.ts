@@ -5,8 +5,8 @@ export type CodeBlockLanguage = string;
 export type CodeBlockTheme = string;
 
 export interface CodeBlockSettings {
-	languages: CodeBlockLanguage[];
-	themes: CodeBlockTheme[];
+	languages?: CodeBlockLanguage[];
+	themes?: CodeBlockTheme[];
 }
 
 export type CodeBlockAdapterConstructorParams =

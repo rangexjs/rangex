@@ -1,6 +1,10 @@
 import { adapterIds } from "#ports";
 import { CodeBlockQuickActions } from "#ui-extensions";
 import { createOverlayMount, type OverlayMount } from "../_Utilities";
+import {
+	defaultCodeBlockLanguages,
+	defaultCodeBlockThemes,
+} from "./CodeBlockAdapter-default";
 import type {
 	CodeBlockAdapterConstructorParams,
 	CodeBlockEditorPort,
@@ -51,10 +55,16 @@ export class CodeBlockAdapter {
 	#editorPort: CodeBlockEditorPort | null = null;
 
 	constructor(...params: CodeBlockAdapterConstructorParams) {
-		const [settings, { overlayHost }] = params;
+		const [
+			{
+				languages = defaultCodeBlockLanguages,
+				themes = defaultCodeBlockThemes,
+			},
+			{ overlayHost },
+		] = params;
 
-		this.#languages = settings.languages;
-		this.#themes = settings.themes;
+		this.#languages = languages;
+		this.#themes = themes;
 
 		this.#overlayMount = createOverlayMount({
 			overlayHost,

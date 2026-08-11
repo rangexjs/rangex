@@ -11,6 +11,7 @@ import {
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
 	type OverlayMount,
+	type UploadMediaFileFn,
 } from "../_Utilities";
 import type {
 	ImageAdapterConstructorParams,
@@ -39,6 +40,7 @@ export class ImageAdapter {
 	#quickActionsOverlayMount: OverlayMount;
 	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
+	#uploadFile: UploadMediaFileFn;
 
 	#align: BlockAlignValue = "center";
 	#objectFit: ImageObjectFitValue = "cover";
@@ -70,8 +72,9 @@ export class ImageAdapter {
 	#editorPort: ImageEditorPort | null = null;
 
 	constructor(...params: ImageAdapterConstructorParams) {
-		const [_settings, { adapterBus, overlayHost }] = params;
+		const [{ uploadFile }, { adapterBus, overlayHost }] = params;
 
+		this.#uploadFile = uploadFile;
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("image");
 
@@ -307,6 +310,10 @@ export class ImageAdapter {
 
 			get blockResize() {
 				return adapter.#blockResize.editorBlockResize;
+			},
+
+			get uploadFile() {
+				return adapter.#uploadFile;
 			},
 
 			updateState: (params) => adapter.#updateState(params),
