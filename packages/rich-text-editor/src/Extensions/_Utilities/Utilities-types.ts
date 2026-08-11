@@ -12,9 +12,11 @@ import type { Image } from "../Image";
 import type { LineHandler } from "../LineHandler";
 import type { Link } from "../Link";
 import type { List } from "../List";
+import type { Markdown } from "../Markdown";
 import type { Mention } from "../Mention";
 import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
+import type { Shortcuts } from "../Shortcuts";
 import type { Symbols } from "../Symbols";
 import type { Table } from "../Table";
 import type { TemplateVariable } from "../TemplateVariable";
@@ -36,9 +38,11 @@ export type ExtensionValue =
 	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>
 	| ReturnType<typeof List>
+	| ReturnType<typeof Markdown>
 	| ReturnType<typeof Mention>
 	| ReturnType<typeof ReadOnly>
 	| ReturnType<typeof Separator>
+	| ReturnType<typeof Shortcuts>
 	| ReturnType<typeof Symbols>
 	| ReturnType<typeof Table>
 	| ReturnType<typeof TemplateVariable>

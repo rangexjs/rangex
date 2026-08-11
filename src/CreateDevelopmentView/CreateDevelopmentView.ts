@@ -13,10 +13,12 @@ import {
 	LineHandler,
 	Link,
 	List,
+	Markdown,
 	Mention,
 	ReadOnly,
 	RichTextEditor,
 	Separator,
+	Shortcuts,
 	Symbols,
 	Table,
 	TemplateVariable,
@@ -71,6 +73,8 @@ export const createDevelopmentView = () => {
 			ReadOnly(),
 			CommandMenu(),
 			LineHandler(),
+			Markdown(),
+			Shortcuts(),
 		],
 	});
 
@@ -101,6 +105,8 @@ export const createDevelopmentView = () => {
 			ReadOnly(),
 			CommandMenu(),
 			LineHandler(),
+			Markdown(),
+			Shortcuts(),
 		],
 	});
 

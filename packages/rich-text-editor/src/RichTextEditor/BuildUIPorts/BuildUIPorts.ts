@@ -13,9 +13,11 @@ import type {
 	LineHandlerUIPort,
 	LinkUIPort,
 	ListUIPort,
+	MarkdownUIPort,
 	MentionUIPort,
 	ReadOnlyUIPort,
 	SeparatorUIPort,
+	ShortcutsUIPort,
 	SymbolsUIPort,
 	TableUIPort,
 	TemplateVariableUIPort,
@@ -55,9 +57,11 @@ export const buildUIPorts = ({
 		lineHandlerUIPort: null,
 		linkUIPort: null,
 		listUIPort: null,
+		markdownUIPort: null,
 		mentionUIPort: null,
 		readOnlyUIPort: null,
 		separatorUIPort: null,
+		shortcutsUIPort: null,
 		symbolsUIPort: null,
 		tableUIPort: null,
 		templateVariableUIPort: null,
@@ -123,6 +127,10 @@ export const buildUIPorts = ({
 			uiPorts.listUIPort = adapter.uiPort as ListUIPort;
 		}
 
+		if (adapter.id === adapterIds.markdown) {
+			uiPorts.markdownUIPort = adapter.uiPort as MarkdownUIPort;
+		}
+
 		if (adapter.id === adapterIds.mention) {
 			uiPorts.mentionUIPort = adapter.uiPort as MentionUIPort;
 		}
@@ -133,6 +141,10 @@ export const buildUIPorts = ({
 
 		if (adapter.id === adapterIds.separator) {
 			uiPorts.separatorUIPort = adapter.uiPort as SeparatorUIPort;
+		}
+
+		if (adapter.id === adapterIds.shortcuts) {
+			uiPorts.shortcutsUIPort = adapter.uiPort as ShortcutsUIPort;
 		}
 
 		if (adapter.id === adapterIds.symbols) {
