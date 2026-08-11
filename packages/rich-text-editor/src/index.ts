@@ -12,6 +12,7 @@ export { Image } from "./Extensions/Image";
 export { LineHandler } from "./Extensions/LineHandler";
 export { Link } from "./Extensions/Link";
 export { List } from "./Extensions/List";
+export { Markdown } from "./Extensions/Markdown";
 export { Mention } from "./Extensions/Mention";
 export { ReadOnly } from "./Extensions/ReadOnly";
 export { Separator } from "./Extensions/Separator";

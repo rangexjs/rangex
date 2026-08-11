@@ -13,6 +13,7 @@ export * from "./ImageAdapter";
 export * from "./LineHandlerAdapter";
 export * from "./LinkAdapter";
 export * from "./ListAdapter";
+export * from "./MarkdownAdapter";
 export * from "./MentionAdapter";
 export * from "./ReadOnlyAdapter";
 export * from "./SeparatorAdapter";

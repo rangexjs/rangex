@@ -12,6 +12,7 @@ import type { Image } from "../Image";
 import type { LineHandler } from "../LineHandler";
 import type { Link } from "../Link";
 import type { List } from "../List";
+import type { Markdown } from "../Markdown";
 import type { Mention } from "../Mention";
 import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
@@ -36,6 +37,7 @@ export type ExtensionValue =
 	| ReturnType<typeof Image>
 	| ReturnType<typeof Link>
 	| ReturnType<typeof List>
+	| ReturnType<typeof Markdown>
 	| ReturnType<typeof Mention>
 	| ReturnType<typeof ReadOnly>
 	| ReturnType<typeof Separator>

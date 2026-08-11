@@ -19,6 +19,7 @@ export const adapterIds = {
 	lineHandler: Symbol("lineHandler"),
 	link: Symbol("link"),
 	list: Symbol("list"),
+	markdown: Symbol("markdown"),
 	mention: Symbol("mention"),
 	readOnly: Symbol("readOnly"),
 	separator: Symbol("separator"),

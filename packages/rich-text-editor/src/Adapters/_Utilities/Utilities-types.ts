@@ -24,6 +24,7 @@ import type {
 } from "../LineHandlerAdapter";
 import type { LinkAdapter, LinkUIPort } from "../LinkAdapter";
 import type { ListAdapter, ListUIPort } from "../ListAdapter";
+import type { MarkdownAdapter, MarkdownUIPort } from "../MarkdownAdapter";
 import type { MentionAdapter, MentionUIPort } from "../MentionAdapter";
 import type { ReadOnlyAdapter, ReadOnlyUIPort } from "../ReadOnlyAdapter";
 import type { SeparatorAdapter, SeparatorUIPort } from "../SeparatorAdapter";
@@ -52,6 +53,7 @@ export type Adapter =
 	| LineHandlerAdapter
 	| LinkAdapter
 	| ListAdapter
+	| MarkdownAdapter
 	| MentionAdapter
 	| ReadOnlyAdapter
 	| SeparatorAdapter
@@ -77,6 +79,7 @@ export interface AdapterUIPorts {
 	lineHandlerUIPort: LineHandlerUIPort;
 	linkUIPort: LinkUIPort;
 	listUIPort: ListUIPort;
+	markdownUIPort: MarkdownUIPort;
 	mentionUIPort: MentionUIPort;
 	readOnlyUIPort: ReadOnlyUIPort;
 	separatorUIPort: SeparatorUIPort;

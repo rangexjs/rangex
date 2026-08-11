@@ -13,6 +13,7 @@ import type {
 	LineHandlerUIPort,
 	LinkUIPort,
 	ListUIPort,
+	MarkdownUIPort,
 	MentionUIPort,
 	ReadOnlyUIPort,
 	SeparatorUIPort,
@@ -55,6 +56,7 @@ export const buildUIPorts = ({
 		lineHandlerUIPort: null,
 		linkUIPort: null,
 		listUIPort: null,
+		markdownUIPort: null,
 		mentionUIPort: null,
 		readOnlyUIPort: null,
 		separatorUIPort: null,
@@ -121,6 +123,10 @@ export const buildUIPorts = ({
 
 		if (adapter.id === adapterIds.list) {
 			uiPorts.listUIPort = adapter.uiPort as ListUIPort;
+		}
+
+		if (adapter.id === adapterIds.markdown) {
+			uiPorts.markdownUIPort = adapter.uiPort as MarkdownUIPort;
 		}
 
 		if (adapter.id === adapterIds.mention) {

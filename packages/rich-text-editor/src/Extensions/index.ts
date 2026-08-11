@@ -13,6 +13,7 @@ export * from "./Image";
 export * from "./LineHandler";
 export * from "./Link";
 export * from "./List";
+export * from "./Markdown";
 export * from "./Mention";
 export * from "./ReadOnly";
 export * from "./Separator";

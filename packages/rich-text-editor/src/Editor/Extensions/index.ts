@@ -12,6 +12,7 @@ export * from "./ConfigureImage";
 export * from "./ConfigureLineHandler";
 export * from "./ConfigureLink";
 export * from "./ConfigureList";
+export * from "./ConfigureMarkdown";
 export * from "./ConfigureMention";
 export * from "./ConfigureReadOnly";
 export * from "./ConfigureSeparator";
