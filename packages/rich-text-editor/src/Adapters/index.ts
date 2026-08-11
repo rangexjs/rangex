@@ -17,6 +17,7 @@ export * from "./MarkdownAdapter";
 export * from "./MentionAdapter";
 export * from "./ReadOnlyAdapter";
 export * from "./SeparatorAdapter";
+export * from "./ShortcutsAdapter";
 export * from "./SymbolsAdapter";
 export * from "./TableAdapter";
 export * from "./TemplateVariableAdapter";

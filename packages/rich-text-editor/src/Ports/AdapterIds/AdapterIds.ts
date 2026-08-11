@@ -23,6 +23,7 @@ export const adapterIds = {
 	mention: Symbol("mention"),
 	readOnly: Symbol("readOnly"),
 	separator: Symbol("separator"),
+	shortcuts: Symbol("shortcuts"),
 	symbols: Symbol("symbols"),
 	table: Symbol("table"),
 	templateVariable: Symbol("templateVariable"),

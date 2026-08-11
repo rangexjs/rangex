@@ -28,6 +28,7 @@ import type { MarkdownAdapter, MarkdownUIPort } from "../MarkdownAdapter";
 import type { MentionAdapter, MentionUIPort } from "../MentionAdapter";
 import type { ReadOnlyAdapter, ReadOnlyUIPort } from "../ReadOnlyAdapter";
 import type { SeparatorAdapter, SeparatorUIPort } from "../SeparatorAdapter";
+import type { ShortcutsAdapter, ShortcutsUIPort } from "../ShortcutsAdapter";
 import type { SymbolsAdapter, SymbolsUIPort } from "../SymbolsAdapter";
 import type { TableAdapter, TableUIPort } from "../TableAdapter";
 import type {
@@ -57,6 +58,7 @@ export type Adapter =
 	| MentionAdapter
 	| ReadOnlyAdapter
 	| SeparatorAdapter
+	| ShortcutsAdapter
 	| SymbolsAdapter
 	| TableAdapter
 	| TemplateVariableAdapter
@@ -83,6 +85,7 @@ export interface AdapterUIPorts {
 	mentionUIPort: MentionUIPort;
 	readOnlyUIPort: ReadOnlyUIPort;
 	separatorUIPort: SeparatorUIPort;
+	shortcutsUIPort: ShortcutsUIPort;
 	symbolsUIPort: SymbolsUIPort;
 	tableUIPort: TableUIPort;
 	templateVariableUIPort: TemplateVariableUIPort;

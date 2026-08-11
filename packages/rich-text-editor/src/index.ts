@@ -16,6 +16,7 @@ export { Markdown } from "./Extensions/Markdown";
 export { Mention } from "./Extensions/Mention";
 export { ReadOnly } from "./Extensions/ReadOnly";
 export { Separator } from "./Extensions/Separator";
+export { Shortcuts } from "./Extensions/Shortcuts";
 export { Symbols } from "./Extensions/Symbols";
 export { Table } from "./Extensions/Table";
 export { TemplateVariable } from "./Extensions/TemplateVariable";

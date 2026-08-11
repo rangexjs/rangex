@@ -17,6 +17,7 @@ export * from "./Markdown";
 export * from "./Mention";
 export * from "./ReadOnly";
 export * from "./Separator";
+export * from "./Shortcuts";
 export * from "./Symbols";
 export * from "./Table";
 export * from "./TemplateVariable";
