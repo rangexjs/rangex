@@ -1,4 +1,5 @@
 import { adapterIds } from "#ports";
+import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
 	FontFamilyOption,
 	FormattingActionState,
@@ -135,7 +136,7 @@ export class FormattingAdapter {
 				defaultLineHeight = { type: "number", value: 1.5 } as const,
 				defaultLineSpacing = { type: "px", value: 0 } as const,
 				defaultTextAlign = "start",
-				fontFamilyOptions,
+				fontFamilyOptions = defaultFontFamilyOptions,
 			},
 			_options,
 		] = params;

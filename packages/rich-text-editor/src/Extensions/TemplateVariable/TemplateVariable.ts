@@ -6,7 +6,6 @@ import { createExtension } from "../_Utilities";
 
 export const TemplateVariable = createExtension<typeof TemplateVariableAdapter>(
 	{
-		defaultSettings: {},
 		createAdapter: (settings, options) =>
 			new TemplateVariableAdapter(settings, options),
 		configure: ({ adapter, editorAPI }) =>

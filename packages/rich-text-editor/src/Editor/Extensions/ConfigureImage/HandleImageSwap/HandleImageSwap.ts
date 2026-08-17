@@ -1,9 +1,5 @@
 import { assertNever } from "#ports";
-import {
-	isWellFormedUrl,
-	probeMediaSrc,
-	uploadMediaFile,
-} from "../../../_Utilities";
+import { isWellFormedUrl, probeMediaSrc } from "../../../_Utilities";
 import { applyImageSrc } from "../_Utilities";
 import type {
 	HandleImageSwapParams,
@@ -44,7 +40,7 @@ const resolveSwapSrc = async ({
 			swapCheckState: { status: "uploading", progress: 0 },
 		});
 
-		const src = await uploadMediaFile({
+		const src = await editorPort.uploadFile({
 			file,
 			onProgress: (progress) => {
 				if (!isStillCurrent()) {

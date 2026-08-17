@@ -3,10 +3,14 @@ import type {
 	MediaResolveParams,
 	MediaType,
 } from "#ports";
+import type { UploadMediaFileFn } from "../_Utilities";
 
-export type EmptyMediaAdapterConstructorParams = CreateAdapterConstructor<{
-	[index: string]: never;
-}>;
+export interface EmptyMediaSettings {
+	uploadFile: UploadMediaFileFn;
+}
+
+export type EmptyMediaAdapterConstructorParams =
+	CreateAdapterConstructor<EmptyMediaSettings>;
 
 export type UploadState =
 	| { status: "idle" }
@@ -88,6 +92,7 @@ export interface UpdateEmptyMediaElementStateParams {
 export type EmptyMediaOnResolveFn = (params: EmitResolveParams) => void;
 
 export interface EmptyMediaEditorPort {
+	readonly uploadFile: UploadMediaFileFn;
 	updateState(params: UpdateEmptyMediaStateParams): void;
 	onInsertRequest(callback: EmptyMediaOnInsertRequestFn): () => void;
 	attach(params: AttachEmptyMediaParams): void;

@@ -5,7 +5,6 @@ import { CheckboxListToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const TodoList = createExtension<typeof TodoListAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) => new TodoListAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureTodoList({ editorPort: adapter.editorPort, editorAPI }),

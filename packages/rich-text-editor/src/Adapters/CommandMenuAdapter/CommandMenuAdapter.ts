@@ -1,5 +1,6 @@
 import type { CommandMenuItemValue } from "#ports";
 import { adapterIds, commandMenuItemsLabel } from "#ports";
+import { defaultCommandMenuItems } from "./CommandMenuAdapter-default";
 import type {
 	CommandMenuAdapterConstructorParams,
 	CommandMenuEditorPort,
@@ -27,7 +28,7 @@ export class CommandMenuAdapter {
 	#editorPort: CommandMenuEditorPort | null = null;
 
 	constructor(...params: CommandMenuAdapterConstructorParams) {
-		const [{ items }, _options] = params;
+		const [{ items = defaultCommandMenuItems }, _options] = params;
 
 		this.#items = items;
 		this.#allowedItems = items;

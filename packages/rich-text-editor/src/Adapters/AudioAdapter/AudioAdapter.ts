@@ -11,6 +11,7 @@ import {
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
 	type OverlayMount,
+	type UploadMediaFileFn,
 } from "../_Utilities";
 import type {
 	AudioAdapterConstructorParams,
@@ -39,6 +40,7 @@ export class AudioAdapter {
 	#quickActionsOverlayMount: OverlayMount;
 	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
+	#uploadFile: UploadMediaFileFn;
 
 	#align: BlockAlignValue = "center";
 	#caption: CaptionState = { enabled: false, position: "below" };
@@ -74,8 +76,9 @@ export class AudioAdapter {
 	#editorPort: AudioEditorPort | null = null;
 
 	constructor(...params: AudioAdapterConstructorParams) {
-		const [_settings, { adapterBus, overlayHost }] = params;
+		const [{ uploadFile }, { adapterBus, overlayHost }] = params;
 
+		this.#uploadFile = uploadFile;
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("audio");
 
@@ -347,6 +350,10 @@ export class AudioAdapter {
 
 			get blockResize() {
 				return adapter.#blockResize.editorBlockResize;
+			},
+
+			get uploadFile() {
+				return adapter.#uploadFile;
 			},
 
 			updateState: (params) => adapter.#updateState(params),

@@ -1,3 +1,4 @@
+export type { ExtensionValue } from "./Extensions";
 export { AccordionItem } from "./Extensions/AccordionItem";
 export { Audio } from "./Extensions/Audio";
 export { BlockQuote } from "./Extensions/BlockQuote";

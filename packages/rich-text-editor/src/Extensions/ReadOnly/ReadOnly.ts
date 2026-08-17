@@ -5,7 +5,6 @@ import { ReadOnlyToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const ReadOnly = createExtension<typeof ReadOnlyAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) => new ReadOnlyAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>
 		configureReadOnly({ editorPort: adapter.editorPort, editorAPI }),

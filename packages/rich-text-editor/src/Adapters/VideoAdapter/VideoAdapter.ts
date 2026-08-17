@@ -11,6 +11,7 @@ import {
 	type OnCaptionEnabledChangeFn,
 	type OnCaptionPositionChangeFn,
 	type OverlayMount,
+	type UploadMediaFileFn,
 } from "../_Utilities";
 import type {
 	OnVideoAttrChangeFn,
@@ -44,6 +45,7 @@ export class VideoAdapter {
 	#quickActionsOverlayMount: OverlayMount;
 	#swapCardOverlayMount: OverlayMount;
 	#blockResize: BlockResize;
+	#uploadFile: UploadMediaFileFn;
 
 	#align: BlockAlignValue = "center";
 	#objectFit: VideoObjectFitValue = "cover";
@@ -85,8 +87,9 @@ export class VideoAdapter {
 	#editorPort: VideoEditorPort | null = null;
 
 	constructor(...params: VideoAdapterConstructorParams) {
-		const [_settings, { adapterBus, overlayHost }] = params;
+		const [{ uploadFile }, { adapterBus, overlayHost }] = params;
 
+		this.#uploadFile = uploadFile;
 		this.#adapterBus = adapterBus;
 		this.#adapterBus.registerSupportedMediaType("video");
 
@@ -412,6 +415,10 @@ export class VideoAdapter {
 
 			get blockResize() {
 				return adapter.#blockResize.editorBlockResize;
+			},
+
+			get uploadFile() {
+				return adapter.#uploadFile;
 			},
 
 			updateState: (params) => adapter.#updateState(params),

@@ -23,11 +23,6 @@ import { handleImageQuickActionsOverlayAppearance } from "./HandleImageQuickActi
 import { handleImageSwap } from "./HandleImageSwap";
 import { handleImageSwapCardOverlayToggle } from "./HandleImageSwapCardOverlayToggle";
 
-// TODO: file uploads are inlined as base64 data URLs (see uploadMediaFile in
-// src/Editor/_Utilities) instead of going through any upload endpoint or blob
-// storage. This embeds the full image bytes directly in the document and in every
-// snapshot/undo boundary. It works for now but isn't viable long term — needs a pluggable
-// upload mechanism (consumer-supplied endpoint/blob storage) eventually.
 export const configureImage = ({
 	editorPort,
 	editorAPI,

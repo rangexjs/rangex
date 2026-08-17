@@ -7,6 +7,7 @@ import {
 	Embed,
 	Emoji,
 	EmptyMedia,
+	type ExtensionValue,
 	FindReplace,
 	Formatting,
 	Image,
@@ -28,6 +29,39 @@ import {
 } from "@rangex/rich-text-editor";
 import storedSnapshot from "../MockDatabase/Demo.json";
 
+/**
+ * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of
+ * sending it anywhere. A consumer building a real editor should replace this with a function
+ * that uploads to their own storage and resolves the resulting URL.
+ */
+const uploadFile = ({
+	file,
+	onProgress,
+}: {
+	file: File;
+	onProgress?: (progress: number) => void;
+}): Promise<string | null> => {
+	return new Promise((resolve) => {
+		const reader = new FileReader();
+
+		reader.onprogress = (event) => {
+			if (event.lengthComputable) {
+				onProgress?.(event.loaded / event.total);
+			}
+		};
+
+		reader.onload = () => {
+			resolve(reader.result as string);
+		};
+
+		reader.onerror = () => {
+			resolve(null);
+		};
+
+		reader.readAsDataURL(file);
+	});
+};
+
 // window.$snapshot = (node) => {
 // 	const res = createToEditorNodeSnapshot({ editorNode: node });
 
@@ -48,66 +82,42 @@ export const createDevelopmentView = () => {
 		},
 	);
 
+	const extensions: ExtensionValue[] = [
+		Link({}),
+		Mention({}),
+		Formatting({}),
+		EmptyMedia({ uploadFile }),
+		Image({ uploadFile }),
+		Video({ uploadFile }),
+		Audio({ uploadFile }),
+		Embed({}),
+		CodeBlock({}),
+		BlockQuote({}),
+		List({}),
+		TodoList({}),
+		Emoji({}),
+		TemplateVariable({}),
+		Table({}),
+		UndoRedo({}),
+		Symbols({}),
+		FindReplace({}),
+		AccordionItem({}),
+		Separator({}),
+		ReadOnly({}),
+		CommandMenu({}),
+		LineHandler({}),
+		Markdown({}),
+		Shortcuts({}),
+	];
+
 	const emptyRichTextEditor = new RichTextEditor({
-		extensions: [
-			Link(),
-			Mention(),
-			Formatting(),
-			EmptyMedia(),
-			Image(),
-			Video(),
-			Audio(),
-			Embed(),
-			CodeBlock(),
-			BlockQuote(),
-			List(),
-			TodoList(),
-			Emoji(),
-			TemplateVariable(),
-			Table(),
-			UndoRedo(),
-			Symbols(),
-			FindReplace(),
-			AccordionItem(),
-			Separator(),
-			ReadOnly(),
-			CommandMenu(),
-			LineHandler(),
-			Markdown(),
-			Shortcuts(),
-		],
+		extensions,
 	});
 
 	const filledRichTextEditor = new RichTextEditor({
 		// @ts-expect-error
 		storedSnapshot,
-		extensions: [
-			Link(),
-			Mention(),
-			Formatting(),
-			EmptyMedia(),
-			Image(),
-			Video(),
-			Audio(),
-			Embed(),
-			CodeBlock(),
-			BlockQuote(),
-			List(),
-			TodoList(),
-			Emoji(),
-			TemplateVariable(),
-			Table(),
-			UndoRedo(),
-			Symbols(),
-			FindReplace(),
-			AccordionItem(),
-			Separator(),
-			ReadOnly(),
-			CommandMenu(),
-			LineHandler(),
-			Markdown(),
-			Shortcuts(),
-		],
+		extensions,
 	});
 
 	maxViewContainer.append(emptyRichTextEditor, filledRichTextEditor);

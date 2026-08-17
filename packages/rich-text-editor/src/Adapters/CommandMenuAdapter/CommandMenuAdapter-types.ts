@@ -1,7 +1,7 @@
 import type { CommandMenuItemValue, CreateAdapterConstructor } from "#ports";
 
 export interface CommandMenuSettings {
-	items: CommandMenuItemValue[];
+	items?: CommandMenuItemValue[];
 }
 
 export type CommandMenuAdapterConstructorParams =

@@ -12,7 +12,7 @@ export interface FormattingSettings {
 	defaultLineHeight?: FormattingLineHeightValue;
 	defaultLineSpacing?: FormattingLineSpacingValue;
 	defaultTextAlign?: FormattingTextAlignValue;
-	fontFamilyOptions: FontFamilyOption[];
+	fontFamilyOptions?: FontFamilyOption[];
 }
 
 export type FormattingAdapterConstructorParams =

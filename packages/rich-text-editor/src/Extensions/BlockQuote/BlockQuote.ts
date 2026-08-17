@@ -5,7 +5,6 @@ import { BlockQuoteToolbarButton } from "#ui-extensions";
 import { createExtension } from "../_Utilities";
 
 export const BlockQuote = createExtension<typeof BlockQuoteAdapter>({
-	defaultSettings: {},
 	createAdapter: (settings, options) =>
 		new BlockQuoteAdapter(settings, options),
 	configure: ({ adapter, editorAPI }) =>

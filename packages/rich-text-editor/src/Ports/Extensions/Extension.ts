@@ -47,7 +47,6 @@ export type GetSettings<T> = T extends AdapterBlueprint
 	: never;
 
 export interface ExtensionDefinition<Adapter extends AdapterBlueprint> {
-	defaultSettings: GetSettings<Adapter>;
 	createAdapter: (
 		settings: GetSettings<Adapter>,
 		options: AdapterOptions,
