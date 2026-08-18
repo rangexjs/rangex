@@ -1,6 +1,6 @@
 # 11. SnapshotTimeline
 
-`SnapshotTimeline` is the undo/redo system. Each `RangeX` instance has exactly one timeline. Consumers access it via `editorAPI.getSnapshotTimeline()`, which returns a `SnapshotTimeline`.
+`SnapshotTimeline` is the undo/redo system. Each editor instance has exactly one timeline. Consumers access it via `editorAPI.getSnapshotTimeline()`, which returns a `SnapshotTimeline`.
 
 ```ts
 const timeline = editorAPI.getSnapshotTimeline();

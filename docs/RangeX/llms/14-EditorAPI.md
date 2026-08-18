@@ -1,16 +1,28 @@
 # 14. EditorAPI
 
-`EditorAPI` is the main interface through which consumers interact with the editor at runtime. It is exposed via the `editorAPI` getter on the `RangeX` instance:
+`EditorAPI` is the main interface through which consumers interact with the editor at runtime. It is the direct return value of `createEditorAPI()`:
 
 ```ts
-const { editorAPI } = rangeX;
+const { editorAPI } = createEditorAPI({ ... });
 ```
 
-`editorAPI` is not a class — it is a plain object whose methods are bound to the `RangeX` instance. All state lives in the `RangeX` instance; the object itself can be passed around freely.
+`editorAPI` is a plain object whose methods close over the editor's internal state — it can be passed around freely.
 
 ---
 
 ## Properties
+
+### `host`
+
+```ts
+readonly host: HTMLElement
+```
+
+The plain element that owns the editor's shadow root. Append this to the document to mount the editor:
+
+```ts
+document.body.appendChild(editorAPI.host);
+```
 
 ### `shadowRoot`
 
@@ -18,7 +30,7 @@ const { editorAPI } = rangeX;
 readonly shadowRoot: ShadowRoot
 ```
 
-The `ShadowRoot` attached to the `RangeX` element. All editor DOM — the `RootEditable`, styles, the caret anchor, and internal structural elements — lives inside this shadow root. Useful when:
+The `ShadowRoot` attached to `host`. All editor DOM — the `RootEditable`, styles, the caret anchor, and internal structural elements — lives inside this shadow root. Useful when:
 
 - Querying elements within the shadow tree
 - Targeting CSS from an external stylesheet that needs shadow DOM scope
@@ -30,7 +42,7 @@ The `ShadowRoot` attached to the `RangeX` element. All editor DOM — the `RootE
 readonly rootEditable: RootEditable
 ```
 
-The `RootEditable` node — the top-level editor element. This is the same node passed (or constructed from a snapshot) in the `RangeX` constructor. Direct access is needed for tree traversal, node creation context, and any operation that takes a `RootEditable` parameter.
+The `RootEditable` node — the top-level editor element. This is the same node passed (or constructed from a snapshot) to `createEditorAPI`. Direct access is needed for tree traversal, node creation context, and any operation that takes a `RootEditable` parameter.
 
 ---
 
@@ -527,7 +539,7 @@ Creates a serializable snapshot of the current editor content for **persistence*
 
 ```ts
 interface StoredSnapshot {
-  version: string;                                     // RangeX major version at snapshot time
+  version: string;                                     // core version at snapshot time
   snapshot: RootEditableSnapshot;                      // full tree snapshot
   glyphFormatterInlineTagsOrder: GlyphFormatterInlineTag[]; // serialization order
 }
@@ -537,10 +549,10 @@ interface StoredSnapshot {
 
 The snapshot is a deep, plain-object representation of the entire editor tree — every element, attribute, and text node, recursively. It can be safely serialized to JSON.
 
-To restore a `StoredSnapshot`, pass it as `rootEditableFrom` in the `RangeX` constructor:
+To restore a `StoredSnapshot`, pass it as `rootEditableFrom` to `createEditorAPI`:
 
 ```ts
-const rangeX = new RangeX({
+const { editorAPI } = createEditorAPI({
   rootEditableFrom: {
     type: "snapshot",
     storedSnapshot,
@@ -550,6 +562,18 @@ const rangeX = new RangeX({
 ```
 
 **Note:** `createStoredSnapshot()` snapshots the current live state of the editor. If you need to capture state at a specific undo/redo step, first call `stepTo({ index })` on the `SnapshotTimeline` (obtained via `editorAPI.getSnapshotTimeline()`), then call `createStoredSnapshot()`.
+
+---
+
+## Destroying the editor
+
+### `destroy()`
+
+```ts
+destroy(): void
+```
+
+Tears down the editor instance: walks the tree to release per-node interactive bindings, then unregisters the instance from internal bookkeeping. Call this when the editor is being permanently removed (e.g. unmounting `editorAPI.host` from the document) to avoid leaking listeners and internal state. Does not remove `editorAPI.host` from the document itself — remove it separately if it's still attached.
 
 ---
 

@@ -1,27 +1,23 @@
 # 3. Setup & Initialization
 
-## Registering the element
-
-Call `defineRangeX()` once before using the editor. It registers `<rich-text-area>` as a custom element and returns the `RangeX` class.
-
-```ts
-import { defineRangeX } from "rich-text-area";
-
-const { RangeX } = defineRangeX({});
-```
-
 ## Creating an instance
 
+Call `createEditorAPI()` to build an editor. It returns an `editorAPI` object.
+
 ```ts
-const rangeX = new RangeX({
+import { createEditorAPI } from "rich-text-area";
+
+const { editorAPI } = createEditorAPI({
 	rootEditableFrom: { type: "node", node: rootEditable },
 	shadowRootOptions: { mode: "open", serializable: true },
 	isTextAreaEditable: true,  // default — omit if not needed
 	isTextAnimation: false,    // default — omit if not needed
 });
 
-document.body.appendChild(rangeX);
+document.body.appendChild(editorAPI.host);
 ```
+
+`editorAPI.host` is a plain element owning the editor's shadow root — append it wherever the editor should live in the page.
 
 ## `rootEditableFrom`
 
@@ -44,13 +40,14 @@ Controls how the editor's content is initialized. Two shapes:
 
 ## Accessing the API
 
-All editor operations go through `rangeX.editorAPI`:
+All editor operations go through the `editorAPI` object returned by `createEditorAPI`:
 
 ```ts
-const api = rangeX.editorAPI;
-
-api.focus();
-api.getEditorSelection();
-api.insertNode({ ... });
+editorAPI.focus();
+editorAPI.getEditorSelection();
+editorAPI.insertNode({ ... });
 ```
 
+## Destroying an instance
+
+Call `editorAPI.destroy()` when the editor is being permanently removed to release internal bindings. See [`destroy()`](#destroying-the-editor) in section 14.

@@ -39,7 +39,7 @@ When a schema constraint is violated (e.g. a component is not in `allowedCompone
 
 ## `createRootEditable(params)`
 
-Creates a `RootEditable`. This is the top-level container passed to `new RangeX(...)`.
+Creates a `RootEditable`. This is the top-level container passed to `createEditorAPI(...)`.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|

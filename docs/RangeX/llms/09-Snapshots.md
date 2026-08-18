@@ -36,10 +36,10 @@ Call this whenever you want to save the current content — e.g. on `editorSelec
 
 **Restoring from a `StoredSnapshot`:**
 
-Pass the snapshot to the `RangeX` constructor instead of a `RootEditable` node:
+Pass the snapshot to `createEditorAPI` instead of a `RootEditable` node:
 
 ```ts
-const rangeX = new RangeX({
+const { editorAPI } = createEditorAPI({
   rootEditableFrom: {
     type: "snapshot",
     storedSnapshot: JSON.parse(savedJson),
@@ -98,7 +98,7 @@ const snapshot = getSnapshot(); // EditorSnapshot — a fresh, mutable deep clon
 
 ## SnapshotView
 
-`SnapshotView` is a read-only, plain-object rendering of a `StoredSnapshot`. It is created via `createSnapshotView` (imported from `"rich-text-area"`) and is useful for rendering a content preview without mounting a full `RangeX` editor instance.
+`SnapshotView` is a read-only, plain-object rendering of a `StoredSnapshot`. It is created via `createSnapshotView` (imported from `"rich-text-area"`) and is useful for rendering a content preview without mounting a full editor instance.
 
 ```ts
 import { createSnapshotView } from "rich-text-area";
@@ -206,7 +206,7 @@ if (node.localName !== "slot") {
 
 ## SnapshotManager
 
-`snapshotManager` is a singleton exported from `"rich-text-area"`, independent of any particular `RangeX` instance. It exists so a `StoredSnapshot` can be inspected and edited programmatically without mounting a live `RangeX` instance at all — e.g. a server-side job migrating old content, or bulk-editing saved documents. It converts between two plain-object forms of a node that can be used in a server environment — no browser APIs needed:
+`snapshotManager` is a singleton exported from `"rich-text-area"`, independent of any particular editor instance. It exists so a `StoredSnapshot` can be inspected and edited programmatically without mounting a live editor instance at all — e.g. a server-side job migrating old content, or bulk-editing saved documents. It converts between two plain-object forms of a node that can be used in a server environment — no browser APIs needed:
 
 - **`EditorNodeSnapshot`** — this is what `StoredSnapshot`/`EditorSnapshot` are built from.
 - **`EditorNodeDraft`** — the same plain snapshot object, but with a DOM-like navigation/mutation API attached directly onto it, letting you walk and splice it with familiar DOM-style calls. It is **not** a separate class and has no live DOM behind it — it behaves like a detached, in-memory DOM tree, entirely outside the browser and outside any live editor instance.

@@ -1,6 +1,6 @@
 # 10. Events
 
-RangeX has two distinct event systems: **editor events** (high-level editor state changes) and **DOM events** (native browser events on editor elements). Both are accessed through `editorAPI`.
+The engine has two distinct event systems: **editor events** (high-level editor state changes) and **DOM events** (native browser events on editor elements). Both are accessed through `editorAPI`.
 
 ---
 

@@ -1,3 +1,4 @@
+import type { EditorAPI } from "rich-text-area";
 import {
 	anchorPositioningStyleSheet,
 	configureCustomStyles,
@@ -18,6 +19,7 @@ import type {
 
 export class RichTextEditor extends HTMLElement {
 	#richTextEditorUI: RichTextEditorUI;
+	#editorAPI: EditorAPI;
 	#cleanups: Set<() => void> = new Set();
 
 	constructor({
@@ -28,8 +30,8 @@ export class RichTextEditor extends HTMLElement {
 		super();
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
-		const rangeX = createRangeX({ storedSnapshot });
-		const { editorAPI } = rangeX;
+		const { editorAPI } = createRangeX({ storedSnapshot });
+		this.#editorAPI = editorAPI;
 
 		const adapterBus = new AdapterBus();
 		const overlayHost = new OverlayHost();
@@ -50,7 +52,7 @@ export class RichTextEditor extends HTMLElement {
 		});
 
 		this.#richTextEditorUI = new RichTextEditorUI({
-			richTextArea: rangeX,
+			richTextArea: editorAPI.host,
 			toolbarButtons,
 			extensions: uiExtensions,
 			uiPorts,
@@ -92,6 +94,7 @@ export class RichTextEditor extends HTMLElement {
 		}
 
 		this.#richTextEditorUI.dispose();
+		this.#editorAPI.destroy();
 	}
 }
 

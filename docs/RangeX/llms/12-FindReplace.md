@@ -5,7 +5,7 @@
 Obtain the instance from the editor API:
 
 ```ts
-const findReplace = rangeX.editorAPI.getFindReplace();
+const findReplace = editorAPI.getFindReplace();
 ```
 
 Always returns the same object — `FindReplace` is a singleton per editor instance.
@@ -174,7 +174,7 @@ unsubscribeMatches();
 ## Full usage example
 
 ```ts
-const findReplace = rangeX.editorAPI.getFindReplace();
+const findReplace = editorAPI.getFindReplace();
 
 findReplace.enable();
 findReplace.setCriteria({ pattern: { source: "hello", flags: "gi" } });
