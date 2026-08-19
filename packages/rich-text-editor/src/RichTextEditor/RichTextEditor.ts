@@ -88,6 +88,12 @@ export class RichTextEditor extends HTMLElement {
 		configureSettings({ richTextEditorUI: this.#richTextEditorUI, editorAPI });
 	}
 
+	createStoredSnapshot() {
+		const storedSnapshot = this.#editorAPI.createStoredSnapshot();
+
+		return storedSnapshot;
+	}
+
 	destroy() {
 		for (const cleanup of this.#cleanups) {
 			cleanup();

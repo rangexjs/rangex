@@ -1,3 +1,4 @@
+export { getMediaSources } from "./Editor/_Utilities/GetMediaSources";
 export type { ExtensionValue } from "./Extensions";
 export { AccordionItem } from "./Extensions/AccordionItem";
 export { Audio } from "./Extensions/Audio";
