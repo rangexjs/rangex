@@ -6,6 +6,6 @@ export interface CreateRootEditableFromParams {
 
 export type CreateRootEditableFromResult = CreateRootEditableFrom;
 
-export interface CreateRangeXParams {
+export interface CreateEditorParams {
 	storedSnapshot: StoredSnapshot | undefined;
 }

@@ -1,4 +1,4 @@
-import { caretAnchorName } from "rich-text-area";
+import { caretAnchorRoleSelector } from "rich-text-area";
 import { assertNever } from "#ports";
 import { positionToSelection } from "../../../_Utilities";
 import { getLinkInsertionMode } from "../_Utilities";
@@ -21,7 +21,7 @@ const openAtCaret = ({
 }: OpenAtCaretParams) => {
 	const { shadowRoot } = editorAPI;
 
-	const caretAnchor = shadowRoot.querySelector(caretAnchorName);
+	const caretAnchor = shadowRoot.querySelector(caretAnchorRoleSelector);
 
 	if (!(caretAnchor instanceof HTMLElement)) {
 		throw new Error("CaretAnchor's type is invalid.");

@@ -7,10 +7,10 @@ import {
 import { createRootStorage } from "#editor";
 import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
 import type {
-	CreateRangeXParams,
+	CreateEditorParams,
 	CreateRootEditableFromParams,
 	CreateRootEditableFromResult,
-} from "./CreateRangeX-types";
+} from "./CreateEditor-types";
 
 const createRootEditableFrom = ({
 	storedSnapshot,
@@ -35,7 +35,7 @@ const createRootEditableFrom = ({
 	return { type: "node", node: rootEditable };
 };
 
-export const createRangeX = ({ storedSnapshot }: CreateRangeXParams) => {
+export const createEditor = ({ storedSnapshot }: CreateEditorParams) => {
 	const rootEditableFrom = createRootEditableFrom({ storedSnapshot });
 
 	const { editorAPI } = createEditorAPI({

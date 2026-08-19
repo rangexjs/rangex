@@ -1,4 +1,4 @@
-import { caretAnchorName, EditorRange } from "rich-text-area";
+import { caretAnchorRoleSelector, EditorRange } from "rich-text-area";
 import type { PositionToSelectionParams } from "./PositionToSelection-types";
 
 /**
@@ -43,8 +43,9 @@ export const positionToSelection = ({
 	});
 
 	if (range.isSinglePoint) {
-		const caretAnchor =
-			editorAPI.shadowRoot.querySelector<HTMLElement>(caretAnchorName);
+		const caretAnchor = editorAPI.shadowRoot.querySelector<HTMLElement>(
+			caretAnchorRoleSelector,
+		);
 
 		if (!caretAnchor) {
 			throw new Error("CaretAnchor can't be null.");

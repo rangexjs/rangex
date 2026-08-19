@@ -11,7 +11,7 @@ import { AdapterBus, OverlayHost, type UIExtension } from "#ports";
 import { RichTextEditorUI } from "#ui";
 import { toolbarButtons as defaultToolbarButtons } from "./_Utilities";
 import { buildUIPorts } from "./BuildUIPorts";
-import { createRangeX } from "./CreateRangeX";
+import { createEditor } from "./CreateEditor";
 import type {
 	ErasedConfigureExtensionFn,
 	RichTextEditorParams,
@@ -30,7 +30,7 @@ export class RichTextEditor extends HTMLElement {
 		super();
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
-		const { editorAPI } = createRangeX({ storedSnapshot });
+		const { editorAPI } = createEditor({ storedSnapshot });
 		this.#editorAPI = editorAPI;
 
 		const adapterBus = new AdapterBus();
