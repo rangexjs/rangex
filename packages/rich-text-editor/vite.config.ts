@@ -9,6 +9,7 @@ export default defineConfig({
 	},
 	build: {
 		outDir: "dist",
+		cssTarget: ["chrome150", "safari26", "firefox150"],
 		lib: {
 			entry: "src/index.ts",
 			fileName: "index",
