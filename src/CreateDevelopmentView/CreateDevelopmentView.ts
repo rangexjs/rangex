@@ -27,7 +27,7 @@ import {
 	UndoRedo,
 	Video,
 } from "@rangex/rich-text-editor";
-import storedSnapshot from "../MockDatabase/Demo.json";
+import storedSnapshot from "../MockDatabase/Demo-features.json";
 
 /**
  * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of

@@ -64,7 +64,7 @@ export const App = (props: AppProps) => {
 					toolbarButtons={props.toolbarButtons}
 					extensions={props.extensions}
 				/>
-				<div class="relative max-h-300 overflow-y-auto">
+				<div class="relative max-h-210 overflow-y-auto">
 					<div>{props.richTextArea}</div>
 					<div ref={props.overlayContainerRef} />
 					<div>
