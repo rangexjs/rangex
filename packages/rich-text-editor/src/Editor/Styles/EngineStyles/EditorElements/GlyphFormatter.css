@@ -1,5 +1,6 @@
 [data-rx-editor-role="glyph-formatter"] {
-	&[data-rx-inline-tags~="code"] {
+	&[data-rx-inline-tags~="code"],
+	& code {
 		font-family: monospace;
 		font-size: 14px;
 		color: light-dark(var(--color-rose-700), var(--color-rose-400));

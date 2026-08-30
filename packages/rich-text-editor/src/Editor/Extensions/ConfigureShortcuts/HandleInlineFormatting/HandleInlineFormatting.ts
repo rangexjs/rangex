@@ -1,6 +1,7 @@
 import type {
 	GlyphFormatterInlineTag,
 	RangeFormatGlyphFormatterInlineTags,
+	TextFormatInlineTags,
 } from "rich-text-area";
 import { selectionStylesChangeEventType } from "rich-text-area";
 import type {
@@ -33,17 +34,22 @@ const matchInlineFormattingShortcut = (
 /**
  * Toggles bold/italic/underline/strikethrough/code on Ctrl/Cmd(+Shift)+letter. Reads the tag's
  * current state off the RangeFormat cached from selectionStylesChange rather than tracking its
- * own copy of the selection's formatting.
+ * own copy of the selection's formatting. In caret mode (collapsed selection), a pending toggle
+ * lives in `textFormatInlineTagsState` and overrides the RangeFormat's `state` until the next
+ * glyph is typed, so it takes precedence when present.
  */
 export const handleInlineFormatting = ({
 	editorAPI,
 }: HandleInlineFormattingParams) => {
 	let rangeFormat: RangeFormatGlyphFormatterInlineTags | null = null;
+	let textFormatInlineTagsState: TextFormatInlineTags | null = null;
 
 	const unsubscribeSelectionStylesChange = editorAPI.subscribeEditorEvent({
 		type: selectionStylesChangeEventType,
 		callback: ({ selectionFormatStyles }) => {
 			rangeFormat = selectionFormatStyles.glyphFormatterInlineTags;
+			textFormatInlineTagsState =
+				selectionFormatStyles.textFormatInlineTagsState;
 		},
 	});
 
@@ -66,8 +72,11 @@ export const handleInlineFormatting = ({
 				return false;
 			}
 
+			const caretState = textFormatInlineTagsState?.[tag];
+			const applied = caretState ?? state === "applied";
+
 			editorAPI.updateSelectionStyles({
-				inlineTags: { [tag]: state !== "applied" },
+				inlineTags: { [tag]: !applied },
 			});
 
 			editorAPI.focus();

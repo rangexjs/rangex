@@ -69,7 +69,7 @@ const findLineAtPoint = ({
 	clientY,
 }: FindLineAtPointParams): FindLineAtPointResult => {
 	const { shadowRoot, rootEditable } = editorAPI;
-	const rangeXHost = shadowRoot.host;
+	const editorHost = shadowRoot.host;
 
 	const shadowRoots = collectShadowRoots({ editorAPI });
 
@@ -91,7 +91,7 @@ const findLineAtPoint = ({
 		return line;
 	}
 
-	const slottedElement = [...rangeXHost.children].find((child) =>
+	const slottedElement = [...editorHost.children].find((child) =>
 		child.contains(offsetNode),
 	);
 

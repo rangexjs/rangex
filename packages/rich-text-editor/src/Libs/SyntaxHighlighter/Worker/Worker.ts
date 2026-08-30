@@ -1,9 +1,7 @@
-import { createHighlighter } from "shiki";
+import { createHighlighterCore } from "@shikijs/core";
+import { createJavaScriptRegexEngine } from "@shikijs/engine-javascript";
 import { assertNever } from "#ports";
-import {
-	highlighterLangs,
-	highlighterThemes,
-} from "../SyntaxHighlighter-constants";
+import { highlighterThemes } from "../SyntaxHighlighter-constants";
 import type {
 	HighlightInfo,
 	ThemeBackgrounds,
@@ -19,9 +17,45 @@ import type {
 	WorkerResponse,
 } from "./Worker-types";
 
-const highlighterPromise = createHighlighter({
-	langs: highlighterLangs,
-	themes: highlighterThemes,
+const highlighterPromise = createHighlighterCore({
+	langs: [
+		() => import("@shikijs/langs/bash"),
+		() => import("@shikijs/langs/c"),
+		() => import("@shikijs/langs/cpp"),
+		() => import("@shikijs/langs/csharp"),
+		() => import("@shikijs/langs/css"),
+		() => import("@shikijs/langs/dart"),
+		() => import("@shikijs/langs/go"),
+		() => import("@shikijs/langs/html"),
+		() => import("@shikijs/langs/java"),
+		() => import("@shikijs/langs/javascript"),
+		() => import("@shikijs/langs/json"),
+		() => import("@shikijs/langs/kotlin"),
+		() => import("@shikijs/langs/markdown"),
+		() => import("@shikijs/langs/php"),
+		() => import("@shikijs/langs/python"),
+		() => import("@shikijs/langs/ruby"),
+		() => import("@shikijs/langs/rust"),
+		() => import("@shikijs/langs/sql"),
+		() => import("@shikijs/langs/swift"),
+		() => import("@shikijs/langs/tsx"),
+		() => import("@shikijs/langs/typescript"),
+	],
+	themes: [
+		() => import("@shikijs/themes/catppuccin-mocha"),
+		() => import("@shikijs/themes/dark-plus"),
+		() => import("@shikijs/themes/dracula"),
+		() => import("@shikijs/themes/github-dark"),
+		() => import("@shikijs/themes/github-light"),
+		() => import("@shikijs/themes/light-plus"),
+		() => import("@shikijs/themes/monokai"),
+		() => import("@shikijs/themes/nord"),
+		() => import("@shikijs/themes/one-dark-pro"),
+		() => import("@shikijs/themes/solarized-dark"),
+		() => import("@shikijs/themes/solarized-light"),
+		() => import("@shikijs/themes/tokyo-night"),
+	],
+	engine: createJavaScriptRegexEngine(),
 });
 
 const getTokens = async ({

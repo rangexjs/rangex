@@ -1,18 +1,16 @@
 import {
 	createBeamText,
 	createContentLine,
+	createEditorAPI,
 	createRootEditable,
-	defineRangeX,
 } from "rich-text-area";
 import { createRootStorage } from "#editor";
 import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
 import type {
-	CreateRangeXParams,
+	CreateEditorParams,
 	CreateRootEditableFromParams,
 	CreateRootEditableFromResult,
-} from "./CreateRangeX-types";
-
-const { RangeX } = defineRangeX({});
+} from "./CreateEditor-types";
 
 const createRootEditableFrom = ({
 	storedSnapshot,
@@ -37,10 +35,10 @@ const createRootEditableFrom = ({
 	return { type: "node", node: rootEditable };
 };
 
-export const createRangeX = ({ storedSnapshot }: CreateRangeXParams) => {
+export const createEditor = ({ storedSnapshot }: CreateEditorParams) => {
 	const rootEditableFrom = createRootEditableFrom({ storedSnapshot });
 
-	return new RangeX({
+	const { editorAPI } = createEditorAPI({
 		rootEditableFrom,
 		shadowRootOptions: {
 			mode: "open",
@@ -48,4 +46,8 @@ export const createRangeX = ({ storedSnapshot }: CreateRangeXParams) => {
 			slotAssignment: "manual",
 		},
 	});
+
+	editorAPI.host.classList.add("editor-host");
+
+	return { editorAPI };
 };

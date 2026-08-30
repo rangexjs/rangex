@@ -15,7 +15,6 @@ import {
 	GlyphFormatter,
 	GlyphFormatterRx,
 	Image,
-	InternalElementsRx,
 	Link,
 	LinkRx,
 	List,
@@ -28,6 +27,7 @@ import {
 	TemplateVariable,
 	TodoList,
 	Video,
+	WidgetElementsRx,
 } from "../EngineStyles";
 import type { GetStyleSheetTextParams } from "./GetStyleSheetText-types";
 
@@ -64,10 +64,10 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 		ComponentRx +
 		EngineGlobalStylesRx +
 		GlyphFormatterRx +
-		InternalElementsRx +
 		LinkRx +
 		RootEditableRx +
-		TableRx;
+		TableRx +
+		WidgetElementsRx;
 
 	return styleSheetText + rxStyleSheetText;
 };
