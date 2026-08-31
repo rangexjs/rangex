@@ -36,8 +36,9 @@ export const handleCodeBlockOverlayAppearance = ({
 			anchorController.show(blockComponent, {
 				clear: true,
 				position: "absolute",
-				top: "calc(anchor(top) + 4px)",
-				right: "calc(anchor(right) + 4px)",
+				top: "calc(anchor(top) - 40px)",
+				// right: "calc(anchor(right) + 4px)",
+				"justify-self": "center",
 			});
 		},
 		onClose() {

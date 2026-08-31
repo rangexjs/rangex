@@ -1,0 +1,86 @@
+@keyframes caret-blinking {
+	0% {
+		opacity: 1;
+	}
+	49% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+[data-rx-widget-role="caret-anchor"] {
+	background-color: light-dark(var(--color-black), var(--color-white));
+
+	&[data-rx-interactive-blink-state="running"] {
+		animation: 1.1s linear infinite caret-blinking;
+	}
+
+	&[data-rx-interactive-editor-state="idle"] {
+		transition-property: top, left;
+		transition-duration: 100ms;
+		transition-timing-function: ease-out;
+	}
+
+	&[data-rx-interactive-display-type="block"] {
+		width: anchor-size(width);
+		height: 1px;
+	}
+
+	&[data-rx-interactive-display-type="inline"] {
+		width: 1px;
+	}
+}
+
+[data-rx-widget-role="col-resizer"] {
+	width: 8px;
+	cursor: col-resize;
+}
+
+[data-rx-widget-role="row-resizer"] {
+	height: 8px;
+	cursor: row-resize;
+}
+
+[data-rx-widget-role="col-resizer"],
+[data-rx-widget-role="row-resizer"] {
+	&:hover {
+		background-color: light-dark(
+			color(from var(--color-primary-500) srgb r g b / 0.3),
+			color(from var(--color-primary-400) srgb r g b / 0.35)
+		);
+	}
+
+	&:active {
+		background-color: light-dark(
+			color(from var(--color-primary-500) srgb r g b / 0.4),
+			color(from var(--color-primary-400) srgb r g b / 0.45)
+		);
+	}
+}
+
+[data-rx-widget-role="caret-drop-indicator"] {
+	transition-property: top, left;
+	transition-duration: 75ms;
+	transition-timing-function: ease-out;
+
+	&[data-rx-interactive-visible="true"] {
+		width: 2px;
+		background-color: var(--color-primary-500);
+	}
+}
+
+[data-rx-widget-role="line-drop-indicator"] {
+	transition-property: top, left;
+	transition-duration: 75ms;
+	transition-timing-function: ease-out;
+
+	&[data-rx-interactive-visible="true"] {
+		height: 2px;
+		background-color: var(--color-primary-500);
+	}
+}

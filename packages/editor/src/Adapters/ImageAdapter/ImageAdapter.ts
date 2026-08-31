@@ -1,0 +1,244 @@
+import type { AdapterBus } from "../_Utilities";
+import {
+	type BlockAlignValue,
+	type BlockResize,
+	type CaptionPosition,
+	type CaptionState,
+	createBlockResize,
+	type OnAlignChangeFn,
+	type OnCaptionEnabledChangeFn,
+	type OnCaptionPositionChangeFn,
+} from "../_Utilities";
+import type {
+	ImageAdapterConstructorParams,
+	ImageAspectRatioValue,
+	ImageConfigPort,
+	ImageObjectFitValue,
+	ImagePublicPort,
+	OnAlignUpdateCallbackFn,
+	OnAltTextUpdateCallbackFn,
+	OnAspectRationCallbackFn,
+	OnCaptionUpdateCallbackFn,
+	OnImageAttrChangeCallbackFn,
+	OnObjectFitUpdateCallbackFn,
+	UpdateImageStateParams,
+} from "./ImageAdapter-types";
+
+export class ImageAdapter {
+	#adapterBus: AdapterBus;
+	#floatingEl = document.createElement("div");
+	#blockResize: BlockResize;
+
+	#align: BlockAlignValue = "center";
+	#objectFit: ImageObjectFitValue = "cover";
+	#aspectRatio: ImageAspectRatioValue = "auto";
+	#caption: CaptionState = { enabled: false, position: "below" };
+	#altText = "";
+
+	#alignListeners: Set<OnAlignUpdateCallbackFn> = new Set();
+	#objectFitListeners: Set<OnObjectFitUpdateCallbackFn> = new Set();
+	#aspectRatioListeners: Set<OnAspectRationCallbackFn> = new Set();
+	#captionListeners: Set<OnCaptionUpdateCallbackFn> = new Set();
+	#altTextListeners: Set<OnAltTextUpdateCallbackFn> = new Set();
+
+	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
+	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
+	#onImageAttrChangeListeners: Set<OnImageAttrChangeCallbackFn> = new Set();
+
+	#configPort: ImageConfigPort | null = null;
+	#publicPort: ImagePublicPort | null = null;
+
+	constructor(...params: ImageAdapterConstructorParams) {
+		const [_settings, { adapterBus, floatingContainer }] = params;
+
+		this.#adapterBus = adapterBus;
+		this.#adapterBus.registerSupportedMediaType("image");
+
+		floatingContainer.append(this.#floatingEl);
+
+		this.#blockResize = createBlockResize({ floatingContainer });
+	}
+
+	#updateState({
+		align,
+		objectFit,
+		aspectRatio,
+		caption,
+		altText,
+	}: UpdateImageStateParams) {
+		if (align !== undefined) {
+			this.#align = align;
+
+			for (const listener of this.#alignListeners) {
+				listener(this.#align);
+			}
+		}
+
+		if (objectFit !== undefined) {
+			this.#objectFit = objectFit;
+
+			for (const listener of this.#objectFitListeners) {
+				listener(this.#objectFit);
+			}
+		}
+
+		if (aspectRatio !== undefined) {
+			this.#aspectRatio = aspectRatio;
+
+			for (const listener of this.#aspectRatioListeners) {
+				listener(this.#aspectRatio);
+			}
+		}
+
+		if (caption !== undefined) {
+			this.#caption = caption;
+
+			for (const listener of this.#captionListeners) {
+				listener(this.#caption);
+			}
+		}
+
+		if (altText !== undefined) {
+			this.#altText = altText;
+
+			for (const listener of this.#altTextListeners) {
+				listener(this.#altText);
+			}
+		}
+	}
+
+	get configPort(): ImageConfigPort {
+		const adapter = this;
+
+		this.#configPort ??= {
+			get blockResize() {
+				return adapter.#blockResize.configBlockResize;
+			},
+
+			get floatingEl() {
+				return adapter.#floatingEl;
+			},
+
+			updateState(params) {
+				adapter.#updateState(params);
+			},
+
+			setAlign(align) {
+				adapter.#updateState({ align });
+			},
+
+			onAlignChange(callback) {
+				adapter.#onAlignChangeListeners.add(callback);
+				return () => adapter.#onAlignChangeListeners.delete(callback);
+			},
+
+			setCaption(caption) {
+				adapter.#updateState({ caption });
+			},
+
+			onCaptionEnabledChange(callback) {
+				adapter.#onCaptionEnabledChangeListeners.add(callback);
+				return () => adapter.#onCaptionEnabledChangeListeners.delete(callback);
+			},
+
+			onCaptionPositionChange(callback) {
+				adapter.#onCaptionPositionChangeListeners.add(callback);
+				return () => adapter.#onCaptionPositionChangeListeners.delete(callback);
+			},
+
+			onImageAttrChange(callback) {
+				adapter.#onImageAttrChangeListeners.add(callback);
+				return () => adapter.#onImageAttrChangeListeners.delete(callback);
+			},
+
+			onMediaResolve(callback) {
+				const cleanup = adapter.#adapterBus.onMediaResolve(callback);
+				return () => cleanup();
+			},
+		};
+
+		return this.#configPort;
+	}
+
+	get publicPort(): ImagePublicPort {
+		const adapter = this;
+
+		this.#publicPort ??= {
+			get blockResize() {
+				return adapter.#blockResize.publicBlockResize;
+			},
+
+			get align() {
+				return adapter.#align;
+			},
+
+			get objectFit() {
+				return adapter.#objectFit;
+			},
+
+			get aspectRatio() {
+				return adapter.#aspectRatio;
+			},
+
+			get caption() {
+				return adapter.#caption;
+			},
+
+			get altText() {
+				return adapter.#altText;
+			},
+
+			onAlignUpdate(callback) {
+				adapter.#alignListeners.add(callback);
+				return () => adapter.#alignListeners.delete(callback);
+			},
+
+			onObjectFitUpdate(callback) {
+				adapter.#objectFitListeners.add(callback);
+				return () => adapter.#objectFitListeners.delete(callback);
+			},
+
+			onAspectRatioUpdate(callback) {
+				adapter.#aspectRatioListeners.add(callback);
+				return () => adapter.#aspectRatioListeners.delete(callback);
+			},
+
+			onCaptionUpdate(callback) {
+				adapter.#captionListeners.add(callback);
+				return () => adapter.#captionListeners.delete(callback);
+			},
+
+			onAltTextUpdate(callback) {
+				adapter.#altTextListeners.add(callback);
+				return () => adapter.#altTextListeners.delete(callback);
+			},
+
+			changeAlign(align) {
+				for (const listener of adapter.#onAlignChangeListeners) {
+					listener(align);
+				}
+			},
+
+			changeCaptionEnabled(enabled) {
+				for (const listener of adapter.#onCaptionEnabledChangeListeners) {
+					listener(enabled);
+				}
+			},
+
+			changeCaptionPosition(position: CaptionPosition) {
+				for (const listener of adapter.#onCaptionPositionChangeListeners) {
+					listener(position);
+				}
+			},
+
+			changeImageAttr(params) {
+				for (const listener of adapter.#onImageAttrChangeListeners) {
+					listener(params);
+				}
+			},
+		};
+
+		return this.#publicPort;
+	}
+}

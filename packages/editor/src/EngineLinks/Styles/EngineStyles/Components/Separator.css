@@ -1,0 +1,20 @@
+[data-rx-editor-role="block-component-line"] {
+	&:has([data-rx-component-name="separator"]) {
+		margin-block: 8px;
+	}
+
+	& :where([data-rx-component-name="separator"]) {
+		height: 24px;
+		align-content: center;
+
+		& hr {
+			border: none;
+			height: 1px;
+			background-color: light-dark(
+				var(--color-neutral-300),
+				var(--color-neutral-700)
+			);
+			margin: 0;
+		}
+	}
+}
