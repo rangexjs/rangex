@@ -1,14 +1,14 @@
 import type { AdapterBus } from "../_Utilities";
 import type {
-	EmptyMediaAdapterConstructorParams,
+	ConstructorParams,
+	ElementState,
 	EmptyMediaConfigPort,
-	EmptyMediaElementState,
-	EmptyMediaOnCanInsertCallbackFn,
-	EmptyMediaOnInsertCallbackFn,
-	EmptyMediaOnResolveCallbackFn,
 	EmptyMediaPublicPort,
-	EmptyMediaUpdateElementStateParams,
-	EmptyMediaUpdateStateParams,
+	OnCanInsertCallbackFn,
+	OnInsertCallbackFn,
+	OnResolveCallbackFn,
+	UpdateElementStateParams,
+	UpdateStateParams,
 	UploadMediaFileFn,
 } from "./EmptyMediaAdapter-types";
 
@@ -19,16 +19,16 @@ export class EmptyMediaAdapter {
 	#disposeSlottedElement;
 	#adapterBus: AdapterBus;
 
-	#onCanInsertListeners: Set<EmptyMediaOnCanInsertCallbackFn> = new Set();
-	#onInsertListeners: Set<EmptyMediaOnInsertCallbackFn> = new Set();
-	#onResolveListeners: Set<EmptyMediaOnResolveCallbackFn> = new Set();
+	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
+	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	#onResolveListeners: Set<OnResolveCallbackFn> = new Set();
 
-	#elements: Map<HTMLElement, EmptyMediaElementState> = new Map();
+	#elements: Map<HTMLElement, ElementState> = new Map();
 
 	#configPort: EmptyMediaConfigPort | null = null;
 	#publicPort: EmptyMediaPublicPort | null = null;
 
-	constructor(...params: EmptyMediaAdapterConstructorParams) {
+	constructor(...params: ConstructorParams) {
 		const [
 			{ uploadFile, createSlottedElement, disposeSlottedElement },
 			{ adapterBus },
@@ -40,7 +40,7 @@ export class EmptyMediaAdapter {
 		this.#adapterBus = adapterBus;
 	}
 
-	#updateState({ canInsert }: EmptyMediaUpdateStateParams) {
+	#updateState({ canInsert }: UpdateStateParams) {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
 
@@ -50,7 +50,7 @@ export class EmptyMediaAdapter {
 		}
 	}
 
-	#getElementState(element: HTMLElement): EmptyMediaElementState {
+	#getElementState(element: HTMLElement): ElementState {
 		const state = this.#elements.get(element);
 
 		if (!state) {
@@ -60,10 +60,7 @@ export class EmptyMediaAdapter {
 		return state;
 	}
 
-	#updateElementState({
-		element,
-		uploadState,
-	}: EmptyMediaUpdateElementStateParams) {
+	#updateElementState({ element, uploadState }: UpdateElementStateParams) {
 		const state = this.#getElementState(element);
 
 		if (uploadState !== undefined) {

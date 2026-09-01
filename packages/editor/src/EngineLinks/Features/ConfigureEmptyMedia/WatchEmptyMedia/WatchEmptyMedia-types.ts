@@ -1,5 +1,8 @@
 import type { BlockComponent, EditorAPI } from "rich-text-area";
-import type { EmptyMediaConfigPort, MediaResolveDetail } from "#adapters";
+import type {
+	EmptyMediaConfigPort,
+	MediaResolveDetail,
+} from "#adapters/EmptyMedia";
 
 export interface WatchEmptyMediaParams {
 	configPort: EmptyMediaConfigPort;

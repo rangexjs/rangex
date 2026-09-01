@@ -14,24 +14,23 @@ export type UploadMediaFileFn = (
 ) => Promise<string | null>;
 
 // TODO: Editor should be passed as a param
-export type EmptyMediaCreateSlottedElementFn = () => HTMLElement;
+export type CreateSlottedElementFn = () => HTMLElement;
 
-export type EmptyMediaDisposeSlottedElementFn = (element: HTMLElement) => void;
+export type DisposeSlottedElementFn = (element: HTMLElement) => void;
 
-export interface EmptyMediaSettings {
+export interface Settings {
 	uploadFile: UploadMediaFileFn;
-	createSlottedElement: EmptyMediaCreateSlottedElementFn;
-	disposeSlottedElement: EmptyMediaDisposeSlottedElementFn;
+	createSlottedElement: CreateSlottedElementFn;
+	disposeSlottedElement: DisposeSlottedElementFn;
 }
 
-export type EmptyMediaAdapterConstructorParams =
-	CreateAdapterConstructor<EmptyMediaSettings>;
+export type ConstructorParams = CreateAdapterConstructor<Settings>;
 
 export interface EmptyMediaState {
 	canInsert?: boolean;
 }
 
-export interface EmptyMediaUpdateStateParams extends EmptyMediaState {}
+export interface UpdateStateParams extends EmptyMediaState {}
 
 export interface MediaFile {
 	insertionType: "file";
@@ -49,64 +48,60 @@ export type MediaResolveDetail =
 	| ({ type: "image" | "video" | "audio" } & MediaSource)
 	| ({ type: "embed" } & MediaURL);
 
-export interface EmptyMediaResolveOption {
+export interface ResolveOption {
 	element: HTMLElement;
 	detail: MediaResolveDetail;
 }
 
-export type EmptyMediaUploadState =
+export type UploadState =
 	| { status: "idle" }
 	| { status: "checking" }
 	| { status: "uploading"; progress: number }
 	| { status: "error"; message: string };
 
-export type EmptyMediaUpdateUploadStateCallbackFn = (
-	value: EmptyMediaUploadState,
-) => void;
+export type UpdateUploadStateCallbackFn = (value: UploadState) => void;
 
-export interface EmptyMediaElementState {
-	uploadState: EmptyMediaUploadState;
-	uploadStateListeners: Set<EmptyMediaUpdateUploadStateCallbackFn>;
+export interface ElementState {
+	uploadState: UploadState;
+	uploadStateListeners: Set<UpdateUploadStateCallbackFn>;
 }
 
-export interface EmptyMediaUpdateElementStateParams {
+export interface UpdateElementStateParams {
 	element: HTMLElement;
-	uploadState?: EmptyMediaUploadState;
+	uploadState?: UploadState;
 }
 
-export type EmptyMediaOnInsertCallbackFn = () => void;
+export type OnInsertCallbackFn = () => void;
 
-export type EmptyMediaOnResolveCallbackFn = (
-	params: EmptyMediaResolveOption,
-) => void;
+export type OnResolveCallbackFn = (params: ResolveOption) => void;
 
 export interface EmptyMediaConfigPort {
 	readonly uploadFile: UploadMediaFileFn;
-	createSlottedElement: EmptyMediaCreateSlottedElementFn;
-	disposeSlottedElement: EmptyMediaDisposeSlottedElementFn;
+	createSlottedElement: CreateSlottedElementFn;
+	disposeSlottedElement: DisposeSlottedElementFn;
 
-	updateState(params: EmptyMediaUpdateStateParams): void;
-	updateElementState(params: EmptyMediaUpdateElementStateParams): void;
+	updateState(params: UpdateStateParams): void;
+	updateElementState(params: UpdateElementStateParams): void;
 
-	onInsert(callback: EmptyMediaOnInsertCallbackFn): () => void;
-	onResolve(callback: EmptyMediaOnResolveCallbackFn): () => void;
+	onInsert(callback: OnInsertCallbackFn): () => void;
+	onResolve(callback: OnResolveCallbackFn): () => void;
 
 	emitMediaResolve(params: MediaResolveCallbackParams): void;
 }
 
-export type EmptyMediaOnCanInsertCallbackFn = (canInsert: boolean) => void;
+export type OnCanInsertCallbackFn = (canInsert: boolean) => void;
 
 export interface EmptyMediaPublicPort {
 	readonly canInsert: boolean;
 	readonly supportedMediaTypes: MediaType[];
 
-	onCanInsertUpdate(callback: EmptyMediaOnCanInsertCallbackFn): () => void;
-	getUploadState(element: HTMLElement): EmptyMediaUploadState;
+	onCanInsertUpdate(callback: OnCanInsertCallbackFn): () => void;
+	getUploadState(element: HTMLElement): UploadState;
 	onUploadStateUpdate(
 		element: HTMLElement,
-		callback: EmptyMediaUpdateUploadStateCallbackFn,
+		callback: UpdateUploadStateCallbackFn,
 	): () => void;
 
 	insert(): void;
-	resolve(params: EmptyMediaResolveOption): void;
+	resolve(params: ResolveOption): void;
 }
