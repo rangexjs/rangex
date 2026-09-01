@@ -5,8 +5,12 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
-import { componentsName, dataPartName, todoCheckboxPart } from "#ports";
-import { blockAlignAttr } from "../../../../Constants";
+import {
+	blockAlignAttr,
+	componentsName,
+	dataPartName,
+	todoCheckboxPart,
+} from "../../../../Constants";
 import {
 	createTodoCheckboxStorage,
 	createTodoListStorage,

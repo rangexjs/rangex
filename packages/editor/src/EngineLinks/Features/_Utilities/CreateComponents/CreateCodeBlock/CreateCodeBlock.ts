@@ -7,8 +7,7 @@ import {
 	createList,
 } from "rich-text-area";
 import { toHighlighterLang } from "#libs";
-import { componentsName } from "#ports";
-import { blockAlignAttr } from "../../../../Constants";
+import { blockAlignAttr, componentsName } from "../../../../Constants";
 import { createCodeBlockStorage } from "../../../../Storage";
 import type {
 	CreateCodeBlockParams,

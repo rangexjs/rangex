@@ -4,8 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createDetachedContext,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import { blockAlignAttr } from "../../../../Constants";
+import { blockAlignAttr, componentsName } from "../../../../Constants";
 import { createEmptyMediaStorage } from "../../../../Storage";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
 

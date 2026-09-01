@@ -4,8 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import { blockAlignAttr } from "../../../../Constants";
+import { blockAlignAttr, componentsName } from "../../../../Constants";
 import { createAudioStorage } from "../../../../Storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 

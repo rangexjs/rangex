@@ -4,7 +4,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName } from "#ports";
+import { componentsName } from "../../../../Constants";
 import { createTemplateVariableStorage } from "../../../../Storage";
 import type {
 	CreateTemplateVariableParams,

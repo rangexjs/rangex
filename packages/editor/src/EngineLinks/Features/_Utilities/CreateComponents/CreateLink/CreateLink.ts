@@ -5,7 +5,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName } from "#ports";
+import { componentsName } from "../../../../Constants";
 import { createLinkStorage } from "../../../../Storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
 

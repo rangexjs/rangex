@@ -4,8 +4,11 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import { aspectRatioAttr, blockAlignAttr } from "../../../../Constants";
+import {
+	aspectRatioAttr,
+	blockAlignAttr,
+	componentsName,
+} from "../../../../Constants";
 import { createEmbedStorage } from "../../../../Storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 

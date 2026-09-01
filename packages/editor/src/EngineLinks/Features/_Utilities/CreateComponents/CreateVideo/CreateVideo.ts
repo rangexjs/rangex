@@ -4,10 +4,10 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import { componentsName } from "#ports";
 import {
 	aspectRatioAttr,
 	blockAlignAttr,
+	componentsName,
 	objectFitAttr,
 } from "../../../../Constants";
 import { createVideoStorage } from "../../../../Storage";

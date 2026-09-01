@@ -4,8 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import { componentsName } from "#ports";
-import { blockAlignAttr } from "../../../../Constants";
+import { blockAlignAttr, componentsName } from "../../../../Constants";
 import { createSeparatorStorage } from "../../../../Storage";
 import type { CreateSeparatorResult } from "./CreateSeparator-types";
 
