@@ -83,7 +83,7 @@ export class EmptyMediaAdapter {
 				return adapter.#uploadFile;
 			},
 
-			attach(host) {
+			createSlottedElement() {
 				const slottedElement = adapter.#createSlottedElement();
 
 				adapter.#elements.set(slottedElement, {
@@ -91,10 +91,10 @@ export class EmptyMediaAdapter {
 					uploadStateListeners: new Set(),
 				});
 
-				host.append(slottedElement);
+				return slottedElement;
 			},
 
-			detach(element) {
+			disposeSlottedElement(element) {
 				adapter.#elements.delete(element);
 				adapter.#disposeSlottedElement(element);
 			},

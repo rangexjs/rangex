@@ -14,16 +14,14 @@ export type UploadMediaFileFn = (
 ) => Promise<string | null>;
 
 // TODO: Editor should be passed as a param
-export type EmptyMediaCreateSlottedElementCallbackFn = () => HTMLElement;
+export type EmptyMediaCreateSlottedElementFn = () => HTMLElement;
 
-export type EmptyMediaDisposeSlottedElementCallbackFn = (
-	element: HTMLElement,
-) => void;
+export type EmptyMediaDisposeSlottedElementFn = (element: HTMLElement) => void;
 
 export interface EmptyMediaSettings {
 	uploadFile: UploadMediaFileFn;
-	createSlottedElement: EmptyMediaCreateSlottedElementCallbackFn;
-	disposeSlottedElement: EmptyMediaDisposeSlottedElementCallbackFn;
+	createSlottedElement: EmptyMediaCreateSlottedElementFn;
+	disposeSlottedElement: EmptyMediaDisposeSlottedElementFn;
 }
 
 export type EmptyMediaAdapterConstructorParams =
@@ -84,14 +82,14 @@ export type EmptyMediaOnResolveCallbackFn = (
 
 export interface EmptyMediaConfigPort {
 	readonly uploadFile: UploadMediaFileFn;
-	attach(host: HTMLElement): void;
-	detach(element: HTMLElement): void;
+	createSlottedElement: EmptyMediaCreateSlottedElementFn;
+	disposeSlottedElement: EmptyMediaDisposeSlottedElementFn;
 
 	updateState(params: EmptyMediaUpdateStateParams): void;
 	updateElementState(params: EmptyMediaUpdateElementStateParams): void;
 
-	onInsert(callback: EmptyMediaOnInsertCallbackFn): void;
-	onResolve(callback: EmptyMediaOnResolveCallbackFn): void;
+	onInsert(callback: EmptyMediaOnInsertCallbackFn): () => void;
+	onResolve(callback: EmptyMediaOnResolveCallbackFn): () => void;
 
 	emitMediaResolve(params: MediaResolveCallbackParams): void;
 }
