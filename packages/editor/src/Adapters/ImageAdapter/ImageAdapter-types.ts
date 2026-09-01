@@ -1,13 +1,12 @@
 import type {
 	BlockAlignPort,
 	BlockAlignValue,
+	BlockResize,
 	CaptionPort,
 	CaptionPosition,
 	CaptionState,
-	ConfigBlockResize,
 	CreateAdapterConstructor,
 	OnMediaResolveCallbackFn,
-	PublicBlockResize,
 } from "../_Utilities";
 
 export interface ImageSettings {}
@@ -41,7 +40,7 @@ export type ImageOnImageAttrChangeCallbackFn = (
 export type ImageOnToggleCallbackFn = (value: boolean) => void;
 
 export interface ImageConfigPort extends BlockAlignPort, CaptionPort {
-	readonly blockResize: ConfigBlockResize;
+	readonly blockResize: BlockResize;
 	readonly floatingEl: HTMLDivElement;
 	updateState(params: UpdateImageStateParams): void;
 	onImageAttrChange(callback: ImageOnImageAttrChangeCallbackFn): () => void;
@@ -59,7 +58,6 @@ export type ImageOnCaptionUpdateCallbackFn = (value: CaptionState) => void;
 export type ImageOnAltTextUpdateCallbackFn = (value: string) => void;
 
 export interface ImagePublicPort {
-	readonly blockResize: PublicBlockResize;
 	readonly align: BlockAlignValue;
 	readonly objectFit: ImageObjectFitValue;
 	readonly aspectRatio: ImageAspectRatioValue;

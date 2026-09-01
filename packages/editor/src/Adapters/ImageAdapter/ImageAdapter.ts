@@ -62,7 +62,7 @@ export class ImageAdapter {
 
 		floatingContainer.append(this.#floatingEl);
 
-		this.#blockResize = createBlockResize({ floatingContainer });
+		this.#blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 	}
 
 	#updateState({
@@ -127,7 +127,7 @@ export class ImageAdapter {
 
 		this.#configPort ??= {
 			get blockResize() {
-				return adapter.#blockResize.configBlockResize;
+				return adapter.#blockResize;
 			},
 
 			get floatingEl() {
@@ -179,10 +179,6 @@ export class ImageAdapter {
 		const adapter = this;
 
 		this.#publicPort ??= {
-			get blockResize() {
-				return adapter.#blockResize.publicBlockResize;
-			},
-
 			get align() {
 				return adapter.#align;
 			},

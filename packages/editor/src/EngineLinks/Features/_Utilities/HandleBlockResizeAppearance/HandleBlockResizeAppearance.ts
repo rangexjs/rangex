@@ -115,7 +115,6 @@ export const handleBlockResizeAppearance = ({
 				}
 
 				cancelHide();
-				blockResize.updateHandleX(16);
 
 				if (currentBlock === currentTarget) {
 					return;

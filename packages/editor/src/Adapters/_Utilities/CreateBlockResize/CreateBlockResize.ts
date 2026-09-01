@@ -1,72 +1,117 @@
-import { BlockResizeHandle } from "#ui-extensions";
-import { createOverlayMount } from "../OverlayMount";
 import type {
-	ConfigBlockResize,
+	BlockResize,
 	CreateBlockResizeParams,
 	CreateBlockResizeResult,
-	OnHandleXUpdateFn,
-	OnResizeEndFn,
-	OnResizeMoveFn,
-	PublicBlockResize,
+	HandleParams,
+	ResizeEndFn,
+	ResizeMoveFn,
+	ResizeMoveParams,
 } from "./CreateBlockResize-types";
 
-/**
- * Composes `createOverlayMount` with a hardwired resize-handle component, plus the
- * `handleX` position and drag `onResizeMove`/`onResizeEnd` events every media adapter's own
- * resize-appearance handler drives. Each adapter that owns a resizable block builds one of
- * these and assigns it to a named `blockResize` field, same convention as `popover`.
- */
+const createHandle = ({ side, xPos, resizeMove, resizeEnd }: HandleParams) => {
+	const handle = document.createElement("span");
+	handle.style[side] = `${xPos}px`;
+
+	const onPointerDown = (event: PointerEvent) => {
+		if (!handle) {
+			throw new Error("Handle can't be undefined.");
+		}
+
+		handle.setPointerCapture(event.pointerId);
+	};
+
+	const onPointerMove = (event: PointerEvent) => {
+		if (!handle) {
+			throw new Error("Handle can't be undefined.");
+		}
+
+		if (!handle.hasPointerCapture(event.pointerId)) {
+			return;
+		}
+
+		const handleRect = handle.getBoundingClientRect();
+		const cornerX = handleRect.left + handleRect.width / 2;
+		const rawDeltaPx = event.clientX - cornerX;
+
+		const deltaSign = { left: -1, right: 1 }[side];
+		const deltaPx = deltaSign * rawDeltaPx;
+
+		resizeMove({ deltaPx, side });
+	};
+
+	const onPointerUp = (event: PointerEvent) => {
+		if (!handle) {
+			throw new Error("Handle can't be undefined.");
+		}
+
+		if (!handle.hasPointerCapture(event.pointerId)) {
+			return;
+		}
+
+		handle.releasePointerCapture(event.pointerId);
+		resizeEnd();
+	};
+
+	const onPointerCancel = (event: PointerEvent) => {
+		if (!handle) {
+			throw new Error("Handle can't be undefined.");
+		}
+
+		if (handle.hasPointerCapture(event.pointerId)) {
+			handle.releasePointerCapture(event.pointerId);
+		}
+
+		resizeEnd();
+	};
+
+	handle.addEventListener("pointerdown", onPointerDown);
+	handle.addEventListener("pointermove", onPointerMove);
+	handle.addEventListener("pointerup", onPointerUp);
+	handle.addEventListener("pointercancel", onPointerCancel);
+
+	return handle;
+};
+
 export const createBlockResize = ({
 	floatingContainer,
+	xPos,
 }: CreateBlockResizeParams): CreateBlockResizeResult => {
+	const onResizeMoveListeners: Set<ResizeMoveFn> = new Set();
+	const onResizeEndListeners: Set<ResizeEndFn> = new Set();
+
+	const resizeMove = (params: ResizeMoveParams) => {
+		for (const listener of onResizeMoveListeners) {
+			listener(params);
+		}
+	};
+
+	const resizeEnd = () => {
+		for (const listener of onResizeEndListeners) {
+			listener();
+		}
+	};
+
 	const container = document.createElement("div");
-	const leftHandle = document.createElement("span");
-	const rightHandle = document.createElement("span");
+	const leftHandle = createHandle({
+		side: "left",
+		xPos,
+		resizeMove,
+		resizeEnd,
+	});
+	const rightHandle = createHandle({
+		side: "right",
+		xPos,
+		resizeMove,
+		resizeEnd,
+	});
 
 	container.append(leftHandle, rightHandle);
 
 	floatingContainer.append(container);
 
-	let handleX = 0;
-
-	const handleXListeners: Set<OnHandleXUpdateFn> = new Set();
-	const onResizeMoveListeners: Set<OnResizeMoveFn> = new Set();
-	const onResizeEndListeners: Set<OnResizeEndFn> = new Set();
-
-	const uiBlockResize: PublicBlockResize = {
-		get handleX() {
-			return handleX;
-		},
-
-		onHandleXUpdate: (callback) => {
-			handleXListeners.add(callback);
-			return () => handleXListeners.delete(callback);
-		},
-
-		emitResizeMove: (params) => {
-			for (const listener of onResizeMoveListeners) {
-				listener(params);
-			}
-		},
-
-		emitResizeEnd: () => {
-			for (const listener of onResizeEndListeners) {
-				listener();
-			}
-		},
-	};
-
-	const editorBlockResize: ConfigBlockResize = {
+	const blockResize: BlockResize = {
 		get element() {
-			return overlayMount.editorOverlayMount.element;
-		},
-
-		updateHandleX: (x) => {
-			handleX = x;
-
-			for (const listener of handleXListeners) {
-				listener(x);
-			}
+			return container;
 		},
 
 		onResizeMove: (callback) => {
@@ -80,11 +125,5 @@ export const createBlockResize = ({
 		},
 	};
 
-	const overlayMount = createOverlayMount({
-		overlayHost,
-		component: BlockResizeHandle,
-		props: { uiBlockResize },
-	});
-
-	return { uiBlockResize, editorBlockResize };
+	return blockResize;
 };

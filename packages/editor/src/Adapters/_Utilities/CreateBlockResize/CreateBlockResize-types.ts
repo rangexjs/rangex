@@ -3,33 +3,27 @@ interface ResizeMove {
 	side: "left" | "right";
 }
 
-export interface OnResizeMoveParams extends ResizeMove {}
+export interface ResizeMoveParams extends ResizeMove {}
 
-export type OnResizeMoveFn = (params: OnResizeMoveParams) => void;
-export type OnResizeEndFn = () => void;
+export type ResizeMoveFn = (params: ResizeMoveParams) => void;
+export type ResizeEndFn = () => void;
 
-export interface ConfigBlockResize {
-	readonly element: HTMLDivElement;
-	onResizeMove(callback: OnResizeMoveFn): () => void;
-	onResizeEnd(callback: OnResizeEndFn): () => void;
-}
-
-export interface EmitResizeMoveParams extends ResizeMove {}
-
-export type OnHandleXUpdateFn = (x: number) => void;
-
-export interface PublicBlockResize {
-	readonly handleX: number;
-	updateHandleX(x: number): void;
+export interface HandleParams {
+	side: "left" | "right";
+	xPos: number;
+	resizeMove: ResizeMoveFn;
+	resizeEnd: ResizeEndFn;
 }
 
 export interface BlockResize {
-	configBlockResize: ConfigBlockResize;
-	publicBlockResize: PublicBlockResize;
+	readonly element: HTMLDivElement;
+	onResizeMove(callback: ResizeMoveFn): () => void;
+	onResizeEnd(callback: ResizeEndFn): () => void;
 }
 
 export interface CreateBlockResizeParams {
 	floatingContainer: HTMLDivElement;
+	xPos: number;
 }
 
 export interface CreateBlockResizeResult extends BlockResize {}

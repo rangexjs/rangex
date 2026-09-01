@@ -1,3 +1,4 @@
+import { BlockResizerRx } from "../Editor";
 import {
 	AccordionItem,
 	AccordionItemRx,
@@ -61,6 +62,7 @@ export const getStyleSheetText = ({ rxStyle }: GetStyleSheetTextParams) => {
 
 	const rxStyleSheetText =
 		AccordionItemRx +
+		BlockResizerRx +
 		ComponentRx +
 		EngineGlobalStylesRx +
 		GlyphFormatterRx +
