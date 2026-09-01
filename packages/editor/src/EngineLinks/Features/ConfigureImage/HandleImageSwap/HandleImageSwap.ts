@@ -1,4 +1,4 @@
-import { assertNever } from "#ports";
+import { assertNever } from "#utilities";
 import { isWellFormedUrl, probeMediaSrc } from "../../../_Utilities";
 import { applyImageSrc } from "../_Utilities";
 import type {

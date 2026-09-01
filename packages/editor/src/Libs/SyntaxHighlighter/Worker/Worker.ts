@@ -1,6 +1,6 @@
 import { createHighlighterCore } from "@shikijs/core";
 import { createJavaScriptRegexEngine } from "@shikijs/engine-javascript";
-import { assertNever } from "#ports";
+import { assertNever } from "#utilities";
 import { highlighterThemes } from "../SyntaxHighlighter-constants";
 import type {
 	HighlightInfo,
