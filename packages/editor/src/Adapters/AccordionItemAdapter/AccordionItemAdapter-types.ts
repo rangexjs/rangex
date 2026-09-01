@@ -34,9 +34,9 @@ export interface AccordionItemPublicPort {
 	readonly canWrap: boolean;
 	readonly isActive: boolean;
 
-	onCanInsertUpdate(callback: AccordionItemOnCanInsertCallbackFn): void;
-	onCanWrapUpdate(callback: AccordionItemOnCanWrapCallbackFn): void;
-	onIsActiveUpdate(callback: AccordionItemOnIsActiveCallbackFn): void;
+	onCanInsertUpdate(callback: AccordionItemOnCanInsertCallbackFn): () => void;
+	onCanWrapUpdate(callback: AccordionItemOnCanWrapCallbackFn): () => void;
+	onIsActiveUpdate(callback: AccordionItemOnIsActiveCallbackFn): () => void;
 
 	insert(): void;
 	delete(): void;
