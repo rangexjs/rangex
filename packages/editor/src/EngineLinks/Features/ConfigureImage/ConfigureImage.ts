@@ -13,19 +13,14 @@ import {
 	setImageCaptionEnabled,
 	setImageCaptionPosition,
 } from "./_Utilities";
-import type {
-	ConfigureImageParams,
-	// ImageInternals,
-} from "./ConfigureImage-types";
+import type { ConfigureImageParams } from "./ConfigureImage-types";
 import { handleImageInsertion } from "./HandleImageInsertion";
 import { handleImageQuickActionsOverlayAppearance } from "./HandleImageQuickActionsOverlayAppearance";
-// import { handleImageSwap } from "./HandleImageSwap";
 
 export const configureImage = ({
 	configPort,
 	editorAPI,
 }: ConfigureImageParams) => {
-	// const internals: ImageInternals = { currentImageFigure: null };
 	const overlayAppearanceHandler = createOverlayAppearanceHandler({
 		editorAPI,
 	});
@@ -73,13 +68,6 @@ export const configureImage = ({
 		setCaptionPosition: setImageCaptionPosition,
 	});
 
-	// const swapCleanup = handleImageSwap({
-	// 	editorPort: configPort,
-	// 	editorAPI,
-	// 	internals,
-	// 	swapAnchorController,
-	// });
-
 	return () => {
 		overlayAppearanceHandler.cleanup();
 
@@ -88,6 +76,5 @@ export const configureImage = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
-		// swapCleanup();
 	};
 };
