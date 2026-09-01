@@ -14,13 +14,14 @@ import type {
 	ImageAspectRatioValue,
 	ImageConfigPort,
 	ImageObjectFitValue,
+	ImageOnAlignUpdateCallbackFn,
+	ImageOnAltTextUpdateCallbackFn,
+	ImageOnAspectRationCallbackFn,
+	ImageOnCaptionUpdateCallbackFn,
+	ImageOnImageAttrChangeCallbackFn,
+	ImageOnObjectFitUpdateCallbackFn,
+	ImageOnToggleCallbackFn,
 	ImagePublicPort,
-	OnAlignUpdateCallbackFn,
-	OnAltTextUpdateCallbackFn,
-	OnAspectRationCallbackFn,
-	OnCaptionUpdateCallbackFn,
-	OnImageAttrChangeCallbackFn,
-	OnObjectFitUpdateCallbackFn,
 	UpdateImageStateParams,
 } from "./ImageAdapter-types";
 
@@ -34,17 +35,21 @@ export class ImageAdapter {
 	#aspectRatio: ImageAspectRatioValue = "auto";
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#altText = "";
+	#isOpen = false;
 
-	#alignListeners: Set<OnAlignUpdateCallbackFn> = new Set();
-	#objectFitListeners: Set<OnObjectFitUpdateCallbackFn> = new Set();
-	#aspectRatioListeners: Set<OnAspectRationCallbackFn> = new Set();
-	#captionListeners: Set<OnCaptionUpdateCallbackFn> = new Set();
-	#altTextListeners: Set<OnAltTextUpdateCallbackFn> = new Set();
+	#alignListeners: Set<ImageOnAlignUpdateCallbackFn> = new Set();
+	#objectFitListeners: Set<ImageOnObjectFitUpdateCallbackFn> = new Set();
+	#aspectRatioListeners: Set<ImageOnAspectRationCallbackFn> = new Set();
+	#captionListeners: Set<ImageOnCaptionUpdateCallbackFn> = new Set();
+	#altTextListeners: Set<ImageOnAltTextUpdateCallbackFn> = new Set();
+	#isOpenListeners: Set<ImageOnToggleCallbackFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
-	#onImageAttrChangeListeners: Set<OnImageAttrChangeCallbackFn> = new Set();
+	#onImageAttrChangeListeners: Set<ImageOnImageAttrChangeCallbackFn> =
+		new Set();
+	#onToggleListeners: Set<ImageOnToggleCallbackFn> = new Set();
 
 	#configPort: ImageConfigPort | null = null;
 	#publicPort: ImagePublicPort | null = null;
@@ -66,6 +71,7 @@ export class ImageAdapter {
 		aspectRatio,
 		caption,
 		altText,
+		isOpen,
 	}: UpdateImageStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
@@ -104,6 +110,14 @@ export class ImageAdapter {
 
 			for (const listener of this.#altTextListeners) {
 				listener(this.#altText);
+			}
+		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#isOpenListeners) {
+				listener(this.#isOpen);
 			}
 		}
 	}
@@ -212,6 +226,11 @@ export class ImageAdapter {
 			onAltTextUpdate(callback) {
 				adapter.#altTextListeners.add(callback);
 				return () => adapter.#altTextListeners.delete(callback);
+			},
+
+			onToggle(callback) {
+				adapter.#onToggleListeners.add(callback);
+				return () => adapter.#onToggleListeners.delete(callback);
 			},
 
 			changeAlign(align) {

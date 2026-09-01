@@ -25,18 +25,18 @@ export interface AccordionItemConfigPort extends DeletePort, UnwrapPort {
 	onWrap(callback: AccordionItemOnWrapCallbackFn): () => void;
 }
 
-export type AccordionItemCanInsertCallbackFn = (canInsert: boolean) => void;
-export type AccordionItemCanWrapCallbackFn = (canWrap: boolean) => void;
-export type AccordionItemIsActiveCallbackFn = (isActive: boolean) => void;
+export type AccordionItemOnCanInsertCallbackFn = (canInsert: boolean) => void;
+export type AccordionItemOnCanWrapCallbackFn = (canWrap: boolean) => void;
+export type AccordionItemOnIsActiveCallbackFn = (isActive: boolean) => void;
 
 export interface AccordionItemPublicPort {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
 	readonly isActive: boolean;
 
-	onCanInsertUpdate(callback: AccordionItemCanInsertCallbackFn): void;
-	onCanWrapUpdate(callback: AccordionItemCanWrapCallbackFn): void;
-	onIsActiveUpdate(callback: AccordionItemIsActiveCallbackFn): void;
+	onCanInsertUpdate(callback: AccordionItemOnCanInsertCallbackFn): void;
+	onCanWrapUpdate(callback: AccordionItemOnCanWrapCallbackFn): void;
+	onIsActiveUpdate(callback: AccordionItemOnIsActiveCallbackFn): void;
 
 	insert(): void;
 	delete(): void;

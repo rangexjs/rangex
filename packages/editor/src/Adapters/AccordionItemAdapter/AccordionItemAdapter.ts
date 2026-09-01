@@ -1,11 +1,11 @@
 import type { OnDeleteCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
 import type {
 	AccordionItemAdapterConstructorParams,
-	AccordionItemCanInsertCallbackFn,
-	AccordionItemCanWrapCallbackFn,
 	AccordionItemConfigPort,
-	AccordionItemIsActiveCallbackFn,
+	AccordionItemOnCanInsertCallbackFn,
+	AccordionItemOnCanWrapCallbackFn,
 	AccordionItemOnInsertCallbackFn,
+	AccordionItemOnIsActiveCallbackFn,
 	AccordionItemOnWrapCallbackFn,
 	AccordionItemPublicPort,
 	UpdateAccordionItemStateParams,
@@ -16,9 +16,9 @@ export class AccordionItemAdapter {
 	#canWrap = false;
 	#isActive = false;
 
-	#canInsertListeners: Set<AccordionItemCanInsertCallbackFn> = new Set();
-	#canWrapListeners: Set<AccordionItemCanWrapCallbackFn> = new Set();
-	#isActiveListeners: Set<AccordionItemIsActiveCallbackFn> = new Set();
+	#canInsertListeners: Set<AccordionItemOnCanInsertCallbackFn> = new Set();
+	#canWrapListeners: Set<AccordionItemOnCanWrapCallbackFn> = new Set();
+	#isActiveListeners: Set<AccordionItemOnIsActiveCallbackFn> = new Set();
 
 	#onInsertListeners: Set<AccordionItemOnInsertCallbackFn> = new Set();
 	#onWrapListeners: Set<AccordionItemOnWrapCallbackFn> = new Set();
