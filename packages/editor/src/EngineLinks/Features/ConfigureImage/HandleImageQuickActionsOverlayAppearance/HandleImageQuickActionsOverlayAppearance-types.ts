@@ -1,4 +1,4 @@
-import type { ImageConfigPort } from "#adapters";
+import type { ImageConfigPort } from "#adapters/Image";
 import type { AnchoredOverlayController } from "../../../_Utilities";
 import type { OverlayAppearanceHandler } from "../../../OverlayAppearanceHandler";
 

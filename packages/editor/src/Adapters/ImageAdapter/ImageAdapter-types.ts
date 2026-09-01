@@ -9,67 +9,62 @@ import type {
 	OnMediaResolveCallbackFn,
 } from "../_Utilities";
 
-export interface ImageSettings {}
+export interface Settings {}
 
-export type ImageAdapterConstructorParams =
-	CreateAdapterConstructor<ImageSettings>;
+export type ConstructorParams = CreateAdapterConstructor<Settings>;
 
-export type ImageObjectFitValue = "cover" | "contain" | "fill";
-export type ImageAspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
+export type ObjectFitValue = "cover" | "contain" | "fill";
+export type AspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
 
 export interface ImageState {
 	align?: BlockAlignValue;
-	objectFit?: ImageObjectFitValue;
-	aspectRatio?: ImageAspectRatioValue;
+	objectFit?: ObjectFitValue;
+	aspectRatio?: AspectRatioValue;
 	caption?: CaptionState;
 	altText?: string;
 	isOpen?: boolean;
 }
 
-export interface UpdateImageStateParams extends ImageState {}
+export interface UpdateStateParams extends ImageState {}
 
 export interface OnImageAttrChangeCallbackParams {
-	objectFit?: ImageObjectFitValue;
-	aspectRatio?: ImageAspectRatioValue;
+	objectFit?: ObjectFitValue;
+	aspectRatio?: AspectRatioValue;
 	altText?: string;
 }
 
-export type ImageOnImageAttrChangeCallbackFn = (
+export type OnImageAttrChangeCallbackFn = (
 	params: OnImageAttrChangeCallbackParams,
 ) => void;
-export type ImageOnToggleCallbackFn = (value: boolean) => void;
+export type OnToggleCallbackFn = (value: boolean) => void;
 
 export interface ImageConfigPort extends BlockAlignPort, CaptionPort {
 	readonly blockResize: BlockResize;
 	readonly floatingEl: HTMLDivElement;
-	updateState(params: UpdateImageStateParams): void;
-	onImageAttrChange(callback: ImageOnImageAttrChangeCallbackFn): () => void;
+	updateState(params: UpdateStateParams): void;
+	onImageAttrChange(callback: OnImageAttrChangeCallbackFn): () => void;
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
 
-export type ImageOnAlignUpdateCallbackFn = (value: BlockAlignValue) => void;
-export type ImageOnObjectFitUpdateCallbackFn = (
-	value: ImageObjectFitValue,
-) => void;
-export type ImageOnAspectRationCallbackFn = (
-	value: ImageAspectRatioValue,
-) => void;
-export type ImageOnCaptionUpdateCallbackFn = (value: CaptionState) => void;
-export type ImageOnAltTextUpdateCallbackFn = (value: string) => void;
+export type OnAlignUpdateCallbackFn = (value: BlockAlignValue) => void;
+export type OnObjectFitUpdateCallbackFn = (value: ObjectFitValue) => void;
+export type OnAspectRationCallbackFn = (value: AspectRatioValue) => void;
+export type OnCaptionUpdateCallbackFn = (value: CaptionState) => void;
+export type OnAltTextUpdateCallbackFn = (value: string) => void;
 
 export interface ImagePublicPort {
 	readonly align: BlockAlignValue;
-	readonly objectFit: ImageObjectFitValue;
-	readonly aspectRatio: ImageAspectRatioValue;
+	readonly objectFit: ObjectFitValue;
+	readonly aspectRatio: AspectRatioValue;
 	readonly caption: CaptionState;
 	readonly altText: string;
 
-	onAlignUpdate(callback: ImageOnAlignUpdateCallbackFn): () => void;
-	onObjectFitUpdate(callback: ImageOnObjectFitUpdateCallbackFn): () => void;
-	onAspectRatioUpdate(callback: ImageOnAspectRationCallbackFn): () => void;
-	onCaptionUpdate(callback: ImageOnCaptionUpdateCallbackFn): () => void;
-	onAltTextUpdate(callback: ImageOnAltTextUpdateCallbackFn): () => void;
-	onToggle(callback: ImageOnToggleCallbackFn): () => void;
+	onAlignUpdate(callback: OnAlignUpdateCallbackFn): () => void;
+	onObjectFitUpdate(callback: OnObjectFitUpdateCallbackFn): () => void;
+	onAspectRatioUpdate(callback: OnAspectRationCallbackFn): () => void;
+	onCaptionUpdate(callback: OnCaptionUpdateCallbackFn): () => void;
+	onAltTextUpdate(callback: OnAltTextUpdateCallbackFn): () => void;
+	onToggle(callback: OnToggleCallbackFn): () => void;
 
 	changeAlign(align: BlockAlignValue): void;
 	changeCaptionEnabled(enabled: boolean): void;

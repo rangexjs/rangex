@@ -10,19 +10,19 @@ import {
 	type OnCaptionPositionChangeFn,
 } from "../_Utilities";
 import type {
-	ImageAdapterConstructorParams,
-	ImageAspectRatioValue,
+	AspectRatioValue,
+	ConstructorParams,
 	ImageConfigPort,
-	ImageObjectFitValue,
-	ImageOnAlignUpdateCallbackFn,
-	ImageOnAltTextUpdateCallbackFn,
-	ImageOnAspectRationCallbackFn,
-	ImageOnCaptionUpdateCallbackFn,
-	ImageOnImageAttrChangeCallbackFn,
-	ImageOnObjectFitUpdateCallbackFn,
-	ImageOnToggleCallbackFn,
 	ImagePublicPort,
-	UpdateImageStateParams,
+	ObjectFitValue,
+	OnAlignUpdateCallbackFn,
+	OnAltTextUpdateCallbackFn,
+	OnAspectRationCallbackFn,
+	OnCaptionUpdateCallbackFn,
+	OnImageAttrChangeCallbackFn,
+	OnObjectFitUpdateCallbackFn,
+	OnToggleCallbackFn,
+	UpdateStateParams,
 } from "./ImageAdapter-types";
 
 export class ImageAdapter {
@@ -31,30 +31,29 @@ export class ImageAdapter {
 	#blockResize: BlockResize;
 
 	#align: BlockAlignValue = "center";
-	#objectFit: ImageObjectFitValue = "cover";
-	#aspectRatio: ImageAspectRatioValue = "auto";
+	#objectFit: ObjectFitValue = "cover";
+	#aspectRatio: AspectRatioValue = "auto";
 	#caption: CaptionState = { enabled: false, position: "below" };
 	#altText = "";
 	#isOpen = false;
 
-	#alignListeners: Set<ImageOnAlignUpdateCallbackFn> = new Set();
-	#objectFitListeners: Set<ImageOnObjectFitUpdateCallbackFn> = new Set();
-	#aspectRatioListeners: Set<ImageOnAspectRationCallbackFn> = new Set();
-	#captionListeners: Set<ImageOnCaptionUpdateCallbackFn> = new Set();
-	#altTextListeners: Set<ImageOnAltTextUpdateCallbackFn> = new Set();
-	#isOpenListeners: Set<ImageOnToggleCallbackFn> = new Set();
+	#alignListeners: Set<OnAlignUpdateCallbackFn> = new Set();
+	#objectFitListeners: Set<OnObjectFitUpdateCallbackFn> = new Set();
+	#aspectRatioListeners: Set<OnAspectRationCallbackFn> = new Set();
+	#captionListeners: Set<OnCaptionUpdateCallbackFn> = new Set();
+	#altTextListeners: Set<OnAltTextUpdateCallbackFn> = new Set();
+	#isOpenListeners: Set<OnToggleCallbackFn> = new Set();
 
 	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
 	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
 	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
-	#onImageAttrChangeListeners: Set<ImageOnImageAttrChangeCallbackFn> =
-		new Set();
-	#onToggleListeners: Set<ImageOnToggleCallbackFn> = new Set();
+	#onImageAttrChangeListeners: Set<OnImageAttrChangeCallbackFn> = new Set();
+	#onToggleListeners: Set<OnToggleCallbackFn> = new Set();
 
 	#configPort: ImageConfigPort | null = null;
 	#publicPort: ImagePublicPort | null = null;
 
-	constructor(...params: ImageAdapterConstructorParams) {
+	constructor(...params: ConstructorParams) {
 		const [_settings, { adapterBus, floatingContainer }] = params;
 
 		this.#adapterBus = adapterBus;
@@ -72,7 +71,7 @@ export class ImageAdapter {
 		caption,
 		altText,
 		isOpen,
-	}: UpdateImageStateParams) {
+	}: UpdateStateParams) {
 		if (align !== undefined) {
 			this.#align = align;
 
