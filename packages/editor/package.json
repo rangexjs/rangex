@@ -17,6 +17,10 @@
 		}
 	},
 	"imports": {
+		"#utilities": {
+			"types": "./src/_Utilities/index.ts",
+			"default": "./src/_Utilities/index"
+		},
 		"#adapters": {
 			"types": "./src/Adapters/index.ts",
 			"default": "./src/Adapters/index"
