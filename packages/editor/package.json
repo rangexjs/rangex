@@ -32,6 +32,10 @@
 		"#engine-links": {
 			"types": "./src/EngineLinks/index.ts",
 			"default": "./src/EngineLinks/index"
+		},
+		"#libs": {
+			"types": "./src/Libs/index.ts",
+			"default": "./src/Libs/index"
 		}
 	},
 	"files": [
@@ -58,6 +62,11 @@
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"rich-text-area": "workspace:*"
+		"rich-text-area": "workspace:*",
+		"@shikijs/core": "^4.3.1",
+		"@shikijs/engine-javascript": "^4.3.1",
+		"@shikijs/langs": "^4.3.1",
+		"@shikijs/themes": "^4.3.1",
+		"shiki": "^4.0.2"
 	}
 }

@@ -22,7 +22,12 @@
       "name": "@rangex/editor",
       "version": "0.0.0",
       "dependencies": {
+        "@shikijs/core": "^4.3.1",
+        "@shikijs/engine-javascript": "^4.3.1",
+        "@shikijs/langs": "^4.3.1",
+        "@shikijs/themes": "^4.3.1",
         "rich-text-area": "workspace:*",
+        "shiki": "^4.0.2",
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
