@@ -25,6 +25,10 @@
 			"types": "./src/Adapters/index.ts",
 			"default": "./src/Adapters/index"
 		},
+		"#adapters/*": {
+			"types": "./src/Adapters/*Adapter/index.ts",
+			"default": "./src/Adapters/*Adapter/index"
+		},
 		"#rangex-editor": {
 			"types": "./src/RangeXEditor/index.ts",
 			"default": "./src/RangeXEditor/index"

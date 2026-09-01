@@ -1,14 +1,14 @@
 import type { OnDeleteCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
 import type {
-	AccordionItemAdapterConstructorParams,
 	AccordionItemConfigPort,
-	AccordionItemOnCanInsertCallbackFn,
-	AccordionItemOnCanWrapCallbackFn,
-	AccordionItemOnInsertCallbackFn,
-	AccordionItemOnIsActiveCallbackFn,
-	AccordionItemOnWrapCallbackFn,
 	AccordionItemPublicPort,
-	UpdateAccordionItemStateParams,
+	ConstructorParams,
+	OnCanInsertCallbackFn,
+	OnCanWrapCallbackFn,
+	OnInsertCallbackFn,
+	OnIsActiveCallbackFn,
+	OnWrapCallbackFn,
+	UpdateStateParams,
 } from "./AccordionItemAdapter-types";
 
 export class AccordionItemAdapter {
@@ -16,27 +16,23 @@ export class AccordionItemAdapter {
 	#canWrap = false;
 	#isActive = false;
 
-	#canInsertListeners: Set<AccordionItemOnCanInsertCallbackFn> = new Set();
-	#canWrapListeners: Set<AccordionItemOnCanWrapCallbackFn> = new Set();
-	#isActiveListeners: Set<AccordionItemOnIsActiveCallbackFn> = new Set();
+	#canInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
+	#canWrapListeners: Set<OnCanWrapCallbackFn> = new Set();
+	#isActiveListeners: Set<OnIsActiveCallbackFn> = new Set();
 
-	#onInsertListeners: Set<AccordionItemOnInsertCallbackFn> = new Set();
-	#onWrapListeners: Set<AccordionItemOnWrapCallbackFn> = new Set();
+	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 	#onDeleteListeners: Set<OnDeleteCallbackFn> = new Set();
 	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
 
 	#configPort: AccordionItemConfigPort | null = null;
 	#publicPort: AccordionItemPublicPort | null = null;
 
-	constructor(...params: AccordionItemAdapterConstructorParams) {
+	constructor(...params: ConstructorParams) {
 		const [_settings, _options] = params;
 	}
 
-	#updateState({
-		canInsert,
-		canWrap,
-		isActive,
-	}: UpdateAccordionItemStateParams) {
+	#updateState({ canInsert, canWrap, isActive }: UpdateStateParams) {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
 

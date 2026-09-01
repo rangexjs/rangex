@@ -4,7 +4,7 @@ import type {
 	UnwrapPort,
 } from "../_Utilities";
 
-export type AccordionItemAdapterConstructorParams = CreateAdapterConstructor<{
+export type ConstructorParams = CreateAdapterConstructor<{
 	[index: string]: never;
 }>;
 
@@ -14,29 +14,29 @@ export interface AccordionItemState {
 	isActive?: boolean;
 }
 
-export interface UpdateAccordionItemStateParams extends AccordionItemState {}
+export interface UpdateStateParams extends AccordionItemState {}
 
-export type AccordionItemOnInsertCallbackFn = () => void;
-export type AccordionItemOnWrapCallbackFn = () => void;
+export type OnInsertCallbackFn = () => void;
+export type OnWrapCallbackFn = () => void;
 
 export interface AccordionItemConfigPort extends DeletePort, UnwrapPort {
-	updateState(params: UpdateAccordionItemStateParams): void;
-	onInsert(callback: AccordionItemOnInsertCallbackFn): () => void;
-	onWrap(callback: AccordionItemOnWrapCallbackFn): () => void;
+	updateState(params: UpdateStateParams): void;
+	onInsert(callback: OnInsertCallbackFn): () => void;
+	onWrap(callback: OnWrapCallbackFn): () => void;
 }
 
-export type AccordionItemOnCanInsertCallbackFn = (canInsert: boolean) => void;
-export type AccordionItemOnCanWrapCallbackFn = (canWrap: boolean) => void;
-export type AccordionItemOnIsActiveCallbackFn = (isActive: boolean) => void;
+export type OnCanInsertCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapCallbackFn = (canWrap: boolean) => void;
+export type OnIsActiveCallbackFn = (isActive: boolean) => void;
 
 export interface AccordionItemPublicPort {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
 	readonly isActive: boolean;
 
-	onCanInsertUpdate(callback: AccordionItemOnCanInsertCallbackFn): () => void;
-	onCanWrapUpdate(callback: AccordionItemOnCanWrapCallbackFn): () => void;
-	onIsActiveUpdate(callback: AccordionItemOnIsActiveCallbackFn): () => void;
+	onCanInsertUpdate(callback: OnCanInsertCallbackFn): () => void;
+	onCanWrapUpdate(callback: OnCanWrapCallbackFn): () => void;
+	onIsActiveUpdate(callback: OnIsActiveCallbackFn): () => void;
 
 	insert(): void;
 	delete(): void;
