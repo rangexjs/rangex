@@ -8,7 +8,7 @@ import type {
 	FormattingLineSpacingValue,
 	FormattingStructuredColor,
 	FormattingTextAlignValue,
-} from "#adapters";
+} from "#adapters/Formatting";
 
 type GetStructuredStyleValue<T extends StructuredStyleValue> = T;
 

@@ -4,7 +4,7 @@ import type {
 	FormattingFontFamilyValue,
 	FormattingFontSizeValue,
 	FormattingLetterSpacingValue,
-} from "#adapters";
+} from "#adapters/Formatting";
 import {
 	isValidBackgroundColorStructuredStyle,
 	isValidColorStructuredStyle,

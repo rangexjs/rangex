@@ -5,7 +5,7 @@ export interface FontFamilyOption {
 	group: "sans-serif" | "serif" | "monospace";
 }
 
-export interface FormattingSettings {
+export interface Settings {
 	defaultFontFamily?: FormattingFontFamilyValue;
 	defaultFontSize?: FormattingFontSizeValue;
 	defaultIndentation?: FormattingIndentationValue;
@@ -15,8 +15,7 @@ export interface FormattingSettings {
 	fontFamilyOptions?: FontFamilyOption[];
 }
 
-export type FormattingAdapterConstructorParams =
-	CreateAdapterConstructor<FormattingSettings>;
+export type ConstructorParams = CreateAdapterConstructor<Settings>;
 
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 
@@ -178,10 +177,8 @@ export interface FormattingState {
 	underline?: FormattingUnderlineState;
 }
 
-export interface UpdateFormattingStateParams extends FormattingState {}
+export interface UpdateStateParams extends FormattingState {}
 
-// Action state — UI → Editor, what `uiPort.emitFormattingChange` takes. Flat raw
-// values: `null` clears the value, an absent key leaves it untouched.
 export interface FormattingActionState {
 	backgroundColor?: FormattingBackgroundColorValue | null;
 	bold?: FormattingTogglePressed;
@@ -202,54 +199,56 @@ export interface FormattingActionState {
 	underline?: FormattingTogglePressed;
 }
 
-export type OnFormattingChangeFn = (params: FormattingActionState) => void;
+export type OnFormattingChangeCallbackFn = (
+	params: FormattingActionState,
+) => void;
 
 export interface FormattingConfigPort {
-	updateState(params: FormattingState): void;
-	onFormattingChange(callback: OnFormattingChangeFn): () => void;
+	updateState(params: UpdateStateParams): void;
+	onFormattingChange(callback: OnFormattingChangeCallbackFn): () => void;
 }
 
-export type FormattingUpdateBackgroundColorFn = (
+export type OnBackgroundColorUpdateCallbackFn = (
 	value: FormattingBackgroundColorState,
 ) => void;
-export type FormattingUpdateBoldFn = (value: FormattingBoldState) => void;
-export type FormattingUpdateCodeFn = (value: FormattingCodeState) => void;
-export type FormattingUpdateColorFn = (value: FormattingColorState) => void;
-export type FormattingUpdateFontFamilyFn = (
+export type OnBoldUpdateCallbackFn = (value: FormattingBoldState) => void;
+export type OnCodeUpdateCallbackFn = (value: FormattingCodeState) => void;
+export type OnColorUpdateCallbackFn = (value: FormattingColorState) => void;
+export type OnFontFamilyUpdateCallbackFn = (
 	value: FormattingFontFamilyState,
 ) => void;
-export type FormattingUpdateFontSizeFn = (
+export type OnFontSizeUpdateCallbackFn = (
 	value: FormattingFontSizeState,
 ) => void;
-export type FormattingUpdateIndentationFn = (
+export type OnIndentationUpdateCallbackFn = (
 	value: FormattingIndentationState,
 ) => void;
-export type FormattingUpdateItalicFn = (value: FormattingItalicState) => void;
-export type FormattingUpdateLetterSpacingFn = (
+export type OnItalicUpdateCallbackFn = (value: FormattingItalicState) => void;
+export type OnLetterSpacingUpdateCallbackFn = (
 	value: FormattingLetterSpacingState,
 ) => void;
-export type FormattingUpdateLineHeightFn = (
+export type OnLineHeightUpdateCallbackFn = (
 	value: FormattingLineHeightState,
 ) => void;
-export type FormattingUpdateLineLocalNameFn = (
+export type OnLineLocalNameUpdateCallbackFn = (
 	value: FormattingLineLocalNameState,
 ) => void;
-export type FormattingUpdateLineSpacingFn = (
+export type OnLineSpacingUpdateCallbackFn = (
 	value: FormattingLineSpacingState,
 ) => void;
-export type FormattingUpdateSubscriptFn = (
+export type OnSubscriptUpdateCallbackFn = (
 	value: FormattingSubscriptState,
 ) => void;
-export type FormattingUpdateSuperscriptFn = (
+export type OnSuperscriptUpdateCallbackFn = (
 	value: FormattingSuperscriptState,
 ) => void;
-export type FormattingUpdateStrikethroughFn = (
+export type OnStrikethroughUpdateCallbackFn = (
 	value: FormattingStrikethroughState,
 ) => void;
-export type FormattingUpdateTextAlignFn = (
+export type OnTextAlignUpdateCallbackFn = (
 	value: FormattingTextAlignState,
 ) => void;
-export type FormattingUpdateUnderlineFn = (
+export type OnUnderlineUpdateCallbackFn = (
 	value: FormattingUnderlineState,
 ) => void;
 export type OnAnyFieldUpdateFn = () => void;
@@ -282,24 +281,24 @@ export interface FormattingPublicPort {
 	readonly fontFamilyOptions: FontFamilyOption[];
 
 	onBackgroundColorUpdate(
-		callback: FormattingUpdateBackgroundColorFn,
+		callback: OnBackgroundColorUpdateCallbackFn,
 	): () => void;
-	onBoldUpdate(callback: FormattingUpdateBoldFn): () => void;
-	onCodeUpdate(callback: FormattingUpdateCodeFn): () => void;
-	onColorUpdate(callback: FormattingUpdateColorFn): () => void;
-	onFontFamilyUpdate(callback: FormattingUpdateFontFamilyFn): () => void;
-	onFontSizeUpdate(callback: FormattingUpdateFontSizeFn): () => void;
-	onIndentationUpdate(callback: FormattingUpdateIndentationFn): () => void;
-	onItalicUpdate(callback: FormattingUpdateItalicFn): () => void;
-	onLetterSpacingUpdate(callback: FormattingUpdateLetterSpacingFn): () => void;
-	onLineHeightUpdate(callback: FormattingUpdateLineHeightFn): () => void;
-	onLineLocalNameUpdate(callback: FormattingUpdateLineLocalNameFn): () => void;
-	onLineSpacingUpdate(callback: FormattingUpdateLineSpacingFn): () => void;
-	onSubscriptUpdate(callback: FormattingUpdateSubscriptFn): () => void;
-	onSuperscriptUpdate(callback: FormattingUpdateSuperscriptFn): () => void;
-	onStrikethroughUpdate(callback: FormattingUpdateStrikethroughFn): () => void;
-	onTextAlignUpdate(callback: FormattingUpdateTextAlignFn): () => void;
-	onUnderlineUpdate(callback: FormattingUpdateUnderlineFn): () => void;
+	onBoldUpdate(callback: OnBoldUpdateCallbackFn): () => void;
+	onCodeUpdate(callback: OnCodeUpdateCallbackFn): () => void;
+	onColorUpdate(callback: OnColorUpdateCallbackFn): () => void;
+	onFontFamilyUpdate(callback: OnFontFamilyUpdateCallbackFn): () => void;
+	onFontSizeUpdate(callback: OnFontSizeUpdateCallbackFn): () => void;
+	onIndentationUpdate(callback: OnIndentationUpdateCallbackFn): () => void;
+	onItalicUpdate(callback: OnItalicUpdateCallbackFn): () => void;
+	onLetterSpacingUpdate(callback: OnLetterSpacingUpdateCallbackFn): () => void;
+	onLineHeightUpdate(callback: OnLineHeightUpdateCallbackFn): () => void;
+	onLineLocalNameUpdate(callback: OnLineLocalNameUpdateCallbackFn): () => void;
+	onLineSpacingUpdate(callback: OnLineSpacingUpdateCallbackFn): () => void;
+	onSubscriptUpdate(callback: OnSubscriptUpdateCallbackFn): () => void;
+	onSuperscriptUpdate(callback: OnSuperscriptUpdateCallbackFn): () => void;
+	onStrikethroughUpdate(callback: OnStrikethroughUpdateCallbackFn): () => void;
+	onTextAlignUpdate(callback: OnTextAlignUpdateCallbackFn): () => void;
+	onUnderlineUpdate(callback: OnUnderlineUpdateCallbackFn): () => void;
 	onAnyFieldUpdate(callback: OnAnyFieldUpdateFn): () => void;
 	changeFormat(params: FormattingActionState): void;
 }

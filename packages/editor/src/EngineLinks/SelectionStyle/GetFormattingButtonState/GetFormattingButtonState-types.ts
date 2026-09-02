@@ -20,7 +20,7 @@ import type {
 	FormattingState,
 	FormattingTextAlignState,
 	FormattingTogglePressed,
-} from "#adapters";
+} from "#adapters/Formatting";
 
 export interface GetLineLocalNameParams {
 	contentLineLocalNames: RangeFormatContentLineLocalNames;

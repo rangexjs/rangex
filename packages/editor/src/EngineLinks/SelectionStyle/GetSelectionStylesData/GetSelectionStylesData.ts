@@ -1,5 +1,5 @@
 import { createStructuredStyleValue } from "rich-text-area";
-import type { FormattingTogglePressed } from "#adapters";
+import type { FormattingTogglePressed } from "#adapters/Formatting";
 import { assertNever } from "#utilities";
 import type {
 	GetBackgroundColorStylesParams,

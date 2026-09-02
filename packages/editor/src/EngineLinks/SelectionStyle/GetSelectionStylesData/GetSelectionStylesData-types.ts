@@ -6,7 +6,7 @@ import type {
 import type {
 	FormattingActionState,
 	FormattingStructuredColor,
-} from "#adapters";
+} from "#adapters/Formatting";
 import type {
 	BackgroundColorStructuredStyleValue,
 	ColorStructuredStyleValue,

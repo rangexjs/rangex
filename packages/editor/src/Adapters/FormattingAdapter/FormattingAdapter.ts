@@ -1,8 +1,8 @@
 import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
+	ConstructorParams,
 	FontFamilyOption,
 	FormattingActionState,
-	FormattingAdapterConstructorParams,
 	FormattingBackgroundColorState,
 	FormattingBoldState,
 	FormattingCodeState,
@@ -28,26 +28,26 @@ import type {
 	FormattingTextAlignState,
 	FormattingTextAlignValue,
 	FormattingUnderlineState,
-	FormattingUpdateBackgroundColorFn,
-	FormattingUpdateBoldFn,
-	FormattingUpdateCodeFn,
-	FormattingUpdateColorFn,
-	FormattingUpdateFontFamilyFn,
-	FormattingUpdateFontSizeFn,
-	FormattingUpdateIndentationFn,
-	FormattingUpdateItalicFn,
-	FormattingUpdateLetterSpacingFn,
-	FormattingUpdateLineHeightFn,
-	FormattingUpdateLineLocalNameFn,
-	FormattingUpdateLineSpacingFn,
-	FormattingUpdateStrikethroughFn,
-	FormattingUpdateSubscriptFn,
-	FormattingUpdateSuperscriptFn,
-	FormattingUpdateTextAlignFn,
-	FormattingUpdateUnderlineFn,
 	OnAnyFieldUpdateFn,
-	OnFormattingChangeFn,
-	UpdateFormattingStateParams,
+	OnBackgroundColorUpdateCallbackFn,
+	OnBoldUpdateCallbackFn,
+	OnCodeUpdateCallbackFn,
+	OnColorUpdateCallbackFn,
+	OnFontFamilyUpdateCallbackFn,
+	OnFontSizeUpdateCallbackFn,
+	OnFormattingChangeCallbackFn,
+	OnIndentationUpdateCallbackFn,
+	OnItalicUpdateCallbackFn,
+	OnLetterSpacingUpdateCallbackFn,
+	OnLineHeightUpdateCallbackFn,
+	OnLineLocalNameUpdateCallbackFn,
+	OnLineSpacingUpdateCallbackFn,
+	OnStrikethroughUpdateCallbackFn,
+	OnSubscriptUpdateCallbackFn,
+	OnSuperscriptUpdateCallbackFn,
+	OnTextAlignUpdateCallbackFn,
+	OnUnderlineUpdateCallbackFn,
+	UpdateStateParams,
 } from "./FormattingAdapter-types";
 
 export class FormattingAdapter {
@@ -105,31 +105,31 @@ export class FormattingAdapter {
 
 	#fontFamilyOptions: FontFamilyOption[];
 
-	#backgroundColorListeners: Set<FormattingUpdateBackgroundColorFn> = new Set();
-	#boldListeners: Set<FormattingUpdateBoldFn> = new Set();
-	#codeListeners: Set<FormattingUpdateCodeFn> = new Set();
-	#colorListeners: Set<FormattingUpdateColorFn> = new Set();
-	#fontFamilyListeners: Set<FormattingUpdateFontFamilyFn> = new Set();
-	#fontSizeListeners: Set<FormattingUpdateFontSizeFn> = new Set();
-	#indentationListeners: Set<FormattingUpdateIndentationFn> = new Set();
-	#italicListeners: Set<FormattingUpdateItalicFn> = new Set();
-	#letterSpacingListeners: Set<FormattingUpdateLetterSpacingFn> = new Set();
-	#lineHeightListeners: Set<FormattingUpdateLineHeightFn> = new Set();
-	#lineLocalNameListeners: Set<FormattingUpdateLineLocalNameFn> = new Set();
-	#lineSpacingListeners: Set<FormattingUpdateLineSpacingFn> = new Set();
-	#subscriptListeners: Set<FormattingUpdateSubscriptFn> = new Set();
-	#superscriptListeners: Set<FormattingUpdateSuperscriptFn> = new Set();
-	#strikethroughListeners: Set<FormattingUpdateStrikethroughFn> = new Set();
-	#textAlignListeners: Set<FormattingUpdateTextAlignFn> = new Set();
-	#underlineListeners: Set<FormattingUpdateUnderlineFn> = new Set();
+	#backgroundColorListeners: Set<OnBackgroundColorUpdateCallbackFn> = new Set();
+	#boldListeners: Set<OnBoldUpdateCallbackFn> = new Set();
+	#codeListeners: Set<OnCodeUpdateCallbackFn> = new Set();
+	#colorListeners: Set<OnColorUpdateCallbackFn> = new Set();
+	#fontFamilyListeners: Set<OnFontFamilyUpdateCallbackFn> = new Set();
+	#fontSizeListeners: Set<OnFontSizeUpdateCallbackFn> = new Set();
+	#indentationListeners: Set<OnIndentationUpdateCallbackFn> = new Set();
+	#italicListeners: Set<OnItalicUpdateCallbackFn> = new Set();
+	#letterSpacingListeners: Set<OnLetterSpacingUpdateCallbackFn> = new Set();
+	#lineHeightListeners: Set<OnLineHeightUpdateCallbackFn> = new Set();
+	#lineLocalNameListeners: Set<OnLineLocalNameUpdateCallbackFn> = new Set();
+	#lineSpacingListeners: Set<OnLineSpacingUpdateCallbackFn> = new Set();
+	#subscriptListeners: Set<OnSubscriptUpdateCallbackFn> = new Set();
+	#superscriptListeners: Set<OnSuperscriptUpdateCallbackFn> = new Set();
+	#strikethroughListeners: Set<OnStrikethroughUpdateCallbackFn> = new Set();
+	#textAlignListeners: Set<OnTextAlignUpdateCallbackFn> = new Set();
+	#underlineListeners: Set<OnUnderlineUpdateCallbackFn> = new Set();
 	#onAnyFieldUpdateListeners: Set<OnAnyFieldUpdateFn> = new Set();
 
-	#onFormattingChangeListeners: Set<OnFormattingChangeFn> = new Set();
+	#onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> = new Set();
 
 	#configPort: FormattingConfigPort | null = null;
 	#publicPort: FormattingPublicPort | null = null;
 
-	constructor(...params: FormattingAdapterConstructorParams) {
+	constructor(...params: ConstructorParams) {
 		const [
 			{
 				defaultFontFamily = "Inter",
@@ -170,7 +170,7 @@ export class FormattingAdapter {
 		strikethrough,
 		textAlign,
 		underline,
-	}: UpdateFormattingStateParams) {
+	}: UpdateStateParams) {
 		if (backgroundColor !== undefined) {
 			this.#backgroundColor = backgroundColor;
 
