@@ -1,15 +1,15 @@
-import type { HandleBlockDeleteParams } from "./HandleBlockDelete-types";
+import type { HandleBlockRemoveParams } from "./HandleBlockRemove-types";
 
 /**
- * Wires a popover's Delete control to the engine. Fires immediately, no confirmation —
+ * Wires a popover's Remove control to the engine. Fires immediately, no confirmation —
  * undo (`registerSnapshotBoundary`) is the safety net, consistent with the rest of the editor.
  */
-export const handleBlockDelete = ({
+export const handleBlockRemove = ({
 	port,
 	editorAPI,
 	getCurrentBlock,
-}: HandleBlockDeleteParams) => {
-	const unsubscribeDelete = port.onDelete(() => {
+}: HandleBlockRemoveParams) => {
+	const unsubscribeRemove = port.onRemove(() => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -37,6 +37,6 @@ export const handleBlockDelete = ({
 	});
 
 	return () => {
-		unsubscribeDelete();
+		unsubscribeRemove();
 	};
 };

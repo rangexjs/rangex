@@ -1,6 +1,6 @@
 import type {
 	CreateAdapterConstructor,
-	DeletePort,
+	RemovePort,
 	UnwrapPort,
 } from "../_Utilities";
 
@@ -33,7 +33,7 @@ export type OnLightThemeCallbackFn = (theme: CodeBlockTheme) => void;
 export type OnDarkThemeCallbackFn = (theme: CodeBlockTheme) => void;
 export type PlainTextProviderFn = () => string[];
 
-export interface CodeBlockConfigPort extends DeletePort, UnwrapPort {
+export interface CodeBlockConfigPort extends RemovePort, UnwrapPort {
 	readonly floatingEl: HTMLDivElement;
 
 	updateState(params: UpdateStateParams): void;
@@ -73,7 +73,7 @@ export interface CodeBlockPublicPort {
 	onDarkThemeUpdate(callback: OnDarkThemeUpdateCallbackFn): () => void;
 
 	insert(): void;
-	delete(): void;
+	remove(): void;
 	wrap(): void;
 	unwrap(): void;
 	changeLanguage(language: CodeBlockLanguage): void;

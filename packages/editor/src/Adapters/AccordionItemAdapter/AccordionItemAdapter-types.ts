@@ -1,6 +1,6 @@
 import type {
 	CreateAdapterConstructor,
-	DeletePort,
+	RemovePort,
 	UnwrapPort,
 } from "../_Utilities";
 
@@ -19,7 +19,7 @@ export interface UpdateStateParams extends AccordionItemState {}
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
 
-export interface AccordionItemConfigPort extends DeletePort, UnwrapPort {
+export interface AccordionItemConfigPort extends RemovePort, UnwrapPort {
 	updateState(params: UpdateStateParams): void;
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onWrap(callback: OnWrapCallbackFn): () => void;
@@ -39,7 +39,7 @@ export interface AccordionItemPublicPort {
 	onIsActiveUpdate(callback: OnIsActiveCallbackFn): () => void;
 
 	insert(): void;
-	delete(): void;
+	remove(): void;
 	wrap(): void;
 	unwrap(): void;
 }

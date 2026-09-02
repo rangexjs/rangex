@@ -1,4 +1,4 @@
-import type { OnDeleteCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
+import type { OnRemoveCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
 import type {
 	AccordionItemConfigPort,
 	AccordionItemPublicPort,
@@ -22,7 +22,7 @@ export class AccordionItemAdapter {
 
 	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteCallbackFn> = new Set();
+	#onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
 	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
 
 	#configPort: AccordionItemConfigPort | null = null;
@@ -76,9 +76,9 @@ export class AccordionItemAdapter {
 				return () => adapter.#onWrapListeners.delete(callback);
 			},
 
-			onDelete(callback) {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onRemove(callback) {
+				adapter.#onRemoveListeners.add(callback);
+				return () => adapter.#onRemoveListeners.delete(callback);
 			},
 
 			onUnwrap(callback) {
@@ -127,8 +127,8 @@ export class AccordionItemAdapter {
 				}
 			},
 
-			delete() {
-				for (const listener of adapter.#onDeleteListeners) {
+			remove() {
+				for (const listener of adapter.#onRemoveListeners) {
 					listener();
 				}
 			},

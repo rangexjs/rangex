@@ -1,4 +1,4 @@
-import type { OnDeleteCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
+import type { OnRemoveCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
 import {
 	defaultCodeBlockLanguages,
 	defaultCodeBlockThemes,
@@ -39,7 +39,7 @@ export class CodeBlockAdapter {
 
 	// ConfigPort
 	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onDeleteListeners: Set<OnDeleteCallbackFn> = new Set();
+	#onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
 	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
 	#onLanguageListeners: Set<OnLanguageCallbackFn> = new Set();
@@ -147,9 +147,9 @@ export class CodeBlockAdapter {
 				return () => adapter.#onInsertListeners.delete(callback);
 			},
 
-			onDelete(callback) {
-				adapter.#onDeleteListeners.add(callback);
-				return () => adapter.#onDeleteListeners.delete(callback);
+			onRemove(callback) {
+				adapter.#onRemoveListeners.add(callback);
+				return () => adapter.#onRemoveListeners.delete(callback);
 			},
 
 			onWrap(callback) {
@@ -261,8 +261,8 @@ export class CodeBlockAdapter {
 				}
 			},
 
-			delete() {
-				for (const listener of adapter.#onDeleteListeners) {
+			remove() {
+				for (const listener of adapter.#onRemoveListeners) {
 					listener();
 				}
 			},

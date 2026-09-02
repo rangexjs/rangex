@@ -1,8 +1,8 @@
 import type { BlockComponent, EditorAPI } from "rich-text-area";
-import type { DeletePort } from "#adapters";
+import type { RemovePort } from "#adapters";
 
-export interface HandleBlockDeleteParams {
-	port: DeletePort;
+export interface HandleBlockRemoveParams {
+	port: RemovePort;
 	editorAPI: EditorAPI;
 	getCurrentBlock: () => BlockComponent | null;
 }
