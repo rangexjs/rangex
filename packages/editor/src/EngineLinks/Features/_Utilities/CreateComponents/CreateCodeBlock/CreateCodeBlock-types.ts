@@ -1,5 +1,5 @@
 import type { BlockComponentLine, Line } from "rich-text-area";
-import type { CodeBlockLanguage } from "#adapters";
+import type { CodeBlockLanguage } from "#adapters/CodeBlock";
 
 export interface CreateCodeBlockParams {
 	language: CodeBlockLanguage;
