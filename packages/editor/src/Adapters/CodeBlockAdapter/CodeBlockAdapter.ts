@@ -189,6 +189,10 @@ export class CodeBlockAdapter {
 		const adapter = this;
 
 		this.#publicPort ??= {
+			get floatingEl() {
+				return adapter.#floatingEl;
+			},
+
 			get languages() {
 				return adapter.#languages;
 			},

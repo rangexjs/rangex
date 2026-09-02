@@ -178,6 +178,10 @@ export class ImageAdapter {
 		const adapter = this;
 
 		this.#publicPort ??= {
+			get floatingEl() {
+				return adapter.#floatingEl;
+			},
+
 			get align() {
 				return adapter.#align;
 			},

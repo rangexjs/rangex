@@ -53,6 +53,8 @@ export type OnCaptionUpdateCallbackFn = (value: CaptionState) => void;
 export type OnAltTextUpdateCallbackFn = (value: string) => void;
 
 export interface ImagePublicPort {
+	readonly floatingEl: HTMLDivElement;
+
 	readonly align: BlockAlignValue;
 	readonly objectFit: ObjectFitValue;
 	readonly aspectRatio: AspectRatioValue;

@@ -54,6 +54,8 @@ export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 
 export interface CodeBlockPublicPort {
+	readonly floatingEl: HTMLDivElement;
+
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
 	readonly canInsert: boolean;
