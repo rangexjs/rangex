@@ -16,14 +16,16 @@ export class AccordionItemAdapter {
 	#canWrap = false;
 	#isActive = false;
 
-	#canInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
-	#canWrapListeners: Set<OnCanWrapCallbackFn> = new Set();
-	#isActiveListeners: Set<OnIsActiveCallbackFn> = new Set();
-
+	// ConfigPort
 	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 	#onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
+	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
+
+	// PublicPort
+	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
+	#onCanWrapListeners: Set<OnCanWrapCallbackFn> = new Set();
+	#onIsActiveListeners: Set<OnIsActiveCallbackFn> = new Set();
 
 	#configPort: AccordionItemConfigPort | null = null;
 	#publicPort: AccordionItemPublicPort | null = null;
@@ -36,7 +38,7 @@ export class AccordionItemAdapter {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
 
-			for (const listener of this.#canInsertListeners) {
+			for (const listener of this.#onCanInsertListeners) {
 				listener(this.#canInsert);
 			}
 		}
@@ -44,7 +46,7 @@ export class AccordionItemAdapter {
 		if (canWrap !== undefined) {
 			this.#canWrap = canWrap;
 
-			for (const listener of this.#canWrapListeners) {
+			for (const listener of this.#onCanWrapListeners) {
 				listener(this.#canWrap);
 			}
 		}
@@ -52,7 +54,7 @@ export class AccordionItemAdapter {
 		if (isActive !== undefined) {
 			this.#isActive = isActive;
 
-			for (const listener of this.#isActiveListeners) {
+			for (const listener of this.#onIsActiveListeners) {
 				listener(this.#isActive);
 			}
 		}
@@ -71,14 +73,14 @@ export class AccordionItemAdapter {
 				return () => adapter.#onInsertListeners.delete(callback);
 			},
 
-			onWrap(callback) {
-				adapter.#onWrapListeners.add(callback);
-				return () => adapter.#onWrapListeners.delete(callback);
-			},
-
 			onRemove(callback) {
 				adapter.#onRemoveListeners.add(callback);
 				return () => adapter.#onRemoveListeners.delete(callback);
+			},
+
+			onWrap(callback) {
+				adapter.#onWrapListeners.add(callback);
+				return () => adapter.#onWrapListeners.delete(callback);
 			},
 
 			onUnwrap(callback) {
@@ -107,18 +109,18 @@ export class AccordionItemAdapter {
 			},
 
 			onCanInsertUpdate(callback) {
-				adapter.#canInsertListeners.add(callback);
-				return () => adapter.#canInsertListeners.delete(callback);
+				adapter.#onCanInsertListeners.add(callback);
+				return () => adapter.#onCanInsertListeners.delete(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				adapter.#canWrapListeners.add(callback);
-				return () => adapter.#canWrapListeners.delete(callback);
+				adapter.#onCanWrapListeners.add(callback);
+				return () => adapter.#onCanWrapListeners.delete(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				adapter.#isActiveListeners.add(callback);
-				return () => adapter.#isActiveListeners.delete(callback);
+				adapter.#onIsActiveListeners.add(callback);
+				return () => adapter.#onIsActiveListeners.delete(callback);
 			},
 
 			insert() {

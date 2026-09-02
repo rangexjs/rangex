@@ -19,9 +19,12 @@ export class EmptyMediaAdapter {
 	#disposeSlottedElement;
 	#adapterBus: AdapterBus;
 
-	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
+	// ConfigPort
 	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	#onResolveListeners: Set<OnResolveCallbackFn> = new Set();
+
+	// PublicPort
+	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
 
 	#elements: Map<HTMLElement, ElementState> = new Map();
 
