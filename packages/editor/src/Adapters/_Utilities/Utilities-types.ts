@@ -1,3 +1,5 @@
+import type { CodeBlockAdapter } from "#adapters/CodeBlock";
+import type { TemplateVariableAdapter } from "#adapters/TemplateVariable";
 import type { AccordionItemAdapter } from "../AccordionItemAdapter";
 import type { EmptyMediaAdapter } from "../EmptyMediaAdapter";
 import type { FormattingAdapter } from "../FormattingAdapter";
@@ -16,6 +18,8 @@ export type CreateAdapterConstructor<Settings extends object> = [
 
 export type Adapter =
 	| AccordionItemAdapter
+	| CodeBlockAdapter
 	| EmptyMediaAdapter
 	| FormattingAdapter
-	| ImageAdapter;
+	| ImageAdapter
+	| TemplateVariableAdapter;
