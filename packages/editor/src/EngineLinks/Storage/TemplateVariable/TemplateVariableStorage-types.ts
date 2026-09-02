@@ -1,5 +1,5 @@
 import type { InlineComponent } from "rich-text-area";
-import type { TemplateVariableKind } from "#adapters";
+import type { TemplateVariableKind } from "#adapters/TemplateVariable";
 import type { TemplateVariableId } from "../../Constants";
 import type { templateVariableStorageVersion } from "./TemplateVariableStorage";
 
