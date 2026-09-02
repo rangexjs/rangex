@@ -15,6 +15,7 @@ import type {
 	OnDarkThemeUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnIsActiveCallbackFn,
+	OnIsOpenUpdateCallbackFn,
 	OnLanguageCallbackFn,
 	OnLanguageUpdateCallbackFn,
 	OnLightThemeCallbackFn,
@@ -36,6 +37,7 @@ export class CodeBlockAdapter {
 	#language = "TypeScript";
 	#lightTheme = "Light+";
 	#darkTheme = "Dark+";
+	#isOpen = false;
 
 	// ConfigPort
 	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
@@ -54,6 +56,7 @@ export class CodeBlockAdapter {
 	#onLanguageUpdateListeners: Set<OnLanguageUpdateCallbackFn> = new Set();
 	#onLightThemeUpdateListeners: Set<OnLightThemeUpdateCallbackFn> = new Set();
 	#onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> = new Set();
+	#onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
 
 	#configPort: CodeBlockConfigPort | null = null;
 	#publicPort: CodeBlockPublicPort | null = null;
@@ -80,6 +83,7 @@ export class CodeBlockAdapter {
 		language,
 		lightTheme,
 		darkTheme,
+		isOpen,
 	}: UpdateStateParams) {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
@@ -126,6 +130,14 @@ export class CodeBlockAdapter {
 
 			for (const listener of this.#onDarkThemeUpdateListeners) {
 				listener(this.#darkTheme);
+			}
+		}
+
+		if (isOpen !== undefined) {
+			this.#isOpen = isOpen;
+
+			for (const listener of this.#onIsOpenUpdateListeners) {
+				listener(this.#isOpen);
 			}
 		}
 	}
@@ -225,6 +237,10 @@ export class CodeBlockAdapter {
 				return adapter.#darkTheme;
 			},
 
+			get isOpen() {
+				return adapter.#isOpen;
+			},
+
 			onCanInsertUpdate(callback) {
 				adapter.#onCanInsertListeners.add(callback);
 				return () => adapter.#onCanInsertListeners.delete(callback);
@@ -253,6 +269,11 @@ export class CodeBlockAdapter {
 			onDarkThemeUpdate(callback) {
 				adapter.#onDarkThemeUpdateListeners.add(callback);
 				return () => adapter.#onDarkThemeUpdateListeners.delete(callback);
+			},
+
+			onIsOpenUpdate(callback) {
+				adapter.#onIsOpenUpdateListeners.add(callback);
+				return () => adapter.#onIsOpenUpdateListeners.delete(callback);
 			},
 
 			insert() {

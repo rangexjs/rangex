@@ -21,6 +21,7 @@ export interface CodeBlockState {
 	language?: CodeBlockLanguage;
 	lightTheme?: CodeBlockTheme;
 	darkTheme?: CodeBlockTheme;
+	isOpen?: boolean;
 }
 
 export interface UpdateStateParams extends CodeBlockState {}
@@ -52,6 +53,7 @@ export type OnIsActiveCallbackFn = (isActive: boolean) => void;
 export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
 export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
+export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
 export interface CodeBlockPublicPort {
 	readonly floatingEl: HTMLDivElement;
@@ -64,6 +66,7 @@ export interface CodeBlockPublicPort {
 	readonly language: CodeBlockLanguage;
 	readonly lightTheme: CodeBlockTheme;
 	readonly darkTheme: CodeBlockTheme;
+	readonly isOpen: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapCallbackFn): () => void;
@@ -71,6 +74,7 @@ export interface CodeBlockPublicPort {
 	onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
 	onLightThemeUpdate(callback: OnLightThemeUpdateCallbackFn): () => void;
 	onDarkThemeUpdate(callback: OnDarkThemeUpdateCallbackFn): () => void;
+	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
 
 	insert(): void;
 	remove(): void;
