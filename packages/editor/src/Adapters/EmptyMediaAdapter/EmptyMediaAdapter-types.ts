@@ -1,5 +1,5 @@
 import type {
-	CreateAdapterConstructor,
+	CreateAdapterParams,
 	MediaResolveCallbackParams,
 	MediaType,
 } from "../_Utilities";
@@ -17,14 +17,6 @@ export type UploadMediaFileFn = (
 export type CreateSlottedElementFn = () => HTMLElement;
 
 export type DisposeSlottedElementFn = (element: HTMLElement) => void;
-
-export interface Settings {
-	uploadFile: UploadMediaFileFn;
-	createSlottedElement: CreateSlottedElementFn;
-	disposeSlottedElement: DisposeSlottedElementFn;
-}
-
-export type ConstructorParams = CreateAdapterConstructor<Settings>;
 
 export interface EmptyMediaState {
 	canInsert?: boolean;
@@ -75,7 +67,7 @@ export type OnInsertCallbackFn = () => void;
 
 export type OnResolveCallbackFn = (params: ResolveOption) => void;
 
-export interface EmptyMediaConfigPort {
+export interface EmptyMediaConfigPortProps {
 	readonly uploadFile: UploadMediaFileFn;
 	createSlottedElement: CreateSlottedElementFn;
 	disposeSlottedElement: DisposeSlottedElementFn;
@@ -89,9 +81,11 @@ export interface EmptyMediaConfigPort {
 	emitMediaResolve(params: MediaResolveCallbackParams): void;
 }
 
+export interface EmptyMediaConfigPort extends EmptyMediaConfigPortProps {}
+
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 
-export interface EmptyMediaPublicPort {
+export interface EmptyMediaPublicPortProps {
 	readonly canInsert: boolean;
 	readonly supportedMediaTypes: MediaType[];
 
@@ -105,3 +99,25 @@ export interface EmptyMediaPublicPort {
 	insert(): void;
 	resolve(params: ResolveOption): void;
 }
+
+export interface EmptyMediaPublicPort extends EmptyMediaPublicPortProps {}
+
+export interface EmptyMediaInternals {
+	canInsert: boolean;
+}
+
+export interface EmptyMediaAdapter {
+	configPort: EmptyMediaConfigPort;
+	publicPort: EmptyMediaPublicPort;
+}
+
+export interface Settings {
+	uploadFile: UploadMediaFileFn;
+	createSlottedElement: CreateSlottedElementFn;
+	disposeSlottedElement: DisposeSlottedElementFn;
+}
+
+export interface CreateEmptyMediaAdapterParams
+	extends CreateAdapterParams<Settings> {}
+
+export interface CreateEmptyMediaAdapterResult extends EmptyMediaAdapter {}

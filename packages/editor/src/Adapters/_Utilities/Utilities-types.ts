@@ -11,7 +11,7 @@ export interface AdapterOptions {
 	floatingContainer: HTMLDivElement;
 }
 
-export type CreateAdapterConstructor<Settings extends object> = [
+export type CreateAdapterParams<Settings extends object> = [
 	Settings,
 	AdapterOptions,
 ];

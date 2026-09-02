@@ -1,18 +1,13 @@
 import type {
-	CreateAdapterConstructor,
-	RemovePort,
-	UnwrapPort,
+	CreateAdapterParams,
+	RemoveConfigPort,
+	RemovePublicPort,
+	UnwrapConfigPort,
+	UnwrapPublicPort,
 } from "../_Utilities";
 
 export type CodeBlockLanguage = string;
 export type CodeBlockTheme = string;
-
-export interface Settings {
-	languages?: CodeBlockLanguage[];
-	themes?: CodeBlockTheme[];
-}
-
-export type ConstructorParams = CreateAdapterConstructor<Settings>;
 
 export interface CodeBlockState {
 	canInsert?: boolean;
@@ -34,7 +29,7 @@ export type OnLightThemeCallbackFn = (theme: CodeBlockTheme) => void;
 export type OnDarkThemeCallbackFn = (theme: CodeBlockTheme) => void;
 export type PlainTextProviderFn = () => string[];
 
-export interface CodeBlockConfigPort extends RemovePort, UnwrapPort {
+export interface CodeBlockConfigPortProps {
 	readonly floatingEl: HTMLDivElement;
 
 	updateState(params: UpdateStateParams): void;
@@ -47,6 +42,11 @@ export interface CodeBlockConfigPort extends RemovePort, UnwrapPort {
 	registerPlainTextProvider(provider: PlainTextProviderFn): void;
 }
 
+export interface CodeBlockConfigPort
+	extends CodeBlockConfigPortProps,
+		RemoveConfigPort,
+		UnwrapConfigPort {}
+
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
@@ -55,7 +55,7 @@ export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
-export interface CodeBlockPublicPort {
+export interface CodeBlockPublicPortProps {
 	readonly floatingEl: HTMLDivElement;
 
 	readonly languages: CodeBlockLanguage[];
@@ -77,12 +77,41 @@ export interface CodeBlockPublicPort {
 	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
 
 	insert(): void;
-	remove(): void;
 	wrap(): void;
-	unwrap(): void;
 	changeLanguage(language: CodeBlockLanguage): void;
 	changeLightTheme(theme: CodeBlockTheme): void;
 	changeDarkTheme(theme: CodeBlockTheme): void;
 
 	getPlainText(): string[];
 }
+
+export interface CodeBlockPublicPort
+	extends CodeBlockPublicPortProps,
+		RemovePublicPort,
+		UnwrapPublicPort {}
+
+export interface CodeBlockInternals {
+	canInsert: boolean;
+	canWrap: boolean;
+	isActive: boolean;
+	language: CodeBlockLanguage;
+	lightTheme: CodeBlockTheme;
+	darkTheme: CodeBlockTheme;
+	isOpen: boolean;
+	plainTextProvider: PlainTextProviderFn | null;
+}
+
+export interface CodeBlockAdapter {
+	configPort: CodeBlockConfigPort;
+	publicPort: CodeBlockPublicPort;
+}
+
+export interface Settings {
+	languages?: CodeBlockLanguage[];
+	themes?: CodeBlockTheme[];
+}
+
+export interface CreateCodeBlockAdapterParams
+	extends CreateAdapterParams<Settings> {}
+
+export interface CreateCodeBlockAdapterResult extends CodeBlockAdapter {}

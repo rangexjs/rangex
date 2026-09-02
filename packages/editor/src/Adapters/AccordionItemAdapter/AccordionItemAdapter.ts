@@ -1,8 +1,13 @@
-import type { OnRemoveCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
+import { extendObjectProperties } from "#utilities";
+import { createRemovePort, createUnwrapPort } from "../_Utilities";
 import type {
 	AccordionItemConfigPort,
+	AccordionItemConfigPortProps,
+	AccordionItemInternals,
 	AccordionItemPublicPort,
-	ConstructorParams,
+	AccordionItemPublicPortProps,
+	CreateAccordionItemAdapterParams,
+	CreateAccordionItemAdapterResult,
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
@@ -11,143 +16,118 @@ import type {
 	UpdateStateParams,
 } from "./AccordionItemAdapter-types";
 
-export class AccordionItemAdapter {
-	#canInsert = false;
-	#canWrap = false;
-	#isActive = false;
+export const createAccordionItemAdapter = (
+	..._params: CreateAccordionItemAdapterParams
+): CreateAccordionItemAdapterResult => {
+	const internals: AccordionItemInternals = {
+		canInsert: false,
+		canWrap: false,
+		isActive: false,
+	};
 
 	// ConfigPort
-	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
-	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
-	#onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
-	#onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
+	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
+		new Set();
+	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 
-	#configPort: AccordionItemConfigPort | null = null;
-	#publicPort: AccordionItemPublicPort | null = null;
+	const removePort = createRemovePort();
+	const unwrapPort = createUnwrapPort();
 
-	constructor(...params: ConstructorParams) {
-		const [_settings, _options] = params;
-	}
-
-	#updateState({ canInsert, canWrap, isActive }: UpdateStateParams) {
+	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			this.#canInsert = canInsert;
+			internals.canInsert = canInsert;
 
-			for (const listener of this.#onCanInsertUpdateListeners) {
-				listener(this.#canInsert);
+			for (const listener of onCanInsertUpdateListeners) {
+				listener(internals.canInsert);
 			}
 		}
 
 		if (canWrap !== undefined) {
-			this.#canWrap = canWrap;
+			internals.canWrap = canWrap;
 
-			for (const listener of this.#onCanWrapUpdateListeners) {
-				listener(this.#canWrap);
+			for (const listener of onCanWrapUpdateListeners) {
+				listener(internals.canWrap);
 			}
 		}
 
 		if (isActive !== undefined) {
-			this.#isActive = isActive;
+			internals.isActive = isActive;
 
-			for (const listener of this.#onIsActiveUpdateListeners) {
-				listener(this.#isActive);
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
 			}
 		}
-	}
+	};
 
-	get configPort(): AccordionItemConfigPort {
-		const adapter = this;
-
-		this.#configPort ??= {
+	const configPort: AccordionItemConfigPort = extendObjectProperties(
+		removePort.configPort,
+		unwrapPort.configPort,
+		{
 			updateState(params) {
-				adapter.#updateState(params);
+				updateState(params);
 			},
 
 			onInsert(callback) {
-				adapter.#onInsertListeners.add(callback);
-				return () => adapter.#onInsertListeners.delete(callback);
-			},
-
-			onRemove(callback) {
-				adapter.#onRemoveListeners.add(callback);
-				return () => adapter.#onRemoveListeners.delete(callback);
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
 			},
 
 			onWrap(callback) {
-				adapter.#onWrapListeners.add(callback);
-				return () => adapter.#onWrapListeners.delete(callback);
+				onWrapListeners.add(callback);
+				return () => onWrapListeners.delete(callback);
 			},
+		} satisfies AccordionItemConfigPortProps,
+	);
 
-			onUnwrap(callback) {
-				adapter.#onUnwrapListeners.add(callback);
-				return () => adapter.#onUnwrapListeners.delete(callback);
-			},
-		};
-
-		return this.#configPort;
-	}
-
-	get publicPort(): AccordionItemPublicPort {
-		const adapter = this;
-
-		this.#publicPort ??= {
+	const publicPort: AccordionItemPublicPort = extendObjectProperties(
+		removePort.publicPort,
+		unwrapPort.publicPort,
+		{
 			get canInsert() {
-				return adapter.#canInsert;
+				return internals.canInsert;
 			},
 
 			get canWrap() {
-				return adapter.#canWrap;
+				return internals.canWrap;
 			},
 
 			get isActive() {
-				return adapter.#isActive;
+				return internals.isActive;
 			},
 
 			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertUpdateListeners.add(callback);
-				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				adapter.#onCanWrapUpdateListeners.add(callback);
-				return () => adapter.#onCanWrapUpdateListeners.delete(callback);
+				onCanWrapUpdateListeners.add(callback);
+				return () => onCanWrapUpdateListeners.delete(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				adapter.#onIsActiveUpdateListeners.add(callback);
-				return () => adapter.#onIsActiveUpdateListeners.delete(callback);
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
 			},
 
 			insert() {
-				for (const listener of adapter.#onInsertListeners) {
-					listener();
-				}
-			},
-
-			remove() {
-				for (const listener of adapter.#onRemoveListeners) {
+				for (const listener of onInsertListeners) {
 					listener();
 				}
 			},
 
 			wrap() {
-				for (const listener of adapter.#onWrapListeners) {
+				for (const listener of onWrapListeners) {
 					listener();
 				}
 			},
+		} satisfies AccordionItemPublicPortProps,
+	);
 
-			unwrap() {
-				for (const listener of adapter.#onUnwrapListeners) {
-					listener();
-				}
-			},
-		};
-
-		return this.#publicPort;
-	}
-}
+	return { configPort, publicPort };
+};

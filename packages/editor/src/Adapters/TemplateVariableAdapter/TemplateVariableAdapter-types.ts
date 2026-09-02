@@ -1,4 +1,4 @@
-import type { CreateAdapterConstructor } from "../_Utilities";
+import type { CreateAdapterParams } from "../_Utilities";
 
 export type TemplateVariableKind =
 	| "full-name"
@@ -38,7 +38,7 @@ export type OnInsertCallbackFn = (params: InsertParams) => void;
 export type OnOptionsCallbackFn = (options: Partial<Options>) => void;
 export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 
-export interface TemplateVariableConfigPort {
+export interface TemplateVariableConfigPortProps {
 	readonly floatingEl: HTMLDivElement;
 
 	updateState(params: UpdateStateParams): void;
@@ -48,12 +48,15 @@ export interface TemplateVariableConfigPort {
 	onSelect(callback: OnSelectCallbackFn): () => void;
 }
 
+export interface TemplateVariableConfigPort
+	extends TemplateVariableConfigPortProps {}
+
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnOptionsUpdateCallbackFn = (value: Options) => void;
 export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
-export interface TemplateVariablePublicPort {
+export interface TemplateVariablePublicPortProps {
 	readonly floatingEl: HTMLDivElement;
 
 	readonly canInsert: boolean;
@@ -71,6 +74,9 @@ export interface TemplateVariablePublicPort {
 	select(item: SuggestionItem): void;
 }
 
+export interface TemplateVariablePublicPort
+	extends TemplateVariablePublicPortProps {}
+
 export interface TemplateVariableInternals {
 	canInsert: boolean;
 	options: Options;
@@ -87,7 +93,7 @@ export interface TemplateVariableAdapter {
 export interface Settings {}
 
 export interface CreateTemplateVariableAdapterParams
-	extends CreateAdapterConstructor<Settings> {}
+	extends CreateAdapterParams<Settings> {}
 
 export interface CreateTemplateVariableAdapterResult
 	extends TemplateVariableAdapter {}

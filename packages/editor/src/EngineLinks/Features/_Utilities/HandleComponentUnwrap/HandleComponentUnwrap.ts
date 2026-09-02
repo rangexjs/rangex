@@ -1,7 +1,7 @@
 import type { HandleComponentUnwrapParams } from "./HandleComponentUnwrap-types";
 
 /**
- * Wires an `UnwrapPort`'s `onUnwrap` to whatever `Component` `getComponent` currently
+ * Wires an `UnwrapConfigPort`'s `onUnwrap` to whatever `Component` `getComponent` currently
  * resolves to, calling `$$unwrap` on it. Works for both `InlineComponent` and
  * `BlockComponent` since `$$unwrap` is defined on `Component` itself.
  */

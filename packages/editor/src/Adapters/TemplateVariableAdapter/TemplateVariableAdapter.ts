@@ -1,3 +1,4 @@
+import { extendObjectProperties } from "#utilities";
 import type {
 	CreateTemplateVariableAdapterParams,
 	CreateTemplateVariableAdapterResult,
@@ -12,8 +13,10 @@ import type {
 	SuggestionItem,
 	SuggestionItems,
 	TemplateVariableConfigPort,
+	TemplateVariableConfigPortProps,
 	TemplateVariableInternals,
 	TemplateVariablePublicPort,
+	TemplateVariablePublicPortProps,
 	UpdateStateParams,
 } from "./TemplateVariableAdapter-types";
 
@@ -101,7 +104,7 @@ export const createTemplateVariableAdapter = (
 		}
 	};
 
-	const configPort: TemplateVariableConfigPort = {
+	const configPort: TemplateVariableConfigPort = extendObjectProperties({}, {
 		get floatingEl() {
 			return floatingEl;
 		},
@@ -124,9 +127,9 @@ export const createTemplateVariableAdapter = (
 			onSelectListeners.add(callback);
 			return () => onSelectListeners.delete(callback);
 		},
-	};
+	} satisfies TemplateVariableConfigPortProps);
 
-	const publicPort: TemplateVariablePublicPort = {
+	const publicPort: TemplateVariablePublicPort = extendObjectProperties({}, {
 		get floatingEl() {
 			return floatingEl;
 		},
@@ -184,7 +187,7 @@ export const createTemplateVariableAdapter = (
 				listener(item);
 			}
 		},
-	};
+	} satisfies TemplateVariablePublicPortProps);
 
 	return { configPort, publicPort };
 };

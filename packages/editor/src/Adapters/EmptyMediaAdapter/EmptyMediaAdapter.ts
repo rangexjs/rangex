@@ -1,70 +1,67 @@
-import type { AdapterBus } from "../_Utilities";
+import { extendObjectProperties } from "#utilities";
 import type {
-	ConstructorParams,
+	CreateEmptyMediaAdapterParams,
+	CreateEmptyMediaAdapterResult,
 	ElementState,
 	EmptyMediaConfigPort,
+	EmptyMediaConfigPortProps,
+	EmptyMediaInternals,
 	EmptyMediaPublicPort,
+	EmptyMediaPublicPortProps,
 	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnResolveCallbackFn,
 	UpdateElementStateParams,
 	UpdateStateParams,
-	UploadMediaFileFn,
 } from "./EmptyMediaAdapter-types";
 
-export class EmptyMediaAdapter {
-	#canInsert = false;
-	#uploadFile: UploadMediaFileFn;
-	#createSlottedElement;
-	#disposeSlottedElement;
-	#adapterBus: AdapterBus;
+export const createEmptyMediaAdapter = (
+	...params: CreateEmptyMediaAdapterParams
+): CreateEmptyMediaAdapterResult => {
+	const [
+		{ uploadFile, createSlottedElement, disposeSlottedElement },
+		{ adapterBus },
+	] = params;
+
+	const internals: EmptyMediaInternals = {
+		canInsert: false,
+	};
+
+	const elements: Map<HTMLElement, ElementState> = new Map();
 
 	// ConfigPort
-	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onResolveListeners: Set<OnResolveCallbackFn> = new Set();
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onResolveListeners: Set<OnResolveCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
+	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
+		new Set();
 
-	#elements: Map<HTMLElement, ElementState> = new Map();
-
-	#configPort: EmptyMediaConfigPort | null = null;
-	#publicPort: EmptyMediaPublicPort | null = null;
-
-	constructor(...params: ConstructorParams) {
-		const [
-			{ uploadFile, createSlottedElement, disposeSlottedElement },
-			{ adapterBus },
-		] = params;
-
-		this.#uploadFile = uploadFile;
-		this.#createSlottedElement = createSlottedElement;
-		this.#disposeSlottedElement = disposeSlottedElement;
-		this.#adapterBus = adapterBus;
-	}
-
-	#updateState({ canInsert }: UpdateStateParams) {
-		if (canInsert !== undefined) {
-			this.#canInsert = canInsert;
-
-			for (const listener of this.#onCanInsertUpdateListeners) {
-				listener(this.#canInsert);
-			}
-		}
-	}
-
-	#getElementState(element: HTMLElement): ElementState {
-		const state = this.#elements.get(element);
+	const getElementState = (element: HTMLElement): ElementState => {
+		const state = elements.get(element);
 
 		if (!state) {
 			throw new Error("No attached state for the given element.");
 		}
 
 		return state;
-	}
+	};
 
-	#updateElementState({ element, uploadState }: UpdateElementStateParams) {
-		const state = this.#getElementState(element);
+	const updateState = ({ canInsert }: UpdateStateParams) => {
+		if (canInsert !== undefined) {
+			internals.canInsert = canInsert;
+
+			for (const listener of onCanInsertUpdateListeners) {
+				listener(internals.canInsert);
+			}
+		}
+	};
+
+	const updateElementState = ({
+		element,
+		uploadState,
+	}: UpdateElementStateParams) => {
+		const state = getElementState(element);
 
 		if (uploadState !== undefined) {
 			state.uploadState = uploadState;
@@ -73,104 +70,94 @@ export class EmptyMediaAdapter {
 				listener(state.uploadState);
 			}
 		}
-	}
+	};
 
-	get configPort(): EmptyMediaConfigPort {
-		const adapter = this;
+	const configPort: EmptyMediaConfigPort = extendObjectProperties({}, {
+		get uploadFile() {
+			return uploadFile;
+		},
 
-		this.#configPort ??= {
-			get uploadFile() {
-				return adapter.#uploadFile;
-			},
+		createSlottedElement() {
+			const slottedElement = createSlottedElement();
 
-			createSlottedElement() {
-				const slottedElement = adapter.#createSlottedElement();
+			elements.set(slottedElement, {
+				uploadState: { status: "idle" },
+				uploadStateListeners: new Set(),
+			});
 
-				adapter.#elements.set(slottedElement, {
-					uploadState: { status: "idle" },
-					uploadStateListeners: new Set(),
-				});
+			return slottedElement;
+		},
 
-				return slottedElement;
-			},
+		disposeSlottedElement(element) {
+			elements.delete(element);
+			disposeSlottedElement(element);
+		},
 
-			disposeSlottedElement(element) {
-				adapter.#elements.delete(element);
-				adapter.#disposeSlottedElement(element);
-			},
+		updateState(params) {
+			updateState(params);
+		},
 
-			updateState(params) {
-				adapter.#updateState(params);
-			},
+		updateElementState({ element, uploadState }) {
+			if (!elements.has(element)) {
+				return;
+			}
 
-			updateElementState({ element, uploadState }) {
-				if (!adapter.#elements.has(element)) {
-					return;
-				}
+			updateElementState({ element, uploadState });
+		},
 
-				adapter.#updateElementState({ element, uploadState });
-			},
+		onInsert(callback) {
+			onInsertListeners.add(callback);
+			return () => onInsertListeners.delete(callback);
+		},
 
-			onInsert(callback) {
-				adapter.#onInsertListeners.add(callback);
-				return () => adapter.#onInsertListeners.delete(callback);
-			},
+		onResolve(callback) {
+			onResolveListeners.add(callback);
+			return () => onResolveListeners.delete(callback);
+		},
 
-			onResolve(callback) {
-				adapter.#onResolveListeners.add(callback);
-				return () => adapter.#onResolveListeners.delete(callback);
-			},
+		emitMediaResolve(params) {
+			adapterBus.emitMediaResolve(params);
+		},
+	} satisfies EmptyMediaConfigPortProps);
 
-			emitMediaResolve(params) {
-				adapter.#adapterBus.emitMediaResolve(params);
-			},
-		};
+	const publicPort: EmptyMediaPublicPort = extendObjectProperties({}, {
+		get canInsert() {
+			return internals.canInsert;
+		},
 
-		return this.#configPort;
-	}
+		get supportedMediaTypes() {
+			return adapterBus.getSupportedMediaTypes();
+		},
 
-	get publicPort(): EmptyMediaPublicPort {
-		const adapter = this;
+		onCanInsertUpdate(callback) {
+			onCanInsertUpdateListeners.add(callback);
+			return () => onCanInsertUpdateListeners.delete(callback);
+		},
 
-		this.#publicPort ??= {
-			get canInsert() {
-				return adapter.#canInsert;
-			},
+		getUploadState(element) {
+			const { uploadState } = getElementState(element);
 
-			get supportedMediaTypes() {
-				return adapter.#adapterBus.getSupportedMediaTypes();
-			},
+			return uploadState;
+		},
 
-			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertUpdateListeners.add(callback);
-				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
-			},
+		onUploadStateUpdate(element, callback) {
+			const state = getElementState(element);
+			state.uploadStateListeners.add(callback);
+			return () => state.uploadStateListeners.delete(callback);
+		},
 
-			getUploadState(element) {
-				const { uploadState } = adapter.#getElementState(element);
+		insert() {
+			for (const listener of onInsertListeners) {
+				listener();
+			}
+		},
 
-				return uploadState;
-			},
+		resolve(params) {
+			for (const listener of onResolveListeners) {
+				listener(params);
+			}
+		},
+	} satisfies EmptyMediaPublicPortProps);
 
-			onUploadStateUpdate(element, callback) {
-				const state = adapter.#getElementState(element);
-				state.uploadStateListeners.add(callback);
-				return () => state.uploadStateListeners.delete(callback);
-			},
-
-			insert() {
-				for (const listener of adapter.#onInsertListeners) {
-					listener();
-				}
-			},
-
-			resolve(params) {
-				for (const listener of adapter.#onResolveListeners) {
-					listener(params);
-				}
-			},
-		};
-
-		return this.#publicPort;
-	}
-}
+	return { configPort, publicPort };
+};

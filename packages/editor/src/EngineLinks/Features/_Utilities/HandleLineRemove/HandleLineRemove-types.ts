@@ -1,10 +1,10 @@
 import type { EditorAPI, Line } from "rich-text-area";
-import type { RemovePort } from "#adapters";
+import type { RemoveConfigPort } from "#adapters";
 
 export type GetCurrentLineFn = () => Line | null;
 
 export interface HandleLineRemoveParams {
-	port: RemovePort;
+	port: RemoveConfigPort;
 	editorAPI: EditorAPI;
 	getCurrentLine: GetCurrentLineFn;
 }

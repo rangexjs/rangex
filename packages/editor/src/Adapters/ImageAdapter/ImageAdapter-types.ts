@@ -4,7 +4,7 @@ import type {
 	BlockResize,
 	CaptionConfigPort,
 	CaptionPublicPort,
-	CreateAdapterConstructor,
+	CreateAdapterParams,
 	OnMediaResolveCallbackFn,
 } from "../_Utilities";
 
@@ -55,6 +55,6 @@ export interface ImageAdapter {
 export interface Settings {}
 
 export interface CreateImageAdapterParams
-	extends CreateAdapterConstructor<Settings> {}
+	extends CreateAdapterParams<Settings> {}
 
 export interface CreateImageAdapterResult extends ImageAdapter {}

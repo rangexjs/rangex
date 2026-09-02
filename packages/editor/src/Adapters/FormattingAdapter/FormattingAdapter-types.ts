@@ -1,4 +1,4 @@
-import type { CreateAdapterConstructor } from "../_Utilities";
+import type { CreateAdapterParams } from "../_Utilities";
 
 export interface FontFamilyOption {
 	value: string;
@@ -15,7 +15,7 @@ export interface Settings {
 	fontFamilyOptions?: FontFamilyOption[];
 }
 
-export type ConstructorParams = CreateAdapterConstructor<Settings>;
+export type ConstructorParams = CreateAdapterParams<Settings>;
 
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 

@@ -1,14 +1,17 @@
-import type { OnRemoveCallbackFn, OnUnwrapCallbackFn } from "../_Utilities";
+import { extendObjectProperties } from "#utilities";
+import { createRemovePort, createUnwrapPort } from "../_Utilities";
 import {
 	defaultCodeBlockLanguages,
 	defaultCodeBlockThemes,
 } from "./CodeBlockAdapter-default";
 import type {
 	CodeBlockConfigPort,
-	CodeBlockLanguage,
+	CodeBlockConfigPortProps,
+	CodeBlockInternals,
 	CodeBlockPublicPort,
-	CodeBlockTheme,
-	ConstructorParams,
+	CodeBlockPublicPortProps,
+	CreateCodeBlockAdapterParams,
+	CreateCodeBlockAdapterResult,
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnDarkThemeCallbackFn,
@@ -21,62 +24,54 @@ import type {
 	OnLightThemeCallbackFn,
 	OnLightThemeUpdateCallbackFn,
 	OnWrapCallbackFn,
-	PlainTextProviderFn,
 	UpdateStateParams,
 } from "./CodeBlockAdapter-types";
 
-export class CodeBlockAdapter {
-	#floatingEl = document.createElement("div");
+export const createCodeBlockAdapter = (
+	...params: CreateCodeBlockAdapterParams
+): CreateCodeBlockAdapterResult => {
+	const [
+		{ languages = defaultCodeBlockLanguages, themes = defaultCodeBlockThemes },
+		{ floatingContainer },
+	] = params;
 
-	#languages: CodeBlockLanguage[];
-	#themes: CodeBlockTheme[];
+	const floatingEl = document.createElement("div");
+	floatingContainer.append(floatingEl);
 
-	#canInsert = false;
-	#canWrap = false;
-	#isActive = false;
-	#language = "TypeScript";
-	#lightTheme = "Light+";
-	#darkTheme = "Dark+";
-	#isOpen = false;
+	const internals: CodeBlockInternals = {
+		canInsert: false,
+		canWrap: false,
+		isActive: false,
+		language: "TypeScript",
+		lightTheme: "Light+",
+		darkTheme: "Dark+",
+		isOpen: false,
+		plainTextProvider: null,
+	};
 
 	// ConfigPort
-	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
-	#onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
-	#onLanguageListeners: Set<OnLanguageCallbackFn> = new Set();
-	#onLightThemeListeners: Set<OnLightThemeCallbackFn> = new Set();
-	#onDarkThemeListeners: Set<OnDarkThemeCallbackFn> = new Set();
-	#plainTextProvider: PlainTextProviderFn | null = null;
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
+	const onLanguageListeners: Set<OnLanguageCallbackFn> = new Set();
+	const onLightThemeListeners: Set<OnLightThemeCallbackFn> = new Set();
+	const onDarkThemeListeners: Set<OnDarkThemeCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
-	#onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
-	#onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
-	#onLanguageUpdateListeners: Set<OnLanguageUpdateCallbackFn> = new Set();
-	#onLightThemeUpdateListeners: Set<OnLightThemeUpdateCallbackFn> = new Set();
-	#onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> = new Set();
-	#onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
+	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
+		new Set();
+	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
+	const onLanguageUpdateListeners: Set<OnLanguageUpdateCallbackFn> = new Set();
+	const onLightThemeUpdateListeners: Set<OnLightThemeUpdateCallbackFn> =
+		new Set();
+	const onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> =
+		new Set();
+	const onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
 
-	#configPort: CodeBlockConfigPort | null = null;
-	#publicPort: CodeBlockPublicPort | null = null;
+	const removePort = createRemovePort();
+	const unwrapPort = createUnwrapPort();
 
-	constructor(...params: ConstructorParams) {
-		const [
-			{
-				languages = defaultCodeBlockLanguages,
-				themes = defaultCodeBlockThemes,
-			},
-			{ floatingContainer },
-		] = params;
-
-		floatingContainer.append(this.#floatingEl);
-
-		this.#languages = languages;
-		this.#themes = themes;
-	}
-
-	#updateState({
+	const updateState = ({
 		canInsert,
 		canWrap,
 		isActive,
@@ -84,249 +79,225 @@ export class CodeBlockAdapter {
 		lightTheme,
 		darkTheme,
 		isOpen,
-	}: UpdateStateParams) {
+	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			this.#canInsert = canInsert;
+			internals.canInsert = canInsert;
 
-			for (const listener of this.#onCanInsertUpdateListeners) {
-				listener(this.#canInsert);
+			for (const listener of onCanInsertUpdateListeners) {
+				listener(internals.canInsert);
 			}
 		}
 
 		if (canWrap !== undefined) {
-			this.#canWrap = canWrap;
+			internals.canWrap = canWrap;
 
-			for (const listener of this.#onCanWrapUpdateListeners) {
-				listener(this.#canWrap);
+			for (const listener of onCanWrapUpdateListeners) {
+				listener(internals.canWrap);
 			}
 		}
 
 		if (isActive !== undefined) {
-			this.#isActive = isActive;
+			internals.isActive = isActive;
 
-			for (const listener of this.#onIsActiveUpdateListeners) {
-				listener(this.#isActive);
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
 			}
 		}
 
 		if (language !== undefined) {
-			this.#language = language;
+			internals.language = language;
 
-			for (const listener of this.#onLanguageUpdateListeners) {
-				listener(this.#language);
+			for (const listener of onLanguageUpdateListeners) {
+				listener(internals.language);
 			}
 		}
 
 		if (lightTheme !== undefined) {
-			this.#lightTheme = lightTheme;
+			internals.lightTheme = lightTheme;
 
-			for (const listener of this.#onLightThemeUpdateListeners) {
-				listener(this.#lightTheme);
+			for (const listener of onLightThemeUpdateListeners) {
+				listener(internals.lightTheme);
 			}
 		}
 
 		if (darkTheme !== undefined) {
-			this.#darkTheme = darkTheme;
+			internals.darkTheme = darkTheme;
 
-			for (const listener of this.#onDarkThemeUpdateListeners) {
-				listener(this.#darkTheme);
+			for (const listener of onDarkThemeUpdateListeners) {
+				listener(internals.darkTheme);
 			}
 		}
 
 		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+			internals.isOpen = isOpen;
 
-			for (const listener of this.#onIsOpenUpdateListeners) {
-				listener(this.#isOpen);
+			for (const listener of onIsOpenUpdateListeners) {
+				listener(internals.isOpen);
 			}
 		}
-	}
+	};
 
-	get configPort(): CodeBlockConfigPort {
-		const adapter = this;
-
-		this.#configPort ??= {
+	const configPort: CodeBlockConfigPort = extendObjectProperties(
+		removePort.configPort,
+		unwrapPort.configPort,
+		{
 			get floatingEl() {
-				return adapter.#floatingEl;
+				return floatingEl;
 			},
 
 			updateState(params) {
-				adapter.#updateState(params);
+				updateState(params);
 			},
 
 			onInsert(callback) {
-				adapter.#onInsertListeners.add(callback);
-				return () => adapter.#onInsertListeners.delete(callback);
-			},
-
-			onRemove(callback) {
-				adapter.#onRemoveListeners.add(callback);
-				return () => adapter.#onRemoveListeners.delete(callback);
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
 			},
 
 			onWrap(callback) {
-				adapter.#onWrapListeners.add(callback);
-				return () => adapter.#onWrapListeners.delete(callback);
-			},
-
-			onUnwrap(callback) {
-				adapter.#onUnwrapListeners.add(callback);
-				return () => adapter.#onUnwrapListeners.delete(callback);
+				onWrapListeners.add(callback);
+				return () => onWrapListeners.delete(callback);
 			},
 
 			onLanguage(callback) {
-				adapter.#onLanguageListeners.add(callback);
-				return () => adapter.#onLanguageListeners.delete(callback);
+				onLanguageListeners.add(callback);
+				return () => onLanguageListeners.delete(callback);
 			},
 
 			onLightTheme(callback) {
-				adapter.#onLightThemeListeners.add(callback);
-				return () => adapter.#onLightThemeListeners.delete(callback);
+				onLightThemeListeners.add(callback);
+				return () => onLightThemeListeners.delete(callback);
 			},
 
 			onDarkTheme(callback) {
-				adapter.#onDarkThemeListeners.add(callback);
-				return () => adapter.#onDarkThemeListeners.delete(callback);
+				onDarkThemeListeners.add(callback);
+				return () => onDarkThemeListeners.delete(callback);
 			},
 
 			registerPlainTextProvider(provider) {
-				adapter.#plainTextProvider = provider;
+				internals.plainTextProvider = provider;
 			},
-		};
+		} satisfies CodeBlockConfigPortProps,
+	);
 
-		return this.#configPort;
-	}
-
-	get publicPort(): CodeBlockPublicPort {
-		const adapter = this;
-
-		this.#publicPort ??= {
+	const publicPort: CodeBlockPublicPort = extendObjectProperties(
+		removePort.publicPort,
+		unwrapPort.publicPort,
+		{
 			get floatingEl() {
-				return adapter.#floatingEl;
+				return floatingEl;
 			},
 
 			get languages() {
-				return adapter.#languages;
+				return languages;
 			},
 
 			get themes() {
-				return adapter.#themes;
+				return themes;
 			},
 
 			get canInsert() {
-				return adapter.#canInsert;
+				return internals.canInsert;
 			},
 
 			get canWrap() {
-				return adapter.#canWrap;
+				return internals.canWrap;
 			},
 
 			get isActive() {
-				return adapter.#isActive;
+				return internals.isActive;
 			},
 
 			get language() {
-				return adapter.#language;
+				return internals.language;
 			},
 
 			get lightTheme() {
-				return adapter.#lightTheme;
+				return internals.lightTheme;
 			},
 
 			get darkTheme() {
-				return adapter.#darkTheme;
+				return internals.darkTheme;
 			},
 
 			get isOpen() {
-				return adapter.#isOpen;
+				return internals.isOpen;
 			},
 
 			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertUpdateListeners.add(callback);
-				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				adapter.#onCanWrapUpdateListeners.add(callback);
-				return () => adapter.#onCanWrapUpdateListeners.delete(callback);
+				onCanWrapUpdateListeners.add(callback);
+				return () => onCanWrapUpdateListeners.delete(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				adapter.#onIsActiveUpdateListeners.add(callback);
-				return () => adapter.#onIsActiveUpdateListeners.delete(callback);
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
 			},
 
 			onLanguageUpdate(callback) {
-				adapter.#onLanguageUpdateListeners.add(callback);
-				return () => adapter.#onLanguageUpdateListeners.delete(callback);
+				onLanguageUpdateListeners.add(callback);
+				return () => onLanguageUpdateListeners.delete(callback);
 			},
 
 			onLightThemeUpdate(callback) {
-				adapter.#onLightThemeUpdateListeners.add(callback);
-				return () => adapter.#onLightThemeUpdateListeners.delete(callback);
+				onLightThemeUpdateListeners.add(callback);
+				return () => onLightThemeUpdateListeners.delete(callback);
 			},
 
 			onDarkThemeUpdate(callback) {
-				adapter.#onDarkThemeUpdateListeners.add(callback);
-				return () => adapter.#onDarkThemeUpdateListeners.delete(callback);
+				onDarkThemeUpdateListeners.add(callback);
+				return () => onDarkThemeUpdateListeners.delete(callback);
 			},
 
 			onIsOpenUpdate(callback) {
-				adapter.#onIsOpenUpdateListeners.add(callback);
-				return () => adapter.#onIsOpenUpdateListeners.delete(callback);
+				onIsOpenUpdateListeners.add(callback);
+				return () => onIsOpenUpdateListeners.delete(callback);
 			},
 
 			insert() {
-				for (const listener of adapter.#onInsertListeners) {
-					listener();
-				}
-			},
-
-			remove() {
-				for (const listener of adapter.#onRemoveListeners) {
+				for (const listener of onInsertListeners) {
 					listener();
 				}
 			},
 
 			wrap() {
-				for (const listener of adapter.#onWrapListeners) {
-					listener();
-				}
-			},
-
-			unwrap() {
-				for (const listener of adapter.#onUnwrapListeners) {
+				for (const listener of onWrapListeners) {
 					listener();
 				}
 			},
 
 			changeLanguage(language) {
-				for (const listener of adapter.#onLanguageListeners) {
+				for (const listener of onLanguageListeners) {
 					listener(language);
 				}
 			},
 
 			changeLightTheme(theme) {
-				for (const listener of adapter.#onLightThemeListeners) {
+				for (const listener of onLightThemeListeners) {
 					listener(theme);
 				}
 			},
 
 			changeDarkTheme(theme) {
-				for (const listener of adapter.#onDarkThemeListeners) {
+				for (const listener of onDarkThemeListeners) {
 					listener(theme);
 				}
 			},
 
 			getPlainText() {
-				if (!adapter.#plainTextProvider) {
+				if (!internals.plainTextProvider) {
 					throw new Error("Plain text provider wasn't registered.");
 				}
 
-				return adapter.#plainTextProvider();
+				return internals.plainTextProvider();
 			},
-		};
+		} satisfies CodeBlockPublicPortProps,
+	);
 
-		return this.#publicPort;
-	}
-}
+	return { configPort, publicPort };
+};
