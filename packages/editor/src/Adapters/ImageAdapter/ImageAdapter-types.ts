@@ -1,27 +1,20 @@
 import type {
-	BlockAlignPort,
-	BlockAlignValue,
+	BlockAlignConfigPort,
+	BlockAlignPublicPort,
 	BlockResize,
-	CaptionPort,
-	CaptionPosition,
-	CaptionState,
+	CaptionConfigPort,
+	CaptionPublicPort,
 	CreateAdapterConstructor,
 	OnMediaResolveCallbackFn,
 } from "../_Utilities";
 
-export interface Settings {}
-
-export type ConstructorParams = CreateAdapterConstructor<Settings>;
-
 export interface ImageState {
-	align?: BlockAlignValue;
-	caption?: CaptionState;
 	isOpen?: boolean;
 }
 
 export interface UpdateStateParams extends ImageState {}
 
-export interface ImageConfigPort extends BlockAlignPort, CaptionPort {
+export interface ImageConfigPortProps {
 	readonly blockResize: BlockResize;
 	readonly floatingEl: HTMLDivElement;
 
@@ -30,22 +23,38 @@ export interface ImageConfigPort extends BlockAlignPort, CaptionPort {
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
 
-export type OnAlignUpdateCallbackFn = (value: BlockAlignValue) => void;
-export type OnCaptionUpdateCallbackFn = (value: CaptionState) => void;
+export interface ImageConfigPort
+	extends ImageConfigPortProps,
+		CaptionConfigPort,
+		BlockAlignConfigPort {}
+
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
-export interface ImagePublicPort {
+export interface ImagePublicPortProps {
 	readonly floatingEl: HTMLDivElement;
 
-	readonly align: BlockAlignValue;
-	readonly caption: CaptionState;
 	readonly isOpen: boolean;
 
-	onAlignUpdate(callback: OnAlignUpdateCallbackFn): () => void;
-	onCaptionUpdate(callback: OnCaptionUpdateCallbackFn): () => void;
 	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
-
-	changeAlign(align: BlockAlignValue): void;
-	changeCaptionEnabled(enabled: boolean): void;
-	changeCaptionPosition(position: CaptionPosition): void;
 }
+
+export interface ImagePublicPort
+	extends ImagePublicPortProps,
+		CaptionPublicPort,
+		BlockAlignPublicPort {}
+
+export interface ImageInternals {
+	isOpen: boolean;
+}
+
+export interface ImageAdapter {
+	configPort: ImageConfigPort;
+	publicPort: ImagePublicPort;
+}
+
+export interface Settings {}
+
+export interface CreateImageAdapterParams
+	extends CreateAdapterConstructor<Settings> {}
+
+export interface CreateImageAdapterResult extends ImageAdapter {}

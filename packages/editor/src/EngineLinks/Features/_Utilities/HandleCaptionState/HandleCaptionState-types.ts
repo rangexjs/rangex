@@ -1,8 +1,12 @@
 import type { BlockComponent, EditorAPI, HTMLLayout } from "rich-text-area";
-import type { CaptionPort, CaptionPosition, CaptionState } from "#adapters";
+import type {
+	CaptionConfigPort,
+	CaptionPosition,
+	CaptionState,
+} from "#adapters";
 
 export interface HandleCaptionStateParams {
-	port: CaptionPort;
+	port: CaptionConfigPort;
 	editorAPI: EditorAPI;
 	getCurrentBlock: () => BlockComponent | null;
 	getFigure: (params: { blockComponent: BlockComponent }) => HTMLLayout;

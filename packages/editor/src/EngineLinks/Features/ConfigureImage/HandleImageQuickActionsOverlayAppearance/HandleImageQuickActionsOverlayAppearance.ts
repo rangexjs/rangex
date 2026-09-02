@@ -32,7 +32,9 @@ export const handleImageQuickActionsOverlayAppearance = ({
 
 			const caption = getImageCaption({ figure });
 
-			configPort.updateState({ align, caption });
+			configPort.setAlign(align);
+
+			configPort.setCaption(caption);
 
 			anchorController.show(blockComponent, {
 				clear: true,
