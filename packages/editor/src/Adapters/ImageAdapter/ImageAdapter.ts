@@ -5,9 +5,9 @@ import {
 	type CaptionPosition,
 	type CaptionState,
 	createBlockResize,
-	type OnAlignChangeFn,
-	type OnCaptionEnabledChangeFn,
-	type OnCaptionPositionChangeFn,
+	type OnAlignChangeCallbackFn,
+	type OnCaptionEnabledChangeCallbackFn,
+	type OnCaptionPositionChangeCallbackFn,
 } from "../_Utilities";
 import type {
 	AspectRatioValue,
@@ -44,9 +44,11 @@ export class ImageAdapter {
 	#altTextListeners: Set<OnAltTextUpdateCallbackFn> = new Set();
 	#isOpenListeners: Set<OnToggleCallbackFn> = new Set();
 
-	#onAlignChangeListeners: Set<OnAlignChangeFn> = new Set();
-	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeFn> = new Set();
-	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeFn> = new Set();
+	#onAlignChangeListeners: Set<OnAlignChangeCallbackFn> = new Set();
+	#onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeCallbackFn> =
+		new Set();
+	#onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeCallbackFn> =
+		new Set();
 	#onImageAttrChangeListeners: Set<OnImageAttrChangeCallbackFn> = new Set();
 	#onToggleListeners: Set<OnToggleCallbackFn> = new Set();
 

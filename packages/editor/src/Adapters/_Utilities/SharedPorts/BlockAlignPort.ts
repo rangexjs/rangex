@@ -1,8 +1,8 @@
 export type BlockAlignValue = "left" | "center" | "right";
 
-export type OnAlignChangeFn = (align: BlockAlignValue) => void;
+export type OnAlignChangeCallbackFn = (align: BlockAlignValue) => void;
 
 export interface BlockAlignPort {
-	onAlignChange(callback: OnAlignChangeFn): () => void;
+	onAlignChange(callback: OnAlignChangeCallbackFn): () => void;
 	setAlign(align: BlockAlignValue): void;
 }

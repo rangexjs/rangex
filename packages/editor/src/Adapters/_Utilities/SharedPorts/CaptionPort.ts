@@ -5,11 +5,17 @@ export interface CaptionState {
 	position: CaptionPosition;
 }
 
-export type OnCaptionEnabledChangeFn = (enabled: boolean) => void;
-export type OnCaptionPositionChangeFn = (position: CaptionPosition) => void;
+export type OnCaptionEnabledChangeCallbackFn = (enabled: boolean) => void;
+export type OnCaptionPositionChangeCallbackFn = (
+	position: CaptionPosition,
+) => void;
 
 export interface CaptionPort {
-	onCaptionEnabledChange(callback: OnCaptionEnabledChangeFn): () => void;
-	onCaptionPositionChange(callback: OnCaptionPositionChangeFn): () => void;
+	onCaptionEnabledChange(
+		callback: OnCaptionEnabledChangeCallbackFn,
+	): () => void;
+	onCaptionPositionChange(
+		callback: OnCaptionPositionChangeCallbackFn,
+	): () => void;
 	setCaption(caption: CaptionState): void;
 }

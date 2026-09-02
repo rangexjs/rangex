@@ -1,5 +1,5 @@
-export type OnDuplicateFn = () => void;
+export type OnDuplicateCallbackFn = () => void;
 
 export interface DuplicatePort {
-	onDuplicate(callback: OnDuplicateFn): () => void;
+	onDuplicate(callback: OnDuplicateCallbackFn): () => void;
 }
