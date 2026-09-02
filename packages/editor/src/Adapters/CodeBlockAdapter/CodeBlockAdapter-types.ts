@@ -47,9 +47,9 @@ export interface CodeBlockConfigPort extends RemovePort, UnwrapPort {
 	registerPlainTextProvider(provider: PlainTextProviderFn): void;
 }
 
-export type OnCanInsertCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveCallbackFn = (isActive: boolean) => void;
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
+export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
 export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
@@ -68,9 +68,9 @@ export interface CodeBlockPublicPort {
 	readonly darkTheme: CodeBlockTheme;
 	readonly isOpen: boolean;
 
-	onCanInsertUpdate(callback: OnCanInsertCallbackFn): () => void;
-	onCanWrapUpdate(callback: OnCanWrapCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveCallbackFn): () => void;
+	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 	onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
 	onLightThemeUpdate(callback: OnLightThemeUpdateCallbackFn): () => void;
 	onDarkThemeUpdate(callback: OnDarkThemeUpdateCallbackFn): () => void;

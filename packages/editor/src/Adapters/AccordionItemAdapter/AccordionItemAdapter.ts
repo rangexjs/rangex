@@ -3,10 +3,10 @@ import type {
 	AccordionItemConfigPort,
 	AccordionItemPublicPort,
 	ConstructorParams,
-	OnCanInsertCallbackFn,
-	OnCanWrapCallbackFn,
+	OnCanInsertUpdateCallbackFn,
+	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveCallbackFn,
+	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./AccordionItemAdapter-types";
@@ -23,9 +23,9 @@ export class AccordionItemAdapter {
 	#onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
-	#onCanWrapListeners: Set<OnCanWrapCallbackFn> = new Set();
-	#onIsActiveListeners: Set<OnIsActiveCallbackFn> = new Set();
+	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
+	#onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+	#onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 
 	#configPort: AccordionItemConfigPort | null = null;
 	#publicPort: AccordionItemPublicPort | null = null;
@@ -38,7 +38,7 @@ export class AccordionItemAdapter {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
 
-			for (const listener of this.#onCanInsertListeners) {
+			for (const listener of this.#onCanInsertUpdateListeners) {
 				listener(this.#canInsert);
 			}
 		}
@@ -46,7 +46,7 @@ export class AccordionItemAdapter {
 		if (canWrap !== undefined) {
 			this.#canWrap = canWrap;
 
-			for (const listener of this.#onCanWrapListeners) {
+			for (const listener of this.#onCanWrapUpdateListeners) {
 				listener(this.#canWrap);
 			}
 		}
@@ -54,7 +54,7 @@ export class AccordionItemAdapter {
 		if (isActive !== undefined) {
 			this.#isActive = isActive;
 
-			for (const listener of this.#onIsActiveListeners) {
+			for (const listener of this.#onIsActiveUpdateListeners) {
 				listener(this.#isActive);
 			}
 		}
@@ -109,18 +109,18 @@ export class AccordionItemAdapter {
 			},
 
 			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertListeners.add(callback);
-				return () => adapter.#onCanInsertListeners.delete(callback);
+				adapter.#onCanInsertUpdateListeners.add(callback);
+				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				adapter.#onCanWrapListeners.add(callback);
-				return () => adapter.#onCanWrapListeners.delete(callback);
+				adapter.#onCanWrapUpdateListeners.add(callback);
+				return () => adapter.#onCanWrapUpdateListeners.delete(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				adapter.#onIsActiveListeners.add(callback);
-				return () => adapter.#onIsActiveListeners.delete(callback);
+				adapter.#onIsActiveUpdateListeners.add(callback);
+				return () => adapter.#onIsActiveUpdateListeners.delete(callback);
 			},
 
 			insert() {

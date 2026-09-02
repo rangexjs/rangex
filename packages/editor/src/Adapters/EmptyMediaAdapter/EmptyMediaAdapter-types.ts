@@ -89,13 +89,13 @@ export interface EmptyMediaConfigPort {
 	emitMediaResolve(params: MediaResolveCallbackParams): void;
 }
 
-export type OnCanInsertCallbackFn = (canInsert: boolean) => void;
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 
 export interface EmptyMediaPublicPort {
 	readonly canInsert: boolean;
 	readonly supportedMediaTypes: MediaType[];
 
-	onCanInsertUpdate(callback: OnCanInsertCallbackFn): () => void;
+	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	getUploadState(element: HTMLElement): UploadState;
 	onUploadStateUpdate(
 		element: HTMLElement,

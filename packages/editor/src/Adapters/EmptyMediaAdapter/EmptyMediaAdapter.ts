@@ -4,7 +4,7 @@ import type {
 	ElementState,
 	EmptyMediaConfigPort,
 	EmptyMediaPublicPort,
-	OnCanInsertCallbackFn,
+	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnResolveCallbackFn,
 	UpdateElementStateParams,
@@ -24,7 +24,7 @@ export class EmptyMediaAdapter {
 	#onResolveListeners: Set<OnResolveCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertListeners: Set<OnCanInsertCallbackFn> = new Set();
+	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
 
 	#elements: Map<HTMLElement, ElementState> = new Map();
 
@@ -47,7 +47,7 @@ export class EmptyMediaAdapter {
 		if (canInsert !== undefined) {
 			this.#canInsert = canInsert;
 
-			for (const listener of this.#onCanInsertListeners) {
+			for (const listener of this.#onCanInsertUpdateListeners) {
 				listener(this.#canInsert);
 			}
 		}
@@ -142,8 +142,8 @@ export class EmptyMediaAdapter {
 			},
 
 			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertListeners.add(callback);
-				return () => adapter.#onCanInsertListeners.delete(callback);
+				adapter.#onCanInsertUpdateListeners.add(callback);
+				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
 			},
 
 			getUploadState(element) {
