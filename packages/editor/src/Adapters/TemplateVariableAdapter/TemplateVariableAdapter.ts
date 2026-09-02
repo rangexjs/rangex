@@ -1,5 +1,6 @@
 import type {
-	ConstructorParams,
+	CreateTemplateVariableAdapterParams,
+	CreateTemplateVariableAdapterResult,
 	InsertParams,
 	OnCanInsertUpdateCallbackFn,
 	OnFilteredItemsUpdateCallbackFn,
@@ -8,10 +9,10 @@ import type {
 	OnOptionsCallbackFn,
 	OnOptionsUpdateCallbackFn,
 	OnSelectCallbackFn,
-	Options,
 	SuggestionItem,
 	SuggestionItems,
 	TemplateVariableConfigPort,
+	TemplateVariableInternals,
 	TemplateVariablePublicPort,
 	UpdateStateParams,
 } from "./TemplateVariableAdapter-types";
@@ -24,177 +25,166 @@ const ALL_ITEMS: SuggestionItems = [
 	{ kind: "date", label: "{{Date}}" },
 ];
 
-export class TemplateVariableAdapter {
-	#floatingEl = document.createElement("div");
+export const createTemplateVariableAdapter = (
+	...params: CreateTemplateVariableAdapterParams
+): CreateTemplateVariableAdapterResult => {
+	const [_settings, { floatingContainer }] = params;
 
-	#canInsert = false;
-	#options: Options = {
-		firstName: null,
-		lastName: null,
-		email: null,
-		date: null,
+	const floatingEl = document.createElement("div");
+	floatingContainer.append(floatingEl);
+
+	const internals: TemplateVariableInternals = {
+		canInsert: false,
+		options: { firstName: null, lastName: null, email: null, date: null },
+		query: "",
+		filteredItems: [],
+		isOpen: false,
 	};
-	#query = "";
-	#filteredItems: SuggestionItems = [];
-	#isOpen = false;
 
 	// ConfigPort
-	#onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	#onOptionsListeners: Set<OnOptionsCallbackFn> = new Set();
-	#onSelectListeners: Set<OnSelectCallbackFn> = new Set();
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onOptionsListeners: Set<OnOptionsCallbackFn> = new Set();
+	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
 
 	// PublicPort
-	#onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
-	#onOptionsUpdateListeners: Set<OnOptionsUpdateCallbackFn> = new Set();
-	#onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
+	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
-	#onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
+	const onOptionsUpdateListeners: Set<OnOptionsUpdateCallbackFn> = new Set();
+	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
+		new Set();
+	const onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
 
-	#configPort: TemplateVariableConfigPort | null = null;
-	#publicPort: TemplateVariablePublicPort | null = null;
-
-	constructor(...params: ConstructorParams) {
-		const [_settings, { floatingContainer }] = params;
-
-		floatingContainer.append(this.#floatingEl);
-	}
-
-	#computeFilteredItems() {
-		const q = this.#query.toLowerCase();
-		this.#filteredItems = q
+	const computeFilteredItems = () => {
+		const q = internals.query.toLowerCase();
+		internals.filteredItems = q
 			? ALL_ITEMS.filter((item) => item.label.toLowerCase().includes(q))
 			: ALL_ITEMS;
 
-		for (const listener of this.#onFilteredItemsUpdateListeners) {
-			listener(this.#filteredItems);
+		for (const listener of onFilteredItemsUpdateListeners) {
+			listener(internals.filteredItems);
 		}
-	}
+	};
 
-	#updateState({ canInsert, options, query, isOpen }: UpdateStateParams) {
+	const updateState = ({
+		canInsert,
+		options,
+		query,
+		isOpen,
+	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			this.#canInsert = canInsert;
+			internals.canInsert = canInsert;
 
-			for (const listener of this.#onCanInsertUpdateListeners) {
-				listener(this.#canInsert);
+			for (const listener of onCanInsertUpdateListeners) {
+				listener(internals.canInsert);
 			}
 		}
 
 		if (options !== undefined) {
-			this.#options = options;
+			internals.options = options;
 
-			for (const listener of this.#onOptionsUpdateListeners) {
-				listener(this.#options);
+			for (const listener of onOptionsUpdateListeners) {
+				listener(internals.options);
 			}
 		}
 
 		if (query !== undefined) {
-			this.#query = query;
-			this.#computeFilteredItems();
+			internals.query = query;
+			computeFilteredItems();
 		}
 
 		if (isOpen !== undefined) {
-			this.#isOpen = isOpen;
+			internals.isOpen = isOpen;
 
-			for (const listener of this.#onIsOpenUpdateListeners) {
-				listener(this.#isOpen);
+			for (const listener of onIsOpenUpdateListeners) {
+				listener(internals.isOpen);
 			}
 		}
-	}
+	};
 
-	get configPort(): TemplateVariableConfigPort {
-		const adapter = this;
+	const configPort: TemplateVariableConfigPort = {
+		get floatingEl() {
+			return floatingEl;
+		},
 
-		this.#configPort ??= {
-			get floatingEl() {
-				return adapter.#floatingEl;
-			},
+		updateState(params) {
+			updateState(params);
+		},
 
-			updateState(params) {
-				adapter.#updateState(params);
-			},
+		onInsert(callback) {
+			onInsertListeners.add(callback);
+			return () => onInsertListeners.delete(callback);
+		},
 
-			onInsert(callback) {
-				adapter.#onInsertListeners.add(callback);
-				return () => adapter.#onInsertListeners.delete(callback);
-			},
+		onOptions(callback) {
+			onOptionsListeners.add(callback);
+			return () => onOptionsListeners.delete(callback);
+		},
 
-			onOptions(callback) {
-				adapter.#onOptionsListeners.add(callback);
-				return () => adapter.#onOptionsListeners.delete(callback);
-			},
+		onSelect(callback) {
+			onSelectListeners.add(callback);
+			return () => onSelectListeners.delete(callback);
+		},
+	};
 
-			onSelect(callback) {
-				adapter.#onSelectListeners.add(callback);
-				return () => adapter.#onSelectListeners.delete(callback);
-			},
-		};
+	const publicPort: TemplateVariablePublicPort = {
+		get floatingEl() {
+			return floatingEl;
+		},
 
-		return this.#configPort;
-	}
+		get canInsert() {
+			return internals.canInsert;
+		},
 
-	get publicPort(): TemplateVariablePublicPort {
-		const adapter = this;
+		get options() {
+			return internals.options;
+		},
 
-		this.#publicPort ??= {
-			get floatingEl() {
-				return adapter.#floatingEl;
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			get canInsert() {
-				return adapter.#canInsert;
-			},
+		get isOpen() {
+			return internals.isOpen;
+		},
 
-			get options() {
-				return adapter.#options;
-			},
+		onCanInsertUpdate(callback) {
+			onCanInsertUpdateListeners.add(callback);
+			return () => onCanInsertUpdateListeners.delete(callback);
+		},
 
-			get filteredItems() {
-				return adapter.#filteredItems;
-			},
+		onOptionsUpdate(callback) {
+			onOptionsUpdateListeners.add(callback);
+			return () => onOptionsUpdateListeners.delete(callback);
+		},
 
-			get isOpen() {
-				return adapter.#isOpen;
-			},
+		onFilteredItemsUpdate(callback) {
+			onFilteredItemsUpdateListeners.add(callback);
+			return () => onFilteredItemsUpdateListeners.delete(callback);
+		},
 
-			onCanInsertUpdate(callback) {
-				adapter.#onCanInsertUpdateListeners.add(callback);
-				return () => adapter.#onCanInsertUpdateListeners.delete(callback);
-			},
+		onIsOpenUpdate(callback) {
+			onIsOpenUpdateListeners.add(callback);
+			return () => onIsOpenUpdateListeners.delete(callback);
+		},
 
-			onOptionsUpdate(callback) {
-				adapter.#onOptionsUpdateListeners.add(callback);
-				return () => adapter.#onOptionsUpdateListeners.delete(callback);
-			},
+		insert(params: InsertParams) {
+			for (const listener of onInsertListeners) {
+				listener(params);
+			}
+		},
 
-			onFilteredItemsUpdate(callback) {
-				adapter.#onFilteredItemsUpdateListeners.add(callback);
-				return () => adapter.#onFilteredItemsUpdateListeners.delete(callback);
-			},
+		changeOptions(options) {
+			for (const listener of onOptionsListeners) {
+				listener(options);
+			}
+		},
 
-			onIsOpenUpdate(callback) {
-				adapter.#onIsOpenUpdateListeners.add(callback);
-				return () => adapter.#onIsOpenUpdateListeners.delete(callback);
-			},
+		select(item: SuggestionItem) {
+			for (const listener of onSelectListeners) {
+				listener(item);
+			}
+		},
+	};
 
-			insert(params: InsertParams) {
-				for (const listener of adapter.#onInsertListeners) {
-					listener(params);
-				}
-			},
-
-			changeOptions(options) {
-				for (const listener of adapter.#onOptionsListeners) {
-					listener(options);
-				}
-			},
-
-			select(item: SuggestionItem) {
-				for (const listener of adapter.#onSelectListeners) {
-					listener(item);
-				}
-			},
-		};
-
-		return this.#publicPort;
-	}
-}
+	return { configPort, publicPort };
+};

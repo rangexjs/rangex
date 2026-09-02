@@ -1,9 +1,5 @@
 import type { CreateAdapterConstructor } from "../_Utilities";
 
-export interface Settings {}
-
-export type ConstructorParams = CreateAdapterConstructor<Settings>;
-
 export type TemplateVariableKind =
 	| "full-name"
 	| "first-name"
@@ -74,3 +70,24 @@ export interface TemplateVariablePublicPort {
 	changeOptions(options: Partial<Options>): void;
 	select(item: SuggestionItem): void;
 }
+
+export interface TemplateVariableInternals {
+	canInsert: boolean;
+	options: Options;
+	query: string;
+	filteredItems: SuggestionItems;
+	isOpen: boolean;
+}
+
+export interface TemplateVariableAdapter {
+	configPort: TemplateVariableConfigPort;
+	publicPort: TemplateVariablePublicPort;
+}
+
+export interface Settings {}
+
+export interface CreateTemplateVariableAdapterParams
+	extends CreateAdapterConstructor<Settings> {}
+
+export interface CreateTemplateVariableAdapterResult
+	extends TemplateVariableAdapter {}
