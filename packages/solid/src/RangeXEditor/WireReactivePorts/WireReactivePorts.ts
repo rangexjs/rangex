@@ -2,6 +2,7 @@ import { AccordionItem } from "../../ReactivePorts/AccordionItem";
 import { CodeBlock } from "../../ReactivePorts/CodeBlock";
 import { EmptyMedia } from "../../ReactivePorts/EmptyMedia";
 import { Formatting } from "../../ReactivePorts/Formatting";
+import { Image } from "../../ReactivePorts/Image";
 import type { WireReactivePortsParams } from "./WireReactivePorts-types";
 
 export const wireReactivePorts = ({
@@ -34,6 +35,13 @@ export const wireReactivePorts = ({
 		const { port, dispose } = Formatting(editor.formatting);
 
 		solidEditor.formatting = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.image) {
+		const { port, dispose } = Image(editor.image);
+
+		solidEditor.image = port;
 		disposeList.add(dispose);
 	}
 };

@@ -1,5 +1,10 @@
 export type { EditorAPI } from "rich-text-area";
-export type { MediaType } from "#adapters";
+export type {
+	BlockAlignValue,
+	CaptionPosition,
+	CaptionState,
+	MediaType,
+} from "#adapters";
 export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
 export type {
 	CodeBlockLanguage,
@@ -39,6 +44,7 @@ export type {
 	FormattingTextAlignValue,
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
+export type { ImagePublicPort } from "#adapters/Image";
 
 export type {
 	CreateEditorParams,
