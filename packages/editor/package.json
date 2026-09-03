@@ -24,27 +24,45 @@
 	},
 	"imports": {
 		"#utilities": {
-			"types": "./src/_Utilities/index.ts",
+			"types": {
+				"development": "./src/_Utilities/index.ts",
+				"production": "./dist/_Utilities/index.d.ts"
+			},
 			"default": "./src/_Utilities/index"
 		},
 		"#adapters": {
-			"types": "./src/Adapters/index.ts",
+			"types": {
+				"development": "./src/Adapters/index.ts",
+				"production": "./dist/Adapters/index.d.ts"
+			},
 			"default": "./src/Adapters/index"
 		},
 		"#adapters/*": {
-			"types": "./src/Adapters/*Adapter/index.ts",
+			"types": {
+				"development": "./src/Adapters/*Adapter/index.ts",
+				"production": "./dist/Adapters/*Adapter/index.d.ts"
+			},
 			"default": "./src/Adapters/*Adapter/index"
 		},
 		"#rangex-editor": {
-			"types": "./src/RangeXEditor/index.ts",
+			"types": {
+				"development": "./src/RangeXEditor/index.ts",
+				"production": "./dist/RangeXEditor/index.d.ts"
+			},
 			"default": "./src/RangeXEditor/index"
 		},
 		"#engine-links": {
-			"types": "./src/EngineLinks/index.ts",
+			"types": {
+				"development": "./src/EngineLinks/index.ts",
+				"production": "./dist/EngineLinks/index.d.ts"
+			},
 			"default": "./src/EngineLinks/index"
 		},
 		"#libs": {
-			"types": "./src/Libs/index.ts",
+			"types": {
+				"development": "./src/Libs/index.ts",
+				"production": "./dist/Libs/index.d.ts"
+			},
 			"default": "./src/Libs/index"
 		}
 	},
