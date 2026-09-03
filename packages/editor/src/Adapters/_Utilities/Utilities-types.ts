@@ -1,9 +1,24 @@
-import type { CodeBlockAdapter } from "#adapters/CodeBlock";
-import type { TemplateVariableAdapter } from "#adapters/TemplateVariable";
-import type { AccordionItemAdapter } from "../AccordionItemAdapter";
-import type { EmptyMediaAdapter } from "../EmptyMediaAdapter";
-import type { FormattingAdapter } from "../FormattingAdapter";
-import type { ImageAdapter } from "../ImageAdapter";
+import type {
+	CodeBlockAdapter,
+	CodeBlockPublicPort,
+} from "#adapters/CodeBlock";
+import type {
+	TemplateVariableAdapter,
+	TemplateVariablePublicPort,
+} from "#adapters/TemplateVariable";
+import type {
+	AccordionItemAdapter,
+	AccordionItemPublicPort,
+} from "../AccordionItemAdapter";
+import type {
+	EmptyMediaAdapter,
+	EmptyMediaPublicPort,
+} from "../EmptyMediaAdapter";
+import type {
+	FormattingAdapter,
+	FormattingPublicPort,
+} from "../FormattingAdapter";
+import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
@@ -23,3 +38,12 @@ export type Adapter =
 	| FormattingAdapter
 	| ImageAdapter
 	| TemplateVariableAdapter;
+
+export interface AdapterPublicPorts {
+	accordionItem: AccordionItemPublicPort;
+	codeBlock: CodeBlockPublicPort;
+	emptyMedia: EmptyMediaPublicPort;
+	formatting: FormattingPublicPort;
+	image: ImagePublicPort;
+	templateVariable: TemplateVariablePublicPort;
+}
