@@ -8,7 +8,7 @@ export const handleFormattingChange = ({
 	const unsubscribe = configPort.onFormattingChange((formattingActionState) => {
 		const selectionStylesData = getSelectionStylesData({
 			formattingActionState,
-			whenMixed: "apply",
+			whenMixed: configPort.whenMixed,
 		});
 
 		editorAPI.updateSelectionStyles(selectionStylesData);

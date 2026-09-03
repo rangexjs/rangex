@@ -35,6 +35,7 @@ export const createFormattingAdapter = (
 ): CreateFormattingAdapterResult => {
 	const [
 		{
+			whenMixed = "apply",
 			defaultFontFamily = "Inter",
 			defaultFontSize = { type: "px", value: 16 } as const,
 			defaultIndentation = { type: "px", value: 0 } as const,
@@ -270,6 +271,10 @@ export const createFormattingAdapter = (
 	};
 
 	const configPort: FormattingConfigPort = extendObjectProperties({}, {
+		get whenMixed() {
+			return whenMixed;
+		},
+
 		updateState(params) {
 			updateState(params);
 		},

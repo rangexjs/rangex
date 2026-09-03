@@ -1,5 +1,7 @@
 import type { CreateAdapterParams } from "../_Utilities";
 
+export type FormattingWhenMixed = "apply" | "remove";
+
 export interface FontFamilyOption {
 	value: string;
 	group: "sans-serif" | "serif" | "monospace";
@@ -192,6 +194,8 @@ export type OnFormattingChangeCallbackFn = (
 ) => void;
 
 export interface FormattingConfigPortProps {
+	readonly whenMixed: FormattingWhenMixed;
+
 	updateState(params: UpdateStateParams): void;
 	onFormattingChange(callback: OnFormattingChangeCallbackFn): () => void;
 }
@@ -328,6 +332,7 @@ export interface FormattingAdapter {
 }
 
 export interface FormattingSettings {
+	whenMixed?: FormattingWhenMixed;
 	defaultFontFamily?: FormattingFontFamilyValue;
 	defaultFontSize?: FormattingFontSizeValue;
 	defaultIndentation?: FormattingIndentationValue;

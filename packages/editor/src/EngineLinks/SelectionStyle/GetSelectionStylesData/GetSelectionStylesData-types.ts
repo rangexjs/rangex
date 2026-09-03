@@ -6,6 +6,7 @@ import type {
 import type {
 	FormattingActionState,
 	FormattingStructuredColor,
+	FormattingWhenMixed,
 } from "#adapters/Formatting";
 import type {
 	BackgroundColorStructuredStyleValue,
@@ -105,18 +106,16 @@ export interface GetStylesParams {
 
 export interface GetStylesResult extends MergedFormatsStyles {}
 
-type WhenMixed = "apply" | "remove";
-
 export interface GetInlineTagsParams {
 	formattingActionState: FormattingActionState;
-	whenMixed: WhenMixed;
+	whenMixed: FormattingWhenMixed;
 }
 
 export interface GetInlineTagsResult extends TextFormatInlineTags {}
 
 export interface GetSelectionStylesDataParams {
 	formattingActionState: FormattingActionState;
-	whenMixed: WhenMixed;
+	whenMixed: FormattingWhenMixed;
 }
 
 export interface GetSelectionStylesDataResult
