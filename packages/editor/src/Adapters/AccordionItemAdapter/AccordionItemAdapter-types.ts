@@ -62,10 +62,10 @@ export interface AccordionItemAdapter {
 	publicPort: AccordionItemPublicPort;
 }
 
-export interface Settings {}
+export interface AccordionItemSettings {}
 
 export interface CreateAccordionItemAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<AccordionItemSettings> {}
 
 export interface CreateAccordionItemAdapterResult
 	extends AccordionItemAdapter {}

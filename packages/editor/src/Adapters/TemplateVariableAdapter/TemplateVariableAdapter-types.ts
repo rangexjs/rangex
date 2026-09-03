@@ -90,10 +90,10 @@ export interface TemplateVariableAdapter {
 	publicPort: TemplateVariablePublicPort;
 }
 
-export interface Settings {}
+export interface TemplateVariableSettings {}
 
 export interface CreateTemplateVariableAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<TemplateVariableSettings> {}
 
 export interface CreateTemplateVariableAdapterResult
 	extends TemplateVariableAdapter {}

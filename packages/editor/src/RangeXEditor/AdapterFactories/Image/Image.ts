@@ -1,8 +1,8 @@
-import { createImageAdapter, type Settings } from "#adapters/Image";
+import { createImageAdapter, type ImageSettings } from "#adapters/Image";
 import { configureImage } from "#engine-links";
 import type { AdapterFactory } from "../../RangeXEditor-types";
 
-export const Image: AdapterFactory<Settings> = (settings) => {
+export const Image: AdapterFactory<ImageSettings> = (settings) => {
 	return (options, { editorAPI, editor }) => {
 		const adapter = createImageAdapter(settings, options);
 

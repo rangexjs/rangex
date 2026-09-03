@@ -111,13 +111,13 @@ export interface EmptyMediaAdapter {
 	publicPort: EmptyMediaPublicPort;
 }
 
-export interface Settings {
+export interface EmptyMediaSettings {
 	uploadFile: UploadMediaFileFn;
 	createSlottedElement: CreateSlottedElementFn;
 	disposeSlottedElement: DisposeSlottedElementFn;
 }
 
 export interface CreateEmptyMediaAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<EmptyMediaSettings> {}
 
 export interface CreateEmptyMediaAdapterResult extends EmptyMediaAdapter {}

@@ -106,12 +106,12 @@ export interface CodeBlockAdapter {
 	publicPort: CodeBlockPublicPort;
 }
 
-export interface Settings {
+export interface CodeBlockSettings {
 	languages?: CodeBlockLanguage[];
 	themes?: CodeBlockTheme[];
 }
 
 export interface CreateCodeBlockAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<CodeBlockSettings> {}
 
 export interface CreateCodeBlockAdapterResult extends CodeBlockAdapter {}

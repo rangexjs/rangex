@@ -152,8 +152,8 @@ is what keeps the two directions' type names distinct in the same file.
 
 **Prefix stripping** — every non-port type in an Adapter's own file drops the feature
 name prefix (`OnInsertCallbackFn`, not `OnAccordionItemInsertCallbackFn`); only
-`XxxState`, `XxxInternals`, `XxxConfigPort(Props)`, `XxxPublicPort(Props)`, and
-`XxxAdapter` keep it. Exception: a bare name that's genuinely ambiguous or reads as a
+`XxxState`, `XxxInternals`, `XxxConfigPort(Props)`, `XxxPublicPort(Props)`, `XxxAdapter`,
+and `XxxSettings` keep it. Exception: a bare name that's genuinely ambiguous or reads as a
 stutter in context keeps the prefix anyway — `CodeBlockLanguage`/`CodeBlockTheme` and
 `TemplateVariableKind` are the two precedents (`kind: Kind` reads worse than
 `kind: TemplateVariableKind`). Ask if a new case seems borderline rather than guessing
@@ -183,7 +183,7 @@ Settled empirically across all six adapters, follow it for new ones:
    `XxxPublicPort extends XxxPublicPortProps, ...SharedPorts {}`.
 5. `XxxInternals`.
 6. `XxxAdapter { configPort; publicPort; }`.
-7. `Settings` (yes, *after* `XxxAdapter`, not before — this moved during the
+7. `XxxSettings` (yes, *after* `XxxAdapter`, not before — this moved during the
    migration; don't put it back at the top).
 8. `CreateXxxAdapterParams extends CreateAdapterParams<Settings> {}`.
 9. `CreateXxxAdapterResult extends XxxAdapter {}`.

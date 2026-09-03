@@ -327,7 +327,7 @@ export interface FormattingAdapter {
 	publicPort: FormattingPublicPort;
 }
 
-export interface Settings {
+export interface FormattingSettings {
 	defaultFontFamily?: FormattingFontFamilyValue;
 	defaultFontSize?: FormattingFontSizeValue;
 	defaultIndentation?: FormattingIndentationValue;
@@ -338,6 +338,6 @@ export interface Settings {
 }
 
 export interface CreateFormattingAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<FormattingSettings> {}
 
 export interface CreateFormattingAdapterResult extends FormattingAdapter {}

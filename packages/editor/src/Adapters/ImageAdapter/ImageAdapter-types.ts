@@ -52,9 +52,9 @@ export interface ImageAdapter {
 	publicPort: ImagePublicPort;
 }
 
-export interface Settings {}
+export interface ImageSettings {}
 
 export interface CreateImageAdapterParams
-	extends CreateAdapterParams<Settings> {}
+	extends CreateAdapterParams<ImageSettings> {}
 
 export interface CreateImageAdapterResult extends ImageAdapter {}
