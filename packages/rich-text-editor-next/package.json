@@ -1,0 +1,56 @@
+{
+	"name": "@rangex/rich-text-editor-next",
+	"version": "0.0.0",
+	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:rangexjs/rangex-dev.git",
+		"directory": "packages/rich-text-editor-next"
+	},
+	"private": true,
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": {
+			"development": {
+				"types": "./src/index.ts",
+				"import": "./src/index.ts"
+			},
+			"production": {
+				"types": "./dist/index.d.ts",
+				"import": "./dist/index.js"
+			}
+		}
+	},
+	"files": [
+		"dist",
+		"LICENSE.md",
+		"README.md"
+	],
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"test": "vitest",
+		"test:coverage": "vitest --coverage",
+		"fix": "biome check ./src --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src && tsc && vitest"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.4",
+		"@happy-dom/global-registrator": "^20.10.6",
+		"@types/bun": "^1.3.14",
+		"@vitest/coverage-v8": "^4.1.10",
+		"esbuild": "^0.28.1",
+		"typescript": "^7.0.2",
+		"vite": "^8.1.5",
+		"vite-plugin-solid": "^2.11.12",
+		"vitest": "^4.1.10"
+	},
+	"dependencies": {
+		"@rangex/editor": "workspace:*",
+		"@rangex/solid": "workspace:*",
+		"@tailwindcss/vite": "^4.3.3",
+		"solid-js": "2.0.0-rc.6",
+		"tailwindcss": "^4.3.3"
+	}
+}

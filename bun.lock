@@ -79,6 +79,28 @@
         "vitest": "^4.1.10",
       },
     },
+    "packages/rich-text-editor-next": {
+      "name": "@rangex/rich-text-editor-next",
+      "version": "0.0.0",
+      "dependencies": {
+        "@rangex/editor": "workspace:*",
+        "@rangex/solid": "workspace:*",
+        "@tailwindcss/vite": "^4.3.3",
+        "solid-js": "2.0.0-rc.6",
+        "tailwindcss": "^4.3.3",
+      },
+      "devDependencies": {
+        "@biomejs/biome": "2.5.4",
+        "@happy-dom/global-registrator": "^20.10.6",
+        "@types/bun": "^1.3.14",
+        "@vitest/coverage-v8": "^4.1.10",
+        "esbuild": "^0.28.1",
+        "typescript": "^7.0.2",
+        "vite": "^8.1.5",
+        "vite-plugin-solid": "^2.11.12",
+        "vitest": "^4.1.10",
+      },
+    },
     "packages/solid": {
       "name": "@rangex/solid",
       "version": "0.0.0",
@@ -232,6 +254,8 @@
     "@rangex/editor": ["@rangex/editor@workspace:packages/editor"],
 
     "@rangex/rich-text-editor": ["@rangex/rich-text-editor@workspace:packages/rich-text-editor"],
+
+    "@rangex/rich-text-editor-next": ["@rangex/rich-text-editor-next@workspace:packages/rich-text-editor-next"],
 
     "@rangex/solid": ["@rangex/solid@workspace:packages/solid"],
 
@@ -660,6 +684,8 @@
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
 
     "@babel/code-frame/js-tokens": ["js-tokens@4.0.0", "", {}, "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ=="],
+
+    "@rangex/rich-text-editor-next/solid-js": ["solid-js@2.0.0-rc.6", "", { "dependencies": { "@solidjs/signals": "^2.0.0-rc.6", "csstype": "^3.1.0", "seroval": "~1.5.4", "seroval-plugins": "~1.5.4" } }, "sha512-Z/M8s9ypLBf+6Bl3AAb5upgkYCl73HkpM+UxdUJ5uFGctTwpOQVCM9Gpj3Mjbiaki270HHUfA3Z0Lyn4w+fDtg=="],
 
     "@rangex/solid/solid-js": ["solid-js@2.0.0-rc.6", "", { "dependencies": { "@solidjs/signals": "^2.0.0-rc.6", "csstype": "^3.1.0", "seroval": "~1.5.4", "seroval-plugins": "~1.5.4" } }, "sha512-Z/M8s9ypLBf+6Bl3AAb5upgkYCl73HkpM+UxdUJ5uFGctTwpOQVCM9Gpj3Mjbiaki270HHUfA3Z0Lyn4w+fDtg=="],
 
