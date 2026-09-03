@@ -1,33 +1,13 @@
+import { extendObjectProperties } from "#utilities";
 import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
-	ConstructorParams,
-	FontFamilyOption,
-	FormattingActionState,
-	FormattingBackgroundColorState,
-	FormattingBoldState,
-	FormattingCodeState,
-	FormattingColorState,
+	CreateFormattingAdapterParams,
+	CreateFormattingAdapterResult,
 	FormattingConfigPort,
-	FormattingFontFamilyState,
-	FormattingFontFamilyValue,
-	FormattingFontSizeState,
-	FormattingFontSizeValue,
-	FormattingIndentationState,
-	FormattingIndentationValue,
-	FormattingItalicState,
-	FormattingLetterSpacingState,
-	FormattingLineHeightState,
-	FormattingLineHeightValue,
-	FormattingLineLocalNameState,
-	FormattingLineSpacingState,
-	FormattingLineSpacingValue,
+	FormattingConfigPortProps,
+	FormattingInternals,
 	FormattingPublicPort,
-	FormattingStrikethroughState,
-	FormattingSubscriptState,
-	FormattingSuperscriptState,
-	FormattingTextAlignState,
-	FormattingTextAlignValue,
-	FormattingUnderlineState,
+	FormattingPublicPortProps,
 	OnAnyFieldUpdateFn,
 	OnBackgroundColorUpdateCallbackFn,
 	OnBoldUpdateCallbackFn,
@@ -50,115 +30,86 @@ import type {
 	UpdateStateParams,
 } from "./FormattingAdapter-types";
 
-export class FormattingAdapter {
-	#backgroundColor: FormattingBackgroundColorState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#bold: FormattingBoldState = { disabled: true, pressed: "false" };
-	#code: FormattingCodeState = { disabled: true, pressed: "false" };
-	#color: FormattingColorState = { disabled: true, values: new Set() };
-	#fontFamily: FormattingFontFamilyState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#fontSize: FormattingFontSizeState = { disabled: true, values: new Set() };
-	#indentation: FormattingIndentationState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#italic: FormattingItalicState = { disabled: true, pressed: "false" };
-	#letterSpacing: FormattingLetterSpacingState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#lineHeight: FormattingLineHeightState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#lineLocalName: FormattingLineLocalNameState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#lineSpacing: FormattingLineSpacingState = {
-		disabled: true,
-		values: new Set(),
-	};
-	#subscript: FormattingSubscriptState = { disabled: true, pressed: "false" };
-	#superscript: FormattingSuperscriptState = {
-		disabled: true,
-		pressed: "false",
-	};
-	#strikethrough: FormattingStrikethroughState = {
-		disabled: true,
-		pressed: "false",
-	};
-	#textAlign: FormattingTextAlignState = { disabled: true, values: new Set() };
-	#underline: FormattingUnderlineState = { disabled: true, pressed: "false" };
+export const createFormattingAdapter = (
+	...params: CreateFormattingAdapterParams
+): CreateFormattingAdapterResult => {
+	const [
+		{
+			defaultFontFamily = "Inter",
+			defaultFontSize = { type: "px", value: 16 } as const,
+			defaultIndentation = { type: "px", value: 0 } as const,
+			defaultLineHeight = { type: "number", value: 1.5 } as const,
+			defaultLineSpacing = { type: "px", value: 0 } as const,
+			defaultTextAlign = "start",
+			fontFamilyOptions = defaultFontFamilyOptions,
+		},
+		_options,
+	] = params;
 
-	#defaultFontFamily: FormattingFontFamilyValue;
-	#defaultFontSize: FormattingFontSizeValue;
-	#defaultIndentation: FormattingIndentationValue;
-	#defaultLineHeight: FormattingLineHeightValue;
-	#defaultLineSpacing: FormattingLineSpacingValue;
-	#defaultTextAlign: FormattingTextAlignValue;
-
-	#fontFamilyOptions: FontFamilyOption[];
+	const internals: FormattingInternals = {
+		backgroundColor: { disabled: true, values: new Set() },
+		bold: { disabled: true, pressed: "false" },
+		code: { disabled: true, pressed: "false" },
+		color: { disabled: true, values: new Set() },
+		fontFamily: { disabled: true, values: new Set() },
+		fontSize: { disabled: true, values: new Set() },
+		indentation: { disabled: true, values: new Set() },
+		italic: { disabled: true, pressed: "false" },
+		letterSpacing: { disabled: true, values: new Set() },
+		lineHeight: { disabled: true, values: new Set() },
+		lineLocalName: { disabled: true, values: new Set() },
+		lineSpacing: { disabled: true, values: new Set() },
+		subscript: { disabled: true, pressed: "false" },
+		superscript: { disabled: true, pressed: "false" },
+		strikethrough: { disabled: true, pressed: "false" },
+		textAlign: { disabled: true, values: new Set() },
+		underline: { disabled: true, pressed: "false" },
+		defaultFontFamily,
+		defaultFontSize,
+		defaultIndentation,
+		defaultLineHeight,
+		defaultLineSpacing,
+		defaultTextAlign,
+		fontFamilyOptions,
+	};
 
 	// ConfigPort
-	#onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> = new Set();
+	const onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> =
+		new Set();
 
 	// PublicPort
-	#onBackgroundColorUpdateListeners: Set<OnBackgroundColorUpdateCallbackFn> =
+	const onBackgroundColorUpdateListeners: Set<OnBackgroundColorUpdateCallbackFn> =
 		new Set();
-	#onBoldUpdateListeners: Set<OnBoldUpdateCallbackFn> = new Set();
-	#onCodeUpdateListeners: Set<OnCodeUpdateCallbackFn> = new Set();
-	#onColorUpdateListeners: Set<OnColorUpdateCallbackFn> = new Set();
-	#onFontFamilyUpdateListeners: Set<OnFontFamilyUpdateCallbackFn> = new Set();
-	#onFontSizeUpdateListeners: Set<OnFontSizeUpdateCallbackFn> = new Set();
-	#onIndentationUpdateListeners: Set<OnIndentationUpdateCallbackFn> = new Set();
-	#onItalicUpdateListeners: Set<OnItalicUpdateCallbackFn> = new Set();
-	#onLetterSpacingUpdateListeners: Set<OnLetterSpacingUpdateCallbackFn> =
+	const onBoldUpdateListeners: Set<OnBoldUpdateCallbackFn> = new Set();
+	const onCodeUpdateListeners: Set<OnCodeUpdateCallbackFn> = new Set();
+	const onColorUpdateListeners: Set<OnColorUpdateCallbackFn> = new Set();
+	const onFontFamilyUpdateListeners: Set<OnFontFamilyUpdateCallbackFn> =
 		new Set();
-	#onLineHeightUpdateListeners: Set<OnLineHeightUpdateCallbackFn> = new Set();
-	#onLineLocalNameUpdateListeners: Set<OnLineLocalNameUpdateCallbackFn> =
+	const onFontSizeUpdateListeners: Set<OnFontSizeUpdateCallbackFn> = new Set();
+	const onIndentationUpdateListeners: Set<OnIndentationUpdateCallbackFn> =
 		new Set();
-	#onLineSpacingUpdateListeners: Set<OnLineSpacingUpdateCallbackFn> = new Set();
-	#onSubscriptUpdateListeners: Set<OnSubscriptUpdateCallbackFn> = new Set();
-	#onSuperscriptUpdateListeners: Set<OnSuperscriptUpdateCallbackFn> = new Set();
-	#onStrikethroughUpdateListeners: Set<OnStrikethroughUpdateCallbackFn> =
+	const onItalicUpdateListeners: Set<OnItalicUpdateCallbackFn> = new Set();
+	const onLetterSpacingUpdateListeners: Set<OnLetterSpacingUpdateCallbackFn> =
 		new Set();
-	#onTextAlignUpdateListeners: Set<OnTextAlignUpdateCallbackFn> = new Set();
-	#onUnderlineUpdateListeners: Set<OnUnderlineUpdateCallbackFn> = new Set();
-	#onAnyFieldUpdateListeners: Set<OnAnyFieldUpdateFn> = new Set();
+	const onLineHeightUpdateListeners: Set<OnLineHeightUpdateCallbackFn> =
+		new Set();
+	const onLineLocalNameUpdateListeners: Set<OnLineLocalNameUpdateCallbackFn> =
+		new Set();
+	const onLineSpacingUpdateListeners: Set<OnLineSpacingUpdateCallbackFn> =
+		new Set();
+	const onSubscriptUpdateListeners: Set<OnSubscriptUpdateCallbackFn> =
+		new Set();
+	const onSuperscriptUpdateListeners: Set<OnSuperscriptUpdateCallbackFn> =
+		new Set();
+	const onStrikethroughUpdateListeners: Set<OnStrikethroughUpdateCallbackFn> =
+		new Set();
+	const onTextAlignUpdateListeners: Set<OnTextAlignUpdateCallbackFn> =
+		new Set();
+	const onUnderlineUpdateListeners: Set<OnUnderlineUpdateCallbackFn> =
+		new Set();
+	const onAnyFieldUpdateListeners: Set<OnAnyFieldUpdateFn> = new Set();
 
-	#configPort: FormattingConfigPort | null = null;
-	#publicPort: FormattingPublicPort | null = null;
-
-	constructor(...params: ConstructorParams) {
-		const [
-			{
-				defaultFontFamily = "Inter",
-				defaultFontSize = { type: "px", value: 16 } as const,
-				defaultIndentation = { type: "px", value: 0 } as const,
-				defaultLineHeight = { type: "number", value: 1.5 } as const,
-				defaultLineSpacing = { type: "px", value: 0 } as const,
-				defaultTextAlign = "start",
-				fontFamilyOptions = defaultFontFamilyOptions,
-			},
-			_options,
-		] = params;
-
-		this.#defaultFontFamily = defaultFontFamily;
-		this.#defaultFontSize = defaultFontSize;
-		this.#defaultIndentation = defaultIndentation;
-		this.#defaultLineHeight = defaultLineHeight;
-		this.#defaultLineSpacing = defaultLineSpacing;
-		this.#defaultTextAlign = defaultTextAlign;
-		this.#fontFamilyOptions = fontFamilyOptions;
-	}
-
-	#updateState({
+	const updateState = ({
 		backgroundColor,
 		bold,
 		code,
@@ -176,362 +127,352 @@ export class FormattingAdapter {
 		strikethrough,
 		textAlign,
 		underline,
-	}: UpdateStateParams) {
+	}: UpdateStateParams) => {
 		if (backgroundColor !== undefined) {
-			this.#backgroundColor = backgroundColor;
+			internals.backgroundColor = backgroundColor;
 
-			for (const listener of this.#onBackgroundColorUpdateListeners) {
-				listener(this.#backgroundColor);
+			for (const listener of onBackgroundColorUpdateListeners) {
+				listener(internals.backgroundColor);
 			}
 		}
 
 		if (bold !== undefined) {
-			this.#bold = bold;
+			internals.bold = bold;
 
-			for (const listener of this.#onBoldUpdateListeners) {
-				listener(this.#bold);
+			for (const listener of onBoldUpdateListeners) {
+				listener(internals.bold);
 			}
 		}
 
 		if (code !== undefined) {
-			this.#code = code;
+			internals.code = code;
 
-			for (const listener of this.#onCodeUpdateListeners) {
-				listener(this.#code);
+			for (const listener of onCodeUpdateListeners) {
+				listener(internals.code);
 			}
 		}
 
 		if (color !== undefined) {
-			this.#color = color;
+			internals.color = color;
 
-			for (const listener of this.#onColorUpdateListeners) {
-				listener(this.#color);
+			for (const listener of onColorUpdateListeners) {
+				listener(internals.color);
 			}
 		}
 
 		if (fontFamily !== undefined) {
-			this.#fontFamily = fontFamily;
+			internals.fontFamily = fontFamily;
 
-			for (const listener of this.#onFontFamilyUpdateListeners) {
-				listener(this.#fontFamily);
+			for (const listener of onFontFamilyUpdateListeners) {
+				listener(internals.fontFamily);
 			}
 		}
 
 		if (fontSize !== undefined) {
-			this.#fontSize = fontSize;
+			internals.fontSize = fontSize;
 
-			for (const listener of this.#onFontSizeUpdateListeners) {
-				listener(this.#fontSize);
+			for (const listener of onFontSizeUpdateListeners) {
+				listener(internals.fontSize);
 			}
 		}
 
 		if (indentation !== undefined) {
-			this.#indentation = indentation;
+			internals.indentation = indentation;
 
-			for (const listener of this.#onIndentationUpdateListeners) {
-				listener(this.#indentation);
+			for (const listener of onIndentationUpdateListeners) {
+				listener(internals.indentation);
 			}
 		}
 
 		if (italic !== undefined) {
-			this.#italic = italic;
+			internals.italic = italic;
 
-			for (const listener of this.#onItalicUpdateListeners) {
-				listener(this.#italic);
+			for (const listener of onItalicUpdateListeners) {
+				listener(internals.italic);
 			}
 		}
 
 		if (letterSpacing !== undefined) {
-			this.#letterSpacing = letterSpacing;
+			internals.letterSpacing = letterSpacing;
 
-			for (const listener of this.#onLetterSpacingUpdateListeners) {
-				listener(this.#letterSpacing);
+			for (const listener of onLetterSpacingUpdateListeners) {
+				listener(internals.letterSpacing);
 			}
 		}
 
 		if (lineHeight !== undefined) {
-			this.#lineHeight = lineHeight;
+			internals.lineHeight = lineHeight;
 
-			for (const listener of this.#onLineHeightUpdateListeners) {
-				listener(this.#lineHeight);
+			for (const listener of onLineHeightUpdateListeners) {
+				listener(internals.lineHeight);
 			}
 		}
 
 		if (lineLocalName !== undefined) {
-			this.#lineLocalName = lineLocalName;
+			internals.lineLocalName = lineLocalName;
 
-			for (const listener of this.#onLineLocalNameUpdateListeners) {
-				listener(this.#lineLocalName);
+			for (const listener of onLineLocalNameUpdateListeners) {
+				listener(internals.lineLocalName);
 			}
 		}
 
 		if (lineSpacing !== undefined) {
-			this.#lineSpacing = lineSpacing;
+			internals.lineSpacing = lineSpacing;
 
-			for (const listener of this.#onLineSpacingUpdateListeners) {
-				listener(this.#lineSpacing);
+			for (const listener of onLineSpacingUpdateListeners) {
+				listener(internals.lineSpacing);
 			}
 		}
 
 		if (subscript !== undefined) {
-			this.#subscript = subscript;
+			internals.subscript = subscript;
 
-			for (const listener of this.#onSubscriptUpdateListeners) {
-				listener(this.#subscript);
+			for (const listener of onSubscriptUpdateListeners) {
+				listener(internals.subscript);
 			}
 		}
 
 		if (superscript !== undefined) {
-			this.#superscript = superscript;
+			internals.superscript = superscript;
 
-			for (const listener of this.#onSuperscriptUpdateListeners) {
-				listener(this.#superscript);
+			for (const listener of onSuperscriptUpdateListeners) {
+				listener(internals.superscript);
 			}
 		}
 
 		if (strikethrough !== undefined) {
-			this.#strikethrough = strikethrough;
+			internals.strikethrough = strikethrough;
 
-			for (const listener of this.#onStrikethroughUpdateListeners) {
-				listener(this.#strikethrough);
+			for (const listener of onStrikethroughUpdateListeners) {
+				listener(internals.strikethrough);
 			}
 		}
 
 		if (textAlign !== undefined) {
-			this.#textAlign = textAlign;
+			internals.textAlign = textAlign;
 
-			for (const listener of this.#onTextAlignUpdateListeners) {
-				listener(this.#textAlign);
+			for (const listener of onTextAlignUpdateListeners) {
+				listener(internals.textAlign);
 			}
 		}
 
 		if (underline !== undefined) {
-			this.#underline = underline;
+			internals.underline = underline;
 
-			for (const listener of this.#onUnderlineUpdateListeners) {
-				listener(this.#underline);
+			for (const listener of onUnderlineUpdateListeners) {
+				listener(internals.underline);
 			}
 		}
 
-		for (const listener of this.#onAnyFieldUpdateListeners) {
+		for (const listener of onAnyFieldUpdateListeners) {
 			listener();
 		}
-	}
+	};
 
-	get configPort(): FormattingConfigPort {
-		const adapter = this;
+	const configPort: FormattingConfigPort = extendObjectProperties({}, {
+		updateState(params) {
+			updateState(params);
+		},
 
-		this.#configPort ??= {
-			updateState(params) {
-				adapter.#updateState(params);
-			},
+		onFormattingChange(callback) {
+			onFormattingChangeListeners.add(callback);
+			return () => onFormattingChangeListeners.delete(callback);
+		},
+	} satisfies FormattingConfigPortProps);
 
-			onFormattingChange(callback) {
-				adapter.#onFormattingChangeListeners.add(callback);
-				return () => adapter.#onFormattingChangeListeners.delete(callback);
-			},
-		};
+	const publicPort: FormattingPublicPort = extendObjectProperties({}, {
+		get backgroundColor() {
+			return internals.backgroundColor;
+		},
 
-		return this.#configPort;
-	}
+		get bold() {
+			return internals.bold;
+		},
 
-	get publicPort(): FormattingPublicPort {
-		const adapter = this;
+		get code() {
+			return internals.code;
+		},
 
-		this.#publicPort ??= {
-			get backgroundColor() {
-				return adapter.#backgroundColor;
-			},
+		get color() {
+			return internals.color;
+		},
 
-			get bold() {
-				return adapter.#bold;
-			},
+		get fontFamily() {
+			return internals.fontFamily;
+		},
 
-			get code() {
-				return adapter.#code;
-			},
+		get fontSize() {
+			return internals.fontSize;
+		},
 
-			get color() {
-				return adapter.#color;
-			},
+		get indentation() {
+			return internals.indentation;
+		},
 
-			get fontFamily() {
-				return adapter.#fontFamily;
-			},
+		get italic() {
+			return internals.italic;
+		},
 
-			get fontSize() {
-				return adapter.#fontSize;
-			},
+		get letterSpacing() {
+			return internals.letterSpacing;
+		},
 
-			get indentation() {
-				return adapter.#indentation;
-			},
+		get lineHeight() {
+			return internals.lineHeight;
+		},
 
-			get italic() {
-				return adapter.#italic;
-			},
+		get lineLocalName() {
+			return internals.lineLocalName;
+		},
 
-			get letterSpacing() {
-				return adapter.#letterSpacing;
-			},
+		get lineSpacing() {
+			return internals.lineSpacing;
+		},
 
-			get lineHeight() {
-				return adapter.#lineHeight;
-			},
+		get subscript() {
+			return internals.subscript;
+		},
 
-			get lineLocalName() {
-				return adapter.#lineLocalName;
-			},
+		get superscript() {
+			return internals.superscript;
+		},
 
-			get lineSpacing() {
-				return adapter.#lineSpacing;
-			},
+		get strikethrough() {
+			return internals.strikethrough;
+		},
 
-			get subscript() {
-				return adapter.#subscript;
-			},
+		get textAlign() {
+			return internals.textAlign;
+		},
 
-			get superscript() {
-				return adapter.#superscript;
-			},
+		get underline() {
+			return internals.underline;
+		},
 
-			get strikethrough() {
-				return adapter.#strikethrough;
-			},
+		get defaultFontFamily() {
+			return internals.defaultFontFamily;
+		},
 
-			get textAlign() {
-				return adapter.#textAlign;
-			},
+		get defaultFontSize() {
+			return internals.defaultFontSize;
+		},
 
-			get underline() {
-				return adapter.#underline;
-			},
+		get defaultIndentation() {
+			return internals.defaultIndentation;
+		},
 
-			get defaultFontFamily() {
-				return adapter.#defaultFontFamily;
-			},
+		get defaultLineHeight() {
+			return internals.defaultLineHeight;
+		},
 
-			get defaultFontSize() {
-				return adapter.#defaultFontSize;
-			},
+		get defaultLineSpacing() {
+			return internals.defaultLineSpacing;
+		},
 
-			get defaultIndentation() {
-				return adapter.#defaultIndentation;
-			},
+		get defaultTextAlign() {
+			return internals.defaultTextAlign;
+		},
 
-			get defaultLineHeight() {
-				return adapter.#defaultLineHeight;
-			},
+		get fontFamilyOptions() {
+			return internals.fontFamilyOptions;
+		},
 
-			get defaultLineSpacing() {
-				return adapter.#defaultLineSpacing;
-			},
+		onBackgroundColorUpdate(callback) {
+			onBackgroundColorUpdateListeners.add(callback);
+			return () => onBackgroundColorUpdateListeners.delete(callback);
+		},
 
-			get defaultTextAlign() {
-				return adapter.#defaultTextAlign;
-			},
+		onBoldUpdate(callback) {
+			onBoldUpdateListeners.add(callback);
+			return () => onBoldUpdateListeners.delete(callback);
+		},
 
-			get fontFamilyOptions() {
-				return adapter.#fontFamilyOptions;
-			},
+		onCodeUpdate(callback) {
+			onCodeUpdateListeners.add(callback);
+			return () => onCodeUpdateListeners.delete(callback);
+		},
 
-			onBackgroundColorUpdate(callback) {
-				adapter.#onBackgroundColorUpdateListeners.add(callback);
-				return () => adapter.#onBackgroundColorUpdateListeners.delete(callback);
-			},
+		onColorUpdate(callback) {
+			onColorUpdateListeners.add(callback);
+			return () => onColorUpdateListeners.delete(callback);
+		},
 
-			onBoldUpdate(callback) {
-				adapter.#onBoldUpdateListeners.add(callback);
-				return () => adapter.#onBoldUpdateListeners.delete(callback);
-			},
+		onFontFamilyUpdate(callback) {
+			onFontFamilyUpdateListeners.add(callback);
+			return () => onFontFamilyUpdateListeners.delete(callback);
+		},
 
-			onCodeUpdate(callback) {
-				adapter.#onCodeUpdateListeners.add(callback);
-				return () => adapter.#onCodeUpdateListeners.delete(callback);
-			},
+		onFontSizeUpdate(callback) {
+			onFontSizeUpdateListeners.add(callback);
+			return () => onFontSizeUpdateListeners.delete(callback);
+		},
 
-			onColorUpdate(callback) {
-				adapter.#onColorUpdateListeners.add(callback);
-				return () => adapter.#onColorUpdateListeners.delete(callback);
-			},
+		onIndentationUpdate(callback) {
+			onIndentationUpdateListeners.add(callback);
+			return () => onIndentationUpdateListeners.delete(callback);
+		},
 
-			onFontFamilyUpdate(callback) {
-				adapter.#onFontFamilyUpdateListeners.add(callback);
-				return () => adapter.#onFontFamilyUpdateListeners.delete(callback);
-			},
+		onItalicUpdate(callback) {
+			onItalicUpdateListeners.add(callback);
+			return () => onItalicUpdateListeners.delete(callback);
+		},
 
-			onFontSizeUpdate(callback) {
-				adapter.#onFontSizeUpdateListeners.add(callback);
-				return () => adapter.#onFontSizeUpdateListeners.delete(callback);
-			},
+		onLetterSpacingUpdate(callback) {
+			onLetterSpacingUpdateListeners.add(callback);
+			return () => onLetterSpacingUpdateListeners.delete(callback);
+		},
 
-			onIndentationUpdate(callback) {
-				adapter.#onIndentationUpdateListeners.add(callback);
-				return () => adapter.#onIndentationUpdateListeners.delete(callback);
-			},
+		onLineHeightUpdate(callback) {
+			onLineHeightUpdateListeners.add(callback);
+			return () => onLineHeightUpdateListeners.delete(callback);
+		},
 
-			onItalicUpdate(callback) {
-				adapter.#onItalicUpdateListeners.add(callback);
-				return () => adapter.#onItalicUpdateListeners.delete(callback);
-			},
+		onLineLocalNameUpdate(callback) {
+			onLineLocalNameUpdateListeners.add(callback);
+			return () => onLineLocalNameUpdateListeners.delete(callback);
+		},
 
-			onLetterSpacingUpdate(callback) {
-				adapter.#onLetterSpacingUpdateListeners.add(callback);
-				return () => adapter.#onLetterSpacingUpdateListeners.delete(callback);
-			},
+		onLineSpacingUpdate(callback) {
+			onLineSpacingUpdateListeners.add(callback);
+			return () => onLineSpacingUpdateListeners.delete(callback);
+		},
 
-			onLineHeightUpdate(callback) {
-				adapter.#onLineHeightUpdateListeners.add(callback);
-				return () => adapter.#onLineHeightUpdateListeners.delete(callback);
-			},
+		onSubscriptUpdate(callback) {
+			onSubscriptUpdateListeners.add(callback);
+			return () => onSubscriptUpdateListeners.delete(callback);
+		},
 
-			onLineLocalNameUpdate(callback) {
-				adapter.#onLineLocalNameUpdateListeners.add(callback);
-				return () => adapter.#onLineLocalNameUpdateListeners.delete(callback);
-			},
+		onSuperscriptUpdate(callback) {
+			onSuperscriptUpdateListeners.add(callback);
+			return () => onSuperscriptUpdateListeners.delete(callback);
+		},
 
-			onLineSpacingUpdate(callback) {
-				adapter.#onLineSpacingUpdateListeners.add(callback);
-				return () => adapter.#onLineSpacingUpdateListeners.delete(callback);
-			},
+		onStrikethroughUpdate(callback) {
+			onStrikethroughUpdateListeners.add(callback);
+			return () => onStrikethroughUpdateListeners.delete(callback);
+		},
 
-			onSubscriptUpdate(callback) {
-				adapter.#onSubscriptUpdateListeners.add(callback);
-				return () => adapter.#onSubscriptUpdateListeners.delete(callback);
-			},
+		onTextAlignUpdate(callback) {
+			onTextAlignUpdateListeners.add(callback);
+			return () => onTextAlignUpdateListeners.delete(callback);
+		},
 
-			onSuperscriptUpdate(callback) {
-				adapter.#onSuperscriptUpdateListeners.add(callback);
-				return () => adapter.#onSuperscriptUpdateListeners.delete(callback);
-			},
+		onUnderlineUpdate(callback) {
+			onUnderlineUpdateListeners.add(callback);
+			return () => onUnderlineUpdateListeners.delete(callback);
+		},
 
-			onStrikethroughUpdate(callback) {
-				adapter.#onStrikethroughUpdateListeners.add(callback);
-				return () => adapter.#onStrikethroughUpdateListeners.delete(callback);
-			},
+		onAnyFieldUpdate(callback) {
+			onAnyFieldUpdateListeners.add(callback);
+			return () => onAnyFieldUpdateListeners.delete(callback);
+		},
 
-			onTextAlignUpdate(callback) {
-				adapter.#onTextAlignUpdateListeners.add(callback);
-				return () => adapter.#onTextAlignUpdateListeners.delete(callback);
-			},
+		changeFormat(params) {
+			for (const listener of onFormattingChangeListeners) {
+				listener(params);
+			}
+		},
+	} satisfies FormattingPublicPortProps);
 
-			onUnderlineUpdate(callback) {
-				adapter.#onUnderlineUpdateListeners.add(callback);
-				return () => adapter.#onUnderlineUpdateListeners.delete(callback);
-			},
-
-			onAnyFieldUpdate(callback) {
-				adapter.#onAnyFieldUpdateListeners.add(callback);
-				return () => adapter.#onAnyFieldUpdateListeners.delete(callback);
-			},
-
-			changeFormat(params: FormattingActionState) {
-				for (const listener of adapter.#onFormattingChangeListeners) {
-					listener(params);
-				}
-			},
-		};
-
-		return this.#publicPort;
-	}
-}
+	return { configPort, publicPort };
+};

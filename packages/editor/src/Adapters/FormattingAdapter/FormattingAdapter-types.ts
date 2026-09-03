@@ -5,18 +5,6 @@ export interface FontFamilyOption {
 	group: "sans-serif" | "serif" | "monospace";
 }
 
-export interface Settings {
-	defaultFontFamily?: FormattingFontFamilyValue;
-	defaultFontSize?: FormattingFontSizeValue;
-	defaultIndentation?: FormattingIndentationValue;
-	defaultLineHeight?: FormattingLineHeightValue;
-	defaultLineSpacing?: FormattingLineSpacingValue;
-	defaultTextAlign?: FormattingTextAlignValue;
-	fontFamilyOptions?: FontFamilyOption[];
-}
-
-export type ConstructorParams = CreateAdapterParams<Settings>;
-
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 
 export interface FormattingSolidColor {
@@ -203,10 +191,12 @@ export type OnFormattingChangeCallbackFn = (
 	params: FormattingActionState,
 ) => void;
 
-export interface FormattingConfigPort {
+export interface FormattingConfigPortProps {
 	updateState(params: UpdateStateParams): void;
 	onFormattingChange(callback: OnFormattingChangeCallbackFn): () => void;
 }
+
+export interface FormattingConfigPort extends FormattingConfigPortProps {}
 
 export type OnBackgroundColorUpdateCallbackFn = (
 	value: FormattingBackgroundColorState,
@@ -253,7 +243,7 @@ export type OnUnderlineUpdateCallbackFn = (
 ) => void;
 export type OnAnyFieldUpdateFn = () => void;
 
-export interface FormattingPublicPort {
+export interface FormattingPublicPortProps {
 	readonly backgroundColor: FormattingBackgroundColorState;
 	readonly bold: FormattingBoldState;
 	readonly code: FormattingCodeState;
@@ -302,3 +292,52 @@ export interface FormattingPublicPort {
 	onAnyFieldUpdate(callback: OnAnyFieldUpdateFn): () => void;
 	changeFormat(params: FormattingActionState): void;
 }
+
+export interface FormattingPublicPort extends FormattingPublicPortProps {}
+
+export interface FormattingInternals {
+	backgroundColor: FormattingBackgroundColorState;
+	bold: FormattingBoldState;
+	code: FormattingCodeState;
+	color: FormattingColorState;
+	fontFamily: FormattingFontFamilyState;
+	fontSize: FormattingFontSizeState;
+	indentation: FormattingIndentationState;
+	italic: FormattingItalicState;
+	letterSpacing: FormattingLetterSpacingState;
+	lineHeight: FormattingLineHeightState;
+	lineLocalName: FormattingLineLocalNameState;
+	lineSpacing: FormattingLineSpacingState;
+	subscript: FormattingSubscriptState;
+	superscript: FormattingSuperscriptState;
+	strikethrough: FormattingStrikethroughState;
+	textAlign: FormattingTextAlignState;
+	underline: FormattingUnderlineState;
+	defaultFontFamily: FormattingFontFamilyValue;
+	defaultFontSize: FormattingFontSizeValue;
+	defaultIndentation: FormattingIndentationValue;
+	defaultLineHeight: FormattingLineHeightValue;
+	defaultLineSpacing: FormattingLineSpacingValue;
+	defaultTextAlign: FormattingTextAlignValue;
+	fontFamilyOptions: FontFamilyOption[];
+}
+
+export interface FormattingAdapter {
+	configPort: FormattingConfigPort;
+	publicPort: FormattingPublicPort;
+}
+
+export interface Settings {
+	defaultFontFamily?: FormattingFontFamilyValue;
+	defaultFontSize?: FormattingFontSizeValue;
+	defaultIndentation?: FormattingIndentationValue;
+	defaultLineHeight?: FormattingLineHeightValue;
+	defaultLineSpacing?: FormattingLineSpacingValue;
+	defaultTextAlign?: FormattingTextAlignValue;
+	fontFamilyOptions?: FontFamilyOption[];
+}
+
+export interface CreateFormattingAdapterParams
+	extends CreateAdapterParams<Settings> {}
+
+export interface CreateFormattingAdapterResult extends FormattingAdapter {}
