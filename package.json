@@ -17,15 +17,16 @@
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",
+		"@rangex/editor": "workspace:*",
 		"@rangex/rich-text-editor": "workspace:*",
+		"@rangex/rich-text-editor-next": "workspace:*",
 		"@tailwindcss/vite": "^4.3.3",
-		"solid-js": "^1.9.14",
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
+		"@solidjs/vite-plugin": "3.0.0-next.38",
 		"typescript": "^7.0.2",
-		"vite": "^8.1.5",
-		"vite-plugin-solid": "^2.11.12"
+		"vite": "^8.1.5"
 	}
 }

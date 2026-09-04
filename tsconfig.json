@@ -5,6 +5,8 @@
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"resolveJsonModule": true,
+		"jsx": "preserve",
+		"jsxImportSource": "@solidjs/web",
 		"customConditions": ["development"]
 	},
 	"include": ["index.ts", "src/**/*"],

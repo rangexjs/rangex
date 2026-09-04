@@ -47,8 +47,15 @@ export type {
 export type { ImagePublicPort } from "#adapters/Image";
 
 export type {
+	AdapterValue,
 	CreateEditorParams,
 	CreateEditorResult,
 	RangeXEditor,
 } from "#rangex-editor";
-export { createEditor } from "#rangex-editor";
+export {
+	AccordionItem,
+	createEditor,
+	EmptyMedia,
+	Formatting,
+	Image,
+} from "#rangex-editor";
