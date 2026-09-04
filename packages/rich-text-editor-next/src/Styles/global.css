@@ -1,0 +1,137 @@
+@import "tailwindcss";
+@import ".//Button.css";
+@import "./MenuButton.css";
+@import "./TextField.css";
+@import "./ToggleButton.css";
+@import "./ToolbarButton.css";
+
+@custom-variant dark {
+	&:where([data-color-scheme="dark"], [data-color-scheme="dark"] *) {
+		@slot;
+	}
+	@media (prefers-color-scheme: dark) {
+		&:where([data-color-scheme="system"], [data-color-scheme="system"] *) {
+			@slot;
+		}
+	}
+}
+
+@layer base {
+	:host {
+		interpolate-size: allow-keywords;
+
+		--tw-translate-x: 0;
+		--tw-translate-y: 0;
+		--tw-translate-z: 0;
+		--tw-rotate-x: rotateX(0);
+		--tw-rotate-y: rotateY(0);
+		--tw-rotate-z: rotateZ(0);
+		--tw-skew-x: skewX(0);
+		--tw-skew-y: skewY(0);
+		--tw-border-style: solid;
+		--tw-gradient-from: #0000;
+		--tw-gradient-via: #0000;
+		--tw-gradient-to: #0000;
+		--tw-gradient-from-position: 0%;
+		--tw-gradient-via-position: 50%;
+		--tw-gradient-to-position: 100%;
+		--tw-shadow: 0 0 #0000;
+		--tw-inset-shadow: 0 0 #0000;
+		--tw-ring-shadow: 0 0 #0000;
+		--tw-inset-ring-shadow: 0 0 #0000;
+		--tw-ring-offset-width: 0px;
+		--tw-ring-offset-color: #fff;
+		--tw-ring-offset-shadow: 0 0 #0000;
+		--tw-outline-style: solid;
+	}
+}
+
+@theme {
+	--color-primary-50: #effaff;
+	--color-primary-100: #def4ff;
+	--color-primary-200: #bfeaff;
+	--color-primary-300: #95dbff;
+	--color-primary-400: #52c3ff;
+	--color-primary-500: #00a1ff;
+	--color-primary-600: #0086d8;
+	--color-primary-700: #0069ae;
+	--color-primary-800: #004c82;
+	--color-primary-900: #003459;
+	--color-primary-950: #001e37;
+}
+
+dialog {
+	--open-duration: 120ms;
+	transition: overlay, display, opacity, scale;
+	transition-duration: var(--open-duration);
+	transition-timing-function: ease-out;
+	transition-behavior: allow-discrete;
+
+	opacity: 0;
+	scale: 0.97;
+
+	&[open] {
+		opacity: 1;
+		scale: 1;
+
+		@starting-style {
+			opacity: 0.4;
+			scale: 0.97;
+		}
+	}
+
+	&::backdrop {
+		transition: overlay, display, background-color;
+		transition-duration: var(--open-duration);
+		transition-timing-function: ease-out;
+		transition-behavior: allow-discrete;
+
+		background-color: transparent;
+	}
+
+	&[open]::backdrop {
+		background-color: color(from var(--color-neutral-900) srgb r g b / 0.5);
+
+		@starting-style {
+			background-color: transparent;
+		}
+	}
+}
+
+[popover] {
+	--open-duration: 80ms;
+	transition: overlay, display, opacity, scale;
+	transition-duration: var(--open-duration);
+	transition-timing-function: ease-out;
+	transition-behavior: allow-discrete;
+
+	opacity: 0;
+	scale: 0.95;
+
+	&:popover-open {
+		opacity: 1;
+		scale: 1;
+
+		@starting-style {
+			opacity: 0.4;
+			scale: 0.95;
+		}
+	}
+}
+
+button {
+	cursor: pointer;
+}
+
+details::details-content {
+	transition-property: height, content-visibility;
+	transition-duration: 0.2s;
+	transition-timing-function: ease-in;
+	transition-behavior: allow-discrete;
+	height: 0;
+	overflow: clip;
+}
+
+details[open]::details-content {
+	height: auto;
+}

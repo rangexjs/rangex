@@ -1,4 +1,5 @@
 import { AdapterBus } from "#adapters";
+import { getStyleSheetText } from "../EngineLinks/Styles";
 import { createCore } from "./CreateCore";
 import type {
 	CreateEditorParams,
@@ -12,6 +13,10 @@ export const createEditor = ({
 	adapters,
 }: CreateEditorParams): CreateEditorResult => {
 	const { editorAPI } = createCore({ storedSnapshot });
+
+	const styleSheet = getStyleSheetText({ rxStyle: true });
+
+	editorAPI.replaceCustomStyles(styleSheet);
 
 	const { host } = editorAPI;
 
