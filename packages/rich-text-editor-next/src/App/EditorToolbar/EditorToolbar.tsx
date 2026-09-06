@@ -1,7 +1,7 @@
 import { Dynamic } from "@solidjs/web";
 import { For, Show } from "solid-js";
 import type { ToolbarButtonsLayout, ToolbarButtonValue } from "#constants";
-import type { ExtensionToolbarButtons } from "../../CreateRichTextEditor";
+import type { ExtensionToolbarButtons } from "#extensions";
 
 interface ToolbarButtonSlotProps {
 	name: ToolbarButtonValue;

@@ -51,6 +51,13 @@
 			},
 			"default": "./src/Context/index"
 		},
+		"#extensions": {
+			"types": {
+				"development": "./src/Extensions/index.ts",
+				"production": "./dist/Extensions/index.d.ts"
+			},
+			"default": "./src/Extensions/index"
+		},
 		"#features": {
 			"types": {
 				"development": "./src/Features/index.ts",

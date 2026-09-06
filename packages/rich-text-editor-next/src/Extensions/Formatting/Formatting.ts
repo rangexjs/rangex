@@ -20,7 +20,7 @@ import {
 	TextAlignToolbarButton,
 	UnderlineToolbarButton,
 } from "#features";
-import type { Extension } from "../../CreateRichTextEditor";
+import type { Extension } from "../_Utilities";
 
 export const Formatting = (
 	...adapterSettings: Parameters<typeof FormattingFactory>

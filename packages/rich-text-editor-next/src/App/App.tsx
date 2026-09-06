@@ -2,7 +2,7 @@ import type { SolidEditor } from "@rangex/solid";
 import type { Component } from "solid-js";
 import type { ToolbarButtonsLayout } from "#constants";
 import { EditorContext } from "#context";
-import type { ExtensionComponents } from "../CreateRichTextEditor";
+import type { ExtensionComponents } from "#extensions";
 import { EditorToolbar } from "./EditorToolbar";
 
 export interface AppProps {

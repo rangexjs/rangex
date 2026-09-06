@@ -1,11 +1,11 @@
 import { createEditor } from "@rangex/solid";
 import { render } from "@solidjs/web";
+import type { ExtensionComponents } from "#extensions";
 import { App } from "../App";
 import { defaultToolbarButtonsLayout } from "./_Utilities";
 import type {
 	CreateRichTextEditorParams,
 	CreateRichTextEditorResult,
-	ExtensionComponents,
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
 import "../ComponentStyles/global.css";
