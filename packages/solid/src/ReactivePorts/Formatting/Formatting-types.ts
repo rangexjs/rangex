@@ -21,6 +21,8 @@ import type {
 	FormattingLineLocalNameValue,
 	FormattingLineSpacingState,
 	FormattingLineSpacingValue,
+	FormattingRemoveLineState,
+	FormattingRemoveTextState,
 	FormattingStrikethroughState,
 	FormattingSubscriptState,
 	FormattingSuperscriptState,
@@ -48,6 +50,8 @@ export interface ReactiveFormattingPort {
 	strikethrough: Accessor<FormattingStrikethroughState>;
 	textAlign: Accessor<FormattingTextAlignState>;
 	underline: Accessor<FormattingUnderlineState>;
+	removeLine: Accessor<FormattingRemoveLineState>;
+	removeText: Accessor<FormattingRemoveTextState>;
 
 	readonly defaultFontFamily: FormattingFontFamilyValue;
 	readonly defaultFontSize: FormattingFontSizeValue;
@@ -76,6 +80,8 @@ export interface ReactiveFormattingPort {
 	toggleStrikethrough(): void;
 	setTextAlign(textAlign: FormattingTextAlignValue): void;
 	toggleUnderline(): void;
+	removeLineFormat(): void;
+	removeTextFormat(): void;
 }
 
 export interface ReactiveFormattingResult {

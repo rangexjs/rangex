@@ -147,6 +147,14 @@ export interface FormattingUnderlineState {
 	pressed: FormattingTogglePressed;
 }
 
+export interface FormattingRemoveLineState {
+	disabled: boolean;
+}
+
+export interface FormattingRemoveTextState {
+	disabled: boolean;
+}
+
 export interface FormattingState {
 	backgroundColor?: FormattingBackgroundColorState;
 	bold?: FormattingBoldState;
@@ -245,7 +253,12 @@ export type OnTextAlignUpdateCallbackFn = (
 export type OnUnderlineUpdateCallbackFn = (
 	value: FormattingUnderlineState,
 ) => void;
-export type OnAnyFieldUpdateFn = () => void;
+export type OnRemoveLineUpdateCallbackFn = (
+	value: FormattingRemoveLineState,
+) => void;
+export type OnRemoveTextUpdateCallbackFn = (
+	value: FormattingRemoveTextState,
+) => void;
 
 export interface FormattingPublicPortProps {
 	readonly backgroundColor: FormattingBackgroundColorState;
@@ -265,6 +278,8 @@ export interface FormattingPublicPortProps {
 	readonly strikethrough: FormattingStrikethroughState;
 	readonly textAlign: FormattingTextAlignState;
 	readonly underline: FormattingUnderlineState;
+	readonly removeLine: FormattingRemoveLineState;
+	readonly removeText: FormattingRemoveTextState;
 	// Configured once at construction, not pushed by the Editor.
 	readonly defaultFontFamily: FormattingFontFamilyValue;
 	readonly defaultFontSize: FormattingFontSizeValue;
@@ -293,7 +308,8 @@ export interface FormattingPublicPortProps {
 	onStrikethroughUpdate(callback: OnStrikethroughUpdateCallbackFn): () => void;
 	onTextAlignUpdate(callback: OnTextAlignUpdateCallbackFn): () => void;
 	onUnderlineUpdate(callback: OnUnderlineUpdateCallbackFn): () => void;
-	onAnyFieldUpdate(callback: OnAnyFieldUpdateFn): () => void;
+	onRemoveLineUpdate(callback: OnRemoveLineUpdateCallbackFn): () => void;
+	onRemoveTextUpdate(callback: OnRemoveTextUpdateCallbackFn): () => void;
 
 	setBackgroundColor(
 		backgroundColor: FormattingBackgroundColorValue | null,
@@ -314,6 +330,8 @@ export interface FormattingPublicPortProps {
 	toggleStrikethrough(): void;
 	setTextAlign(textAlign: FormattingTextAlignValue): void;
 	toggleUnderline(): void;
+	removeLineFormat(): void;
+	removeTextFormat(): void;
 }
 
 export interface FormattingPublicPort extends FormattingPublicPortProps {}
@@ -336,6 +354,8 @@ export interface FormattingInternals {
 	strikethrough: FormattingStrikethroughState;
 	textAlign: FormattingTextAlignState;
 	underline: FormattingUnderlineState;
+	removeLine: FormattingRemoveLineState;
+	removeText: FormattingRemoveTextState;
 	defaultFontFamily: FormattingFontFamilyValue;
 	defaultFontSize: FormattingFontSizeValue;
 	defaultIndentation: FormattingIndentationValue;

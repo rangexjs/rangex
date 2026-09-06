@@ -41,6 +41,8 @@ export type {
 	FormattingLineSpacingState,
 	FormattingLineSpacingValue,
 	FormattingPublicPort,
+	FormattingRemoveLineState,
+	FormattingRemoveTextState,
 	FormattingStrikethroughState,
 	FormattingSubscriptState,
 	FormattingSuperscriptState,

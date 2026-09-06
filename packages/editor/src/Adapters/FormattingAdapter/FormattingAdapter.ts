@@ -8,7 +8,6 @@ import type {
 	FormattingInternals,
 	FormattingPublicPort,
 	FormattingPublicPortProps,
-	OnAnyFieldUpdateFn,
 	OnBackgroundColorUpdateCallbackFn,
 	OnBoldUpdateCallbackFn,
 	OnCodeUpdateCallbackFn,
@@ -22,6 +21,8 @@ import type {
 	OnLineHeightUpdateCallbackFn,
 	OnLineLocalNameUpdateCallbackFn,
 	OnLineSpacingUpdateCallbackFn,
+	OnRemoveLineUpdateCallbackFn,
+	OnRemoveTextUpdateCallbackFn,
 	OnStrikethroughUpdateCallbackFn,
 	OnSubscriptUpdateCallbackFn,
 	OnSuperscriptUpdateCallbackFn,
@@ -29,6 +30,10 @@ import type {
 	OnUnderlineUpdateCallbackFn,
 	UpdateStateParams,
 } from "./FormattingAdapter-types";
+import {
+	isRemoveLineDisabled,
+	isRemoveTextDisabled,
+} from "./IsRemoveFormatDisabled";
 
 export const createFormattingAdapter = (
 	...params: CreateFormattingAdapterParams
@@ -65,6 +70,8 @@ export const createFormattingAdapter = (
 		strikethrough: { disabled: true, pressed: "false" },
 		textAlign: { disabled: true, values: new Set() },
 		underline: { disabled: true, pressed: "false" },
+		removeLine: { disabled: true },
+		removeText: { disabled: true },
 		defaultFontFamily,
 		defaultFontSize,
 		defaultIndentation,
@@ -108,7 +115,10 @@ export const createFormattingAdapter = (
 		new Set();
 	const onUnderlineUpdateListeners: Set<OnUnderlineUpdateCallbackFn> =
 		new Set();
-	const onAnyFieldUpdateListeners: Set<OnAnyFieldUpdateFn> = new Set();
+	const onRemoveLineUpdateListeners: Set<OnRemoveLineUpdateCallbackFn> =
+		new Set();
+	const onRemoveTextUpdateListeners: Set<OnRemoveTextUpdateCallbackFn> =
+		new Set();
 
 	const updateState = ({
 		backgroundColor,
@@ -265,8 +275,20 @@ export const createFormattingAdapter = (
 			}
 		}
 
-		for (const listener of onAnyFieldUpdateListeners) {
-			listener();
+		const removeLineDisabled = isRemoveLineDisabled(internals);
+
+		internals.removeLine = { disabled: removeLineDisabled };
+
+		for (const listener of onRemoveLineUpdateListeners) {
+			listener(internals.removeLine);
+		}
+
+		const removeTextDisabled = isRemoveTextDisabled(internals);
+
+		internals.removeText = { disabled: removeTextDisabled };
+
+		for (const listener of onRemoveTextUpdateListeners) {
+			listener(internals.removeText);
 		}
 	};
 
@@ -352,6 +374,14 @@ export const createFormattingAdapter = (
 
 		get underline() {
 			return internals.underline;
+		},
+
+		get removeLine() {
+			return internals.removeLine;
+		},
+
+		get removeText() {
+			return internals.removeText;
 		},
 
 		get defaultFontFamily() {
@@ -467,9 +497,14 @@ export const createFormattingAdapter = (
 			return () => onUnderlineUpdateListeners.delete(callback);
 		},
 
-		onAnyFieldUpdate(callback) {
-			onAnyFieldUpdateListeners.add(callback);
-			return () => onAnyFieldUpdateListeners.delete(callback);
+		onRemoveLineUpdate(callback) {
+			onRemoveLineUpdateListeners.add(callback);
+			return () => onRemoveLineUpdateListeners.delete(callback);
+		},
+
+		onRemoveTextUpdate(callback) {
+			onRemoveTextUpdateListeners.add(callback);
+			return () => onRemoveTextUpdateListeners.delete(callback);
 		},
 
 		setBackgroundColor(backgroundColor) {
@@ -571,6 +606,39 @@ export const createFormattingAdapter = (
 		toggleUnderline() {
 			for (const listener of onFormattingChangeListeners) {
 				listener({ underline: internals.underline.pressed });
+			}
+		},
+
+		removeLineFormat() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({
+					indentation: internals.defaultIndentation,
+					lineHeight: internals.defaultLineHeight,
+					lineSpacing: internals.defaultLineSpacing,
+					textAlign: internals.defaultTextAlign,
+				});
+			}
+		},
+
+		// Each toggle field is sent as "true" — not the value to set, but the
+		// currently-applied state the Editor is being told to turn off. Toggle
+		// fields in FormattingActionState always mean "this is on, flip it."
+		removeTextFormat() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({
+					backgroundColor: null,
+					bold: "true",
+					code: "true",
+					color: null,
+					fontFamily: null,
+					fontSize: null,
+					italic: "true",
+					letterSpacing: null,
+					strikethrough: "true",
+					subscript: "true",
+					superscript: "true",
+					underline: "true",
+				});
 			}
 		},
 	} satisfies FormattingPublicPortProps);

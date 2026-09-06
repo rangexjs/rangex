@@ -33,6 +33,8 @@ export const Formatting = (
 	);
 	const [textAlign, setTextAlign] = createSignal(publicPort.textAlign);
 	const [underline, setUnderline] = createSignal(publicPort.underline);
+	const [removeLine, setRemoveLine] = createSignal(publicPort.removeLine);
+	const [removeText, setRemoveText] = createSignal(publicPort.removeText);
 
 	const unsubscribeList = new Set<() => void>();
 
@@ -53,6 +55,8 @@ export const Formatting = (
 	unsubscribeList.add(publicPort.onStrikethroughUpdate(setStrikethrough));
 	unsubscribeList.add(publicPort.onTextAlignUpdate(setTextAlign));
 	unsubscribeList.add(publicPort.onUnderlineUpdate(setUnderline));
+	unsubscribeList.add(publicPort.onRemoveLineUpdate(setRemoveLine));
+	unsubscribeList.add(publicPort.onRemoveTextUpdate(setRemoveText));
 
 	const port: ReactiveFormattingPort = {
 		backgroundColor,
@@ -72,6 +76,8 @@ export const Formatting = (
 		strikethrough,
 		textAlign,
 		underline,
+		removeLine,
+		removeText,
 
 		defaultFontFamily: publicPort.defaultFontFamily,
 		defaultFontSize: publicPort.defaultFontSize,
@@ -98,6 +104,8 @@ export const Formatting = (
 		toggleStrikethrough: publicPort.toggleStrikethrough,
 		setTextAlign: publicPort.setTextAlign,
 		toggleUnderline: publicPort.toggleUnderline,
+		removeLineFormat: publicPort.removeLineFormat,
+		removeTextFormat: publicPort.removeTextFormat,
 	};
 
 	const dispose = () => {
