@@ -51,6 +51,7 @@ export type {
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
+export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 
 export type {
 	AdapterValue,

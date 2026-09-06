@@ -19,6 +19,7 @@ import type {
 	FormattingPublicPort,
 } from "../FormattingAdapter";
 import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
+import type { ReadOnlyAdapter, ReadOnlyPublicPort } from "../ReadOnlyAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
@@ -37,6 +38,7 @@ export type Adapter =
 	| EmptyMediaAdapter
 	| FormattingAdapter
 	| ImageAdapter
+	| ReadOnlyAdapter
 	| TemplateVariableAdapter;
 
 export interface AdapterPublicPorts {
@@ -45,5 +47,6 @@ export interface AdapterPublicPorts {
 	emptyMedia: EmptyMediaPublicPort;
 	formatting: FormattingPublicPort;
 	image: ImagePublicPort;
+	readOnly: ReadOnlyPublicPort;
 	templateVariable: TemplateVariablePublicPort;
 }
