@@ -44,6 +44,8 @@ export type {
 	FormattingRemoveLineState,
 	FormattingRemoveTextState,
 	FormattingStrikethroughState,
+	FormattingStructuredColor,
+	FormattingStructuredThemeColors,
 	FormattingSubscriptState,
 	FormattingSuperscriptState,
 	FormattingTextAlignState,
