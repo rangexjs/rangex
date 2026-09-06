@@ -1,22 +1,46 @@
 import { createEditor } from "@rangex/solid";
 import { render } from "@solidjs/web";
 import { App } from "../App";
+import { defaultToolbarButtonsLayout } from "./_Utilities";
 import type {
 	CreateRichTextEditorParams,
 	CreateRichTextEditorResult,
+	ExtensionComponents,
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
+import "../ComponentStyles/global.css";
 
-export const createRichTextEditor = (
-	params: CreateRichTextEditorParams,
-): CreateRichTextEditorResult => {
-	const { editor, host, floatingContainer } = createEditor(params);
+export const createRichTextEditor = ({
+	storedSnapshot,
+	extensions,
+	toolbarButtonsLayout = defaultToolbarButtonsLayout,
+}: CreateRichTextEditorParams): CreateRichTextEditorResult => {
+	const adapters = extensions.map(({ createAdapter }) => createAdapter());
+
+	const { editor, host, floatingContainer } = createEditor({
+		storedSnapshot,
+		adapters,
+	});
+
+	const components = extensions.reduce<ExtensionComponents>(
+		(prev, value) => {
+			Object.assign(prev.toolbarButtons, value.components.toolbarButtons);
+			return prev;
+		},
+		{ toolbarButtons: {} },
+	);
 
 	const editorHost = document.createElement("div");
 
 	const dispose = render(
 		() => (
-			<App editor={editor} host={host} floatingContainer={floatingContainer} />
+			<App
+				components={components}
+				toolbarButtonsLayout={toolbarButtonsLayout}
+				editor={editor}
+				host={host}
+				floatingContainer={floatingContainer}
+			/>
 		),
 		editorHost,
 	);

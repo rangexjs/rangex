@@ -1,11 +1,8 @@
 import {
-	AccordionItem,
-	type AdapterValue,
-	EmptyMedia,
+	createRichTextEditor,
+	type Extension,
 	Formatting,
-	Image,
-} from "@rangex/editor";
-import { createRichTextEditor } from "@rangex/rich-text-editor-next";
+} from "@rangex/rich-text-editor-next";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
 
 /**
@@ -65,17 +62,12 @@ export const createDevelopmentView = () => {
 		//
 	};
 
-	const adapters: AdapterValue[] = [
-		AccordionItem({}),
-		EmptyMedia({ uploadFile, createSlottedElement, disposeSlottedElement }),
-		Formatting({}),
-		Image({}),
-	];
+	const extensions: Extension[] = [Formatting({})];
 
 	const filledRichTextEditor = createRichTextEditor({
-		// @ts-expect-error
-		storedSnapshot,
-		adapters,
+		// biome-ignore lint/suspicious/noExplicitAny: Fix later
+		storedSnapshot: storedSnapshot as any,
+		extensions,
 	});
 
 	maxViewContainer.append(filledRichTextEditor.editorHost);

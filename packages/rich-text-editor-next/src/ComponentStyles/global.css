@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import ".//Button.css";
+@import "./Button.css";
 @import "./MenuButton.css";
 @import "./TextField.css";
 @import "./ToggleButton.css";

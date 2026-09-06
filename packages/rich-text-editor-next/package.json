@@ -22,6 +22,50 @@
 			}
 		}
 	},
+	"imports": {
+		"#utilities": {
+			"types": {
+				"development": "./src/_Utilities/index.ts",
+				"production": "./dist/_Utilities/index.d.ts"
+			},
+			"default": "./src/_Utilities/index"
+		},
+		"#color": {
+			"types": {
+				"development": "./src/Color/index.ts",
+				"production": "./dist/Color/index.d.ts"
+			},
+			"default": "./src/Color/index"
+		},
+		"#constants": {
+			"types": {
+				"development": "./src/Constants/index.ts",
+				"production": "./dist/Constants/index.d.ts"
+			},
+			"default": "./src/Constants/index"
+		},
+		"#context": {
+			"types": {
+				"development": "./src/Context/index.ts",
+				"production": "./dist/Context/index.d.ts"
+			},
+			"default": "./src/Context/index"
+		},
+		"#features": {
+			"types": {
+				"development": "./src/Features/index.ts",
+				"production": "./dist/Features/index.d.ts"
+			},
+			"default": "./src/Features/index"
+		},
+		"#ui": {
+			"types": {
+				"development": "./src/UI/index.ts",
+				"production": "./dist/UI/index.d.ts"
+			},
+			"default": "./src/UI/index"
+		}
+	},
 	"files": [
 		"dist",
 		"LICENSE.md",
