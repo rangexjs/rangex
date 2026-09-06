@@ -5,12 +5,14 @@ import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const { accordionItem, readOnly } = useEditorContext();
+	const { accordionItem, separator, readOnly } = useEditorContext();
 
 	const [checked, setChecked] = createSignal(false);
 
 	const disabled = createMemo(
-		() => !accordionItem?.canInsert() || !!readOnly?.checked(),
+		() =>
+			!(accordionItem?.canInsert() || separator?.canInsert()) ||
+			!!readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();
@@ -32,6 +34,19 @@ export const CustomComponentToolbarButton = () => {
 					disabled: !accordionItem.canInsert(),
 					onClick: () => {
 						accordionItem.wrap();
+					},
+				},
+			});
+		}
+
+		if (separator) {
+			items.push({
+				icon: "Separator",
+				text: "Separator",
+				button: {
+					disabled: !separator.canInsert(),
+					onClick: () => {
+						separator.insert();
 					},
 				},
 			});

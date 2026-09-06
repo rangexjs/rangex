@@ -20,6 +20,10 @@ import type {
 } from "../FormattingAdapter";
 import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
 import type { ReadOnlyAdapter, ReadOnlyPublicPort } from "../ReadOnlyAdapter";
+import type {
+	SeparatorAdapter,
+	SeparatorPublicPort,
+} from "../SeparatorAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
@@ -39,6 +43,7 @@ export type Adapter =
 	| FormattingAdapter
 	| ImageAdapter
 	| ReadOnlyAdapter
+	| SeparatorAdapter
 	| TemplateVariableAdapter;
 
 export interface AdapterPublicPorts {
@@ -48,5 +53,6 @@ export interface AdapterPublicPorts {
 	formatting: FormattingPublicPort;
 	image: ImagePublicPort;
 	readOnly: ReadOnlyPublicPort;
+	separator: SeparatorPublicPort;
 	templateVariable: TemplateVariablePublicPort;
 }

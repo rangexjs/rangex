@@ -54,6 +54,7 @@ export type {
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
+export type { SeparatorPublicPort } from "#adapters/Separator";
 
 export type {
 	AdapterFactoryValue,
@@ -67,4 +68,5 @@ export {
 	EmptyMedia,
 	Formatting,
 	Image,
+	Separator,
 } from "#rangex-editor";

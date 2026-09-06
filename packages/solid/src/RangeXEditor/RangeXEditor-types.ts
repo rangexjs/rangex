@@ -4,6 +4,7 @@ import type { ReactiveEmptyMediaPort } from "../ReactivePorts/EmptyMedia";
 import type { ReactiveFormattingPort } from "../ReactivePorts/Formatting";
 import type { ReactiveImagePort } from "../ReactivePorts/Image";
 import type { ReactiveReadOnlyPort } from "../ReactivePorts/ReadOnly";
+import type { ReactiveSeparatorPort } from "../ReactivePorts/Separator";
 
 export interface SolidEditor {
 	accordionItem?: ReactiveAccordionItemPort;
@@ -12,6 +13,7 @@ export interface SolidEditor {
 	formatting?: ReactiveFormattingPort;
 	image?: ReactiveImagePort;
 	readOnly?: ReactiveReadOnlyPort;
+	separator?: ReactiveSeparatorPort;
 
 	destroy(): void;
 }

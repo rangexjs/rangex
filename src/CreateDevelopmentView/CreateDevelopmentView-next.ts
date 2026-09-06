@@ -3,6 +3,7 @@ import {
 	createRichTextEditor,
 	type Extension,
 	Formatting,
+	Separator,
 } from "@rangex/rich-text-editor-next";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
 
@@ -63,7 +64,11 @@ export const createDevelopmentView = () => {
 		//
 	};
 
-	const extensions: Extension[] = [Formatting({}), AccordionItem({})];
+	const extensions: Extension[] = [
+		Formatting({}),
+		AccordionItem({}),
+		Separator({}),
+	];
 
 	const filledRichTextEditor = createRichTextEditor({
 		// biome-ignore lint/suspicious/noExplicitAny: Fix later

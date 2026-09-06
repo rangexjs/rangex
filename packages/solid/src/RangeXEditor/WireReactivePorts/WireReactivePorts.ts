@@ -4,6 +4,7 @@ import { EmptyMedia } from "../../ReactivePorts/EmptyMedia";
 import { Formatting } from "../../ReactivePorts/Formatting";
 import { Image } from "../../ReactivePorts/Image";
 import { ReadOnly } from "../../ReactivePorts/ReadOnly";
+import { Separator } from "../../ReactivePorts/Separator";
 import type { WireReactivePortsParams } from "./WireReactivePorts-types";
 
 export const wireReactivePorts = ({
@@ -50,6 +51,13 @@ export const wireReactivePorts = ({
 		const { port, dispose } = ReadOnly(editor.readOnly);
 
 		solidEditor.readOnly = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.separator) {
+		const { port, dispose } = Separator(editor.separator);
+
+		solidEditor.separator = port;
 		disposeList.add(dispose);
 	}
 };
