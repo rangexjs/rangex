@@ -1,10 +1,11 @@
 import type {
 	FontFamilyOption,
-	FormattingActionState,
 	FormattingBackgroundColorState,
+	FormattingBackgroundColorValue,
 	FormattingBoldState,
 	FormattingCodeState,
 	FormattingColorState,
+	FormattingColorValue,
 	FormattingFontFamilyState,
 	FormattingFontFamilyValue,
 	FormattingFontSizeState,
@@ -13,9 +14,11 @@ import type {
 	FormattingIndentationValue,
 	FormattingItalicState,
 	FormattingLetterSpacingState,
+	FormattingLetterSpacingValue,
 	FormattingLineHeightState,
 	FormattingLineHeightValue,
 	FormattingLineLocalNameState,
+	FormattingLineLocalNameValue,
 	FormattingLineSpacingState,
 	FormattingLineSpacingValue,
 	FormattingStrikethroughState,
@@ -54,7 +57,25 @@ export interface ReactiveFormattingPort {
 	readonly defaultTextAlign: FormattingTextAlignValue;
 	readonly fontFamilyOptions: FontFamilyOption[];
 
-	changeFormat(params: FormattingActionState): void;
+	setBackgroundColor(
+		backgroundColor: FormattingBackgroundColorValue | null,
+	): void;
+	toggleBold(): void;
+	toggleCode(): void;
+	setColor(color: FormattingColorValue | null): void;
+	setFontFamily(fontFamily: FormattingFontFamilyValue | null): void;
+	setFontSize(fontSize: FormattingFontSizeValue | null): void;
+	setIndentation(indentation: FormattingIndentationValue): void;
+	toggleItalic(): void;
+	setLetterSpacing(letterSpacing: FormattingLetterSpacingValue | null): void;
+	setLineHeight(lineHeight: FormattingLineHeightValue): void;
+	setLineLocalName(lineLocalName: FormattingLineLocalNameValue): void;
+	setLineSpacing(lineSpacing: FormattingLineSpacingValue): void;
+	toggleSubscript(): void;
+	toggleSuperscript(): void;
+	toggleStrikethrough(): void;
+	setTextAlign(textAlign: FormattingTextAlignValue): void;
+	toggleUnderline(): void;
 }
 
 export interface ReactiveFormattingResult {

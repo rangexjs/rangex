@@ -81,7 +81,23 @@ export const Formatting = (
 		defaultTextAlign: publicPort.defaultTextAlign,
 		fontFamilyOptions: publicPort.fontFamilyOptions,
 
-		changeFormat: publicPort.changeFormat,
+		setBackgroundColor: publicPort.setBackgroundColor,
+		toggleBold: publicPort.toggleBold,
+		toggleCode: publicPort.toggleCode,
+		setColor: publicPort.setColor,
+		setFontFamily: publicPort.setFontFamily,
+		setFontSize: publicPort.setFontSize,
+		setIndentation: publicPort.setIndentation,
+		toggleItalic: publicPort.toggleItalic,
+		setLetterSpacing: publicPort.setLetterSpacing,
+		setLineHeight: publicPort.setLineHeight,
+		setLineLocalName: publicPort.setLineLocalName,
+		setLineSpacing: publicPort.setLineSpacing,
+		toggleSubscript: publicPort.toggleSubscript,
+		toggleSuperscript: publicPort.toggleSuperscript,
+		toggleStrikethrough: publicPort.toggleStrikethrough,
+		setTextAlign: publicPort.setTextAlign,
+		toggleUnderline: publicPort.toggleUnderline,
 	};
 
 	const dispose = () => {

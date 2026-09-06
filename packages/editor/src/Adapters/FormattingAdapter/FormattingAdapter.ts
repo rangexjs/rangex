@@ -472,9 +472,105 @@ export const createFormattingAdapter = (
 			return () => onAnyFieldUpdateListeners.delete(callback);
 		},
 
-		changeFormat(params) {
+		setBackgroundColor(backgroundColor) {
 			for (const listener of onFormattingChangeListeners) {
-				listener(params);
+				listener({ backgroundColor });
+			}
+		},
+
+		toggleBold() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ bold: internals.bold.pressed });
+			}
+		},
+
+		toggleCode() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ code: internals.code.pressed });
+			}
+		},
+
+		setColor(color) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ color });
+			}
+		},
+
+		setFontFamily(fontFamily) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ fontFamily });
+			}
+		},
+
+		setFontSize(fontSize) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ fontSize });
+			}
+		},
+
+		setIndentation(indentation) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ indentation });
+			}
+		},
+
+		toggleItalic() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ italic: internals.italic.pressed });
+			}
+		},
+
+		setLetterSpacing(letterSpacing) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ letterSpacing });
+			}
+		},
+
+		setLineHeight(lineHeight) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ lineHeight });
+			}
+		},
+
+		setLineLocalName(lineLocalName) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ lineLocalName });
+			}
+		},
+
+		setLineSpacing(lineSpacing) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ lineSpacing });
+			}
+		},
+
+		toggleSubscript() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ subscript: internals.subscript.pressed });
+			}
+		},
+
+		toggleSuperscript() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ superscript: internals.superscript.pressed });
+			}
+		},
+
+		toggleStrikethrough() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ strikethrough: internals.strikethrough.pressed });
+			}
+		},
+
+		setTextAlign(textAlign) {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ textAlign });
+			}
+		},
+
+		toggleUnderline() {
+			for (const listener of onFormattingChangeListeners) {
+				listener({ underline: internals.underline.pressed });
 			}
 		},
 	} satisfies FormattingPublicPortProps);
