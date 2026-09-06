@@ -10,12 +10,6 @@ export const BoldToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.bold().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.bold().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const BoldToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.bold().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.bold().pressed}
 			>
 				<Icon name="Bold" class="size-4" />
 			</ToolbarButton>

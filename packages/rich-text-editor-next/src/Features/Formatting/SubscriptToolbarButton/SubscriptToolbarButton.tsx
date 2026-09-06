@@ -10,12 +10,6 @@ export const SubscriptToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.subscript().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.subscript().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const SubscriptToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.subscript().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.subscript().pressed}
 			>
 				<Icon name="Subscript" class="size-4" />
 			</ToolbarButton>

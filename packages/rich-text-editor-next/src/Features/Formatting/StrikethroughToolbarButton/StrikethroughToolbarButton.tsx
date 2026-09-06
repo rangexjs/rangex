@@ -10,12 +10,6 @@ export const StrikethroughToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.strikethrough().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.strikethrough().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const StrikethroughToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.strikethrough().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.strikethrough().pressed}
 			>
 				<Icon name="Strikethrough" class="size-4" />
 			</ToolbarButton>

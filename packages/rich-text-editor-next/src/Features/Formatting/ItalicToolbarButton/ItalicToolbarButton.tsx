@@ -10,12 +10,6 @@ export const ItalicToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.italic().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.italic().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const ItalicToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.italic().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.italic().pressed}
 			>
 				<Icon name="Italic" class="size-4" />
 			</ToolbarButton>

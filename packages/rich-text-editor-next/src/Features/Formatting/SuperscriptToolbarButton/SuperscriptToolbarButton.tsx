@@ -10,12 +10,6 @@ export const SuperscriptToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.superscript().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.superscript().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const SuperscriptToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.superscript().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.superscript().pressed}
 			>
 				<Icon name="Superscript" class="size-4" />
 			</ToolbarButton>

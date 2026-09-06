@@ -10,12 +10,6 @@ export const CodeToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.code().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.code().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const CodeToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.code().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.code().pressed}
 			>
 				<Icon name="Code" class="size-4" />
 			</ToolbarButton>

@@ -9,6 +9,17 @@ export interface FontFamilyOption {
 
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 
+export interface FormattingToggleState {
+	disabled: boolean;
+	pressed: FormattingTogglePressed;
+}
+
+export interface FormattingToggleButton extends FormattingToggleState {
+	checked: boolean;
+}
+
+export interface CreateToggleButtonParams extends FormattingToggleState {}
+
 export interface FormattingSolidColor {
 	type: "solid";
 	value: string;
@@ -67,15 +78,9 @@ export interface FormattingBackgroundColorState {
 	values: Set<FormattingBackgroundColorValue>;
 }
 
-export interface FormattingBoldState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingBoldState extends FormattingToggleButton {}
 
-export interface FormattingCodeState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingCodeState extends FormattingToggleButton {}
 
 export interface FormattingColorState {
 	disabled: boolean;
@@ -97,10 +102,7 @@ export interface FormattingIndentationState {
 	values: Set<FormattingIndentationValue>;
 }
 
-export interface FormattingItalicState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingItalicState extends FormattingToggleButton {}
 
 export interface FormattingLetterSpacingState {
 	disabled: boolean;
@@ -122,30 +124,18 @@ export interface FormattingLineSpacingState {
 	values: Set<FormattingLineSpacingValue>;
 }
 
-export interface FormattingSubscriptState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingSubscriptState extends FormattingToggleButton {}
 
-export interface FormattingSuperscriptState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingSuperscriptState extends FormattingToggleButton {}
 
-export interface FormattingStrikethroughState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingStrikethroughState extends FormattingToggleButton {}
 
 export interface FormattingTextAlignState {
 	disabled: boolean;
 	values: Set<FormattingTextAlignValue>;
 }
 
-export interface FormattingUnderlineState {
-	disabled: boolean;
-	pressed: FormattingTogglePressed;
-}
+export interface FormattingUnderlineState extends FormattingToggleButton {}
 
 export interface FormattingRemoveLineState {
 	disabled: boolean;
@@ -157,22 +147,22 @@ export interface FormattingRemoveTextState {
 
 export interface FormattingState {
 	backgroundColor?: FormattingBackgroundColorState;
-	bold?: FormattingBoldState;
-	code?: FormattingCodeState;
+	bold?: FormattingToggleState;
+	code?: FormattingToggleState;
 	color?: FormattingColorState;
 	fontFamily?: FormattingFontFamilyState;
 	fontSize?: FormattingFontSizeState;
 	indentation?: FormattingIndentationState;
-	italic?: FormattingItalicState;
+	italic?: FormattingToggleState;
 	letterSpacing?: FormattingLetterSpacingState;
 	lineHeight?: FormattingLineHeightState;
 	lineLocalName?: FormattingLineLocalNameState;
 	lineSpacing?: FormattingLineSpacingState;
-	subscript?: FormattingSubscriptState;
-	superscript?: FormattingSuperscriptState;
-	strikethrough?: FormattingStrikethroughState;
+	subscript?: FormattingToggleState;
+	superscript?: FormattingToggleState;
+	strikethrough?: FormattingToggleState;
 	textAlign?: FormattingTextAlignState;
-	underline?: FormattingUnderlineState;
+	underline?: FormattingToggleState;
 }
 
 export interface UpdateStateParams extends FormattingState {}

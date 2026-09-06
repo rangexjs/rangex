@@ -3,11 +3,13 @@ import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
 	CreateFormattingAdapterParams,
 	CreateFormattingAdapterResult,
+	CreateToggleButtonParams,
 	FormattingConfigPort,
 	FormattingConfigPortProps,
 	FormattingInternals,
 	FormattingPublicPort,
 	FormattingPublicPortProps,
+	FormattingToggleButton,
 	OnBackgroundColorUpdateCallbackFn,
 	OnBoldUpdateCallbackFn,
 	OnCodeUpdateCallbackFn,
@@ -52,24 +54,35 @@ export const createFormattingAdapter = (
 		_options,
 	] = params;
 
+	const createToggleButton = ({
+		disabled,
+		pressed,
+	}: CreateToggleButtonParams): FormattingToggleButton => ({
+		disabled,
+		pressed,
+		get checked() {
+			return this.pressed === "true" || this.pressed === "mixed";
+		},
+	});
+
 	const internals: FormattingInternals = {
 		backgroundColor: { disabled: true, values: new Set() },
-		bold: { disabled: true, pressed: "false" },
-		code: { disabled: true, pressed: "false" },
+		bold: createToggleButton({ disabled: true, pressed: "false" }),
+		code: createToggleButton({ disabled: true, pressed: "false" }),
 		color: { disabled: true, values: new Set() },
 		fontFamily: { disabled: true, values: new Set() },
 		fontSize: { disabled: true, values: new Set() },
 		indentation: { disabled: true, values: new Set() },
-		italic: { disabled: true, pressed: "false" },
+		italic: createToggleButton({ disabled: true, pressed: "false" }),
 		letterSpacing: { disabled: true, values: new Set() },
 		lineHeight: { disabled: true, values: new Set() },
 		lineLocalName: { disabled: true, values: new Set() },
 		lineSpacing: { disabled: true, values: new Set() },
-		subscript: { disabled: true, pressed: "false" },
-		superscript: { disabled: true, pressed: "false" },
-		strikethrough: { disabled: true, pressed: "false" },
+		subscript: createToggleButton({ disabled: true, pressed: "false" }),
+		superscript: createToggleButton({ disabled: true, pressed: "false" }),
+		strikethrough: createToggleButton({ disabled: true, pressed: "false" }),
 		textAlign: { disabled: true, values: new Set() },
-		underline: { disabled: true, pressed: "false" },
+		underline: createToggleButton({ disabled: true, pressed: "false" }),
 		removeLine: { disabled: true },
 		removeText: { disabled: true },
 		defaultFontFamily,
@@ -148,7 +161,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (bold !== undefined) {
-			internals.bold = bold;
+			internals.bold = createToggleButton(bold);
 
 			for (const listener of onBoldUpdateListeners) {
 				listener(internals.bold);
@@ -156,7 +169,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (code !== undefined) {
-			internals.code = code;
+			internals.code = createToggleButton(code);
 
 			for (const listener of onCodeUpdateListeners) {
 				listener(internals.code);
@@ -196,7 +209,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (italic !== undefined) {
-			internals.italic = italic;
+			internals.italic = createToggleButton(italic);
 
 			for (const listener of onItalicUpdateListeners) {
 				listener(internals.italic);
@@ -236,7 +249,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (subscript !== undefined) {
-			internals.subscript = subscript;
+			internals.subscript = createToggleButton(subscript);
 
 			for (const listener of onSubscriptUpdateListeners) {
 				listener(internals.subscript);
@@ -244,7 +257,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (superscript !== undefined) {
-			internals.superscript = superscript;
+			internals.superscript = createToggleButton(superscript);
 
 			for (const listener of onSuperscriptUpdateListeners) {
 				listener(internals.superscript);
@@ -252,7 +265,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (strikethrough !== undefined) {
-			internals.strikethrough = strikethrough;
+			internals.strikethrough = createToggleButton(strikethrough);
 
 			for (const listener of onStrikethroughUpdateListeners) {
 				listener(internals.strikethrough);
@@ -268,7 +281,7 @@ export const createFormattingAdapter = (
 		}
 
 		if (underline !== undefined) {
-			internals.underline = underline;
+			internals.underline = createToggleButton(underline);
 
 			for (const listener of onUnderlineUpdateListeners) {
 				listener(internals.underline);

@@ -10,12 +10,6 @@ export const UnderlineToolbarButton = () => {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const pressed = createMemo(() => formatting.underline().pressed);
-
-	const checked = createMemo(
-		() => pressed() === "true" || pressed() === "mixed",
-	);
-
 	const disabled = createMemo(
 		() => formatting.underline().disabled || !!readOnly?.checked(),
 	);
@@ -27,10 +21,10 @@ export const UnderlineToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={checked()}
+				checked={formatting.underline().checked}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={pressed()}
+				aria-pressed={formatting.underline().pressed}
 			>
 				<Icon name="Underline" class="size-4" />
 			</ToolbarButton>
