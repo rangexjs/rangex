@@ -68,5 +68,5 @@ export const createAccordionItem = ({
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});
 
-	return { blockComponentLine, summaryNestedEditable };
+	return { blockComponentLine, summaryNestedEditable, bodyNestedEditable };
 };

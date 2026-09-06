@@ -17,8 +17,10 @@ import type {
 } from "./AccordionItemAdapter-types";
 
 export const createAccordionItemAdapter = (
-	..._params: CreateAccordionItemAdapterParams
+	...params: CreateAccordionItemAdapterParams
 ): CreateAccordionItemAdapterResult => {
+	const [_settings, _options] = params;
+
 	const internals: AccordionItemInternals = {
 		canInsert: false,
 		canWrap: false,

@@ -1,6 +1,6 @@
 import { createBlockComponentPlacement } from "../../BlockComponentPlacement";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
-import { handleAccordionItemInsertion } from "./HandleAccordionItemInsertion";
+import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
 import { handleAccordionItemSummaryToggle } from "./HandleAccordionItemSummaryToggle";
 import { handleAccordionItemToolbarButtonState } from "./HandleAccordionItemToolbarButtonState";
 
@@ -16,7 +16,7 @@ export const configureAccordionItem = ({
 		blockComponentPlacement,
 	});
 
-	const insertionCleanup = handleAccordionItemInsertion({
+	const insertionCleanup = handleAccordionItemPlacement({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,

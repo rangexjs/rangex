@@ -7,4 +7,5 @@ export interface CreateAccordionItemParams {
 export interface CreateAccordionItemResult {
 	blockComponentLine: BlockComponentLine;
 	summaryNestedEditable: NestedEditable;
+	bodyNestedEditable: NestedEditable;
 }

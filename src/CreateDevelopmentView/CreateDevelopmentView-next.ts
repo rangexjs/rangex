@@ -1,4 +1,5 @@
 import {
+	AccordionItem,
 	createRichTextEditor,
 	type Extension,
 	Formatting,
@@ -62,7 +63,7 @@ export const createDevelopmentView = () => {
 		//
 	};
 
-	const extensions: Extension[] = [Formatting({})];
+	const extensions: Extension[] = [Formatting({}), AccordionItem({})];
 
 	const filledRichTextEditor = createRichTextEditor({
 		// biome-ignore lint/suspicious/noExplicitAny: Fix later
