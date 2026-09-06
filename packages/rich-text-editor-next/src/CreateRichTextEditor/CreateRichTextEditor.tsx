@@ -1,6 +1,6 @@
 import { createEditor } from "@rangex/solid";
 import { render } from "@solidjs/web";
-import { App } from "../Components/App";
+import { App } from "../App";
 import type {
 	CreateRichTextEditorParams,
 	CreateRichTextEditorResult,
@@ -14,6 +14,13 @@ export const createRichTextEditor = (
 
 	const editorHost = document.createElement("div");
 
+	const dispose = render(
+		() => (
+			<App editor={editor} host={host} floatingContainer={floatingContainer} />
+		),
+		editorHost,
+	);
+
 	const richTextEditor: RichTextEditor = {
 		get editorHost() {
 			return editorHost;
@@ -21,15 +28,9 @@ export const createRichTextEditor = (
 
 		destroy() {
 			editor.destroy();
+			dispose();
 		},
 	};
-
-	render(
-		() => (
-			<App editor={editor} host={host} floatingContainer={floatingContainer} />
-		),
-		editorHost,
-	);
 
 	return richTextEditor;
 };
