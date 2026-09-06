@@ -1,6 +1,6 @@
 import type { EditorAPI, StoredSnapshot } from "rich-text-area";
 import type { AdapterOptions, AdapterPublicPorts } from "#adapters";
-import type { AdapterValue } from "./AdapterFactories";
+import type { AdapterFactoryValue } from "./AdapterFactories";
 
 type OptionalPublicPorts = {
 	[Key in keyof AdapterPublicPorts]+?: AdapterPublicPorts[Key];
@@ -22,13 +22,13 @@ export type RegisterAdapterFn = (
 	context: AdapterContext,
 ) => RegisterAdapterResult;
 
-export type AdapterFactory<Settings extends object> = (
+export type AdapterFactoryFn<Settings extends object> = (
 	settings: Settings,
 ) => RegisterAdapterFn;
 
 export interface CreateEditorParams {
 	storedSnapshot?: StoredSnapshot;
-	adapters: AdapterValue[];
+	adapters: AdapterFactoryValue[];
 }
 
 export interface CreateEditorResult {

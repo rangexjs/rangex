@@ -56,7 +56,7 @@ export type { ImagePublicPort } from "#adapters/Image";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 
 export type {
-	AdapterValue,
+	AdapterFactoryValue,
 	CreateEditorParams,
 	CreateEditorResult,
 	RangeXEditor,

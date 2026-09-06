@@ -3,9 +3,9 @@ import {
 	type FormattingSettings,
 } from "#adapters/Formatting";
 import { configureFormatting } from "#engine-links";
-import type { AdapterFactory } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
-export const Formatting: AdapterFactory<FormattingSettings> = (settings) => {
+export const Formatting: AdapterFactoryFn<FormattingSettings> = (settings) => {
 	return (options, { editorAPI, editor }) => {
 		const adapter = createFormattingAdapter(settings, options);
 

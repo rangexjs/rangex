@@ -3,9 +3,9 @@ import {
 	createAccordionItemAdapter,
 } from "#adapters/AccordionItem";
 import { configureAccordionItem } from "#engine-links";
-import type { AdapterFactory } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
-export const AccordionItem: AdapterFactory<AccordionItemSettings> = (
+export const AccordionItem: AdapterFactoryFn<AccordionItemSettings> = (
 	settings,
 ) => {
 	return (options, { editorAPI, editor }) => {

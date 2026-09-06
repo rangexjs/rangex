@@ -3,9 +3,9 @@ import {
 	type EmptyMediaSettings,
 } from "#adapters/EmptyMedia";
 import { configureEmptyMedia } from "#engine-links";
-import type { AdapterFactory } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
-export const EmptyMedia: AdapterFactory<EmptyMediaSettings> = (settings) => {
+export const EmptyMedia: AdapterFactoryFn<EmptyMediaSettings> = (settings) => {
 	return (options, { editorAPI, editor }) => {
 		const adapter = createEmptyMediaAdapter(settings, options);
 
