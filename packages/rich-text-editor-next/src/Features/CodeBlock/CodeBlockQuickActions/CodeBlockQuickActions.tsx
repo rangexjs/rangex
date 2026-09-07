@@ -1,5 +1,5 @@
 import { Portal } from "@solidjs/web";
-import { createEffect, createSignal, createUniqueId } from "solid-js";
+import { createSignal, createUniqueId, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../_Utilities";
@@ -33,18 +33,23 @@ export const CodeBlockQuickActions = () => {
 		}
 
 		if (optionsPopover.matches(":popover-open")) {
+			// Force a synchronous reflow before hiding — otherwise the popover can
+			// briefly animate from a stale, not-yet-committed style.
+			optionsPopover.offsetHeight;
 			optionsPopover.hidePopover();
 		}
 	};
 
-	createEffect(
-		() => codeBlock.isOpen(),
-		(isOpen) => {
-			if (!isOpen) {
-				closeNestedPopovers();
-			}
-		},
-	);
+	// We can't rely on the codeBlock.isOpen() as we have to detect the change before repaint
+	const unsubscribeIsOpen = codeBlock.raw.onIsOpenUpdate((isOpen) => {
+		if (!isOpen) {
+			closeNestedPopovers();
+		}
+	});
+
+	onCleanup(() => {
+		unsubscribeIsOpen();
+	});
 
 	const onCopyClick = (() => {
 		let timeoutId = NaN;

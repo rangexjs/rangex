@@ -22,6 +22,8 @@ export const handleCodeBlockOverlayAppearance = ({
 			return blockComponent.$$componentName === componentsName.codeBlock;
 		},
 		onShow({ blockComponent }) {
+			anchorController.hide();
+
 			const { lang, theme } = ensureNodeCodeBlockStorage({
 				blockComponent,
 				fallbacks: codeBlockStorageFallbacks,
