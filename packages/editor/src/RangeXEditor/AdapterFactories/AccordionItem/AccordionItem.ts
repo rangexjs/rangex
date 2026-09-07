@@ -2,7 +2,7 @@ import {
 	type AccordionItemSettings,
 	createAccordionItemAdapter,
 } from "#adapters/AccordionItem";
-import { configureAccordionItem } from "#engine-links";
+import { configureAccordionItem } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const AccordionItem: AdapterFactoryFn<AccordionItemSettings> = (

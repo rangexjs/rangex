@@ -58,6 +58,13 @@
 			},
 			"default": "./src/EngineLinks/index"
 		},
+		"#features": {
+			"types": {
+				"development": "./src/Features/index.ts",
+				"production": "./dist/Features/index.d.ts"
+			},
+			"default": "./src/Features/index"
+		},
 		"#libs": {
 			"types": {
 				"development": "./src/Libs/index.ts",

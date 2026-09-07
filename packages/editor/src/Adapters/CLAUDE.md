@@ -5,7 +5,7 @@
 An Adapter owns one feature's real state and exposes it through two narrowed,
 non-overlapping views:
 
-- **`configPort`** — consumed only by `EngineLinks/Features/ConfigureXxx/` wiring
+- **`configPort`** — consumed only by `Features/ConfigureXxx/` wiring
   (internal to this package, never exposed outside it). Registers callbacks for
   UI→Engine intent (`onInsert`, `onLanguage`, ...) and receives Engine→state pushes via
   `updateState(params)`.
@@ -244,7 +244,7 @@ method 1:1 with `Listeners` appended (`onCanInsertUpdate` → `onCanInsertUpdate
 3. Nothing to touch in `package.json` — `#adapters/*` is a single wildcard
    (`"./src/Adapters/*Adapter/index.ts"`) that already resolves any new `XxxAdapter`
    folder automatically.
-4. If it needs `EngineLinks` wiring (`EngineLinks/Features/ConfigureXxx/`) and an
+4. If it needs `Features` wiring (`Features/ConfigureXxx/`) and an
    `AdapterFactory` (`RangeXEditor/AdapterFactories/Xxx/`), build those too — an Adapter
    alone isn't reachable from `createEditor`'s `adapters` array without a matching
    `AdapterFactory`. See the Progress section below for what's built and what isn't.
@@ -279,17 +279,18 @@ file and that package disagree, this file wins for anything under `Adapters/`.
 
 ### Status
 
-Converted to the current factory pattern (all six, no class-based holdouts left):
-`AccordionItem`, `CodeBlock`, `EmptyMedia`, `Formatting`, `Image`, `TemplateVariable`.
+Converted to the current factory pattern (all seven, no class-based holdouts left):
+`AccordionItem`, `CodeBlock`, `EmptyMedia`, `Formatting`, `Image`, `Separator`,
+`TemplateVariable`.
 
-Of those six, only four are actually reachable end-to-end from `createEditor` — they
-have both `EngineLinks/Features/ConfigureXxx/` wiring and an
-`RangeXEditor/AdapterFactories/Xxx/`: `AccordionItem`, `EmptyMedia`, `Formatting`,
-`Image`. `CodeBlock` and `TemplateVariable` are fully converted Adapters with no way to
-actually register them yet — both pieces are still unbuilt for those two.
+Of those seven, five are actually reachable end-to-end from `createEditor` — they
+have both `Features/ConfigureXxx/` wiring and an `RangeXEditor/AdapterFactories/Xxx/`:
+`AccordionItem`, `EmptyMedia`, `Formatting`, `Image`, `Separator`. `CodeBlock` and
+`TemplateVariable` are fully converted Adapters with no way to actually register them
+yet — both pieces are still unbuilt for those two.
 
 Not started at all — still only exist in `packages/rich-text-editor/src/Adapters/` as
 classes, each needs the full conversion above, not a port of the old shape:
 `Audio`, `BlockQuote`, `CommandMenu`, `Embed`, `Emoji`, `FindReplace`, `LineHandler`,
-`Link`, `List`, `Markdown`, `Mention`, `ReadOnly`, `Separator`, `Shortcuts`, `Symbols`,
+`Link`, `List`, `Markdown`, `Mention`, `ReadOnly`, `Shortcuts`, `Symbols`,
 `Table`, `TodoList`, `UndoRedo`, `Video`.
