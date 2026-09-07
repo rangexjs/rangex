@@ -1,6 +1,6 @@
 import { CodeBlock as CodeBlockFactory } from "@rangex/editor";
 import { toolbarButtonsName } from "#constants";
-import { CodeBlockToolbarButton } from "#features";
+import { CodeBlockQuickActions, CodeBlockToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";
 
 export const CodeBlock = (
@@ -12,6 +12,7 @@ export const CodeBlock = (
 			toolbarButtons: {
 				[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
 			},
+			floatingComponents: [CodeBlockQuickActions],
 		},
 	};
 };

@@ -48,6 +48,7 @@ export const Formatting = (
 				[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
 				[toolbarButtonsName.underline]: UnderlineToolbarButton,
 			},
+			floatingComponents: [],
 		},
 	};
 };

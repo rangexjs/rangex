@@ -1,5 +1,6 @@
 import type { SolidEditor } from "@rangex/solid";
-import type { Component } from "solid-js";
+import { Dynamic } from "@solidjs/web";
+import { type Component, For } from "solid-js";
 import type { ToolbarButtonsLayout } from "#constants";
 import { EditorContext } from "#context";
 import type { ExtensionComponents } from "#extensions";
@@ -15,14 +16,17 @@ export interface AppProps {
 
 export const App: Component<AppProps> = (props) => {
 	return (
-		<div>
-			<EditorContext value={props.editor}>
+		<EditorContext value={props.editor}>
+			<div>
 				<EditorToolbar
 					toolbarButtonsLayout={props.toolbarButtonsLayout}
 					toolbarButtons={props.components.toolbarButtons}
 				/>
-			</EditorContext>
-			<div>{[props.host, props.floatingContainer]}</div>
-		</div>
+				<div>{[props.host, props.floatingContainer]}</div>
+				<For each={props.components.floatingComponents}>
+					{(FloatingComponent) => <Dynamic component={FloatingComponent} />}
+				</For>
+			</div>
+		</EditorContext>
 	);
 };

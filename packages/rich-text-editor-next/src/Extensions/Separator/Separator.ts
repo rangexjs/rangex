@@ -12,6 +12,7 @@ export const Separator = (
 			toolbarButtons: {
 				[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			},
+			floatingComponents: [],
 		},
 	};
 };

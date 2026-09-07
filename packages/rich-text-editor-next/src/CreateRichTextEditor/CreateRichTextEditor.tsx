@@ -25,9 +25,11 @@ export const createRichTextEditor = ({
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {
 			Object.assign(prev.toolbarButtons, value.components.toolbarButtons);
+			prev.floatingComponents.push(...value.components.floatingComponents);
+
 			return prev;
 		},
-		{ toolbarButtons: {} },
+		{ toolbarButtons: {}, floatingComponents: [] },
 	);
 
 	const editorHost = document.createElement("div");

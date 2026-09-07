@@ -12,6 +12,7 @@ export const AccordionItem = (
 			toolbarButtons: {
 				[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
 			},
+			floatingComponents: [],
 		},
 	};
 };

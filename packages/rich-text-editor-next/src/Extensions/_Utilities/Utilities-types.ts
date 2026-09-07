@@ -6,8 +6,11 @@ export type ExtensionToolbarButtons = Partial<
 	Record<ToolbarButtonValue, Component>
 >;
 
+export type ExtensionFloatingComponents = Component[];
+
 export interface ExtensionComponents {
 	toolbarButtons: ExtensionToolbarButtons;
+	floatingComponents: ExtensionFloatingComponents;
 }
 
 export interface Extension {
