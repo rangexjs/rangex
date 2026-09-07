@@ -21,8 +21,18 @@ export interface CodeBlockState {
 
 export interface UpdateStateParams extends CodeBlockState {}
 
-export type OnInsertCallbackFn = () => void;
-export type OnWrapCallbackFn = () => void;
+export interface PlacementOption {
+	language: CodeBlockLanguage;
+}
+
+export interface OnInsertCallbackParams extends PlacementOption {}
+
+export type OnInsertCallbackFn = (params: OnInsertCallbackParams) => void;
+
+export interface OnWrapCallbackParams extends PlacementOption {}
+
+export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
+
 export type OnCopyCallbackFn = () => void;
 export type OnLanguageCallbackFn = (language: CodeBlockLanguage) => void;
 export type OnLightThemeCallbackFn = (theme: CodeBlockTheme) => void;
@@ -34,8 +44,8 @@ export interface CodeBlockConfigPortProps {
 
 	updateState(params: UpdateStateParams): void;
 
-	onInsert(callback: OnInsertCallbackFn): void;
-	onWrap(callback: OnWrapCallbackFn): void;
+	onInsert(callback: OnInsertCallbackFn): () => void;
+	onWrap(callback: OnWrapCallbackFn): () => void;
 	onLanguage(callback: OnLanguageCallbackFn): () => void;
 	onLightTheme(callback: OnLightThemeCallbackFn): () => void;
 	onDarkTheme(callback: OnDarkThemeCallbackFn): () => void;
@@ -54,6 +64,10 @@ export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
 export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
+
+export interface InsertParams extends PlacementOption {}
+
+export interface WrapParams extends PlacementOption {}
 
 export interface CodeBlockPublicPortProps {
 	readonly floatingEl: HTMLDivElement;
@@ -76,8 +90,8 @@ export interface CodeBlockPublicPortProps {
 	onDarkThemeUpdate(callback: OnDarkThemeUpdateCallbackFn): () => void;
 	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
 
-	insert(): void;
-	wrap(): void;
+	insert(params: InsertParams): void;
+	wrap(params: WrapParams): void;
 	changeLanguage(language: CodeBlockLanguage): void;
 	changeLightTheme(theme: CodeBlockTheme): void;
 	changeDarkTheme(theme: CodeBlockTheme): void;

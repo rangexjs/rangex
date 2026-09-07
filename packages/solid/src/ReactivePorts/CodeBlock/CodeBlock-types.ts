@@ -1,6 +1,14 @@
 import type { CodeBlockLanguage, CodeBlockTheme } from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
+export interface PlacementOption {
+	language: CodeBlockLanguage;
+}
+
+export interface InsertParams extends PlacementOption {}
+
+export interface WrapParams extends PlacementOption {}
+
 export interface ReactiveCodeBlockPort {
 	readonly floatingEl: HTMLDivElement;
 	readonly languages: CodeBlockLanguage[];
@@ -14,8 +22,8 @@ export interface ReactiveCodeBlockPort {
 	darkTheme: Accessor<CodeBlockTheme>;
 	isOpen: Accessor<boolean>;
 
-	insert(): void;
-	wrap(): void;
+	insert(params: InsertParams): void;
+	wrap(params: WrapParams): void;
 	changeLanguage(language: CodeBlockLanguage): void;
 	changeLightTheme(theme: CodeBlockTheme): void;
 	changeDarkTheme(theme: CodeBlockTheme): void;

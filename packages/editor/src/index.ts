@@ -64,6 +64,7 @@ export type {
 } from "#rangex-editor";
 export {
 	AccordionItem,
+	CodeBlock,
 	createEditor,
 	EmptyMedia,
 	Formatting,

@@ -31,7 +31,7 @@ export type OnOverlayCloseFn = (params: OnOverlayShowParams) => void;
 type CurrentBlock = BlockComponent | null;
 
 export interface OverlayRegistration {
-	popover: HTMLDivElement;
+	popover: HTMLElement;
 	shouldShow: OnOverlayShouldShowFn;
 	onShow: OnOverlayShowFn;
 	onClose: OnOverlayCloseFn;
@@ -43,7 +43,7 @@ export interface OverlayRegistration {
 }
 
 export interface RegisterOverlayParams {
-	popover: HTMLDivElement;
+	popover: HTMLElement;
 	extraElements?: HTMLElement[];
 	shouldShow: OnOverlayShouldShowFn;
 	onShow: OnOverlayShowFn;

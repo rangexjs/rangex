@@ -259,15 +259,15 @@ export const createCodeBlockAdapter = (
 				return () => onIsOpenUpdateListeners.delete(callback);
 			},
 
-			insert() {
+			insert(params) {
 				for (const listener of onInsertListeners) {
-					listener();
+					listener(params);
 				}
 			},
 
-			wrap() {
+			wrap(params) {
 				for (const listener of onWrapListeners) {
-					listener();
+					listener(params);
 				}
 			},
 

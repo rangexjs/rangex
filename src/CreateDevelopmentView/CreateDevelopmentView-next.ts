@@ -1,5 +1,6 @@
 import {
 	AccordionItem,
+	CodeBlock,
 	createRichTextEditor,
 	type Extension,
 	Formatting,
@@ -67,6 +68,7 @@ export const createDevelopmentView = () => {
 	const extensions: Extension[] = [
 		Formatting({}),
 		AccordionItem({}),
+		CodeBlock({}),
 		Separator({}),
 	];
 
