@@ -14,6 +14,8 @@ export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
 	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
 
 	const port: ReactiveImagePort = {
+		raw: publicPort,
+
 		floatingEl: publicPort.floatingEl,
 
 		isOpen,

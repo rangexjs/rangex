@@ -27,6 +27,8 @@ export const CodeBlock = (
 	unsubscribeList.add(publicPort.onIsOpenUpdate(setIsOpen));
 
 	const port: ReactiveCodeBlockPort = {
+		raw: publicPort,
+
 		floatingEl: publicPort.floatingEl,
 		languages: publicPort.languages,
 		themes: publicPort.themes,

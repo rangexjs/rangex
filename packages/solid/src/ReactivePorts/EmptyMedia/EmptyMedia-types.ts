@@ -1,7 +1,14 @@
-import type { MediaType, ResolveOption, UploadState } from "@rangex/editor";
+import type {
+	EmptyMediaPublicPort,
+	MediaType,
+	ResolveOption,
+	UploadState,
+} from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveEmptyMediaPort {
+	readonly raw: EmptyMediaPublicPort;
+
 	readonly supportedMediaTypes: MediaType[];
 
 	canInsert: Accessor<boolean>;

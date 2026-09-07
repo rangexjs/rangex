@@ -19,6 +19,8 @@ export const AccordionItem = (
 	unsubscribeList.add(publicPort.onIsActiveUpdate(setIsActive));
 
 	const port: ReactiveAccordionItemPort = {
+		raw: publicPort,
+
 		canInsert,
 		canWrap,
 		isActive,
