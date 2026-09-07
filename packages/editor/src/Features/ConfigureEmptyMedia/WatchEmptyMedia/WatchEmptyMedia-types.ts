@@ -13,7 +13,7 @@ export type WatchEmptyMediaResult = () => void;
 
 export interface ResolveMediaSrcParams {
 	detail: Exclude<MediaResolveDetail, { type: "embed" }>;
-	element: HTMLElement;
+	element: HTMLDivElement;
 	configPort: EmptyMediaConfigPort;
 	isStillCurrent: () => boolean;
 }

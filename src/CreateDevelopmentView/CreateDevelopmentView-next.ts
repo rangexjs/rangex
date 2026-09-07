@@ -2,6 +2,7 @@ import {
 	AccordionItem,
 	CodeBlock,
 	createRichTextEditor,
+	EmptyMedia,
 	type Extension,
 	Formatting,
 	Separator,
@@ -55,19 +56,10 @@ export const createDevelopmentView = () => {
 		},
 	);
 
-	const createSlottedElement = () => {
-		const div = document.createElement("div");
-		div.textContent = "floating element";
-		return div;
-	};
-
-	const disposeSlottedElement = (_el: HTMLElement) => {
-		//
-	};
-
 	const extensions: Extension[] = [
-		Formatting({}),
 		AccordionItem({}),
+		EmptyMedia({ uploadFile }),
+		Formatting({}),
 		CodeBlock({}),
 		Separator({}),
 	];

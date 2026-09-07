@@ -13,11 +13,6 @@ export type UploadMediaFileFn = (
 	params: UploadMediaFileParams,
 ) => Promise<string | null>;
 
-// TODO: Editor should be passed as a param
-export type CreateSlottedElementFn = () => HTMLElement;
-
-export type DisposeSlottedElementFn = (element: HTMLElement) => void;
-
 export interface EmptyMediaState {
 	canInsert?: boolean;
 }
@@ -41,7 +36,7 @@ export type MediaResolveDetail =
 	| ({ type: "embed" } & MediaURL);
 
 export interface ResolveOption {
-	element: HTMLElement;
+	element: HTMLDivElement;
 	detail: MediaResolveDetail;
 }
 
@@ -56,12 +51,17 @@ export type UpdateUploadStateCallbackFn = (value: UploadState) => void;
 export interface ElementState {
 	uploadState: UploadState;
 	uploadStateListeners: Set<UpdateUploadStateCallbackFn>;
+	dispose: (() => void) | undefined;
 }
 
 export interface UpdateElementStateParams {
-	element: HTMLElement;
+	element: HTMLDivElement;
 	uploadState?: UploadState;
 }
+
+export type CreateSlottedElementFn = () => HTMLDivElement;
+
+export type RemoveSlottedElementFn = (container: HTMLDivElement) => void;
 
 export type OnInsertCallbackFn = () => void;
 
@@ -69,11 +69,12 @@ export type OnResolveCallbackFn = (params: ResolveOption) => void;
 
 export interface EmptyMediaConfigPortProps {
 	readonly uploadFile: UploadMediaFileFn;
-	createSlottedElement: CreateSlottedElementFn;
-	disposeSlottedElement: DisposeSlottedElementFn;
 
 	updateState(params: UpdateStateParams): void;
 	updateElementState(params: UpdateElementStateParams): void;
+
+	createSlottedElement: CreateSlottedElementFn;
+	removeSlottedElement: RemoveSlottedElementFn;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onResolve(callback: OnResolveCallbackFn): () => void;
@@ -83,16 +84,22 @@ export interface EmptyMediaConfigPortProps {
 
 export interface EmptyMediaConfigPort extends EmptyMediaConfigPortProps {}
 
+export type RegisterSlottedElementCallbackFn = (
+	container: HTMLDivElement,
+) => () => void;
+
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 
 export interface EmptyMediaPublicPortProps {
 	readonly canInsert: boolean;
 	readonly supportedMediaTypes: MediaType[];
 
+	registerSlottedElement(callback: RegisterSlottedElementCallbackFn): void;
+
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	getUploadState(element: HTMLElement): UploadState;
+	getUploadState(element: HTMLDivElement): UploadState;
 	onUploadStateUpdate(
-		element: HTMLElement,
+		element: HTMLDivElement,
 		callback: UpdateUploadStateCallbackFn,
 	): () => void;
 
@@ -104,6 +111,8 @@ export interface EmptyMediaPublicPort extends EmptyMediaPublicPortProps {}
 
 export interface EmptyMediaInternals {
 	canInsert: boolean;
+
+	registerSlottedElement: RegisterSlottedElementCallbackFn | null;
 }
 
 export interface EmptyMediaAdapter {
@@ -113,8 +122,6 @@ export interface EmptyMediaAdapter {
 
 export interface EmptyMediaSettings {
 	uploadFile: UploadMediaFileFn;
-	createSlottedElement: CreateSlottedElementFn;
-	disposeSlottedElement: DisposeSlottedElementFn;
 }
 
 export interface CreateEmptyMediaAdapterParams

@@ -18,16 +18,14 @@ import type {
 export const createEmptyMediaAdapter = (
 	...params: CreateEmptyMediaAdapterParams
 ): CreateEmptyMediaAdapterResult => {
-	const [
-		{ uploadFile, createSlottedElement, disposeSlottedElement },
-		{ adapterBus },
-	] = params;
+	const [{ uploadFile }, { adapterBus }] = params;
 
 	const internals: EmptyMediaInternals = {
 		canInsert: false,
+		registerSlottedElement: null,
 	};
 
-	const elements: Map<HTMLElement, ElementState> = new Map();
+	const elements: Map<HTMLDivElement, ElementState> = new Map();
 
 	// ConfigPort
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
@@ -37,7 +35,7 @@ export const createEmptyMediaAdapter = (
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 
-	const getElementState = (element: HTMLElement): ElementState => {
+	const getElementState = (element: HTMLDivElement): ElementState => {
 		const state = elements.get(element);
 
 		if (!state) {
@@ -78,19 +76,27 @@ export const createEmptyMediaAdapter = (
 		},
 
 		createSlottedElement() {
-			const slottedElement = createSlottedElement();
+			const container = document.createElement("div");
+			const dispose = internals.registerSlottedElement?.(container);
 
-			elements.set(slottedElement, {
+			elements.set(container, {
 				uploadState: { status: "idle" },
 				uploadStateListeners: new Set(),
+				dispose,
 			});
 
-			return slottedElement;
+			return container;
 		},
 
-		disposeSlottedElement(element) {
-			elements.delete(element);
-			disposeSlottedElement(element);
+		removeSlottedElement(container) {
+			const state = elements.get(container);
+
+			if (!state) {
+				throw new Error("Container wasn't registered.");
+			}
+
+			state.dispose?.();
+			elements.delete(container);
 		},
 
 		updateState(params) {
@@ -127,6 +133,17 @@ export const createEmptyMediaAdapter = (
 
 		get supportedMediaTypes() {
 			return adapterBus.getSupportedMediaTypes();
+		},
+
+		registerSlottedElement(callback) {
+			internals.registerSlottedElement = callback;
+
+			for (const [element, state] of elements) {
+				state.dispose?.();
+
+				const dispose = internals.registerSlottedElement(element);
+				state.dispose = dispose;
+			}
 		},
 
 		onCanInsertUpdate(callback) {

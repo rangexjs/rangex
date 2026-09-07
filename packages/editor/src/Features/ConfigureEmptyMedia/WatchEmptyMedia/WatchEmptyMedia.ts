@@ -111,7 +111,7 @@ export const watchEmptyMedia = ({
 		throw new Error("Host must be an HTMLElement.");
 	}
 
-	const containersByBlock: Map<BlockComponent, HTMLElement> = new Map();
+	const containersByBlock: Map<BlockComponent, HTMLDivElement> = new Map();
 
 	/**
 	 * Removes the placeholder block via `removeNodesInRange` — replacing the old
@@ -260,7 +260,7 @@ export const watchEmptyMedia = ({
 		detachedContext.assign();
 		slottedElement.remove();
 		containersByBlock.delete(blockComponent);
-		configPort.disposeSlottedElement(slottedElement);
+		configPort.removeSlottedElement(slottedElement);
 	};
 
 	let tracked = queryMediaBlocks();

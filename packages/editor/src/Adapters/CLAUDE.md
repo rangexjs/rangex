@@ -132,6 +132,30 @@ it structurally cannot have," it's not category 3 — reconsider whether it's ac
 category 1 (derived state) instead, or whether it belongs in `EngineLinks` instead of the
 Adapter at all.
 
+### 4. Pull-computed via externally injected capability (inverted category 3)
+
+The mirror image of category 3: a capability only a *consumer outside this package* can
+supply (this package is framework-agnostic — no Solid, no UI — so it structurally cannot
+render anything itself), which `EngineLinks` then needs to invoke internally.
+`EmptyMediaAdapter`'s `registerSlottedElement`/`createSlottedElement` is the only current
+example: only `@rangex/solid`'s consumer knows how to mount a picker component, so the
+registration has to happen from the public side inward, not the internal side outward.
+
+- `publicPort`: `registerXxx(provider: XxxProviderFn): void` — same single-slot,
+  no-`Set`, no-unsubscribe shape as category 3's `configPort.registerXxx`, just declared
+  on the opposite port because the provider is external this time.
+- `configPort`: `xxx(...): T` — a synchronous pull through the registered provider,
+  called by `EngineLinks` on demand (`EmptyMediaAdapter`'s `createSlottedElement()` pulls
+  `internals.registerSlottedElement` to build each element). Unlike category 3's
+  `getXxx()`, this pull commonly happens *before* registration is guaranteed to have run
+  yet (e.g. a `storedSnapshot` with a pre-existing unresolved block, created during the
+  same synchronous `createEditor()` pass that hasn't reached the consumer's registration
+  call yet) — so it can't throw-on-unregistered the way category 3 does. Instead, treat
+  "not yet registered" as a legitimate transient state: create the DOM node anyway, and
+  have the `registerXxx` provider backfill/re-invoke itself over anything created before
+  it arrived (see `EmptyMediaAdapter.ts`'s `registerSlottedElement`, which replays itself
+  across every already-created element).
+
 ## Composition
 
 `extendObjectProperties(obj, props1, props2, ...)` (`#utilities`) merges each source

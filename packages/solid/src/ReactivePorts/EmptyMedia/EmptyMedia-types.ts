@@ -11,6 +11,8 @@ export interface ReactiveEmptyMediaPort {
 
 	readonly supportedMediaTypes: MediaType[];
 
+	registerSlottedElement: EmptyMediaPublicPort["registerSlottedElement"];
+
 	canInsert: Accessor<boolean>;
 	uploadState(element: HTMLElement): Accessor<UploadState>;
 

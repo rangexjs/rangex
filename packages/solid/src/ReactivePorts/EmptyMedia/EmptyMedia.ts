@@ -14,9 +14,9 @@ export const EmptyMedia = (
 
 	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
 
-	const uploadStateSignals = new Map<HTMLElement, Accessor<UploadState>>();
+	const uploadStateSignals = new Map<HTMLDivElement, Accessor<UploadState>>();
 
-	const uploadState = (element: HTMLElement): Accessor<UploadState> => {
+	const uploadState = (element: HTMLDivElement): Accessor<UploadState> => {
 		const cached = uploadStateSignals.get(element);
 		if (cached) {
 			return cached;
@@ -34,6 +34,8 @@ export const EmptyMedia = (
 		raw: publicPort,
 
 		supportedMediaTypes: publicPort.supportedMediaTypes,
+
+		registerSlottedElement: publicPort.registerSlottedElement,
 
 		canInsert,
 		uploadState,

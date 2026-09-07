@@ -13,6 +13,7 @@ export type {
 } from "#adapters/CodeBlock";
 export type {
 	EmptyMediaPublicPort,
+	MediaResolveDetail,
 	ResolveOption,
 	UploadState,
 } from "#adapters/EmptyMedia";

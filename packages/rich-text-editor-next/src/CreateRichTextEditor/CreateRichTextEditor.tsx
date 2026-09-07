@@ -32,6 +32,10 @@ export const createRichTextEditor = ({
 		{ toolbarButtons: {}, floatingComponents: [] },
 	);
 
+	for (const { register } of extensions) {
+		register?.(editor);
+	}
+
 	const editorHost = document.createElement("div");
 
 	const dispose = render(
