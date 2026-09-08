@@ -1,6 +1,0 @@
-[data-rx-editor-role="root-editable"] {
-	font-family: "Inter", sans-serif;
-
-	background-color: light-dark(var(--color-white), var(--color-neutral-950));
-	color: light-dark(var(--color-black), var(--color-white));
-}

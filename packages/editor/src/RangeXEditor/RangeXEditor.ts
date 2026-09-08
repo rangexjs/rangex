@@ -1,5 +1,5 @@
 import { AdapterBus } from "#adapters";
-import { getStyleSheetText } from "../EngineLinks/Styles";
+import { buildEngineStyleText, getHostStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
 import type {
 	CreateEditorParams,
@@ -11,12 +11,13 @@ import type {
 export const createEditor = ({
 	storedSnapshot,
 	adapters,
+	styles,
 }: CreateEditorParams): CreateEditorResult => {
 	const { editorAPI } = createCore({ storedSnapshot });
 
-	const styleSheet = getStyleSheetText({ rxStyle: true });
+	const { editorStyleText } = buildEngineStyleText(styles);
 
-	editorAPI.replaceCustomStyles(styleSheet);
+	editorAPI.replaceCustomStyles(editorStyleText);
 
 	const { host } = editorAPI;
 
@@ -42,5 +43,7 @@ export const createEditor = ({
 		cleanupList.add(cleanup);
 	}
 
-	return { editor, host, floatingContainer };
+	const hostStyles = getHostStyleText();
+
+	return { editor, host, floatingContainer, hostStyles };
 };

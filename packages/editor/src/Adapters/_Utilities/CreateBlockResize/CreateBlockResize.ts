@@ -92,6 +92,8 @@ export const createBlockResize = ({
 	};
 
 	const container = document.createElement("div");
+	container.classList.add("block-resizer");
+
 	const leftHandle = createHandle({
 		side: "left",
 		xPos,

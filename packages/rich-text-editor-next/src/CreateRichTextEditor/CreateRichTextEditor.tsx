@@ -9,6 +9,7 @@ import type {
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
 import "../ComponentStyles/global.css";
+import { getEngineStyles } from "../EngineStyles";
 
 export const createRichTextEditor = ({
 	storedSnapshot,
@@ -17,10 +18,18 @@ export const createRichTextEditor = ({
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
-	const { editor, host, floatingContainer } = createEditor({
+	const styles = getEngineStyles();
+
+	const { editor, host, floatingContainer, hostStyles } = createEditor({
 		storedSnapshot,
 		adapters,
+		styles,
 	});
+
+	// TODO: `hostStyles` should be exposed via RichTextEditor and the user supposed to attach to the RootNode
+	const styleSheet = new CSSStyleSheet();
+	styleSheet.replaceSync(hostStyles);
+	document.adoptedStyleSheets.push(styleSheet);
 
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {

@@ -1,5 +1,6 @@
 import type { EditorAPI, StoredSnapshot } from "rich-text-area";
 import type { AdapterOptions, AdapterPublicPorts } from "#adapters";
+import type { EngineStyles } from "../Styles";
 import type { AdapterFactoryValue } from "./AdapterFactories";
 
 type OptionalPublicPorts = {
@@ -29,10 +30,12 @@ export type AdapterFactoryFn<Settings extends object> = (
 export interface CreateEditorParams {
 	storedSnapshot?: StoredSnapshot;
 	adapters: AdapterFactoryValue[];
+	styles: EngineStyles;
 }
 
 export interface CreateEditorResult {
 	editor: RangeXEditor;
 	host: HTMLElement;
 	floatingContainer: HTMLDivElement;
+	hostStyles: string;
 }

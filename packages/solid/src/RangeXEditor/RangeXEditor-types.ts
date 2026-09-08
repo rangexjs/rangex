@@ -22,4 +22,5 @@ export interface CreateEditorResult {
 	editor: SolidEditor;
 	host: HTMLElement;
 	floatingContainer: HTMLDivElement;
+	hostStyles: string;
 }

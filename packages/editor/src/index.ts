@@ -56,7 +56,6 @@ export type {
 export type { ImagePublicPort } from "#adapters/Image";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
-
 export type {
 	AdapterFactoryValue,
 	CreateEditorParams,
@@ -72,3 +71,4 @@ export {
 	Image,
 	Separator,
 } from "#rangex-editor";
+export type { EngineStyles } from "./Styles";

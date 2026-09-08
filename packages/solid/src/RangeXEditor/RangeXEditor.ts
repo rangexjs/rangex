@@ -6,7 +6,8 @@ import { wireReactivePorts } from "./WireReactivePorts";
 export const createEditor = (
 	params: CreateEditorParams,
 ): CreateEditorResult => {
-	const { editor, host, floatingContainer } = createCoreEditor(params);
+	const { editor, host, floatingContainer, hostStyles } =
+		createCoreEditor(params);
 
 	const disposeList = new Set<() => void>();
 
@@ -22,5 +23,5 @@ export const createEditor = (
 
 	wireReactivePorts({ editor, solidEditor, disposeList });
 
-	return { editor: solidEditor, host, floatingContainer };
+	return { editor: solidEditor, host, floatingContainer, hostStyles };
 };
