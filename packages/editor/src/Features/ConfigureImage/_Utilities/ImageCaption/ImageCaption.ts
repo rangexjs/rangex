@@ -7,12 +7,12 @@ import {
 	type HTMLLayout,
 	htmlLayoutName,
 } from "rich-text-area";
+import type { CaptionPosition } from "#adapters";
 import type { TextAlignStructuredStyleValue } from "#engine-links";
 import { getImageImg } from "../GetImageElements";
 import type {
 	GetImageCaptionParams,
 	GetImageCaptionResult,
-	ImageCaptionPosition,
 	SetImageCaptionEnabledParams,
 	SetImageCaptionPositionParams,
 } from "./ImageCaption-types";
@@ -50,7 +50,7 @@ export const getImageCaption = ({
 
 	const { $$children } = figure;
 
-	const position: ImageCaptionPosition =
+	const position: CaptionPosition =
 		$$children.indexOf(figcaption) < $$children.indexOf(img)
 			? "above"
 			: "below";

@@ -1,17 +1,11 @@
 import type { HTMLLayout } from "rich-text-area";
-
-export type ImageCaptionPosition = "above" | "below";
-
-export interface ImageCaptionState {
-	enabled: boolean;
-	position: ImageCaptionPosition;
-}
+import type { CaptionPosition, CaptionState } from "#adapters";
 
 export interface GetImageCaptionParams {
 	figure: HTMLLayout;
 }
 
-export type GetImageCaptionResult = ImageCaptionState;
+export type GetImageCaptionResult = CaptionState;
 
 export interface SetImageCaptionEnabledParams {
 	figure: HTMLLayout;
@@ -20,5 +14,5 @@ export interface SetImageCaptionEnabledParams {
 
 export interface SetImageCaptionPositionParams {
 	figure: HTMLLayout;
-	position: ImageCaptionPosition;
+	position: CaptionPosition;
 }
