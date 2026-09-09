@@ -10,21 +10,14 @@ import type {
 	CurrentBlockConfigPort,
 	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
+	QuickActionsConfigPort,
+	QuickActionsPublicPort,
 	SwapToEmptyMediaConfigPort,
 	SwapToEmptyMediaPublicPort,
 } from "../_Utilities";
 
-export interface EmbedState {
-	isOpen?: boolean;
-}
-
-export interface UpdateStateParams extends EmbedState {}
-
 export interface EmbedConfigPortProps {
 	readonly blockResize: BlockResize;
-	readonly floatingEl: HTMLDivElement;
-
-	updateState(params: UpdateStateParams): void;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -35,17 +28,10 @@ export interface EmbedConfigPort
 		BlockAlignConfigPort,
 		CurrentBlockConfigPort,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort {}
+		SwapToEmptyMediaConfigPort,
+		QuickActionsConfigPort {}
 
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
-
-export interface EmbedPublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
-	readonly isOpen: boolean;
-
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
-}
+export interface EmbedPublicPortProps {}
 
 export interface EmbedPublicPort
 	extends EmbedPublicPortProps,
@@ -53,11 +39,8 @@ export interface EmbedPublicPort
 		BlockAlignPublicPort,
 		CurrentBlockPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort {}
-
-export interface EmbedInternals {
-	isOpen: boolean;
-}
+		SwapToEmptyMediaPublicPort,
+		QuickActionsPublicPort {}
 
 export interface EmbedAdapter {
 	configPort: EmbedConfigPort;

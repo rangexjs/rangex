@@ -1,14 +1,11 @@
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
-	componentsName,
-	createAnchoredOverlayController,
-	createBlockComponentPlacement,
-	createOverlayAppearanceHandler,
-} from "#engine-links";
-import {
+	getBlockAlign,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleCommitSnapshot,
+	handleQuickActionsOverlayAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -19,23 +16,12 @@ import {
 } from "./_Utilities";
 import type { ConfigureImageParams } from "./ConfigureImage-types";
 import { handleImageInsertion } from "./HandleImageInsertion";
-import { handleImageQuickActionsOverlayAppearance } from "./HandleImageQuickActionsOverlayAppearance";
 
 export const configureImage = ({
 	configPort,
 	editorAPI,
 }: ConfigureImageParams) => {
-	const overlayAppearanceHandler = createOverlayAppearanceHandler({
-		editorAPI,
-	});
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const anchorController = createAnchoredOverlayController({
-		element: configPort.floatingEl,
-		options: {
-			onToggle: (isOpen) => configPort.updateState({ isOpen }),
-		},
-	});
 
 	const commitSnapshotCleanup = handleCommitSnapshot({
 		port: configPort,
@@ -48,11 +34,25 @@ export const configureImage = ({
 		blockComponentPlacement,
 	});
 
-	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
-		handleImageQuickActionsOverlayAppearance({
-			configPort,
-			overlayAppearanceHandler,
-			anchorController,
+	const { getCurrentBlock, cleanup: quickActionsCleanup } =
+		handleQuickActionsOverlayAppearance({
+			port: configPort,
+			editorAPI,
+			componentName: componentsName.image,
+			beforeOpen({ blockComponent }) {
+				const { $$parentElement } = blockComponent;
+
+				if (!$$parentElement) {
+					throw new Error("ParentElement not supposed to be null.");
+				}
+
+				const align = getBlockAlign({ blockComponentLine: $$parentElement });
+				const figure = getImageFigure({ blockComponent });
+				const caption = getImageCaption({ figure });
+
+				configPort.setAlign(align);
+				configPort.setCaption(caption);
+			},
 		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
@@ -84,10 +84,8 @@ export const configureImage = ({
 	});
 
 	return () => {
-		overlayAppearanceHandler.cleanup();
-
 		insertionCleanup();
-		overlayAppearanceCleanup();
+		quickActionsCleanup();
 		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();

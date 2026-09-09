@@ -10,7 +10,7 @@ export interface InsertParams extends PlacementOption {}
 export interface WrapParams extends PlacementOption {}
 
 export interface ReactiveCodeBlockPort {
-	readonly floatingEl: HTMLDivElement;
+	readonly quickActionsEl: HTMLDivElement;
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
 
@@ -20,7 +20,8 @@ export interface ReactiveCodeBlockPort {
 	language: Accessor<CodeBlockLanguage>;
 	lightTheme: Accessor<CodeBlockTheme>;
 	darkTheme: Accessor<CodeBlockTheme>;
-	isOpen: Accessor<boolean>;
+	currentBlock: Accessor<HTMLElement | null>;
+	quickActionsOpen: Accessor<boolean>;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;

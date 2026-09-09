@@ -309,9 +309,9 @@ export const VideoQuickActions = () => {
 		}
 	};
 
-	// We can't rely on video.isOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = editor.video.onIsOpenUpdate((isOpen) => {
-		if (!isOpen) {
+	// We can't rely on video.quickActionsOpen() as we have to detect the change before repaint
+	const unsubscribeIsOpen = editor.video.onQuickActionsOpenUpdate((open) => {
+		if (!open) {
 			closeNestedPopovers();
 		}
 	});
@@ -321,7 +321,7 @@ export const VideoQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={video.floatingEl}>
+		<Portal mount={video.quickActionsEl}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
 					value={video.align()}

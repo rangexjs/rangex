@@ -1,11 +1,13 @@
 import {
-	createAnchoredOverlayController,
+	codeBlockStorageFallbacks,
+	componentsName,
 	createBlockComponentPlacement,
-	createOverlayAppearanceHandler,
+	ensureNodeCodeBlockStorage,
 } from "#engine-links";
+import { toUILanguage, toUITheme } from "#libs";
+import { handleQuickActionsOverlayAppearance } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
-import { handleCodeBlockOverlayAppearance } from "./HandleCodeBlockOverlayAppearance";
 import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
 import { handleCodeBlockPlacement } from "./HandleCodeBlockPlacement";
 import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButtonState";
@@ -16,17 +18,7 @@ export const configureCodeBlock = ({
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-	const overlayAppearanceHandler = createOverlayAppearanceHandler({
-		editorAPI,
-	});
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
-
-	const anchorController = createAnchoredOverlayController({
-		element: configPort.floatingEl,
-		options: {
-			onToggle: (isOpen) => configPort.updateState({ isOpen }),
-		},
-	});
 
 	const toolbarButtonStateCleanup = handleCodeBlockToolbarButtonState({
 		configPort,
@@ -42,11 +34,23 @@ export const configureCodeBlock = ({
 
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
-	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
-		handleCodeBlockOverlayAppearance({
-			configPort,
-			overlayAppearanceHandler,
-			anchorController,
+	const { getCurrentBlock, cleanup: quickActionsCleanup } =
+		handleQuickActionsOverlayAppearance({
+			port: configPort,
+			editorAPI,
+			componentName: componentsName.codeBlock,
+			beforeOpen({ blockComponent }) {
+				const { lang, theme } = ensureNodeCodeBlockStorage({
+					blockComponent,
+					fallbacks: codeBlockStorageFallbacks,
+				});
+
+				configPort.updateState({
+					language: toUILanguage(lang),
+					lightTheme: toUITheme(theme.light),
+					darkTheme: toUITheme(theme.dark),
+				});
+			},
 		});
 
 	const overlayStateCleanup = handleCodeBlockOverlayState({
@@ -57,12 +61,10 @@ export const configureCodeBlock = ({
 	});
 
 	return () => {
-		overlayAppearanceHandler.cleanup();
-
 		toolbarButtonStateCleanup();
 		placementCleanup();
 		lineNumbersCleanup();
 		overlayStateCleanup();
-		overlayAppearanceCleanup();
+		quickActionsCleanup();
 	};
 };

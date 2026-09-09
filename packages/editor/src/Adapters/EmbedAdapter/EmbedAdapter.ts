@@ -5,6 +5,7 @@ import {
 	createCaptionPort,
 	createCommitSnapshotPort,
 	createCurrentBlockPort,
+	createQuickActionsPort,
 	createSwapToEmptyMediaPort,
 } from "../_Utilities";
 import type {
@@ -12,11 +13,8 @@ import type {
 	CreateEmbedAdapterResult,
 	EmbedConfigPort,
 	EmbedConfigPortProps,
-	EmbedInternals,
 	EmbedPublicPort,
 	EmbedPublicPortProps,
-	OnIsOpenUpdateCallbackFn,
-	UpdateStateParams,
 } from "./EmbedAdapter-types";
 
 export const createEmbedAdapter = (
@@ -26,33 +24,14 @@ export const createEmbedAdapter = (
 
 	adapterBus.registerSupportedMediaType("embed");
 
-	const floatingEl = document.createElement("div");
-	floatingContainer.append(floatingEl);
-
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
-
-	const internals: EmbedInternals = {
-		isOpen: false,
-	};
-
-	// PublicPort
-	const onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
 	const currentBlockPort = createCurrentBlockPort();
 	const commitSnapshotPort = createCommitSnapshotPort();
 	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
-
-	const updateState = ({ isOpen }: UpdateStateParams) => {
-		if (isOpen !== undefined) {
-			internals.isOpen = isOpen;
-
-			for (const listener of onIsOpenUpdateListeners) {
-				listener(isOpen);
-			}
-		}
-	};
+	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const configPort: EmbedConfigPort = extendObjectProperties(
 		captionPort.configPort,
@@ -60,17 +39,10 @@ export const createEmbedAdapter = (
 		currentBlockPort.configPort,
 		commitSnapshotPort.configPort,
 		swapToEmptyMediaPort.configPort,
+		quickActionsPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
-			},
-
-			get floatingEl() {
-				return floatingEl;
-			},
-
-			updateState(params) {
-				updateState(params);
 			},
 
 			onMediaResolve(callback) {
@@ -86,20 +58,8 @@ export const createEmbedAdapter = (
 		currentBlockPort.publicPort,
 		commitSnapshotPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
-		{
-			get floatingEl() {
-				return floatingEl;
-			},
-
-			get isOpen() {
-				return internals.isOpen;
-			},
-
-			onIsOpenUpdate(callback) {
-				onIsOpenUpdateListeners.add(callback);
-				return () => onIsOpenUpdateListeners.delete(callback);
-			},
-		} satisfies EmbedPublicPortProps,
+		quickActionsPort.publicPort,
+		{} satisfies EmbedPublicPortProps,
 	);
 
 	return { configPort, publicPort };

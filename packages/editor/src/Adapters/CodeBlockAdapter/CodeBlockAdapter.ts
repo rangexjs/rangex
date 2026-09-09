@@ -1,5 +1,10 @@
 import { extendObjectProperties } from "#utilities";
-import { createRemovePort, createUnwrapPort } from "../_Utilities";
+import {
+	createCurrentBlockPort,
+	createQuickActionsPort,
+	createRemovePort,
+	createUnwrapPort,
+} from "../_Utilities";
 import {
 	defaultCodeBlockLanguages,
 	defaultCodeBlockThemes,
@@ -18,7 +23,6 @@ import type {
 	OnDarkThemeUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnIsActiveUpdateCallbackFn,
-	OnIsOpenUpdateCallbackFn,
 	OnLanguageCallbackFn,
 	OnLanguageUpdateCallbackFn,
 	OnLightThemeCallbackFn,
@@ -35,9 +39,6 @@ export const createCodeBlockAdapter = (
 		{ floatingContainer },
 	] = params;
 
-	const floatingEl = document.createElement("div");
-	floatingContainer.append(floatingEl);
-
 	const internals: CodeBlockInternals = {
 		canInsert: false,
 		canWrap: false,
@@ -45,7 +46,6 @@ export const createCodeBlockAdapter = (
 		language: "TypeScript",
 		lightTheme: "Light+",
 		darkTheme: "Dark+",
-		isOpen: false,
 		plainTextProvider: null,
 	};
 
@@ -66,10 +66,11 @@ export const createCodeBlockAdapter = (
 		new Set();
 	const onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> =
 		new Set();
-	const onIsOpenUpdateListeners: Set<OnIsOpenUpdateCallbackFn> = new Set();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
+	const currentBlockPort = createCurrentBlockPort();
+	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const updateState = ({
 		canInsert,
@@ -78,7 +79,6 @@ export const createCodeBlockAdapter = (
 		language,
 		lightTheme,
 		darkTheme,
-		isOpen,
 	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
@@ -127,24 +127,14 @@ export const createCodeBlockAdapter = (
 				listener(internals.darkTheme);
 			}
 		}
-
-		if (isOpen !== undefined) {
-			internals.isOpen = isOpen;
-
-			for (const listener of onIsOpenUpdateListeners) {
-				listener(internals.isOpen);
-			}
-		}
 	};
 
 	const configPort: CodeBlockConfigPort = extendObjectProperties(
 		removePort.configPort,
 		unwrapPort.configPort,
+		currentBlockPort.configPort,
+		quickActionsPort.configPort,
 		{
-			get floatingEl() {
-				return floatingEl;
-			},
-
 			updateState(params) {
 				updateState(params);
 			},
@@ -183,11 +173,9 @@ export const createCodeBlockAdapter = (
 	const publicPort: CodeBlockPublicPort = extendObjectProperties(
 		removePort.publicPort,
 		unwrapPort.publicPort,
+		currentBlockPort.publicPort,
+		quickActionsPort.publicPort,
 		{
-			get floatingEl() {
-				return floatingEl;
-			},
-
 			get languages() {
 				return languages;
 			},
@@ -220,10 +208,6 @@ export const createCodeBlockAdapter = (
 				return internals.darkTheme;
 			},
 
-			get isOpen() {
-				return internals.isOpen;
-			},
-
 			onCanInsertUpdate(callback) {
 				onCanInsertUpdateListeners.add(callback);
 				return () => onCanInsertUpdateListeners.delete(callback);
@@ -252,11 +236,6 @@ export const createCodeBlockAdapter = (
 			onDarkThemeUpdate(callback) {
 				onDarkThemeUpdateListeners.add(callback);
 				return () => onDarkThemeUpdateListeners.delete(callback);
-			},
-
-			onIsOpenUpdate(callback) {
-				onIsOpenUpdateListeners.add(callback);
-				return () => onIsOpenUpdateListeners.delete(callback);
 			},
 
 			insert(params) {

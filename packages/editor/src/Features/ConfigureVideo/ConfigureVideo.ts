@@ -1,14 +1,11 @@
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
-	componentsName,
-	createAnchoredOverlayController,
-	createBlockComponentPlacement,
-	createOverlayAppearanceHandler,
-} from "#engine-links";
-import {
+	getBlockAlign,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleCommitSnapshot,
+	handleQuickActionsOverlayAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -19,23 +16,12 @@ import {
 } from "./_Utilities";
 import type { ConfigureVideoParams } from "./ConfigureVideo-types";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
-import { handleVideoQuickActionsOverlayAppearance } from "./HandleVideoQuickActionsOverlayAppearance";
 
 export const configureVideo = ({
 	configPort,
 	editorAPI,
 }: ConfigureVideoParams) => {
-	const overlayAppearanceHandler = createOverlayAppearanceHandler({
-		editorAPI,
-	});
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const anchorController = createAnchoredOverlayController({
-		element: configPort.floatingEl,
-		options: {
-			onToggle: (isOpen) => configPort.updateState({ isOpen }),
-		},
-	});
 
 	const commitSnapshotCleanup = handleCommitSnapshot({
 		port: configPort,
@@ -48,11 +34,25 @@ export const configureVideo = ({
 		blockComponentPlacement,
 	});
 
-	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
-		handleVideoQuickActionsOverlayAppearance({
-			configPort,
-			overlayAppearanceHandler,
-			anchorController,
+	const { getCurrentBlock, cleanup: quickActionsCleanup } =
+		handleQuickActionsOverlayAppearance({
+			port: configPort,
+			editorAPI,
+			componentName: componentsName.video,
+			beforeOpen({ blockComponent }) {
+				const { $$parentElement } = blockComponent;
+
+				if (!$$parentElement) {
+					throw new Error("ParentElement not supposed to be null.");
+				}
+
+				const align = getBlockAlign({ blockComponentLine: $$parentElement });
+				const figure = getVideoFigure({ blockComponent });
+				const caption = getVideoCaption({ figure });
+
+				configPort.setAlign(align);
+				configPort.setCaption(caption);
+			},
 		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
@@ -84,10 +84,8 @@ export const configureVideo = ({
 	});
 
 	return () => {
-		overlayAppearanceHandler.cleanup();
-
 		insertionCleanup();
-		overlayAppearanceCleanup();
+		quickActionsCleanup();
 		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();

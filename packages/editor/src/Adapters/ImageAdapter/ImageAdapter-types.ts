@@ -10,21 +10,14 @@ import type {
 	CurrentBlockConfigPort,
 	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
+	QuickActionsConfigPort,
+	QuickActionsPublicPort,
 	SwapToEmptyMediaConfigPort,
 	SwapToEmptyMediaPublicPort,
 } from "../_Utilities";
 
-export interface ImageState {
-	isOpen?: boolean;
-}
-
-export interface UpdateStateParams extends ImageState {}
-
 export interface ImageConfigPortProps {
 	readonly blockResize: BlockResize;
-	readonly floatingEl: HTMLDivElement;
-
-	updateState(params: UpdateStateParams): void;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -35,17 +28,10 @@ export interface ImageConfigPort
 		BlockAlignConfigPort,
 		CurrentBlockConfigPort,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort {}
+		SwapToEmptyMediaConfigPort,
+		QuickActionsConfigPort {}
 
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
-
-export interface ImagePublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
-	readonly isOpen: boolean;
-
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
-}
+export interface ImagePublicPortProps {}
 
 export interface ImagePublicPort
 	extends ImagePublicPortProps,
@@ -53,11 +39,8 @@ export interface ImagePublicPort
 		BlockAlignPublicPort,
 		CurrentBlockPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort {}
-
-export interface ImageInternals {
-	isOpen: boolean;
-}
+		SwapToEmptyMediaPublicPort,
+		QuickActionsPublicPort {}
 
 export interface ImageAdapter {
 	configPort: ImageConfigPort;

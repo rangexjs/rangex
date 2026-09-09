@@ -1,14 +1,11 @@
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
-	componentsName,
-	createAnchoredOverlayController,
-	createBlockComponentPlacement,
-	createOverlayAppearanceHandler,
-} from "#engine-links";
-import {
+	getBlockAlign,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleCommitSnapshot,
+	handleQuickActionsOverlayAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -19,23 +16,12 @@ import {
 } from "./_Utilities";
 import type { ConfigureAudioParams } from "./ConfigureAudio-types";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
-import { handleAudioQuickActionsOverlayAppearance } from "./HandleAudioQuickActionsOverlayAppearance";
 
 export const configureAudio = ({
 	configPort,
 	editorAPI,
 }: ConfigureAudioParams) => {
-	const overlayAppearanceHandler = createOverlayAppearanceHandler({
-		editorAPI,
-	});
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const anchorController = createAnchoredOverlayController({
-		element: configPort.floatingEl,
-		options: {
-			onToggle: (isOpen) => configPort.updateState({ isOpen }),
-		},
-	});
 
 	const commitSnapshotCleanup = handleCommitSnapshot({
 		port: configPort,
@@ -48,11 +34,25 @@ export const configureAudio = ({
 		blockComponentPlacement,
 	});
 
-	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
-		handleAudioQuickActionsOverlayAppearance({
-			configPort,
-			overlayAppearanceHandler,
-			anchorController,
+	const { getCurrentBlock, cleanup: quickActionsCleanup } =
+		handleQuickActionsOverlayAppearance({
+			port: configPort,
+			editorAPI,
+			componentName: componentsName.audio,
+			beforeOpen({ blockComponent }) {
+				const { $$parentElement } = blockComponent;
+
+				if (!$$parentElement) {
+					throw new Error("ParentElement not supposed to be null.");
+				}
+
+				const align = getBlockAlign({ blockComponentLine: $$parentElement });
+				const figure = getAudioFigure({ blockComponent });
+				const caption = getAudioCaption({ figure });
+
+				configPort.setAlign(align);
+				configPort.setCaption(caption);
+			},
 		});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
@@ -84,10 +84,8 @@ export const configureAudio = ({
 	});
 
 	return () => {
-		overlayAppearanceHandler.cleanup();
-
 		insertionCleanup();
-		overlayAppearanceCleanup();
+		quickActionsCleanup();
 		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();

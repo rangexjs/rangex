@@ -6,10 +6,10 @@ import type {
 import type { Accessor } from "solid-js";
 
 export interface ReactiveVideoPort {
-	readonly floatingEl: HTMLDivElement;
+	readonly quickActionsEl: HTMLDivElement;
 	readonly canSwap: boolean;
 
-	isOpen: Accessor<boolean>;
+	quickActionsOpen: Accessor<boolean>;
 	caption: Accessor<CaptionState>;
 	align: Accessor<BlockAlignValue>;
 	currentBlock: Accessor<HTMLElement | null>;

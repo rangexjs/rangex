@@ -1,5 +1,9 @@
 import type {
 	CreateAdapterParams,
+	CurrentBlockConfigPort,
+	CurrentBlockPublicPort,
+	QuickActionsConfigPort,
+	QuickActionsPublicPort,
 	RemoveConfigPort,
 	RemovePublicPort,
 	UnwrapConfigPort,
@@ -16,7 +20,6 @@ export interface CodeBlockState {
 	language?: CodeBlockLanguage;
 	lightTheme?: CodeBlockTheme;
 	darkTheme?: CodeBlockTheme;
-	isOpen?: boolean;
 }
 
 export interface UpdateStateParams extends CodeBlockState {}
@@ -40,8 +43,6 @@ export type OnDarkThemeCallbackFn = (theme: CodeBlockTheme) => void;
 export type PlainTextProviderFn = () => string[];
 
 export interface CodeBlockConfigPortProps {
-	readonly floatingEl: HTMLDivElement;
-
 	updateState(params: UpdateStateParams): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
@@ -55,7 +56,9 @@ export interface CodeBlockConfigPortProps {
 export interface CodeBlockConfigPort
 	extends CodeBlockConfigPortProps,
 		RemoveConfigPort,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentBlockConfigPort,
+		QuickActionsConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
@@ -63,15 +66,12 @@ export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
 export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
 export interface InsertParams extends PlacementOption {}
 
 export interface WrapParams extends PlacementOption {}
 
 export interface CodeBlockPublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
 	readonly canInsert: boolean;
@@ -80,7 +80,6 @@ export interface CodeBlockPublicPortProps {
 	readonly language: CodeBlockLanguage;
 	readonly lightTheme: CodeBlockTheme;
 	readonly darkTheme: CodeBlockTheme;
-	readonly isOpen: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
@@ -88,7 +87,6 @@ export interface CodeBlockPublicPortProps {
 	onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
 	onLightThemeUpdate(callback: OnLightThemeUpdateCallbackFn): () => void;
 	onDarkThemeUpdate(callback: OnDarkThemeUpdateCallbackFn): () => void;
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;
@@ -102,7 +100,9 @@ export interface CodeBlockPublicPortProps {
 export interface CodeBlockPublicPort
 	extends CodeBlockPublicPortProps,
 		RemovePublicPort,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentBlockPublicPort,
+		QuickActionsPublicPort {}
 
 export interface CodeBlockInternals {
 	canInsert: boolean;
@@ -111,7 +111,6 @@ export interface CodeBlockInternals {
 	language: CodeBlockLanguage;
 	lightTheme: CodeBlockTheme;
 	darkTheme: CodeBlockTheme;
-	isOpen: boolean;
 	plainTextProvider: PlainTextProviderFn | null;
 }
 

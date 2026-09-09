@@ -4,6 +4,7 @@ export * from "./CommitSnapshotPort";
 export * from "./CurrentBlockPort";
 export * from "./DuplicatePort";
 export * from "./InsertRootLinePort";
+export * from "./QuickActionsPort";
 export * from "./RemovePort";
 export * from "./SwapToEmptyMediaPort";
 export * from "./UnwrapPort";

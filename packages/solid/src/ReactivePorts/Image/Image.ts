@@ -3,23 +3,25 @@ import { createSignal } from "solid-js";
 import type { ReactiveImagePort, ReactiveImageResult } from "./Image-types";
 
 export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
-	const [isOpen, setIsOpen] = createSignal(publicPort.isOpen);
+	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
+		publicPort.quickActionsOpen,
+	);
 	const [caption, setCaption] = createSignal(publicPort.caption);
 	const [align, setAlign] = createSignal(publicPort.align);
 	const [currentBlock, setCurrentBlock] = createSignal(publicPort.currentBlock);
 
 	const unsubscribeList = new Set<() => void>();
 
-	unsubscribeList.add(publicPort.onIsOpenUpdate(setIsOpen));
+	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
 	unsubscribeList.add(publicPort.onCaptionUpdate(setCaption));
 	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
 	unsubscribeList.add(publicPort.onCurrentBlockUpdate(setCurrentBlock));
 
 	const port: ReactiveImagePort = {
-		floatingEl: publicPort.floatingEl,
+		quickActionsEl: publicPort.quickActionsEl,
 		canSwap: publicPort.canSwap,
 
-		isOpen,
+		quickActionsOpen,
 		caption,
 		align,
 		currentBlock,

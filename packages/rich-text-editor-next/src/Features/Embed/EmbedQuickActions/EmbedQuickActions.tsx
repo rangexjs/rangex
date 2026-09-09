@@ -162,9 +162,9 @@ export const EmbedQuickActions = () => {
 		}
 	};
 
-	// We can't rely on embed.isOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = editor.embed.onIsOpenUpdate((isOpen) => {
-		if (!isOpen) {
+	// We can't rely on embed.quickActionsOpen() as we have to detect the change before repaint
+	const unsubscribeIsOpen = editor.embed.onQuickActionsOpenUpdate((open) => {
+		if (!open) {
 			closeNestedPopovers();
 		}
 	});
@@ -174,7 +174,7 @@ export const EmbedQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={embed.floatingEl}>
+		<Portal mount={embed.quickActionsEl}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
 					value={embed.align()}

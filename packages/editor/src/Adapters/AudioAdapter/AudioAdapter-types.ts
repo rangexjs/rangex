@@ -10,21 +10,14 @@ import type {
 	CurrentBlockConfigPort,
 	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
+	QuickActionsConfigPort,
+	QuickActionsPublicPort,
 	SwapToEmptyMediaConfigPort,
 	SwapToEmptyMediaPublicPort,
 } from "../_Utilities";
 
-export interface AudioState {
-	isOpen?: boolean;
-}
-
-export interface UpdateStateParams extends AudioState {}
-
 export interface AudioConfigPortProps {
 	readonly blockResize: BlockResize;
-	readonly floatingEl: HTMLDivElement;
-
-	updateState(params: UpdateStateParams): void;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -35,17 +28,10 @@ export interface AudioConfigPort
 		BlockAlignConfigPort,
 		CurrentBlockConfigPort,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort {}
+		SwapToEmptyMediaConfigPort,
+		QuickActionsConfigPort {}
 
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
-
-export interface AudioPublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
-	readonly isOpen: boolean;
-
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
-}
+export interface AudioPublicPortProps {}
 
 export interface AudioPublicPort
 	extends AudioPublicPortProps,
@@ -53,11 +39,8 @@ export interface AudioPublicPort
 		BlockAlignPublicPort,
 		CurrentBlockPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort {}
-
-export interface AudioInternals {
-	isOpen: boolean;
-}
+		SwapToEmptyMediaPublicPort,
+		QuickActionsPublicPort {}
 
 export interface AudioAdapter {
 	configPort: AudioConfigPort;

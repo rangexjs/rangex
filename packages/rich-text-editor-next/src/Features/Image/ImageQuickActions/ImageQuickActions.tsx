@@ -185,9 +185,9 @@ export const ImageQuickActions = () => {
 		}
 	};
 
-	// We can't rely on image.isOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = editor.image.onIsOpenUpdate((isOpen) => {
-		if (!isOpen) {
+	// We can't rely on image.quickActionsOpen() as we have to detect the change before repaint
+	const unsubscribeIsOpen = editor.image.onQuickActionsOpenUpdate((open) => {
+		if (!open) {
 			closeNestedPopovers();
 		}
 	});
@@ -197,7 +197,7 @@ export const ImageQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={image.floatingEl}>
+		<Portal mount={image.quickActionsEl}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
 					value={image.align()}

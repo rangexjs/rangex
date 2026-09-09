@@ -14,7 +14,10 @@ export const CodeBlock = (
 	const [language, setLanguage] = createSignal(publicPort.language);
 	const [lightTheme, setLightTheme] = createSignal(publicPort.lightTheme);
 	const [darkTheme, setDarkTheme] = createSignal(publicPort.darkTheme);
-	const [isOpen, setIsOpen] = createSignal(publicPort.isOpen);
+	const [currentBlock, setCurrentBlock] = createSignal(publicPort.currentBlock);
+	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
+		publicPort.quickActionsOpen,
+	);
 
 	const unsubscribeList = new Set<() => void>();
 
@@ -24,10 +27,11 @@ export const CodeBlock = (
 	unsubscribeList.add(publicPort.onLanguageUpdate(setLanguage));
 	unsubscribeList.add(publicPort.onLightThemeUpdate(setLightTheme));
 	unsubscribeList.add(publicPort.onDarkThemeUpdate(setDarkTheme));
-	unsubscribeList.add(publicPort.onIsOpenUpdate(setIsOpen));
+	unsubscribeList.add(publicPort.onCurrentBlockUpdate(setCurrentBlock));
+	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
 
 	const port: ReactiveCodeBlockPort = {
-		floatingEl: publicPort.floatingEl,
+		quickActionsEl: publicPort.quickActionsEl,
 		languages: publicPort.languages,
 		themes: publicPort.themes,
 
@@ -37,7 +41,8 @@ export const CodeBlock = (
 		language,
 		lightTheme,
 		darkTheme,
-		isOpen,
+		currentBlock,
+		quickActionsOpen,
 
 		insert: publicPort.insert,
 		wrap: publicPort.wrap,

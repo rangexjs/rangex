@@ -10,21 +10,14 @@ import type {
 	CurrentBlockConfigPort,
 	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
+	QuickActionsConfigPort,
+	QuickActionsPublicPort,
 	SwapToEmptyMediaConfigPort,
 	SwapToEmptyMediaPublicPort,
 } from "../_Utilities";
 
-export interface VideoState {
-	isOpen?: boolean;
-}
-
-export interface UpdateStateParams extends VideoState {}
-
 export interface VideoConfigPortProps {
 	readonly blockResize: BlockResize;
-	readonly floatingEl: HTMLDivElement;
-
-	updateState(params: UpdateStateParams): void;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -35,17 +28,10 @@ export interface VideoConfigPort
 		BlockAlignConfigPort,
 		CurrentBlockConfigPort,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort {}
+		SwapToEmptyMediaConfigPort,
+		QuickActionsConfigPort {}
 
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
-
-export interface VideoPublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
-	readonly isOpen: boolean;
-
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
-}
+export interface VideoPublicPortProps {}
 
 export interface VideoPublicPort
 	extends VideoPublicPortProps,
@@ -53,11 +39,8 @@ export interface VideoPublicPort
 		BlockAlignPublicPort,
 		CurrentBlockPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort {}
-
-export interface VideoInternals {
-	isOpen: boolean;
-}
+		SwapToEmptyMediaPublicPort,
+		QuickActionsPublicPort {}
 
 export interface VideoAdapter {
 	configPort: VideoConfigPort;
