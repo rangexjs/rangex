@@ -33,7 +33,7 @@ export const CustomComponentToolbarButton = () => {
 				button: {
 					disabled: !accordionItem.canInsert(),
 					onClick: () => {
-						accordionItem.wrap();
+						accordionItem.insert();
 					},
 				},
 			});
