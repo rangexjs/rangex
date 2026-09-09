@@ -10,3 +10,4 @@ export * from "./HandleCommitSnapshot";
 export * from "./HandleComponentUnwrap";
 export * from "./HandleInsertRootLine";
 export * from "./HandleLineRemove";
+export * from "./HandleSwapToEmptyMedia";

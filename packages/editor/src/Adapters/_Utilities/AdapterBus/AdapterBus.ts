@@ -2,6 +2,7 @@ import type {
 	MediaResolveCallbackParams,
 	MediaType,
 	OnMediaResolveCallbackFn,
+	OnSwapToEmptyMediaCallbackFn,
 } from "./AdapterBus-types";
 
 /**
@@ -14,6 +15,9 @@ import type {
 export class AdapterBus {
 	#mediaResolveListeners: Set<OnMediaResolveCallbackFn> = new Set();
 	#supportedMediaTypes: Set<MediaType> = new Set();
+
+	#swapToEmptyMediaListeners: Set<OnSwapToEmptyMediaCallbackFn> = new Set();
+	#emptyMediaAvailable = false;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {
 		this.#mediaResolveListeners.add(callback);
@@ -32,5 +36,24 @@ export class AdapterBus {
 
 	getSupportedMediaTypes(): MediaType[] {
 		return [...this.#supportedMediaTypes];
+	}
+
+	onSwapToEmptyMedia(callback: OnSwapToEmptyMediaCallbackFn) {
+		this.#swapToEmptyMediaListeners.add(callback);
+		return () => this.#swapToEmptyMediaListeners.delete(callback);
+	}
+
+	emitSwapToEmptyMedia() {
+		for (const listener of this.#swapToEmptyMediaListeners) {
+			listener();
+		}
+	}
+
+	registerEmptyMediaAvailable() {
+		this.#emptyMediaAvailable = true;
+	}
+
+	isEmptyMediaAvailable(): boolean {
+		return this.#emptyMediaAvailable;
 	}
 }

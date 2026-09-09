@@ -7,6 +7,7 @@ import type { Accessor } from "solid-js";
 
 export interface ReactiveImagePort {
 	readonly floatingEl: HTMLDivElement;
+	readonly canSwap: boolean;
 
 	isOpen: Accessor<boolean>;
 	caption: Accessor<CaptionState>;
@@ -17,6 +18,7 @@ export interface ReactiveImagePort {
 	changeCaptionPosition(position: CaptionPosition): void;
 	changeAlign(align: BlockAlignValue): void;
 	commitSnapshot(): void;
+	swap(): void;
 }
 
 export interface ReactiveImageResult {

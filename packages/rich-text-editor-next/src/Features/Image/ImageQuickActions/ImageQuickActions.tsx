@@ -67,7 +67,6 @@ export const ImageQuickActions = () => {
 	const [objectFit, setObjectFitSignal] = createSignal<ObjectFitValue>("cover");
 	const [aspectRatio, setAspectRatioSignal] =
 		createSignal<AspectRatioValue>("auto");
-	const [isSwapCardOpen, setIsSwapCardOpen] = createSignal(false);
 
 	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -152,9 +151,8 @@ export const ImageQuickActions = () => {
 		onAltTextCommit();
 	};
 
-	const onSwapToggle = () => {
-		// TODO: wire to the adapter once SwapCard (Image -> EmptyMedia) is implemented.
-		setIsSwapCardOpen((value) => !value);
+	const onSwapClick = () => {
+		image.swap();
 	};
 
 	const onCaptionToggle = () => {
@@ -213,10 +211,9 @@ export const ImageQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					data-is-checked={isSwapCardOpen()}
 					title="Swap"
-					disabled={readOnly?.checked()}
-					onClick={onSwapToggle}
+					disabled={!image.canSwap || readOnly?.checked()}
+					onClick={onSwapClick}
 				>
 					<Icon name="Swap" class="size-4" />
 				</button>

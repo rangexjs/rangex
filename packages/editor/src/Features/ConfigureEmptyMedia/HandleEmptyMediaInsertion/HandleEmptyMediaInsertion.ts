@@ -9,7 +9,7 @@ export const handleEmptyMediaInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onInsert(() => {
+	const insertEmptyMedia = () => {
 		const emptyMediaLine = createEmptyMedia();
 
 		blockComponentPlacement.insertBySelection({
@@ -27,9 +27,13 @@ export const handleEmptyMediaInsertion = ({
 		});
 
 		editorAPI.focus();
-	});
+	};
+
+	const unsubscribeInsert = configPort.onInsert(insertEmptyMedia);
+	const unsubscribeSwap = configPort.onSwap(insertEmptyMedia);
 
 	return () => {
-		unsubscribe();
+		unsubscribeInsert();
+		unsubscribeSwap();
 	};
 };

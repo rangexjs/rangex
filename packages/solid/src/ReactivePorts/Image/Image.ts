@@ -17,6 +17,7 @@ export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
 
 	const port: ReactiveImagePort = {
 		floatingEl: publicPort.floatingEl,
+		canSwap: publicPort.canSwap,
 
 		isOpen,
 		caption,
@@ -27,6 +28,7 @@ export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
 		changeCaptionPosition: publicPort.changeCaptionPosition,
 		changeAlign: publicPort.changeAlign,
 		commitSnapshot: publicPort.commitSnapshot,
+		swap: publicPort.swap,
 	};
 
 	const dispose = () => {

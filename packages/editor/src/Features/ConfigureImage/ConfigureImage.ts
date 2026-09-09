@@ -9,6 +9,7 @@ import {
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleCommitSnapshot,
+	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
 	getImageCaption,
@@ -76,6 +77,12 @@ export const configureImage = ({
 		setCaptionPosition: setImageCaptionPosition,
 	});
 
+	const swapCleanup = handleSwapToEmptyMedia({
+		port: configPort,
+		editorAPI,
+		getCurrentBlock,
+	});
+
 	return () => {
 		overlayAppearanceHandler.cleanup();
 
@@ -85,5 +92,6 @@ export const configureImage = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		swapCleanup();
 	};
 };

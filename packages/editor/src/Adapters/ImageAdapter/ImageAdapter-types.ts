@@ -10,6 +10,8 @@ import type {
 	CurrentBlockConfigPort,
 	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
+	SwapToEmptyMediaConfigPort,
+	SwapToEmptyMediaPublicPort,
 } from "../_Utilities";
 
 export interface ImageState {
@@ -32,7 +34,8 @@ export interface ImageConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentBlockConfigPort,
-		CommitSnapshotConfigPort {}
+		CommitSnapshotConfigPort,
+		SwapToEmptyMediaConfigPort {}
 
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
@@ -49,7 +52,8 @@ export interface ImagePublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentBlockPublicPort,
-		CommitSnapshotPublicPort {}
+		CommitSnapshotPublicPort,
+		SwapToEmptyMediaPublicPort {}
 
 export interface ImageInternals {
 	isOpen: boolean;

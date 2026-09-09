@@ -5,6 +5,7 @@ import {
 	createCaptionPort,
 	createCommitSnapshotPort,
 	createCurrentBlockPort,
+	createSwapToEmptyMediaPort,
 } from "../_Utilities";
 import type {
 	CreateImageAdapterParams,
@@ -41,6 +42,7 @@ export const createImageAdapter = (
 	const blockAlignPort = createBlockAlignPort();
 	const currentBlockPort = createCurrentBlockPort();
 	const commitSnapshotPort = createCommitSnapshotPort();
+	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
 
 	const updateState = ({ isOpen }: UpdateStateParams) => {
 		if (isOpen !== undefined) {
@@ -57,6 +59,7 @@ export const createImageAdapter = (
 		blockAlignPort.configPort,
 		currentBlockPort.configPort,
 		commitSnapshotPort.configPort,
+		swapToEmptyMediaPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
@@ -82,6 +85,7 @@ export const createImageAdapter = (
 		blockAlignPort.publicPort,
 		currentBlockPort.publicPort,
 		commitSnapshotPort.publicPort,
+		swapToEmptyMediaPort.publicPort,
 		{
 			get floatingEl() {
 				return floatingEl;

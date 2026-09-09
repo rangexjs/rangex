@@ -8,3 +8,5 @@ export interface MediaResolveCallbackParams {
 export type OnMediaResolveCallbackFn = (
 	params: MediaResolveCallbackParams,
 ) => void;
+
+export type OnSwapToEmptyMediaCallbackFn = () => void;

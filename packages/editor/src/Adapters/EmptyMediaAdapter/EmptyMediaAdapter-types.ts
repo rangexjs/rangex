@@ -64,6 +64,8 @@ export type RemoveSlottedElementFn = (container: HTMLDivElement) => void;
 
 export type OnInsertCallbackFn = () => void;
 
+export type OnSwapCallbackFn = () => void;
+
 export type OnResolveCallbackFn = (params: ResolveOption) => void;
 
 export interface EmptyMediaConfigPortProps {
@@ -76,6 +78,7 @@ export interface EmptyMediaConfigPortProps {
 	removeSlottedElement: RemoveSlottedElementFn;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
+	onSwap(callback: OnSwapCallbackFn): () => void;
 	onResolve(callback: OnResolveCallbackFn): () => void;
 
 	emitMediaResolve(params: MediaResolveCallbackParams): void;

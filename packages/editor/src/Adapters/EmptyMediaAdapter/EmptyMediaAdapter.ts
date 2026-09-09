@@ -20,6 +20,8 @@ export const createEmptyMediaAdapter = (
 ): CreateEmptyMediaAdapterResult => {
 	const [{ uploadFile }, { adapterBus }] = params;
 
+	adapterBus.registerEmptyMediaAvailable();
+
 	const internals: EmptyMediaInternals = {
 		canInsert: false,
 		registerSlottedElement: null,
@@ -119,6 +121,11 @@ export const createEmptyMediaAdapter = (
 		onInsert(callback) {
 			onInsertListeners.add(callback);
 			return () => onInsertListeners.delete(callback);
+		},
+
+		onSwap(callback) {
+			const cleanup = adapterBus.onSwapToEmptyMedia(callback);
+			return () => cleanup();
 		},
 
 		onResolve(callback) {
