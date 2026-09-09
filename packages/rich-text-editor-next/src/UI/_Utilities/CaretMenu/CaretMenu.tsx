@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+import { Portal } from "@solidjs/web";
 import {
 	type Accessor,
 	createEffect,
@@ -15,6 +16,7 @@ interface CaretItemParams {
 export type CaretItemFn = (params: CaretItemParams) => JSX.Element;
 
 export interface CaretMenuProps {
+	caretMenuEl: HTMLDivElement;
 	items: Accessor<CaretItemFn[]>;
 	isOpen: Accessor<boolean>;
 	onSelect: (index: number) => void;
@@ -22,19 +24,32 @@ export interface CaretMenuProps {
 }
 
 export const CaretMenu = (props: CaretMenuProps) => {
+	props.caretMenuEl.classList.add(
+		"scrollbar-thin",
+		"z-20",
+		"overflow-y-auto",
+		"max-h-[min(100%,360px)]",
+		"rounded-lg",
+		"border",
+		"border-neutral-300",
+		"bg-white",
+		"shadow-md",
+		"dark:border-neutral-700",
+		"dark:bg-neutral-900",
+	);
+
+	if (props.class) {
+		props.caretMenuEl.classList.add(...props.class.split(" ").filter(Boolean));
+	}
+
 	const [activeIndex, setActiveIndex] = createSignal(0);
 	const isEntryActive = (index: number) => activeIndex() === index;
 
-	let container: HTMLDivElement | undefined;
 	let listEl: HTMLUListElement | undefined;
 
 	const resetList = () => {
-		if (!container) {
-			throw new Error("Container can't be undefined.");
-		}
-
 		setActiveIndex(0);
-		container.scrollTo({ top: 0 });
+		props.caretMenuEl.scrollTo({ top: 0 });
 	};
 
 	createEffect(
@@ -109,15 +124,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
 	});
 
 	return (
-		<div
-			ref={(element) => {
-				container = element;
-			}}
-			class={[
-				"scrollbar-thin z-20 max-h-[min(100%,360px)] overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",
-				props.class,
-			]}
-		>
+		<Portal mount={props.caretMenuEl}>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={props.items()}>
 					{(item, index) => {
@@ -134,6 +141,6 @@ export const CaretMenu = (props: CaretMenuProps) => {
 					}}
 				</For>
 			</ul>
-		</div>
+		</Portal>
 	);
 };

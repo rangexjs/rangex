@@ -12,6 +12,7 @@ import type {
 } from "../AccordionItemAdapter";
 import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
 import type { EmbedAdapter, EmbedPublicPort } from "../EmbedAdapter";
+import type { EmojiAdapter, EmojiPublicPort } from "../EmojiAdapter";
 import type {
 	EmptyMediaAdapter,
 	EmptyMediaPublicPort,
@@ -21,6 +22,7 @@ import type {
 	FormattingPublicPort,
 } from "../FormattingAdapter";
 import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
+import type { MentionAdapter, MentionPublicPort } from "../MentionAdapter";
 import type { ReadOnlyAdapter, ReadOnlyPublicPort } from "../ReadOnlyAdapter";
 import type {
 	SeparatorAdapter,
@@ -44,9 +46,11 @@ export type Adapter =
 	| AudioAdapter
 	| CodeBlockAdapter
 	| EmbedAdapter
+	| EmojiAdapter
 	| EmptyMediaAdapter
 	| FormattingAdapter
 	| ImageAdapter
+	| MentionAdapter
 	| ReadOnlyAdapter
 	| SeparatorAdapter
 	| TemplateVariableAdapter
@@ -57,9 +61,11 @@ export interface AdapterPublicPorts {
 	audio: AudioPublicPort;
 	codeBlock: CodeBlockPublicPort;
 	embed: EmbedPublicPort;
+	emoji: EmojiPublicPort;
 	emptyMedia: EmptyMediaPublicPort;
 	formatting: FormattingPublicPort;
 	image: ImagePublicPort;
+	mention: MentionPublicPort;
 	readOnly: ReadOnlyPublicPort;
 	separator: SeparatorPublicPort;
 	templateVariable: TemplateVariablePublicPort;

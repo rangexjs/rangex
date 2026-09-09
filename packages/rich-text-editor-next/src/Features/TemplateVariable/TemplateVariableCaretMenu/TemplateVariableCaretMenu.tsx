@@ -1,4 +1,3 @@
-import { Portal } from "@solidjs/web";
 import { useReactiveEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
@@ -36,13 +35,12 @@ export const TemplateVariableCaretMenu = () => {
 	};
 
 	return (
-		<Portal mount={templateVariable.caretMenuEl}>
-			<CaretMenu
-				items={items}
-				isOpen={templateVariable.caretMenuOpen}
-				onSelect={onSelect}
-				class="min-w-40 max-w-56"
-			/>
-		</Portal>
+		<CaretMenu
+			caretMenuEl={templateVariable.caretMenuEl}
+			items={items}
+			isOpen={templateVariable.caretMenuOpen}
+			onSelect={onSelect}
+			class="min-w-40 max-w-56"
+		/>
 	);
 };

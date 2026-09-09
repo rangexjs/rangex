@@ -3,9 +3,11 @@ import {
 	Audio,
 	CodeBlock,
 	Embed,
+	Emoji,
 	EmptyMedia,
 	Formatting,
 	Image,
+	Mention,
 	ReadOnly,
 	Separator,
 	TemplateVariable,
@@ -51,6 +53,13 @@ export const createReactiveEditor = ({
 		disposeList.add(dispose);
 	}
 
+	if (editor.emoji) {
+		const { port, dispose } = Emoji(editor.emoji);
+
+		reactiveEditor.emoji = port;
+		disposeList.add(dispose);
+	}
+
 	if (editor.emptyMedia) {
 		const { port, dispose } = EmptyMedia(editor.emptyMedia);
 
@@ -69,6 +78,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Image(editor.image);
 
 		reactiveEditor.image = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.mention) {
+		const { port, dispose } = Mention(editor.mention);
+
+		reactiveEditor.mention = port;
 		disposeList.add(dispose);
 	}
 

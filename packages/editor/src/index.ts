@@ -14,6 +14,11 @@ export type {
 } from "#adapters/CodeBlock";
 export type { EmbedPublicPort } from "#adapters/Embed";
 export type {
+	EmojiPublicPort,
+	SuggestionItem as EmojiSuggestionItem,
+	SuggestionItems as EmojiSuggestionItems,
+} from "#adapters/Emoji";
+export type {
 	EmptyMediaPublicPort,
 	MediaResolveDetail,
 	ResolveOption,
@@ -56,6 +61,11 @@ export type {
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
+export type {
+	MentionPublicPort,
+	SuggestionItem as MentionSuggestionItem,
+	SuggestionItems as MentionSuggestionItems,
+} from "#adapters/Mention";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
 export type {
@@ -78,9 +88,11 @@ export {
 	CodeBlock,
 	createEditor,
 	Embed,
+	Emoji,
 	EmptyMedia,
 	Formatting,
 	Image,
+	Mention,
 	ReadOnly,
 	Separator,
 	TemplateVariable,
