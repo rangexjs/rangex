@@ -7,4 +7,5 @@ export * from "./ConfigureFormatting";
 export * from "./ConfigureImage";
 export * from "./ConfigureReadOnly";
 export * from "./ConfigureSeparator";
+export * from "./ConfigureTemplateVariable";
 export * from "./ConfigureVideo";

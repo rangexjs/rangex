@@ -15,7 +15,6 @@ interface CaretItemParams {
 export type CaretItemFn = (params: CaretItemParams) => JSX.Element;
 
 export interface CaretMenuProps {
-	ref: (element: HTMLDivElement) => void;
 	items: Accessor<CaretItemFn[]>;
 	isOpen: Accessor<boolean>;
 	onSelect: (index: number) => void;
@@ -113,7 +112,6 @@ export const CaretMenu = (props: CaretMenuProps) => {
 		<div
 			ref={(element) => {
 				container = element;
-				props.ref(element);
 			}}
 			class={[
 				"scrollbar-thin z-20 max-h-[min(100%,360px)] overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",

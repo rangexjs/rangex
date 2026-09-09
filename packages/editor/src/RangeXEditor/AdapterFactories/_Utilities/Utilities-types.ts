@@ -7,6 +7,7 @@ import type { Formatting } from "../Formatting";
 import type { Image } from "../Image";
 import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
+import type { TemplateVariable } from "../TemplateVariable";
 import type { Video } from "../Video";
 
 export type AdapterFactory =
@@ -19,6 +20,7 @@ export type AdapterFactory =
 	| typeof Image
 	| typeof ReadOnly
 	| typeof Separator
+	| typeof TemplateVariable
 	| typeof Video;
 
 export type AdapterFactoryValue = ReturnType<AdapterFactory>;

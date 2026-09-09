@@ -10,6 +10,7 @@ import {
 	Image,
 	ReadOnly,
 	Separator,
+	TemplateVariable,
 	Video,
 } from "@rangex/rich-text-editor-next";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
@@ -71,6 +72,7 @@ export const createDevelopmentView = () => {
 		Image({}),
 		ReadOnly({}),
 		Separator({}),
+		TemplateVariable({}),
 		Video({}),
 	];
 

@@ -1,0 +1,102 @@
+import { createContentLine } from "rich-text-area";
+import { ensureNodeRootStorage } from "#engine-links";
+import { createTemplateVariable } from "../../_Utilities";
+import {
+	getTemplateVariableQuery,
+	resolveTemplateVariableDisplayText,
+} from "../_Utilities";
+import type {
+	HandleTemplateVariableSelectParams,
+	RemoveTemplateVariableQueryTextParams,
+	RemoveTemplateVariableQueryTextResult,
+} from "./HandleTemplateVariableSelect-types";
+
+/**
+ * Removes the {{query text (e.g. "{{FirstName") that triggered the caret menu, before the
+ * component is inserted.
+ */
+const removeTemplateVariableQueryText = ({
+	editorAPI,
+}: RemoveTemplateVariableQueryTextParams): RemoveTemplateVariableQueryTextResult => {
+	const selection = editorAPI.getEditorSelection();
+
+	const { fromText, fromOffset } = selection.getBoundaryPoints();
+
+	const templateVariableQuery = getTemplateVariableQuery({
+		editorAPI,
+		fromText,
+		fromOffset,
+	});
+
+	if (!templateVariableQuery) {
+		return { queryFound: false };
+	}
+
+	const { toText, toOffset } = templateVariableQuery;
+
+	editorAPI.removeNodesInRange({
+		fromNode: fromText,
+		fromOffset,
+		toNode: toText,
+		toOffset,
+	});
+
+	return { queryFound: true };
+};
+
+/**
+ * Subscribes to caret-menu selection and inserts the component at the cursor. Strips the
+ * {{query text first, then re-reads the cursor position and inserts there.
+ */
+export const handleTemplateVariableSelect = ({
+	configPort,
+	editorAPI,
+}: HandleTemplateVariableSelectParams) => {
+	const { rootEditable } = editorAPI;
+
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = configPort.onSelect(({ kind }) => {
+		const { queryFound } = removeTemplateVariableQueryText({ editorAPI });
+
+		if (!queryFound) {
+			console.warn(
+				"handleTemplateVariableSelect: no {{query found at cursor — item was selected but the trigger text could not be located.",
+			);
+			return;
+		}
+
+		const { fromText, fromOffset } = selection.getBoundaryPoints();
+
+		const rootStorage = ensureNodeRootStorage({ rootEditable });
+
+		const displayText = resolveTemplateVariableDisplayText({
+			type: kind,
+			storage: rootStorage.templateVariable,
+		});
+
+		const templateVariable = createTemplateVariable({
+			type: kind,
+			displayText,
+		});
+
+		editorAPI.insertNode({
+			fromNode: fromText,
+			fromOffset,
+			lines: [
+				createContentLine({ localName: "p", childNodes: [templateVariable] }),
+			],
+			breakBeforeInsert: false,
+		});
+
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+		snapshotTimeline.registerSnapshotBoundary();
+
+		editorAPI.focus();
+	});
+
+	return () => {
+		unsubscribe();
+	};
+};

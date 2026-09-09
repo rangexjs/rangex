@@ -58,6 +58,13 @@ export type {
 export type { ImagePublicPort } from "#adapters/Image";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
+export type {
+	Options as TemplateVariableOptions,
+	SuggestionItem as TemplateVariableSuggestionItem,
+	SuggestionItems as TemplateVariableSuggestionItems,
+	TemplateVariableKind,
+	TemplateVariablePublicPort,
+} from "#adapters/TemplateVariable";
 export type { VideoPublicPort } from "#adapters/Video";
 export type {
 	AdapterFactoryValue,
@@ -76,6 +83,7 @@ export {
 	Image,
 	ReadOnly,
 	Separator,
+	TemplateVariable,
 	Video,
 } from "#rangex-editor";
 export type { EngineStyles } from "./Styles";

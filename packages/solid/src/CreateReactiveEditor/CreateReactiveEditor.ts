@@ -8,6 +8,7 @@ import {
 	Image,
 	ReadOnly,
 	Separator,
+	TemplateVariable,
 	Video,
 } from "../ReactivePorts";
 import type {
@@ -82,6 +83,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Separator(editor.separator);
 
 		reactiveEditor.separator = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.templateVariable) {
+		const { port, dispose } = TemplateVariable(editor.templateVariable);
+
+		reactiveEditor.templateVariable = port;
 		disposeList.add(dispose);
 	}
 

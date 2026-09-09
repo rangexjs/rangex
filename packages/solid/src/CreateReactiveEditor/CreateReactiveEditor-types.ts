@@ -8,6 +8,7 @@ import type { ReactiveFormattingPort } from "../ReactivePorts/Formatting";
 import type { ReactiveImagePort } from "../ReactivePorts/Image";
 import type { ReactiveReadOnlyPort } from "../ReactivePorts/ReadOnly";
 import type { ReactiveSeparatorPort } from "../ReactivePorts/Separator";
+import type { ReactiveTemplateVariablePort } from "../ReactivePorts/TemplateVariable";
 import type { ReactiveVideoPort } from "../ReactivePorts/Video";
 
 export interface ReactiveEditor {
@@ -20,6 +21,7 @@ export interface ReactiveEditor {
 	image?: ReactiveImagePort;
 	readOnly?: ReactiveReadOnlyPort;
 	separator?: ReactiveSeparatorPort;
+	templateVariable?: ReactiveTemplateVariablePort;
 	video?: ReactiveVideoPort;
 }
 

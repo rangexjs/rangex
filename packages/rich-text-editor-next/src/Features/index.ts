@@ -6,4 +6,5 @@ export * from "./EmptyMedia";
 export * from "./Formatting";
 export * from "./Image";
 export * from "./ReadOnly";
+export * from "./TemplateVariable";
 export * from "./Video";

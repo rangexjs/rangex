@@ -1,4 +1,8 @@
-import type { CreateAdapterParams } from "../_Utilities";
+import type {
+	CaretMenuConfigPort,
+	CaretMenuPublicPort,
+	CreateAdapterParams,
+} from "../_Utilities";
 
 export type TemplateVariableKind =
 	| "full-name"
@@ -25,7 +29,6 @@ export interface TemplateVariableState {
 	canInsert?: boolean;
 	options?: Options;
 	query?: string;
-	isOpen?: boolean;
 }
 
 export interface UpdateStateParams extends TemplateVariableState {}
@@ -39,7 +42,7 @@ export type OnOptionsCallbackFn = (options: Partial<Options>) => void;
 export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 
 export interface TemplateVariableConfigPortProps {
-	readonly floatingEl: HTMLDivElement;
+	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
 
@@ -49,25 +52,21 @@ export interface TemplateVariableConfigPortProps {
 }
 
 export interface TemplateVariableConfigPort
-	extends TemplateVariableConfigPortProps {}
+	extends TemplateVariableConfigPortProps,
+		CaretMenuConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnOptionsUpdateCallbackFn = (value: Options) => void;
 export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
-export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
 export interface TemplateVariablePublicPortProps {
-	readonly floatingEl: HTMLDivElement;
-
 	readonly canInsert: boolean;
 	readonly options: Options;
 	readonly filteredItems: SuggestionItems;
-	readonly isOpen: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onOptionsUpdate(callback: OnOptionsUpdateCallbackFn): () => void;
 	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
-	onIsOpenUpdate(callback: OnIsOpenUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	changeOptions(options: Partial<Options>): void;
@@ -75,14 +74,14 @@ export interface TemplateVariablePublicPortProps {
 }
 
 export interface TemplateVariablePublicPort
-	extends TemplateVariablePublicPortProps {}
+	extends TemplateVariablePublicPortProps,
+		CaretMenuPublicPort {}
 
 export interface TemplateVariableInternals {
 	canInsert: boolean;
 	options: Options;
 	query: string;
 	filteredItems: SuggestionItems;
-	isOpen: boolean;
 }
 
 export interface TemplateVariableAdapter {
