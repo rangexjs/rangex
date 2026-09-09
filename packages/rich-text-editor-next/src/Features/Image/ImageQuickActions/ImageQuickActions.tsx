@@ -272,7 +272,7 @@ export const ImageQuickActions = () => {
 								onChange={(value) => image.changeCaptionPosition(value)}
 								appearance="primary-outline"
 								class="rounded-sm"
-								commonButtonClass="rounded-sm py-1.5 font-medium text-xs"
+								commonButtonClass="rounded-sm py-1 font-medium text-xs"
 							/>
 						</div>
 
