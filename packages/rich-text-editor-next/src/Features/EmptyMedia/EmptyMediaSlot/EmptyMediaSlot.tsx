@@ -4,7 +4,7 @@ import type {
 	UploadState,
 } from "@rangex/editor";
 import type { ReactiveEditor } from "@rangex/solid";
-import { createMemo, createSignal } from "solid-js";
+import { createMemo, createSignal, flush } from "solid-js";
 import {
 	createTextFieldState,
 	FormField,
@@ -260,6 +260,8 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		}
 
 		urlHandle.validate();
+
+		flush();
 
 		if (urlHandle.state().hasError) {
 			return;

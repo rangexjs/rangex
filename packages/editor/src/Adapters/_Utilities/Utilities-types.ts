@@ -11,6 +11,7 @@ import type {
 	AccordionItemPublicPort,
 } from "../AccordionItemAdapter";
 import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
+import type { EmbedAdapter, EmbedPublicPort } from "../EmbedAdapter";
 import type {
 	EmptyMediaAdapter,
 	EmptyMediaPublicPort,
@@ -42,6 +43,7 @@ export type Adapter =
 	| AccordionItemAdapter
 	| AudioAdapter
 	| CodeBlockAdapter
+	| EmbedAdapter
 	| EmptyMediaAdapter
 	| FormattingAdapter
 	| ImageAdapter
@@ -54,6 +56,7 @@ export interface AdapterPublicPorts {
 	accordionItem: AccordionItemPublicPort;
 	audio: AudioPublicPort;
 	codeBlock: CodeBlockPublicPort;
+	embed: EmbedPublicPort;
 	emptyMedia: EmptyMediaPublicPort;
 	formatting: FormattingPublicPort;
 	image: ImagePublicPort;

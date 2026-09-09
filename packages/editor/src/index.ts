@@ -12,6 +12,7 @@ export type {
 	CodeBlockPublicPort,
 	CodeBlockTheme,
 } from "#adapters/CodeBlock";
+export type { EmbedPublicPort } from "#adapters/Embed";
 export type {
 	EmptyMediaPublicPort,
 	MediaResolveDetail,
@@ -69,6 +70,7 @@ export {
 	Audio,
 	CodeBlock,
 	createEditor,
+	Embed,
 	EmptyMedia,
 	Formatting,
 	Image,

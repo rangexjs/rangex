@@ -1,6 +1,7 @@
 export * from "./AccordionItem";
 export * from "./Audio";
 export * from "./CodeBlock";
+export * from "./Embed";
 export * from "./EmptyMedia";
 export * from "./Formatting";
 export * from "./Image";

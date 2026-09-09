@@ -3,6 +3,7 @@ import {
 	Audio,
 	CodeBlock,
 	createRichTextEditor,
+	Embed,
 	EmptyMedia,
 	type Extension,
 	Formatting,
@@ -62,6 +63,7 @@ export const createDevelopmentView = () => {
 	const extensions: Extension[] = [
 		AccordionItem({}),
 		Audio({}),
+		Embed({}),
 		EmptyMedia({ uploadFile }),
 		Formatting({}),
 		CodeBlock({}),
