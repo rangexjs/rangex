@@ -1,6 +1,6 @@
 import type { FormattingIndentationValue } from "@rangex/editor";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -26,7 +26,7 @@ const defaultValues: Set<FormattingIndentationValue> = new Set([
 ]);
 
 export const IndentationToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

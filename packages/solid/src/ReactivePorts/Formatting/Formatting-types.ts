@@ -21,7 +21,6 @@ import type {
 	FormattingLineLocalNameValue,
 	FormattingLineSpacingState,
 	FormattingLineSpacingValue,
-	FormattingPublicPort,
 	FormattingRemoveLineState,
 	FormattingRemoveTextState,
 	FormattingStrikethroughState,
@@ -34,8 +33,6 @@ import type {
 import type { Accessor } from "solid-js";
 
 export interface ReactiveFormattingPort {
-	readonly raw: FormattingPublicPort;
-
 	backgroundColor: Accessor<FormattingBackgroundColorState>;
 	bold: Accessor<FormattingBoldState>;
 	code: Accessor<FormattingCodeState>;

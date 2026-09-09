@@ -1,6 +1,6 @@
 import type { FormattingLetterSpacingValue } from "@rangex/editor";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -28,7 +28,7 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 ]);
 
 export const LetterSpacingToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

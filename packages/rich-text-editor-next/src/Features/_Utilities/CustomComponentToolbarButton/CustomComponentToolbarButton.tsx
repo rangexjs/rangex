@@ -1,11 +1,11 @@
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const { accordionItem, separator, readOnly } = useEditorContext();
+	const { accordionItem, separator, readOnly } = useReactiveEditorContext();
 
 	const [checked, setChecked] = createSignal(false);
 

@@ -1,6 +1,6 @@
 import type { FormattingFontFamilyValue } from "@rangex/editor";
 import { createEffect, createMemo, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -31,7 +31,7 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontFamilyToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

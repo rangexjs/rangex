@@ -1,5 +1,5 @@
 import { createMemo, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -8,7 +8,7 @@ import {
 } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
-	const { codeBlock, readOnly } = useEditorContext();
+	const { codeBlock, readOnly } = useReactiveEditorContext();
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");

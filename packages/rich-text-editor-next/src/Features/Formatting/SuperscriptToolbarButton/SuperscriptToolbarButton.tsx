@@ -1,10 +1,10 @@
 import { createMemo } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SuperscriptToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

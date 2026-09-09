@@ -1,2 +1,2 @@
-export * from "./RangeXEditor";
+export * from "./CreateReactiveEditor";
 export * from "./ReactivePorts";

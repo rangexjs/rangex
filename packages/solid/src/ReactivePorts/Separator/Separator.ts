@@ -15,8 +15,6 @@ export const Separator = (
 	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
 
 	const port: ReactiveSeparatorPort = {
-		raw: publicPort,
-
 		canInsert,
 
 		insert: publicPort.insert,

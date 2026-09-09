@@ -2,13 +2,10 @@ import type {
 	BlockAlignValue,
 	CaptionPosition,
 	CaptionState,
-	ImagePublicPort,
 } from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveImagePort {
-	readonly raw: ImagePublicPort;
-
 	readonly floatingEl: HTMLDivElement;
 
 	isOpen: Accessor<boolean>;

@@ -1,10 +1,10 @@
 import { createMemo } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const EmptyMediaToolbarButton = () => {
-	const { emptyMedia, readOnly } = useEditorContext();
+	const { emptyMedia, readOnly } = useReactiveEditorContext();
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");

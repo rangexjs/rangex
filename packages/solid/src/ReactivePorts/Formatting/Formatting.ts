@@ -59,8 +59,6 @@ export const Formatting = (
 	unsubscribeList.add(publicPort.onRemoveTextUpdate(setRemoveText));
 
 	const port: ReactiveFormattingPort = {
-		raw: publicPort,
-
 		backgroundColor,
 		bold,
 		code,

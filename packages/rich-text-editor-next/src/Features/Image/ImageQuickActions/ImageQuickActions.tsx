@@ -6,7 +6,7 @@ import {
 	createUniqueId,
 	onCleanup,
 } from "solid-js";
-import { useEditorContext } from "#context";
+import { useEditorContext, useReactiveEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -49,9 +49,10 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const ImageQuickActions = () => {
-	const { image, readOnly } = useEditorContext();
+	const { image, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
 
-	if (!image) {
+	if (!(image && editor.image)) {
 		throw new Error("Image can't be undefined.");
 	}
 
@@ -187,7 +188,7 @@ export const ImageQuickActions = () => {
 	};
 
 	// We can't rely on image.isOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = image.raw.onIsOpenUpdate((isOpen) => {
+	const unsubscribeIsOpen = editor.image.onIsOpenUpdate((isOpen) => {
 		if (!isOpen) {
 			closeNestedPopovers();
 		}

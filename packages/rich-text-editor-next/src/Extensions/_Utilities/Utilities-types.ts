@@ -1,5 +1,5 @@
-import type { AdapterFactoryValue } from "@rangex/editor";
-import type { SolidEditor } from "@rangex/solid";
+import type { AdapterFactoryValue, RangeXEditor } from "@rangex/editor";
+import type { ReactiveEditor } from "@rangex/solid";
 import type { Component } from "solid-js";
 import type { ToolbarButtonValue } from "#constants";
 
@@ -14,7 +14,12 @@ export interface ExtensionComponents {
 	floatingComponents: ExtensionFloatingComponents;
 }
 
-export type RegisterFn = (editor: SolidEditor) => void;
+export interface RegisterEditor {
+	editor: RangeXEditor;
+	reactiveEditor: ReactiveEditor;
+}
+
+export type RegisterFn = (editor: RegisterEditor) => void;
 
 export interface Extension {
 	createAdapter: () => AdapterFactoryValue;

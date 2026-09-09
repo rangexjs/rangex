@@ -15,8 +15,6 @@ export const ReadOnly = (
 	unsubscribeList.add(publicPort.onCheckedUpdate(setChecked));
 
 	const port: ReactiveReadOnlyPort = {
-		raw: publicPort,
-
 		checked,
 
 		toggle: publicPort.toggle,

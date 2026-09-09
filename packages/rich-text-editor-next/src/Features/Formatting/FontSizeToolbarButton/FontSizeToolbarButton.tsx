@@ -1,6 +1,6 @@
 import type { FormattingFontSizeValue } from "@rangex/editor";
 import { createEffect, createMemo, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -50,7 +50,7 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontSizeToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

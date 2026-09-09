@@ -31,8 +31,6 @@ export const EmptyMedia = (
 	};
 
 	const port: ReactiveEmptyMediaPort = {
-		raw: publicPort,
-
 		supportedMediaTypes: publicPort.supportedMediaTypes,
 
 		registerSlottedElement: publicPort.registerSlottedElement,

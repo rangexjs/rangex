@@ -7,8 +7,6 @@ import type {
 import type { Accessor } from "solid-js";
 
 export interface ReactiveEmptyMediaPort {
-	readonly raw: EmptyMediaPublicPort;
-
 	readonly supportedMediaTypes: MediaType[];
 
 	registerSlottedElement: EmptyMediaPublicPort["registerSlottedElement"];

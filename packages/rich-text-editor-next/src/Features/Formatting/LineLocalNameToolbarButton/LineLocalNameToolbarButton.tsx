@@ -1,6 +1,6 @@
 import type { FormattingLineLocalNameValue } from "@rangex/editor";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import {
 	ToolbarButton,
 	ToolbarDropdown,
@@ -8,7 +8,7 @@ import {
 } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

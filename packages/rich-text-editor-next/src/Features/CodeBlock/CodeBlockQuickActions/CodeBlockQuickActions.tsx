@@ -1,13 +1,14 @@
 import { Portal } from "@solidjs/web";
 import { createSignal, createUniqueId, onCleanup } from "solid-js";
-import { useEditorContext } from "#context";
+import { useEditorContext, useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../_Utilities";
 
 export const CodeBlockQuickActions = () => {
-	const { codeBlock, readOnly } = useEditorContext();
+	const { codeBlock, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
 
-	if (!codeBlock) {
+	if (!(codeBlock && editor.codeBlock)) {
 		throw new Error("CodeBlock can't be undefined.");
 	}
 
@@ -41,7 +42,7 @@ export const CodeBlockQuickActions = () => {
 	};
 
 	// We can't rely on the codeBlock.isOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = codeBlock.raw.onIsOpenUpdate((isOpen) => {
+	const unsubscribeIsOpen = editor.codeBlock.onIsOpenUpdate((isOpen) => {
 		if (!isOpen) {
 			closeNestedPopovers();
 		}

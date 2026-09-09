@@ -5,7 +5,7 @@ import {
 	createUniqueId,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import {
 	type ColorMode,
 	ColorPanel,
@@ -21,7 +21,7 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const ColorToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

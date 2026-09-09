@@ -1,6 +1,6 @@
 import type { FormattingLineHeightValue } from "@rangex/editor";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -21,7 +21,7 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 ]);
 
 export const LineHeightToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

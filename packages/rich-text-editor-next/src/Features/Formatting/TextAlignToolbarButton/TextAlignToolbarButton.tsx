@@ -1,6 +1,6 @@
 import type { FormattingTextAlignValue } from "@rangex/editor";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
-import { useEditorContext } from "#context";
+import { useReactiveEditorContext } from "#context";
 import { Icon, type IconName } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
@@ -35,7 +35,7 @@ const getToolbarIconFromActiveValues = (
 };
 
 export const TextAlignToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const { formatting, readOnly } = useReactiveEditorContext();
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

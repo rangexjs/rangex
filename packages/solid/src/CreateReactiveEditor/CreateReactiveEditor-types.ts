@@ -1,3 +1,4 @@
+import type { RangeXEditor } from "@rangex/editor";
 import type { ReactiveAccordionItemPort } from "../ReactivePorts/AccordionItem";
 import type { ReactiveCodeBlockPort } from "../ReactivePorts/CodeBlock";
 import type { ReactiveEmptyMediaPort } from "../ReactivePorts/EmptyMedia";
@@ -6,7 +7,7 @@ import type { ReactiveImagePort } from "../ReactivePorts/Image";
 import type { ReactiveReadOnlyPort } from "../ReactivePorts/ReadOnly";
 import type { ReactiveSeparatorPort } from "../ReactivePorts/Separator";
 
-export interface SolidEditor {
+export interface ReactiveEditor {
 	accordionItem?: ReactiveAccordionItemPort;
 	codeBlock?: ReactiveCodeBlockPort;
 	emptyMedia?: ReactiveEmptyMediaPort;
@@ -14,13 +15,13 @@ export interface SolidEditor {
 	image?: ReactiveImagePort;
 	readOnly?: ReactiveReadOnlyPort;
 	separator?: ReactiveSeparatorPort;
-
-	destroy(): void;
 }
 
-export interface CreateEditorResult {
-	editor: SolidEditor;
-	host: HTMLElement;
-	floatingContainer: HTMLDivElement;
-	hostStyles: string;
+export interface CreateReactiveEditorParams {
+	editor: RangeXEditor;
+}
+
+export interface CreateReactiveEditorResult {
+	reactiveEditor: ReactiveEditor;
+	disposeList: Set<() => void>;
 }

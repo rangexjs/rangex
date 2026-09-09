@@ -1,63 +1,72 @@
-import { AccordionItem } from "../../ReactivePorts/AccordionItem";
-import { CodeBlock } from "../../ReactivePorts/CodeBlock";
-import { EmptyMedia } from "../../ReactivePorts/EmptyMedia";
-import { Formatting } from "../../ReactivePorts/Formatting";
-import { Image } from "../../ReactivePorts/Image";
-import { ReadOnly } from "../../ReactivePorts/ReadOnly";
-import { Separator } from "../../ReactivePorts/Separator";
-import type { WireReactivePortsParams } from "./WireReactivePorts-types";
+import {
+	AccordionItem,
+	CodeBlock,
+	EmptyMedia,
+	Formatting,
+	Image,
+	ReadOnly,
+	Separator,
+} from "../ReactivePorts";
+import type {
+	CreateReactiveEditorParams,
+	CreateReactiveEditorResult,
+	ReactiveEditor,
+} from "./CreateReactiveEditor-types";
 
-export const wireReactivePorts = ({
+export const createReactiveEditor = ({
 	editor,
-	solidEditor,
-	disposeList,
-}: WireReactivePortsParams) => {
+}: CreateReactiveEditorParams): CreateReactiveEditorResult => {
+	const reactiveEditor: ReactiveEditor = {};
+	const disposeList = new Set<() => void>();
+
 	if (editor.accordionItem) {
 		const { port, dispose } = AccordionItem(editor.accordionItem);
 
-		solidEditor.accordionItem = port;
+		reactiveEditor.accordionItem = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.codeBlock) {
 		const { port, dispose } = CodeBlock(editor.codeBlock);
 
-		solidEditor.codeBlock = port;
+		reactiveEditor.codeBlock = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.emptyMedia) {
 		const { port, dispose } = EmptyMedia(editor.emptyMedia);
 
-		solidEditor.emptyMedia = port;
+		reactiveEditor.emptyMedia = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.formatting) {
 		const { port, dispose } = Formatting(editor.formatting);
 
-		solidEditor.formatting = port;
+		reactiveEditor.formatting = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.image) {
 		const { port, dispose } = Image(editor.image);
 
-		solidEditor.image = port;
+		reactiveEditor.image = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.readOnly) {
 		const { port, dispose } = ReadOnly(editor.readOnly);
 
-		solidEditor.readOnly = port;
+		reactiveEditor.readOnly = port;
 		disposeList.add(dispose);
 	}
 
 	if (editor.separator) {
 		const { port, dispose } = Separator(editor.separator);
 
-		solidEditor.separator = port;
+		reactiveEditor.separator = port;
 		disposeList.add(dispose);
 	}
+
+	return { reactiveEditor, disposeList };
 };

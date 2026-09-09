@@ -3,7 +3,7 @@ import type {
 	MediaType,
 	UploadState,
 } from "@rangex/editor";
-import type { SolidEditor } from "@rangex/solid";
+import type { ReactiveEditor } from "@rangex/solid";
 import { createMemo, createSignal } from "solid-js";
 import {
 	createTextFieldState,
@@ -147,7 +147,7 @@ const getMediaTabControls = (
 };
 
 export interface EmptyMediaSlotProps {
-	editor: SolidEditor;
+	reactiveEditor: ReactiveEditor;
 	container: HTMLDivElement;
 }
 
@@ -159,7 +159,7 @@ export interface EmptyMediaSlotProps {
  * side owns uploading and resolution.
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
-	const emptyMedia = props.editor.emptyMedia;
+	const emptyMedia = props.reactiveEditor.emptyMedia;
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");
