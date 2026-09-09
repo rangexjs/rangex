@@ -74,6 +74,7 @@ export {
 	EmptyMedia,
 	Formatting,
 	Image,
+	ReadOnly,
 	Separator,
 	Video,
 } from "#rangex-editor";

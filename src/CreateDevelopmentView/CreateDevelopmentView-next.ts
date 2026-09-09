@@ -8,6 +8,7 @@ import {
 	type Extension,
 	Formatting,
 	Image,
+	ReadOnly,
 	Separator,
 	Video,
 } from "@rangex/rich-text-editor-next";
@@ -68,6 +69,7 @@ export const createDevelopmentView = () => {
 		Formatting({}),
 		CodeBlock({}),
 		Image({}),
+		ReadOnly({}),
 		Separator({}),
 		Video({}),
 	];

@@ -5,4 +5,5 @@ export * from "./Embed";
 export * from "./EmptyMedia";
 export * from "./Formatting";
 export * from "./Image";
+export * from "./ReadOnly";
 export * from "./Video";

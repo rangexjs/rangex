@@ -5,6 +5,7 @@ import type { Embed } from "../Embed";
 import type { EmptyMedia } from "../EmptyMedia";
 import type { Formatting } from "../Formatting";
 import type { Image } from "../Image";
+import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
 import type { Video } from "../Video";
 
@@ -16,6 +17,7 @@ export type AdapterFactory =
 	| typeof EmptyMedia
 	| typeof Formatting
 	| typeof Image
+	| typeof ReadOnly
 	| typeof Separator
 	| typeof Video;
 
