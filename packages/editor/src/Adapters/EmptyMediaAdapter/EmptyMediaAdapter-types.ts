@@ -51,7 +51,6 @@ export type UpdateUploadStateCallbackFn = (value: UploadState) => void;
 export interface ElementState {
 	uploadState: UploadState;
 	uploadStateListeners: Set<UpdateUploadStateCallbackFn>;
-	dispose: (() => void) | undefined;
 }
 
 export interface UpdateElementStateParams {

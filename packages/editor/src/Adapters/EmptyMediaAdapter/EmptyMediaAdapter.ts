@@ -26,6 +26,7 @@ export const createEmptyMediaAdapter = (
 	};
 
 	const elements: Map<HTMLDivElement, ElementState> = new Map();
+	const disposes: Map<HTMLDivElement, () => void> = new Map();
 
 	// ConfigPort
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
@@ -77,25 +78,29 @@ export const createEmptyMediaAdapter = (
 
 		createSlottedElement() {
 			const container = document.createElement("div");
-			const dispose = internals.registerSlottedElement?.(container);
 
 			elements.set(container, {
 				uploadState: { status: "idle" },
 				uploadStateListeners: new Set(),
-				dispose,
 			});
+
+			const dispose = internals.registerSlottedElement?.(container);
+
+			if (dispose) {
+				disposes.set(container, dispose);
+			}
 
 			return container;
 		},
 
 		removeSlottedElement(container) {
-			const state = elements.get(container);
-
-			if (!state) {
+			if (!elements.has(container)) {
 				throw new Error("Container wasn't registered.");
 			}
 
-			state.dispose?.();
+			const dispose = disposes.get(container);
+			dispose?.();
+			disposes.delete(container);
 			elements.delete(container);
 		},
 
@@ -138,11 +143,11 @@ export const createEmptyMediaAdapter = (
 		registerSlottedElement(callback) {
 			internals.registerSlottedElement = callback;
 
-			for (const [element, state] of elements) {
-				state.dispose?.();
+			for (const element of elements.keys()) {
+				disposes.get(element)?.();
 
 				const dispose = internals.registerSlottedElement(element);
-				state.dispose = dispose;
+				disposes.set(element, dispose);
 			}
 		},
 
