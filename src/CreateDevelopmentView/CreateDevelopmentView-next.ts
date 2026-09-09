@@ -1,5 +1,6 @@
 import {
 	AccordionItem,
+	Audio,
 	CodeBlock,
 	createRichTextEditor,
 	EmptyMedia,
@@ -7,6 +8,7 @@ import {
 	Formatting,
 	Image,
 	Separator,
+	Video,
 } from "@rangex/rich-text-editor-next";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
 
@@ -59,11 +61,13 @@ export const createDevelopmentView = () => {
 
 	const extensions: Extension[] = [
 		AccordionItem({}),
+		Audio({}),
 		EmptyMedia({ uploadFile }),
 		Formatting({}),
 		CodeBlock({}),
 		Image({}),
 		Separator({}),
+		Video({}),
 	];
 
 	const filledRichTextEditor = createRichTextEditor({

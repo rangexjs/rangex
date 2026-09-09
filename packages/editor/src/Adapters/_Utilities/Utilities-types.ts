@@ -10,6 +10,7 @@ import type {
 	AccordionItemAdapter,
 	AccordionItemPublicPort,
 } from "../AccordionItemAdapter";
+import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
 import type {
 	EmptyMediaAdapter,
 	EmptyMediaPublicPort,
@@ -24,6 +25,7 @@ import type {
 	SeparatorAdapter,
 	SeparatorPublicPort,
 } from "../SeparatorAdapter";
+import type { VideoAdapter, VideoPublicPort } from "../VideoAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
@@ -38,16 +40,19 @@ export type CreateAdapterParams<Settings extends object> = [
 
 export type Adapter =
 	| AccordionItemAdapter
+	| AudioAdapter
 	| CodeBlockAdapter
 	| EmptyMediaAdapter
 	| FormattingAdapter
 	| ImageAdapter
 	| ReadOnlyAdapter
 	| SeparatorAdapter
-	| TemplateVariableAdapter;
+	| TemplateVariableAdapter
+	| VideoAdapter;
 
 export interface AdapterPublicPorts {
 	accordionItem: AccordionItemPublicPort;
+	audio: AudioPublicPort;
 	codeBlock: CodeBlockPublicPort;
 	emptyMedia: EmptyMediaPublicPort;
 	formatting: FormattingPublicPort;
@@ -55,4 +60,5 @@ export interface AdapterPublicPorts {
 	readOnly: ReadOnlyPublicPort;
 	separator: SeparatorPublicPort;
 	templateVariable: TemplateVariablePublicPort;
+	video: VideoPublicPort;
 }

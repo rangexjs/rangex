@@ -6,6 +6,7 @@ export type {
 	MediaType,
 } from "#adapters";
 export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
+export type { AudioPublicPort } from "#adapters/Audio";
 export type {
 	CodeBlockLanguage,
 	CodeBlockPublicPort,
@@ -56,6 +57,7 @@ export type {
 export type { ImagePublicPort } from "#adapters/Image";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
+export type { VideoPublicPort } from "#adapters/Video";
 export type {
 	AdapterFactoryValue,
 	CreateEditorParams,
@@ -64,11 +66,13 @@ export type {
 } from "#rangex-editor";
 export {
 	AccordionItem,
+	Audio,
 	CodeBlock,
 	createEditor,
 	EmptyMedia,
 	Formatting,
 	Image,
 	Separator,
+	Video,
 } from "#rangex-editor";
 export type { EngineStyles } from "./Styles";

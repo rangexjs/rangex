@@ -1,11 +1,13 @@
 import {
 	AccordionItem,
+	Audio,
 	CodeBlock,
 	EmptyMedia,
 	Formatting,
 	Image,
 	ReadOnly,
 	Separator,
+	Video,
 } from "../ReactivePorts";
 import type {
 	CreateReactiveEditorParams,
@@ -23,6 +25,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = AccordionItem(editor.accordionItem);
 
 		reactiveEditor.accordionItem = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.audio) {
+		const { port, dispose } = Audio(editor.audio);
+
+		reactiveEditor.audio = port;
 		disposeList.add(dispose);
 	}
 
@@ -65,6 +74,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Separator(editor.separator);
 
 		reactiveEditor.separator = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.video) {
+		const { port, dispose } = Video(editor.video);
+
+		reactiveEditor.video = port;
 		disposeList.add(dispose);
 	}
 
