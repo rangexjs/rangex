@@ -5,12 +5,17 @@ import {
 	Embed,
 	Emoji,
 	EmptyMedia,
+	FindReplace,
 	Formatting,
 	Image,
+	List,
 	Mention,
 	ReadOnly,
 	Separator,
+	Symbols,
 	TemplateVariable,
+	TodoList,
+	UndoRedo,
 	Video,
 } from "../ReactivePorts";
 import type {
@@ -67,6 +72,13 @@ export const createReactiveEditor = ({
 		disposeList.add(dispose);
 	}
 
+	if (editor.findReplace) {
+		const { port, dispose } = FindReplace(editor.findReplace);
+
+		reactiveEditor.findReplace = port;
+		disposeList.add(dispose);
+	}
+
 	if (editor.formatting) {
 		const { port, dispose } = Formatting(editor.formatting);
 
@@ -78,6 +90,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Image(editor.image);
 
 		reactiveEditor.image = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.list) {
+		const { port, dispose } = List(editor.list);
+
+		reactiveEditor.list = port;
 		disposeList.add(dispose);
 	}
 
@@ -102,10 +121,31 @@ export const createReactiveEditor = ({
 		disposeList.add(dispose);
 	}
 
+	if (editor.symbols) {
+		const { port, dispose } = Symbols(editor.symbols);
+
+		reactiveEditor.symbols = port;
+		disposeList.add(dispose);
+	}
+
 	if (editor.templateVariable) {
 		const { port, dispose } = TemplateVariable(editor.templateVariable);
 
 		reactiveEditor.templateVariable = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.todoList) {
+		const { port, dispose } = TodoList(editor.todoList);
+
+		reactiveEditor.todoList = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.undoRedo) {
+		const { port, dispose } = UndoRedo(editor.undoRedo);
+
+		reactiveEditor.undoRedo = port;
 		disposeList.add(dispose);
 	}
 

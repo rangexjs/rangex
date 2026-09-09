@@ -1,4 +1,4 @@
-export type { EditorAPI } from "rich-text-area";
+export type { EditorAPI, ListLocalName } from "rich-text-area";
 export type {
 	BlockAlignValue,
 	CaptionPosition,
@@ -24,6 +24,13 @@ export type {
 	ResolveOption,
 	UploadState,
 } from "#adapters/EmptyMedia";
+export type {
+	FindReplaceCriteria,
+	FindReplacePattern,
+	FindReplacePublicPort,
+	FindReplaceResultsState,
+	FindReplaceSearchResult,
+} from "#adapters/FindReplace";
 export type {
 	FontFamilyOption,
 	FormattingActionState,
@@ -61,6 +68,8 @@ export type {
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
+export type { ListPublicPort } from "#adapters/List";
+export type { MarkdownPublicPort } from "#adapters/Markdown";
 export type {
 	MentionPublicPort,
 	SuggestionItem as MentionSuggestionItem,
@@ -68,6 +77,8 @@ export type {
 } from "#adapters/Mention";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
+export type { ShortcutsPublicPort } from "#adapters/Shortcuts";
+export type { SymbolsItems, SymbolsPublicPort } from "#adapters/Symbols";
 export type {
 	Options as TemplateVariableOptions,
 	SuggestionItem as TemplateVariableSuggestionItem,
@@ -75,6 +86,8 @@ export type {
 	TemplateVariableKind,
 	TemplateVariablePublicPort,
 } from "#adapters/TemplateVariable";
+export type { TodoListPublicPort } from "#adapters/TodoList";
+export type { UndoRedoPublicPort } from "#adapters/UndoRedo";
 export type { VideoPublicPort } from "#adapters/Video";
 export type {
 	AdapterFactoryValue,
@@ -90,12 +103,19 @@ export {
 	Embed,
 	Emoji,
 	EmptyMedia,
+	FindReplace,
 	Formatting,
 	Image,
+	List,
+	Markdown,
 	Mention,
 	ReadOnly,
 	Separator,
+	Shortcuts,
+	Symbols,
 	TemplateVariable,
+	TodoList,
+	UndoRedo,
 	Video,
 } from "#rangex-editor";
 export type { EngineStyles } from "./Styles";
