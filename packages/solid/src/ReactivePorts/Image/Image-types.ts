@@ -14,10 +14,12 @@ export interface ReactiveImagePort {
 	isOpen: Accessor<boolean>;
 	caption: Accessor<CaptionState>;
 	align: Accessor<BlockAlignValue>;
+	currentBlock: Accessor<HTMLElement | null>;
 
 	changeCaptionEnabled(enabled: boolean): void;
 	changeCaptionPosition(position: CaptionPosition): void;
 	changeAlign(align: BlockAlignValue): void;
+	commitSnapshot(): void;
 }
 
 export interface ReactiveImageResult {

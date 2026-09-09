@@ -8,6 +8,7 @@ import {
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleCommitSnapshot,
 } from "../_Utilities";
 import {
 	getImageCaption,
@@ -35,6 +36,11 @@ export const configureImage = ({
 		},
 	});
 
+	const commitSnapshotCleanup = handleCommitSnapshot({
+		port: configPort,
+		editorAPI,
+	});
+
 	const insertionCleanup = handleImageInsertion({
 		configPort,
 		editorAPI,
@@ -43,7 +49,7 @@ export const configureImage = ({
 
 	const { getCurrentBlock, cleanup: overlayAppearanceCleanup } =
 		handleImageQuickActionsOverlayAppearance({
-			configPort: configPort,
+			configPort,
 			overlayAppearanceHandler,
 			anchorController,
 		});
@@ -75,6 +81,7 @@ export const configureImage = ({
 
 		insertionCleanup();
 		overlayAppearanceCleanup();
+		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

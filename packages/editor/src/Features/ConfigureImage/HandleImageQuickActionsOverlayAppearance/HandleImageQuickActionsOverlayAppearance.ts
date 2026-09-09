@@ -15,11 +15,13 @@ export const handleImageQuickActionsOverlayAppearance = ({
 	anchorController,
 }: HandleImageQuickActionsOverlayAppearanceParams) => {
 	return overlayAppearanceHandler.registerComponent({
-		popover: configPort.floatingEl,
+		popover: anchorController.element,
 		shouldShow({ blockComponent }) {
 			return blockComponent.$$componentName === componentsName.image;
 		},
 		onShow({ blockComponent }) {
+			anchorController.hide();
+
 			const { $$parentElement } = blockComponent;
 
 			if (!$$parentElement) {
@@ -36,6 +38,8 @@ export const handleImageQuickActionsOverlayAppearance = ({
 
 			configPort.setCaption(caption);
 
+			configPort.setCurrentBlock(blockComponent);
+
 			anchorController.show(blockComponent, {
 				clear: true,
 				position: "absolute",
@@ -45,6 +49,8 @@ export const handleImageQuickActionsOverlayAppearance = ({
 		},
 		onClose() {
 			anchorController.hide();
+
+			configPort.setCurrentBlock(null);
 		},
 	});
 };

@@ -11,8 +11,8 @@
 		cursor: ew-resize;
 		border-radius: 9999px;
 
-		background-color: light-dark(black, white);
-		border: light-dark(white, black);
+		background-color: color(from light-dark(black, white) srgb r g b / 0.8);
+		border: 2px solid color(from light-dark(white, black) srgb r g b / 0.8);
 	}
 
 	& > span:first-child {

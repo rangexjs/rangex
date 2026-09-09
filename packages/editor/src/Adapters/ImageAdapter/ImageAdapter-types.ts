@@ -4,7 +4,11 @@ import type {
 	BlockResize,
 	CaptionConfigPort,
 	CaptionPublicPort,
+	CommitSnapshotConfigPort,
+	CommitSnapshotPublicPort,
 	CreateAdapterParams,
+	CurrentBlockConfigPort,
+	CurrentBlockPublicPort,
 	OnMediaResolveCallbackFn,
 } from "../_Utilities";
 
@@ -26,7 +30,9 @@ export interface ImageConfigPortProps {
 export interface ImageConfigPort
 	extends ImageConfigPortProps,
 		CaptionConfigPort,
-		BlockAlignConfigPort {}
+		BlockAlignConfigPort,
+		CurrentBlockConfigPort,
+		CommitSnapshotConfigPort {}
 
 export type OnIsOpenUpdateCallbackFn = (value: boolean) => void;
 
@@ -41,7 +47,9 @@ export interface ImagePublicPortProps {
 export interface ImagePublicPort
 	extends ImagePublicPortProps,
 		CaptionPublicPort,
-		BlockAlignPublicPort {}
+		BlockAlignPublicPort,
+		CurrentBlockPublicPort,
+		CommitSnapshotPublicPort {}
 
 export interface ImageInternals {
 	isOpen: boolean;

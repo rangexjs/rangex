@@ -5,6 +5,7 @@ import {
 	EmptyMedia,
 	type Extension,
 	Formatting,
+	Image,
 	Separator,
 } from "@rangex/rich-text-editor-next";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
@@ -61,6 +62,7 @@ export const createDevelopmentView = () => {
 		EmptyMedia({ uploadFile }),
 		Formatting({}),
 		CodeBlock({}),
+		Image({}),
 		Separator({}),
 	];
 

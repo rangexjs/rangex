@@ -6,6 +6,7 @@ export * from "./HandleBlockLineDuplication";
 export * from "./HandleBlockRemove";
 export * from "./HandleBlockResizeAppearance";
 export * from "./HandleCaptionState";
+export * from "./HandleCommitSnapshot";
 export * from "./HandleComponentUnwrap";
 export * from "./HandleInsertRootLine";
 export * from "./HandleLineRemove";
