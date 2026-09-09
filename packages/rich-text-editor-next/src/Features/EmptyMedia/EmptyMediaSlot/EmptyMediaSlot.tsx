@@ -360,6 +360,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			onDrop={onDrop}
 			onKeyDown={stopEditorPropagation}
 			onBeforeInput={stopEditorPropagation}
+			onPointerDown={stopEditorPropagation}
 			onPaste={stopEditorPropagation}
 			onCopy={stopEditorPropagation}
 			onCut={stopEditorPropagation}
