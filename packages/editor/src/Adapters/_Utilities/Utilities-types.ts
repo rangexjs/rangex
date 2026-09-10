@@ -36,6 +36,7 @@ import type {
 	FormattingPublicPort,
 } from "../FormattingAdapter";
 import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
+import type { LinkAdapter, LinkPublicPort } from "../LinkAdapter";
 import type { ListAdapter, ListPublicPort } from "../ListAdapter";
 import type { MarkdownAdapter, MarkdownPublicPort } from "../MarkdownAdapter";
 import type { MentionAdapter, MentionPublicPort } from "../MentionAdapter";
@@ -75,6 +76,7 @@ export type Adapter =
 	| FindReplaceAdapter
 	| FormattingAdapter
 	| ImageAdapter
+	| LinkAdapter
 	| ListAdapter
 	| MarkdownAdapter
 	| MentionAdapter
@@ -100,6 +102,7 @@ export interface AdapterPublicPorts {
 	findReplace: FindReplacePublicPort;
 	formatting: FormattingPublicPort;
 	image: ImagePublicPort;
+	link: LinkPublicPort;
 	list: ListPublicPort;
 	markdown: MarkdownPublicPort;
 	mention: MentionPublicPort;

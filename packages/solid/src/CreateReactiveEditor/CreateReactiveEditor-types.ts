@@ -10,6 +10,7 @@ import type { ReactiveEmptyMediaPort } from "../ReactivePorts/EmptyMedia";
 import type { ReactiveFindReplacePort } from "../ReactivePorts/FindReplace";
 import type { ReactiveFormattingPort } from "../ReactivePorts/Formatting";
 import type { ReactiveImagePort } from "../ReactivePorts/Image";
+import type { ReactiveLinkPort } from "../ReactivePorts/Link";
 import type { ReactiveListPort } from "../ReactivePorts/List";
 import type { ReactiveMentionPort } from "../ReactivePorts/Mention";
 import type { ReactiveReadOnlyPort } from "../ReactivePorts/ReadOnly";
@@ -33,6 +34,7 @@ export interface ReactiveEditor {
 	findReplace?: ReactiveFindReplacePort;
 	formatting?: ReactiveFormattingPort;
 	image?: ReactiveImagePort;
+	link?: ReactiveLinkPort;
 	list?: ReactiveListPort;
 	mention?: ReactiveMentionPort;
 	readOnly?: ReactiveReadOnlyPort;

@@ -75,6 +75,15 @@ export type {
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
+export type {
+	ApplyParams as LinkApplyParams,
+	LinkDisplayText,
+	LinkMode,
+	LinkPublicPort,
+	LinkToggleButtons,
+	LinkURL,
+	LinkView,
+} from "#adapters/Link";
 export type { ListPublicPort } from "#adapters/List";
 export type { MarkdownPublicPort } from "#adapters/Markdown";
 export type {
@@ -131,6 +140,7 @@ export {
 	FindReplace,
 	Formatting,
 	Image,
+	Link,
 	List,
 	Markdown,
 	Mention,

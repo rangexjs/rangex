@@ -10,6 +10,7 @@ import {
 	FindReplace,
 	Formatting,
 	Image,
+	Link,
 	List,
 	Mention,
 	ReadOnly,
@@ -107,6 +108,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Image(editor.image);
 
 		reactiveEditor.image = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.link) {
+		const { port, dispose } = Link(editor.link);
+
+		reactiveEditor.link = port;
 		disposeList.add(dispose);
 	}
 
