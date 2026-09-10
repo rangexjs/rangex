@@ -1,6 +1,7 @@
 import type { AccordionItem } from "../AccordionItem";
 import type { Audio } from "../Audio";
 import type { CodeBlock } from "../CodeBlock";
+import type { CommandMenu } from "../CommandMenu";
 import type { Embed } from "../Embed";
 import type { Emoji } from "../Emoji";
 import type { EmptyMedia } from "../EmptyMedia";
@@ -23,6 +24,7 @@ export type AdapterFactory =
 	| typeof AccordionItem
 	| typeof Audio
 	| typeof CodeBlock
+	| typeof CommandMenu
 	| typeof Embed
 	| typeof Emoji
 	| typeof EmptyMedia

@@ -13,6 +13,10 @@ import type {
 	AccordionItemPublicPort,
 } from "../AccordionItemAdapter";
 import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
+import type {
+	CommandMenuAdapter,
+	CommandMenuPublicPort,
+} from "../CommandMenuAdapter";
 import type { EmbedAdapter, EmbedPublicPort } from "../EmbedAdapter";
 import type { EmojiAdapter, EmojiPublicPort } from "../EmojiAdapter";
 import type {
@@ -58,6 +62,7 @@ export type Adapter =
 	| AccordionItemAdapter
 	| AudioAdapter
 	| CodeBlockAdapter
+	| CommandMenuAdapter
 	| EmbedAdapter
 	| EmojiAdapter
 	| EmptyMediaAdapter
@@ -80,6 +85,7 @@ export interface AdapterPublicPorts {
 	accordionItem: AccordionItemPublicPort;
 	audio: AudioPublicPort;
 	codeBlock: CodeBlockPublicPort;
+	commandMenu: CommandMenuPublicPort;
 	embed: EmbedPublicPort;
 	emoji: EmojiPublicPort;
 	emptyMedia: EmptyMediaPublicPort;

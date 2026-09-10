@@ -2,6 +2,7 @@ import {
 	AccordionItem,
 	Audio,
 	CodeBlock,
+	CommandMenu,
 	Embed,
 	Emoji,
 	EmptyMedia,
@@ -48,6 +49,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = CodeBlock(editor.codeBlock);
 
 		reactiveEditor.codeBlock = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.commandMenu) {
+		const { port, dispose } = CommandMenu(editor.commandMenu);
+
+		reactiveEditor.commandMenu = port;
 		disposeList.add(dispose);
 	}
 

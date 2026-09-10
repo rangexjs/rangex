@@ -12,6 +12,12 @@ export type {
 	CodeBlockPublicPort,
 	CodeBlockTheme,
 } from "#adapters/CodeBlock";
+export type {
+	CommandMenuItemValue,
+	CommandMenuPublicPort,
+	SuggestionItem as CommandMenuSuggestionItem,
+	SuggestionItems as CommandMenuSuggestionItems,
+} from "#adapters/CommandMenu";
 export type { EmbedPublicPort } from "#adapters/Embed";
 export type {
 	EmojiPublicPort,
@@ -99,6 +105,7 @@ export {
 	AccordionItem,
 	Audio,
 	CodeBlock,
+	CommandMenu,
 	createEditor,
 	Embed,
 	Emoji,
