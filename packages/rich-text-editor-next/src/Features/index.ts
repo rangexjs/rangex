@@ -13,6 +13,7 @@ export * from "./List";
 export * from "./Mention";
 export * from "./ReadOnly";
 export * from "./Symbols";
+export * from "./Table";
 export * from "./TemplateVariable";
 export * from "./TodoList";
 export * from "./UndoRedo";

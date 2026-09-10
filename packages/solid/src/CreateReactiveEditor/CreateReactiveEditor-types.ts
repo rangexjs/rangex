@@ -15,6 +15,7 @@ import type { ReactiveMentionPort } from "../ReactivePorts/Mention";
 import type { ReactiveReadOnlyPort } from "../ReactivePorts/ReadOnly";
 import type { ReactiveSeparatorPort } from "../ReactivePorts/Separator";
 import type { ReactiveSymbolsPort } from "../ReactivePorts/Symbols";
+import type { ReactiveTablePort } from "../ReactivePorts/Table";
 import type { ReactiveTemplateVariablePort } from "../ReactivePorts/TemplateVariable";
 import type { ReactiveTodoListPort } from "../ReactivePorts/TodoList";
 import type { ReactiveUndoRedoPort } from "../ReactivePorts/UndoRedo";
@@ -37,6 +38,7 @@ export interface ReactiveEditor {
 	readOnly?: ReactiveReadOnlyPort;
 	separator?: ReactiveSeparatorPort;
 	symbols?: ReactiveSymbolsPort;
+	table?: ReactiveTablePort;
 	templateVariable?: ReactiveTemplateVariablePort;
 	todoList?: ReactiveTodoListPort;
 	undoRedo?: ReactiveUndoRedoPort;

@@ -16,6 +16,7 @@ export * from "./ConfigureReadOnly";
 export * from "./ConfigureSeparator";
 export * from "./ConfigureShortcuts";
 export * from "./ConfigureSymbols";
+export * from "./ConfigureTable";
 export * from "./ConfigureTemplateVariable";
 export * from "./ConfigureTodoList";
 export * from "./ConfigureUndoRedo";

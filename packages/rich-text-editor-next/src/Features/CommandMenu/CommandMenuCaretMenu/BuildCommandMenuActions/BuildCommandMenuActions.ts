@@ -19,6 +19,7 @@ export const buildCommandMenuActions = (): BuildCommandMenuActionsResult => {
 		formatting,
 		list,
 		separator,
+		table,
 		todoList,
 	} = useReactiveEditorContext();
 
@@ -84,6 +85,13 @@ export const buildCommandMenuActions = (): BuildCommandMenuActionsResult => {
 		actions.set("code-block", {
 			icon: "CodeBlock",
 			onSelect: () => codeBlock.insert({ language: "TypeScript" }),
+		});
+	}
+
+	if (table) {
+		actions.set("table", {
+			icon: "Table",
+			onSelect: () => table.insert({ row: 5, column: 5 }),
 		});
 	}
 

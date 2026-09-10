@@ -49,6 +49,7 @@ import type {
 	ShortcutsPublicPort,
 } from "../ShortcutsAdapter";
 import type { SymbolsAdapter, SymbolsPublicPort } from "../SymbolsAdapter";
+import type { TableAdapter, TablePublicPort } from "../TableAdapter";
 import type { VideoAdapter, VideoPublicPort } from "../VideoAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
@@ -81,6 +82,7 @@ export type Adapter =
 	| SeparatorAdapter
 	| ShortcutsAdapter
 	| SymbolsAdapter
+	| TableAdapter
 	| TemplateVariableAdapter
 	| TodoListAdapter
 	| UndoRedoAdapter
@@ -105,6 +107,7 @@ export interface AdapterPublicPorts {
 	separator: SeparatorPublicPort;
 	shortcuts: ShortcutsPublicPort;
 	symbols: SymbolsPublicPort;
+	table: TablePublicPort;
 	templateVariable: TemplateVariablePublicPort;
 	todoList: TodoListPublicPort;
 	undoRedo: UndoRedoPublicPort;

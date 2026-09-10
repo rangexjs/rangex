@@ -16,6 +16,7 @@ import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
 import type { Shortcuts } from "../Shortcuts";
 import type { Symbols } from "../Symbols";
+import type { Table } from "../Table";
 import type { TemplateVariable } from "../TemplateVariable";
 import type { TodoList } from "../TodoList";
 import type { UndoRedo } from "../UndoRedo";
@@ -40,6 +41,7 @@ export type AdapterFactory =
 	| typeof Separator
 	| typeof Shortcuts
 	| typeof Symbols
+	| typeof Table
 	| typeof TemplateVariable
 	| typeof TodoList
 	| typeof UndoRedo

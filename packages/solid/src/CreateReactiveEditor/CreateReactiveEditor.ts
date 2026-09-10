@@ -15,6 +15,7 @@ import {
 	ReadOnly,
 	Separator,
 	Symbols,
+	Table,
 	TemplateVariable,
 	TodoList,
 	UndoRedo,
@@ -141,6 +142,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Symbols(editor.symbols);
 
 		reactiveEditor.symbols = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.table) {
+		const { port, dispose } = Table(editor.table);
+
+		reactiveEditor.table = port;
 		disposeList.add(dispose);
 	}
 

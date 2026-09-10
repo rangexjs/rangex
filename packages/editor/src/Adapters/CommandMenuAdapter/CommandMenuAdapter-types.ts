@@ -17,6 +17,7 @@ export type CommandMenuItemValue =
 	| "todo-list"
 	| "block-quote"
 	| "code-block"
+	| "table"
 	| "media"
 	| "accordion-item"
 	| "separator";

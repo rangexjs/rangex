@@ -28,6 +28,7 @@ const ALL_ITEMS: SuggestionItems = [
 	{ value: "todo-list", label: "Todo list" },
 	{ value: "block-quote", label: "Blockquote" },
 	{ value: "code-block", label: "Code block" },
+	{ value: "table", label: "Table" },
 	{ value: "media", label: "Media" },
 	{ value: "accordion-item", label: "Accordion item" },
 	{ value: "separator", label: "Separator" },

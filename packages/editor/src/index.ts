@@ -87,6 +87,22 @@ export type { SeparatorPublicPort } from "#adapters/Separator";
 export type { ShortcutsPublicPort } from "#adapters/Shortcuts";
 export type { SymbolsItems, SymbolsPublicPort } from "#adapters/Symbols";
 export type {
+	TableCellResizingAction,
+	TableCellResizingState,
+	TableCellTypeAction,
+	TableCellTypeState,
+	TableClearContentsState,
+	TableInsertDeleteAction,
+	TableInsertDeleteState,
+	TableMergeSplitAction,
+	TableMergeSplitState,
+	TablePublicPort,
+	TableSectionTypeAction,
+	TableSectionTypeState,
+	TableVerticalAlignmentAction,
+	TableVerticalAlignmentState,
+} from "#adapters/Table";
+export type {
 	Options as TemplateVariableOptions,
 	SuggestionItem as TemplateVariableSuggestionItem,
 	SuggestionItems as TemplateVariableSuggestionItems,
@@ -122,6 +138,7 @@ export {
 	Separator,
 	Shortcuts,
 	Symbols,
+	Table,
 	TemplateVariable,
 	TodoList,
 	UndoRedo,
