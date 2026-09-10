@@ -15,6 +15,7 @@ export type CommandMenuItemValue =
 	| "bulleted-list"
 	| "numbered-list"
 	| "todo-list"
+	| "block-quote"
 	| "code-block"
 	| "media"
 	| "accordion-item"

@@ -1,5 +1,6 @@
 export * from "./ConfigureAccordionItem";
 export * from "./ConfigureAudio";
+export * from "./ConfigureBlockQuote";
 export * from "./ConfigureCodeBlock";
 export * from "./ConfigureCommandMenu";
 export * from "./ConfigureEmbed";

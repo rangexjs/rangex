@@ -1,6 +1,7 @@
 import {
 	AccordionItem,
 	Audio,
+	BlockQuote,
 	CodeBlock,
 	CommandMenu,
 	createRichTextEditor,
@@ -75,6 +76,7 @@ export const createDevelopmentView = () => {
 	const extensions: Extension[] = [
 		AccordionItem({}),
 		Audio({}),
+		BlockQuote({}),
 		Embed({}),
 		Emoji({}),
 		EmptyMedia({ uploadFile }),

@@ -1,6 +1,7 @@
 import type { RangeXEditor } from "@rangex/editor";
 import type { ReactiveAccordionItemPort } from "../ReactivePorts/AccordionItem";
 import type { ReactiveAudioPort } from "../ReactivePorts/Audio";
+import type { ReactiveBlockQuotePort } from "../ReactivePorts/BlockQuote";
 import type { ReactiveCodeBlockPort } from "../ReactivePorts/CodeBlock";
 import type { ReactiveCommandMenuPort } from "../ReactivePorts/CommandMenu";
 import type { ReactiveEmbedPort } from "../ReactivePorts/Embed";
@@ -22,6 +23,7 @@ import type { ReactiveVideoPort } from "../ReactivePorts/Video";
 export interface ReactiveEditor {
 	accordionItem?: ReactiveAccordionItemPort;
 	audio?: ReactiveAudioPort;
+	blockQuote?: ReactiveBlockQuotePort;
 	codeBlock?: ReactiveCodeBlockPort;
 	commandMenu?: ReactiveCommandMenuPort;
 	embed?: ReactiveEmbedPort;

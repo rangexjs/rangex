@@ -14,6 +14,10 @@ import type {
 } from "../AccordionItemAdapter";
 import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
 import type {
+	BlockQuoteAdapter,
+	BlockQuotePublicPort,
+} from "../BlockQuoteAdapter";
+import type {
 	CommandMenuAdapter,
 	CommandMenuPublicPort,
 } from "../CommandMenuAdapter";
@@ -61,6 +65,7 @@ export type CreateAdapterParams<Settings extends object> = [
 export type Adapter =
 	| AccordionItemAdapter
 	| AudioAdapter
+	| BlockQuoteAdapter
 	| CodeBlockAdapter
 	| CommandMenuAdapter
 	| EmbedAdapter
@@ -84,6 +89,7 @@ export type Adapter =
 export interface AdapterPublicPorts {
 	accordionItem: AccordionItemPublicPort;
 	audio: AudioPublicPort;
+	blockQuote: BlockQuotePublicPort;
 	codeBlock: CodeBlockPublicPort;
 	commandMenu: CommandMenuPublicPort;
 	embed: EmbedPublicPort;

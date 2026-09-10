@@ -26,6 +26,7 @@ const ALL_ITEMS: SuggestionItems = [
 	{ value: "bulleted-list", label: "Bulleted list" },
 	{ value: "numbered-list", label: "Numbered list" },
 	{ value: "todo-list", label: "Todo list" },
+	{ value: "block-quote", label: "Blockquote" },
 	{ value: "code-block", label: "Code block" },
 	{ value: "media", label: "Media" },
 	{ value: "accordion-item", label: "Accordion item" },

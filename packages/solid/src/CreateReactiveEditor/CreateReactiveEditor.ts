@@ -1,6 +1,7 @@
 import {
 	AccordionItem,
 	Audio,
+	BlockQuote,
 	CodeBlock,
 	CommandMenu,
 	Embed,
@@ -42,6 +43,13 @@ export const createReactiveEditor = ({
 		const { port, dispose } = Audio(editor.audio);
 
 		reactiveEditor.audio = port;
+		disposeList.add(dispose);
+	}
+
+	if (editor.blockQuote) {
+		const { port, dispose } = BlockQuote(editor.blockQuote);
+
+		reactiveEditor.blockQuote = port;
 		disposeList.add(dispose);
 	}
 

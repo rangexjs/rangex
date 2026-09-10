@@ -13,6 +13,7 @@ import type {
 export const buildCommandMenuActions = (): BuildCommandMenuActionsResult => {
 	const {
 		accordionItem,
+		blockQuote,
 		codeBlock,
 		emptyMedia,
 		formatting,
@@ -69,6 +70,13 @@ export const buildCommandMenuActions = (): BuildCommandMenuActionsResult => {
 		actions.set("todo-list", {
 			icon: "ListChecks",
 			onSelect: () => todoList.insert(),
+		});
+	}
+
+	if (blockQuote) {
+		actions.set("block-quote", {
+			icon: "BlockQuote",
+			onSelect: () => blockQuote.insert(),
 		});
 	}
 

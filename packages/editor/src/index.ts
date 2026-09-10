@@ -7,6 +7,7 @@ export type {
 } from "#adapters";
 export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
 export type { AudioPublicPort } from "#adapters/Audio";
+export type { BlockQuotePublicPort } from "#adapters/BlockQuote";
 export type {
 	CodeBlockLanguage,
 	CodeBlockPublicPort,
@@ -104,6 +105,7 @@ export type {
 export {
 	AccordionItem,
 	Audio,
+	BlockQuote,
 	CodeBlock,
 	CommandMenu,
 	createEditor,
