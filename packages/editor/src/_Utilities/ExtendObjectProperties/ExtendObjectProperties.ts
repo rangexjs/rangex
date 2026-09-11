@@ -6,6 +6,10 @@ export const extendObjectProperties = <
 	T4,
 	T5,
 	T6,
+	T7,
+	T8,
+	T9,
+	T10,
 >(
 	obj: Obj,
 	props1: T1,
@@ -14,8 +18,23 @@ export const extendObjectProperties = <
 	props4?: T4,
 	props5?: T5,
 	props6?: T6,
+	props7?: T7,
+	props8?: T8,
+	props9?: T9,
+	props10?: T10,
 ) => {
-	const propsList = [props1, props2, props3, props4, props5, props6];
+	const propsList = [
+		props1,
+		props2,
+		props3,
+		props4,
+		props5,
+		props6,
+		props7,
+		props8,
+		props9,
+		props10,
+	];
 
 	const knownKeys = new Set<string>(Object.getOwnPropertyNames(obj));
 
@@ -39,5 +58,5 @@ export const extendObjectProperties = <
 		Object.defineProperties(obj, descriptors);
 	}
 
-	return obj as Obj & T1 & T2 & T3 & T4 & T5 & T6;
+	return obj as Obj & T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8 & T9 & T10;
 };
