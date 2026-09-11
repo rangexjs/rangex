@@ -12,7 +12,7 @@ export interface OnBeforeOpenParams {
 export type OnBeforeOpenFn = (params: OnBeforeOpenParams) => void;
 
 export interface HandleQuickActionsOverlayAppearanceParams {
-	port: QuickActionsConfigPort & CurrentComponentConfigPort;
+	port: QuickActionsConfigPort & CurrentComponentConfigPort<BlockComponent>;
 	editorAPI: EditorAPI;
 	componentName: BlockComponentName;
 	beforeOpen: OnBeforeOpenFn;

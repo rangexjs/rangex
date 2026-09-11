@@ -1,3 +1,4 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -26,7 +27,7 @@ export interface ImageConfigPort
 	extends ImageConfigPortProps,
 		CaptionConfigPort,
 		BlockAlignConfigPort,
-		CurrentComponentConfigPort,
+		CurrentComponentConfigPort<BlockComponent>,
 		CommitSnapshotConfigPort,
 		SwapToEmptyMediaConfigPort,
 		QuickActionsConfigPort {}

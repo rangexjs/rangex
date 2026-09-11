@@ -1,3 +1,4 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -57,7 +58,7 @@ export interface CodeBlockConfigPort
 	extends CodeBlockConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort,
+		CurrentComponentConfigPort<BlockComponent>,
 		QuickActionsConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;

@@ -1,3 +1,4 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
@@ -28,7 +29,7 @@ export const createAudioAdapter = (
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
-	const currentComponentPort = createCurrentComponentPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 	const commitSnapshotPort = createCommitSnapshotPort();
 	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });

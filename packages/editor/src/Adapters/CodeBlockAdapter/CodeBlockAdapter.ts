@@ -1,3 +1,4 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
@@ -69,7 +70,7 @@ export const createCodeBlockAdapter = (
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
-	const currentComponentPort = createCurrentComponentPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const updateState = ({
