@@ -8,14 +8,16 @@ export const Embed = (publicPort: EmbedPublicPort): ReactiveEmbedResult => {
 	);
 	const [caption, setCaption] = createSignal(publicPort.caption);
 	const [align, setAlign] = createSignal(publicPort.align);
-	const [currentBlock, setCurrentBlock] = createSignal(publicPort.currentBlock);
+	const [currentBlock, setCurrentBlock] = createSignal(
+		publicPort.currentComponent,
+	);
 
 	const unsubscribeList = new Set<() => void>();
 
 	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
 	unsubscribeList.add(publicPort.onCaptionUpdate(setCaption));
 	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
-	unsubscribeList.add(publicPort.onCurrentBlockUpdate(setCurrentBlock));
+	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
 	const port: ReactiveEmbedPort = {
 		quickActionsEl: publicPort.quickActionsEl,

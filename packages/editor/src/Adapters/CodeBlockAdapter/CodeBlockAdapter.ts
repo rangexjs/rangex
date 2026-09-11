@@ -1,6 +1,6 @@
 import { extendObjectProperties } from "#utilities";
 import {
-	createCurrentBlockPort,
+	createCurrentComponentPort,
 	createQuickActionsPort,
 	createRemovePort,
 	createUnwrapPort,
@@ -69,7 +69,7 @@ export const createCodeBlockAdapter = (
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
-	const currentBlockPort = createCurrentBlockPort();
+	const currentComponentPort = createCurrentComponentPort();
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const updateState = ({
@@ -132,7 +132,7 @@ export const createCodeBlockAdapter = (
 	const configPort: CodeBlockConfigPort = extendObjectProperties(
 		removePort.configPort,
 		unwrapPort.configPort,
-		currentBlockPort.configPort,
+		currentComponentPort.configPort,
 		quickActionsPort.configPort,
 		{
 			updateState(params) {
@@ -173,7 +173,7 @@ export const createCodeBlockAdapter = (
 	const publicPort: CodeBlockPublicPort = extendObjectProperties(
 		removePort.publicPort,
 		unwrapPort.publicPort,
-		currentBlockPort.publicPort,
+		currentComponentPort.publicPort,
 		quickActionsPort.publicPort,
 		{
 			get languages() {

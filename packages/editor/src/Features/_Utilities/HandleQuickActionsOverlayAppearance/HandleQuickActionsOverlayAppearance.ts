@@ -8,7 +8,7 @@ import type { HandleQuickActionsOverlayAppearanceParams } from "./HandleQuickAct
  * Shared hover-panel wiring for every block-component adapter's QuickActions overlay
  * (Image, Video, Audio, Embed, CodeBlock, ...): creates the anchored overlay controller
  * over `port.quickActionsEl`, registers it with a dedicated {@link OverlayAppearanceHandler},
- * and pushes `currentBlock` in/out via `port` on open/close. `beforeOpen` is the only
+ * and pushes `currentComponent` in/out via `port` on open/close. `beforeOpen` is the only
  * per-feature hook, called between `hide()` and `show()` to push whatever state that
  * feature's overlay needs (alignment, caption, language/theme, ...).
  */
@@ -38,7 +38,7 @@ export const handleQuickActionsOverlayAppearance = ({
 			onShow({ blockComponent }) {
 				anchorController.hide();
 
-				port.setCurrentBlock(blockComponent);
+				port.setCurrentComponent(blockComponent);
 
 				beforeOpen({ blockComponent });
 
@@ -52,7 +52,7 @@ export const handleQuickActionsOverlayAppearance = ({
 			onClose() {
 				anchorController.hide();
 
-				port.setCurrentBlock(null);
+				port.setCurrentComponent(null);
 			},
 		});
 

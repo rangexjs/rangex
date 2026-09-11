@@ -7,8 +7,8 @@ import type {
 	CommitSnapshotConfigPort,
 	CommitSnapshotPublicPort,
 	CreateAdapterParams,
-	CurrentBlockConfigPort,
-	CurrentBlockPublicPort,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
@@ -26,7 +26,7 @@ export interface EmbedConfigPort
 	extends EmbedConfigPortProps,
 		CaptionConfigPort,
 		BlockAlignConfigPort,
-		CurrentBlockConfigPort,
+		CurrentComponentConfigPort,
 		CommitSnapshotConfigPort,
 		SwapToEmptyMediaConfigPort,
 		QuickActionsConfigPort {}
@@ -37,7 +37,7 @@ export interface EmbedPublicPort
 	extends EmbedPublicPortProps,
 		CaptionPublicPort,
 		BlockAlignPublicPort,
-		CurrentBlockPublicPort,
+		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
 		SwapToEmptyMediaPublicPort,
 		QuickActionsPublicPort {}

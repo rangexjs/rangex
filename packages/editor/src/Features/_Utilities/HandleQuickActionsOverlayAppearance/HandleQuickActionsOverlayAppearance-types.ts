@@ -1,5 +1,8 @@
 import type { BlockComponent, EditorAPI } from "rich-text-area";
-import type { CurrentBlockConfigPort, QuickActionsConfigPort } from "#adapters";
+import type {
+	CurrentComponentConfigPort,
+	QuickActionsConfigPort,
+} from "#adapters";
 import type { BlockComponentName } from "#engine-links";
 
 export interface OnBeforeOpenParams {
@@ -9,7 +12,7 @@ export interface OnBeforeOpenParams {
 export type OnBeforeOpenFn = (params: OnBeforeOpenParams) => void;
 
 export interface HandleQuickActionsOverlayAppearanceParams {
-	port: QuickActionsConfigPort & CurrentBlockConfigPort;
+	port: QuickActionsConfigPort & CurrentComponentConfigPort;
 	editorAPI: EditorAPI;
 	componentName: BlockComponentName;
 	beforeOpen: OnBeforeOpenFn;

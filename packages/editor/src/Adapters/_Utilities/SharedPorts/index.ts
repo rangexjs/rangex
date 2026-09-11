@@ -2,7 +2,7 @@ export * from "./BlockAlignPort";
 export * from "./CaptionPort";
 export * from "./CaretMenuPort";
 export * from "./CommitSnapshotPort";
-export * from "./CurrentBlockPort";
+export * from "./CurrentComponentPort";
 export * from "./DuplicatePort";
 export * from "./InsertRootLinePort";
 export * from "./QuickActionsPort";

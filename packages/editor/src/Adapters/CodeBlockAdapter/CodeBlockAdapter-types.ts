@@ -1,7 +1,7 @@
 import type {
 	CreateAdapterParams,
-	CurrentBlockConfigPort,
-	CurrentBlockPublicPort,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
 	RemoveConfigPort,
@@ -57,7 +57,7 @@ export interface CodeBlockConfigPort
 	extends CodeBlockConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
-		CurrentBlockConfigPort,
+		CurrentComponentConfigPort,
 		QuickActionsConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
@@ -101,7 +101,7 @@ export interface CodeBlockPublicPort
 	extends CodeBlockPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
-		CurrentBlockPublicPort,
+		CurrentComponentPublicPort,
 		QuickActionsPublicPort {}
 
 export interface CodeBlockInternals {

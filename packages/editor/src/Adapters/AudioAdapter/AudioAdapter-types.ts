@@ -7,8 +7,8 @@ import type {
 	CommitSnapshotConfigPort,
 	CommitSnapshotPublicPort,
 	CreateAdapterParams,
-	CurrentBlockConfigPort,
-	CurrentBlockPublicPort,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
@@ -26,7 +26,7 @@ export interface AudioConfigPort
 	extends AudioConfigPortProps,
 		CaptionConfigPort,
 		BlockAlignConfigPort,
-		CurrentBlockConfigPort,
+		CurrentComponentConfigPort,
 		CommitSnapshotConfigPort,
 		SwapToEmptyMediaConfigPort,
 		QuickActionsConfigPort {}
@@ -37,7 +37,7 @@ export interface AudioPublicPort
 	extends AudioPublicPortProps,
 		CaptionPublicPort,
 		BlockAlignPublicPort,
-		CurrentBlockPublicPort,
+		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
 		SwapToEmptyMediaPublicPort,
 		QuickActionsPublicPort {}

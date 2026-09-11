@@ -4,7 +4,7 @@ import {
 	createBlockResize,
 	createCaptionPort,
 	createCommitSnapshotPort,
-	createCurrentBlockPort,
+	createCurrentComponentPort,
 	createQuickActionsPort,
 	createSwapToEmptyMediaPort,
 } from "../_Utilities";
@@ -28,7 +28,7 @@ export const createVideoAdapter = (
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
-	const currentBlockPort = createCurrentBlockPort();
+	const currentComponentPort = createCurrentComponentPort();
 	const commitSnapshotPort = createCommitSnapshotPort();
 	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
@@ -36,7 +36,7 @@ export const createVideoAdapter = (
 	const configPort: VideoConfigPort = extendObjectProperties(
 		captionPort.configPort,
 		blockAlignPort.configPort,
-		currentBlockPort.configPort,
+		currentComponentPort.configPort,
 		commitSnapshotPort.configPort,
 		swapToEmptyMediaPort.configPort,
 		quickActionsPort.configPort,
@@ -55,7 +55,7 @@ export const createVideoAdapter = (
 	const publicPort: VideoPublicPort = extendObjectProperties(
 		captionPort.publicPort,
 		blockAlignPort.publicPort,
-		currentBlockPort.publicPort,
+		currentComponentPort.publicPort,
 		commitSnapshotPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
 		quickActionsPort.publicPort,
