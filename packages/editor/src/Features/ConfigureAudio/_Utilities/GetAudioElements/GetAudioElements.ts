@@ -6,6 +6,9 @@ import type {
 	GetAudioFigureResult,
 } from "./GetAudioElements-types";
 
+/*
+ * Returns the block component's figure element, throwing if the first child isn't a figure.
+ */
 export const getAudioFigure = ({
 	blockComponent,
 }: GetAudioFigureParams): GetAudioFigureResult => {
@@ -22,6 +25,9 @@ export const getAudioFigure = ({
 	return figure;
 };
 
+/*
+ * Returns the audio element nested inside a figure, throwing if none is found.
+ */
 export const getAudioElement = ({
 	figure,
 }: GetAudioElementParams): GetAudioElementResult => {

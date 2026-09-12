@@ -2,7 +2,9 @@ import { createFormattableTexts } from "rich-text-area";
 import { componentsName } from "#engine-links";
 import type { HandleReplacementParams } from "./HandleReplacement-types";
 
-/** Performs single or bulk text replacement in response to replace actions. */
+/*
+ * Performs single or bulk text replacement in response to replace actions.
+ */
 export const handleReplacement = ({
 	configPort,
 	editorAPI,

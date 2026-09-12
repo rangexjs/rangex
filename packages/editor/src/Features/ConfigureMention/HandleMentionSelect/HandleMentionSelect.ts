@@ -7,8 +7,8 @@ import type {
 	RemoveMentionQueryTextResult,
 } from "./HandleMentionSelect-types";
 
-/**
- * Removes the @query text (e.g. "@john") that triggered the mention, before the component is inserted.
+/*
+ * Removes the @query text that triggered the mention, before the component is inserted.
  */
 const removeMentionQueryText = ({
 	editorAPI,
@@ -35,10 +35,10 @@ const removeMentionQueryText = ({
 	return { queryFound: true };
 };
 
-/**
- * Subscribes to mention selection and inserts the mention component at the cursor.
- * On select, strips the @query text first, then re-reads the cursor position (now pointing
- * at where the @ was) and inserts the component there.
+/*
+ * Subscribes to mention selection and inserts the mention component at the cursor. On select,
+ * strips the @query text first, then re-reads the cursor position and inserts the component
+ * there. Returns a cleanup function.
  */
 export const handleMentionSelect = ({
 	configPort,

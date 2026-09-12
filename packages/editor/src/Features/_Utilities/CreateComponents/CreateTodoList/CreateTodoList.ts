@@ -18,6 +18,10 @@ import type {
 	CreateTodoListResult,
 } from "./CreateTodoList-types";
 
+/*
+ * Builds a todo list block component: an unordered list whose items each get a checkbox
+ * before the editable line content.
+ */
 export const createTodoList = ({
 	childNodes,
 }: CreateTodoListParams): CreateTodoListResult => {

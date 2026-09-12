@@ -1,6 +1,10 @@
 import { createSeparator } from "../../_Utilities";
 import type { HandleSeparatorPlacementParams } from "./HandleSeparatorPlacement-types";
 
+/*
+ * Listens for insert requests and inserts a separator at the current selection, moving the
+ * caret past it. Returns a cleanup function that unsubscribes the listener.
+ */
 export const handleSeparatorPlacement = ({
 	configPort,
 	editorAPI,

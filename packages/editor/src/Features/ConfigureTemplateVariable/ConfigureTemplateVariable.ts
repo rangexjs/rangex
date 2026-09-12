@@ -6,6 +6,11 @@ import { handleTemplateVariableSelect } from "./HandleTemplateVariableSelect";
 import { handleTemplateVariableToolbarButtonState } from "./HandleTemplateVariableToolbarButtonState";
 import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
 
+/*
+ * Wires up the template variable feature: toolbar button state, insertion, value updates,
+ * caret-menu selection, and the caret menu's appearance while typing a {{query. Returns a
+ * cleanup function.
+ */
 export const configureTemplateVariable = ({
 	configPort,
 	editorAPI,

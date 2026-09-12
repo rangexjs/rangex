@@ -3,14 +3,10 @@ import type {
 	GetEmojiQueryResult,
 } from "./GetEmojiQuery-types";
 
-/**
- * Scans backward from the cursor to find a :-triggered emoji query.
- * Stops early if whitespace is encountered before reaching the colon.
- * Returns null if no : is found, if the query is empty, or if the char limit is reached.
- *
- * When `hasClosingColon` is set, the first ':' reached is the shortcode's own closing
- * ':' rather than the query's opening one — it is skipped, and the scan continues for
- * the real opening ':' further back.
+/*
+ * Scans backward from the cursor to find a :-triggered emoji query, stopping early on whitespace
+ * or once a character limit is reached. When `hasClosingColon` is set, skips the shortcode's own
+ * closing ':' first and keeps scanning for the query's opening ':'. Returns null if none is found.
  */
 export const getEmojiQuery = ({
 	editorAPI,

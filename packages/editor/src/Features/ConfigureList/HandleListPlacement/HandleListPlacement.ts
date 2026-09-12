@@ -9,6 +9,10 @@ import {
 import { createList } from "../../_Utilities";
 import type { HandleListPlacementParams } from "./HandleListPlacement-types";
 
+/*
+ * Listens for insert and wrap requests and creates a list of the requested type at the current
+ * selection, placing the caret inside its last item. Returns a cleanup function for both listeners.
+ */
 export const handleListPlacement = ({
 	configPort,
 	editorAPI,

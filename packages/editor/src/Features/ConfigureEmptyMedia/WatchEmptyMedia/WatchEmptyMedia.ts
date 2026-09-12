@@ -93,12 +93,11 @@ const resolveMediaSrc = async ({
 	return src;
 };
 
-/**
- * Tracks `media` `BlockComponent`s added to the RootEditable, mounting the SolidJS picker
- * UI for each one via the adapter's `attach`/`detach`, and tearing it down once the block
- * disappears — either removed outright, or (once resolved) removed by `finalizeResolve` below.
- * RootEditable is always the source of truth: this watcher reacts to whatever's actually in
- * the tree, regardless of how it got there (toolbar insertion, undo/redo, paste, etc).
+/*
+ * Tracks empty media block components in the root editable, mounting a picker UI for each one
+ * and resolving submissions (URL, upload, or embed) down to a final media source, replacing the
+ * placeholder block once resolved. Reacts to whatever is actually in the tree, however it got
+ * there. Returns a cleanup function.
  */
 export const watchEmptyMedia = ({
 	configPort,

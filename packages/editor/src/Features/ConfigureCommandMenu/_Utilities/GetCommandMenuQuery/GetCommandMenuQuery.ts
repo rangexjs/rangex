@@ -2,8 +2,8 @@ import { componentsName, getClosestBlockComponent } from "#engine-links";
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertCommandMenuParams } from "./GetCommandMenuQuery-types";
 
-/**
- * Returns false if the cursor is inside a code block — slash commands stay literal text there.
+/*
+ * Returns false if the cursor is inside a code block, where slash commands stay literal text.
  */
 export const canInsertCommandMenu = ({
 	fromText,
@@ -16,10 +16,10 @@ export const canInsertCommandMenu = ({
 	return !blockComponent;
 };
 
-/**
+/*
  * Scans backward from the cursor for a /-triggered command query. Only matches when the / is at
  * the start of the line or preceded by a space — mid-word slashes stay literal text. Returns null
- * if the cursor is inside a code block, or no valid trigger is found within the char limit.
+ * if the cursor is inside a code block, or no valid trigger is found within the scan limit.
  */
 export const getCommandMenuQuery: GetCaretMenuQueryFn = ({
 	editorAPI,

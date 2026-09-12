@@ -11,6 +11,10 @@ import {
 } from "#engine-links";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
+/*
+ * Builds a list block component (ordered/unordered) whose items are populated from the
+ * given child lines, or left empty when none are provided.
+ */
 export const createList = ({
 	localName,
 	lineType,

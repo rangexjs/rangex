@@ -17,6 +17,10 @@ import {
 import type { ConfigureAudioParams } from "./ConfigureAudio-types";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
 
+/*
+ * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ */
 export const configureAudio = ({
 	configPort,
 	editorAPI,

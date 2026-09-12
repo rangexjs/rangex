@@ -5,8 +5,9 @@ import type {
 	GetTemplateVariableQueryResult,
 } from "./GetTemplateVariableQuery-types";
 
-/**
- * Returns true if the closest ScopedEditable from fromText allows the template-variable component.
+/*
+ * Returns true if the closest ScopedEditable from fromText allows the template-variable
+ * component.
  */
 export const canInsertTemplateVariable = ({
 	fromText,
@@ -25,7 +26,7 @@ export const canInsertTemplateVariable = ({
 	);
 };
 
-/**
+/*
  * Scans backward from the cursor to find a {{-triggered template variable query. Returns null
  * if the surrounding ScopedEditable doesn't allow template variables, or {{ isn't found within
  * the char limit.

@@ -1,11 +1,9 @@
 import type { HandleCaptionStateParams } from "./HandleCaptionState-types";
 
-/**
- * Wires a popover's caption toggle and position controls to the engine. Reads the active
- * media block from the appearance handler that registered it — set whenever the popover
- * opens over a new block. `getFigure`/`getCaption`/`setCaptionEnabled`/`setCaptionPosition`
- * are injected per media type, since the DOM shape used to locate a caption differs across
- * image/video/audio/embed.
+/*
+ * Wires a popover's caption toggle and position controls to the engine, applying changes to
+ * the active media block's figure and registering a snapshot boundary after each change.
+ * The figure/caption accessors are injected since their DOM shape varies by media type.
  */
 export const handleCaptionState = ({
 	port,

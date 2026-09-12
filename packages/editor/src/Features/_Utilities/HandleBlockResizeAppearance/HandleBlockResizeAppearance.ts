@@ -56,11 +56,9 @@ const calcFlexBasis = ({
 	throw new Error("Missing condition");
 };
 
-/**
- * Shared across every media extension that owns a `blockResize` overlay (Image/Video/Audio/
- * Embed): shows/hides the resize handles on pointer hover (mirroring `OverlayAppearanceHandler`'s
- * hover mechanics, but simpler since there's only ever one registration: `componentName`) and
- * drives the actual resize via `blockResize`'s move/end events.
+/*
+ * Shows and hides a block's resize handles on pointer hover, and drives the actual resize
+ * by adjusting the block's flex basis as resize move/end events fire.
  */
 export const handleBlockResizeAppearance = ({
 	blockResize,

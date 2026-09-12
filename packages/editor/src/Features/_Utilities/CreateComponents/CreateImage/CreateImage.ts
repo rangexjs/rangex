@@ -13,6 +13,10 @@ import {
 } from "#engine-links";
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
+/*
+ * Builds an image block component wrapping a `figure`/`img` element with default fit and
+ * aspect-ratio attributes.
+ */
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 	return createBlockComponentLine({
 		domAttrs: {

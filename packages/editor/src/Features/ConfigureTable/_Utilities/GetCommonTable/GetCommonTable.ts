@@ -6,10 +6,9 @@ import type {
 	GetCommonTableFromSelectionResult,
 } from "./GetCommonTable-types";
 
-/**
+/*
  * Returns the TableCell that both selection boundary points share by identity, or null
- * if they are in different cells. The identity check (`===`) is intentional — both
- * endpoints must be inside exactly the same cell for a single-cell action to apply.
+ * if they are in different cells.
  */
 export const getCommonTableCellFromSelection = ({
 	editorAPI,
@@ -30,10 +29,9 @@ export const getCommonTableCellFromSelection = ({
 	return hasSameTableCell ? fromTableCell : null;
 };
 
-/**
+/*
  * Returns the Table that both selection boundary points share by identity, or null
- * if they are in different tables. The identity check (`===`) is intentional — both
- * endpoints must be inside exactly the same table for a single-table action to apply.
+ * if they are in different tables.
  */
 export const getCommonTableFromSelection = ({
 	editorAPI,

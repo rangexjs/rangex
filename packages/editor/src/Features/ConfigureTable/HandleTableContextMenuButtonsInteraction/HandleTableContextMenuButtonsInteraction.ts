@@ -293,6 +293,10 @@ const handleClearContents = ({
 	});
 };
 
+/*
+ * Registers handlers for every table context-menu button action (section type, merge/split,
+ * insert/delete, cell type, vertical alignment, cell resizing, clear contents).
+ */
 export const handleTableContextMenuButtonsInteraction = ({
 	configPort,
 	editorAPI,

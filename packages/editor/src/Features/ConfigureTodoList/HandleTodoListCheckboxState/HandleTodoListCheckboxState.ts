@@ -13,6 +13,11 @@ import {
 } from "#engine-links";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
+/*
+ * Keeps each todo item's checkbox in sync with its stored checked state: restoring it whenever
+ * list items change, and persisting it back to storage whenever the checkbox itself is toggled.
+ * Returns a cleanup function.
+ */
 export const handleTodoListCheckboxState = ({
 	editorAPI,
 }: HandleTodoListCheckboxStateParams) => {

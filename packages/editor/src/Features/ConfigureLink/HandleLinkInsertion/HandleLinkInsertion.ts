@@ -15,7 +15,7 @@ import type {
 	WrapWithLinkParams,
 } from "./HandleLinkInsertion-types";
 
-/**
+/*
  * Collapses the selection to the end of the link's content so the caret lands inside it.
  */
 const setSelectionToLinkEnd = ({
@@ -48,7 +48,7 @@ const anchorToLink = ({
 	});
 };
 
-/**
+/*
  * Creates a link at the collapsed caret, inserts it, then anchors the preview popover to it.
  */
 const insertAtCaret = ({
@@ -88,7 +88,7 @@ const insertAtCaret = ({
 	editorAPI.focus();
 };
 
-/**
+/*
  * Wraps each valid segment in the selection with a link, skipping any that already contain an
  * InlineComponent.
  */
@@ -169,6 +169,10 @@ const wrapWithLink = ({
 	editorAPI.focus();
 };
 
+/*
+ * Handles link insertion requests, creating and inserting a link at the caret or wrapping the
+ * current selection depending on the placement mode. Returns a cleanup function.
+ */
 export const handleLinkInsertion = ({
 	configPort,
 	editorAPI,

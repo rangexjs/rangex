@@ -1,9 +1,9 @@
 import { createEmbed } from "../../_Utilities";
 import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
 
-/**
- * Inserts a real embed block at the caret whenever `onMediaResolve` reports a resolved embed
- * source, filtering out every other media type's resolution.
+/*
+ * Inserts a real embed block at the caret whenever media resolution reports a resolved embed
+ * source, ignoring resolutions for other media types.
  */
 export const handleEmbedInsertion = ({
 	configPort,

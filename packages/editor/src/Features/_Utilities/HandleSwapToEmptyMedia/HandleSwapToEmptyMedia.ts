@@ -1,5 +1,9 @@
 import type { HandleSwapToEmptyMediaParams } from "./HandleSwapToEmptyMedia-types";
 
+/*
+ * Wires a swap control to the engine: when swapping is allowed, clears the current block's
+ * content, registers a snapshot boundary, and notifies the port that the swap happened.
+ */
 export const handleSwapToEmptyMedia = ({
 	port,
 	editorAPI,

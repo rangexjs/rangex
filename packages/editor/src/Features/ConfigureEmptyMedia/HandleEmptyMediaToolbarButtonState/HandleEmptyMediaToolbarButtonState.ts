@@ -2,9 +2,9 @@ import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
 import type { HandleEmptyMediaToolbarButtonStateParams } from "./HandleEmptyMediaToolbarButtonState-types";
 
-/**
- * Keeps the media button disabled when the selection is in a context that doesn't allow
- * media insertion.
+/*
+ * Keeps the empty media toolbar button's insert availability in sync with the current
+ * selection. Returns a cleanup function.
  */
 export const handleEmptyMediaToolbarButtonState = ({
 	configPort,

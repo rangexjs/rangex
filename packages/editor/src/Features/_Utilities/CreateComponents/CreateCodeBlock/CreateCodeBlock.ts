@@ -17,6 +17,10 @@ import type {
 	CreateCodeBlockResult,
 } from "./CreateCodeBlock-types";
 
+/*
+ * Builds a code block component: a `pre`/`code` element containing a numbered line list,
+ * with syntax highlighting configured from the given language and light/dark themes.
+ */
 export const createCodeBlock = ({
 	language,
 	childNodes,

@@ -10,6 +10,10 @@ import type {
 	CreateTemplateVariableResult,
 } from "./CreateTemplateVariable-types";
 
+/*
+ * Builds an inline template variable component of the given kind, displaying its text as
+ * editable, formattable content.
+ */
 export const createTemplateVariable = ({
 	type,
 	displayText,

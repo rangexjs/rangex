@@ -17,6 +17,10 @@ import {
 import type { ConfigureImageParams } from "./ConfigureImage-types";
 import { handleImageInsertion } from "./HandleImageInsertion";
 
+/*
+ * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ */
 export const configureImage = ({
 	configPort,
 	editorAPI,

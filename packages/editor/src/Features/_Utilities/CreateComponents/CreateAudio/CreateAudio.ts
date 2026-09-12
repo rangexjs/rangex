@@ -11,6 +11,9 @@ import {
 } from "#engine-links";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
+/*
+ * Builds an audio block component wrapping an HTML `audio` element with playback controls.
+ */
 export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 	return createBlockComponentLine({
 		domAttrs: {

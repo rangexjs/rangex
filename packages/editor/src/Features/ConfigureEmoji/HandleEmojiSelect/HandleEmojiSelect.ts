@@ -6,7 +6,7 @@ import type {
 	RemoveEmojiQueryTextResult,
 } from "./HandleEmojiSelect-types";
 
-/**
+/*
  * Removes the :query text (e.g. ":sob") that triggered the emoji, before the emoji is inserted.
  */
 const removeEmojiQueryText = ({
@@ -39,9 +39,9 @@ const removeEmojiQueryText = ({
 	return { queryFound: true };
 };
 
-/**
- * Subscribes to emoji selection and inserts the emoji character at the cursor.
- * Strips the :query text first, then re-reads the cursor position and inserts there.
+/*
+ * Subscribes to emoji selection and inserts the chosen emoji at the cursor, first stripping the
+ * :query text that triggered it and re-reading the cursor position before inserting.
  */
 export const handleEmojiSelect = ({
 	configPort,

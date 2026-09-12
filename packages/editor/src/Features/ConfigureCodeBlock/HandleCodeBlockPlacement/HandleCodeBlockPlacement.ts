@@ -9,6 +9,10 @@ import {
 import { createCodeBlock } from "../../_Utilities";
 import type { HandleCodeBlockPlacementParams } from "./HandleCodeBlockPlacement-types";
 
+/*
+ * Handles inserting and wrapping code block components by selection, placing the caret
+ * inside the newly created line and registering a snapshot boundary. Returns a cleanup function.
+ */
 export const handleCodeBlockPlacement = ({
 	configPort,
 	editorAPI,

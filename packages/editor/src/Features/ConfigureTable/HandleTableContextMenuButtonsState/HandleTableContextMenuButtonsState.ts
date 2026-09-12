@@ -317,6 +317,10 @@ const updateTableContextMenuButtonsState = ({
 	});
 };
 
+/*
+ * Subscribes to selection and table-structure editor events to keep the context-menu
+ * button states (disabled/checked, with reasons) in sync with the active table selection.
+ */
 export const handleTableContextMenuButtonsState = ({
 	configPort,
 	editorAPI,

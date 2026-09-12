@@ -70,6 +70,11 @@ const updateAllTemplateVariableNodes = ({
 	}
 };
 
+/*
+ * Subscribes to option updates, persists changed values into root storage, refreshes every
+ * template variable node's display text to match, and registers a snapshot boundary. Returns
+ * a cleanup function.
+ */
 export const handleTemplateVariableUpdate = ({
 	configPort,
 	editorAPI,

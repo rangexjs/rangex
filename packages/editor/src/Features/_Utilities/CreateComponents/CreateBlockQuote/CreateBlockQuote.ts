@@ -15,6 +15,9 @@ import type {
 	CreateBlockQuoteResult,
 } from "./CreateBlockQuote-types";
 
+/*
+ * Builds a block quote component wrapping a `blockquote` element with an editable text area.
+ */
 export const createBlockQuote = ({
 	childNodes,
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {

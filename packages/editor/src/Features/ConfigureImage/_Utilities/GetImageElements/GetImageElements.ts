@@ -6,6 +6,9 @@ import type {
 	GetImageImgResult,
 } from "./GetImageElements-types";
 
+/*
+ * Returns the block component's figure element, throwing if the first child isn't a figure.
+ */
 export const getImageFigure = ({
 	blockComponent,
 }: GetImageFigureParams): GetImageFigureResult => {
@@ -22,6 +25,9 @@ export const getImageFigure = ({
 	return figure;
 };
 
+/*
+ * Returns the img element nested inside a figure, throwing if none is found.
+ */
 export const getImageImg = ({
 	figure,
 }: GetImageImgParams): GetImageImgResult => {

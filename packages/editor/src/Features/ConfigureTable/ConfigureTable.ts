@@ -9,6 +9,10 @@ import { handleTableContextMenuVisibility } from "./HandleTableContextMenuVisibi
 import { handleTableInsertion } from "./HandleTableInsertion";
 import { handleTableToolbarButtonState } from "./HandleTableToolbarButtonState";
 
+/*
+ * Wires up all table feature handlers (insertion, toolbar state, context-menu visibility,
+ * button state, and button interactions) and returns their combined cleanup.
+ */
 export const configureTable = ({
 	configPort,
 	editorAPI,

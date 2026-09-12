@@ -3,6 +3,11 @@ import { ensureNodeRootStorage } from "#engine-links";
 import { canInsertTemplateVariable, storageToOptions } from "../_Utilities";
 import type { HandleTemplateVariableToolbarButtonStateParams } from "./HandleTemplateVariableToolbarButtonState-types";
 
+/*
+ * Subscribes to selection changes and keeps the toolbar button's state in sync: whether a
+ * template variable can be inserted, and the current stored option values. Returns a cleanup
+ * function.
+ */
 export const handleTemplateVariableToolbarButtonState = ({
 	configPort,
 	editorAPI,

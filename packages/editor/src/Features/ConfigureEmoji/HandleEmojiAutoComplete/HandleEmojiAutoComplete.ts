@@ -6,10 +6,9 @@ import {
 import { getEmojiQuery } from "../_Utilities";
 import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-types";
 
-/**
- * Intercepts the closing ':' keystroke and auto-inserts an emoji when the text
- * immediately before the cursor forms a completed :<name> shortcode that matches
- * a known emoji. Fires only on actual typing, not on cursor movement.
+/*
+ * Intercepts the closing ':' keystroke and, when the text immediately before the cursor forms a
+ * completed :name: shortcode matching a known emoji, replaces the shortcode with that emoji.
  */
 export const handleEmojiAutoComplete = ({
 	configPort,

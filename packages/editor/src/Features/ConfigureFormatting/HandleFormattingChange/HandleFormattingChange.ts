@@ -1,6 +1,9 @@
 import { getSelectionStylesData } from "#engine-links";
 import type { HandleFormattingChangeParams } from "./HandleFormattingChange-types";
 
+/*
+ * Applies a requested formatting change to the current selection's styles and refocuses the editor.
+ */
 export const handleFormattingChange = ({
 	configPort,
 	editorAPI,

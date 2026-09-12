@@ -22,6 +22,10 @@ const embedSandbox =
 const embedAllow =
 	"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write";
 
+/*
+ * Builds an embed block component wrapping a sandboxed `iframe` for third-party content,
+ * with a fixed sandbox/allow policy and a default 16:9 aspect ratio.
+ */
 export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 	return createBlockComponentLine({
 		domAttrs: {

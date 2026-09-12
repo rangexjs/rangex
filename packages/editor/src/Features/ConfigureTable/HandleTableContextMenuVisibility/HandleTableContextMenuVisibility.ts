@@ -73,12 +73,9 @@ const syncOverlayVisibility = ({
 	}
 };
 
-/**
- * Subscribes to editor events to keep the context-menu overlay anchored to the
- * relevant TableCell. Three event types drive visibility: `editorSelectionChange`
- * covers a caret or range inside a single cell; `tableSelectionChange` covers
- * multi-cell table selections; `tableStructureChange` keeps the anchor up to date
- * when rows or columns are inserted or deleted.
+/*
+ * Subscribes to selection and table-structure editor events to keep the context-menu
+ * overlay anchored to the relevant TableCell as the selection or table shape changes.
  */
 export const handleTableContextMenuVisibility = ({
 	editorAPI,

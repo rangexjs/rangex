@@ -5,12 +5,9 @@ import {
 } from "rich-text-area";
 import type { HandleAccordionItemSummaryToggleParams } from "./HandleAccordionItemSummaryToggle-types";
 
-/**
- * A click inside the summary's title editable would otherwise toggle the accordion open/closed
- * (native <summary> activation behavior) instead of just placing the caret — canceled here.
- * Enter gets the same treatment: the editor's own newline handling is canceled and swapped for
- * toggling the accordion instead, since <summary>'s own native Enter-to-toggle only fires when
- * <summary> itself is focused, not a NestedEditable inside it.
+/*
+ * Prevents native <summary> click/Enter activation from firing while editing its nested editable,
+ * and instead toggles the accordion's open state manually. Returns a cleanup function.
  */
 export const handleAccordionItemSummaryToggle = ({
 	editorAPI,

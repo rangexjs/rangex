@@ -1,6 +1,10 @@
 import { createEmptyMedia } from "../../_Utilities";
 import type { HandleEmptyMediaInsertionParams } from "./HandleEmptyMediaInsertion-types";
 
+/*
+ * Handles inserting and swapping in an empty media placeholder by selection, placing the caret
+ * after it and registering a snapshot boundary. Returns a cleanup function.
+ */
 export const handleEmptyMediaInsertion = ({
 	configPort,
 	editorAPI,

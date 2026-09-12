@@ -2,7 +2,7 @@ import { componentsName, getClosestScopedEditable } from "#engine-links";
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertMentionParams } from "./GetMentionQuery-types";
 
-/**
+/*
  * Returns true if the closest ScopedEditable from fromText allows the mention component.
  */
 export const canInsertMention = ({
@@ -22,7 +22,7 @@ export const canInsertMention = ({
 	);
 };
 
-/**
+/*
  * Scans backward from the cursor to find an @-triggered mention query. Returns null if the
  * surrounding ScopedEditable doesn't allow mentions, or @ isn't found within the char limit.
  */

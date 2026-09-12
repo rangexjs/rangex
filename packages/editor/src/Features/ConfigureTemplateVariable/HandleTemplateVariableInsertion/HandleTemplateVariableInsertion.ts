@@ -4,6 +4,11 @@ import { createTemplateVariable } from "../../_Utilities";
 import { resolveTemplateVariableDisplayText } from "../_Utilities";
 import type { HandleTemplateVariableInsertionParams } from "./HandleTemplateVariableInsertion-types";
 
+/*
+ * Subscribes to insertion requests and inserts a template variable component of the requested
+ * kind at the cursor, with its display text resolved from the stored values. Returns a cleanup
+ * function.
+ */
 export const handleTemplateVariableInsertion = ({
 	configPort,
 	editorAPI,

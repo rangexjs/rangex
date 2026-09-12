@@ -9,15 +9,10 @@ import {
 } from "#engine-links";
 import type { HandleCaretMenuOverlayAppearanceParams } from "./HandleCaretMenuOverlayAppearance-types";
 
-/**
- * Shared caret-anchored menu wiring for every backtrack-triggered popover (TemplateVariable,
- * Mention, Emoji, CommandMenu, ...): creates the anchored overlay controller over
- * `port.caretMenuEl`, wires all three close behaviors (selection-change, editor blur, Escape —
- * subscribed before appearance, so a close always resolves before appearance re-evaluates on the
- * same selection-change event), and shows the menu whenever `getQuery` finds a trigger at the
- * cursor and `onQuery` says there's something to show. `getQuery` is the only per-feature hook —
- * the backtrack scan itself (which trigger character, how far back to look, any extra
- * validation) is left entirely to the caller.
+/*
+ * Wires a caret-anchored overlay's appearance to the engine: closes it on selection change,
+ * editor blur, or Escape, and shows it near the cursor whenever the injected `getQuery` finds
+ * a trigger at the caret and `onQuery` confirms there's something to display.
  */
 export const handleCaretMenuOverlayAppearance = ({
 	port,

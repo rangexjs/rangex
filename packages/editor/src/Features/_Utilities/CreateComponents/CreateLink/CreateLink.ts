@@ -9,6 +9,9 @@ import {
 import { componentsName, createLinkStorage } from "#engine-links";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
 
+/*
+ * Builds an inline link component wrapping an `a` element around editable, formattable text.
+ */
 export const createLink = ({
 	text,
 	href,

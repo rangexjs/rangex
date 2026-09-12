@@ -39,9 +39,9 @@ const removeCommandMenuQueryText = ({
 	return { queryFound: true };
 };
 
-/**
- * Subscribes to the menu's before-select event and strips the /query text first, so whichever
- * extension's action runs next inserts at the position the `/` used to be.
+/*
+ * Strips the triggering /query text before a command menu item is selected, so the selected
+ * item's action inserts at the position the `/` used to be. Returns a cleanup function.
  */
 export const handleCommandMenuBeforeSelect = ({
 	configPort,

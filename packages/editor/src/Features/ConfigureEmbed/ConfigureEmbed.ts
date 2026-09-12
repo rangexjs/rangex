@@ -17,6 +17,10 @@ import {
 import type { ConfigureEmbedParams } from "./ConfigureEmbed-types";
 import { handleEmbedInsertion } from "./HandleEmbedInsertion";
 
+/*
+ * Wires up the embed feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ */
 export const configureEmbed = ({
 	configPort,
 	editorAPI,

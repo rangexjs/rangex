@@ -68,10 +68,9 @@ const canApplyLink = ({ editorAPI }: CanApplyLinkParams) => {
 	return $$allowedComponents.includes(componentsName.link);
 };
 
-/**
- * Detects a completed "[text](url)" or "![alt](url)" marker on the closing ")" keystroke.
- * Lets that keystroke insert natively first — same as HandleInlineMarkdown — so the literal
- * marker text lands in the DOM before conversion, and a single undo restores it.
+/*
+ * Detects a completed "[text](url)" or "![alt](url)" marker on the closing ")" keystroke,
+ * letting the keystroke insert natively first so a single undo can restore the literal text.
  */
 export const handleLinkMarkdown = ({ editorAPI }: HandleLinkMarkdownParams) => {
 	const selection = editorAPI.getEditorSelection();

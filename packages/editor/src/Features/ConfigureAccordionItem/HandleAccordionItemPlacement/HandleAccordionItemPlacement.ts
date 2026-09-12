@@ -1,6 +1,10 @@
 import { createAccordionItem } from "../../_Utilities";
 import type { HandleAccordionItemPlacementParams } from "./HandleAccordionItemPlacement-types";
 
+/*
+ * Handles inserting and wrapping accordion item components by selection, placing the caret
+ * inside the newly created editable and registering a snapshot boundary. Returns a cleanup function.
+ */
 export const handleAccordionItemPlacement = ({
 	configPort,
 	editorAPI,

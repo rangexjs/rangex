@@ -4,6 +4,10 @@ import { handleTodoListCheckboxState } from "./HandleTodoListCheckboxState";
 import { handleTodoListPlacement } from "./HandleTodoListPlacement";
 import { handleTodoListToolbarButtonState } from "./HandleTodoListToolbarButtonState";
 
+/*
+ * Wires up the todo list block component: toolbar button state, insert/wrap placement,
+ * and checkbox state syncing. Returns a cleanup function that tears down all of it.
+ */
 export const configureTodoList = ({
 	configPort,
 	editorAPI,

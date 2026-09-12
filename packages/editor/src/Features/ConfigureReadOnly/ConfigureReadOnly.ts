@@ -1,5 +1,9 @@
 import type { ConfigureReadOnlyParams } from "./ConfigureReadOnly-types";
 
+/*
+ * Syncs the read-only toggle's initial state with the editor's editability and wires up toggling
+ * it, returning a cleanup function.
+ */
 export const configureReadOnly = ({
 	configPort,
 	editorAPI,

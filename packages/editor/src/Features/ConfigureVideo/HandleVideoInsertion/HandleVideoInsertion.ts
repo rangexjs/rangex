@@ -1,9 +1,9 @@
 import { createVideo } from "../../_Utilities";
 import type { HandleVideoInsertionParams } from "./HandleVideoInsertion-types";
 
-/**
- * Inserts a real video block at the caret whenever `onMediaResolve` reports a resolved video
- * source, filtering out every other media type's resolution.
+/*
+ * Inserts a real video block at the caret whenever media resolution reports a resolved video
+ * source, ignoring resolutions for other media types.
  */
 export const handleVideoInsertion = ({
 	configPort,

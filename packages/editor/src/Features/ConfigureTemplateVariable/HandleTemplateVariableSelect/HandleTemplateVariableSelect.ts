@@ -11,9 +11,8 @@ import type {
 	RemoveTemplateVariableQueryTextResult,
 } from "./HandleTemplateVariableSelect-types";
 
-/**
- * Removes the {{query text (e.g. "{{FirstName") that triggered the caret menu, before the
- * component is inserted.
+/*
+ * Removes the {{query text that triggered the caret menu, before the component is inserted.
  */
 const removeTemplateVariableQueryText = ({
 	editorAPI,
@@ -44,9 +43,10 @@ const removeTemplateVariableQueryText = ({
 	return { queryFound: true };
 };
 
-/**
+/*
  * Subscribes to caret-menu selection and inserts the component at the cursor. Strips the
- * {{query text first, then re-reads the cursor position and inserts there.
+ * {{query text first, then re-reads the cursor position and inserts there. Returns a cleanup
+ * function.
  */
 export const handleTemplateVariableSelect = ({
 	configPort,

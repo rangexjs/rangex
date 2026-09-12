@@ -1,10 +1,8 @@
 import type { HandleCommitSnapshotParams } from "./HandleCommitSnapshot-types";
 
-/**
- * Wires a `CommitSnapshotConfigPort`'s `onCommitSnapshot` to a snapshot boundary — used by
- * consumers that mutate a block's DOM directly (e.g. an `img`'s `object-fit`/`aspect-ratio`/
- * `alt`) without ever routing the value itself through a port, so the engine still needs an
- * explicit signal that a snapshot-worthy change happened.
+/*
+ * Registers a snapshot boundary whenever the port signals that a direct DOM mutation
+ * happened outside the normal port-driven change flow.
  */
 export const handleCommitSnapshot = ({
 	port,

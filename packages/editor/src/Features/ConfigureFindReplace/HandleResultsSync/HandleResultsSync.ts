@@ -1,7 +1,9 @@
 import type { FindReplaceResultsState } from "#adapters/FindReplace";
 import type { HandleResultsSyncParams } from "./HandleResultsSync-types";
 
-/** Keeps the popover's result counters in sync with the engine on index or match changes. */
+/*
+ * Keeps the popover's result counters in sync with the engine on index or match changes.
+ */
 export const handleResultsSync = ({
 	configPort,
 	editorAPI,

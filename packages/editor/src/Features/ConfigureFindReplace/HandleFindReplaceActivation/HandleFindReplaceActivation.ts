@@ -1,6 +1,8 @@
 import type { HandleFindReplaceActivationParams } from "./HandleFindReplaceActivation-types";
 
-/** Ties find-replace engine activation to the popover lifecycle, seeding criteria on open. */
+/*
+ * Ties find-replace engine activation to the popover lifecycle, seeding criteria on open.
+ */
 export const handleFindReplaceActivation = ({
 	configPort,
 	editorAPI,

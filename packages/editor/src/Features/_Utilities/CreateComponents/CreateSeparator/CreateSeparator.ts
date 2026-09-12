@@ -11,6 +11,9 @@ import {
 } from "#engine-links";
 import type { CreateSeparatorResult } from "./CreateSeparator-types";
 
+/*
+ * Builds a separator block component wrapping a simple `hr` element.
+ */
 export const createSeparator = (): CreateSeparatorResult => {
 	const blockComponentLine = createBlockComponentLine({
 		domAttrs: {

@@ -1,8 +1,8 @@
 import type { HandleBlockRemoveParams } from "./HandleBlockRemove-types";
 
-/**
- * Wires a popover's Remove control to the engine. Fires immediately, no confirmation —
- * undo (`registerSnapshotBoundary`) is the safety net, consistent with the rest of the editor.
+/*
+ * Wires a popover's Remove control to the engine, removing the active block immediately
+ * and registering a snapshot boundary so the removal can be undone.
  */
 export const handleBlockRemove = ({
 	port,

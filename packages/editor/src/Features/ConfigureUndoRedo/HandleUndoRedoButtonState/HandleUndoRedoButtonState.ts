@@ -1,6 +1,9 @@
 import { snapshotIndexChangeEventType } from "rich-text-area";
 import type { HandleUndoRedoButtonStateParams } from "./HandleUndoRedoButtonState-types";
 
+/*
+ * Updates the undo/redo buttons' enabled state whenever the snapshot timeline's current index changes.
+ */
 export const handleUndoRedoButtonState = ({
 	configPort,
 	editorAPI,

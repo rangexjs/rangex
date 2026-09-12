@@ -12,6 +12,11 @@ import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkPlacementState } from "./HandleLinkPlacementState";
 import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
 
+/*
+ * Wires up the link feature: selection menu appearance, display text, placement state, menu
+ * open/close, interaction tracking, insertion, modification, and unwrap handling. Returns a
+ * cleanup function that tears down all of it.
+ */
 export const configureLink = ({
 	configPort,
 	editorAPI,

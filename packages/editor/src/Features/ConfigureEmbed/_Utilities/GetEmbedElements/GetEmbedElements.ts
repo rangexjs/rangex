@@ -6,6 +6,9 @@ import type {
 	GetEmbedFigureResult,
 } from "./GetEmbedElements-types";
 
+/*
+ * Returns the block component's figure element, throwing if the first child isn't a figure.
+ */
 export const getEmbedFigure = ({
 	blockComponent,
 }: GetEmbedFigureParams): GetEmbedFigureResult => {
@@ -22,6 +25,9 @@ export const getEmbedFigure = ({
 	return figure;
 };
 
+/*
+ * Returns the iframe element nested inside a figure, throwing if none is found.
+ */
 export const getEmbedElement = ({
 	figure,
 }: GetEmbedElementParams): GetEmbedElementResult => {

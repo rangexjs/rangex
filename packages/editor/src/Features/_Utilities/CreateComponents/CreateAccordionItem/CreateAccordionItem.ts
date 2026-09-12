@@ -20,6 +20,10 @@ import type {
 	CreateAccordionItemResult,
 } from "./CreateAccordionItem-types";
 
+/*
+ * Builds an accordion item block component: a collapsible `details`/`summary` element with
+ * a chevron icon, a single-line editable summary, and a multi-line editable body.
+ */
 export const createAccordionItem = ({
 	childNodes,
 }: CreateAccordionItemParams): CreateAccordionItemResult => {

@@ -2,6 +2,9 @@ import { selectionStylesChangeEventType } from "rich-text-area";
 import { getFormattingButtonState } from "#engine-links";
 import type { HandleFormattingButtonStateParams } from "./HandleFormattingButtonState-types";
 
+/*
+ * Updates the formatting toolbar buttons' state whenever the selection's applied styles change.
+ */
 export const handleFormattingButtonState = ({
 	configPort,
 	editorAPI,

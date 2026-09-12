@@ -1,7 +1,9 @@
 import { EditorRange } from "rich-text-area";
 import type { ScrollMatchedRangeIntoViewParams } from "./ScrollMatchedRangeIntoView-types";
 
-/** Scrolls the current find-replace match into view. */
+/*
+ * Scrolls the current find-replace match into view.
+ */
 export const scrollMatchedRangeIntoView = ({
 	findReplace,
 }: ScrollMatchedRangeIntoViewParams) => {

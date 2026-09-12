@@ -2,6 +2,9 @@ import type { ConfigureUndoRedoParams } from "./ConfigureUndoRedo-types";
 import { handleUndoRedoButtonState } from "./HandleUndoRedoButtonState";
 import { handleUndoRedoNavigation } from "./HandleUndoRedoNavigation";
 
+/*
+ * Wires up undo/redo button state and step navigation handling, returning a cleanup function.
+ */
 export const configureUndoRedo = ({
 	configPort,
 	editorAPI,

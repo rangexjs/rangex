@@ -1,6 +1,10 @@
 import { createContentLine, createFormattableTexts } from "rich-text-area";
 import type { HandleSymbolsInsertionParams } from "./HandleSymbolsInsertion-types";
 
+/*
+ * Listens for symbol insert requests and inserts the requested symbol text at the current
+ * selection's leading edge (following DOM direction), then refocuses the editor.
+ */
 export const handleSymbolsInsertion = ({
 	configPort,
 	editorAPI,

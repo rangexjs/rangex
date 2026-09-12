@@ -32,10 +32,9 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	return null;
 };
 
-/**
- * Reads whether a figure's caption is currently shown and, if so, whether it sits
- * above or below the audio — derived entirely from the figcaption's presence and
- * DOM order, not a separate stored flag.
+/*
+ * Reads whether a figure's caption is currently shown and, if so, whether it sits above or below
+ * the audio — derived from the figcaption's presence and DOM order, not a stored flag.
  */
 export const getAudioCaption = ({
 	figure,
@@ -58,9 +57,9 @@ export const getAudioCaption = ({
 	return { enabled: true, position };
 };
 
-/**
- * Adds or removes the figcaption. Adding creates a fresh, empty `NestedEditable`
- * below the audio; removing discards the figcaption and whatever the user had typed.
+/*
+ * Adds or removes the figcaption. Adding creates a fresh, empty nested editable below the audio;
+ * removing discards the figcaption and whatever the user had typed in it.
  */
 export const setAudioCaptionEnabled = ({
 	figure,
@@ -104,10 +103,9 @@ export const setAudioCaptionEnabled = ({
 	);
 };
 
-/**
- * Moves the figcaption before or after the audio. No-op target state is
- * idempotent — always repositions relative to the audio rather than checking
- * the current order first.
+/*
+ * Moves the figcaption before or after the audio, always repositioning relative to the audio
+ * rather than checking the current order first. Throws if the figure has no figcaption.
  */
 export const setAudioCaptionPosition = ({
 	figure,

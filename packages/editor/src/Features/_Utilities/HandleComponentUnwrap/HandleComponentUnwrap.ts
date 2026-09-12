@@ -1,9 +1,8 @@
 import type { HandleComponentUnwrapParams } from "./HandleComponentUnwrap-types";
 
-/**
- * Wires an `UnwrapConfigPort`'s `onUnwrap` to whatever `Component` `getComponent` currently
- * resolves to, calling `$$unwrap` on it. Works for both `InlineComponent` and
- * `BlockComponent` since `$$unwrap` is defined on `Component` itself.
+/*
+ * Wires an unwrap control to the engine, unwrapping the currently resolved component and
+ * registering a snapshot boundary.
  */
 export const handleComponentUnwrap = ({
 	port,

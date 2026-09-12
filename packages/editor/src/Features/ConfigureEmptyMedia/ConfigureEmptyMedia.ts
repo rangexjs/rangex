@@ -4,6 +4,10 @@ import { handleEmptyMediaInsertion } from "./HandleEmptyMediaInsertion";
 import { handleEmptyMediaToolbarButtonState } from "./HandleEmptyMediaToolbarButtonState";
 import { watchEmptyMedia } from "./WatchEmptyMedia";
 
+/*
+ * Wires up the empty media placeholder component: toolbar button state, insertion, and
+ * watching placed blocks to resolve their final media source. Returns a cleanup function.
+ */
 export const configureEmptyMedia = ({
 	configPort,
 	editorAPI,

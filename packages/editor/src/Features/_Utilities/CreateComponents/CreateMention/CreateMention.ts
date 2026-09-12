@@ -10,6 +10,10 @@ import type {
 	CreateMentionResult,
 } from "./CreateMention-types";
 
+/*
+ * Builds an inline mention component displaying "@name" as editable, formattable text and
+ * storing the referenced user id.
+ */
 export const createMention = ({
 	userId,
 	name,

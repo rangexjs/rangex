@@ -1,12 +1,8 @@
 import type { HandleLineRemoveParams } from "./HandleLineRemove-types";
 
-/**
- * Removes the `Line` `getCurrentLine` currently resolves to, regardless of whether it's a
- * `ContentLine` or a `BlockComponentLine` — both are removed the same way, by clearing
- * their full child range. This is the line-level counterpart to `HandleBlockRemove`, which
- * only knows how to remove a `BlockComponent`'s own line; once every block-level popover
- * (Image, Video, ...) delegates removal to `LineHandler` instead of its own Remove button,
- * `HandleBlockRemove` goes away in favor of this.
+/*
+ * Wires a remove control to the engine, removing the current line and moving the selection
+ * to a sibling line, or clearing its content if it has no siblings.
  */
 export const handleLineRemove = ({
 	port,

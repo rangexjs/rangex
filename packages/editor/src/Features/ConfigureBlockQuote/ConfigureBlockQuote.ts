@@ -3,6 +3,9 @@ import type { ConfigureBlockQuoteParams } from "./ConfigureBlockQuote-types";
 import { handleBlockQuotePlacement } from "./HandleBlockQuotePlacement";
 import { handleBlockQuoteToolbarButtonState } from "./HandleBlockQuoteToolbarButtonState";
 
+/*
+ * Wires up block quote toolbar button state and placement handling, returning a cleanup function.
+ */
 export const configureBlockQuote = ({
 	configPort,
 	editorAPI,

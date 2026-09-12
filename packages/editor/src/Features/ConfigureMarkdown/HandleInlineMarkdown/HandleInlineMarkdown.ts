@@ -109,12 +109,11 @@ const canApplyInlineTag = ({ editorAPI, tag }: CanApplyInlineTagParams) => {
 	return $$allowedGlyphFormatterInlineTags.includes(tag);
 };
 
-/**
+/*
  * Detects a completed inline markdown marker ("**bold**", "*italic*"/"_italic_",
  * "~~strike~~", "`code`") on the keystroke that closes it, and wraps the enclosed text in
- * the matching inline tag. Lets that keystroke insert natively first — same as
- * HandleBlockMarkdown — so the literal marker text lands in the DOM before conversion, and
- * a single undo restores it.
+ * the matching inline tag, letting the keystroke insert natively first so a single undo
+ * can restore the literal text.
  */
 export const handleInlineMarkdown = ({
 	editorAPI,

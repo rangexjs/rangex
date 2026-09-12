@@ -12,6 +12,10 @@ import {
 } from "#engine-links";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
+/*
+ * Builds a table block component with the given row/column counts, applying a default
+ * border style to both the table and its cells.
+ */
 export const createTable = ({
 	rows,
 	cols,

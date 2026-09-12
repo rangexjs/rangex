@@ -286,11 +286,10 @@ const applyBlockMarkdownConversion = ({
 	assertNever(conversion);
 };
 
-/**
- * Detects a completed block-level markdown trigger (e.g. "###", "-", "1.", "[]", ">",
- * "```") on the keystroke that completes it, and converts the current line accordingly.
- * Lets that keystroke insert natively first so the literal trigger text lands in the
- * DOM before conversion, and a single undo restores it.
+/*
+ * Detects a completed block-level markdown trigger (e.g. "###", "-", "1.", "[]", ">", "```")
+ * on the keystroke that completes it, and converts the current line accordingly, letting
+ * the keystroke insert natively first so a single undo can restore the literal text.
  */
 export const handleBlockMarkdown = ({
 	editorAPI,

@@ -2,6 +2,10 @@ import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
 import type { HandleTodoListToolbarButtonStateParams } from "./HandleTodoListToolbarButtonState-types";
 
+/*
+ * Keeps the todo list toolbar button's insert/wrap availability in sync with the current
+ * selection. Returns a cleanup function.
+ */
 export const handleTodoListToolbarButtonState = ({
 	configPort,
 	editorAPI,

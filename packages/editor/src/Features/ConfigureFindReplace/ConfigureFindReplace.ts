@@ -6,7 +6,9 @@ import { handleResultsSync } from "./HandleResultsSync";
 import { handleSearchChange } from "./HandleSearchChange";
 import { handleStepChange } from "./HandleStepChange";
 
-/** Registers all find-replace event handlers between the UI and the editor engine. */
+/*
+ * Registers all find-replace event handlers between the UI and the editor engine.
+ */
 export const configureFindReplace = ({
 	configPort,
 	editorAPI,

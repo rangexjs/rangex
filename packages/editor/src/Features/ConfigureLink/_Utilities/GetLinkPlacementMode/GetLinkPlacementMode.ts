@@ -5,11 +5,11 @@ import type {
 	GetLinkPlacementModeResult,
 } from "./GetLinkPlacementMode-types";
 
-/**
- * Resolves whether the current selection can take a link, and as which shape: a collapsed
+/*
+ * Resolves whether the current selection can take a link and in what shape: a collapsed
  * caret can only "insert" a brand-new link, a real range can only "wrap" its own text into
- * one. Returns null when neither applies (e.g. inside a link already, or a context whose
- * `$$allowedComponents` excludes links).
+ * one. Returns null when neither applies, e.g. inside a link already, or where links aren't
+ * an allowed component.
  */
 export const getLinkPlacementMode = ({
 	editorAPI,

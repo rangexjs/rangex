@@ -4,6 +4,10 @@ import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
 import { handleAccordionItemSummaryToggle } from "./HandleAccordionItemSummaryToggle";
 import { handleAccordionItemToolbarButtonState } from "./HandleAccordionItemToolbarButtonState";
 
+/*
+ * Wires up the accordion item block component: toolbar button state, insert/wrap placement,
+ * and summary toggle handling. Returns a cleanup function that tears down all of it.
+ */
 export const configureAccordionItem = ({
 	configPort,
 	editorAPI,

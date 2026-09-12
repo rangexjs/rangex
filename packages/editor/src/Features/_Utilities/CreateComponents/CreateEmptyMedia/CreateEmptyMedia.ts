@@ -11,12 +11,9 @@ import {
 } from "#engine-links";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
 
-/**
- * Media is inserted empty — an unresolved placeholder, not a populated image/video/audio/
- * embed. Unlike image's dropzone, the placeholder's only child is a `DetachedContext`
- * `slot` — `ConfigureEmptyMedia`'s watcher reactively mounts the SolidJS picker UI into it
- * once the block connects, and forwards resolution onto `adapterBus` for a future
- * Image/Video/Audio/Embed extension to insert the real component.
+/*
+ * Builds an unresolved media placeholder block component, exposing a single `slot` child
+ * that a picker UI can later mount into once a concrete media type is chosen.
  */
 export const createEmptyMedia = (): CreateEmptyMediaResult => {
 	const blockComponentLine = createBlockComponentLine({

@@ -1,10 +1,9 @@
 import { createBeamText, createContentLine } from "rich-text-area";
 import type { HandleInsertRootLineParams } from "./HandleInsertRootLine-types";
 
-/**
- * Inserts a blank paragraph line above or below the `Line` `getCurrentLine` resolves to.
- * `insertNode` accepts the `Line` node directly as `fromNode` — offset `0` for "above",
- * the line's own child count for "below".
+/*
+ * Wires an insert control to the engine, inserting a blank paragraph line above or below
+ * the current line and moving the selection into it.
  */
 export const handleInsertRootLine = ({
 	port,

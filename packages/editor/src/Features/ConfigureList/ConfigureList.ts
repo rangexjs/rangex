@@ -3,6 +3,9 @@ import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
 import { handleListToolbarButtonState } from "./HandleListToolbarButtonState";
 
+/*
+ * Wires up list toolbar button state and placement handling, returning a cleanup function.
+ */
 export const configureList = ({
 	configPort,
 	editorAPI,

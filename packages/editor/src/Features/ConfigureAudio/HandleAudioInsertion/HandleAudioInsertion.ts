@@ -1,9 +1,9 @@
 import { createAudio } from "../../_Utilities";
 import type { HandleAudioInsertionParams } from "./HandleAudioInsertion-types";
 
-/**
- * Inserts a real audio block at the caret whenever `onMediaResolve` reports a resolved audio
- * source, filtering out every other media type's resolution.
+/*
+ * Inserts a real audio block at the caret whenever media resolution reports a resolved audio
+ * source, ignoring resolutions for other media types.
  */
 export const handleAudioInsertion = ({
 	configPort,

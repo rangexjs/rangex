@@ -1,6 +1,10 @@
 import { createTable } from "../../_Utilities";
 import type { HandleTableInsertionParams } from "./HandleTableInsertion-types";
 
+/*
+ * Inserts a new table at the current selection on insert requests, then places the
+ * selection inside it and focuses the editor.
+ */
 export const handleTableInsertion = ({
 	configPort,
 	editorAPI,

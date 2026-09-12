@@ -1,6 +1,8 @@
 import type { HandleSearchChangeParams } from "./HandleSearchChange-types";
 
-/** Updates the engine's search criteria whenever the user changes the find options. */
+/*
+ * Updates the engine's search criteria whenever the user changes the find options.
+ */
 export const handleSearchChange = ({
 	configPort,
 	editorAPI,

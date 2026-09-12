@@ -4,13 +4,10 @@ import {
 } from "#engine-links";
 import type { HandleQuickActionsOverlayAppearanceParams } from "./HandleQuickActionsOverlayAppearance-types";
 
-/**
- * Shared hover-panel wiring for every block-component adapter's QuickActions overlay
- * (Image, Video, Audio, Embed, CodeBlock, ...): creates the anchored overlay controller
- * over `port.quickActionsEl`, registers it with a dedicated {@link OverlayAppearanceHandler},
- * and pushes `currentComponent` in/out via `port` on open/close. `beforeOpen` is the only
- * per-feature hook, called between `hide()` and `show()` to push whatever state that
- * feature's overlay needs (alignment, caption, language/theme, ...).
+/*
+ * Wires a block component's quick-actions overlay appearance to the engine, anchoring it to
+ * the current block on hover and tracking that block as the port's current component while
+ * open. `beforeOpen` runs before each show, so the caller can push any extra state it needs.
  */
 export const handleQuickActionsOverlayAppearance = ({
 	port,

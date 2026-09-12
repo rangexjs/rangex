@@ -4,6 +4,10 @@ import type {
 	ScanMarkdownCharsResult,
 } from "./ScanMarkdownChars-types";
 
+/*
+ * Scans backward from the cursor up to `maxChars` characters, returning the scanned text
+ * step and how many characters were actually scanned, or null if nothing could be scanned.
+ */
 export const scanMarkdownChars = ({
 	editorAPI,
 	fromText,

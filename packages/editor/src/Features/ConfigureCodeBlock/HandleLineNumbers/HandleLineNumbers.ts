@@ -8,6 +8,10 @@ import {
 import { componentsName } from "#engine-links";
 import type { HandleLineNumbersParams } from "./HandleLineNumbers-types";
 
+/*
+ * Keeps each code block's line number gutter in sync with its list items, renumbering
+ * the detached line-number text whenever lines are added, removed, or reordered.
+ */
 export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,

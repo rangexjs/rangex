@@ -10,9 +10,9 @@ const alignValues: string[] = Object.values(blockAlignAttr.value);
 const isBlockAlignValue = (value: string): value is GetBlockAlignResult =>
 	alignValues.includes(value);
 
-/**
- * Reads the current `data-block-align` off a block's `BlockComponentLine`, falling back
- * to "center" (and warning) if the attribute is missing or was set to something invalid.
+/*
+ * Reads the current block alignment off a `BlockComponentLine`, falling back to "center"
+ * (and warning) if the attribute is missing or set to an invalid value.
  */
 export const getBlockAlign = ({
 	blockComponentLine,
@@ -31,9 +31,8 @@ export const getBlockAlign = ({
 	return value;
 };
 
-/**
- * Switches which side a block's content is anchored to within its `block-component-line`,
- * driving the flex layout defined in `BlockComponentLine.css`.
+/*
+ * Sets which side a block's content is anchored to within its `BlockComponentLine`.
  */
 export const setBlockAlign = ({
 	blockComponentLine,

@@ -3,6 +3,10 @@ import type {
 	HandleBlockLineDuplicationResult,
 } from "./HandleBlockLineDuplication-types";
 
+/*
+ * Wires a duplicate control to the engine, cloning the current block line, inserting the
+ * clone right after it, and moving the selection into it. Returns a cleanup function.
+ */
 export const handleBlockLineDuplication = ({
 	port: editorPort,
 	editorAPI,

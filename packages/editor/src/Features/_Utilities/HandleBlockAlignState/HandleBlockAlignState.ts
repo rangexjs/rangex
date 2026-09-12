@@ -1,9 +1,9 @@
 import { setBlockAlign } from "../BlockAlign";
 import type { HandleBlockAlignStateParams } from "./HandleBlockAlignState-types";
 
-/**
- * Wires a popover's alignment control to the engine. Reads the active block from the
- * appearance handler that registered it — set whenever the popover opens over a new block.
+/*
+ * Wires a popover's alignment control to the engine, applying alignment changes to the
+ * active block and registering a snapshot boundary. Returns a cleanup function.
  */
 export const handleBlockAlignState = ({
 	port,

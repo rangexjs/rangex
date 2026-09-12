@@ -1,6 +1,10 @@
 import { assertNever } from "#utilities";
 import type { ResolveTemplateVariableDisplayTextParams } from "./ResolveTemplateVariableDisplayText-types";
 
+/*
+ * Resolves the display text for a template variable of the given type from the stored values,
+ * falling back to a placeholder label like "{{Full name}}" when the value isn't set.
+ */
 export const resolveTemplateVariableDisplayText = ({
 	type,
 	storage,

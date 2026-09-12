@@ -3,6 +3,9 @@ import type {
 	StorageToOptionsResult,
 } from "./StorageToOptions-types";
 
+/*
+ * Maps the stored template variable values to the adapter's Options shape.
+ */
 export const storageToOptions = ({
 	storage,
 }: StorageToOptionsParams): StorageToOptionsResult => {

@@ -32,10 +32,9 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	return null;
 };
 
-/**
- * Reads whether a figure's caption is currently shown and, if so, whether it sits
- * above or below the image — derived entirely from the figcaption's presence and
- * DOM order, not a separate stored flag.
+/*
+ * Reads whether a figure's caption is currently shown and, if so, whether it sits above or below
+ * the image — derived from the figcaption's presence and DOM order, not a stored flag.
  */
 export const getImageCaption = ({
 	figure,
@@ -58,9 +57,9 @@ export const getImageCaption = ({
 	return { enabled: true, position };
 };
 
-/**
- * Adds or removes the figcaption. Adding creates a fresh, empty `NestedEditable`
- * below the image; removing discards the figcaption and whatever the user had typed.
+/*
+ * Adds or removes the figcaption. Adding creates a fresh, empty nested editable below the image;
+ * removing discards the figcaption and whatever the user had typed in it.
  */
 export const setImageCaptionEnabled = ({
 	figure,
@@ -104,10 +103,9 @@ export const setImageCaptionEnabled = ({
 	);
 };
 
-/**
- * Moves the figcaption before or after the img. No-op target state is
- * idempotent — always repositions relative to the img rather than checking
- * the current order first.
+/*
+ * Moves the figcaption before or after the img, always repositioning relative to the img rather
+ * than checking the current order first. Throws if the figure has no figcaption.
  */
 export const setImageCaptionPosition = ({
 	figure,

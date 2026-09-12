@@ -9,6 +9,10 @@ import {
 import { createTodoList } from "../../_Utilities";
 import type { HandleTodoListPlacementParams } from "./HandleTodoListPlacement-types";
 
+/*
+ * Handles inserting and wrapping todo list components by selection, placing the caret
+ * inside the newly created line and registering a snapshot boundary. Returns a cleanup function.
+ */
 export const handleTodoListPlacement = ({
 	configPort,
 	editorAPI,

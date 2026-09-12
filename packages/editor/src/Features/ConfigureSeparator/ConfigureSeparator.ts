@@ -3,6 +3,9 @@ import type { ConfigureSeparatorParams } from "./ConfigureSeparator-types";
 import { handleSeparatorPlacement } from "./HandleSeparatorPlacement";
 import { handleSeparatorToolbarButtonState } from "./HandleSeparatorToolbarButtonState";
 
+/*
+ * Wires up separator toolbar button state and placement handling, returning a cleanup function.
+ */
 export const configureSeparator = ({
 	configPort,
 	editorAPI,

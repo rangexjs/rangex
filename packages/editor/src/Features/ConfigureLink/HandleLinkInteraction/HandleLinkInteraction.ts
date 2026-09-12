@@ -29,9 +29,9 @@ const openLinkMenu = ({
 	});
 };
 
-/**
- * Registers a delegated click handler that tracks the clicked link as the current one and syncs
- * its display text into the popover state.
+/*
+ * Registers a delegated click handler that tracks the clicked link as the current component
+ * and opens the link menu when configured to open on click.
  */
 const registerClick = ({
 	configPort,
@@ -116,6 +116,10 @@ const registerSelectionIn = ({
 	};
 };
 
+/*
+ * Tracks link click and selection-in interactions, marking the interacted link as the current
+ * component and opening the link menu when configured to do so. Returns a cleanup function.
+ */
 export const handleLinkInteraction = ({
 	configPort,
 	editorAPI,

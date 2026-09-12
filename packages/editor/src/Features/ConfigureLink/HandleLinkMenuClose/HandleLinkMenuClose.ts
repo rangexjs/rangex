@@ -7,7 +7,7 @@ import type {
 	HandleLinkMenuCloseParams,
 } from "./HandleLinkMenuClose-types";
 
-/**
+/*
  * Closes the popover whenever the selection moves outside the current link or becomes
  * non-collapsed.
  */
@@ -49,7 +49,7 @@ const closeOnSelectionChange = ({
 	});
 };
 
-/**
+/*
  * Closes the popover whenever the current link is detached from the RootEditable (e.g. undo,
  * external removal).
  */
@@ -77,6 +77,10 @@ const closeOnLinkRemoval = ({
 	});
 };
 
+/*
+ * Closes the link menu popover when the selection leaves the current link or the link itself
+ * is removed from the document. Returns a cleanup function.
+ */
 export const handleLinkMenuClose = ({
 	configPort,
 	editorAPI,

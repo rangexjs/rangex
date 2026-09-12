@@ -7,6 +7,10 @@ import {
 import { createBlockQuote } from "../../_Utilities";
 import type { HandleBlockQuotePlacementParams } from "./HandleBlockQuotePlacement-types";
 
+/*
+ * Listens for insert and wrap requests and creates a block quote at the current selection,
+ * placing the caret inside it. Returns a cleanup function that unsubscribes both listeners.
+ */
 export const handleBlockQuotePlacement = ({
 	configPort,
 	editorAPI,

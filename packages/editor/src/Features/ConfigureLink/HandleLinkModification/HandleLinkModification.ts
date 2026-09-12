@@ -9,9 +9,10 @@ import type {
 	OnModifyCallback,
 } from "./HandleLinkModification-types";
 
-/**
- * Registers the modify callback, updates the link's content in-place, then syncs the popover
- * state to match what was actually persisted.
+/*
+ * Registers a callback that replaces the currently open link's content in place, moves the
+ * caret to the end of the new content, and registers a snapshot boundary. Returns a cleanup
+ * function.
  */
 export const handleLinkModification = ({
 	configPort,

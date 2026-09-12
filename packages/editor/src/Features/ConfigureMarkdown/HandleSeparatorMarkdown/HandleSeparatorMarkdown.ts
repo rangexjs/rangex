@@ -11,11 +11,9 @@ import {
 } from "../_Utilities";
 import type { HandleSeparatorMarkdownParams } from "./HandleSeparatorMarkdown-types";
 
-/**
- * Detects "---", "***" or "___" on the 3rd identical character typed on an otherwise
- * empty line, and converts it to a Separator. Lets that keystroke insert natively first —
- * same as HandleBlockMarkdown — so the literal trigger text lands in the DOM before
- * conversion, and a single undo restores it.
+/*
+ * Detects "---", "***" or "___" typed on an otherwise empty line and converts it to a
+ * Separator, letting the keystroke insert natively first so a single undo can restore it.
  */
 export const handleSeparatorMarkdown = ({
 	editorAPI,

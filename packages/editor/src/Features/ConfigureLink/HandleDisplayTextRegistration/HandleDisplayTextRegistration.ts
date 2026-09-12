@@ -10,9 +10,9 @@ import type {
 	HandleDisplayTextRegistrationParams,
 } from "./HandleDisplayTextRegistration-types";
 
-/**
- * Reads the currently open link's own DOM content — used when a link is already open (click/
- * modify flow), so the field reflects what's actually persisted rather than the raw selection.
+/*
+ * Reads the currently open link's own DOM content, so the field reflects what's actually
+ * persisted rather than the raw selection.
  */
 const getDisplayTextFromLink = ({
 	editorAPI,
@@ -40,10 +40,9 @@ const getDisplayTextFromLink = ({
 	return { value, disabled: false };
 };
 
-/**
- * Pre-fills the display text field from the selection, or disables it when the selection spans
- * more than one wrappable segment (no single plain-text value can represent it) — used when no
- * link is open yet (insert/wrap flow).
+/*
+ * Pre-fills the display text field from the current selection, or disables it when the
+ * selection spans more than one wrappable segment, since no single value can represent it.
  */
 const getDisplayTextFromSelection = ({
 	editorAPI,
@@ -74,6 +73,10 @@ const getDisplayTextFromSelection = ({
 	return { value: "Selected Text", disabled: true };
 };
 
+/*
+ * Registers the display text provider on the config port, sourcing the value from the
+ * currently open link when one exists, or from the current selection otherwise.
+ */
 export const handleDisplayTextRegistration = ({
 	configPort,
 	editorAPI,

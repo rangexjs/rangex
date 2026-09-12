@@ -7,9 +7,9 @@ import type {
 	OpenForWrapParams,
 } from "./HandleSelectionMenuOpen-types";
 
-/**
- * Opens the popover anchored to the caret — used when the selection is collapsed, so there is
- * no range to position against.
+/*
+ * Opens the popover anchored to the caret, for a collapsed selection with no range to
+ * position against.
  */
 const openAtCaret = ({
 	editorAPI,
@@ -22,9 +22,8 @@ const openAtCaret = ({
 	});
 };
 
-/**
- * Opens the popover positioned to the selection with pre-filled display text — used when the
- * selection is non-collapsed.
+/*
+ * Opens the popover positioned to a non-collapsed selection, with pre-filled display text.
  */
 const openForWrap = ({
 	editorAPI,
@@ -37,6 +36,10 @@ const openForWrap = ({
 	});
 };
 
+/*
+ * Opens the selection menu popover when requested, anchoring it to the caret or to the
+ * selection depending on the current link placement mode. Returns a cleanup function.
+ */
 export const handleSelectionMenuOpen = ({
 	configPort,
 	editorAPI,

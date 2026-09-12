@@ -13,6 +13,10 @@ import { handleCodeBlockPlacement } from "./HandleCodeBlockPlacement";
 import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButtonState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
+/*
+ * Wires up the code block component: toolbar button state, insert/wrap placement, line numbers,
+ * syntax highlighting, and the quick actions overlay. Returns a cleanup function.
+ */
 export const configureCodeBlock = ({
 	configPort,
 	editorAPI,

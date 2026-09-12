@@ -6,6 +6,9 @@ import type {
 	GetVideoFigureResult,
 } from "./GetVideoElements-types";
 
+/*
+ * Returns the block component's figure element, throwing if the first child isn't a figure.
+ */
 export const getVideoFigure = ({
 	blockComponent,
 }: GetVideoFigureParams): GetVideoFigureResult => {
@@ -22,6 +25,9 @@ export const getVideoFigure = ({
 	return figure;
 };
 
+/*
+ * Returns the video element nested inside a figure, throwing if none is found.
+ */
 export const getVideoElement = ({
 	figure,
 }: GetVideoElementParams): GetVideoElementResult => {

@@ -6,6 +6,10 @@ import type {
 	HandleSelectionMenuAppearanceResult,
 } from "./HandleSelectionMenuAppearance-types";
 
+/*
+ * Wires a selection menu popover to the engine, hiding it whenever the selection changes and
+ * toggling selection highlighting as the popover opens and closes.
+ */
 export const handleSelectionMenuAppearance = ({
 	configPort,
 	editorAPI,

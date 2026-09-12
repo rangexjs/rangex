@@ -13,6 +13,10 @@ import {
 } from "#engine-links";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
+/*
+ * Builds a video block component wrapping a `figure`/`video` element with playback controls
+ * and default fit and aspect-ratio attributes.
+ */
 export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 	return createBlockComponentLine({
 		domAttrs: {

@@ -8,11 +8,10 @@ import type {
 
 const charLimit = 10;
 
-/**
+/*
  * Scans backward from the cursor to the start of the current ContentLine, returning the
- * full line prefix (text + boundary point). Every block markdown trigger (heading, list,
- * ...) is short, so failing to reach the line start within `charLimit` characters means
- * the cursor isn't at a valid trigger position — returns null in that case.
+ * full line prefix (text + boundary point), or null if the line start isn't reached
+ * within `charLimit` characters.
  */
 export const getLineMarkdownPrefix = ({
 	editorAPI,
@@ -46,6 +45,10 @@ export const getLineMarkdownPrefix = ({
 	return lastStep;
 };
 
+/*
+ * Returns whether the given line prefix starts at the very beginning of its ContentLine,
+ * with no range-sensitive nodes before it.
+ */
 export const isPrefixAtContentLineStart = ({
 	prefix,
 }: IsPrefixAtContentLineStartParams) => {

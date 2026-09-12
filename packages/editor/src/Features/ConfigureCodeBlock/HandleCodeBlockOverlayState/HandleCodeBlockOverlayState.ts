@@ -11,10 +11,9 @@ import {
 import { toHighlighterLang, toHighlighterTheme } from "#libs";
 import type { HandleCodeBlockOverlayStateParams } from "./HandleCodeBlockOverlayState-types";
 
-/**
- * Wires the overlay's language/theme/copy actions to the engine.
- * Reads the active code block from the shared {@link OverlayAppearanceHandler} —
- * set whenever the overlay opens over a new block.
+/*
+ * Wires the code block overlay's language/theme changes and plain-text export to the engine,
+ * applying them to the currently active code block and re-highlighting it. Returns a cleanup function.
  */
 export const handleCodeBlockOverlayState = ({
 	configPort,

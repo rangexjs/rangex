@@ -17,6 +17,10 @@ import {
 import type { ConfigureVideoParams } from "./ConfigureVideo-types";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
 
+/*
+ * Wires up the video feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ */
 export const configureVideo = ({
 	configPort,
 	editorAPI,
