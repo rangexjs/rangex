@@ -2,10 +2,11 @@ import {
 	contentLineName,
 	contentLineRoleSelector,
 	createContentLine,
+	type InlineComponent,
 } from "rich-text-area";
 import { assertNever } from "#utilities";
 import { createLink } from "../../_Utilities";
-import { getLinkInsertionMode, getStateFromLink } from "../_Utilities";
+import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	AnchorToLinkParams,
 	HandleLinkInsertionParams,
@@ -35,8 +36,11 @@ const setSelectionToLinkEnd = ({
 	});
 };
 
-const anchorToLink = ({ link, popoverController }: AnchorToLinkParams) => {
-	popoverController.show(link, {
+const anchorToLink = ({
+	link,
+	linkMenuPopoverController,
+}: AnchorToLinkParams) => {
+	linkMenuPopoverController.show(link, {
 		clear: true,
 		position: "fixed",
 		"justify-self": "anchor-center",
@@ -50,15 +54,13 @@ const anchorToLink = ({ link, popoverController }: AnchorToLinkParams) => {
 const insertAtCaret = ({
 	configPort,
 	editorAPI,
-	internals,
 	text,
-	href,
-	target,
-	popoverController,
+	linkMenuPopoverController,
+	afterInsertion,
 }: InsertAtCaretParams) => {
-	const link = createLink({ text, href, target });
+	const link = createLink({ text });
 
-	internals.currentLink = link;
+	configPort.setCurrentComponent(link);
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -77,11 +79,11 @@ const insertAtCaret = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	const state = getStateFromLink({ editorAPI, link });
+	afterInsertion?.(link);
 
-	configPort.updateState(state);
-
-	anchorToLink({ link, popoverController });
+	if (configPort.linkMenu.openAt.includes("after-insertion")) {
+		anchorToLink({ link, linkMenuPopoverController });
+	}
 
 	editorAPI.focus();
 };
@@ -93,10 +95,8 @@ const insertAtCaret = ({
 const wrapWithLink = ({
 	configPort,
 	editorAPI,
-	internals,
-	href,
-	target,
-	popoverController,
+	linkMenuPopoverController,
+	afterInsertion,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -109,6 +109,8 @@ const wrapWithLink = ({
 		toNode: toText,
 		toOffset,
 	});
+
+	let currentLink: InlineComponent | null = null;
 
 	for (const segment of segments) {
 		if (segment.getInlineComponentListInSegment().length) {
@@ -125,9 +127,9 @@ const wrapWithLink = ({
 			toOffset: endOffset,
 		});
 
-		const link = createLink({ text: plainText, href, target });
+		const link = createLink({ text: plainText });
 
-		internals.currentLink = link;
+		currentLink = link;
 
 		editorAPI.removeNodesInRange({
 			fromNode: startText,
@@ -146,24 +148,23 @@ const wrapWithLink = ({
 		});
 	}
 
-	if (!internals.currentLink) {
+	if (!currentLink) {
 		throw new Error("CurrentLink not supposed to be null.");
 	}
 
-	setSelectionToLinkEnd({ link: internals.currentLink, selection });
+	configPort.setCurrentComponent(currentLink);
+
+	setSelectionToLinkEnd({ link: currentLink, selection });
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	const state = getStateFromLink({
-		editorAPI,
-		link: internals.currentLink,
-	});
+	afterInsertion?.(currentLink);
 
-	configPort.updateState(state);
-
-	anchorToLink({ link: internals.currentLink, popoverController });
+	if (configPort.linkMenu.openAt.includes("after-insertion")) {
+		anchorToLink({ link: currentLink, linkMenuPopoverController });
+	}
 
 	editorAPI.focus();
 };
@@ -171,18 +172,15 @@ const wrapWithLink = ({
 export const handleLinkInsertion = ({
 	configPort,
 	editorAPI,
-	internals,
-	popoverController,
+	linkMenuPopoverController,
 }: HandleLinkInsertionParams) => {
-	const unsubscribe = configPort.onInsert(({ text, url, isNewTab }) => {
-		if (internals.currentLink) {
+	const unsubscribe = configPort.onInsert(({ text, afterInsertion }) => {
+		if (configPort.currentComponent) {
 			console.warn("handleLinkInsertion: a link is already open.");
 			return;
 		}
 
-		const target = isNewTab ? "_blank" : "_self";
-
-		const mode = getLinkInsertionMode({ editorAPI });
+		const mode = getLinkPlacementMode({ editorAPI });
 
 		if (mode === null) {
 			console.warn("handleLinkInsertion: selection can't take a link.");
@@ -193,11 +191,9 @@ export const handleLinkInsertion = ({
 			insertAtCaret({
 				configPort,
 				editorAPI,
-				internals,
-				text: text || url,
-				href: url,
-				target,
-				popoverController,
+				text,
+				linkMenuPopoverController,
+				afterInsertion,
 			});
 			return;
 		}
@@ -206,10 +202,8 @@ export const handleLinkInsertion = ({
 			wrapWithLink({
 				configPort,
 				editorAPI,
-				internals,
-				href: url,
-				target,
-				popoverController,
+				linkMenuPopoverController,
+				afterInsertion,
 			});
 			return;
 		}

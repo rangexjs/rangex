@@ -5,13 +5,11 @@ import type {
 } from "rich-text-area";
 import type { LinkConfigPort } from "#adapters/Link";
 import type { PopoverOverlayController } from "#engine-links";
-import type { LinkInternals } from "../ConfigureLink-types";
 
 export interface HandleLinkInsertionParams {
 	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
-	internals: LinkInternals;
-	popoverController: PopoverOverlayController;
+	linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface SetSelectionToLinkEndParams {
@@ -21,24 +19,20 @@ export interface SetSelectionToLinkEndParams {
 
 export interface AnchorToLinkParams {
 	link: InlineComponent;
-	popoverController: PopoverOverlayController;
+	linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface InsertAtCaretParams {
 	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
-	internals: LinkInternals;
 	text: string;
-	href: string;
-	target: string;
-	popoverController: PopoverOverlayController;
+	linkMenuPopoverController: PopoverOverlayController;
+	afterInsertion?: (link: HTMLElement) => void;
 }
 
 export interface WrapWithLinkParams {
 	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
-	internals: LinkInternals;
-	href: string;
-	target: string;
-	popoverController: PopoverOverlayController;
+	linkMenuPopoverController: PopoverOverlayController;
+	afterInsertion?: (link: HTMLElement) => void;
 }

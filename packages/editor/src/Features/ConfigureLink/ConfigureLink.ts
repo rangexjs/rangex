@@ -1,86 +1,89 @@
 import { createPopoverOverlayController } from "#engine-links";
-import { handleComponentUnwrap } from "../_Utilities";
-import type { ConfigureLinkParams, LinkInternals } from "./ConfigureLink-types";
-import { handleLinkClick } from "./HandleLinkClick";
+import {
+	handleComponentUnwrap,
+	handleSelectionMenuAppearance,
+} from "../_Utilities";
+import type { ConfigureLinkParams } from "./ConfigureLink-types";
+import { handleDisplayTextRegistration } from "./HandleDisplayTextRegistration";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
+import { handleLinkInteraction } from "./HandleLinkInteraction";
+import { handleLinkMenuClose } from "./HandleLinkMenuClose";
 import { handleLinkModification } from "./HandleLinkModification";
-import { handleLinkOverlayClose } from "./HandleLinkOverlayClose";
-import { handleLinkToolbarButtonState } from "./HandleLinkToolbarButtonState";
-import { handleLinkToolbarClick } from "./HandleLinkToolbarClick";
-import { handleLinkViewChange } from "./HandleLinkViewChange";
+import { handleLinkPlacementState } from "./HandleLinkPlacementState";
+import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
 
 export const configureLink = ({
 	configPort,
 	editorAPI,
 }: ConfigureLinkParams) => {
-	const internals: LinkInternals = { currentLink: null };
+	const {
+		selectionMenuPopoverController,
+		cleanup: selectionMenuAppearanceCleanup,
+	} = handleSelectionMenuAppearance({
+		configPort,
+		editorAPI,
+	});
 
-	const popoverController = createPopoverOverlayController({
-		element: configPort.overlayEl,
+	const linkMenuPopoverController = createPopoverOverlayController({
+		element: configPort.linkMenuEl,
 		options: {
 			popover: "auto",
-			onToggle: (isOpen) => {
-				if (!isOpen) {
-					editorAPI.focus();
-				}
+			onToggle: () => {
+				configPort.emitLinkMenuToggle();
 			},
 		},
 	});
 
-	const toolbarButtonStateCleanup = handleLinkToolbarButtonState({
+	handleDisplayTextRegistration({ configPort, editorAPI });
+
+	const placementStateCleanup = handleLinkPlacementState({
 		configPort,
 		editorAPI,
 	});
 
-	const toolbarClickCleanup = handleLinkToolbarClick({
+	const menuOpenCleanup = handleSelectionMenuOpen({
 		configPort,
 		editorAPI,
-		popoverController,
+		selectionMenuPopoverController,
 	});
 
-	const clickCleanup = handleLinkClick({
+	const linkInteractionCleanup = handleLinkInteraction({
 		configPort,
 		editorAPI,
-		internals,
-		popoverController,
+		linkMenuPopoverController,
 	});
 
 	const insertionCleanup = handleLinkInsertion({
 		configPort,
 		editorAPI,
-		internals,
-		popoverController,
+		linkMenuPopoverController,
 	});
 
 	const modificationCleanup = handleLinkModification({
 		configPort,
 		editorAPI,
-		internals,
 	});
 
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () => internals.currentLink,
+		getComponent: () => configPort.currentComponent,
 	});
 
-	const overlayCloseCleanup = handleLinkOverlayClose({
+	const menuCloseCleanup = handleLinkMenuClose({
 		configPort,
 		editorAPI,
-		internals,
-		popoverController,
+		linkMenuPopoverController,
 	});
 
-	const viewChangeCleanup = handleLinkViewChange({ configPort });
-
 	return () => {
-		toolbarButtonStateCleanup();
-		toolbarClickCleanup();
-		clickCleanup();
+		selectionMenuAppearanceCleanup();
+		placementStateCleanup();
+		menuOpenCleanup();
+		linkInteractionCleanup();
 		insertionCleanup();
 		modificationCleanup();
 		unwrapCleanup();
-		overlayCloseCleanup();
-		viewChangeCleanup();
+		menuCloseCleanup();
 	};
 };

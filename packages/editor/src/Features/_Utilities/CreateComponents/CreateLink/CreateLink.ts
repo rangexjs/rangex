@@ -4,6 +4,7 @@ import {
 	createHTMLLayout,
 	createInlineComponent,
 	createNestedEditable,
+	type DOMAttrs,
 } from "rich-text-area";
 import { componentsName, createLinkStorage } from "#engine-links";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
@@ -13,6 +14,11 @@ export const createLink = ({
 	href,
 	target,
 }: CreateLinkParams): CreateLinkResult => {
+	const domAttrs: DOMAttrs = {
+		...(href && { href }),
+		...(target && { target }),
+	};
+
 	return createInlineComponent({
 		componentName: componentsName.link,
 		content: { type: "linked-characters" },
@@ -20,7 +26,7 @@ export const createLink = ({
 		childNodes: [
 			createHTMLLayout({
 				localName: "a",
-				domAttrs: { href, target },
+				domAttrs,
 				childNodes: [
 					createNestedEditable({
 						content: { type: "linked-characters", unwrap: "if-empty" },

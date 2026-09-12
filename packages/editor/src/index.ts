@@ -76,13 +76,10 @@ export type {
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
 export type {
-	ApplyParams as LinkApplyParams,
+	InsertParams as LinkInsertParams,
 	LinkDisplayText,
-	LinkMode,
 	LinkPublicPort,
-	LinkToggleButtons,
-	LinkURL,
-	LinkView,
+	ModifyParams as LinkModifyParams,
 } from "#adapters/Link";
 export type { ListPublicPort } from "#adapters/List";
 export type { MarkdownPublicPort } from "#adapters/Markdown";

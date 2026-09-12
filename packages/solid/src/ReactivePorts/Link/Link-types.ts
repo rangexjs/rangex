@@ -1,29 +1,28 @@
 import type {
-	LinkApplyParams,
 	LinkDisplayText,
-	LinkMode,
-	LinkToggleButtons,
-	LinkURL,
-	LinkView,
+	LinkInsertParams,
+	LinkModifyParams,
 } from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveLinkPort {
-	readonly overlayEl: HTMLDivElement;
+	readonly linkMenuEl: HTMLDivElement;
+	readonly selectionMenu: HTMLDivElement;
 
-	canApply: Accessor<boolean>;
-	view: Accessor<LinkView>;
-	mode: Accessor<LinkMode>;
-	displayText: Accessor<LinkDisplayText>;
-	url: Accessor<LinkURL>;
-	toggleButtons: Accessor<LinkToggleButtons>;
+	canInsert: Accessor<boolean>;
+	linkMenuOpen: Accessor<boolean>;
+	selectionMenuOpen: Accessor<boolean>;
+	currentLink: Accessor<HTMLElement | null>;
 
-	toolbarClick(): void;
-	viewChange(view: LinkView): void;
-	cancel(): void;
-	insert(params: LinkApplyParams): void;
-	modify(params: LinkApplyParams): void;
+	onLinkClickEvent(callback: () => void): () => void;
+	onLinkSelectionInEvent(callback: () => void): () => void;
+
+	insert(params: LinkInsertParams): void;
+	modify(params: LinkModifyParams): void;
 	unwrap(): void;
+	openSelectionMenu(): void;
+	closeSelectionMenu(): void;
+	getDisplayText(): LinkDisplayText;
 }
 
 export interface ReactiveLinkResult {

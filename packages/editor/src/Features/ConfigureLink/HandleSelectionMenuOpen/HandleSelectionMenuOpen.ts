@@ -1,0 +1,69 @@
+import { positionToSelection } from "#engine-links";
+import { assertNever } from "#utilities";
+import { getLinkPlacementMode } from "../_Utilities";
+import type {
+	HandleSelectionMenuOpenParams,
+	OpenAtCaretParams,
+	OpenForWrapParams,
+} from "./HandleSelectionMenuOpen-types";
+
+/**
+ * Opens the popover anchored to the caret — used when the selection is collapsed, so there is
+ * no range to position against.
+ */
+const openAtCaret = ({
+	editorAPI,
+	selectionMenuPopoverController,
+}: OpenAtCaretParams) => {
+	positionToSelection({
+		editorAPI,
+		controller: selectionMenuPopoverController,
+		topMargin: 8,
+	});
+};
+
+/**
+ * Opens the popover positioned to the selection with pre-filled display text — used when the
+ * selection is non-collapsed.
+ */
+const openForWrap = ({
+	editorAPI,
+	selectionMenuPopoverController,
+}: OpenForWrapParams) => {
+	positionToSelection({
+		editorAPI,
+		controller: selectionMenuPopoverController,
+		topMargin: 10,
+	});
+};
+
+export const handleSelectionMenuOpen = ({
+	configPort,
+	editorAPI,
+	selectionMenuPopoverController,
+}: HandleSelectionMenuOpenParams) => {
+	const unsubscribe = configPort.onOpenSelectionMenu(() => {
+		const mode = getLinkPlacementMode({ editorAPI });
+
+		if (!mode) {
+			console.warn("handleSelectionMenuOpen: selection can't take a link.");
+			return;
+		}
+
+		if (mode === "insert") {
+			openAtCaret({ editorAPI, selectionMenuPopoverController });
+			return;
+		}
+
+		if (mode === "wrap") {
+			openForWrap({ editorAPI, selectionMenuPopoverController });
+			return;
+		}
+
+		assertNever(mode);
+	});
+
+	return () => {
+		unsubscribe();
+	};
+};

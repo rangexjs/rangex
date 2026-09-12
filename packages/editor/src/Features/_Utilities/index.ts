@@ -12,4 +12,5 @@ export * from "./HandleComponentUnwrap";
 export * from "./HandleInsertRootLine";
 export * from "./HandleLineRemove";
 export * from "./HandleQuickActionsOverlayAppearance";
+export * from "./HandleSelectionMenuAppearance";
 export * from "./HandleSwapToEmptyMedia";

@@ -1,103 +1,97 @@
+import type { InlineComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
+	SelectionMenuConfigPort,
+	SelectionMenuPublicPort,
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
 
-export type LinkView = "preview" | "edit";
-export type LinkMode = "insert" | "modify";
+export type LinkMenuOpenTrigger = "click" | "selection-in" | "after-insertion";
+
+export interface LinkMenuSettings {
+	openAt: LinkMenuOpenTrigger[];
+}
 
 export interface LinkDisplayText {
-	inputValue: string;
+	value: string;
 	disabled: boolean;
 }
 
-export interface LinkURL {
-	inputValue: string;
-}
-
-export interface LinkToggleButtons {
-	isNewTab: boolean;
-}
-
-export interface ApplyParams {
+export interface InsertParams {
 	text: string;
-	url: string;
-	isNewTab: boolean;
+	afterInsertion?: (link: HTMLElement) => void;
+}
+
+export interface ModifyParams {
+	text: string;
 }
 
 export interface LinkState {
-	canApply?: boolean;
-	view?: LinkView;
-	mode?: LinkMode;
-	displayText?: LinkDisplayText;
-	url?: LinkURL;
-	toggleButtons?: LinkToggleButtons;
+	canInsert?: boolean;
 }
 
 export interface UpdateStateParams extends LinkState {}
 
-export type OnToolbarClickCallbackFn = () => void;
-export type OnViewChangeCallbackFn = (view: LinkView) => void;
-export type OnCancelCallbackFn = () => void;
-export type OnInsertCallbackFn = (params: ApplyParams) => void;
-export type OnModifyCallbackFn = (params: ApplyParams) => void;
+export type OnInsertCallbackFn = (params: InsertParams) => void;
+export type OnModifyCallbackFn = (params: ModifyParams) => void;
+export type DisplayTextProviderFn = () => LinkDisplayText;
 
 export interface LinkConfigPortProps {
-	readonly overlayEl: HTMLDivElement;
+	readonly linkMenuEl: HTMLDivElement;
+	readonly linkMenu: LinkMenuSettings;
 
 	updateState(params: UpdateStateParams): void;
+	emitLinkClick(): void;
+	emitLinkSelectionIn(): void;
+	emitLinkMenuToggle(): void;
 
-	onToolbarClick(callback: OnToolbarClickCallbackFn): () => void;
-	onViewChange(callback: OnViewChangeCallbackFn): () => void;
-	onCancel(callback: OnCancelCallbackFn): () => void;
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onModify(callback: OnModifyCallbackFn): () => void;
+
+	registerDisplayText(provider: DisplayTextProviderFn): void;
 }
 
-export interface LinkConfigPort extends LinkConfigPortProps, UnwrapConfigPort {}
+export interface LinkConfigPort
+	extends LinkConfigPortProps,
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<InlineComponent>,
+		SelectionMenuConfigPort {}
 
-export type OnCanApplyUpdateCallbackFn = (value: boolean) => void;
-export type OnViewUpdateCallbackFn = (value: LinkView) => void;
-export type OnModeUpdateCallbackFn = (value: LinkMode) => void;
-export type OnDisplayTextUpdateCallbackFn = (value: LinkDisplayText) => void;
-export type OnUrlUpdateCallbackFn = (value: LinkURL) => void;
-export type OnToggleButtonsUpdateCallbackFn = (
-	value: LinkToggleButtons,
-) => void;
+export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
+export type OnLinkClickEventCallbackFn = () => void;
+export type OnLinkSelectionInEventCallbackFn = () => void;
+export type OnLinkMenuToggleCallbackFn = () => void;
 
 export interface LinkPublicPortProps {
-	readonly overlayEl: HTMLDivElement;
-	readonly canApply: boolean;
-	readonly view: LinkView;
-	readonly mode: LinkMode;
-	readonly displayText: LinkDisplayText;
-	readonly url: LinkURL;
-	readonly toggleButtons: LinkToggleButtons;
+	readonly linkMenuEl: HTMLDivElement;
+	readonly canInsert: boolean;
+	readonly linkMenuOpen: boolean;
 
-	onCanApplyUpdate(callback: OnCanApplyUpdateCallbackFn): () => void;
-	onViewUpdate(callback: OnViewUpdateCallbackFn): () => void;
-	onModeUpdate(callback: OnModeUpdateCallbackFn): () => void;
-	onDisplayTextUpdate(callback: OnDisplayTextUpdateCallbackFn): () => void;
-	onUrlUpdate(callback: OnUrlUpdateCallbackFn): () => void;
-	onToggleButtonsUpdate(callback: OnToggleButtonsUpdateCallbackFn): () => void;
+	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+	onLinkClickEvent(callback: OnLinkClickEventCallbackFn): () => void;
+	onLinkSelectionInEvent(
+		callback: OnLinkSelectionInEventCallbackFn,
+	): () => void;
+	onLinkMenuToggle(callback: OnLinkMenuToggleCallbackFn): () => void;
 
-	toolbarClick(): void;
-	viewChange(view: LinkView): void;
-	cancel(): void;
-	insert(params: ApplyParams): void;
-	modify(params: ApplyParams): void;
+	insert(params: InsertParams): void;
+	modify(params: ModifyParams): void;
+
+	getDisplayText(): LinkDisplayText;
 }
 
-export interface LinkPublicPort extends LinkPublicPortProps, UnwrapPublicPort {}
+export interface LinkPublicPort
+	extends LinkPublicPortProps,
+		UnwrapPublicPort,
+		CurrentComponentPublicPort,
+		SelectionMenuPublicPort {}
 
 export interface LinkInternals {
-	canApply: boolean;
-	view: LinkView;
-	mode: LinkMode;
-	displayText: LinkDisplayText;
-	url: LinkURL;
-	toggleButtons: LinkToggleButtons;
+	canInsert: boolean;
+	displayTextProvider: DisplayTextProviderFn | null;
 }
 
 export interface LinkAdapter {
@@ -105,7 +99,9 @@ export interface LinkAdapter {
 	publicPort: LinkPublicPort;
 }
 
-export interface LinkSettings {}
+export interface LinkSettings {
+	linkMenu?: LinkMenuSettings;
+}
 
 export interface CreateLinkAdapterParams
 	extends CreateAdapterParams<LinkSettings> {}

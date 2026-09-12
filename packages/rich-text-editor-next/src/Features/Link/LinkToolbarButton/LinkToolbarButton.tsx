@@ -10,15 +10,23 @@ export const LinkToolbarButton = () => {
 		throw new Error("Link can't be undefined.");
 	}
 
-	const disabled = createMemo(() => !link.canApply() || !!readOnly?.checked());
+	const disabled = createMemo(() => !link.canInsert() || !!readOnly?.checked());
 
 	const onClick = () => {
-		link.toolbarClick();
+		if (link.selectionMenuOpen()) {
+			link.closeSelectionMenu();
+		} else {
+			link.openSelectionMenu();
+		}
 	};
 
 	return (
 		<span>
-			<ToolbarButton disabled={disabled()} onClick={onClick}>
+			<ToolbarButton
+				checked={link.selectionMenuOpen()}
+				disabled={disabled()}
+				onClick={onClick}
+			>
 				<Icon name="SimpleLink" class="size-4" />
 			</ToolbarButton>
 		</span>

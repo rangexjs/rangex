@@ -1,6 +1,6 @@
 import { Link as LinkFactory } from "@rangex/editor";
 import { toolbarButtonsName } from "#constants";
-import { LinkCard, LinkToolbarButton } from "#features";
+import { LinkMenu, LinkSelectionMenu, LinkToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";
 
 export const Link = (
@@ -12,7 +12,7 @@ export const Link = (
 			toolbarButtons: {
 				[toolbarButtonsName.link]: LinkToolbarButton,
 			},
-			floatingComponents: [LinkCard],
+			floatingComponents: [LinkSelectionMenu, LinkMenu],
 		},
 	};
 };

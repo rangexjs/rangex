@@ -3,40 +3,46 @@ import { createSignal } from "solid-js";
 import type { ReactiveLinkPort, ReactiveLinkResult } from "./Link-types";
 
 export const Link = (publicPort: LinkPublicPort): ReactiveLinkResult => {
-	const [canApply, setCanApply] = createSignal(publicPort.canApply);
-	const [view, setView] = createSignal(publicPort.view);
-	const [mode, setMode] = createSignal(publicPort.mode);
-	const [displayText, setDisplayText] = createSignal(publicPort.displayText);
-	const [url, setUrl] = createSignal(publicPort.url);
-	const [toggleButtons, setToggleButtons] = createSignal(
-		publicPort.toggleButtons,
+	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
+	const [linkMenuOpen, setLinkMenuOpen] = createSignal(publicPort.linkMenuOpen);
+	const [selectionMenuOpen, setSelectionMenuOpen] = createSignal(
+		publicPort.selectionMenuOpen,
+	);
+	const [currentLink, setCurrentLink] = createSignal(
+		publicPort.currentComponent,
 	);
 
 	const unsubscribeList = new Set<() => void>();
 
-	unsubscribeList.add(publicPort.onCanApplyUpdate(setCanApply));
-	unsubscribeList.add(publicPort.onViewUpdate(setView));
-	unsubscribeList.add(publicPort.onModeUpdate(setMode));
-	unsubscribeList.add(publicPort.onDisplayTextUpdate(setDisplayText));
-	unsubscribeList.add(publicPort.onUrlUpdate(setUrl));
-	unsubscribeList.add(publicPort.onToggleButtonsUpdate(setToggleButtons));
+	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
+	unsubscribeList.add(
+		publicPort.onLinkMenuToggle(() => setLinkMenuOpen(publicPort.linkMenuOpen)),
+	);
+	unsubscribeList.add(
+		publicPort.onSelectionMenuOpenUpdate(() =>
+			setSelectionMenuOpen(publicPort.selectionMenuOpen),
+		),
+	);
+	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentLink));
 
 	const port: ReactiveLinkPort = {
-		overlayEl: publicPort.overlayEl,
+		linkMenuEl: publicPort.linkMenuEl,
+		selectionMenu: publicPort.selectionMenu,
 
-		canApply,
-		view,
-		mode,
-		displayText,
-		url,
-		toggleButtons,
+		canInsert,
+		linkMenuOpen,
+		selectionMenuOpen,
+		currentLink,
 
-		toolbarClick: publicPort.toolbarClick,
-		viewChange: publicPort.viewChange,
-		cancel: publicPort.cancel,
+		onLinkClickEvent: publicPort.onLinkClickEvent,
+		onLinkSelectionInEvent: publicPort.onLinkSelectionInEvent,
+
 		insert: publicPort.insert,
 		modify: publicPort.modify,
 		unwrap: publicPort.unwrap,
+		openSelectionMenu: publicPort.openSelectionMenu,
+		closeSelectionMenu: publicPort.closeSelectionMenu,
+		getDisplayText: publicPort.getDisplayText,
 	};
 
 	const dispose = () => {

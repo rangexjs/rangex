@@ -1,145 +1,103 @@
+import type { InlineComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
-import { createUnwrapPort } from "../_Utilities";
+import {
+	createCurrentComponentPort,
+	createSelectionMenuPort,
+	createUnwrapPort,
+} from "../_Utilities";
+import { defaultLinkMenuSettings } from "./LinkAdapter-default";
 import type {
-	ApplyParams,
 	CreateLinkAdapterParams,
 	CreateLinkAdapterResult,
+	InsertParams,
 	LinkConfigPort,
 	LinkConfigPortProps,
 	LinkInternals,
 	LinkPublicPort,
 	LinkPublicPortProps,
-	OnCanApplyUpdateCallbackFn,
-	OnCancelCallbackFn,
-	OnDisplayTextUpdateCallbackFn,
+	ModifyParams,
+	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnModeUpdateCallbackFn,
+	OnLinkClickEventCallbackFn,
+	OnLinkMenuToggleCallbackFn,
+	OnLinkSelectionInEventCallbackFn,
 	OnModifyCallbackFn,
-	OnToggleButtonsUpdateCallbackFn,
-	OnToolbarClickCallbackFn,
-	OnUrlUpdateCallbackFn,
-	OnViewChangeCallbackFn,
-	OnViewUpdateCallbackFn,
 	UpdateStateParams,
 } from "./LinkAdapter-types";
 
 export const createLinkAdapter = (
 	...params: CreateLinkAdapterParams
 ): CreateLinkAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [{ linkMenu = defaultLinkMenuSettings }, { floatingContainer }] =
+		params;
 
-	const overlayEl = document.createElement("div");
-	floatingContainer.append(overlayEl);
+	const linkMenuEl = document.createElement("div");
+	floatingContainer.append(linkMenuEl);
 
 	const internals: LinkInternals = {
-		canApply: false,
-		view: "preview",
-		mode: "insert",
-		displayText: { inputValue: "", disabled: false },
-		url: { inputValue: "" },
-		toggleButtons: { isNewTab: false },
+		canInsert: false,
+		displayTextProvider: null,
 	};
 
 	// ConfigPort
-	const onToolbarClickListeners: Set<OnToolbarClickCallbackFn> = new Set();
-	const onViewChangeListeners: Set<OnViewChangeCallbackFn> = new Set();
-	const onCancelListeners: Set<OnCancelCallbackFn> = new Set();
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	const onModifyListeners: Set<OnModifyCallbackFn> = new Set();
 
 	// PublicPort
-	const onCanApplyUpdateListeners: Set<OnCanApplyUpdateCallbackFn> = new Set();
-	const onViewUpdateListeners: Set<OnViewUpdateCallbackFn> = new Set();
-	const onModeUpdateListeners: Set<OnModeUpdateCallbackFn> = new Set();
-	const onDisplayTextUpdateListeners: Set<OnDisplayTextUpdateCallbackFn> =
+	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
-	const onUrlUpdateListeners: Set<OnUrlUpdateCallbackFn> = new Set();
-	const onToggleButtonsUpdateListeners: Set<OnToggleButtonsUpdateCallbackFn> =
+	const onLinkClickEventListeners: Set<OnLinkClickEventCallbackFn> = new Set();
+	const onLinkSelectionInEventListeners: Set<OnLinkSelectionInEventCallbackFn> =
 		new Set();
+	const onLinkMenuToggleListeners: Set<OnLinkMenuToggleCallbackFn> = new Set();
 
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
+	const selectionMenuPort = createSelectionMenuPort({ floatingContainer });
 
-	const updateState = ({
-		canApply,
-		view,
-		mode,
-		displayText,
-		url,
-		toggleButtons,
-	}: UpdateStateParams) => {
-		if (canApply !== undefined) {
-			internals.canApply = canApply;
+	const updateState = ({ canInsert }: UpdateStateParams) => {
+		if (canInsert !== undefined) {
+			internals.canInsert = canInsert;
 
-			for (const listener of onCanApplyUpdateListeners) {
-				listener(internals.canApply);
-			}
-		}
-
-		if (view !== undefined) {
-			internals.view = view;
-
-			for (const listener of onViewUpdateListeners) {
-				listener(internals.view);
-			}
-		}
-
-		if (mode !== undefined) {
-			internals.mode = mode;
-
-			for (const listener of onModeUpdateListeners) {
-				listener(internals.mode);
-			}
-		}
-
-		if (displayText !== undefined) {
-			internals.displayText = displayText;
-
-			for (const listener of onDisplayTextUpdateListeners) {
-				listener(internals.displayText);
-			}
-		}
-
-		if (url !== undefined) {
-			internals.url = url;
-
-			for (const listener of onUrlUpdateListeners) {
-				listener(internals.url);
-			}
-		}
-
-		if (toggleButtons !== undefined) {
-			internals.toggleButtons = toggleButtons;
-
-			for (const listener of onToggleButtonsUpdateListeners) {
-				listener(internals.toggleButtons);
+			for (const listener of onCanInsertUpdateListeners) {
+				listener(internals.canInsert);
 			}
 		}
 	};
 
 	const configPort: LinkConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
+		selectionMenuPort.configPort,
 		{
-			get overlayEl() {
-				return overlayEl;
+			get linkMenuEl() {
+				return linkMenuEl;
+			},
+
+			get linkMenu() {
+				return linkMenu;
 			},
 
 			updateState(params) {
 				updateState(params);
 			},
 
-			onToolbarClick(callback) {
-				onToolbarClickListeners.add(callback);
-				return () => onToolbarClickListeners.delete(callback);
+			emitLinkClick() {
+				for (const listener of onLinkClickEventListeners) {
+					listener();
+				}
 			},
 
-			onViewChange(callback) {
-				onViewChangeListeners.add(callback);
-				return () => onViewChangeListeners.delete(callback);
+			emitLinkSelectionIn() {
+				for (const listener of onLinkSelectionInEventListeners) {
+					listener();
+				}
 			},
 
-			onCancel(callback) {
-				onCancelListeners.add(callback);
-				return () => onCancelListeners.delete(callback);
+			emitLinkMenuToggle() {
+				for (const listener of onLinkMenuToggleListeners) {
+					listener();
+				}
 			},
 
 			onInsert(callback) {
@@ -151,98 +109,68 @@ export const createLinkAdapter = (
 				onModifyListeners.add(callback);
 				return () => onModifyListeners.delete(callback);
 			},
+
+			registerDisplayText(provider) {
+				internals.displayTextProvider = provider;
+			},
 		} satisfies LinkConfigPortProps,
 	);
 
 	const publicPort: LinkPublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
+		selectionMenuPort.publicPort,
 		{
-			get overlayEl() {
-				return overlayEl;
+			get linkMenuEl() {
+				return linkMenuEl;
 			},
 
-			get canApply() {
-				return internals.canApply;
+			get canInsert() {
+				return internals.canInsert;
 			},
 
-			get view() {
-				return internals.view;
+			get linkMenuOpen() {
+				return linkMenuEl.matches(":popover-open");
 			},
 
-			get mode() {
-				return internals.mode;
+			onCanInsertUpdate(callback) {
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
 			},
 
-			get displayText() {
-				return internals.displayText;
+			onLinkClickEvent(callback) {
+				onLinkClickEventListeners.add(callback);
+				return () => onLinkClickEventListeners.delete(callback);
 			},
 
-			get url() {
-				return internals.url;
+			onLinkSelectionInEvent(callback) {
+				onLinkSelectionInEventListeners.add(callback);
+				return () => onLinkSelectionInEventListeners.delete(callback);
 			},
 
-			get toggleButtons() {
-				return internals.toggleButtons;
+			onLinkMenuToggle(callback) {
+				onLinkMenuToggleListeners.add(callback);
+				return () => onLinkMenuToggleListeners.delete(callback);
 			},
 
-			onCanApplyUpdate(callback) {
-				onCanApplyUpdateListeners.add(callback);
-				return () => onCanApplyUpdateListeners.delete(callback);
-			},
-
-			onViewUpdate(callback) {
-				onViewUpdateListeners.add(callback);
-				return () => onViewUpdateListeners.delete(callback);
-			},
-
-			onModeUpdate(callback) {
-				onModeUpdateListeners.add(callback);
-				return () => onModeUpdateListeners.delete(callback);
-			},
-
-			onDisplayTextUpdate(callback) {
-				onDisplayTextUpdateListeners.add(callback);
-				return () => onDisplayTextUpdateListeners.delete(callback);
-			},
-
-			onUrlUpdate(callback) {
-				onUrlUpdateListeners.add(callback);
-				return () => onUrlUpdateListeners.delete(callback);
-			},
-
-			onToggleButtonsUpdate(callback) {
-				onToggleButtonsUpdateListeners.add(callback);
-				return () => onToggleButtonsUpdateListeners.delete(callback);
-			},
-
-			toolbarClick() {
-				for (const listener of onToolbarClickListeners) {
-					listener();
-				}
-			},
-
-			viewChange(view) {
-				for (const listener of onViewChangeListeners) {
-					listener(view);
-				}
-			},
-
-			cancel() {
-				for (const listener of onCancelListeners) {
-					listener();
-				}
-			},
-
-			insert(params: ApplyParams) {
+			insert(params: InsertParams) {
 				for (const listener of onInsertListeners) {
 					listener(params);
 				}
 			},
 
-			modify(params: ApplyParams) {
+			modify(params: ModifyParams) {
 				for (const listener of onModifyListeners) {
 					listener(params);
 				}
+			},
+
+			getDisplayText() {
+				if (!internals.displayTextProvider) {
+					throw new Error("DisplayText provider wasn't registered.");
+				}
+
+				return internals.displayTextProvider();
 			},
 		} satisfies LinkPublicPortProps,
 	);
