@@ -73,6 +73,10 @@ export const handleBlockResizeAppearance = ({
 
 	const anchorController = createAnchoredOverlayController({
 		element: blockResize.element,
+		options: {
+			lightDismiss: false,
+			closeOnEscape: false,
+		},
 	});
 
 	const scheduleHide = () => {

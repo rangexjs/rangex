@@ -18,6 +18,8 @@ export const configureTable = ({
 	const anchorController = createAnchoredOverlayController({
 		element: configPort.contextMenuEl,
 		options: {
+			lightDismiss: false,
+			closeOnEscape: false,
 			onToggle: (open) => configPort.setContextMenu({ open }),
 		},
 	});

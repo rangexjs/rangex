@@ -25,6 +25,8 @@ export const handleQuickActionsOverlayAppearance = ({
 	const anchorController = createAnchoredOverlayController({
 		element: port.quickActionsEl,
 		options: {
+			lightDismiss: false,
+			closeOnEscape: false,
 			onToggle: (open) => port.setQuickActions({ open }),
 		},
 	});

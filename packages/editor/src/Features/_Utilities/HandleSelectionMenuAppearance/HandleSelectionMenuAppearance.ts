@@ -16,7 +16,8 @@ export const handleSelectionMenuAppearance = ({
 	const selectionMenuPopoverController = createPopoverOverlayController({
 		element: configPort.selectionMenu,
 		options: {
-			popover: "auto",
+			lightDismiss: true,
+			closeOnEscape: true,
 			onToggle: (open) => {
 				configPort.emitSelectionMenuToggle();
 

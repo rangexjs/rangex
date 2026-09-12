@@ -1,3 +1,16 @@
+export interface RegisterLightDismissParams {
+	element: HTMLElement;
+	getAnchor: () => HTMLElement | null;
+	isOpen: () => boolean;
+	hide: () => void;
+	signal: AbortSignal;
+}
+
+export interface CreateCloseWatcherParams {
+	hide: () => void;
+	signal: AbortSignal;
+}
+
 export type AnchorPositionField =
 	| "position"
 	| "position-area"
@@ -22,27 +35,29 @@ export interface OverlayController {
 	readonly isOpen: boolean;
 	show(anchorElement: HTMLElement, styleOptions: AnchorStyleOptions): void;
 	hide(): void;
+	cleanup(): void;
 }
 
 export type OnAnchoredOverlayToggleFn = (isOpen: boolean) => void;
 
 export interface AnchoredOverlayControllerOptions {
+	lightDismiss: boolean;
+	closeOnEscape: boolean;
 	onToggle?: OnAnchoredOverlayToggleFn;
 }
 
 export interface CreateAnchoredOverlayControllerParams {
 	element: HTMLElement;
-	options?: AnchoredOverlayControllerOptions;
+	options: AnchoredOverlayControllerOptions;
 }
 
 export interface AnchoredOverlayController extends OverlayController {}
 
-export type PopoverMode = "auto" | "manual" | "hint";
-
 export type OnPopoverOverlayToggleFn = (isOpen: boolean) => void;
 
 export interface PopoverOverlayControllerOptions {
-	popover: PopoverMode;
+	lightDismiss: boolean;
+	closeOnEscape: boolean;
 	onToggle?: OnPopoverOverlayToggleFn;
 }
 

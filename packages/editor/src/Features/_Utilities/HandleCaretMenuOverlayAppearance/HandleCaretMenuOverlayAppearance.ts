@@ -30,6 +30,8 @@ export const handleCaretMenuOverlayAppearance = ({
 	const anchorController = createAnchoredOverlayController({
 		element: port.caretMenuEl,
 		options: {
+			lightDismiss: false,
+			closeOnEscape: false,
 			onToggle: (open) => port.setCaretMenu({ open }),
 		},
 	});

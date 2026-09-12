@@ -27,7 +27,8 @@ export const configureLink = ({
 	const linkMenuPopoverController = createPopoverOverlayController({
 		element: configPort.linkMenuEl,
 		options: {
-			popover: "auto",
+			lightDismiss: true,
+			closeOnEscape: true,
 			onToggle: () => {
 				configPort.emitLinkMenuToggle();
 			},
