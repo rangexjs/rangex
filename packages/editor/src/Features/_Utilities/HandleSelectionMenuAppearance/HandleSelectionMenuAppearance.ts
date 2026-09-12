@@ -1,5 +1,6 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
 import { createPopoverOverlayController } from "#engine-links";
+import { forceReflowWithoutTransition } from "#utilities";
 import type {
 	HandleSelectionMenuAppearanceParams,
 	HandleSelectionMenuAppearanceResult,
@@ -30,11 +31,7 @@ export const handleSelectionMenuAppearance = ({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			selectionMenuPopoverController.hide();
-			const { element } = selectionMenuPopoverController;
-			element.style.setProperty("transition", "none");
-			// Forces reflow so the open (and animated) popovers disappear immediately
-			element.offsetHeight;
-			element.style.removeProperty("transition");
+			forceReflowWithoutTransition(selectionMenuPopoverController.element);
 		},
 	});
 

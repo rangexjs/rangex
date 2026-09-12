@@ -6,6 +6,10 @@
 	display: none !important;
 }
 
+.disable-transition {
+	transition: none !important;
+}
+
 /*
 	Everything below can be removed once anchor-name supports cross tree-scopes
 	https://issues.chromium.org/issues/450830785

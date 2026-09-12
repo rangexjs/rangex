@@ -1,21 +1,11 @@
 import { EditorRange, editorSelectionChangeEventType } from "rich-text-area";
+import { observeEditorNodeAttachment } from "#engine-links";
+import { forceReflowWithoutTransition } from "#utilities";
 import type {
-	CloseLinkMenuParams,
+	CloseOnLinkRemovalParams,
 	CloseOnSelectionChangeParams,
 	HandleLinkMenuCloseParams,
-	HandleLinkMenuUnwrapParams,
 } from "./HandleLinkMenuClose-types";
-
-/**
- * Closes the LinkMenu.
- */
-const closeLinkMenu = ({
-	configPort,
-	linkMenuPopoverController,
-}: CloseLinkMenuParams) => {
-	configPort.setCurrentComponent(null);
-	linkMenuPopoverController.hide();
-};
 
 /**
  * Closes the popover whenever the selection moves outside the current link or becomes
@@ -54,17 +44,36 @@ const closeOnSelectionChange = ({
 				}
 			}
 
-			closeLinkMenu({ configPort, linkMenuPopoverController });
+			linkMenuPopoverController.hide();
 		},
 	});
 };
 
-const handleLinkMenuUnwrap = ({
+/**
+ * Closes the popover whenever the current link is detached from the RootEditable (e.g. undo,
+ * external removal).
+ */
+const closeOnLinkRemoval = ({
 	configPort,
+	editorAPI,
 	linkMenuPopoverController,
-}: HandleLinkMenuUnwrapParams) => {
-	return configPort.onUnwrap(() => {
-		closeLinkMenu({ configPort, linkMenuPopoverController });
+}: CloseOnLinkRemovalParams) => {
+	return observeEditorNodeAttachment({
+		editorAPI,
+		onMutation: ({ detachedNodes }) => {
+			const { currentComponent } = configPort;
+
+			if (!currentComponent) {
+				return;
+			}
+
+			if (!detachedNodes.includes(currentComponent)) {
+				return;
+			}
+
+			linkMenuPopoverController.hide();
+			forceReflowWithoutTransition(linkMenuPopoverController.element);
+		},
 	});
 };
 
@@ -78,13 +87,14 @@ export const handleLinkMenuClose = ({
 		editorAPI,
 		linkMenuPopoverController,
 	});
-	const unsubscribeUnwrap = handleLinkMenuUnwrap({
+	const unsubscribeLinkRemoval = closeOnLinkRemoval({
 		configPort,
+		editorAPI,
 		linkMenuPopoverController,
 	});
 
 	return () => {
 		unsubscribeSelectionChange();
-		unsubscribeUnwrap();
+		unsubscribeLinkRemoval();
 	};
 };
