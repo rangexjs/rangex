@@ -25,7 +25,9 @@ export const LinkSelectionMenu = () => {
 
 	const refreshFields = () => {
 		displayTextHandle.reset();
-		setDisplayTextDisabled(false);
+		const displayText = link.getDisplayText();
+		displayTextHandle.setValue(displayText.value);
+		setDisplayTextDisabled(displayText.disabled);
 
 		urlHandle.reset();
 		setIsNewTab(false);

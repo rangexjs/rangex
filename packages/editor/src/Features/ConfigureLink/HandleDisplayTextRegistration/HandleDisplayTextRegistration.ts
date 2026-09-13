@@ -3,6 +3,7 @@ import {
 	contentLineRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
+import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	GetDisplayTextFromLinkParams,
 	GetDisplayTextFromSelectionParams,
@@ -47,30 +48,39 @@ const getDisplayTextFromLink = ({
 const getDisplayTextFromSelection = ({
 	editorAPI,
 }: GetDisplayTextFromSelectionParams): GetDisplayTextInfoResult => {
-	const selection = editorAPI.getEditorSelection();
+	const mode = getLinkPlacementMode({ editorAPI });
 
-	const { fromText, fromOffset, toText, toOffset } =
-		selection.getBoundaryPoints();
+	if (mode === "insert") {
+		return { value: "", disabled: false };
+	}
 
-	const segments = editorAPI.getInlineWrappableSegments({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+	if (mode === "wrap") {
+		const selection = editorAPI.getEditorSelection();
 
-	if (segments.length === 1) {
-		const value = editorAPI.getPlainText({
+		const { fromText, fromOffset, toText, toOffset } =
+			selection.getBoundaryPoints();
+
+		const segments = editorAPI.getInlineWrappableSegments({
 			fromNode: fromText,
 			fromOffset,
 			toNode: toText,
 			toOffset,
 		});
 
-		return { value, disabled: false };
+		if (segments.length === 1) {
+			const value = editorAPI.getPlainText({
+				fromNode: fromText,
+				fromOffset,
+				toNode: toText,
+				toOffset,
+			});
+
+			return { value, disabled: false };
+		}
 	}
 
-	return { value: "Selected Text", disabled: true };
+	console.warn("Selection doesn't map to a single display text value.");
+	return { value: "", disabled: false };
 };
 
 /*
