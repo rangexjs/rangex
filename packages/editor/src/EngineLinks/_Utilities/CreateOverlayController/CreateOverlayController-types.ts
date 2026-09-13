@@ -12,8 +12,11 @@ export interface RegisterLightDismissParams {
 	signal: AbortSignal;
 }
 
+export type OnEscapeFn = () => void;
+
 export interface CreateCloseWatcherParams {
 	hide: HideFn;
+	onEscape?: OnEscapeFn;
 	signal: AbortSignal;
 }
 
@@ -52,6 +55,7 @@ export interface AnchoredOverlayControllerOptions {
 	lightDismiss: boolean;
 	closeOnEscape: boolean;
 	onToggle?: OnAnchoredOverlayToggleFn;
+	onEscape?: OnEscapeFn;
 }
 
 export interface CreateAnchoredOverlayControllerParams {
@@ -67,6 +71,7 @@ export interface PopoverOverlayControllerOptions {
 	lightDismiss: boolean;
 	closeOnEscape: boolean;
 	onToggle?: OnPopoverOverlayToggleFn;
+	onEscape?: OnEscapeFn;
 }
 
 export interface CreatePopoverOverlayControllerParams {

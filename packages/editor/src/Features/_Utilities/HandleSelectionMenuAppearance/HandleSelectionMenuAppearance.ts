@@ -28,6 +28,9 @@ export const handleSelectionMenuAppearance = ({
 					selection.highlight = open;
 				}
 			},
+			onEscape: () => {
+				editorAPI.focus();
+			},
 		},
 	});
 

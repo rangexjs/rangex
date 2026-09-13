@@ -48,12 +48,17 @@ const registerLightDismiss = ({
  * back gesture/button. Single-use: once it closes or is destroyed, a new one must be created
  * for the next open.
  */
-const createCloseWatcher = ({ hide, signal }: CreateCloseWatcherParams) => {
+const createCloseWatcher = ({
+	hide,
+	onEscape,
+	signal,
+}: CreateCloseWatcherParams) => {
 	const watcher = new CloseWatcher({ signal });
 
-	watcher.onclose = () => {
+	watcher.addEventListener("close", () => {
 		hide({});
-	};
+		onEscape?.();
+	});
 
 	return watcher;
 };
@@ -65,7 +70,7 @@ export const createAnchoredOverlayController = ({
 	element,
 	options,
 }: CreateAnchoredOverlayControllerParams): AnchoredOverlayController => {
-	const { onToggle, lightDismiss, closeOnEscape } = options;
+	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
 	element.classList.add(hideAnchoredClass);
 	element.style.setProperty("position-visibility", "anchor-valid");
@@ -130,6 +135,7 @@ export const createAnchoredOverlayController = ({
 			if (closeOnEscape) {
 				closeWatcher = createCloseWatcher({
 					hide,
+					onEscape,
 					signal: abortController.signal,
 				});
 			}
@@ -166,7 +172,7 @@ export const createPopoverOverlayController = ({
 	element,
 	options,
 }: CreatePopoverOverlayControllerParams): PopoverOverlayController => {
-	const { onToggle, lightDismiss, closeOnEscape } = options;
+	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
 	element.setAttribute("popover", "manual");
 
@@ -232,6 +238,7 @@ export const createPopoverOverlayController = ({
 			if (closeOnEscape) {
 				closeWatcher = createCloseWatcher({
 					hide,
+					onEscape,
 					signal: abortController.signal,
 				});
 			}
