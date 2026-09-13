@@ -9,8 +9,3 @@ export interface ReactiveEmojiPort {
 
 	select(item: EmojiSuggestionItem): void;
 }
-
-export interface ReactiveEmojiResult {
-	port: ReactiveEmojiPort;
-	dispose: () => void;
-}

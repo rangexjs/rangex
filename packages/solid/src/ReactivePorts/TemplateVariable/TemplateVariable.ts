@@ -1,13 +1,17 @@
 import type { TemplateVariablePublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveTemplateVariablePort,
-	ReactiveTemplateVariableResult,
-} from "./TemplateVariable-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveTemplateVariablePort } from "./TemplateVariable-types";
 
-export const TemplateVariable = (
-	publicPort: TemplateVariablePublicPort,
-): ReactiveTemplateVariableResult => {
+export const TemplateVariable = <
+	T extends TemplateVariablePublicPort | undefined,
+>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [options, setOptions] = createSignal(publicPort.options);
 	const [filteredItems, setFilteredItems] = createSignal(
@@ -17,12 +21,10 @@ export const TemplateVariable = (
 		publicPort.caretMenuOpen,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(publicPort.onOptionsUpdate(setOptions));
-	unsubscribeList.add(publicPort.onFilteredItemsUpdate(setFilteredItems));
-	unsubscribeList.add(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onOptionsUpdate(setOptions));
+	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
 
 	const port: ReactiveTemplateVariablePort = {
 		caretMenuEl: publicPort.caretMenuEl,
@@ -37,11 +39,5 @@ export const TemplateVariable = (
 		select: publicPort.select,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

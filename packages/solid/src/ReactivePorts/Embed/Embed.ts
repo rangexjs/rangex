@@ -1,8 +1,15 @@
 import type { EmbedPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveEmbedPort, ReactiveEmbedResult } from "./Embed-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveEmbedPort } from "./Embed-types";
 
-export const Embed = (publicPort: EmbedPublicPort): ReactiveEmbedResult => {
+export const Embed = <T extends EmbedPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
 		publicPort.quickActionsOpen,
 	);
@@ -12,12 +19,10 @@ export const Embed = (publicPort: EmbedPublicPort): ReactiveEmbedResult => {
 		publicPort.currentComponent,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
-	unsubscribeList.add(publicPort.onCaptionUpdate(setCaption));
-	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
-	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentBlock));
+	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(publicPort.onCaptionUpdate(setCaption));
+	onCleanup(publicPort.onAlignUpdate(setAlign));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
 	const port: ReactiveEmbedPort = {
 		quickActionsEl: publicPort.quickActionsEl,
@@ -35,11 +40,5 @@ export const Embed = (publicPort: EmbedPublicPort): ReactiveEmbedResult => {
 		swap: publicPort.swap,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

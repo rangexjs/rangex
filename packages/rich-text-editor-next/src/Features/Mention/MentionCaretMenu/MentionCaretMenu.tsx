@@ -1,8 +1,10 @@
-import { useReactiveEditorContext } from "#context";
+import { Mention } from "@rangex/solid";
+import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const MentionCaretMenu = () => {
-	const { mention } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const mention = Mention(editor.mention);
 
 	if (!mention) {
 		throw new Error("Mention can't be undefined.");

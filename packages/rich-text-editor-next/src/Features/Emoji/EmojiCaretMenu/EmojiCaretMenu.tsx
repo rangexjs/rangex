@@ -1,8 +1,10 @@
-import { useReactiveEditorContext } from "#context";
+import { Emoji } from "@rangex/solid";
+import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const EmojiCaretMenu = () => {
-	const { emoji } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const emoji = Emoji(editor.emoji);
 
 	if (!emoji) {
 		throw new Error("Emoji can't be undefined.");

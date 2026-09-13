@@ -1,6 +1,7 @@
+import { Table } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import { createUniqueId, For, onCleanup, Show } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { assertNever } from "#utilities";
 import {
@@ -119,8 +120,8 @@ const Menu = (props: MenuProps) => {
 };
 
 export const TableContextMenu = () => {
-	const { table } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const table = Table(editor.table);
 
 	if (!(table && editor.table)) {
 		throw new Error("Table can't be undefined.");

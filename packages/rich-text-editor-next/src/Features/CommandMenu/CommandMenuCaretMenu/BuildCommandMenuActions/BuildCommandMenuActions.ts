@@ -1,58 +1,69 @@
-import { useReactiveEditorContext } from "#context";
+import {
+	AccordionItem,
+	BlockQuote,
+	CodeBlock,
+	EmptyMedia,
+	LineLocalName,
+	List,
+	Separator,
+	Table,
+	TodoList,
+} from "@rangex/solid";
 import type {
+	BuildCommandMenuActionsParams,
 	BuildCommandMenuActionsResult,
 	CommandActions,
 } from "./BuildCommandMenuActions-types";
 
 /**
  * Maps each command menu item to the specific owning extension's action to call on select — an
- * item whose owning port isn't present isn't included, so it never renders at all. Reads each
- * owning port straight from context so CommandMenuCaretMenu never has to grow a parameter per
- * new item.
+ * item whose owning port isn't present isn't included, so it never renders at all. Constructs
+ * every owning port itself from the raw editor, so CommandMenuCaretMenu never has to grow a
+ * parameter per new item.
  */
-export const buildCommandMenuActions = (): BuildCommandMenuActionsResult => {
-	const {
-		accordionItem,
-		blockQuote,
-		codeBlock,
-		emptyMedia,
-		formatting,
-		list,
-		separator,
-		table,
-		todoList,
-	} = useReactiveEditorContext();
+export const buildCommandMenuActions = ({
+	editor,
+}: BuildCommandMenuActionsParams): BuildCommandMenuActionsResult => {
+	const accordionItem = AccordionItem(editor.accordionItem);
+	const blockQuote = BlockQuote(editor.blockQuote);
+	const codeBlock = CodeBlock(editor.codeBlock);
+	const emptyMedia = EmptyMedia(editor.emptyMedia);
+	const lineLocalName = LineLocalName(editor.formatting);
+	const list = List(editor.list);
+	const separator = Separator(editor.separator);
+	const table = Table(editor.table);
+	const todoList = TodoList(editor.todoList);
 
 	const actions: CommandActions = new Map();
 
-	if (formatting) {
+	if (lineLocalName) {
 		actions.set("p", {
 			icon: "Paragraph",
-			onSelect: () => formatting.setLineLocalName("p"),
+			onSelect: () => lineLocalName.set("p"),
 		});
 		actions.set("h1", {
 			icon: "TextHOne",
-			onSelect: () => formatting.setLineLocalName("h1"),
+			onSelect: () => lineLocalName.set("h1"),
 		});
 		actions.set("h2", {
 			icon: "TextHTwo",
-			onSelect: () => formatting.setLineLocalName("h2"),
+			onSelect: () => lineLocalName.set("h2"),
 		});
 		actions.set("h3", {
 			icon: "TextHThree",
-			onSelect: () => formatting.setLineLocalName("h3"),
+			onSelect: () => lineLocalName.set("h3"),
 		});
 		actions.set("h4", {
 			icon: "TextHFour",
-			onSelect: () => formatting.setLineLocalName("h4"),
+			onSelect: () => lineLocalName.set("h4"),
 		});
 		actions.set("h5", {
 			icon: "TextHFive",
-			onSelect: () => formatting.setLineLocalName("h5"),
+			onSelect: () => lineLocalName.set("h5"),
 		});
 		actions.set("h6", {
 			icon: "TextHSix",
-			onSelect: () => formatting.setLineLocalName("h6"),
+			onSelect: () => lineLocalName.set("h6"),
 		});
 	}
 

@@ -24,8 +24,3 @@ export interface ReactiveFindReplacePort {
 	replace(params: ReplaceParams): void;
 	replaceAll(params: ReplaceParams): void;
 }
-
-export interface ReactiveFindReplaceResult {
-	port: ReactiveFindReplacePort;
-	dispose: () => void;
-}

@@ -1,6 +1,7 @@
 import type { FormattingFontFamilyValue } from "@rangex/editor";
+import { FontFamily, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -31,30 +32,32 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontFamilyToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const fontFamily = FontFamily(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!fontFamily) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const fontFamilyOptions = formatting.fontFamilyOptions;
+	const fontFamilyOptions = fontFamily.options;
 	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
 
 	const [fontFamilyHandle, fontFamilyControls] =
 		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
-				formatting.fontFamily().values,
-				formatting.defaultFontFamily,
+				fontFamily.values(),
+				fontFamily.default,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	createEffect(
-		() => formatting.fontFamily().values,
+		() => fontFamily.values(),
 		(values) => {
 			fontFamilyHandle.setValue(
-				getInputValueFromActiveValues(values, formatting.defaultFontFamily),
+				getInputValueFromActiveValues(values, fontFamily.default),
 			);
 		},
 	);
@@ -82,10 +85,10 @@ export const FontFamilyToolbarButton = () => {
 
 		fontFamilyHandle.setValue(normalizedValue);
 
-		const fontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === formatting.defaultFontFamily ? null : normalizedValue;
+		const nextFontFamily: FormattingFontFamilyValue | null =
+			normalizedValue === fontFamily.default ? null : normalizedValue;
 
-		formatting.setFontFamily(fontFamily);
+		fontFamily.set(nextFontFamily);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -102,8 +105,8 @@ export const FontFamilyToolbarButton = () => {
 		);
 
 		const activeValue = getInputValueFromActiveValues(
-			formatting.fontFamily().values,
-			formatting.defaultFontFamily,
+			fontFamily.values(),
+			fontFamily.default,
 		);
 
 		if (!normalizedValue || normalizedValue === activeValue) {
@@ -113,14 +116,14 @@ export const FontFamilyToolbarButton = () => {
 
 		fontFamilyHandle.setValue(normalizedValue);
 
-		const fontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === formatting.defaultFontFamily ? null : normalizedValue;
+		const nextFontFamily: FormattingFontFamilyValue | null =
+			normalizedValue === fontFamily.default ? null : normalizedValue;
 
-		formatting.setFontFamily(fontFamily);
+		fontFamily.set(nextFontFamily);
 	};
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.fontFamily().values;
+		const activeValues = fontFamily.values();
 
 		const getText = (value: FormattingFontFamilyValue) => {
 			const option = fontFamilyOptions.find((o) => o.value === value);
@@ -138,11 +141,9 @@ export const FontFamilyToolbarButton = () => {
 				text: getText(fontFamilyItem),
 				button: {
 					onClick: () => {
-						const fontFamily: FormattingFontFamilyValue | null =
-							fontFamilyItem === formatting.defaultFontFamily
-								? null
-								: fontFamilyItem;
-						formatting.setFontFamily(fontFamily);
+						const nextFontFamily: FormattingFontFamilyValue | null =
+							fontFamilyItem === fontFamily.default ? null : fontFamilyItem;
+						fontFamily.set(nextFontFamily);
 					},
 				},
 			};
@@ -150,7 +151,7 @@ export const FontFamilyToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.fontFamily().disabled || !!readOnly?.checked(),
+		() => fontFamily.disabled() || !!readOnly?.checked(),
 	);
 
 	const anchorName = "--font-family-anchor";

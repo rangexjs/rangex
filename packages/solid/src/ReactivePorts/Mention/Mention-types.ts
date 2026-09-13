@@ -12,8 +12,3 @@ export interface ReactiveMentionPort {
 
 	select(item: MentionSuggestionItem): void;
 }
-
-export interface ReactiveMentionResult {
-	port: ReactiveMentionPort;
-	dispose: () => void;
-}

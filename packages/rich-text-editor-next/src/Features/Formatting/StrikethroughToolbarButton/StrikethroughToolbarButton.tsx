@@ -1,30 +1,33 @@
+import { ReadOnly, Strikethrough } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const StrikethroughToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const strikethrough = Strikethrough(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!strikethrough) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const disabled = createMemo(
-		() => formatting.strikethrough().disabled || !!readOnly?.checked(),
+		() => strikethrough.disabled() || !!readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		formatting.toggleStrikethrough();
+		strikethrough.toggle();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={formatting.strikethrough().checked}
+				checked={strikethrough.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={formatting.strikethrough().pressed}
+				aria-pressed={strikethrough.pressed()}
 			>
 				<Icon name="Strikethrough" class="size-4" />
 			</ToolbarButton>

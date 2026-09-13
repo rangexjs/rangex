@@ -1,5 +1,4 @@
 import { createEditor } from "@rangex/editor";
-import { createReactiveEditor } from "@rangex/solid";
 import { render } from "@solidjs/web";
 import type { ExtensionComponents } from "#extensions";
 import { App } from "../App";
@@ -32,8 +31,6 @@ export const createRichTextEditor = ({
 	styleSheet.replaceSync(hostStyles);
 	document.adoptedStyleSheets.push(styleSheet);
 
-	const { reactiveEditor, disposeList } = createReactiveEditor({ editor });
-
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {
 			Object.assign(prev.toolbarButtons, value.components.toolbarButtons);
@@ -45,7 +42,7 @@ export const createRichTextEditor = ({
 	);
 
 	for (const { register } of extensions) {
-		register?.({ editor, reactiveEditor });
+		register?.(editor);
 	}
 
 	const editorHost = document.createElement("div");
@@ -56,7 +53,6 @@ export const createRichTextEditor = ({
 				components={components}
 				toolbarButtonsLayout={toolbarButtonsLayout}
 				editor={editor}
-				reactiveEditor={reactiveEditor}
 				host={host}
 				floatingContainer={floatingContainer}
 			/>
@@ -70,10 +66,6 @@ export const createRichTextEditor = ({
 		},
 
 		destroy() {
-			for (const disposePort of disposeList) {
-				disposePort();
-			}
-
 			editor.destroy();
 			dispose();
 		},

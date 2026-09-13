@@ -1,6 +1,7 @@
 import type { FormattingLineLocalNameValue } from "@rangex/editor";
+import { LineLocalName, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	ToolbarButton,
 	ToolbarDropdown,
@@ -8,9 +9,11 @@ import {
 } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const lineLocalName = LineLocalName(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!lineLocalName) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -30,7 +33,7 @@ export const LineLocalNameToolbarButton = () => {
 		titles[localName];
 
 	const title = createMemo(() => {
-		const localNames = formatting.lineLocalName().values;
+		const localNames = lineLocalName.values();
 
 		if (localNames.size === 0) {
 			return "None";
@@ -54,7 +57,7 @@ export const LineLocalNameToolbarButton = () => {
 	};
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.lineLocalName().values;
+		const activeValues = lineLocalName.values();
 
 		const localNames: FormattingLineLocalNameValue[] = [
 			"p",
@@ -72,7 +75,7 @@ export const LineLocalNameToolbarButton = () => {
 				checked: activeValues.has(localName),
 				button: {
 					onClick: () => {
-						formatting.setLineLocalName(localName);
+						lineLocalName.set(localName);
 					},
 					class: "justify-center",
 				},
@@ -81,7 +84,7 @@ export const LineLocalNameToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.lineLocalName().disabled || !!readOnly?.checked(),
+		() => lineLocalName.disabled() || !!readOnly?.checked(),
 	);
 
 	return (

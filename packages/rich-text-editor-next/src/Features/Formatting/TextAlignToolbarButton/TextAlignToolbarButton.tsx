@@ -1,6 +1,7 @@
 import type { FormattingTextAlignValue } from "@rangex/editor";
+import { ReadOnly, TextAlign } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon, type IconName } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
@@ -35,16 +36,18 @@ const getToolbarIconFromActiveValues = (
 };
 
 export const TextAlignToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const textAlign = TextAlign(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!textAlign) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const [checked, setChecked] = createSignal(false);
 
 	const toolbarIcon = createMemo(() =>
-		getToolbarIconFromActiveValues(formatting.textAlign().values),
+		getToolbarIconFromActiveValues(textAlign.values()),
 	);
 
 	const popoverId = createUniqueId();
@@ -55,12 +58,12 @@ export const TextAlignToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const onTextAlignClick = (textAlign: FormattingTextAlignValue) => {
-		formatting.setTextAlign(textAlign);
+	const onTextAlignClick = (textAlignValue: FormattingTextAlignValue) => {
+		textAlign.set(textAlignValue);
 	};
 
 	const disabled = createMemo(
-		() => formatting.textAlign().disabled || !!readOnly?.checked(),
+		() => textAlign.disabled() || !!readOnly?.checked(),
 	);
 
 	return (
@@ -85,7 +88,7 @@ export const TextAlignToolbarButton = () => {
 					<For each={textAlignValues}>
 						{(name) => (
 							<ToolbarButton
-								checked={formatting.textAlign().values.has(name)}
+								checked={textAlign.values().has(name)}
 								commandfor={popoverId}
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}

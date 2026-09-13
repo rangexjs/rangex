@@ -1,8 +1,15 @@
 import type { EmojiPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveEmojiPort, ReactiveEmojiResult } from "./Emoji-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveEmojiPort } from "./Emoji-types";
 
-export const Emoji = (publicPort: EmojiPublicPort): ReactiveEmojiResult => {
+export const Emoji = <T extends EmojiPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [filteredItems, setFilteredItems] = createSignal(
 		publicPort.filteredItems,
 	);
@@ -10,10 +17,8 @@ export const Emoji = (publicPort: EmojiPublicPort): ReactiveEmojiResult => {
 		publicPort.caretMenuOpen,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onFilteredItemsUpdate(setFilteredItems));
-	unsubscribeList.add(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
+	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
 
 	const port: ReactiveEmojiPort = {
 		caretMenuEl: publicPort.caretMenuEl,
@@ -24,11 +29,5 @@ export const Emoji = (publicPort: EmojiPublicPort): ReactiveEmojiResult => {
 		select: publicPort.select,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

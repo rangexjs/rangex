@@ -1,10 +1,13 @@
+import { List, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const UnorderedListToolbarButton = () => {
-	const { list, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const list = List(editor.list);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!list) {
 		throw new Error("List can't be undefined.");

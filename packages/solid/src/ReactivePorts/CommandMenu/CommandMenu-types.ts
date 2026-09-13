@@ -9,8 +9,3 @@ export interface ReactiveCommandMenuPort {
 
 	beforeSelect(): void;
 }
-
-export interface ReactiveCommandMenuResult {
-	port: ReactiveCommandMenuPort;
-	dispose: () => void;
-}

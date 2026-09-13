@@ -1,6 +1,7 @@
 import type { TemplateVariableKind } from "@rangex/editor";
+import { ReadOnly, TemplateVariable } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -10,7 +11,9 @@ import {
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
 export const TemplateVariableToolbarButton = () => {
-	const { templateVariable, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const templateVariable = TemplateVariable(editor.templateVariable);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");

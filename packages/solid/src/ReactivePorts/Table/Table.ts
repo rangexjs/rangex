@@ -1,8 +1,15 @@
 import type { TablePublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveTablePort, ReactiveTableResult } from "./Table-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveTablePort } from "./Table-types";
 
-export const Table = (publicPort: TablePublicPort): ReactiveTableResult => {
+export const Table = <T extends TablePublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [contextMenuOpen, setContextMenuOpen] = createSignal(
 		publicPort.contextMenuOpen,
@@ -19,19 +26,15 @@ export const Table = (publicPort: TablePublicPort): ReactiveTableResult => {
 		publicPort.clearContents,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(publicPort.onContextMenuOpenUpdate(setContextMenuOpen));
-	unsubscribeList.add(publicPort.onSectionTypeUpdate(setSectionType));
-	unsubscribeList.add(publicPort.onMergeSplitUpdate(setMergeSplit));
-	unsubscribeList.add(publicPort.onInsertDeleteUpdate(setInsertDelete));
-	unsubscribeList.add(publicPort.onCellTypeUpdate(setCellType));
-	unsubscribeList.add(
-		publicPort.onVerticalAlignmentUpdate(setVerticalAlignment),
-	);
-	unsubscribeList.add(publicPort.onCellResizingUpdate(setCellResizing));
-	unsubscribeList.add(publicPort.onClearContentsUpdate(setClearContents));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onContextMenuOpenUpdate(setContextMenuOpen));
+	onCleanup(publicPort.onSectionTypeUpdate(setSectionType));
+	onCleanup(publicPort.onMergeSplitUpdate(setMergeSplit));
+	onCleanup(publicPort.onInsertDeleteUpdate(setInsertDelete));
+	onCleanup(publicPort.onCellTypeUpdate(setCellType));
+	onCleanup(publicPort.onVerticalAlignmentUpdate(setVerticalAlignment));
+	onCleanup(publicPort.onCellResizingUpdate(setCellResizing));
+	onCleanup(publicPort.onClearContentsUpdate(setClearContents));
 
 	const port: ReactiveTablePort = {
 		contextMenuEl: publicPort.contextMenuEl,
@@ -56,11 +59,5 @@ export const Table = (publicPort: TablePublicPort): ReactiveTableResult => {
 		clear: publicPort.clear,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

@@ -1,17 +1,19 @@
+import { CommandMenu } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu, Icon } from "#ui";
 import type { CommandMenuAction } from "./BuildCommandMenuActions";
 import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 
 export const CommandMenuCaretMenu = () => {
-	const { commandMenu } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const commandMenu = CommandMenu(editor.commandMenu);
 
 	if (!commandMenu) {
 		throw new Error("CommandMenu can't be undefined.");
 	}
 
-	const actions = createMemo(() => buildCommandMenuActions());
+	const actions = createMemo(() => buildCommandMenuActions({ editor }));
 
 	const entries = createMemo(() =>
 		commandMenu

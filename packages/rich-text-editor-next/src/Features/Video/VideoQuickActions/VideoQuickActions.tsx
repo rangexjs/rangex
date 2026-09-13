@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import { ReadOnly, Video } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import {
 	createEffect,
@@ -6,7 +7,7 @@ import {
 	createUniqueId,
 	onCleanup,
 } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -49,8 +50,9 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const VideoQuickActions = () => {
-	const { video, readOnly } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const video = Video(editor.video);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!(video && editor.video)) {
 		throw new Error("Video can't be undefined.");

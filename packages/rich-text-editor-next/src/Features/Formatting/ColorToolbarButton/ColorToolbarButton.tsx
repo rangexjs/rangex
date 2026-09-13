@@ -1,3 +1,4 @@
+import { Color, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createMemo,
@@ -5,7 +6,7 @@ import {
 	createUniqueId,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	type ColorMode,
 	ColorPanel,
@@ -21,9 +22,11 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const ColorToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const color = Color(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!color) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -39,7 +42,7 @@ export const ColorToolbarButton = () => {
 	};
 
 	const initialHslColors = getHslThemeColors({
-		colors: formatting.color().values,
+		colors: color.values(),
 	});
 	const initialColorMode = getColorMode(initialHslColors);
 
@@ -60,7 +63,7 @@ export const ColorToolbarButton = () => {
 	const [activeColors, setActiveColors] = createSignal(initialActiveColors);
 
 	createEffect(
-		() => formatting.color().values,
+		() => color.values(),
 		(values) => {
 			const hslColors = getHslThemeColors({ colors: values });
 			const colorMode = getColorMode(hslColors);
@@ -100,11 +103,11 @@ export const ColorToolbarButton = () => {
 		}
 
 		if (type === "remove") {
-			formatting.setColor(null);
+			color.set(null);
 		}
 
 		if (type === "apply") {
-			formatting.setColor({
+			color.set({
 				light: {
 					type: "solid",
 					value: ColorFormat.hsl(lightHsl()).color(),
@@ -114,9 +117,7 @@ export const ColorToolbarButton = () => {
 		}
 	};
 
-	const disabled = createMemo(
-		() => formatting.color().disabled || !!readOnly?.checked(),
-	);
+	const disabled = createMemo(() => color.disabled() || !!readOnly?.checked());
 
 	return (
 		<span>

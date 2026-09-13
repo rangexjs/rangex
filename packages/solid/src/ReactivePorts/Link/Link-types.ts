@@ -24,8 +24,3 @@ export interface ReactiveLinkPort {
 	closeSelectionMenu(): void;
 	getDisplayText(): LinkDisplayText;
 }
-
-export interface ReactiveLinkResult {
-	port: ReactiveLinkPort;
-	dispose: () => void;
-}

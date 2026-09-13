@@ -1,9 +1,11 @@
-import { useReactiveEditorContext } from "#context";
+import { ReadOnly } from "@rangex/solid";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const ReadOnlyToolbarButton = () => {
-	const { readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!readOnly) {
 		throw new Error("ReadOnly can't be undefined.");

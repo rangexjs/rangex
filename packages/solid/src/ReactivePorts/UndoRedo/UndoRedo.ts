@@ -1,22 +1,22 @@
 import type { UndoRedoPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveUndoRedoPort,
-	ReactiveUndoRedoResult,
-} from "./UndoRedo-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveUndoRedoPort } from "./UndoRedo-types";
 
-export const UndoRedo = (
-	publicPort: UndoRedoPublicPort,
-): ReactiveUndoRedoResult => {
+export const UndoRedo = <T extends UndoRedoPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canStepBack, setCanStepBack] = createSignal(publicPort.canStepBack);
 	const [canStepForward, setCanStepForward] = createSignal(
 		publicPort.canStepForward,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanStepBackUpdate(setCanStepBack));
-	unsubscribeList.add(publicPort.onCanStepForwardUpdate(setCanStepForward));
+	onCleanup(publicPort.onCanStepBackUpdate(setCanStepBack));
+	onCleanup(publicPort.onCanStepForwardUpdate(setCanStepForward));
 
 	const port: ReactiveUndoRedoPort = {
 		canStepBack,
@@ -26,11 +26,5 @@ export const UndoRedo = (
 		stepForward: publicPort.stepForward,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

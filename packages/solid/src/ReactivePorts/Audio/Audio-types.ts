@@ -20,8 +20,3 @@ export interface ReactiveAudioPort {
 	commitSnapshot(): void;
 	swap(): void;
 }
-
-export interface ReactiveAudioResult {
-	port: ReactiveAudioPort;
-	dispose: () => void;
-}

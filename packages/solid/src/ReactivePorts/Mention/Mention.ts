@@ -1,13 +1,15 @@
 import type { MentionPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveMentionPort,
-	ReactiveMentionResult,
-} from "./Mention-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveMentionPort } from "./Mention-types";
 
-export const Mention = (
-	publicPort: MentionPublicPort,
-): ReactiveMentionResult => {
+export const Mention = <T extends MentionPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [filteredItems, setFilteredItems] = createSignal(
 		publicPort.filteredItems,
 	);
@@ -15,10 +17,8 @@ export const Mention = (
 		publicPort.caretMenuOpen,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onFilteredItemsUpdate(setFilteredItems));
-	unsubscribeList.add(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
+	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
 
 	const port: ReactiveMentionPort = {
 		caretMenuEl: publicPort.caretMenuEl,
@@ -29,11 +29,5 @@ export const Mention = (
 		select: publicPort.select,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

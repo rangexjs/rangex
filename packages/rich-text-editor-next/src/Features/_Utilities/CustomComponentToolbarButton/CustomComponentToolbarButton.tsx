@@ -1,11 +1,15 @@
+import { AccordionItem, ReadOnly, Separator } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const { accordionItem, separator, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const accordionItem = AccordionItem(editor.accordionItem);
+	const separator = Separator(editor.separator);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 

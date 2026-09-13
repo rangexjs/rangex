@@ -1,8 +1,15 @@
 import type { LinkPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveLinkPort, ReactiveLinkResult } from "./Link-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveLinkPort } from "./Link-types";
 
-export const Link = (publicPort: LinkPublicPort): ReactiveLinkResult => {
+export const Link = <T extends LinkPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [linkMenuOpen, setLinkMenuOpen] = createSignal(publicPort.linkMenuOpen);
 	const [selectionMenuOpen, setSelectionMenuOpen] = createSignal(
@@ -12,18 +19,16 @@ export const Link = (publicPort: LinkPublicPort): ReactiveLinkResult => {
 		publicPort.currentComponent,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(
 		publicPort.onLinkMenuToggle(() => setLinkMenuOpen(publicPort.linkMenuOpen)),
 	);
-	unsubscribeList.add(
+	onCleanup(
 		publicPort.onSelectionMenuOpenUpdate(() =>
 			setSelectionMenuOpen(publicPort.selectionMenuOpen),
 		),
 	);
-	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentLink));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentLink));
 
 	const port: ReactiveLinkPort = {
 		linkMenuEl: publicPort.linkMenuEl,
@@ -45,11 +50,5 @@ export const Link = (publicPort: LinkPublicPort): ReactiveLinkResult => {
 		getDisplayText: publicPort.getDisplayText,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

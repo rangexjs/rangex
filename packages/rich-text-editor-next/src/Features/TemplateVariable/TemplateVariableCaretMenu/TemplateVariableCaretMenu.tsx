@@ -1,8 +1,10 @@
-import { useReactiveEditorContext } from "#context";
+import { TemplateVariable } from "@rangex/solid";
+import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const TemplateVariableCaretMenu = () => {
-	const { templateVariable } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const templateVariable = TemplateVariable(editor.templateVariable);
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");

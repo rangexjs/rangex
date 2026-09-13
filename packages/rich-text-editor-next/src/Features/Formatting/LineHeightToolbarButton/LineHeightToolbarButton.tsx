@@ -1,6 +1,7 @@
 import type { FormattingLineHeightValue } from "@rangex/editor";
+import { LineHeight, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -21,9 +22,11 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 ]);
 
 export const LineHeightToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const lineHeight = LineHeight(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!lineHeight) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -40,7 +43,7 @@ export const LineHeightToolbarButton = () => {
 	const sortedList = createMemo(() => {
 		const deduplicatedValues: FormattingLineHeightValue[] = [];
 
-		const commonValues = [...defaultValues, ...formatting.lineHeight().values];
+		const commonValues = [...defaultValues, ...lineHeight.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -59,7 +62,7 @@ export const LineHeightToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.lineHeight().values;
+		const activeValues = lineHeight.values();
 
 		const contains = (value: FormattingLineHeightValue) => {
 			return !![...activeValues].find(
@@ -68,13 +71,13 @@ export const LineHeightToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map((lineHeight) => {
+		return sortedList().map((lineHeightItem) => {
 			return {
-				checked: contains(lineHeight),
-				text: `${lineHeight.value}`,
+				checked: contains(lineHeightItem),
+				text: `${lineHeightItem.value}`,
 				button: {
 					onClick: () => {
-						formatting.setLineHeight(lineHeight);
+						lineHeight.set(lineHeightItem);
 					},
 					class: "justify-center",
 				},
@@ -83,7 +86,7 @@ export const LineHeightToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.lineHeight().disabled || !!readOnly?.checked(),
+		() => lineHeight.disabled() || !!readOnly?.checked(),
 	);
 
 	return (

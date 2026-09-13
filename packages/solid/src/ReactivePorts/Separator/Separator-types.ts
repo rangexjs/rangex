@@ -5,8 +5,3 @@ export interface ReactiveSeparatorPort {
 
 	insert(): void;
 }
-
-export interface ReactiveSeparatorResult {
-	port: ReactiveSeparatorPort;
-	dispose: () => void;
-}

@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import { Audio, ReadOnly } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import {
 	createEffect,
@@ -6,7 +7,7 @@ import {
 	createUniqueId,
 	onCleanup,
 } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -24,8 +25,9 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const AudioQuickActions = () => {
-	const { audio, readOnly } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const audio = Audio(editor.audio);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!(audio && editor.audio)) {
 		throw new Error("Audio can't be undefined.");

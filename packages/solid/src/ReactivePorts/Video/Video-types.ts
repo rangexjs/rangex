@@ -20,8 +20,3 @@ export interface ReactiveVideoPort {
 	commitSnapshot(): void;
 	swap(): void;
 }
-
-export interface ReactiveVideoResult {
-	port: ReactiveVideoPort;
-	dispose: () => void;
-}

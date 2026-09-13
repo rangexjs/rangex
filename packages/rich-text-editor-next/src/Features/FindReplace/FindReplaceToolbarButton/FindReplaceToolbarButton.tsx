@@ -1,3 +1,4 @@
+import { FindReplace, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createMemo,
@@ -6,7 +7,7 @@ import {
 	For,
 	Show,
 } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	Checkbox,
 	type CheckboxControls,
@@ -26,7 +27,9 @@ import { FindReplaceResults } from "./FindReplaceResults";
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
 export const FindReplaceToolbarButton = () => {
-	const { findReplace, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const findReplace = FindReplace(editor.findReplace);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!findReplace) {
 		throw new Error("FindReplace can't be undefined.");

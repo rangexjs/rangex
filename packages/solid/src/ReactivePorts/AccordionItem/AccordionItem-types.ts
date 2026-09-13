@@ -10,8 +10,3 @@ export interface ReactiveAccordionItemPort {
 	remove(): void;
 	unwrap(): void;
 }
-
-export interface ReactiveAccordionItemResult {
-	port: ReactiveAccordionItemPort;
-	dispose: () => void;
-}

@@ -1,13 +1,15 @@
 import type { CodeBlockPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveCodeBlockPort,
-	ReactiveCodeBlockResult,
-} from "./CodeBlock-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveCodeBlockPort } from "./CodeBlock-types";
 
-export const CodeBlock = (
-	publicPort: CodeBlockPublicPort,
-): ReactiveCodeBlockResult => {
+export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 	const [isActive, setIsActive] = createSignal(publicPort.isActive);
@@ -21,16 +23,14 @@ export const CodeBlock = (
 		publicPort.quickActionsOpen,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(publicPort.onCanWrapUpdate(setCanWrap));
-	unsubscribeList.add(publicPort.onIsActiveUpdate(setIsActive));
-	unsubscribeList.add(publicPort.onLanguageUpdate(setLanguage));
-	unsubscribeList.add(publicPort.onLightThemeUpdate(setLightTheme));
-	unsubscribeList.add(publicPort.onDarkThemeUpdate(setDarkTheme));
-	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentBlock));
-	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
+	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
+	onCleanup(publicPort.onLanguageUpdate(setLanguage));
+	onCleanup(publicPort.onLightThemeUpdate(setLightTheme));
+	onCleanup(publicPort.onDarkThemeUpdate(setDarkTheme));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
+	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
 
 	const port: ReactiveCodeBlockPort = {
 		quickActionsEl: publicPort.quickActionsEl,
@@ -56,11 +56,5 @@ export const CodeBlock = (
 		getPlainText: publicPort.getPlainText,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

@@ -20,8 +20,3 @@ export interface ReactiveEmbedPort {
 	commitSnapshot(): void;
 	swap(): void;
 }
-
-export interface ReactiveEmbedResult {
-	port: ReactiveEmbedPort;
-	dispose: () => void;
-}

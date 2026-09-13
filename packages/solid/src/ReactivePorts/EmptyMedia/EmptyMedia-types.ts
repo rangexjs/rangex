@@ -17,8 +17,3 @@ export interface ReactiveEmptyMediaPort {
 	insert(): void;
 	resolve(params: ResolveOption): void;
 }
-
-export interface ReactiveEmptyMediaResult {
-	port: ReactiveEmptyMediaPort;
-	dispose: () => void;
-}

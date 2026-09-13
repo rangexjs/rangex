@@ -1,15 +1,20 @@
 import type { ListPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveListPort, ReactiveListResult } from "./List-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveListPort } from "./List-types";
 
-export const List = (publicPort: ListPublicPort): ReactiveListResult => {
+export const List = <T extends ListPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(publicPort.onCanWrapUpdate(setCanWrap));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
 
 	const port: ReactiveListPort = {
 		canInsert,
@@ -19,11 +24,5 @@ export const List = (publicPort: ListPublicPort): ReactiveListResult => {
 		wrap: publicPort.wrap,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

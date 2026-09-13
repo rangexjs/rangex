@@ -1,18 +1,18 @@
 import type { FindReplacePublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveFindReplacePort,
-	ReactiveFindReplaceResult,
-} from "./FindReplace-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveFindReplacePort } from "./FindReplace-types";
 
-export const FindReplace = (
-	publicPort: FindReplacePublicPort,
-): ReactiveFindReplaceResult => {
+export const FindReplace = <T extends FindReplacePublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [results, setResults] = createSignal(publicPort.results);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onResultsUpdate(setResults));
+	onCleanup(publicPort.onResultsUpdate(setResults));
 
 	const port: ReactiveFindReplacePort = {
 		results,
@@ -27,11 +27,5 @@ export const FindReplace = (
 		replaceAll: publicPort.replaceAll,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

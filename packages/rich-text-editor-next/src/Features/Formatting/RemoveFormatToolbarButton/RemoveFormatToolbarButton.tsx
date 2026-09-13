@@ -1,24 +1,24 @@
+import { ReadOnly, RemoveFormat } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const RemoveFormatToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const removeFormat = RemoveFormat(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!removeFormat) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const disabled = createMemo(
-		() =>
-			(formatting.removeLine().disabled && formatting.removeText().disabled) ||
-			!!readOnly?.checked(),
+		() => removeFormat.disabled() || !!readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		formatting.removeLineFormat();
-		formatting.removeTextFormat();
+		removeFormat.remove();
 	};
 
 	return (

@@ -1,12 +1,14 @@
+import { CodeBlock, ReadOnly } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import { createSignal, createUniqueId, onCleanup } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../_Utilities";
 
 export const CodeBlockQuickActions = () => {
-	const { codeBlock, readOnly } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const codeBlock = CodeBlock(editor.codeBlock);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!(codeBlock && editor.codeBlock)) {
 		throw new Error("CodeBlock can't be undefined.");

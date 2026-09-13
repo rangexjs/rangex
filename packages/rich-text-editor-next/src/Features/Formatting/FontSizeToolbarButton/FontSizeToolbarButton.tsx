@@ -1,6 +1,7 @@
 import type { FormattingFontSizeValue } from "@rangex/editor";
+import { FontSize, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -50,27 +51,29 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontSizeToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const fontSize = FontSize(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!fontSize) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const [fontSizeHandle, fontSizeControls] =
 		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
-				formatting.fontSize().values,
-				formatting.defaultFontSize,
+				fontSize.values(),
+				fontSize.default,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	createEffect(
-		() => formatting.fontSize().values,
+		() => fontSize.values(),
 		(values) => {
 			fontSizeHandle.setValue(
-				getInputValueFromActiveValues(values, formatting.defaultFontSize),
+				getInputValueFromActiveValues(values, fontSize.default),
 			);
 		},
 	);
@@ -93,13 +96,13 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = formatting.defaultFontSize;
-		const fontSize: FormattingFontSizeValue | null =
+		const defaultFontSize = fontSize.default;
+		const nextFontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		formatting.setFontSize(fontSize);
+		fontSize.set(nextFontSize);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -112,8 +115,8 @@ export const FontSizeToolbarButton = () => {
 		const { value } = currentTarget;
 
 		const activeValue = getInputValueFromActiveValues(
-			formatting.fontSize().values,
-			formatting.defaultFontSize,
+			fontSize.values(),
+			fontSize.default,
 		);
 
 		if (!value || value === activeValue || /[^\d]/.test(value)) {
@@ -122,19 +125,19 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = formatting.defaultFontSize;
-		const fontSize: FormattingFontSizeValue | null =
+		const defaultFontSize = fontSize.default;
+		const nextFontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		formatting.setFontSize(fontSize);
+		fontSize.set(nextFontSize);
 	};
 
 	const sortedFontSizes = createMemo(() => {
 		const deduplicatedValues: FormattingFontSizeValue[] = [];
 
-		const commonValues = [...fontSizeValues, ...formatting.fontSize().values];
+		const commonValues = [...fontSizeValues, ...fontSize.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -153,7 +156,7 @@ export const FontSizeToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.fontSize().values;
+		const activeValues = fontSize.values();
 
 		const contains = (value: FormattingFontSizeValue) => {
 			return !![...activeValues].find(
@@ -169,12 +172,12 @@ export const FontSizeToolbarButton = () => {
 					text: `${fontSizeItem.value}`,
 					button: {
 						onClick: () => {
-							const defaultFontSize = formatting.defaultFontSize;
-							const fontSize: FormattingFontSizeValue | null =
+							const defaultFontSize = fontSize.default;
+							const nextFontSize: FormattingFontSizeValue | null =
 								fontSizeItem.value === defaultFontSize.value
 									? null
 									: fontSizeItem;
-							formatting.setFontSize(fontSize);
+							fontSize.set(nextFontSize);
 						},
 						class: "justify-center",
 					},
@@ -184,7 +187,7 @@ export const FontSizeToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.fontSize().disabled || !!readOnly?.checked(),
+		() => fontSize.disabled() || !!readOnly?.checked(),
 	);
 
 	const anchorName = "--font-size-anchor";

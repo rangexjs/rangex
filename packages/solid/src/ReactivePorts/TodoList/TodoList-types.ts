@@ -7,8 +7,3 @@ export interface ReactiveTodoListPort {
 	insert(): void;
 	wrap(): void;
 }
-
-export interface ReactiveTodoListResult {
-	port: ReactiveTodoListPort;
-	dispose: () => void;
-}

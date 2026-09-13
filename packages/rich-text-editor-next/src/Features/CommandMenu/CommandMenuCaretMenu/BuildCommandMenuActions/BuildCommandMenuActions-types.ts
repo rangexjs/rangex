@@ -1,4 +1,4 @@
-import type { CommandMenuItemValue } from "@rangex/editor";
+import type { CommandMenuItemValue, RangeXEditor } from "@rangex/editor";
 import type { IconName } from "#ui";
 
 export interface CommandMenuAction {
@@ -7,5 +7,9 @@ export interface CommandMenuAction {
 }
 
 export type CommandActions = Map<CommandMenuItemValue, CommandMenuAction>;
+
+export interface BuildCommandMenuActionsParams {
+	editor: RangeXEditor;
+}
 
 export type BuildCommandMenuActionsResult = CommandActions;

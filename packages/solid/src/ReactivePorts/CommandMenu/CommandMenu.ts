@@ -1,13 +1,15 @@
 import type { CommandMenuPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveCommandMenuPort,
-	ReactiveCommandMenuResult,
-} from "./CommandMenu-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveCommandMenuPort } from "./CommandMenu-types";
 
-export const CommandMenu = (
-	publicPort: CommandMenuPublicPort,
-): ReactiveCommandMenuResult => {
+export const CommandMenu = <T extends CommandMenuPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [filteredItems, setFilteredItems] = createSignal(
 		publicPort.filteredItems,
 	);
@@ -15,10 +17,8 @@ export const CommandMenu = (
 		publicPort.caretMenuOpen,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onFilteredItemsUpdate(setFilteredItems));
-	unsubscribeList.add(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
+	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
 
 	const port: ReactiveCommandMenuPort = {
 		caretMenuEl: publicPort.caretMenuEl,
@@ -29,11 +29,5 @@ export const CommandMenu = (
 		beforeSelect: publicPort.beforeSelect,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

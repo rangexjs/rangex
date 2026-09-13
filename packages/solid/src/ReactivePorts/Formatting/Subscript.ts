@@ -1,0 +1,33 @@
+import type { FormattingPublicPort } from "@rangex/editor";
+import { createSignal, onCleanup } from "solid-js";
+import type {
+	FromFormattingToReactivePort,
+	ReactiveFormattingToggleButton,
+} from "./_Utilities";
+
+export const Subscript = <T extends FormattingPublicPort | undefined>(
+	formatting: T,
+): FromFormattingToReactivePort<T, ReactiveFormattingToggleButton> => {
+	if (!formatting) {
+		return undefined as FromFormattingToReactivePort<
+			T,
+			ReactiveFormattingToggleButton
+		>;
+	}
+
+	const [state, setState] = createSignal(formatting.subscript);
+
+	onCleanup(formatting.onSubscriptUpdate(setState));
+
+	const port: ReactiveFormattingToggleButton = {
+		checked: () => state().checked,
+		pressed: () => state().pressed,
+		disabled: () => state().disabled,
+		toggle: formatting.toggleSubscript,
+	};
+
+	return port as FromFormattingToReactivePort<
+		T,
+		ReactiveFormattingToggleButton
+	>;
+};

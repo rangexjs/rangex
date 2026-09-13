@@ -20,8 +20,3 @@ export interface ReactiveImagePort {
 	commitSnapshot(): void;
 	swap(): void;
 }
-
-export interface ReactiveImageResult {
-	port: ReactiveImagePort;
-	dispose: () => void;
-}

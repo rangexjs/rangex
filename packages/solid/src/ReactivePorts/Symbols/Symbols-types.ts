@@ -5,8 +5,3 @@ export interface ReactiveSymbolsPort {
 
 	insert(data: string): void;
 }
-
-export interface ReactiveSymbolsResult {
-	port: ReactiveSymbolsPort;
-	dispose: () => void;
-}

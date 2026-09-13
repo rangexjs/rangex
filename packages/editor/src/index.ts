@@ -72,6 +72,7 @@ export type {
 	FormattingSuperscriptState,
 	FormattingTextAlignState,
 	FormattingTextAlignValue,
+	FormattingTogglePressed,
 	FormattingUnderlineState,
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";

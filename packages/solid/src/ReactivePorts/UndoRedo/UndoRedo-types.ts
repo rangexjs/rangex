@@ -7,8 +7,3 @@ export interface ReactiveUndoRedoPort {
 	stepBack(): void;
 	stepForward(): void;
 }
-
-export interface ReactiveUndoRedoResult {
-	port: ReactiveUndoRedoPort;
-	dispose: () => void;
-}

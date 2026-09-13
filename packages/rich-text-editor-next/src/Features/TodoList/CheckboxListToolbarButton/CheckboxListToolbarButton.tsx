@@ -1,10 +1,13 @@
+import { ReadOnly, TodoList } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CheckboxListToolbarButton = () => {
-	const { todoList, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const todoList = TodoList(editor.todoList);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!todoList) {
 		throw new Error("TodoList can't be undefined.");

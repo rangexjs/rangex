@@ -1,18 +1,18 @@
 import type { EmptyMediaPublicPort, UploadState } from "@rangex/editor";
-import { type Accessor, createSignal } from "solid-js";
-import type {
-	ReactiveEmptyMediaPort,
-	ReactiveEmptyMediaResult,
-} from "./EmptyMedia-types";
+import { type Accessor, createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveEmptyMediaPort } from "./EmptyMedia-types";
 
-export const EmptyMedia = (
-	publicPort: EmptyMediaPublicPort,
-): ReactiveEmptyMediaResult => {
+export const EmptyMedia = <T extends EmptyMediaPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 
 	const uploadStateSignals = new Map<HTMLDivElement, Accessor<UploadState>>();
 
@@ -24,7 +24,7 @@ export const EmptyMedia = (
 
 		const [value, setValue] = createSignal(publicPort.getUploadState(element));
 
-		unsubscribeList.add(publicPort.onUploadStateUpdate(element, setValue));
+		onCleanup(publicPort.onUploadStateUpdate(element, setValue));
 		uploadStateSignals.set(element, value);
 
 		return value;
@@ -42,11 +42,5 @@ export const EmptyMedia = (
 		resolve: publicPort.resolve,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

@@ -5,8 +5,3 @@ export interface ReactiveReadOnlyPort {
 
 	toggle(): void;
 }
-
-export interface ReactiveReadOnlyResult {
-	port: ReactiveReadOnlyPort;
-	dispose: () => void;
-}

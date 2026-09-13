@@ -1,8 +1,15 @@
 import type { AudioPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveAudioPort, ReactiveAudioResult } from "./Audio-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveAudioPort } from "./Audio-types";
 
-export const Audio = (publicPort: AudioPublicPort): ReactiveAudioResult => {
+export const Audio = <T extends AudioPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
 		publicPort.quickActionsOpen,
 	);
@@ -12,12 +19,10 @@ export const Audio = (publicPort: AudioPublicPort): ReactiveAudioResult => {
 		publicPort.currentComponent,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
-	unsubscribeList.add(publicPort.onCaptionUpdate(setCaption));
-	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
-	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentBlock));
+	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(publicPort.onCaptionUpdate(setCaption));
+	onCleanup(publicPort.onAlignUpdate(setAlign));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
 	const port: ReactiveAudioPort = {
 		quickActionsEl: publicPort.quickActionsEl,
@@ -35,11 +40,5 @@ export const Audio = (publicPort: AudioPublicPort): ReactiveAudioResult => {
 		swap: publicPort.swap,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

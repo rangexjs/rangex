@@ -1,30 +1,33 @@
+import { ReadOnly, Superscript } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SuperscriptToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const superscript = Superscript(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!superscript) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const disabled = createMemo(
-		() => formatting.superscript().disabled || !!readOnly?.checked(),
+		() => superscript.disabled() || !!readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		formatting.toggleSuperscript();
+		superscript.toggle();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={formatting.superscript().checked}
+				checked={superscript.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={formatting.superscript().pressed}
+				aria-pressed={superscript.pressed()}
 			>
 				<Icon name="Superscript" class="size-4" />
 			</ToolbarButton>

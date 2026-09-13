@@ -1,10 +1,13 @@
+import { ReadOnly, UndoRedo } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const HistoryBackToolbarButton = () => {
-	const { undoRedo, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const undoRedo = UndoRedo(editor.undoRedo);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!undoRedo) {
 		throw new Error("UndoRedo can't be undefined.");

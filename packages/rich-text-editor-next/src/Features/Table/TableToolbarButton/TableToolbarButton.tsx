@@ -1,5 +1,6 @@
+import { ReadOnly, Table } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
@@ -20,7 +21,9 @@ const createGrid = (rows: number, cols: number): Grid => {
 };
 
 export const TableToolbarButton = () => {
-	const { table, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const table = Table(editor.table);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!table) {
 		throw new Error("Table can't be undefined.");

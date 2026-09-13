@@ -7,8 +7,3 @@ export interface ReactiveBlockQuotePort {
 	insert(): void;
 	wrap(): void;
 }
-
-export interface ReactiveBlockQuoteResult {
-	port: ReactiveBlockQuotePort;
-	dispose: () => void;
-}

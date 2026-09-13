@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import { Embed, ReadOnly } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import {
 	createEffect,
@@ -6,7 +7,7 @@ import {
 	createUniqueId,
 	onCleanup,
 } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -39,8 +40,9 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const EmbedQuickActions = () => {
-	const { embed, readOnly } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const embed = Embed(editor.embed);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!(embed && editor.embed)) {
 		throw new Error("Embed can't be undefined.");

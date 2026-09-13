@@ -1,10 +1,13 @@
+import { BlockQuote, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const BlockQuoteToolbarButton = () => {
-	const { blockQuote, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const blockQuote = BlockQuote(editor.blockQuote);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!blockQuote) {
 		throw new Error("BlockQuote can't be undefined.");

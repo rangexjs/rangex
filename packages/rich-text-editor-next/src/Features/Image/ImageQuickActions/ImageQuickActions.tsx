@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import { Image, ReadOnly } from "@rangex/solid";
 import { Portal } from "@solidjs/web";
 import {
 	createEffect,
@@ -6,7 +7,7 @@ import {
 	createUniqueId,
 	onCleanup,
 } from "solid-js";
-import { useEditorContext, useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
 	Icon,
@@ -49,8 +50,9 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const ImageQuickActions = () => {
-	const { image, readOnly } = useReactiveEditorContext();
 	const editor = useEditorContext();
+	const image = Image(editor.image);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!(image && editor.image)) {
 		throw new Error("Image can't be undefined.");

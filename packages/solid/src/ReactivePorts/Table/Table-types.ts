@@ -42,8 +42,3 @@ export interface ReactiveTablePort {
 	setCellResizing(action: TableCellResizingAction): void;
 	clear(): void;
 }
-
-export interface ReactiveTableResult {
-	port: ReactiveTablePort;
-	dispose: () => void;
-}

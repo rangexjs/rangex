@@ -1,18 +1,18 @@
 import type { ReadOnlyPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveReadOnlyPort,
-	ReactiveReadOnlyResult,
-} from "./ReadOnly-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveReadOnlyPort } from "./ReadOnly-types";
 
-export const ReadOnly = (
-	publicPort: ReadOnlyPublicPort,
-): ReactiveReadOnlyResult => {
+export const ReadOnly = <T extends ReadOnlyPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [checked, setChecked] = createSignal(publicPort.checked);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCheckedUpdate(setChecked));
+	onCleanup(publicPort.onCheckedUpdate(setChecked));
 
 	const port: ReactiveReadOnlyPort = {
 		checked,
@@ -20,11 +20,5 @@ export const ReadOnly = (
 		toggle: publicPort.toggle,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

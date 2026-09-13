@@ -1,21 +1,19 @@
 import type { SymbolsPublicPort } from "@rangex/editor";
-import type {
-	ReactiveSymbolsPort,
-	ReactiveSymbolsResult,
-} from "./Symbols-types";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveSymbolsPort } from "./Symbols-types";
 
-export const Symbols = (
-	publicPort: SymbolsPublicPort,
-): ReactiveSymbolsResult => {
+export const Symbols = <T extends SymbolsPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const port: ReactiveSymbolsPort = {
 		items: publicPort.items,
 
 		insert: publicPort.insert,
 	};
 
-	const dispose = () => {
-		// Nothing to unsubscribe from — items/insert are static, no onXxxUpdate.
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

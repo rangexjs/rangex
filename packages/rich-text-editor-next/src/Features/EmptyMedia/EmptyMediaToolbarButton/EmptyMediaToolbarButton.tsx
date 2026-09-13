@@ -1,10 +1,13 @@
+import { EmptyMedia, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const EmptyMediaToolbarButton = () => {
-	const { emptyMedia, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const emptyMedia = EmptyMedia(editor.emptyMedia);
+	const readOnly = ReadOnly(editor.readOnly);
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");

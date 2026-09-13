@@ -1,6 +1,7 @@
 import type { FormattingLetterSpacingValue } from "@rangex/editor";
+import { LetterSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -28,9 +29,11 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 ]);
 
 export const LetterSpacingToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const letterSpacing = LetterSpacing(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!letterSpacing) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -47,10 +50,7 @@ export const LetterSpacingToolbarButton = () => {
 	const sortedLetterSpacings = createMemo(() => {
 		const deduplicatedValues: FormattingLetterSpacingValue[] = [];
 
-		const commonValues = [
-			...defaultValues,
-			...formatting.letterSpacing().values,
-		];
+		const commonValues = [...defaultValues, ...letterSpacing.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -69,7 +69,7 @@ export const LetterSpacingToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.letterSpacing().values;
+		const activeValues = letterSpacing.values();
 
 		const contains = (value: FormattingLetterSpacingValue) => {
 			return !![...activeValues].find(
@@ -85,7 +85,7 @@ export const LetterSpacingToolbarButton = () => {
 					text: `${spacing.value}`,
 					button: {
 						onClick: () => {
-							formatting.setLetterSpacing(spacing);
+							letterSpacing.set(spacing);
 						},
 						class: "justify-center",
 					},
@@ -95,7 +95,7 @@ export const LetterSpacingToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.letterSpacing().disabled || !!readOnly?.checked(),
+		() => letterSpacing.disabled() || !!readOnly?.checked(),
 	);
 
 	return (

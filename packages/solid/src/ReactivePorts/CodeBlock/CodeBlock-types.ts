@@ -33,8 +33,3 @@ export interface ReactiveCodeBlockPort {
 
 	getPlainText(): string[];
 }
-
-export interface ReactiveCodeBlockResult {
-	port: ReactiveCodeBlockPort;
-	dispose: () => void;
-}

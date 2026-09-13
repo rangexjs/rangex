@@ -1,30 +1,31 @@
+import { Italic, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const ItalicToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const italic = Italic(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!italic) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const disabled = createMemo(
-		() => formatting.italic().disabled || !!readOnly?.checked(),
-	);
+	const disabled = createMemo(() => italic.disabled() || !!readOnly?.checked());
 
 	const onClick = () => {
-		formatting.toggleItalic();
+		italic.toggle();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={formatting.italic().checked}
+				checked={italic.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={formatting.italic().pressed}
+				aria-pressed={italic.pressed()}
 			>
 				<Icon name="Italic" class="size-4" />
 			</ToolbarButton>

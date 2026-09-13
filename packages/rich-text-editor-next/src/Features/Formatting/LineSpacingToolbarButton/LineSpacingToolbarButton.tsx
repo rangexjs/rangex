@@ -1,6 +1,7 @@
 import type { FormattingLineSpacingValue } from "@rangex/editor";
+import { LineSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import {
 	ToolbarButton,
@@ -17,9 +18,11 @@ const defaultValues: Set<FormattingLineSpacingValue> = new Set([
 ]);
 
 export const LineSpacingToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const lineSpacing = LineSpacing(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!lineSpacing) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -36,7 +39,7 @@ export const LineSpacingToolbarButton = () => {
 	const sortedList = createMemo(() => {
 		const deduplicatedValues: FormattingLineSpacingValue[] = [];
 
-		const commonValues = [...defaultValues, ...formatting.lineSpacing().values];
+		const commonValues = [...defaultValues, ...lineSpacing.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -55,7 +58,7 @@ export const LineSpacingToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = formatting.lineSpacing().values;
+		const activeValues = lineSpacing.values();
 
 		const contains = (value: FormattingLineSpacingValue) => {
 			return !![...activeValues].find(
@@ -64,13 +67,13 @@ export const LineSpacingToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map<ToolbarDropdownList[number]>((lineSpacing) => {
+		return sortedList().map<ToolbarDropdownList[number]>((lineSpacingItem) => {
 			return {
-				checked: contains(lineSpacing),
-				text: `${lineSpacing.value}`,
+				checked: contains(lineSpacingItem),
+				text: `${lineSpacingItem.value}`,
 				button: {
 					onClick: () => {
-						formatting.setLineSpacing(lineSpacing);
+						lineSpacing.set(lineSpacingItem);
 					},
 					class: "justify-center",
 				},
@@ -79,7 +82,7 @@ export const LineSpacingToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => formatting.lineSpacing().disabled || !!readOnly?.checked(),
+		() => lineSpacing.disabled() || !!readOnly?.checked(),
 	);
 
 	return (

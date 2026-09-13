@@ -1,8 +1,15 @@
 import type { ImagePublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type { ReactiveImagePort, ReactiveImageResult } from "./Image-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveImagePort } from "./Image-types";
 
-export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
+export const Image = <T extends ImagePublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
 		publicPort.quickActionsOpen,
 	);
@@ -12,12 +19,10 @@ export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
 		publicPort.currentComponent,
 	);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
-	unsubscribeList.add(publicPort.onCaptionUpdate(setCaption));
-	unsubscribeList.add(publicPort.onAlignUpdate(setAlign));
-	unsubscribeList.add(publicPort.onCurrentComponentUpdate(setCurrentBlock));
+	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(publicPort.onCaptionUpdate(setCaption));
+	onCleanup(publicPort.onAlignUpdate(setAlign));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
 	const port: ReactiveImagePort = {
 		quickActionsEl: publicPort.quickActionsEl,
@@ -35,11 +40,5 @@ export const Image = (publicPort: ImagePublicPort): ReactiveImageResult => {
 		swap: publicPort.swap,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

@@ -1,3 +1,4 @@
+import { BackgroundColor, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createMemo,
@@ -5,7 +6,7 @@ import {
 	createUniqueId,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import {
 	type ColorMode,
 	ColorPanel,
@@ -21,9 +22,11 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const BackgroundColorToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const backgroundColor = BackgroundColor(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!backgroundColor) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
@@ -39,7 +42,7 @@ export const BackgroundColorToolbarButton = () => {
 	};
 
 	const initialHslColors = getHslThemeColors({
-		colors: formatting.backgroundColor().values,
+		colors: backgroundColor.values(),
 	});
 	const initialColorMode = getColorMode(initialHslColors);
 
@@ -60,7 +63,7 @@ export const BackgroundColorToolbarButton = () => {
 	const [activeColors, setActiveColors] = createSignal(initialActiveColors);
 
 	createEffect(
-		() => formatting.backgroundColor().values,
+		() => backgroundColor.values(),
 		(values) => {
 			const hslColors = getHslThemeColors({ colors: values });
 			const colorMode = getColorMode(hslColors);
@@ -100,11 +103,11 @@ export const BackgroundColorToolbarButton = () => {
 		}
 
 		if (type === "remove") {
-			formatting.setBackgroundColor(null);
+			backgroundColor.set(null);
 		}
 
 		if (type === "apply") {
-			formatting.setBackgroundColor({
+			backgroundColor.set({
 				light: {
 					type: "solid",
 					value: ColorFormat.hsl(lightHsl()).color(),
@@ -115,7 +118,7 @@ export const BackgroundColorToolbarButton = () => {
 	};
 
 	const disabled = createMemo(
-		() => formatting.backgroundColor().disabled || !!readOnly?.checked(),
+		() => backgroundColor.disabled() || !!readOnly?.checked(),
 	);
 
 	return (

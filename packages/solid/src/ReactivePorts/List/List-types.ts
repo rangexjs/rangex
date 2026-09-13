@@ -16,8 +16,3 @@ export interface ReactiveListPort {
 	insert(params: ListInsertParams): void;
 	wrap(params: ListWrapParams): void;
 }
-
-export interface ReactiveListResult {
-	port: ReactiveListPort;
-	dispose: () => void;
-}

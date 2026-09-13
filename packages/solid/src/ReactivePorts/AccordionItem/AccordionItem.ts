@@ -1,22 +1,22 @@
 import type { AccordionItemPublicPort } from "@rangex/editor";
-import { createSignal } from "solid-js";
-import type {
-	ReactiveAccordionItemPort,
-	ReactiveAccordionItemResult,
-} from "./AccordionItem-types";
+import { createSignal, onCleanup } from "solid-js";
+import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { ReactiveAccordionItemPort } from "./AccordionItem-types";
 
-export const AccordionItem = (
-	publicPort: AccordionItemPublicPort,
-): ReactiveAccordionItemResult => {
+export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
+	publicPort: T,
+): FromPublicToReactivePort<T> => {
+	if (!publicPort) {
+		return undefined as FromPublicToReactivePort<T>;
+	}
+
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 	const [isActive, setIsActive] = createSignal(publicPort.isActive);
 
-	const unsubscribeList = new Set<() => void>();
-
-	unsubscribeList.add(publicPort.onCanInsertUpdate(setCanInsert));
-	unsubscribeList.add(publicPort.onCanWrapUpdate(setCanWrap));
-	unsubscribeList.add(publicPort.onIsActiveUpdate(setIsActive));
+	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
+	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
 
 	const port: ReactiveAccordionItemPort = {
 		canInsert,
@@ -29,11 +29,5 @@ export const AccordionItem = (
 		unwrap: publicPort.unwrap,
 	};
 
-	const dispose = () => {
-		for (const unsubscribe of unsubscribeList) {
-			unsubscribe();
-		}
-	};
-
-	return { port, dispose };
+	return port as FromPublicToReactivePort<T>;
 };

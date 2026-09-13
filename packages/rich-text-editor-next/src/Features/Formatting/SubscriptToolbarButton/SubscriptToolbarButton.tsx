@@ -1,30 +1,33 @@
+import { ReadOnly, Subscript } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SubscriptToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const subscript = Subscript(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!subscript) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
 	const disabled = createMemo(
-		() => formatting.subscript().disabled || !!readOnly?.checked(),
+		() => subscript.disabled() || !!readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		formatting.toggleSubscript();
+		subscript.toggle();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={formatting.subscript().checked}
+				checked={subscript.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={formatting.subscript().pressed}
+				aria-pressed={subscript.pressed()}
 			>
 				<Icon name="Subscript" class="size-4" />
 			</ToolbarButton>

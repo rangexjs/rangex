@@ -22,8 +22,3 @@ export interface ReactiveTemplateVariablePort {
 	changeOptions(options: Partial<TemplateVariableOptions>): void;
 	select(item: TemplateVariableSuggestionItem): void;
 }
-
-export interface ReactiveTemplateVariableResult {
-	port: ReactiveTemplateVariablePort;
-	dispose: () => void;
-}

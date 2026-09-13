@@ -1,30 +1,31 @@
+import { Bold, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useReactiveEditorContext } from "#context";
+import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const BoldToolbarButton = () => {
-	const { formatting, readOnly } = useReactiveEditorContext();
+	const editor = useEditorContext();
+	const bold = Bold(editor.formatting);
+	const readOnly = ReadOnly(editor.readOnly);
 
-	if (!formatting) {
+	if (!bold) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const disabled = createMemo(
-		() => formatting.bold().disabled || !!readOnly?.checked(),
-	);
+	const disabled = createMemo(() => bold.disabled() || !!readOnly?.checked());
 
 	const onClick = () => {
-		formatting.toggleBold();
+		bold.toggle();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={formatting.bold().checked}
+				checked={bold.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={formatting.bold().pressed}
+				aria-pressed={bold.pressed()}
 			>
 				<Icon name="Bold" class="size-4" />
 			</ToolbarButton>
