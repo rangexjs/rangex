@@ -103,6 +103,7 @@ const registerSelectionIn = ({
 			if (!target.hasAttribute(dataInteractiveWithinComponentSelection)) {
 				if (configPort.currentComponent === target) {
 					configPort.setCurrentComponent(null);
+					linkMenuPopoverController.hide({ instant: true });
 				}
 
 				continue;
