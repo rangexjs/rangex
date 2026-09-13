@@ -1,6 +1,6 @@
 export interface RegisterLightDismissParams {
 	element: HTMLElement;
-	getAnchor: () => HTMLElement | null;
+	exemptNodes: Set<HTMLElement>;
 	isOpen: () => boolean;
 	hide: () => void;
 	signal: AbortSignal;
@@ -35,6 +35,8 @@ export interface OverlayController {
 	readonly isOpen: boolean;
 	show(anchorElement: HTMLElement, styleOptions: AnchorStyleOptions): void;
 	hide(): void;
+	addExemptNode(node: HTMLElement): void;
+	removeExemptNode(node: HTMLElement): void;
 	cleanup(): void;
 }
 

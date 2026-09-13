@@ -47,6 +47,8 @@ export const Link = <T extends LinkPublicPort | undefined>(
 		unwrap: publicPort.unwrap,
 		openSelectionMenu: publicPort.openSelectionMenu,
 		closeSelectionMenu: publicPort.closeSelectionMenu,
+		addExemptNode: publicPort.addExemptNode,
+		removeExemptNode: publicPort.removeExemptNode,
 		getDisplayText: publicPort.getDisplayText,
 	};
 

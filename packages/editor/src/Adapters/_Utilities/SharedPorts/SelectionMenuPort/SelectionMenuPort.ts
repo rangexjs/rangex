@@ -1,8 +1,10 @@
 import type {
 	CreateSelectionMenuPortParams,
 	CreateSelectionMenuPortResult,
+	OnAddExemptNodeCallbackFn,
 	OnCloseSelectionMenuCallbackFn,
 	OnOpenSelectionMenuCallbackFn,
+	OnRemoveExemptNodeCallbackFn,
 	OnSelectionMenuToggleCallbackFn,
 	SelectionMenuConfigPort,
 	SelectionMenuPublicPort,
@@ -18,6 +20,9 @@ export const createSelectionMenuPort = ({
 	const onOpenSelectionMenuListeners: Set<OnOpenSelectionMenuCallbackFn> =
 		new Set();
 	const onCloseSelectionMenuListeners: Set<OnCloseSelectionMenuCallbackFn> =
+		new Set();
+	const onAddExemptNodeListeners: Set<OnAddExemptNodeCallbackFn> = new Set();
+	const onRemoveExemptNodeListeners: Set<OnRemoveExemptNodeCallbackFn> =
 		new Set();
 
 	// PublicPort
@@ -37,6 +42,8 @@ export const createSelectionMenuPort = ({
 	const emitOpenSelectionMenu = emitListener(onOpenSelectionMenuListeners);
 	const emitCloseSelectionMenu = emitListener(onCloseSelectionMenuListeners);
 	const emitSelectionMenuToggle = emitListener(onSelectionMenuToggleListeners);
+	const emitAddExemptNode = emitListener(onAddExemptNodeListeners);
+	const emitRemoveExemptNode = emitListener(onRemoveExemptNodeListeners);
 
 	const configPort: SelectionMenuConfigPort = {
 		get selectionMenu() {
@@ -55,6 +62,16 @@ export const createSelectionMenuPort = ({
 		onCloseSelectionMenu(callback) {
 			onCloseSelectionMenuListeners.add(callback);
 			return () => onCloseSelectionMenuListeners.delete(callback);
+		},
+
+		onAddExemptNode(callback) {
+			onAddExemptNodeListeners.add(callback);
+			return () => onAddExemptNodeListeners.delete(callback);
+		},
+
+		onRemoveExemptNode(callback) {
+			onRemoveExemptNodeListeners.add(callback);
+			return () => onRemoveExemptNodeListeners.delete(callback);
 		},
 	};
 
@@ -78,6 +95,14 @@ export const createSelectionMenuPort = ({
 
 		closeSelectionMenu() {
 			emitCloseSelectionMenu();
+		},
+
+		addExemptNode(node) {
+			emitAddExemptNode(node);
+		},
+
+		removeExemptNode(node) {
+			emitRemoveExemptNode(node);
 		},
 	};
 

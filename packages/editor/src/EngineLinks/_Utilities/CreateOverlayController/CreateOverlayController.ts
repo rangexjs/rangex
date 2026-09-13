@@ -13,34 +13,32 @@ const hideAnchoredClass = "hide-anchored";
 
 const registerLightDismiss = ({
 	element,
-	getAnchor,
+	exemptNodes,
 	isOpen,
 	hide,
 	signal,
 }: RegisterLightDismissParams) => {
-	document.addEventListener(
-		"pointerup",
-		(event) => {
-			if (!isOpen()) {
+	const onPointerUp = (event: PointerEvent) => {
+		if (!isOpen()) {
+			return;
+		}
+
+		const path = event.composedPath();
+
+		if (path.includes(element)) {
+			return;
+		}
+
+		for (const node of exemptNodes) {
+			if (path.includes(node)) {
 				return;
 			}
+		}
 
-			const path = event.composedPath();
+		hide();
+	};
 
-			if (path.includes(element)) {
-				return;
-			}
-
-			const anchor = getAnchor();
-
-			if (anchor && path.includes(anchor)) {
-				return;
-			}
-
-			hide();
-		},
-		{ signal },
-	);
+	document.addEventListener("pointerup", onPointerUp, { signal });
 };
 
 /**
@@ -71,8 +69,8 @@ export const createAnchoredOverlayController = ({
 	element.style.setProperty("position-visibility", "anchor-valid");
 
 	let isOpen = false;
-	let currentAnchor: HTMLElement | null = null;
 	let closeWatcher: CloseWatcher | null = null;
+	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = () => {
 		element.classList.add(hideAnchoredClass);
@@ -87,7 +85,7 @@ export const createAnchoredOverlayController = ({
 	if (lightDismiss) {
 		registerLightDismiss({
 			element,
-			getAnchor: () => currentAnchor,
+			exemptNodes,
 			isOpen: () => isOpen,
 			hide,
 			signal: abortController.signal,
@@ -122,7 +120,6 @@ export const createAnchoredOverlayController = ({
 
 			element.style.setProperty("position-anchor", anchorName);
 			element.classList.remove(hideAnchoredClass);
-			currentAnchor = anchorElement;
 
 			if (closeOnEscape) {
 				closeWatcher = createCloseWatcher({
@@ -136,6 +133,14 @@ export const createAnchoredOverlayController = ({
 		},
 
 		hide,
+
+		addExemptNode(node) {
+			exemptNodes.add(node);
+		},
+
+		removeExemptNode(node) {
+			exemptNodes.delete(node);
+		},
 
 		cleanup() {
 			abortController.abort();
@@ -160,8 +165,8 @@ export const createPopoverOverlayController = ({
 	element.setAttribute("popover", "manual");
 
 	let isOpen = false;
-	let currentAnchor: HTMLElement | null = null;
 	let closeWatcher: CloseWatcher | null = null;
+	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = () => {
 		if (!isOpen) {
@@ -180,7 +185,7 @@ export const createPopoverOverlayController = ({
 	if (lightDismiss) {
 		registerLightDismiss({
 			element,
-			getAnchor: () => currentAnchor,
+			exemptNodes,
 			isOpen: () => isOpen,
 			hide,
 			signal: abortController.signal,
@@ -213,7 +218,6 @@ export const createPopoverOverlayController = ({
 			}
 
 			element.showPopover({ source: anchorElement });
-			currentAnchor = anchorElement;
 
 			if (closeOnEscape) {
 				closeWatcher = createCloseWatcher({
@@ -227,6 +231,14 @@ export const createPopoverOverlayController = ({
 		},
 
 		hide,
+
+		addExemptNode(node) {
+			exemptNodes.add(node);
+		},
+
+		removeExemptNode(node) {
+			exemptNodes.delete(node);
+		},
 
 		cleanup() {
 			abortController.abort();

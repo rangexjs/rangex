@@ -40,10 +40,25 @@ export const handleSelectionMenuAppearance = ({
 		},
 	});
 
+	const unsubscribeCloseSelectionMenu = configPort.onCloseSelectionMenu(() => {
+		selectionMenuPopoverController.hide();
+	});
+
+	const unsubscribeAddExemptNode = configPort.onAddExemptNode((node) => {
+		selectionMenuPopoverController.addExemptNode(node);
+	});
+
+	const unsubscribeRemoveExemptNode = configPort.onRemoveExemptNode((node) => {
+		selectionMenuPopoverController.removeExemptNode(node);
+	});
+
 	return {
 		selectionMenuPopoverController,
 		cleanup() {
 			unsubscribeSelectionChange();
+			unsubscribeCloseSelectionMenu();
+			unsubscribeAddExemptNode();
+			unsubscribeRemoveExemptNode();
 		},
 	};
 };

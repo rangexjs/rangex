@@ -22,5 +22,7 @@ export interface ReactiveLinkPort {
 	unwrap(): void;
 	openSelectionMenu(): void;
 	closeSelectionMenu(): void;
+	addExemptNode(node: HTMLElement): void;
+	removeExemptNode(node: HTMLElement): void;
 	getDisplayText(): LinkDisplayText;
 }

@@ -1,5 +1,5 @@
 import { Link, ReadOnly } from "@rangex/solid";
-import { createMemo } from "solid-js";
+import { createMemo, onSettled } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
@@ -13,6 +13,16 @@ export const LinkToolbarButton = () => {
 		throw new Error("Link can't be undefined.");
 	}
 
+	let containerRef: HTMLSpanElement;
+
+	onSettled(() => {
+		link.addExemptNode(containerRef);
+
+		return () => {
+			link.removeExemptNode(containerRef);
+		};
+	});
+
 	const disabled = createMemo(() => !link.canInsert() || !!readOnly?.checked());
 
 	const onClick = () => {
@@ -24,7 +34,7 @@ export const LinkToolbarButton = () => {
 	};
 
 	return (
-		<span>
+		<span ref={(el) => (containerRef = el)}>
 			<ToolbarButton
 				checked={link.selectionMenuOpen()}
 				disabled={disabled()}
