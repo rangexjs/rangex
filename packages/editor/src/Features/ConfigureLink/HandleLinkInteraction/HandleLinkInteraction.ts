@@ -1,9 +1,11 @@
 import {
+	EditorRange,
+	editorSelectionChangeEventType,
 	inlineComponentAttrName,
 	inlineComponentName,
 	isEditorNode,
 } from "rich-text-area";
-import { componentsName } from "#engine-links";
+import { componentsName, getClosestInlineComponent } from "#engine-links";
 import type {
 	HandleLinkInteractionParams,
 	OpenLinkMenuParams,
@@ -84,49 +86,57 @@ const registerSelectionIn = ({
 	linkMenuPopoverController,
 }: RegisterSelectionInParams) => {
 	const { rootEditable } = editorAPI;
-	const { dataInteractiveWithinComponentSelection } = inlineComponentAttrName;
 
-	const observer = new MutationObserver((mutations) => {
-		for (const { target } of mutations) {
-			if (!isEditorNode(target)) {
-				throw new Error("Target supposed to be an EditorNode.");
+	const selection = editorAPI.getEditorSelection();
+
+	const unsubscribe = editorAPI.subscribeEditorEvent({
+		type: editorSelectionChangeEventType,
+		callback: () => {
+			const selBoundaryPoints = selection.getBoundaryPoints();
+
+			const range = new EditorRange({
+				fromNode: selBoundaryPoints.fromText,
+				fromOffset: selBoundaryPoints.fromOffset,
+				toNode: selBoundaryPoints.toText,
+				toOffset: selBoundaryPoints.toOffset,
+			});
+
+			const component = getClosestInlineComponent({
+				fromNode: range.startText,
+			});
+
+			if (component?.$$componentName !== componentsName.link) {
+				configPort.setCurrentComponent(null);
+				return;
 			}
 
-			if (target.$$editorRole !== inlineComponentName) {
-				continue;
-			}
+			const withinSelection = range.isDescendant({
+				container: component,
+				start: true,
+				end: true,
+			});
 
-			if (target.$$componentName !== componentsName.link) {
-				continue;
-			}
-
-			if (!target.hasAttribute(dataInteractiveWithinComponentSelection)) {
-				if (configPort.currentComponent === target) {
+			if (!withinSelection) {
+				if (configPort.currentComponent === component) {
 					configPort.setCurrentComponent(null);
-					const instant = !rootEditable.contains(target);
+					const instant = !rootEditable.contains(component);
 					linkMenuPopoverController.hide({ instant });
 				}
 
-				continue;
+				return;
 			}
 
-			configPort.setCurrentComponent(target);
+			configPort.setCurrentComponent(component);
 			configPort.emitLinkSelectionIn();
 
 			if (configPort.linkMenu.openAt.includes("selection-in")) {
 				openLinkMenu({ linkMenuPopoverController, configPort });
 			}
-		}
-	});
-
-	observer.observe(rootEditable, {
-		attributes: true,
-		attributeFilter: [dataInteractiveWithinComponentSelection],
-		subtree: true,
+		},
 	});
 
 	return () => {
-		observer.disconnect();
+		unsubscribe();
 	};
 };
 
