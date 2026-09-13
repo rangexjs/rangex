@@ -91,5 +91,6 @@ export const configureLink = ({
 		modificationCleanup();
 		unwrapCleanup();
 		menuCloseCleanup();
+		linkMenuPopoverController.cleanup();
 	};
 };

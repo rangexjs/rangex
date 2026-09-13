@@ -53,6 +53,7 @@ export const handleSelectionMenuAppearance = ({
 	return {
 		selectionMenuPopoverController,
 		cleanup() {
+			selectionMenuPopoverController.cleanup();
 			unsubscribeSelectionChange();
 			unsubscribeCloseSelectionMenu();
 			unsubscribeAddExemptNode();

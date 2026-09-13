@@ -60,6 +60,7 @@ export const handleQuickActionsOverlayAppearance = ({
 		cleanup: () => {
 			overlayAppearanceHandler.cleanup();
 			registrationCleanup();
+			anchorController.cleanup();
 		},
 	};
 };

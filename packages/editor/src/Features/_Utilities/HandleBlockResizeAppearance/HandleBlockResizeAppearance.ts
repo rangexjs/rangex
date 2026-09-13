@@ -181,5 +181,6 @@ export const handleBlockResizeAppearance = ({
 		unsubscribeResizeMove();
 		unsubscribeResizeEnd();
 		clearTimeout(hideTimeoutId);
+		anchorController.cleanup();
 	};
 };

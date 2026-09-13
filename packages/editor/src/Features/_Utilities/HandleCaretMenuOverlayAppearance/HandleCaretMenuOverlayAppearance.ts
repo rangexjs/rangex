@@ -129,5 +129,6 @@ export const handleCaretMenuOverlayAppearance = ({
 		unsubscribeSelectionChangeClose();
 		unsubscribeEditorBlurClose();
 		unsubscribeAppearance();
+		anchorController.cleanup();
 	};
 };

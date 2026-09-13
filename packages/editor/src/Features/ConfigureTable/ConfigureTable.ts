@@ -59,5 +59,6 @@ export const configureTable = ({
 		contextMenuStateCleanup();
 		contextMenuInteractionCleanup();
 		tableInsertionCleanup();
+		anchorController.cleanup();
 	};
 };
