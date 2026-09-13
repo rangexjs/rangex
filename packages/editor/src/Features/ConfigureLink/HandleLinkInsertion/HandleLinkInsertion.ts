@@ -180,7 +180,7 @@ export const handleLinkInsertion = ({
 }: HandleLinkInsertionParams) => {
 	const unsubscribe = configPort.onInsert(({ text, afterInsertion }) => {
 		if (configPort.currentComponent) {
-			console.warn("handleLinkInsertion: a link is already open.");
+			console.warn("handleLinkInsertion: link is not supposed to be active.");
 			return;
 		}
 

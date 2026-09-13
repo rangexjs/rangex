@@ -38,6 +38,8 @@ const registerClick = ({
 	editorAPI,
 	linkMenuPopoverController,
 }: RegisterClickParams) => {
+	const { dataInteractiveWithinComponentSelection } = inlineComponentAttrName;
+
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
 			element.$$editorRole === inlineComponentName &&
@@ -53,6 +55,12 @@ const registerClick = ({
 
 				if (currentTarget.$$editorRole !== inlineComponentName) {
 					throw new Error("CurrentTarget's type is invalid.");
+				}
+
+				if (
+					!currentTarget.hasAttribute(dataInteractiveWithinComponentSelection)
+				) {
+					return;
 				}
 
 				configPort.setCurrentComponent(currentTarget);
@@ -93,6 +101,10 @@ const registerSelectionIn = ({
 			}
 
 			if (!target.hasAttribute(dataInteractiveWithinComponentSelection)) {
+				if (configPort.currentComponent === target) {
+					configPort.setCurrentComponent(null);
+				}
+
 				continue;
 			}
 
