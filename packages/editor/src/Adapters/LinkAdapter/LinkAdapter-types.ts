@@ -33,20 +33,25 @@ export interface LinkState {
 	canInsert?: boolean;
 }
 
-export interface UpdateStateParams extends LinkState {}
+export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
 export type OnModifyCallbackFn = (params: ModifyParams) => void;
+export type OnLinkClickCallbackFn = () => void;
+export type OnLinkSelectionInCallbackFn = () => void;
+export type OnLinkMenuToggleCallbackFn = () => void;
 export type DisplayTextProviderFn = () => LinkDisplayText;
+
+export interface UpdateStateParams extends LinkState {}
 
 export interface LinkConfigPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly linkMenu: LinkMenuSettings;
 
 	updateState(params: UpdateStateParams): void;
-	emitLinkClick(): void;
-	emitLinkSelectionIn(): void;
-	emitLinkMenuToggle(): void;
+	notifyLinkClick(): void;
+	notifyLinkSelectionIn(): void;
+	notifyLinkMenuToggle(): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onModify(callback: OnModifyCallbackFn): () => void;
@@ -60,21 +65,14 @@ export interface LinkConfigPort
 		CurrentComponentConfigPort<InlineComponent>,
 		SelectionMenuConfigPort {}
 
-export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
-export type OnLinkClickEventCallbackFn = () => void;
-export type OnLinkSelectionInEventCallbackFn = () => void;
-export type OnLinkMenuToggleCallbackFn = () => void;
-
 export interface LinkPublicPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly canInsert: boolean;
 	readonly linkMenuOpen: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onLinkClickEvent(callback: OnLinkClickEventCallbackFn): () => void;
-	onLinkSelectionInEvent(
-		callback: OnLinkSelectionInEventCallbackFn,
-	): () => void;
+	onLinkClick(callback: OnLinkClickCallbackFn): () => void;
+	onLinkSelectionIn(callback: OnLinkSelectionInCallbackFn): () => void;
 	onLinkMenuToggle(callback: OnLinkMenuToggleCallbackFn): () => void;
 
 	insert(params: InsertParams): void;

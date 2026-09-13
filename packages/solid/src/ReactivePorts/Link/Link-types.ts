@@ -14,8 +14,8 @@ export interface ReactiveLinkPort {
 	selectionMenuOpen: Accessor<boolean>;
 	currentLink: Accessor<HTMLElement | null>;
 
-	onLinkClickEvent(callback: () => void): () => void;
-	onLinkSelectionInEvent(callback: () => void): () => void;
+	onLinkClick(callback: () => void): () => void;
+	onLinkSelectionIn(callback: () => void): () => void;
 
 	insert(params: LinkInsertParams): void;
 	modify(params: LinkModifyParams): void;

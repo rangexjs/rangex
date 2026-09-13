@@ -39,8 +39,8 @@ export const Link = <T extends LinkPublicPort | undefined>(
 		selectionMenuOpen,
 		currentLink,
 
-		onLinkClickEvent: publicPort.onLinkClickEvent,
-		onLinkSelectionInEvent: publicPort.onLinkSelectionInEvent,
+		onLinkClick: publicPort.onLinkClick,
+		onLinkSelectionIn: publicPort.onLinkSelectionIn,
 
 		insert: publicPort.insert,
 		modify: publicPort.modify,

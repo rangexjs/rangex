@@ -18,9 +18,9 @@ import type {
 	ModifyParams,
 	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnLinkClickEventCallbackFn,
+	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
-	OnLinkSelectionInEventCallbackFn,
+	OnLinkSelectionInCallbackFn,
 	OnModifyCallbackFn,
 	UpdateStateParams,
 } from "./LinkAdapter-types";
@@ -35,19 +35,21 @@ export const createLinkAdapter = (
 	floatingContainer.append(linkMenuEl);
 
 	const internals: LinkInternals = {
+		// States
 		canInsert: false,
+		// Providers
 		displayTextProvider: null,
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onModifyListeners: Set<OnModifyCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
-	const onLinkClickEventListeners: Set<OnLinkClickEventCallbackFn> = new Set();
-	const onLinkSelectionInEventListeners: Set<OnLinkSelectionInEventCallbackFn> =
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onModifyListeners: Set<OnModifyCallbackFn> = new Set();
+	const onLinkClickListeners: Set<OnLinkClickCallbackFn> = new Set();
+	const onLinkSelectionInListeners: Set<OnLinkSelectionInCallbackFn> =
 		new Set();
 	const onLinkMenuToggleListeners: Set<OnLinkMenuToggleCallbackFn> = new Set();
 
@@ -82,19 +84,19 @@ export const createLinkAdapter = (
 				updateState(params);
 			},
 
-			emitLinkClick() {
-				for (const listener of onLinkClickEventListeners) {
+			notifyLinkClick() {
+				for (const listener of onLinkClickListeners) {
 					listener();
 				}
 			},
 
-			emitLinkSelectionIn() {
-				for (const listener of onLinkSelectionInEventListeners) {
+			notifyLinkSelectionIn() {
+				for (const listener of onLinkSelectionInListeners) {
 					listener();
 				}
 			},
 
-			emitLinkMenuToggle() {
+			notifyLinkMenuToggle() {
 				for (const listener of onLinkMenuToggleListeners) {
 					listener();
 				}
@@ -138,14 +140,14 @@ export const createLinkAdapter = (
 				return () => onCanInsertUpdateListeners.delete(callback);
 			},
 
-			onLinkClickEvent(callback) {
-				onLinkClickEventListeners.add(callback);
-				return () => onLinkClickEventListeners.delete(callback);
+			onLinkClick(callback) {
+				onLinkClickListeners.add(callback);
+				return () => onLinkClickListeners.delete(callback);
 			},
 
-			onLinkSelectionInEvent(callback) {
-				onLinkSelectionInEventListeners.add(callback);
-				return () => onLinkSelectionInEventListeners.delete(callback);
+			onLinkSelectionIn(callback) {
+				onLinkSelectionInListeners.add(callback);
+				return () => onLinkSelectionInListeners.delete(callback);
 			},
 
 			onLinkMenuToggle(callback) {

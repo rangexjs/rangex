@@ -35,7 +35,7 @@ export const configureLink = ({
 			lightDismiss: true,
 			closeOnEscape: true,
 			onToggle: () => {
-				configPort.emitLinkMenuToggle();
+				configPort.notifyLinkMenuToggle();
 			},
 			onEscape: () => {
 				editorAPI.focus();
