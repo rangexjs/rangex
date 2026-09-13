@@ -15,7 +15,7 @@ export const createSymbolsAdapter = (
 ): CreateSymbolsAdapterResult => {
 	const [{ items = defaultSymbolsItems }, _options] = params;
 
-	// ConfigPort
+	// CommandListeners
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 
 	const configPort: SymbolsConfigPort = extendObjectProperties({}, {

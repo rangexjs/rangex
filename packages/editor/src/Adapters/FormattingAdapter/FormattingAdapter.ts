@@ -66,6 +66,7 @@ export const createFormattingAdapter = (
 	});
 
 	const internals: FormattingInternals = {
+		// States
 		backgroundColor: { disabled: true, values: new Set() },
 		bold: createToggleButton({ disabled: true, pressed: "false" }),
 		code: createToggleButton({ disabled: true, pressed: "false" }),
@@ -85,6 +86,7 @@ export const createFormattingAdapter = (
 		underline: createToggleButton({ disabled: true, pressed: "false" }),
 		removeLine: { disabled: true },
 		removeText: { disabled: true },
+		// Rest
 		defaultFontFamily,
 		defaultFontSize,
 		defaultIndentation,
@@ -94,11 +96,7 @@ export const createFormattingAdapter = (
 		fontFamilyOptions,
 	};
 
-	// ConfigPort
-	const onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> =
-		new Set();
-
-	// PublicPort
+	// StateListeners
 	const onBackgroundColorUpdateListeners: Set<OnBackgroundColorUpdateCallbackFn> =
 		new Set();
 	const onBoldUpdateListeners: Set<OnBoldUpdateCallbackFn> = new Set();
@@ -131,6 +129,10 @@ export const createFormattingAdapter = (
 	const onRemoveLineUpdateListeners: Set<OnRemoveLineUpdateCallbackFn> =
 		new Set();
 	const onRemoveTextUpdateListeners: Set<OnRemoveTextUpdateCallbackFn> =
+		new Set();
+
+	// CommandListeners
+	const onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> =
 		new Set();
 
 	const updateState = ({

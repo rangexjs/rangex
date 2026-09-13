@@ -83,46 +83,6 @@ export interface TableState {
 	clearContents?: TableClearContentsState;
 }
 
-export interface UpdateStateParams extends TableState {}
-
-export interface InsertParams {
-	row: number;
-	column: number;
-}
-
-export type OnInsertCallbackFn = (params: InsertParams) => void;
-export type OnSectionTypeCallbackFn = (action: TableSectionTypeAction) => void;
-export type OnMergeSplitCallbackFn = (action: TableMergeSplitAction) => void;
-export type OnInsertDeleteCallbackFn = (
-	action: TableInsertDeleteAction,
-) => void;
-export type OnCellTypeCallbackFn = (action: TableCellTypeAction) => void;
-export type OnVerticalAlignmentCallbackFn = (
-	action: TableVerticalAlignmentAction,
-) => void;
-export type OnCellResizingCallbackFn = (
-	action: TableCellResizingAction,
-) => void;
-export type OnClearContentsCallbackFn = () => void;
-
-export interface TableConfigPortProps {
-	readonly contextMenuEl: HTMLDivElement;
-
-	updateState(params: UpdateStateParams): void;
-	setContextMenu(params: { open: boolean }): void;
-
-	onInsert(callback: OnInsertCallbackFn): () => void;
-	onSectionType(callback: OnSectionTypeCallbackFn): () => void;
-	onMergeSplit(callback: OnMergeSplitCallbackFn): () => void;
-	onInsertDelete(callback: OnInsertDeleteCallbackFn): () => void;
-	onCellType(callback: OnCellTypeCallbackFn): () => void;
-	onVerticalAlignment(callback: OnVerticalAlignmentCallbackFn): () => void;
-	onCellResizing(callback: OnCellResizingCallbackFn): () => void;
-	onClear(callback: OnClearContentsCallbackFn): () => void;
-}
-
-export interface TableConfigPort extends TableConfigPortProps {}
-
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnContextMenuOpenUpdateCallbackFn = (
 	contextMenuOpen: boolean,
@@ -146,6 +106,53 @@ export type OnCellResizingUpdateCallbackFn = (
 export type OnClearContentsUpdateCallbackFn = (
 	value: TableClearContentsState,
 ) => void;
+
+export interface InsertParams {
+	row: number;
+	column: number;
+}
+
+export type OnInsertCallbackFn = (params: InsertParams) => void;
+
+export type OnChangeSectionTypeCallbackFn = (
+	action: TableSectionTypeAction,
+) => void;
+export type OnChangeMergeSplitCallbackFn = (
+	action: TableMergeSplitAction,
+) => void;
+export type OnChangeInsertDeleteCallbackFn = (
+	action: TableInsertDeleteAction,
+) => void;
+export type OnChangeCellTypeCallbackFn = (action: TableCellTypeAction) => void;
+export type OnChangeVerticalAlignmentCallbackFn = (
+	action: TableVerticalAlignmentAction,
+) => void;
+export type OnChangeCellResizingCallbackFn = (
+	action: TableCellResizingAction,
+) => void;
+export type OnClearContentsCallbackFn = () => void;
+
+export interface UpdateStateParams extends TableState {}
+
+export interface TableConfigPortProps {
+	readonly contextMenuEl: HTMLDivElement;
+
+	updateState(params: UpdateStateParams): void;
+	setContextMenu(params: { open: boolean }): void;
+
+	onInsert(callback: OnInsertCallbackFn): () => void;
+	onChangeSectionType(callback: OnChangeSectionTypeCallbackFn): () => void;
+	onChangeMergeSplit(callback: OnChangeMergeSplitCallbackFn): () => void;
+	onChangeInsertDelete(callback: OnChangeInsertDeleteCallbackFn): () => void;
+	onChangeCellType(callback: OnChangeCellTypeCallbackFn): () => void;
+	onChangeVerticalAlignment(
+		callback: OnChangeVerticalAlignmentCallbackFn,
+	): () => void;
+	onChangeCellResizing(callback: OnChangeCellResizingCallbackFn): () => void;
+	onClear(callback: OnClearContentsCallbackFn): () => void;
+}
+
+export interface TableConfigPort extends TableConfigPortProps {}
 
 export interface TablePublicPortProps {
 	readonly contextMenuEl: HTMLDivElement;
@@ -175,12 +182,12 @@ export interface TablePublicPortProps {
 	onClearContentsUpdate(callback: OnClearContentsUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
-	setSectionType(action: TableSectionTypeAction): void;
-	setMergeSplit(action: TableMergeSplitAction): void;
-	setInsertDelete(action: TableInsertDeleteAction): void;
-	setCellType(action: TableCellTypeAction): void;
-	setVerticalAlignment(action: TableVerticalAlignmentAction): void;
-	setCellResizing(action: TableCellResizingAction): void;
+	changeSectionType(action: TableSectionTypeAction): void;
+	changeMergeSplit(action: TableMergeSplitAction): void;
+	changeInsertDelete(action: TableInsertDeleteAction): void;
+	changeCellType(action: TableCellTypeAction): void;
+	changeVerticalAlignment(action: TableVerticalAlignmentAction): void;
+	changeCellResizing(action: TableCellResizingAction): void;
 	clear(): void;
 }
 

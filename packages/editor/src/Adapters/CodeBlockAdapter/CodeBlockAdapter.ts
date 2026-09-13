@@ -20,13 +20,13 @@ import type {
 	CreateCodeBlockAdapterResult,
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
-	OnDarkThemeCallbackFn,
+	OnChangeDarkThemeCallbackFn,
+	OnChangeLanguageCallbackFn,
+	OnChangeLightThemeCallbackFn,
 	OnDarkThemeUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnIsActiveUpdateCallbackFn,
-	OnLanguageCallbackFn,
 	OnLanguageUpdateCallbackFn,
-	OnLightThemeCallbackFn,
 	OnLightThemeUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
@@ -41,23 +41,18 @@ export const createCodeBlockAdapter = (
 	] = params;
 
 	const internals: CodeBlockInternals = {
+		// States
 		canInsert: false,
 		canWrap: false,
 		isActive: false,
 		language: "TypeScript",
 		lightTheme: "Light+",
 		darkTheme: "Dark+",
+		// Providers
 		plainTextProvider: null,
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-	const onLanguageListeners: Set<OnLanguageCallbackFn> = new Set();
-	const onLightThemeListeners: Set<OnLightThemeCallbackFn> = new Set();
-	const onDarkThemeListeners: Set<OnDarkThemeCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
@@ -66,6 +61,15 @@ export const createCodeBlockAdapter = (
 	const onLightThemeUpdateListeners: Set<OnLightThemeUpdateCallbackFn> =
 		new Set();
 	const onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> =
+		new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
+	const onChangeLanguageListeners: Set<OnChangeLanguageCallbackFn> = new Set();
+	const onChangeLightThemeListeners: Set<OnChangeLightThemeCallbackFn> =
+		new Set();
+	const onChangeDarkThemeListeners: Set<OnChangeDarkThemeCallbackFn> =
 		new Set();
 
 	const removePort = createRemovePort();
@@ -150,19 +154,19 @@ export const createCodeBlockAdapter = (
 				return () => onWrapListeners.delete(callback);
 			},
 
-			onLanguage(callback) {
-				onLanguageListeners.add(callback);
-				return () => onLanguageListeners.delete(callback);
+			onChangeLanguage(callback) {
+				onChangeLanguageListeners.add(callback);
+				return () => onChangeLanguageListeners.delete(callback);
 			},
 
-			onLightTheme(callback) {
-				onLightThemeListeners.add(callback);
-				return () => onLightThemeListeners.delete(callback);
+			onChangeLightTheme(callback) {
+				onChangeLightThemeListeners.add(callback);
+				return () => onChangeLightThemeListeners.delete(callback);
 			},
 
-			onDarkTheme(callback) {
-				onDarkThemeListeners.add(callback);
-				return () => onDarkThemeListeners.delete(callback);
+			onChangeDarkTheme(callback) {
+				onChangeDarkThemeListeners.add(callback);
+				return () => onChangeDarkThemeListeners.delete(callback);
 			},
 
 			registerPlainTextProvider(provider) {
@@ -252,19 +256,19 @@ export const createCodeBlockAdapter = (
 			},
 
 			changeLanguage(language) {
-				for (const listener of onLanguageListeners) {
+				for (const listener of onChangeLanguageListeners) {
 					listener(language);
 				}
 			},
 
 			changeLightTheme(theme) {
-				for (const listener of onLightThemeListeners) {
+				for (const listener of onChangeLightThemeListeners) {
 					listener(theme);
 				}
 			},
 
 			changeDarkTheme(theme) {
-				for (const listener of onDarkThemeListeners) {
+				for (const listener of onChangeDarkThemeListeners) {
 					listener(theme);
 				}
 			},

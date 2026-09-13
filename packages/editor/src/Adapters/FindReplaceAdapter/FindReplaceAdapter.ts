@@ -25,10 +25,14 @@ export const createFindReplaceAdapter = (
 	const [_settings, _options] = params;
 
 	const internals: FindReplaceInternals = {
+		// States
 		results: { currentIndex: 0, totalResults: 0, results: [] },
 	};
 
-	// ConfigPort
+	// StateListeners
+	const onResultsUpdateListeners: Set<OnResultsUpdateCallbackFn> = new Set();
+
+	// CommandListeners
 	const onOpenListeners: Set<OnOpenCallbackFn> = new Set();
 	const onCloseListeners: Set<OnCloseCallbackFn> = new Set();
 	const onSearchListeners: Set<OnSearchCallbackFn> = new Set();
@@ -38,9 +42,6 @@ export const createFindReplaceAdapter = (
 		new Set();
 	const onReplaceListeners: Set<OnReplaceCallbackFn> = new Set();
 	const onReplaceAllListeners: Set<OnReplaceAllCallbackFn> = new Set();
-
-	// PublicPort
-	const onResultsUpdateListeners: Set<OnResultsUpdateCallbackFn> = new Set();
 
 	const updateState = ({ results }: UpdateStateParams) => {
 		if (results !== undefined) {

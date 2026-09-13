@@ -53,7 +53,7 @@ const handleSelectionType = ({
 	configPort,
 	editorAPI,
 }: HandleSelectionTypeParams) => {
-	return configPort.onSectionType((type) => {
+	return configPort.onChangeSectionType((type) => {
 		const toSection: TableSectionLocalName = (
 			{
 				header: "thead",
@@ -82,7 +82,7 @@ const handleMergeSplit = ({
 	configPort,
 	editorAPI,
 }: HandleMergeSplitParams) => {
-	return configPort.onMergeSplit((action) => {
+	return configPort.onChangeMergeSplit((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -114,7 +114,7 @@ const handleInsertDelete = ({
 	configPort,
 	editorAPI,
 }: HandleInsertDeleteParams) => {
-	return configPort.onInsertDelete((action) => {
+	return configPort.onChangeInsertDelete((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -139,7 +139,7 @@ const handleInsertDelete = ({
 };
 
 const handleCellType = ({ configPort, editorAPI }: HandleCellTypeParams) => {
-	return configPort.onCellType((action) => {
+	return configPort.onChangeCellType((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
@@ -183,7 +183,7 @@ const handleVerticalAlignment = ({
 	configPort,
 	editorAPI,
 }: HandleVerticalAlignmentParams) => {
-	return configPort.onVerticalAlignment((action) => {
+	return configPort.onChangeVerticalAlignment((action) => {
 		const tableCells = getActiveTableCells({ editorAPI });
 
 		const alignContent = (
@@ -214,7 +214,7 @@ const handleCellResizing = ({
 	configPort,
 	editorAPI,
 }: HandleCellResizingParams) => {
-	return configPort.onCellResizing((action) => {
+	return configPort.onChangeCellResizing((action) => {
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {

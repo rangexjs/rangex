@@ -22,20 +22,21 @@ export const createAccordionItemAdapter = (
 	const [_settings, _options] = params;
 
 	const internals: AccordionItemInternals = {
+		// States
 		canInsert: false,
 		canWrap: false,
 		isActive: false,
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
 	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();

@@ -23,17 +23,19 @@ export const createEmojiAdapter = (
 	const [{ items = defaultEmojiItems }, { floatingContainer }] = params;
 
 	const internals: EmojiInternals = {
-		items,
+		// States
 		query: "",
 		filteredItems: [],
+		// Rest
+		items,
 	};
 
-	// ConfigPort
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 

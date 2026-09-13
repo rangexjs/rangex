@@ -20,19 +20,20 @@ export const createUndoRedoAdapter = (
 	const [_settings, _options] = params;
 
 	const internals: UndoRedoInternals = {
+		// States
 		canStepBack: false,
 		canStepForward: false,
 	};
 
-	// ConfigPort
-	const onStepBackListeners: Set<OnStepBackCallbackFn> = new Set();
-	const onStepForwardListeners: Set<OnStepForwardCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanStepBackUpdateListeners: Set<OnCanStepBackUpdateCallbackFn> =
 		new Set();
 	const onCanStepForwardUpdateListeners: Set<OnCanStepForwardUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onStepBackListeners: Set<OnStepBackCallbackFn> = new Set();
+	const onStepForwardListeners: Set<OnStepForwardCallbackFn> = new Set();
 
 	const updateState = ({ canStepBack, canStepForward }: UpdateStateParams) => {
 		if (canStepBack !== undefined) {

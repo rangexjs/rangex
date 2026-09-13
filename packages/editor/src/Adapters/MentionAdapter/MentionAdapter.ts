@@ -20,17 +20,18 @@ export const createMentionAdapter = (
 	const [_settings, { floatingContainer }] = params;
 
 	const internals: MentionInternals = {
+		// States
 		items: [],
 		query: "",
 		filteredItems: [],
 	};
 
-	// ConfigPort
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 

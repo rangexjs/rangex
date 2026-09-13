@@ -6,7 +6,8 @@ export interface ListState {
 	canWrap?: boolean;
 }
 
-export interface UpdateStateParams extends ListState {}
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export interface PlacementOption {
 	localName: ListLocalName;
@@ -20,6 +21,8 @@ export interface OnWrapCallbackParams extends PlacementOption {}
 
 export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
 
+export interface UpdateStateParams extends ListState {}
+
 export interface ListConfigPortProps {
 	updateState(params: UpdateStateParams): void;
 
@@ -28,9 +31,6 @@ export interface ListConfigPortProps {
 }
 
 export interface ListConfigPort extends ListConfigPortProps {}
-
-export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export interface InsertParams extends PlacementOption {}
 

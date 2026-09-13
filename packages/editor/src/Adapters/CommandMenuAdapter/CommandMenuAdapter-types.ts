@@ -33,9 +33,11 @@ export interface CommandMenuState {
 	query?: string;
 }
 
-export interface UpdateStateParams extends CommandMenuState {}
+export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export type OnBeforeSelectCallbackFn = () => void;
+
+export interface UpdateStateParams extends CommandMenuState {}
 
 export interface CommandMenuConfigPortProps {
 	readonly filteredItems: SuggestionItems;
@@ -48,8 +50,6 @@ export interface CommandMenuConfigPortProps {
 export interface CommandMenuConfigPort
 	extends CommandMenuConfigPortProps,
 		CaretMenuConfigPort {}
-
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export interface CommandMenuPublicPortProps {
 	readonly filteredItems: SuggestionItems;

@@ -16,14 +16,15 @@ export const createReadOnlyAdapter = (
 	..._params: CreateReadOnlyAdapterParams
 ): CreateReadOnlyAdapterResult => {
 	const internals: ReadOnlyInternals = {
+		// States
 		checked: false,
 	};
 
-	// ConfigPort
-	const onToggleListeners: Set<OnToggleCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCheckedUpdateListeners: Set<OnCheckedUpdateCallbackFn> = new Set();
+
+	// CommandListeners
+	const onToggleListeners: Set<OnToggleCallbackFn> = new Set();
 
 	const updateState = ({ checked }: UpdateStateParams) => {
 		if (checked !== undefined) {

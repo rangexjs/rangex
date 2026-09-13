@@ -12,10 +12,14 @@ export interface AccordionItemState {
 	isActive?: boolean;
 }
 
-export interface UpdateStateParams extends AccordionItemState {}
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
+export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
+
+export interface UpdateStateParams extends AccordionItemState {}
 
 export interface AccordionItemConfigPortProps {
 	updateState(params: UpdateStateParams): void;
@@ -28,10 +32,6 @@ export interface AccordionItemConfigPort
 	extends AccordionItemConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort {}
-
-export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export interface AccordionItemPublicPortProps {
 	readonly canInsert: boolean;

@@ -18,9 +18,11 @@ export interface MentionState {
 	query?: string;
 }
 
-export interface UpdateStateParams extends MentionState {}
+export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export type OnSelectCallbackFn = (item: SuggestionItem) => void;
+
+export interface UpdateStateParams extends MentionState {}
 
 export interface MentionConfigPortProps {
 	readonly filteredItems: SuggestionItems;
@@ -33,8 +35,6 @@ export interface MentionConfigPortProps {
 export interface MentionConfigPort
 	extends MentionConfigPortProps,
 		CaretMenuConfigPort {}
-
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export interface MentionPublicPortProps {
 	readonly filteredItems: SuggestionItems;

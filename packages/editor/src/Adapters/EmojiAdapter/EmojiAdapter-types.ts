@@ -15,9 +15,11 @@ export interface EmojiState {
 	query?: string;
 }
 
-export interface UpdateStateParams extends EmojiState {}
+export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export type OnSelectCallbackFn = (item: SuggestionItem) => void;
+
+export interface UpdateStateParams extends EmojiState {}
 
 export interface EmojiConfigPortProps {
 	readonly filteredItems: SuggestionItems;
@@ -32,8 +34,6 @@ export interface EmojiConfigPortProps {
 export interface EmojiConfigPort
 	extends EmojiConfigPortProps,
 		CaretMenuConfigPort {}
-
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export interface EmojiPublicPortProps {
 	readonly filteredItems: SuggestionItems;

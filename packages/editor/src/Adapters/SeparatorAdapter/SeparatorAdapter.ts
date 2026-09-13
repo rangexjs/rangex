@@ -18,15 +18,16 @@ export const createSeparatorAdapter = (
 	const [_settings, _options] = params;
 
 	const internals: SeparatorInternals = {
+		// States
 		canInsert: false,
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
 		if (canInsert !== undefined) {

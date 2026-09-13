@@ -62,17 +62,19 @@ export const createCommandMenuAdapter = (
 	const resolvedItems = resolveItems(items);
 
 	const internals: CommandMenuInternals = {
-		items: resolvedItems,
+		// States
 		query: "",
 		filteredItems: resolvedItems,
+		// Rest
+		items: resolvedItems,
 	};
 
-	// ConfigPort
-	const onBeforeSelectListeners: Set<OnBeforeSelectCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onBeforeSelectListeners: Set<OnBeforeSelectCallbackFn> = new Set();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 

@@ -50,12 +50,12 @@ export const Table = <T extends TablePublicPort | undefined>(
 		clearContents,
 
 		insert: publicPort.insert,
-		setSectionType: publicPort.setSectionType,
-		setMergeSplit: publicPort.setMergeSplit,
-		setInsertDelete: publicPort.setInsertDelete,
-		setCellType: publicPort.setCellType,
-		setVerticalAlignment: publicPort.setVerticalAlignment,
-		setCellResizing: publicPort.setCellResizing,
+		changeSectionType: publicPort.changeSectionType,
+		changeMergeSplit: publicPort.changeMergeSplit,
+		changeInsertDelete: publicPort.changeInsertDelete,
+		changeCellType: publicPort.changeCellType,
+		changeVerticalAlignment: publicPort.changeVerticalAlignment,
+		changeCellResizing: publicPort.changeCellResizing,
 		clear: publicPort.clear,
 	};
 

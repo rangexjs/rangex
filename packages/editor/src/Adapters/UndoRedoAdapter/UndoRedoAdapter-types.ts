@@ -5,10 +5,15 @@ export interface UndoRedoState {
 	canStepForward?: boolean;
 }
 
-export interface UpdateStateParams extends UndoRedoState {}
+export type OnCanStepBackUpdateCallbackFn = (canStepBack: boolean) => void;
+export type OnCanStepForwardUpdateCallbackFn = (
+	canStepForward: boolean,
+) => void;
 
 export type OnStepBackCallbackFn = () => void;
 export type OnStepForwardCallbackFn = () => void;
+
+export interface UpdateStateParams extends UndoRedoState {}
 
 export interface UndoRedoConfigPortProps {
 	updateState(params: UpdateStateParams): void;
@@ -18,11 +23,6 @@ export interface UndoRedoConfigPortProps {
 }
 
 export interface UndoRedoConfigPort extends UndoRedoConfigPortProps {}
-
-export type OnCanStepBackUpdateCallbackFn = (canStepBack: boolean) => void;
-export type OnCanStepForwardUpdateCallbackFn = (
-	canStepForward: boolean,
-) => void;
 
 export interface UndoRedoPublicPortProps {
 	readonly canStepBack: boolean;

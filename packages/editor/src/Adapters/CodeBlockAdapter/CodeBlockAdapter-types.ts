@@ -23,7 +23,12 @@ export interface CodeBlockState {
 	darkTheme?: CodeBlockTheme;
 }
 
-export interface UpdateStateParams extends CodeBlockState {}
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
+export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
+export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
+export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
+export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 
 export interface PlacementOption {
 	language: CodeBlockLanguage;
@@ -37,20 +42,22 @@ export interface OnWrapCallbackParams extends PlacementOption {}
 
 export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
 
-export type OnCopyCallbackFn = () => void;
-export type OnLanguageCallbackFn = (language: CodeBlockLanguage) => void;
-export type OnLightThemeCallbackFn = (theme: CodeBlockTheme) => void;
-export type OnDarkThemeCallbackFn = (theme: CodeBlockTheme) => void;
+export type OnChangeLanguageCallbackFn = (language: CodeBlockLanguage) => void;
+export type OnChangeLightThemeCallbackFn = (theme: CodeBlockTheme) => void;
+export type OnChangeDarkThemeCallbackFn = (theme: CodeBlockTheme) => void;
+
 export type PlainTextProviderFn = () => string[];
+
+export interface UpdateStateParams extends CodeBlockState {}
 
 export interface CodeBlockConfigPortProps {
 	updateState(params: UpdateStateParams): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onWrap(callback: OnWrapCallbackFn): () => void;
-	onLanguage(callback: OnLanguageCallbackFn): () => void;
-	onLightTheme(callback: OnLightThemeCallbackFn): () => void;
-	onDarkTheme(callback: OnDarkThemeCallbackFn): () => void;
+	onChangeLanguage(callback: OnChangeLanguageCallbackFn): () => void;
+	onChangeLightTheme(callback: OnChangeLightThemeCallbackFn): () => void;
+	onChangeDarkTheme(callback: OnChangeDarkThemeCallbackFn): () => void;
 	registerPlainTextProvider(provider: PlainTextProviderFn): void;
 }
 
@@ -60,13 +67,6 @@ export interface CodeBlockConfigPort
 		UnwrapConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		QuickActionsConfigPort {}
-
-export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
-export type OnLanguageUpdateCallbackFn = (value: CodeBlockLanguage) => void;
-export type OnLightThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
-export type OnDarkThemeUpdateCallbackFn = (value: CodeBlockTheme) => void;
 
 export interface InsertParams extends PlacementOption {}
 

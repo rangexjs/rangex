@@ -5,10 +5,13 @@ export interface TodoListState {
 	canWrap?: boolean;
 }
 
-export interface UpdateStateParams extends TodoListState {}
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
+
+export interface UpdateStateParams extends TodoListState {}
 
 export interface TodoListConfigPortProps {
 	updateState(params: UpdateStateParams): void;
@@ -18,9 +21,6 @@ export interface TodoListConfigPortProps {
 }
 
 export interface TodoListConfigPort extends TodoListConfigPortProps {}
-
-export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export interface TodoListPublicPortProps {
 	readonly canInsert: boolean;

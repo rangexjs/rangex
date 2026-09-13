@@ -23,20 +23,22 @@ export const createEmptyMediaAdapter = (
 	adapterBus.registerEmptyMediaAvailable();
 
 	const internals: EmptyMediaInternals = {
+		// States
 		canInsert: false,
+		// Rest
 		registerSlottedElement: null,
 	};
 
 	const elements: Map<HTMLDivElement, ElementState> = new Map();
 	const disposes: Map<HTMLDivElement, () => void> = new Map();
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onResolveListeners: Set<OnResolveCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onResolveListeners: Set<OnResolveCallbackFn> = new Set();
 
 	const getElementState = (element: HTMLDivElement): ElementState => {
 		const state = elements.get(element);

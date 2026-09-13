@@ -26,7 +26,9 @@ export interface FindReplaceState {
 	results?: FindReplaceResultsState;
 }
 
-export interface UpdateStateParams extends FindReplaceState {}
+export type OnResultsUpdateCallbackFn = (
+	results: FindReplaceResultsState,
+) => void;
 
 export interface NavigateToIndexParams {
 	index: number;
@@ -47,6 +49,8 @@ export type OnNavigateToIndexCallbackFn = (
 export type OnReplaceCallbackFn = (params: ReplaceParams) => void;
 export type OnReplaceAllCallbackFn = (params: ReplaceParams) => void;
 
+export interface UpdateStateParams extends FindReplaceState {}
+
 export interface FindReplaceConfigPortProps {
 	updateState(params: UpdateStateParams): void;
 
@@ -61,10 +65,6 @@ export interface FindReplaceConfigPortProps {
 }
 
 export interface FindReplaceConfigPort extends FindReplaceConfigPortProps {}
-
-export type OnResultsUpdateCallbackFn = (
-	results: FindReplaceResultsState,
-) => void;
 
 export interface FindReplacePublicPortProps {
 	readonly results: FindReplaceResultsState;

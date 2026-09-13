@@ -34,11 +34,11 @@ export interface ReactiveTablePort {
 	clearContents: Accessor<TableClearContentsState>;
 
 	insert(params: TableInsertParams): void;
-	setSectionType(action: TableSectionTypeAction): void;
-	setMergeSplit(action: TableMergeSplitAction): void;
-	setInsertDelete(action: TableInsertDeleteAction): void;
-	setCellType(action: TableCellTypeAction): void;
-	setVerticalAlignment(action: TableVerticalAlignmentAction): void;
-	setCellResizing(action: TableCellResizingAction): void;
+	changeSectionType(action: TableSectionTypeAction): void;
+	changeMergeSplit(action: TableMergeSplitAction): void;
+	changeInsertDelete(action: TableInsertDeleteAction): void;
+	changeCellType(action: TableCellTypeAction): void;
+	changeVerticalAlignment(action: TableVerticalAlignmentAction): void;
+	changeCellResizing(action: TableCellResizingAction): void;
 	clear(): void;
 }

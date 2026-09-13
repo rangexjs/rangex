@@ -3,21 +3,21 @@ import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
 	OnCanInsertUpdateCallbackFn,
-	OnCellResizingCallbackFn,
 	OnCellResizingUpdateCallbackFn,
-	OnCellTypeCallbackFn,
 	OnCellTypeUpdateCallbackFn,
+	OnChangeCellResizingCallbackFn,
+	OnChangeCellTypeCallbackFn,
+	OnChangeInsertDeleteCallbackFn,
+	OnChangeMergeSplitCallbackFn,
+	OnChangeSectionTypeCallbackFn,
+	OnChangeVerticalAlignmentCallbackFn,
 	OnClearContentsCallbackFn,
 	OnClearContentsUpdateCallbackFn,
 	OnContextMenuOpenUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnInsertDeleteCallbackFn,
 	OnInsertDeleteUpdateCallbackFn,
-	OnMergeSplitCallbackFn,
 	OnMergeSplitUpdateCallbackFn,
-	OnSectionTypeCallbackFn,
 	OnSectionTypeUpdateCallbackFn,
-	OnVerticalAlignmentCallbackFn,
 	OnVerticalAlignmentUpdateCallbackFn,
 	TableConfigPort,
 	TableConfigPortProps,
@@ -36,6 +36,7 @@ export const createTableAdapter = (
 	floatingContainer.append(contextMenuEl);
 
 	const internals: TableInternals = {
+		// States
 		canInsert: false,
 		contextMenuOpen: false,
 		sectionType: {
@@ -77,18 +78,7 @@ export const createTableAdapter = (
 		clearContents: { disabled: true },
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onSectionTypeListeners: Set<OnSectionTypeCallbackFn> = new Set();
-	const onMergeSplitListeners: Set<OnMergeSplitCallbackFn> = new Set();
-	const onInsertDeleteListeners: Set<OnInsertDeleteCallbackFn> = new Set();
-	const onCellTypeListeners: Set<OnCellTypeCallbackFn> = new Set();
-	const onVerticalAlignmentListeners: Set<OnVerticalAlignmentCallbackFn> =
-		new Set();
-	const onCellResizingListeners: Set<OnCellResizingCallbackFn> = new Set();
-	const onClearContentsListeners: Set<OnClearContentsCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onContextMenuOpenUpdateListeners: Set<OnContextMenuOpenUpdateCallbackFn> =
@@ -106,6 +96,21 @@ export const createTableAdapter = (
 		new Set();
 	const onClearContentsUpdateListeners: Set<OnClearContentsUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onChangeSectionTypeListeners: Set<OnChangeSectionTypeCallbackFn> =
+		new Set();
+	const onChangeMergeSplitListeners: Set<OnChangeMergeSplitCallbackFn> =
+		new Set();
+	const onChangeInsertDeleteListeners: Set<OnChangeInsertDeleteCallbackFn> =
+		new Set();
+	const onChangeCellTypeListeners: Set<OnChangeCellTypeCallbackFn> = new Set();
+	const onChangeVerticalAlignmentListeners: Set<OnChangeVerticalAlignmentCallbackFn> =
+		new Set();
+	const onChangeCellResizingListeners: Set<OnChangeCellResizingCallbackFn> =
+		new Set();
+	const onClearContentsListeners: Set<OnClearContentsCallbackFn> = new Set();
 
 	const updateState = ({
 		canInsert,
@@ -209,34 +214,34 @@ export const createTableAdapter = (
 			return () => onInsertListeners.delete(callback);
 		},
 
-		onSectionType(callback) {
-			onSectionTypeListeners.add(callback);
-			return () => onSectionTypeListeners.delete(callback);
+		onChangeSectionType(callback) {
+			onChangeSectionTypeListeners.add(callback);
+			return () => onChangeSectionTypeListeners.delete(callback);
 		},
 
-		onMergeSplit(callback) {
-			onMergeSplitListeners.add(callback);
-			return () => onMergeSplitListeners.delete(callback);
+		onChangeMergeSplit(callback) {
+			onChangeMergeSplitListeners.add(callback);
+			return () => onChangeMergeSplitListeners.delete(callback);
 		},
 
-		onInsertDelete(callback) {
-			onInsertDeleteListeners.add(callback);
-			return () => onInsertDeleteListeners.delete(callback);
+		onChangeInsertDelete(callback) {
+			onChangeInsertDeleteListeners.add(callback);
+			return () => onChangeInsertDeleteListeners.delete(callback);
 		},
 
-		onCellType(callback) {
-			onCellTypeListeners.add(callback);
-			return () => onCellTypeListeners.delete(callback);
+		onChangeCellType(callback) {
+			onChangeCellTypeListeners.add(callback);
+			return () => onChangeCellTypeListeners.delete(callback);
 		},
 
-		onVerticalAlignment(callback) {
-			onVerticalAlignmentListeners.add(callback);
-			return () => onVerticalAlignmentListeners.delete(callback);
+		onChangeVerticalAlignment(callback) {
+			onChangeVerticalAlignmentListeners.add(callback);
+			return () => onChangeVerticalAlignmentListeners.delete(callback);
 		},
 
-		onCellResizing(callback) {
-			onCellResizingListeners.add(callback);
-			return () => onCellResizingListeners.delete(callback);
+		onChangeCellResizing(callback) {
+			onChangeCellResizingListeners.add(callback);
+			return () => onChangeCellResizingListeners.delete(callback);
 		},
 
 		onClear(callback) {
@@ -337,38 +342,38 @@ export const createTableAdapter = (
 			}
 		},
 
-		setSectionType(action) {
-			for (const listener of onSectionTypeListeners) {
+		changeSectionType(action) {
+			for (const listener of onChangeSectionTypeListeners) {
 				listener(action);
 			}
 		},
 
-		setMergeSplit(action) {
-			for (const listener of onMergeSplitListeners) {
+		changeMergeSplit(action) {
+			for (const listener of onChangeMergeSplitListeners) {
 				listener(action);
 			}
 		},
 
-		setInsertDelete(action) {
-			for (const listener of onInsertDeleteListeners) {
+		changeInsertDelete(action) {
+			for (const listener of onChangeInsertDeleteListeners) {
 				listener(action);
 			}
 		},
 
-		setCellType(action) {
-			for (const listener of onCellTypeListeners) {
+		changeCellType(action) {
+			for (const listener of onChangeCellTypeListeners) {
 				listener(action);
 			}
 		},
 
-		setVerticalAlignment(action) {
-			for (const listener of onVerticalAlignmentListeners) {
+		changeVerticalAlignment(action) {
+			for (const listener of onChangeVerticalAlignmentListeners) {
 				listener(action);
 			}
 		},
 
-		setCellResizing(action) {
-			for (const listener of onCellResizingListeners) {
+		changeCellResizing(action) {
+			for (const listener of onChangeCellResizingListeners) {
 				listener(action);
 			}
 		},

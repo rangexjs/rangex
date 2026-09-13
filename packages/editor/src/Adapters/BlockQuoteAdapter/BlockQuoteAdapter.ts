@@ -20,18 +20,19 @@ export const createBlockQuoteAdapter = (
 	const [_settings, _options] = params;
 
 	const internals: BlockQuoteInternals = {
+		// States
 		canInsert: false,
 		canWrap: false,
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 
 	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {

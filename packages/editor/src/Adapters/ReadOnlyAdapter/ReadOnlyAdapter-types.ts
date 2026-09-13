@@ -4,9 +4,11 @@ export interface ReadOnlyState {
 	checked?: boolean;
 }
 
-export interface UpdateStateParams extends ReadOnlyState {}
+export type OnCheckedUpdateCallbackFn = (checked: boolean) => void;
 
 export type OnToggleCallbackFn = (checked: boolean) => void;
+
+export interface UpdateStateParams extends ReadOnlyState {}
 
 export interface ReadOnlyConfigPortProps {
 	updateState(params: UpdateStateParams): void;
@@ -15,8 +17,6 @@ export interface ReadOnlyConfigPortProps {
 }
 
 export interface ReadOnlyConfigPort extends ReadOnlyConfigPortProps {}
-
-export type OnCheckedUpdateCallbackFn = (checked: boolean) => void;
 
 export interface ReadOnlyPublicPortProps {
 	readonly checked: boolean;

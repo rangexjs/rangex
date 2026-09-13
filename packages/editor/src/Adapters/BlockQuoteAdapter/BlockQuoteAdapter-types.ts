@@ -5,10 +5,13 @@ export interface BlockQuoteState {
 	canWrap?: boolean;
 }
 
-export interface UpdateStateParams extends BlockQuoteState {}
+export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
+export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
+
+export interface UpdateStateParams extends BlockQuoteState {}
 
 export interface BlockQuoteConfigPortProps {
 	updateState(params: UpdateStateParams): void;
@@ -18,9 +21,6 @@ export interface BlockQuoteConfigPortProps {
 }
 
 export interface BlockQuoteConfigPort extends BlockQuoteConfigPortProps {}
-
-export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
 export interface BlockQuotePublicPortProps {
 	readonly canInsert: boolean;

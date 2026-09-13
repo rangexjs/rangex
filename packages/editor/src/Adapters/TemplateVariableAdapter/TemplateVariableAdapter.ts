@@ -34,23 +34,24 @@ export const createTemplateVariableAdapter = (
 	const [_settings, { floatingContainer }] = params;
 
 	const internals: TemplateVariableInternals = {
+		// States
 		canInsert: false,
 		options: { firstName: null, lastName: null, email: null, date: null },
 		query: "",
 		filteredItems: [],
 	};
 
-	// ConfigPort
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onOptionsListeners: Set<OnOptionsCallbackFn> = new Set();
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
-
-	// PublicPort
+	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onOptionsUpdateListeners: Set<OnOptionsUpdateCallbackFn> = new Set();
 	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
 		new Set();
+
+	// CommandListeners
+	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const onOptionsListeners: Set<OnOptionsCallbackFn> = new Set();
+	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
