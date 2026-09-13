@@ -35,7 +35,7 @@ export const handleQuickActionsOverlayAppearance = ({
 				return blockComponent.$$componentName === componentName;
 			},
 			onShow({ blockComponent }) {
-				anchorController.hide();
+				anchorController.hide({});
 
 				port.setCurrentComponent(blockComponent);
 
@@ -49,7 +49,7 @@ export const handleQuickActionsOverlayAppearance = ({
 				});
 			},
 			onClose() {
-				anchorController.hide();
+				anchorController.hide({});
 
 				port.setCurrentComponent(null);
 			},

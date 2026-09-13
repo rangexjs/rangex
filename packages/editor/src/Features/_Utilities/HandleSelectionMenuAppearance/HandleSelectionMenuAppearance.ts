@@ -1,6 +1,5 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
 import { createPopoverOverlayController } from "#engine-links";
-import { forceReflowWithoutTransition } from "#utilities";
 import type {
 	HandleSelectionMenuAppearanceParams,
 	HandleSelectionMenuAppearanceResult,
@@ -35,13 +34,12 @@ export const handleSelectionMenuAppearance = ({
 	const unsubscribeSelectionChange = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			selectionMenuPopoverController.hide();
-			forceReflowWithoutTransition(selectionMenuPopoverController.element);
+			selectionMenuPopoverController.hide({ instant: true });
 		},
 	});
 
 	const unsubscribeCloseSelectionMenu = configPort.onCloseSelectionMenu(() => {
-		selectionMenuPopoverController.hide();
+		selectionMenuPopoverController.hide({});
 	});
 
 	const unsubscribeAddExemptNode = configPort.onAddExemptNode((node) => {

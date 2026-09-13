@@ -80,7 +80,7 @@ export const handleBlockResizeAppearance = ({
 	const scheduleHide = () => {
 		clearTimeout(hideTimeoutId);
 		hideTimeoutId = setTimeout(() => {
-			anchorController.hide();
+			anchorController.hide({});
 			currentBlock = null;
 		}, 100);
 	};

@@ -1,10 +1,12 @@
 /// <reference path="./CloseWatcher.d.ts" />
 import { dataAnchorName } from "rich-text-area";
+import { forceReflowWithoutTransition } from "#utilities";
 import type {
 	AnchoredOverlayController,
 	CreateAnchoredOverlayControllerParams,
 	CreateCloseWatcherParams,
 	CreatePopoverOverlayControllerParams,
+	HideParams,
 	PopoverOverlayController,
 	RegisterLightDismissParams,
 } from "./CreateOverlayController-types";
@@ -35,7 +37,7 @@ const registerLightDismiss = ({
 			}
 		}
 
-		hide();
+		hide({});
 	};
 
 	document.addEventListener("pointerup", onPointerUp, { signal });
@@ -50,7 +52,7 @@ const createCloseWatcher = ({ hide, signal }: CreateCloseWatcherParams) => {
 	const watcher = new CloseWatcher({ signal });
 
 	watcher.onclose = () => {
-		hide();
+		hide({});
 	};
 
 	return watcher;
@@ -72,12 +74,16 @@ export const createAnchoredOverlayController = ({
 	let closeWatcher: CloseWatcher | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
-	const hide = () => {
+	const hide = ({ instant = false }: HideParams) => {
 		element.classList.add(hideAnchoredClass);
 		closeWatcher?.destroy();
 		closeWatcher = null;
 		isOpen = false;
 		onToggle?.(isOpen);
+
+		if (instant) {
+			forceReflowWithoutTransition(element);
+		}
 	};
 
 	const abortController = new AbortController();
@@ -168,7 +174,7 @@ export const createPopoverOverlayController = ({
 	let closeWatcher: CloseWatcher | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
-	const hide = () => {
+	const hide = ({ instant = false }: HideParams) => {
 		if (!isOpen) {
 			return;
 		}
@@ -178,6 +184,10 @@ export const createPopoverOverlayController = ({
 		closeWatcher = null;
 		isOpen = false;
 		onToggle?.(isOpen);
+
+		if (instant) {
+			forceReflowWithoutTransition(element);
+		}
 	};
 
 	const abortController = new AbortController();

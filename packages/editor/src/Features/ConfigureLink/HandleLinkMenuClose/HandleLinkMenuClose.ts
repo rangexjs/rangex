@@ -1,6 +1,5 @@
 import { EditorRange, editorSelectionChangeEventType } from "rich-text-area";
 import { observeEditorNodeAttachment } from "#engine-links";
-import { forceReflowWithoutTransition } from "#utilities";
 import type {
 	CloseOnLinkRemovalParams,
 	CloseOnSelectionChangeParams,
@@ -44,7 +43,7 @@ const closeOnSelectionChange = ({
 				}
 			}
 
-			linkMenuPopoverController.hide();
+			linkMenuPopoverController.hide({});
 		},
 	});
 };
@@ -71,8 +70,7 @@ const closeOnLinkRemoval = ({
 				return;
 			}
 
-			linkMenuPopoverController.hide();
-			forceReflowWithoutTransition(linkMenuPopoverController.element);
+			linkMenuPopoverController.hide({ instant: true });
 		},
 	});
 };

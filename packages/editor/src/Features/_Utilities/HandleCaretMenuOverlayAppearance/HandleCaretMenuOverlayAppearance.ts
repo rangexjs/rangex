@@ -40,7 +40,7 @@ export const handleCaretMenuOverlayAppearance = ({
 			return;
 		}
 
-		anchorController.hide();
+		anchorController.hide({});
 
 		editorAPI.focus();
 	};
@@ -54,7 +54,7 @@ export const handleCaretMenuOverlayAppearance = ({
 				return;
 			}
 
-			anchorController.hide();
+			anchorController.hide({});
 		},
 	});
 
@@ -76,7 +76,7 @@ export const handleCaretMenuOverlayAppearance = ({
 				return;
 			}
 
-			anchorController.hide();
+			anchorController.hide({});
 		},
 	});
 

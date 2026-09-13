@@ -1,13 +1,19 @@
+export interface HideParams {
+	instant?: boolean;
+}
+
+export type HideFn = (params: HideParams) => void;
+
 export interface RegisterLightDismissParams {
 	element: HTMLElement;
 	exemptNodes: Set<HTMLElement>;
 	isOpen: () => boolean;
-	hide: () => void;
+	hide: HideFn;
 	signal: AbortSignal;
 }
 
 export interface CreateCloseWatcherParams {
-	hide: () => void;
+	hide: HideFn;
 	signal: AbortSignal;
 }
 
@@ -34,7 +40,7 @@ export interface OverlayController {
 	readonly element: HTMLElement;
 	readonly isOpen: boolean;
 	show(anchorElement: HTMLElement, styleOptions: AnchorStyleOptions): void;
-	hide(): void;
+	hide: HideFn;
 	addExemptNode(node: HTMLElement): void;
 	removeExemptNode(node: HTMLElement): void;
 	cleanup(): void;

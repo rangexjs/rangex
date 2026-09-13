@@ -40,7 +40,7 @@ const syncOverlayVisibility = ({
 }: SyncOverlayVisibilityParams) => {
 	const { rootEditable } = editorAPI;
 
-	anchorController.hide();
+	anchorController.hide({});
 
 	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
 
