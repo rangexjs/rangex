@@ -1,7 +1,6 @@
 import {
 	EditorRange,
 	editorSelectionChangeEventType,
-	inlineComponentAttrName,
 	inlineComponentName,
 	isEditorNode,
 } from "rich-text-area";
@@ -40,7 +39,7 @@ const registerClick = ({
 	editorAPI,
 	linkMenuPopoverController,
 }: RegisterClickParams) => {
-	const { dataInteractiveWithinComponentSelection } = inlineComponentAttrName;
+	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
@@ -59,9 +58,22 @@ const registerClick = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				if (
-					!currentTarget.hasAttribute(dataInteractiveWithinComponentSelection)
-				) {
+				const selBoundaryPoints = selection.getBoundaryPoints();
+
+				const range = new EditorRange({
+					fromNode: selBoundaryPoints.fromText,
+					fromOffset: selBoundaryPoints.fromOffset,
+					toNode: selBoundaryPoints.toText,
+					toOffset: selBoundaryPoints.toOffset,
+				});
+
+				const withinSelection = range.isDescendant({
+					container: currentTarget,
+					start: true,
+					end: true,
+				});
+
+				if (!withinSelection) {
 					return;
 				}
 
