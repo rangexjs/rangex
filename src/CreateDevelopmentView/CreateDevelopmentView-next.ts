@@ -71,7 +71,7 @@ export const createDevelopmentView = () => {
 			display: "block flex",
 			flexDirection: "column",
 			gap: "30px",
-			margin: "0 auto",
+			margin: "60px auto",
 			maxWidth: "1200px",
 		},
 	);
