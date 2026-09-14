@@ -1,5 +1,4 @@
-import { Table } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { FloatingPortal, Table } from "@rangex/solid";
 import { createUniqueId, For, onCleanup, Show } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
@@ -147,7 +146,6 @@ export const TableContextMenu = () => {
 		}
 	};
 
-	// We can't rely on table.contextMenuOpen() as we have to detect the change before repaint
 	const unsubscribeIsOpen = table.onContextMenuOpenUpdate((open) => {
 		if (!open) {
 			closeNestedPopovers();
@@ -159,7 +157,7 @@ export const TableContextMenu = () => {
 	});
 
 	return (
-		<Portal mount={table.contextMenuEl}>
+		<FloatingPortal mount={table.contextMenuEl}>
 			<div class="z-20 inline-flex justify-center overflow-visible bg-transparent">
 				<div class="group size-3 leading-0 transition-all hover:size-5 [&:has(+_[popover]:popover-open)]:size-5">
 					<button
@@ -182,6 +180,6 @@ export const TableContextMenu = () => {
 					items={contextMenuItems}
 				/>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };
