@@ -40,10 +40,13 @@ export const createVideoAdapter = (
 		currentComponentPort.configPort,
 		commitSnapshotPort.configPort,
 		swapToEmptyMediaPort.configPort,
-		quickActionsPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
+			},
+
+			get quickActions() {
+				return quickActionsPort.configPort;
 			},
 
 			onMediaResolve(callback) {
@@ -59,8 +62,11 @@ export const createVideoAdapter = (
 		currentComponentPort.publicPort,
 		commitSnapshotPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
-		quickActionsPort.publicPort,
-		{} satisfies VideoPublicPortProps,
+		{
+			get quickActions() {
+				return quickActionsPort.publicPort;
+			},
+		} satisfies VideoPublicPortProps,
 	);
 
 	return { configPort, publicPort };

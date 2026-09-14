@@ -138,8 +138,11 @@ export const createCodeBlockAdapter = (
 		removePort.configPort,
 		unwrapPort.configPort,
 		currentComponentPort.configPort,
-		quickActionsPort.configPort,
 		{
+			get quickActions() {
+				return quickActionsPort.configPort;
+			},
+
 			updateState(params) {
 				updateState(params);
 			},
@@ -179,8 +182,11 @@ export const createCodeBlockAdapter = (
 		removePort.publicPort,
 		unwrapPort.publicPort,
 		currentComponentPort.publicPort,
-		quickActionsPort.publicPort,
 		{
+			get quickActions() {
+				return quickActionsPort.publicPort;
+			},
+
 			get languages() {
 				return languages;
 			},

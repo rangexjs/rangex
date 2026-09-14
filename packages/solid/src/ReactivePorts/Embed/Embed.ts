@@ -1,6 +1,9 @@
 import type { EmbedPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type {
+	FromPublicToReactivePort,
+	ReactiveQuickActionsPort,
+} from "../../_Utilities";
 import type { ReactiveEmbedPort } from "./Embed-types";
 
 export const Embed = <T extends EmbedPublicPort | undefined>(
@@ -10,8 +13,8 @@ export const Embed = <T extends EmbedPublicPort | undefined>(
 		return undefined as FromPublicToReactivePort<T>;
 	}
 
-	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
-		publicPort.quickActionsOpen,
+	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
+		publicPort.quickActions.isOpen,
 	);
 	const [captionEnabled, setCaptionEnabled] = createSignal(
 		publicPort.captionEnabled,
@@ -24,17 +27,25 @@ export const Embed = <T extends EmbedPublicPort | undefined>(
 		publicPort.currentComponent,
 	);
 
-	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(
+		publicPort.quickActions.onToggle(() =>
+			setQuickActionsIsOpen(publicPort.quickActions.isOpen),
+		),
+	);
 	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
 	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
 	onCleanup(publicPort.onAlignUpdate(setAlign));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
+	const quickActions: ReactiveQuickActionsPort = {
+		element: publicPort.quickActions.element,
+		isOpen: quickActionsIsOpen,
+	};
+
 	const port: ReactiveEmbedPort = {
-		quickActionsEl: publicPort.quickActionsEl,
+		quickActions,
 		canSwap: publicPort.canSwap,
 
-		quickActionsOpen,
 		captionEnabled,
 		captionPosition,
 		align,

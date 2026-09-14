@@ -3,31 +3,26 @@ export interface QuickActionsState {
 }
 
 export interface UpdateStateParams {
-	open?: boolean;
+	isOpen?: boolean;
 }
 
 export interface QuickActionsInternals {
-	quickActionsOpen: boolean;
+	isOpen: boolean;
 }
 
 export interface QuickActionsConfigPort {
-	readonly quickActionsEl: HTMLDivElement;
+	readonly element: HTMLDivElement;
 
 	updateQuickActions(params: UpdateStateParams): void;
 }
 
-export type OnQuickActionsOpenUpdateCallbackFn = (
-	quickActionsOpen: boolean,
-) => void;
+export type OnQuickActionsToggleCallbackFn = () => void;
 
 export interface QuickActionsPublicPort {
-	readonly quickActionsEl: HTMLDivElement;
+	readonly element: HTMLDivElement;
+	readonly isOpen: boolean;
 
-	readonly quickActionsOpen: boolean;
-
-	onQuickActionsOpenUpdate(
-		callback: OnQuickActionsOpenUpdateCallbackFn,
-	): () => void;
+	onToggle(callback: OnQuickActionsToggleCallbackFn): () => void;
 }
 
 export interface QuickActionsPort {

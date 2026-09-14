@@ -19,6 +19,7 @@ import type {
 
 export interface AudioConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -29,10 +30,11 @@ export interface AudioConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort,
-		QuickActionsConfigPort {}
+		SwapToEmptyMediaConfigPort {}
 
-export interface AudioPublicPortProps {}
+export interface AudioPublicPortProps {
+	readonly quickActions: QuickActionsPublicPort;
+}
 
 export interface AudioPublicPort
 	extends AudioPublicPortProps,
@@ -40,8 +42,7 @@ export interface AudioPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort,
-		QuickActionsPublicPort {}
+		SwapToEmptyMediaPublicPort {}
 
 export interface AudioAdapter {
 	configPort: AudioConfigPort;

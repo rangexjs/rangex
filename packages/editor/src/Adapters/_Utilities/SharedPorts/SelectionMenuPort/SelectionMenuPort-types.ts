@@ -14,13 +14,13 @@ export interface SelectionMenuConfigPort {
 	onRemoveExemptNode(callback: OnRemoveExemptNodeCallbackFn): () => void;
 }
 
-export type OnToggleCallbackFn = () => void;
+export type OnSelectionMenuToggleCallbackFn = () => void;
 
 export interface SelectionMenuPublicPort {
 	readonly element: HTMLDivElement;
 	readonly isOpen: boolean;
 
-	onToggle(callback: OnToggleCallbackFn): () => void;
+	onToggle(callback: OnSelectionMenuToggleCallbackFn): () => void;
 
 	open(): void;
 	close(): void;

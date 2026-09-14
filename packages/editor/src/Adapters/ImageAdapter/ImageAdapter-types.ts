@@ -19,6 +19,7 @@ import type {
 
 export interface ImageConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -29,10 +30,11 @@ export interface ImageConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort,
-		QuickActionsConfigPort {}
+		SwapToEmptyMediaConfigPort {}
 
-export interface ImagePublicPortProps {}
+export interface ImagePublicPortProps {
+	readonly quickActions: QuickActionsPublicPort;
+}
 
 export interface ImagePublicPort
 	extends ImagePublicPortProps,
@@ -40,8 +42,7 @@ export interface ImagePublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort,
-		QuickActionsPublicPort {}
+		SwapToEmptyMediaPublicPort {}
 
 export interface ImageAdapter {
 	configPort: ImageConfigPort;

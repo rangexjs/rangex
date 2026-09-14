@@ -1,7 +1,7 @@
 import type {
 	CreateQuickActionsPortParams,
 	CreateQuickActionsPortResult,
-	OnQuickActionsOpenUpdateCallbackFn,
+	OnQuickActionsToggleCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsInternals,
 	QuickActionsPublicPort,
@@ -11,30 +11,29 @@ import type {
 export const createQuickActionsPort = ({
 	floatingContainer,
 }: CreateQuickActionsPortParams): CreateQuickActionsPortResult => {
-	const quickActionsEl = document.createElement("div");
-	floatingContainer.append(quickActionsEl);
+	const element = document.createElement("div");
+	floatingContainer.append(element);
 
 	const internals: QuickActionsInternals = {
-		quickActionsOpen: false,
+		isOpen: false,
 	};
 
-	// StateListeners
-	const onQuickActionsOpenUpdateListeners: Set<OnQuickActionsOpenUpdateCallbackFn> =
-		new Set();
+	// CommandListeners
+	const onToggleListeners: Set<OnQuickActionsToggleCallbackFn> = new Set();
 
-	const updateState = ({ open }: UpdateStateParams) => {
-		if (open !== undefined) {
-			internals.quickActionsOpen = open;
+	const updateState = ({ isOpen }: UpdateStateParams) => {
+		if (isOpen !== undefined) {
+			internals.isOpen = isOpen;
 
-			for (const listener of onQuickActionsOpenUpdateListeners) {
-				listener(internals.quickActionsOpen);
+			for (const listener of onToggleListeners) {
+				listener();
 			}
 		}
 	};
 
 	const configPort: QuickActionsConfigPort = {
-		get quickActionsEl() {
-			return quickActionsEl;
+		get element() {
+			return element;
 		},
 
 		updateQuickActions(params) {
@@ -43,17 +42,17 @@ export const createQuickActionsPort = ({
 	};
 
 	const publicPort: QuickActionsPublicPort = {
-		get quickActionsEl() {
-			return quickActionsEl;
+		get element() {
+			return element;
 		},
 
-		get quickActionsOpen() {
-			return internals.quickActionsOpen;
+		get isOpen() {
+			return internals.isOpen;
 		},
 
-		onQuickActionsOpenUpdate(callback) {
-			onQuickActionsOpenUpdateListeners.add(callback);
-			return () => onQuickActionsOpenUpdateListeners.delete(callback);
+		onToggle(callback) {
+			onToggleListeners.add(callback);
+			return () => onToggleListeners.delete(callback);
 		},
 	};
 

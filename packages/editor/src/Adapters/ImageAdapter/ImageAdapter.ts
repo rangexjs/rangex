@@ -40,10 +40,13 @@ export const createImageAdapter = (
 		currentComponentPort.configPort,
 		commitSnapshotPort.configPort,
 		swapToEmptyMediaPort.configPort,
-		quickActionsPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
+			},
+
+			get quickActions() {
+				return quickActionsPort.configPort;
 			},
 
 			onMediaResolve(callback) {
@@ -59,8 +62,11 @@ export const createImageAdapter = (
 		currentComponentPort.publicPort,
 		commitSnapshotPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
-		quickActionsPort.publicPort,
-		{} satisfies ImagePublicPortProps,
+		{
+			get quickActions() {
+				return quickActionsPort.publicPort;
+			},
+		} satisfies ImagePublicPortProps,
 	);
 
 	return { configPort, publicPort };

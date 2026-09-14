@@ -5,7 +5,7 @@ import type {
 	OnCloseCallbackFn,
 	OnOpenCallbackFn,
 	OnRemoveExemptNodeCallbackFn,
-	OnToggleCallbackFn,
+	OnSelectionMenuToggleCallbackFn,
 	SelectionMenuConfigPort,
 	SelectionMenuPublicPort,
 } from "./SelectionMenuPort-types";
@@ -17,7 +17,7 @@ export const createSelectionMenuPort = ({
 	floatingContainer.append(element);
 
 	// CommandListeners
-	const onToggleListeners: Set<OnToggleCallbackFn> = new Set();
+	const onToggleListeners: Set<OnSelectionMenuToggleCallbackFn> = new Set();
 	const onOpenListeners: Set<OnOpenCallbackFn> = new Set();
 	const onCloseListeners: Set<OnCloseCallbackFn> = new Set();
 	const onAddExemptNodeListeners: Set<OnAddExemptNodeCallbackFn> = new Set();

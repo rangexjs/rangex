@@ -19,6 +19,7 @@ import type {
 
 export interface EmbedConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -29,10 +30,11 @@ export interface EmbedConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort,
-		QuickActionsConfigPort {}
+		SwapToEmptyMediaConfigPort {}
 
-export interface EmbedPublicPortProps {}
+export interface EmbedPublicPortProps {
+	readonly quickActions: QuickActionsPublicPort;
+}
 
 export interface EmbedPublicPort
 	extends EmbedPublicPortProps,
@@ -40,8 +42,7 @@ export interface EmbedPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort,
-		QuickActionsPublicPort {}
+		SwapToEmptyMediaPublicPort {}
 
 export interface EmbedAdapter {
 	configPort: EmbedConfigPort;

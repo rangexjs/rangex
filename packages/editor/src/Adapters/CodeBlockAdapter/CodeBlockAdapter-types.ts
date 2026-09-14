@@ -51,6 +51,8 @@ export type PlainTextProviderFn = () => string[];
 export interface UpdateStateParams extends CodeBlockState {}
 
 export interface CodeBlockConfigPortProps {
+	readonly quickActions: QuickActionsConfigPort;
+
 	updateState(params: UpdateStateParams): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
@@ -65,14 +67,15 @@ export interface CodeBlockConfigPort
 	extends CodeBlockConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent>,
-		QuickActionsConfigPort {}
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface InsertParams extends PlacementOption {}
 
 export interface WrapParams extends PlacementOption {}
 
 export interface CodeBlockPublicPortProps {
+	readonly quickActions: QuickActionsPublicPort;
+
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
 	readonly canInsert: boolean;
@@ -102,8 +105,7 @@ export interface CodeBlockPublicPort
 	extends CodeBlockPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
-		CurrentComponentPublicPort,
-		QuickActionsPublicPort {}
+		CurrentComponentPublicPort {}
 
 export interface CodeBlockInternals {
 	canInsert: boolean;

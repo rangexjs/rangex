@@ -1,5 +1,6 @@
 import type { CodeBlockLanguage, CodeBlockTheme } from "@rangex/editor";
 import type { Accessor } from "solid-js";
+import type { ReactiveQuickActionsPort } from "../../_Utilities";
 
 export interface PlacementOption {
 	language: CodeBlockLanguage;
@@ -10,7 +11,7 @@ export interface InsertParams extends PlacementOption {}
 export interface WrapParams extends PlacementOption {}
 
 export interface ReactiveCodeBlockPort {
-	readonly quickActionsEl: HTMLDivElement;
+	readonly quickActions: ReactiveQuickActionsPort;
 	readonly languages: CodeBlockLanguage[];
 	readonly themes: CodeBlockTheme[];
 
@@ -21,7 +22,6 @@ export interface ReactiveCodeBlockPort {
 	lightTheme: Accessor<CodeBlockTheme>;
 	darkTheme: Accessor<CodeBlockTheme>;
 	currentBlock: Accessor<HTMLElement | null>;
-	quickActionsOpen: Accessor<boolean>;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;

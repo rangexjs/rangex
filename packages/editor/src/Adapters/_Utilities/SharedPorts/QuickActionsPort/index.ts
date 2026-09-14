@@ -1,6 +1,6 @@
 export { createQuickActionsPort } from "./QuickActionsPort";
 export type {
-	OnQuickActionsOpenUpdateCallbackFn,
+	OnQuickActionsToggleCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPort,
 	QuickActionsPublicPort,

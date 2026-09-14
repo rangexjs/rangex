@@ -139,8 +139,9 @@ ports one of two ways:
   For a port that's one instance of a reusable widget/concept that could need more than
   one differently-named copy on the same Adapter — the smell to watch for is member
   names needing a baked-in disambiguating prefix to avoid colliding once merged flat
-  (`caretMenuOpen`/`quickActionsOpen`/`selectionMenuOpen` are the same concept three
-  times over). `SelectionMenuPort` is the reference.
+  (`caretMenuOpen`/`quickActionsOpen`/`selectionMenuOpen` were the same concept three
+  times over before nesting). `SelectionMenuPort` and `QuickActionsPort` are the
+  reference.
 
 Naming inside a SharedPort follows the same State/Command/Provider rules as an Adapter
 (Member shapes above), plus two cases specific to SharedPorts:

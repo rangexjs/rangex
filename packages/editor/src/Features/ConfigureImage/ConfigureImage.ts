@@ -41,6 +41,7 @@ export const configureImage = ({
 	const { getCurrentBlock, cleanup: quickActionsCleanup } =
 		handleQuickActionsOverlayAppearance({
 			port: configPort,
+			quickActionsPort: configPort.quickActions,
 			editorAPI,
 			componentName: componentsName.image,
 			beforeOpen({ blockComponent }) {

@@ -41,6 +41,7 @@ export const configureCodeBlock = ({
 	const { getCurrentBlock, cleanup: quickActionsCleanup } =
 		handleQuickActionsOverlayAppearance({
 			port: configPort,
+			quickActionsPort: configPort.quickActions,
 			editorAPI,
 			componentName: componentsName.codeBlock,
 			beforeOpen({ blockComponent }) {

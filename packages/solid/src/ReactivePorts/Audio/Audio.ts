@@ -1,6 +1,9 @@
 import type { AudioPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type {
+	FromPublicToReactivePort,
+	ReactiveQuickActionsPort,
+} from "../../_Utilities";
 import type { ReactiveAudioPort } from "./Audio-types";
 
 export const Audio = <T extends AudioPublicPort | undefined>(
@@ -10,8 +13,8 @@ export const Audio = <T extends AudioPublicPort | undefined>(
 		return undefined as FromPublicToReactivePort<T>;
 	}
 
-	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
-		publicPort.quickActionsOpen,
+	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
+		publicPort.quickActions.isOpen,
 	);
 	const [captionEnabled, setCaptionEnabled] = createSignal(
 		publicPort.captionEnabled,
@@ -24,17 +27,25 @@ export const Audio = <T extends AudioPublicPort | undefined>(
 		publicPort.currentComponent,
 	);
 
-	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(
+		publicPort.quickActions.onToggle(() =>
+			setQuickActionsIsOpen(publicPort.quickActions.isOpen),
+		),
+	);
 	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
 	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
 	onCleanup(publicPort.onAlignUpdate(setAlign));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
+	const quickActions: ReactiveQuickActionsPort = {
+		element: publicPort.quickActions.element,
+		isOpen: quickActionsIsOpen,
+	};
+
 	const port: ReactiveAudioPort = {
-		quickActionsEl: publicPort.quickActionsEl,
+		quickActions,
 		canSwap: publicPort.canSwap,
 
-		quickActionsOpen,
 		captionEnabled,
 		captionPosition,
 		align,

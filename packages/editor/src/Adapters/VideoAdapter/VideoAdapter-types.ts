@@ -19,6 +19,7 @@ import type {
 
 export interface VideoConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
@@ -29,10 +30,11 @@ export interface VideoConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		CommitSnapshotConfigPort,
-		SwapToEmptyMediaConfigPort,
-		QuickActionsConfigPort {}
+		SwapToEmptyMediaConfigPort {}
 
-export interface VideoPublicPortProps {}
+export interface VideoPublicPortProps {
+	readonly quickActions: QuickActionsPublicPort;
+}
 
 export interface VideoPublicPort
 	extends VideoPublicPortProps,
@@ -40,8 +42,7 @@ export interface VideoPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		CommitSnapshotPublicPort,
-		SwapToEmptyMediaPublicPort,
-		QuickActionsPublicPort {}
+		SwapToEmptyMediaPublicPort {}
 
 export interface VideoAdapter {
 	configPort: VideoConfigPort;

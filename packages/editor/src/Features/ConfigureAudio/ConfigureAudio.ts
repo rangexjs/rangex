@@ -41,6 +41,7 @@ export const configureAudio = ({
 	const { getCurrentBlock, cleanup: quickActionsCleanup } =
 		handleQuickActionsOverlayAppearance({
 			port: configPort,
+			quickActionsPort: configPort.quickActions,
 			editorAPI,
 			componentName: componentsName.audio,
 			beforeOpen({ blockComponent }) {

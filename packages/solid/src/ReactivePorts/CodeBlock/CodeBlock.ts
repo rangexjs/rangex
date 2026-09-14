@@ -1,6 +1,9 @@
 import type { CodeBlockPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type {
+	FromPublicToReactivePort,
+	ReactiveQuickActionsPort,
+} from "../../_Utilities";
 import type { ReactiveCodeBlockPort } from "./CodeBlock-types";
 
 export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
@@ -19,8 +22,8 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	const [currentBlock, setCurrentBlock] = createSignal(
 		publicPort.currentComponent,
 	);
-	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
-		publicPort.quickActionsOpen,
+	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
+		publicPort.quickActions.isOpen,
 	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
@@ -30,10 +33,19 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	onCleanup(publicPort.onLightThemeUpdate(setLightTheme));
 	onCleanup(publicPort.onDarkThemeUpdate(setDarkTheme));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
-	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
+	onCleanup(
+		publicPort.quickActions.onToggle(() =>
+			setQuickActionsIsOpen(publicPort.quickActions.isOpen),
+		),
+	);
+
+	const quickActions: ReactiveQuickActionsPort = {
+		element: publicPort.quickActions.element,
+		isOpen: quickActionsIsOpen,
+	};
 
 	const port: ReactiveCodeBlockPort = {
-		quickActionsEl: publicPort.quickActionsEl,
+		quickActions,
 		languages: publicPort.languages,
 		themes: publicPort.themes,
 
@@ -44,7 +56,6 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 		lightTheme,
 		darkTheme,
 		currentBlock,
-		quickActionsOpen,
 
 		insert: publicPort.insert,
 		wrap: publicPort.wrap,

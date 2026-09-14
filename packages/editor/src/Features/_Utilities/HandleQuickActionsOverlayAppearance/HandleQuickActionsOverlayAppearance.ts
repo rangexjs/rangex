@@ -11,6 +11,7 @@ import type { HandleQuickActionsOverlayAppearanceParams } from "./HandleQuickAct
  */
 export const handleQuickActionsOverlayAppearance = ({
 	port,
+	quickActionsPort,
 	editorAPI,
 	componentName,
 	beforeOpen,
@@ -20,11 +21,11 @@ export const handleQuickActionsOverlayAppearance = ({
 	});
 
 	const anchorController = createAnchoredOverlayController({
-		element: port.quickActionsEl,
+		element: quickActionsPort.element,
 		options: {
 			lightDismiss: false,
 			closeOnEscape: false,
-			onToggle: (open) => port.updateQuickActions({ open }),
+			onToggle: (isOpen) => quickActionsPort.updateQuickActions({ isOpen }),
 		},
 	});
 
