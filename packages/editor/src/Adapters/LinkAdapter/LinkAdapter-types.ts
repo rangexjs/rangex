@@ -47,6 +47,7 @@ export interface UpdateStateParams extends LinkState {}
 export interface LinkConfigPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly linkMenu: LinkMenuSettings;
+	readonly selectionMenu: SelectionMenuConfigPort;
 
 	updateState(params: UpdateStateParams): void;
 	notifyLinkClick(): void;
@@ -62,13 +63,13 @@ export interface LinkConfigPortProps {
 export interface LinkConfigPort
 	extends LinkConfigPortProps,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort<InlineComponent>,
-		SelectionMenuConfigPort {}
+		CurrentComponentConfigPort<InlineComponent> {}
 
 export interface LinkPublicPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly canInsert: boolean;
 	readonly linkMenuOpen: boolean;
+	readonly selectionMenu: SelectionMenuPublicPort;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onLinkClick(callback: OnLinkClickCallbackFn): () => void;
@@ -84,8 +85,7 @@ export interface LinkPublicPortProps {
 export interface LinkPublicPort
 	extends LinkPublicPortProps,
 		UnwrapPublicPort,
-		CurrentComponentPublicPort,
-		SelectionMenuPublicPort {}
+		CurrentComponentPublicPort {}
 
 export interface LinkInternals {
 	canInsert: boolean;

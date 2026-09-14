@@ -1,31 +1,29 @@
-export type OnOpenSelectionMenuCallbackFn = () => void;
-export type OnCloseSelectionMenuCallbackFn = () => void;
+export type OnOpenCallbackFn = () => void;
+export type OnCloseCallbackFn = () => void;
 export type OnAddExemptNodeCallbackFn = (node: HTMLElement) => void;
 export type OnRemoveExemptNodeCallbackFn = (node: HTMLElement) => void;
 
 export interface SelectionMenuConfigPort {
-	readonly selectionMenu: HTMLDivElement;
+	readonly element: HTMLDivElement;
 
-	emitSelectionMenuToggle(): void;
+	notifyToggle(): void;
 
-	onOpenSelectionMenu(callback: OnOpenSelectionMenuCallbackFn): () => void;
-	onCloseSelectionMenu(callback: OnCloseSelectionMenuCallbackFn): () => void;
+	onOpen(callback: OnOpenCallbackFn): () => void;
+	onClose(callback: OnCloseCallbackFn): () => void;
 	onAddExemptNode(callback: OnAddExemptNodeCallbackFn): () => void;
 	onRemoveExemptNode(callback: OnRemoveExemptNodeCallbackFn): () => void;
 }
 
-export type OnSelectionMenuToggleCallbackFn = () => void;
+export type OnToggleCallbackFn = () => void;
 
 export interface SelectionMenuPublicPort {
-	readonly selectionMenu: HTMLDivElement;
-	readonly selectionMenuOpen: boolean;
+	readonly element: HTMLDivElement;
+	readonly isOpen: boolean;
 
-	onSelectionMenuOpenUpdate(
-		callback: OnSelectionMenuToggleCallbackFn,
-	): () => void;
+	onToggle(callback: OnToggleCallbackFn): () => void;
 
-	openSelectionMenu(): void;
-	closeSelectionMenu(): void;
+	open(): void;
+	close(): void;
 	addExemptNode(node: HTMLElement): void;
 	removeExemptNode(node: HTMLElement): void;
 }

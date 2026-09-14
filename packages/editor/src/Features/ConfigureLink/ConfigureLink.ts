@@ -25,7 +25,7 @@ export const configureLink = ({
 		selectionMenuPopoverController,
 		cleanup: selectionMenuAppearanceCleanup,
 	} = handleSelectionMenuAppearance({
-		configPort,
+		configPort: configPort.selectionMenu,
 		editorAPI,
 	});
 
@@ -51,7 +51,7 @@ export const configureLink = ({
 	});
 
 	const menuOpenCleanup = handleSelectionMenuOpen({
-		configPort,
+		configPort: configPort.selectionMenu,
 		editorAPI,
 		selectionMenuPopoverController,
 	});

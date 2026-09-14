@@ -70,7 +70,6 @@ export const createLinkAdapter = (
 	const configPort: LinkConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
 		currentComponentPort.configPort,
-		selectionMenuPort.configPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;
@@ -78,6 +77,10 @@ export const createLinkAdapter = (
 
 			get linkMenu() {
 				return linkMenu;
+			},
+
+			get selectionMenu() {
+				return selectionMenuPort.configPort;
 			},
 
 			updateState(params) {
@@ -121,7 +124,6 @@ export const createLinkAdapter = (
 	const publicPort: LinkPublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
 		currentComponentPort.publicPort,
-		selectionMenuPort.publicPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;
@@ -133,6 +135,10 @@ export const createLinkAdapter = (
 
 			get linkMenuOpen() {
 				return linkMenuEl.matches(":popover-open");
+			},
+
+			get selectionMenu() {
+				return selectionMenuPort.publicPort;
 			},
 
 			onCanInsertUpdate(callback) {

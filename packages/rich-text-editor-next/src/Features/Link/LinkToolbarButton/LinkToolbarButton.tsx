@@ -16,27 +16,27 @@ export const LinkToolbarButton = () => {
 	let containerRef: HTMLSpanElement;
 
 	onSettled(() => {
-		link.addExemptNode(containerRef);
+		link.selectionMenu.addExemptNode(containerRef);
 
 		return () => {
-			link.removeExemptNode(containerRef);
+			link.selectionMenu.removeExemptNode(containerRef);
 		};
 	});
 
 	const disabled = createMemo(() => !link.canInsert() || !!readOnly?.checked());
 
 	const onClick = () => {
-		if (link.selectionMenuOpen()) {
-			link.closeSelectionMenu();
+		if (link.selectionMenu.isOpen()) {
+			link.selectionMenu.close();
 		} else {
-			link.openSelectionMenu();
+			link.selectionMenu.open();
 		}
 	};
 
 	return (
 		<span ref={(el) => (containerRef = el)}>
 			<ToolbarButton
-				checked={link.selectionMenuOpen()}
+				checked={link.selectionMenu.isOpen()}
 				disabled={disabled()}
 				onClick={onClick}
 			>

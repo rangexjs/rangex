@@ -45,7 +45,7 @@ export const handleSelectionMenuOpen = ({
 	editorAPI,
 	selectionMenuPopoverController,
 }: HandleSelectionMenuOpenParams) => {
-	const unsubscribe = configPort.onOpenSelectionMenu(() => {
+	const unsubscribe = configPort.onOpen(() => {
 		const mode = getLinkPlacementMode({ editorAPI });
 
 		if (!mode) {

@@ -21,7 +21,7 @@ export const LinkSelectionMenu = () => {
 
 	const [isNewTab, setIsNewTab] = createSignal(false);
 
-	const { selectionMenu } = link;
+	const selectionMenuEl = link.selectionMenu.element;
 
 	const refreshFields = () => {
 		displayTextHandle.reset();
@@ -34,7 +34,7 @@ export const LinkSelectionMenu = () => {
 
 		flush();
 
-		const input = selectionMenu.querySelector<HTMLInputElement>(
+		const input = selectionMenuEl.querySelector<HTMLInputElement>(
 			`#${displayTextHandle.id}`,
 		);
 
@@ -45,8 +45,8 @@ export const LinkSelectionMenu = () => {
 		input.focus();
 	};
 
-	const selectionMenuOpenUpdateCleanup = link.onSelectionMenuOpenUpdate(() => {
-		if (!link.selectionMenuOpen) {
+	const selectionMenuOpenUpdateCleanup = link.selectionMenu.onToggle(() => {
+		if (!link.selectionMenu.isOpen) {
 			return;
 		}
 
@@ -89,7 +89,7 @@ export const LinkSelectionMenu = () => {
 			},
 		});
 
-		link.closeSelectionMenu();
+		link.selectionMenu.close();
 	};
 
 	const onNewTabChange = () => {
@@ -97,16 +97,16 @@ export const LinkSelectionMenu = () => {
 	};
 
 	const onCancel = () => {
-		link.closeSelectionMenu();
+		link.selectionMenu.close();
 	};
 
 	const className =
 		"z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900";
 
-	selectionMenu.classList.add(...className.split(" "));
+	selectionMenuEl.classList.add(...className.split(" "));
 
 	return (
-		<Portal mount={selectionMenu}>
+		<Portal mount={selectionMenuEl}>
 			<span class="absolute -top-2 left-1/2 inline-block size-4 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
 			<LinkEdit
 				mode="insert"

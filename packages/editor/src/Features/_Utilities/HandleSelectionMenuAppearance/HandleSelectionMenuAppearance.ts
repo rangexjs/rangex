@@ -17,12 +17,12 @@ export const handleSelectionMenuAppearance = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const selectionMenuPopoverController = createPopoverOverlayController({
-		element: configPort.selectionMenu,
+		element: configPort.element,
 		options: {
 			lightDismiss: true,
 			closeOnEscape: true,
 			onToggle: (open) => {
-				configPort.emitSelectionMenuToggle();
+				configPort.notifyToggle();
 
 				if (!preventHighlight) {
 					selection.highlight = open;
@@ -41,7 +41,7 @@ export const handleSelectionMenuAppearance = ({
 		},
 	});
 
-	const unsubscribeCloseSelectionMenu = configPort.onCloseSelectionMenu(() => {
+	const unsubscribeCloseSelectionMenu = configPort.onClose(() => {
 		selectionMenuPopoverController.hide({});
 	});
 

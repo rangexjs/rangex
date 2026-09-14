@@ -1,9 +1,9 @@
 import type { EditorAPI } from "rich-text-area";
-import type { LinkConfigPort } from "#adapters/Link";
+import type { SelectionMenuConfigPort } from "#adapters";
 import type { PopoverOverlayController } from "#engine-links";
 
 export interface HandleSelectionMenuOpenParams {
-	configPort: LinkConfigPort;
+	configPort: SelectionMenuConfigPort;
 	editorAPI: EditorAPI;
 	selectionMenuPopoverController: PopoverOverlayController;
 }

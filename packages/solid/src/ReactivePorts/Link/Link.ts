@@ -1,7 +1,7 @@
 import type { LinkPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type { FromPublicToReactivePort } from "../../_Utilities";
-import type { ReactiveLinkPort } from "./Link-types";
+import type { ReactiveLinkPort, ReactiveSelectionMenuPort } from "./Link-types";
 
 export const Link = <T extends LinkPublicPort | undefined>(
 	publicPort: T,
@@ -12,8 +12,8 @@ export const Link = <T extends LinkPublicPort | undefined>(
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [linkMenuOpen, setLinkMenuOpen] = createSignal(publicPort.linkMenuOpen);
-	const [selectionMenuOpen, setSelectionMenuOpen] = createSignal(
-		publicPort.selectionMenuOpen,
+	const [selectionMenuIsOpen, setSelectionMenuIsOpen] = createSignal(
+		publicPort.selectionMenu.isOpen,
 	);
 	const [currentLink, setCurrentLink] = createSignal(
 		publicPort.currentComponent,
@@ -24,19 +24,28 @@ export const Link = <T extends LinkPublicPort | undefined>(
 		publicPort.onLinkMenuToggle(() => setLinkMenuOpen(publicPort.linkMenuOpen)),
 	);
 	onCleanup(
-		publicPort.onSelectionMenuOpenUpdate(() =>
-			setSelectionMenuOpen(publicPort.selectionMenuOpen),
+		publicPort.selectionMenu.onToggle(() =>
+			setSelectionMenuIsOpen(publicPort.selectionMenu.isOpen),
 		),
 	);
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentLink));
 
+	const selectionMenu: ReactiveSelectionMenuPort = {
+		element: publicPort.selectionMenu.element,
+		isOpen: selectionMenuIsOpen,
+		onToggle: publicPort.selectionMenu.onToggle,
+		open: publicPort.selectionMenu.open,
+		close: publicPort.selectionMenu.close,
+		addExemptNode: publicPort.selectionMenu.addExemptNode,
+		removeExemptNode: publicPort.selectionMenu.removeExemptNode,
+	};
+
 	const port: ReactiveLinkPort = {
 		linkMenuEl: publicPort.linkMenuEl,
-		selectionMenu: publicPort.selectionMenu,
+		selectionMenu,
 
 		canInsert,
 		linkMenuOpen,
-		selectionMenuOpen,
 		currentLink,
 
 		onLinkClick: publicPort.onLinkClick,
@@ -45,10 +54,6 @@ export const Link = <T extends LinkPublicPort | undefined>(
 		insert: publicPort.insert,
 		modify: publicPort.modify,
 		unwrap: publicPort.unwrap,
-		openSelectionMenu: publicPort.openSelectionMenu,
-		closeSelectionMenu: publicPort.closeSelectionMenu,
-		addExemptNode: publicPort.addExemptNode,
-		removeExemptNode: publicPort.removeExemptNode,
 		getDisplayText: publicPort.getDisplayText,
 	};
 

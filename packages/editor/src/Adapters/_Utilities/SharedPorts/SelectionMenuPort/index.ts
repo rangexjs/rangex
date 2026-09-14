@@ -1,8 +1,8 @@
 export { createSelectionMenuPort } from "./SelectionMenuPort";
 export type {
-	OnCloseSelectionMenuCallbackFn,
-	OnOpenSelectionMenuCallbackFn,
-	OnSelectionMenuToggleCallbackFn,
+	OnCloseCallbackFn,
+	OnOpenCallbackFn,
+	OnToggleCallbackFn,
 	SelectionMenuConfigPort,
 	SelectionMenuPort,
 	SelectionMenuPublicPort,
