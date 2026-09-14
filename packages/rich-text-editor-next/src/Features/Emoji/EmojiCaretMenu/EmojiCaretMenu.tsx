@@ -3,15 +3,16 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const EmojiCaretMenu = () => {
-	const editor = useEditorContext();
-	const emoji = Emoji(editor.emoji);
+	const { emoji } = useEditorContext();
 
 	if (!emoji) {
 		throw new Error("Emoji can't be undefined.");
 	}
 
+	const $emoji = Emoji(emoji);
+
 	const items = () =>
-		emoji.filteredItems().map((item): CaretItemFn => {
+		$emoji.filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -30,7 +31,7 @@ export const EmojiCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = emoji.filteredItems().at(index);
+		const item = $emoji.filteredItems().at(index);
 
 		if (!item) {
 			return;
@@ -41,9 +42,8 @@ export const EmojiCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={emoji.caretMenu.element}
+			caretMenuPort={emoji.caretMenu}
 			items={items}
-			isOpen={emoji.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-40 max-w-56"
 		/>

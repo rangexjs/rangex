@@ -5,16 +5,17 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CheckboxListToolbarButton = () => {
-	const editor = useEditorContext();
-	const todoList = TodoList(editor.todoList);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { todoList, readOnly } = useEditorContext();
 
 	if (!todoList) {
 		throw new Error("TodoList can't be undefined.");
 	}
 
+	const $todoList = TodoList(todoList);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => !todoList.canWrap() || !!readOnly?.checked(),
+		() => !$todoList.canWrap() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

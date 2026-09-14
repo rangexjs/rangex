@@ -9,16 +9,17 @@ import {
 } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
-	const editor = useEditorContext();
-	const codeBlock = CodeBlock(editor.codeBlock);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { codeBlock, readOnly } = useEditorContext();
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");
 	}
 
+	const $codeBlock = CodeBlock(codeBlock);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => !codeBlock.canWrap() || !!readOnly?.checked(),
+		() => !$codeBlock.canWrap() || !!$readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();

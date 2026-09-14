@@ -19,9 +19,6 @@ export const TodoList = <T extends TodoListPublicPort | undefined>(
 	const port: ReactiveTodoListPort = {
 		canInsert,
 		canWrap,
-
-		insert: publicPort.insert,
-		wrap: publicPort.wrap,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTodoListPort>;

@@ -5,16 +5,17 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const HistoryForwardToolbarButton = () => {
-	const editor = useEditorContext();
-	const undoRedo = UndoRedo(editor.undoRedo);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { undoRedo, readOnly } = useEditorContext();
 
 	if (!undoRedo) {
 		throw new Error("UndoRedo can't be undefined.");
 	}
 
+	const $undoRedo = UndoRedo(undoRedo);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => !undoRedo.canStepForward() || !!readOnly?.checked(),
+		() => !$undoRedo.canStepForward() || !!$readOnly?.checked(),
 	);
 
 	return (

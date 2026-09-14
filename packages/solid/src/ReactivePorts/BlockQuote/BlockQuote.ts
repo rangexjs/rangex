@@ -19,9 +19,6 @@ export const BlockQuote = <T extends BlockQuotePublicPort | undefined>(
 	const port: ReactiveBlockQuotePort = {
 		canInsert,
 		canWrap,
-
-		insert: publicPort.insert,
-		wrap: publicPort.wrap,
 	};
 
 	return port as PreserveUndefined<T, ReactiveBlockQuotePort>;

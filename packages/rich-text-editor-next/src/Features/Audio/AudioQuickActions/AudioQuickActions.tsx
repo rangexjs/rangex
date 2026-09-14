@@ -1,6 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
-import { Audio, ReadOnly } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { Audio, FloatingPortal, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createSignal,
@@ -25,16 +24,17 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const AudioQuickActions = () => {
-	const editor = useEditorContext();
-	const audio = Audio(editor.audio);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { audio, readOnly } = useEditorContext();
 
-	if (!(audio && editor.audio)) {
+	if (!audio) {
 		throw new Error("Audio can't be undefined.");
 	}
 
+	const $audio = Audio(audio);
+	const $readOnly = ReadOnly(readOnly);
+
 	const audioElement = () => {
-		const currentBlock = audio.currentBlock();
+		const currentBlock = $audio.currentComponent();
 
 		return currentBlock?.querySelector<HTMLAudioElement>("audio") ?? null;
 	};
@@ -181,11 +181,7 @@ export const AudioQuickActions = () => {
 	};
 
 	const onCaptionToggle = () => {
-		if (readOnly?.checked()) {
-			return;
-		}
-
-		audio.changeCaptionEnabled(!audio.captionEnabled());
+		audio.changeCaptionEnabled(!$audio.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -210,10 +206,8 @@ export const AudioQuickActions = () => {
 		}
 	};
 
-	// We can't rely on audio.quickActions.isOpen() as we have to detect the change before repaint
-	const audioQuickActionsPort = editor.audio.quickActions;
-	const unsubscribeIsOpen = audioQuickActionsPort.onToggle(() => {
-		if (!audioQuickActionsPort.isOpen) {
+	const unsubscribeIsOpen = audio.quickActions.onToggle(() => {
+		if (!audio.quickActions.isOpen) {
 			closeNestedPopovers();
 		}
 	});
@@ -223,11 +217,11 @@ export const AudioQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={audio.quickActions.element}>
+		<FloatingPortal mount={audio.quickActions.element}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
-					value={audio.align()}
-					disabled={readOnly?.checked()}
+					value={$audio.align()}
+					disabled={$readOnly?.checked()}
 					onChange={(value) => audio.changeAlign(value)}
 					popoverRef={(el) => {
 						blockAlignPopover = el;
@@ -238,7 +232,7 @@ export const AudioQuickActions = () => {
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Swap"
-					disabled={!audio.canSwap || readOnly?.checked()}
+					disabled={!audio.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
 					<Icon name="Swap" class="size-4" />
@@ -251,7 +245,7 @@ export const AudioQuickActions = () => {
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
 						title="Options"
-						disabled={readOnly?.checked()}
+						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
 					</button>
@@ -297,14 +291,14 @@ export const AudioQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={audio.captionEnabled()}
+								checked={$audio.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!audio.captionEnabled()}>
+						<div hidden={!$audio.captionEnabled()}>
 							<SegmentedControl
-								id={audio.captionPosition()}
+								id={$audio.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => audio.changeCaptionPosition(value)}
 								appearance="primary-outline"
@@ -345,6 +339,6 @@ export const AudioQuickActions = () => {
 					</div>
 				</span>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };

@@ -1,18 +1,18 @@
-import { CodeBlock, ReadOnly } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { CodeBlock, FloatingPortal, ReadOnly } from "@rangex/solid";
 import { createSignal, createUniqueId, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../_Utilities";
 
 export const CodeBlockQuickActions = () => {
-	const editor = useEditorContext();
-	const codeBlock = CodeBlock(editor.codeBlock);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { codeBlock, readOnly } = useEditorContext();
 
-	if (!(codeBlock && editor.codeBlock)) {
+	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");
 	}
+
+	const $codeBlock = CodeBlock(codeBlock);
+	const $readOnly = ReadOnly(readOnly);
 
 	const languageOptions = codeBlock.languages.map((language) => ({
 		label: language,
@@ -43,10 +43,8 @@ export const CodeBlockQuickActions = () => {
 		}
 	};
 
-	// We can't rely on codeBlock.quickActions.isOpen() as we have to detect the change before repaint
-	const codeBlockQuickActionsPort = editor.codeBlock.quickActions;
-	const unsubscribeIsOpen = codeBlockQuickActionsPort.onToggle(() => {
-		if (!codeBlockQuickActionsPort.isOpen) {
+	const unsubscribeIsOpen = codeBlock.quickActions.onToggle(() => {
+		if (!codeBlock.quickActions.isOpen) {
 			closeNestedPopovers();
 		}
 	});
@@ -68,13 +66,13 @@ export const CodeBlockQuickActions = () => {
 	})();
 
 	return (
-		<Portal mount={codeBlock.quickActions.element}>
+		<FloatingPortal mount={codeBlock.quickActions.element}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Copy"
-					disabled={readOnly?.checked()}
+					disabled={$readOnly?.checked()}
 					onClick={onCopyClick}
 				>
 					<Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />
@@ -86,7 +84,7 @@ export const CodeBlockQuickActions = () => {
 					command="toggle-popover"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Options"
-					disabled={readOnly?.checked()}
+					disabled={$readOnly?.checked()}
 				>
 					<Icon name="DotsThreeHorizontal" class="size-4" />
 				</button>
@@ -101,26 +99,26 @@ export const CodeBlockQuickActions = () => {
 				>
 					<OptionDropdown
 						label="Language"
-						value={codeBlock.language()}
+						value={$codeBlock.language()}
 						options={languageOptions}
 						onSelect={(language) => codeBlock.changeLanguage(language)}
 					/>
 					<OptionDropdown
 						label="☀ Light"
-						value={codeBlock.lightTheme()}
+						value={$codeBlock.lightTheme()}
 						options={themeOptions}
 						onSelect={(theme) => codeBlock.changeLightTheme(theme)}
 						class="flex-1"
 					/>
 					<OptionDropdown
 						label="☾ Dark"
-						value={codeBlock.darkTheme()}
+						value={$codeBlock.darkTheme()}
 						options={themeOptions}
 						onSelect={(theme) => codeBlock.changeDarkTheme(theme)}
 						class="flex-1"
 					/>
 				</div>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };

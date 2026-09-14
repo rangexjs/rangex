@@ -7,16 +7,18 @@ import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 
 export const CommandMenuCaretMenu = () => {
 	const editor = useEditorContext();
-	const commandMenu = CommandMenu(editor.commandMenu);
+	const { commandMenu } = editor;
 
 	if (!commandMenu) {
 		throw new Error("CommandMenu can't be undefined.");
 	}
 
+	const $commandMenu = CommandMenu(commandMenu);
+
 	const actions = createMemo(() => buildCommandMenuActions({ editor }));
 
 	const entries = createMemo(() =>
-		commandMenu
+		$commandMenu
 			.filteredItems()
 			.map((item) => {
 				const action = actions().get(item.value);
@@ -59,9 +61,8 @@ export const CommandMenuCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={commandMenu.caretMenu.element}
+			caretMenuPort={commandMenu.caretMenu}
 			items={items}
-			isOpen={commandMenu.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-48 max-w-64"
 		/>

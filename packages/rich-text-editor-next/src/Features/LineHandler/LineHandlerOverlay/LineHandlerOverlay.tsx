@@ -1,23 +1,17 @@
-import { LineHandler } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { FloatingPortal, LineHandler } from "@rangex/solid";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { LineButton } from "./_Utilities";
 import { LineDrag } from "./LineDrag";
 
 export const LineHandlerOverlay = () => {
-	const editor = useEditorContext();
-	const lineHandler = LineHandler(editor.lineHandler);
+	const { lineHandler } = useEditorContext();
 
-	if (!(lineHandler && editor.lineHandler)) {
+	if (!lineHandler) {
 		throw new Error("LineHandler can't be undefined.");
 	}
 
-	lineHandler.element.classList.add(
-		..."z-10 hidden items-center gap-0.5 bg-transparent sm:flex".split(" "),
-	);
-
-	lineHandler.element.style.transition = "top 200ms ease-out";
+	const $lineHandler = LineHandler(lineHandler);
 
 	const onInsertClick = (event: MouseEvent) => {
 		const position = event.altKey ? "above" : "below";
@@ -25,7 +19,10 @@ export const LineHandlerOverlay = () => {
 	};
 
 	return (
-		<Portal mount={lineHandler.element}>
+		<FloatingPortal
+			mount={lineHandler.element}
+			class="z-10 hidden items-center gap-0.5 bg-transparent transition-[top] duration-200 ease-[ease-out] sm:flex"
+		>
 			<LineButton
 				title="Insert line below (Alt: insert above)"
 				onClick={onInsertClick}
@@ -33,7 +30,7 @@ export const LineHandlerOverlay = () => {
 				<Icon name="Plus" class="size-3" />
 			</LineButton>
 
-			<LineDrag lineHandler={lineHandler} />
-		</Portal>
+			<LineDrag lineHandler={lineHandler} $lineHandler={$lineHandler} />
+		</FloatingPortal>
 	);
 };

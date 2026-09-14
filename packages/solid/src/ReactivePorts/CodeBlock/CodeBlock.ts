@@ -1,9 +1,6 @@
 import type { CodeBlockPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	PreserveUndefined,
-	ReactiveQuickActionsPort,
-} from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveCodeBlockPort } from "./CodeBlock-types";
 
 export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
@@ -19,11 +16,8 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	const [language, setLanguage] = createSignal(publicPort.language);
 	const [lightTheme, setLightTheme] = createSignal(publicPort.lightTheme);
 	const [darkTheme, setDarkTheme] = createSignal(publicPort.darkTheme);
-	const [currentBlock, setCurrentBlock] = createSignal(
+	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
-	);
-	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
-		publicPort.quickActions.isOpen,
 	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
@@ -32,39 +26,16 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	onCleanup(publicPort.onLanguageUpdate(setLanguage));
 	onCleanup(publicPort.onLightThemeUpdate(setLightTheme));
 	onCleanup(publicPort.onDarkThemeUpdate(setDarkTheme));
-	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
-	onCleanup(
-		publicPort.quickActions.onToggle(() =>
-			setQuickActionsIsOpen(publicPort.quickActions.isOpen),
-		),
-	);
-
-	const quickActions: ReactiveQuickActionsPort = {
-		element: publicPort.quickActions.element,
-		isOpen: quickActionsIsOpen,
-	};
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 
 	const port: ReactiveCodeBlockPort = {
-		quickActions,
-		languages: publicPort.languages,
-		themes: publicPort.themes,
-
 		canInsert,
 		canWrap,
 		isActive,
 		language,
 		lightTheme,
 		darkTheme,
-		currentBlock,
-
-		insert: publicPort.insert,
-		wrap: publicPort.wrap,
-		changeLanguage: publicPort.changeLanguage,
-		changeLightTheme: publicPort.changeLightTheme,
-		changeDarkTheme: publicPort.changeDarkTheme,
-		remove: publicPort.remove,
-		unwrap: publicPort.unwrap,
-		getPlainText: publicPort.getPlainText,
+		currentComponent,
 	};
 
 	return port as PreserveUndefined<T, ReactiveCodeBlockPort>;

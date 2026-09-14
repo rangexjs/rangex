@@ -1,6 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
-import { ReadOnly, Video } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { FloatingPortal, ReadOnly, Video } from "@rangex/solid";
 import {
 	createEffect,
 	createSignal,
@@ -50,16 +49,17 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const VideoQuickActions = () => {
-	const editor = useEditorContext();
-	const video = Video(editor.video);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { video, readOnly } = useEditorContext();
 
-	if (!(video && editor.video)) {
+	if (!video) {
 		throw new Error("Video can't be undefined.");
 	}
 
+	const $video = Video(video);
+	const $readOnly = ReadOnly(readOnly);
+
 	const videoElement = () => {
-		const currentBlock = video.currentBlock();
+		const currentBlock = $video.currentComponent();
 
 		return currentBlock?.querySelector<HTMLVideoElement>("video") ?? null;
 	};
@@ -280,11 +280,7 @@ export const VideoQuickActions = () => {
 	};
 
 	const onCaptionToggle = () => {
-		if (readOnly?.checked()) {
-			return;
-		}
-
-		video.changeCaptionEnabled(!video.captionEnabled());
+		video.changeCaptionEnabled(!$video.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -309,10 +305,8 @@ export const VideoQuickActions = () => {
 		}
 	};
 
-	// We can't rely on video.quickActions.isOpen() as we have to detect the change before repaint
-	const videoQuickActionsPort = editor.video.quickActions;
-	const unsubscribeIsOpen = videoQuickActionsPort.onToggle(() => {
-		if (!videoQuickActionsPort.isOpen) {
+	const unsubscribeIsOpen = video.quickActions.onToggle(() => {
+		if (!video.quickActions.isOpen) {
 			closeNestedPopovers();
 		}
 	});
@@ -322,11 +316,11 @@ export const VideoQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={video.quickActions.element}>
+		<FloatingPortal mount={video.quickActions.element}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
-					value={video.align()}
-					disabled={readOnly?.checked()}
+					value={$video.align()}
+					disabled={$readOnly?.checked()}
 					onChange={(value) => video.changeAlign(value)}
 					popoverRef={(el) => {
 						blockAlignPopover = el;
@@ -337,7 +331,7 @@ export const VideoQuickActions = () => {
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Swap"
-					disabled={!video.canSwap || readOnly?.checked()}
+					disabled={!video.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
 					<Icon name="Swap" class="size-4" />
@@ -350,7 +344,7 @@ export const VideoQuickActions = () => {
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
 						title="Options"
-						disabled={readOnly?.checked()}
+						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
 					</button>
@@ -410,14 +404,14 @@ export const VideoQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={video.captionEnabled()}
+								checked={$video.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!video.captionEnabled()}>
+						<div hidden={!$video.captionEnabled()}>
 							<SegmentedControl
-								id={video.captionPosition()}
+								id={$video.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => video.changeCaptionPosition(value)}
 								appearance="primary-outline"
@@ -488,6 +482,6 @@ export const VideoQuickActions = () => {
 					</div>
 				</span>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };

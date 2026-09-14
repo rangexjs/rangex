@@ -3,6 +3,7 @@ export type {
 	BlockAlignValue,
 	CaptionPosition,
 	CaptionState,
+	CaretMenuPublicPort,
 	InsertRootLinePosition,
 	MediaType,
 } from "#adapters";

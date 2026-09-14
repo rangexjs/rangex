@@ -21,9 +21,6 @@ export const UndoRedo = <T extends UndoRedoPublicPort | undefined>(
 	const port: ReactiveUndoRedoPort = {
 		canStepBack,
 		canStepForward,
-
-		stepBack: publicPort.stepBack,
-		stepForward: publicPort.stepForward,
 	};
 
 	return port as PreserveUndefined<T, ReactiveUndoRedoPort>;

@@ -1,4 +1,4 @@
-import type { ReactiveTemplateVariablePort } from "@rangex/solid";
+import type { TemplateVariablePublicPort } from "@rangex/editor";
 import {
 	createTextFieldState,
 	FormField,
@@ -10,7 +10,7 @@ import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface NameModalProps {
 	modalId: string;
-	templateVariable: ReactiveTemplateVariablePort;
+	templateVariable: TemplateVariablePublicPort;
 }
 
 export const NameModal = (props: NameModalProps) => {
@@ -24,7 +24,7 @@ export const NameModal = (props: NameModalProps) => {
 			return;
 		}
 
-		const options = props.templateVariable.options();
+		const options = props.templateVariable.options;
 		firstNameHandle.setValue(options.firstName ?? "");
 		lastNameHandle.setValue(options.lastName ?? "");
 	};

@@ -120,14 +120,15 @@ const Menu = (props: MenuProps) => {
 };
 
 export const TableContextMenu = () => {
-	const editor = useEditorContext();
-	const table = Table(editor.table);
+	const { table } = useEditorContext();
 
-	if (!(table && editor.table)) {
+	if (!table) {
 		throw new Error("Table can't be undefined.");
 	}
 
-	const contextMenuItems = createContextMenuItems({ table });
+	const $table = Table(table);
+
+	const contextMenuItems = createContextMenuItems({ table, $table });
 
 	const popoverId = createUniqueId();
 
@@ -147,7 +148,7 @@ export const TableContextMenu = () => {
 	};
 
 	// We can't rely on table.contextMenuOpen() as we have to detect the change before repaint
-	const unsubscribeIsOpen = editor.table.onContextMenuOpenUpdate((open) => {
+	const unsubscribeIsOpen = table.onContextMenuOpenUpdate((open) => {
 		if (!open) {
 			closeNestedPopovers();
 		}

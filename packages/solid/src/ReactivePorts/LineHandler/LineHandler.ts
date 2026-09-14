@@ -23,19 +23,10 @@ export const LineHandler = <T extends LineHandlerPublicPort | undefined>(
 	onCleanup(publicPort.onCanUnwrapUpdate(setCanUnwrap));
 
 	const port: ReactiveLineHandlerPort = {
-		element: publicPort.element,
-
 		turnIntoAvailability,
 		canRemove,
 		canDuplicate,
 		canUnwrap,
-
-		dragStart: publicPort.dragStart,
-		turnInto: publicPort.turnInto,
-		remove: publicPort.remove,
-		duplicate: publicPort.duplicate,
-		unwrap: publicPort.unwrap,
-		insertRootLine: publicPort.insertRootLine,
 	};
 
 	return port as PreserveUndefined<T, ReactiveLineHandlerPort>;

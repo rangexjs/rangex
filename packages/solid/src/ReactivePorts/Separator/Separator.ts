@@ -16,8 +16,6 @@ export const Separator = <T extends SeparatorPublicPort | undefined>(
 
 	const port: ReactiveSeparatorPort = {
 		canInsert,
-
-		insert: publicPort.insert,
 	};
 
 	return port as PreserveUndefined<T, ReactiveSeparatorPort>;

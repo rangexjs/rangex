@@ -11,18 +11,19 @@ import {
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
 export const TemplateVariableToolbarButton = () => {
-	const editor = useEditorContext();
-	const templateVariable = TemplateVariable(editor.templateVariable);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { templateVariable, readOnly } = useEditorContext();
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");
 	}
 
+	const $templateVariable = TemplateVariable(templateVariable);
+	const $readOnly = ReadOnly(readOnly);
+
 	const [checked, setChecked] = createSignal(false);
 
 	const disabled = createMemo(
-		() => !templateVariable.canInsert() || !!readOnly?.checked(),
+		() => !$templateVariable.canInsert() || !!$readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();

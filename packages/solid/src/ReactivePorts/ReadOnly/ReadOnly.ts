@@ -16,8 +16,6 @@ export const ReadOnly = <T extends ReadOnlyPublicPort | undefined>(
 
 	const port: ReactiveReadOnlyPort = {
 		checked,
-
-		toggle: publicPort.toggle,
 	};
 
 	return port as PreserveUndefined<T, ReactiveReadOnlyPort>;

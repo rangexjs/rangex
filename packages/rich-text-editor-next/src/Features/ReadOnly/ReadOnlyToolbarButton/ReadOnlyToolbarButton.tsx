@@ -4,12 +4,13 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const ReadOnlyToolbarButton = () => {
-	const editor = useEditorContext();
-	const readOnly = ReadOnly(editor.readOnly);
+	const { readOnly } = useEditorContext();
 
 	if (!readOnly) {
 		throw new Error("ReadOnly can't be undefined.");
 	}
+
+	const $readOnly = ReadOnly(readOnly);
 
 	const onClick = () => {
 		readOnly.toggle();
@@ -18,9 +19,9 @@ export const ReadOnlyToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={readOnly.checked()}
+				checked={$readOnly.checked()}
 				onClick={onClick}
-				aria-pressed={`${readOnly.checked()}`}
+				aria-pressed={`${$readOnly.checked()}`}
 			>
 				<Icon name="LockSimple" class="size-4" />
 			</ToolbarButton>

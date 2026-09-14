@@ -1,6 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
-import { Embed, ReadOnly } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { Embed, FloatingPortal, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createSignal,
@@ -40,16 +39,17 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const EmbedQuickActions = () => {
-	const editor = useEditorContext();
-	const embed = Embed(editor.embed);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { embed, readOnly } = useEditorContext();
 
-	if (!(embed && editor.embed)) {
+	if (!embed) {
 		throw new Error("Embed can't be undefined.");
 	}
 
+	const $embed = Embed(embed);
+	const $readOnly = ReadOnly(readOnly);
+
 	const embedElement = () => {
-		const currentBlock = embed.currentBlock();
+		const currentBlock = $embed.currentComponent();
 
 		return currentBlock?.querySelector<HTMLIFrameElement>("iframe") ?? null;
 	};
@@ -133,11 +133,7 @@ export const EmbedQuickActions = () => {
 	};
 
 	const onCaptionToggle = () => {
-		if (readOnly?.checked()) {
-			return;
-		}
-
-		embed.changeCaptionEnabled(!embed.captionEnabled());
+		embed.changeCaptionEnabled(!$embed.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -162,10 +158,8 @@ export const EmbedQuickActions = () => {
 		}
 	};
 
-	// We can't rely on embed.quickActions.isOpen() as we have to detect the change before repaint
-	const embedQuickActionsPort = editor.embed.quickActions;
-	const unsubscribeIsOpen = embedQuickActionsPort.onToggle(() => {
-		if (!embedQuickActionsPort.isOpen) {
+	const unsubscribeIsOpen = embed.quickActions.onToggle(() => {
+		if (!embed.quickActions.isOpen) {
 			closeNestedPopovers();
 		}
 	});
@@ -175,11 +169,11 @@ export const EmbedQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={embed.quickActions.element}>
+		<FloatingPortal mount={embed.quickActions.element}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
-					value={embed.align()}
-					disabled={readOnly?.checked()}
+					value={$embed.align()}
+					disabled={$readOnly?.checked()}
 					onChange={(value) => embed.changeAlign(value)}
 					popoverRef={(el) => {
 						blockAlignPopover = el;
@@ -190,7 +184,7 @@ export const EmbedQuickActions = () => {
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Swap"
-					disabled={!embed.canSwap || readOnly?.checked()}
+					disabled={!embed.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
 					<Icon name="Swap" class="size-4" />
@@ -203,7 +197,7 @@ export const EmbedQuickActions = () => {
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
 						title="Options"
-						disabled={readOnly?.checked()}
+						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
 					</button>
@@ -228,14 +222,14 @@ export const EmbedQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={embed.captionEnabled()}
+								checked={$embed.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!embed.captionEnabled()}>
+						<div hidden={!$embed.captionEnabled()}>
 							<SegmentedControl
-								id={embed.captionPosition()}
+								id={$embed.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => embed.changeCaptionPosition(value)}
 								appearance="primary-outline"
@@ -276,6 +270,6 @@ export const EmbedQuickActions = () => {
 					</div>
 				</span>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };

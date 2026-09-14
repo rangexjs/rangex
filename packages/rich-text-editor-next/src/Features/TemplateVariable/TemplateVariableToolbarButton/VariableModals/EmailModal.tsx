@@ -1,4 +1,4 @@
-import type { ReactiveTemplateVariablePort } from "@rangex/solid";
+import type { TemplateVariablePublicPort } from "@rangex/editor";
 import { flush } from "solid-js";
 import {
 	createTextFieldState,
@@ -11,7 +11,7 @@ import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface EmailModalProps {
 	modalId: string;
-	templateVariable: ReactiveTemplateVariablePort;
+	templateVariable: TemplateVariablePublicPort;
 }
 
 export const EmailModal = (props: EmailModalProps) => {
@@ -26,7 +26,7 @@ export const EmailModal = (props: EmailModalProps) => {
 			return;
 		}
 
-		emailHandle.setValue(props.templateVariable.options().email ?? "");
+		emailHandle.setValue(props.templateVariable.options.email ?? "");
 	};
 
 	const updateTemplateVariable = (event: MouseEvent) => {

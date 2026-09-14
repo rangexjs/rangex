@@ -37,8 +37,6 @@ export const Table = <T extends TablePublicPort | undefined>(
 	onCleanup(publicPort.onClearContentsUpdate(setClearContents));
 
 	const port: ReactiveTablePort = {
-		contextMenuEl: publicPort.contextMenuEl,
-
 		canInsert,
 		contextMenuOpen,
 		sectionType,
@@ -48,15 +46,6 @@ export const Table = <T extends TablePublicPort | undefined>(
 		verticalAlignment,
 		cellResizing,
 		clearContents,
-
-		insert: publicPort.insert,
-		changeSectionType: publicPort.changeSectionType,
-		changeMergeSplit: publicPort.changeMergeSplit,
-		changeInsertDelete: publicPort.changeInsertDelete,
-		changeCellType: publicPort.changeCellType,
-		changeVerticalAlignment: publicPort.changeVerticalAlignment,
-		changeCellResizing: publicPort.changeCellResizing,
-		clear: publicPort.clear,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTablePort>;

@@ -6,17 +6,17 @@ import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const editor = useEditorContext();
-	const accordionItem = AccordionItem(editor.accordionItem);
-	const separator = Separator(editor.separator);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { accordionItem, separator, readOnly } = useEditorContext();
+	const $accordionItem = AccordionItem(accordionItem);
+	const $separator = Separator(separator);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
 	const disabled = createMemo(
 		() =>
-			!(accordionItem?.canInsert() || separator?.canInsert()) ||
-			!!readOnly?.checked(),
+			!($accordionItem?.canInsert() || $separator?.canInsert()) ||
+			!!$readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();
@@ -30,12 +30,12 @@ export const CustomComponentToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const items: ToolbarDropdownList = [];
 
-		if (accordionItem) {
+		if (accordionItem && $accordionItem) {
 			items.push({
 				icon: "CaretCircleRight",
 				text: "Accordion",
 				button: {
-					disabled: !accordionItem.canInsert(),
+					disabled: !$accordionItem.canInsert(),
 					onClick: () => {
 						accordionItem.insert();
 					},
@@ -43,12 +43,12 @@ export const CustomComponentToolbarButton = () => {
 			});
 		}
 
-		if (separator) {
+		if (separator && $separator) {
 			items.push({
 				icon: "Separator",
 				text: "Separator",
 				button: {
-					disabled: !separator.canInsert(),
+					disabled: !$separator.canInsert(),
 					onClick: () => {
 						separator.insert();
 					},

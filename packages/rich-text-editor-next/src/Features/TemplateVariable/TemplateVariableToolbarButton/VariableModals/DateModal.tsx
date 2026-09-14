@@ -1,4 +1,4 @@
-import type { ReactiveTemplateVariablePort } from "@rangex/solid";
+import type { TemplateVariablePublicPort } from "@rangex/editor";
 import { flush } from "solid-js";
 import {
 	createTextFieldState,
@@ -11,7 +11,7 @@ import { normalizeTemplateVariableValue } from "./_Utilities";
 
 interface DateModalProps {
 	modalId: string;
-	templateVariable: ReactiveTemplateVariablePort;
+	templateVariable: TemplateVariablePublicPort;
 }
 
 export const DateModal = (props: DateModalProps) => {
@@ -31,7 +31,7 @@ export const DateModal = (props: DateModalProps) => {
 			return;
 		}
 
-		dateHandle.setValue(props.templateVariable.options().date ?? "");
+		dateHandle.setValue(props.templateVariable.options.date ?? "");
 	};
 
 	const updateTemplateVariable = (event: MouseEvent) => {

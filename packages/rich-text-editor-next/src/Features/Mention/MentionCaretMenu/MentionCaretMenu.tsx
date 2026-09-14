@@ -3,15 +3,16 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const MentionCaretMenu = () => {
-	const editor = useEditorContext();
-	const mention = Mention(editor.mention);
+	const { mention } = useEditorContext();
 
 	if (!mention) {
 		throw new Error("Mention can't be undefined.");
 	}
 
+	const $mention = Mention(mention);
+
 	const items = () =>
-		mention.filteredItems().map((item): CaretItemFn => {
+		$mention.filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -39,7 +40,7 @@ export const MentionCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = mention.filteredItems().at(index);
+		const item = $mention.filteredItems().at(index);
 
 		if (!item) {
 			return;
@@ -50,9 +51,8 @@ export const MentionCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={mention.caretMenu.element}
+			caretMenuPort={mention.caretMenu}
 			items={items}
-			isOpen={mention.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-48 max-w-64"
 		/>

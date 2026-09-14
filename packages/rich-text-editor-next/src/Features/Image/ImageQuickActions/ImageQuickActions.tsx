@@ -1,6 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
-import { Image, ReadOnly } from "@rangex/solid";
-import { Portal } from "@solidjs/web";
+import { FloatingPortal, Image, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
 	createSignal,
@@ -50,16 +49,17 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const ImageQuickActions = () => {
-	const editor = useEditorContext();
-	const image = Image(editor.image);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { image, readOnly } = useEditorContext();
 
-	if (!(image && editor.image)) {
+	if (!image) {
 		throw new Error("Image can't be undefined.");
 	}
 
+	const $image = Image(image);
+	const $readOnly = ReadOnly(readOnly);
+
 	const img = () => {
-		const currentBlock = image.currentBlock();
+		const currentBlock = $image.currentComponent();
 
 		return currentBlock?.querySelector<HTMLImageElement>("img") ?? null;
 	};
@@ -156,11 +156,7 @@ export const ImageQuickActions = () => {
 	};
 
 	const onCaptionToggle = () => {
-		if (readOnly?.checked()) {
-			return;
-		}
-
-		image.changeCaptionEnabled(!image.captionEnabled());
+		image.changeCaptionEnabled(!$image.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -185,10 +181,8 @@ export const ImageQuickActions = () => {
 		}
 	};
 
-	// We can't rely on image.quickActions.isOpen() as we have to detect the change before repaint
-	const imageQuickActionsPort = editor.image.quickActions;
-	const unsubscribeIsOpen = imageQuickActionsPort.onToggle(() => {
-		if (!imageQuickActionsPort.isOpen) {
+	const unsubscribeIsOpen = image.quickActions.onToggle(() => {
+		if (!image.quickActions.isOpen) {
 			closeNestedPopovers();
 		}
 	});
@@ -198,11 +192,11 @@ export const ImageQuickActions = () => {
 	});
 
 	return (
-		<Portal mount={image.quickActions.element}>
+		<FloatingPortal mount={image.quickActions.element}>
 			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
 				<BlockAlign
-					value={image.align()}
-					disabled={readOnly?.checked()}
+					value={$image.align()}
+					disabled={$readOnly?.checked()}
 					onChange={(value) => image.changeAlign(value)}
 					popoverRef={(el) => {
 						blockAlignPopover = el;
@@ -213,7 +207,7 @@ export const ImageQuickActions = () => {
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
 					title="Swap"
-					disabled={!image.canSwap || readOnly?.checked()}
+					disabled={!image.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
 					<Icon name="Swap" class="size-4" />
@@ -226,7 +220,7 @@ export const ImageQuickActions = () => {
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
 						title="Options"
-						disabled={readOnly?.checked()}
+						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
 					</button>
@@ -258,14 +252,14 @@ export const ImageQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={image.captionEnabled()}
+								checked={$image.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!image.captionEnabled()}>
+						<div hidden={!$image.captionEnabled()}>
 							<SegmentedControl
-								id={image.captionPosition()}
+								id={$image.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => image.changeCaptionPosition(value)}
 								appearance="primary-outline"
@@ -306,6 +300,6 @@ export const ImageQuickActions = () => {
 					</div>
 				</span>
 			</div>
-		</Portal>
+		</FloatingPortal>
 	);
 };

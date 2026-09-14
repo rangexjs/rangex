@@ -3,15 +3,16 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const TemplateVariableCaretMenu = () => {
-	const editor = useEditorContext();
-	const templateVariable = TemplateVariable(editor.templateVariable);
+	const { templateVariable } = useEditorContext();
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");
 	}
 
+	const $templateVariable = TemplateVariable(templateVariable);
+
 	const items = () =>
-		templateVariable.filteredItems().map((item): CaretItemFn => {
+		$templateVariable.filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -27,7 +28,7 @@ export const TemplateVariableCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = templateVariable.filteredItems().at(index);
+		const item = $templateVariable.filteredItems().at(index);
 
 		if (!item) {
 			return;
@@ -38,9 +39,8 @@ export const TemplateVariableCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={templateVariable.caretMenu.element}
+			caretMenuPort={templateVariable.caretMenu}
 			items={items}
-			isOpen={templateVariable.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-40 max-w-56"
 		/>

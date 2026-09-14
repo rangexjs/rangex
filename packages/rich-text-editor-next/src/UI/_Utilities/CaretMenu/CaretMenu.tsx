@@ -1,10 +1,12 @@
+import type { CaretMenuPublicPort } from "@rangex/editor";
+import { FloatingPortal } from "@rangex/solid";
 import type { JSX } from "@solidjs/web";
-import { Portal } from "@solidjs/web";
 import {
 	type Accessor,
 	createEffect,
 	createSignal,
 	For,
+	onCleanup,
 	onSettled,
 } from "solid-js";
 
@@ -16,32 +18,13 @@ interface CaretItemParams {
 export type CaretItemFn = (params: CaretItemParams) => JSX.Element;
 
 export interface CaretMenuProps {
-	caretMenuEl: HTMLDivElement;
+	caretMenuPort: CaretMenuPublicPort;
 	items: Accessor<CaretItemFn[]>;
-	isOpen: Accessor<boolean>;
 	onSelect: (index: number) => void;
 	class?: string;
 }
 
 export const CaretMenu = (props: CaretMenuProps) => {
-	props.caretMenuEl.classList.add(
-		"scrollbar-thin",
-		"z-20",
-		"overflow-y-auto",
-		"max-h-[min(100%,360px)]",
-		"rounded-lg",
-		"border",
-		"border-neutral-300",
-		"bg-white",
-		"shadow-md",
-		"dark:border-neutral-700",
-		"dark:bg-neutral-900",
-	);
-
-	if (props.class) {
-		props.caretMenuEl.classList.add(...props.class.split(" ").filter(Boolean));
-	}
-
 	const [activeIndex, setActiveIndex] = createSignal(0);
 	const isEntryActive = (index: number) => activeIndex() === index;
 
@@ -49,7 +32,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
 
 	const resetList = () => {
 		setActiveIndex(0);
-		props.caretMenuEl.scrollTo({ top: 0 });
+		props.caretMenuPort.element.scrollTo({ top: 0 });
 	};
 
 	createEffect(
@@ -59,21 +42,22 @@ export const CaretMenu = (props: CaretMenuProps) => {
 		},
 	);
 
-	createEffect(
-		() => props.isOpen(),
-		(open) => {
-			if (open) {
-				resetList();
-			}
-		},
-	);
+	const toggleCleanup = props.caretMenuPort.onToggle(() => {
+		if (props.caretMenuPort.isOpen) {
+			resetList();
+		}
+	});
+
+	onCleanup(() => {
+		toggleCleanup();
+	});
 
 	const onKeyDown = (event: KeyboardEvent) => {
 		if (!listEl) {
 			throw new Error("List can't be undefined.");
 		}
 
-		if (!props.isOpen()) {
+		if (!props.caretMenuPort.isOpen) {
 			return;
 		}
 
@@ -124,7 +108,13 @@ export const CaretMenu = (props: CaretMenuProps) => {
 	});
 
 	return (
-		<Portal mount={props.caretMenuEl}>
+		<FloatingPortal
+			mount={props.caretMenuPort.element}
+			class={[
+				"scrollbar-thin z-20 max-h-[min(100%,360px)] overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",
+				props.class,
+			]}
+		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">
 				<For each={props.items()}>
 					{(item, index) => {
@@ -141,6 +131,6 @@ export const CaretMenu = (props: CaretMenuProps) => {
 					}}
 				</For>
 			</ul>
-		</Portal>
+		</FloatingPortal>
 	);
 };

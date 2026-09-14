@@ -15,7 +15,6 @@ export * from "./List";
 export * from "./Mention";
 export * from "./ReadOnly";
 export * from "./Separator";
-export * from "./Symbols";
 export * from "./Table";
 export * from "./TemplateVariable";
 export * from "./TodoList";

@@ -5,16 +5,17 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const BlockQuoteToolbarButton = () => {
-	const editor = useEditorContext();
-	const blockQuote = BlockQuote(editor.blockQuote);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { blockQuote, readOnly } = useEditorContext();
 
 	if (!blockQuote) {
 		throw new Error("BlockQuote can't be undefined.");
 	}
 
+	const $blockQuote = BlockQuote(blockQuote);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => !blockQuote.canWrap() || !!readOnly?.checked(),
+		() => !$blockQuote.canWrap() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

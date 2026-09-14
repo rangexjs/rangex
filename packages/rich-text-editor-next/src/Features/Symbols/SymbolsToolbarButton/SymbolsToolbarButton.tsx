@@ -1,17 +1,17 @@
-import { ReadOnly, Symbols } from "@rangex/solid";
+import { ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SymbolsToolbarButton = () => {
-	const editor = useEditorContext();
-	const symbols = Symbols(editor.symbols);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { symbols, readOnly } = useEditorContext();
 
 	if (!symbols) {
 		throw new Error("Symbols can't be undefined.");
 	}
+
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -25,7 +25,7 @@ export const SymbolsToolbarButton = () => {
 		symbols.insert(data);
 	};
 
-	const disabled = createMemo(() => !!readOnly?.checked());
+	const disabled = createMemo(() => !!$readOnly?.checked());
 
 	return (
 		<span>

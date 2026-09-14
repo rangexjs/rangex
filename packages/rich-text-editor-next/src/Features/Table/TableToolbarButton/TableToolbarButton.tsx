@@ -21,13 +21,14 @@ const createGrid = (rows: number, cols: number): Grid => {
 };
 
 export const TableToolbarButton = () => {
-	const editor = useEditorContext();
-	const table = Table(editor.table);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { table, readOnly } = useEditorContext();
 
 	if (!table) {
 		throw new Error("Table can't be undefined.");
 	}
+
+	const $table = Table(table);
+	const $readOnly = ReadOnly(readOnly);
 
 	const rows = 10;
 	const cols = 10;
@@ -107,7 +108,7 @@ export const TableToolbarButton = () => {
 	};
 
 	const disabled = createMemo(
-		() => !table.canInsert() || !!readOnly?.checked(),
+		() => !$table.canInsert() || !!$readOnly?.checked(),
 	);
 
 	return (

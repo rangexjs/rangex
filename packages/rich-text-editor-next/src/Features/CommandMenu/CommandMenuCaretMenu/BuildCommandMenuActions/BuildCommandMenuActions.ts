@@ -1,14 +1,4 @@
-import {
-	AccordionItem,
-	BlockQuote,
-	CodeBlock,
-	EmptyMedia,
-	LineLocalName,
-	List,
-	Separator,
-	Table,
-	TodoList,
-} from "@rangex/solid";
+import { EmptyMedia, LineLocalName } from "@rangex/solid";
 import type {
 	BuildCommandMenuActionsParams,
 	BuildCommandMenuActionsResult,
@@ -24,15 +14,18 @@ import type {
 export const buildCommandMenuActions = ({
 	editor,
 }: BuildCommandMenuActionsParams): BuildCommandMenuActionsResult => {
-	const accordionItem = AccordionItem(editor.accordionItem);
-	const blockQuote = BlockQuote(editor.blockQuote);
-	const codeBlock = CodeBlock(editor.codeBlock);
+	const {
+		blockQuote,
+		accordionItem,
+		codeBlock,
+		list,
+		separator,
+		table,
+		todoList,
+	} = editor;
+
 	const emptyMedia = EmptyMedia(editor.emptyMedia);
 	const lineLocalName = LineLocalName(editor.formatting);
-	const list = List(editor.list);
-	const separator = Separator(editor.separator);
-	const table = Table(editor.table);
-	const todoList = TodoList(editor.todoList);
 
 	const actions: CommandActions = new Map();
 

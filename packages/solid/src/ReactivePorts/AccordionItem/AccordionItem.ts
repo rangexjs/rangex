@@ -22,11 +22,6 @@ export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 		canInsert,
 		canWrap,
 		isActive,
-
-		insert: publicPort.insert,
-		wrap: publicPort.wrap,
-		remove: publicPort.remove,
-		unwrap: publicPort.unwrap,
 	};
 
 	return port as PreserveUndefined<T, ReactiveAccordionItemPort>;

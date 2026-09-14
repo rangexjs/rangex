@@ -19,9 +19,6 @@ export const List = <T extends ListPublicPort | undefined>(
 	const port: ReactiveListPort = {
 		canInsert,
 		canWrap,
-
-		insert: publicPort.insert,
-		wrap: publicPort.wrap,
 	};
 
 	return port as PreserveUndefined<T, ReactiveListPort>;

@@ -1,9 +1,11 @@
-import type { TurnIntoAvailability } from "@rangex/editor";
-import type { ReactiveLineHandlerPort } from "@rangex/solid";
+import type {
+	LineHandlerPublicPort,
+	TurnIntoAvailability,
+} from "@rangex/editor";
 import type { MenuItem } from "../_Utilities";
 
 interface CreateTurnIntoItemsParams {
-	lineHandler: ReactiveLineHandlerPort;
+	lineHandler: LineHandlerPublicPort;
 	turnIntoAvailability: TurnIntoAvailability;
 }
 
@@ -68,7 +70,7 @@ const createTurnIntoItems = ({
 };
 
 export interface CreateLineDragMenuItemsParams {
-	lineHandler: ReactiveLineHandlerPort;
+	lineHandler: LineHandlerPublicPort;
 	turnIntoAvailability: TurnIntoAvailability;
 	canRemove: boolean;
 	canDuplicate: boolean;
