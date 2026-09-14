@@ -22,6 +22,7 @@ export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 export interface UpdateStateParams extends EmojiState {}
 
 export interface EmojiConfigPortProps {
+	readonly caretMenu: CaretMenuConfigPort;
 	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
@@ -31,11 +32,10 @@ export interface EmojiConfigPortProps {
 	findByName(name: string): SuggestionItem | undefined;
 }
 
-export interface EmojiConfigPort
-	extends EmojiConfigPortProps,
-		CaretMenuConfigPort {}
+export interface EmojiConfigPort extends EmojiConfigPortProps {}
 
 export interface EmojiPublicPortProps {
+	readonly caretMenu: CaretMenuPublicPort;
 	readonly filteredItems: SuggestionItems;
 
 	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
@@ -43,9 +43,7 @@ export interface EmojiPublicPortProps {
 	select(item: SuggestionItem): void;
 }
 
-export interface EmojiPublicPort
-	extends EmojiPublicPortProps,
-		CaretMenuPublicPort {}
+export interface EmojiPublicPort extends EmojiPublicPortProps {}
 
 export interface EmojiInternals {
 	items: SuggestionItems;

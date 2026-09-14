@@ -36,7 +36,7 @@ export const configureTemplateVariable = ({
 	});
 
 	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
-		port: configPort,
+		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getTemplateVariableQuery,
 		onQuery(query) {

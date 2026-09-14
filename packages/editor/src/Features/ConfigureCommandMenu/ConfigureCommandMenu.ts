@@ -17,7 +17,7 @@ export const configureCommandMenu = ({
 	});
 
 	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
-		port: configPort,
+		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getCommandMenuQuery,
 		onQuery(query) {

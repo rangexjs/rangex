@@ -99,43 +99,45 @@ export const createCommandMenuAdapter = (
 		}
 	};
 
-	const configPort: CommandMenuConfigPort = extendObjectProperties(
-		caretMenuPort.configPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+	const configPort: CommandMenuConfigPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.configPort;
+		},
 
-			updateState(params) {
-				updateState(params);
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			onBeforeSelect(callback) {
-				onBeforeSelectListeners.add(callback);
-				return () => onBeforeSelectListeners.delete(callback);
-			},
-		} satisfies CommandMenuConfigPortProps,
-	);
+		updateState(params) {
+			updateState(params);
+		},
 
-	const publicPort: CommandMenuPublicPort = extendObjectProperties(
-		caretMenuPort.publicPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+		onBeforeSelect(callback) {
+			onBeforeSelectListeners.add(callback);
+			return () => onBeforeSelectListeners.delete(callback);
+		},
+	} satisfies CommandMenuConfigPortProps);
 
-			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
-			},
+	const publicPort: CommandMenuPublicPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.publicPort;
+		},
 
-			beforeSelect() {
-				for (const listener of onBeforeSelectListeners) {
-					listener();
-				}
-			},
-		} satisfies CommandMenuPublicPortProps,
-	);
+		get filteredItems() {
+			return internals.filteredItems;
+		},
+
+		onFilteredItemsUpdate(callback) {
+			onFilteredItemsUpdateListeners.add(callback);
+			return () => onFilteredItemsUpdateListeners.delete(callback);
+		},
+
+		beforeSelect() {
+			for (const listener of onBeforeSelectListeners) {
+				listener();
+			}
+		},
+	} satisfies CommandMenuPublicPortProps);
 
 	return { configPort, publicPort };
 };

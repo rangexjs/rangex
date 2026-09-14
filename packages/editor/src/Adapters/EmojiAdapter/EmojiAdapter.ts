@@ -59,47 +59,49 @@ export const createEmojiAdapter = (
 		}
 	};
 
-	const configPort: EmojiConfigPort = extendObjectProperties(
-		caretMenuPort.configPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+	const configPort: EmojiConfigPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.configPort;
+		},
 
-			updateState(params) {
-				updateState(params);
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			onSelect(callback) {
-				onSelectListeners.add(callback);
-				return () => onSelectListeners.delete(callback);
-			},
+		updateState(params) {
+			updateState(params);
+		},
 
-			findByName(name) {
-				return internals.items.find((item) => item.name === name.toLowerCase());
-			},
-		} satisfies EmojiConfigPortProps,
-	);
+		onSelect(callback) {
+			onSelectListeners.add(callback);
+			return () => onSelectListeners.delete(callback);
+		},
 
-	const publicPort: EmojiPublicPort = extendObjectProperties(
-		caretMenuPort.publicPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+		findByName(name) {
+			return internals.items.find((item) => item.name === name.toLowerCase());
+		},
+	} satisfies EmojiConfigPortProps);
 
-			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
-			},
+	const publicPort: EmojiPublicPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.publicPort;
+		},
 
-			select(item: SuggestionItem) {
-				for (const listener of onSelectListeners) {
-					listener(item);
-				}
-			},
-		} satisfies EmojiPublicPortProps,
-	);
+		get filteredItems() {
+			return internals.filteredItems;
+		},
+
+		onFilteredItemsUpdate(callback) {
+			onFilteredItemsUpdateListeners.add(callback);
+			return () => onFilteredItemsUpdateListeners.delete(callback);
+		},
+
+		select(item: SuggestionItem) {
+			for (const listener of onSelectListeners) {
+				listener(item);
+			}
+		},
+	} satisfies EmojiPublicPortProps);
 
 	return { configPort, publicPort };
 };

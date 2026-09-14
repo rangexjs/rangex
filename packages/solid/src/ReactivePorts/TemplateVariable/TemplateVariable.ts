@@ -1,6 +1,9 @@
 import type { TemplateVariablePublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type {
+	FromPublicToReactivePort,
+	ReactiveCaretMenuPort,
+} from "../../_Utilities";
 import type { ReactiveTemplateVariablePort } from "./TemplateVariable-types";
 
 export const TemplateVariable = <
@@ -17,22 +20,30 @@ export const TemplateVariable = <
 	const [filteredItems, setFilteredItems] = createSignal(
 		publicPort.filteredItems,
 	);
-	const [caretMenuOpen, setCaretMenuOpen] = createSignal(
-		publicPort.caretMenuOpen,
+	const [caretMenuIsOpen, setCaretMenuIsOpen] = createSignal(
+		publicPort.caretMenu.isOpen,
 	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onOptionsUpdate(setOptions));
 	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
-	onCleanup(publicPort.onCaretMenuOpenUpdate(setCaretMenuOpen));
+	onCleanup(
+		publicPort.caretMenu.onToggle(() =>
+			setCaretMenuIsOpen(publicPort.caretMenu.isOpen),
+		),
+	);
+
+	const caretMenu: ReactiveCaretMenuPort = {
+		element: publicPort.caretMenu.element,
+		isOpen: caretMenuIsOpen,
+	};
 
 	const port: ReactiveTemplateVariablePort = {
-		caretMenuEl: publicPort.caretMenuEl,
+		caretMenu,
 
 		canInsert,
 		options,
 		filteredItems,
-		caretMenuOpen,
 
 		insert: publicPort.insert,
 		changeOptions: publicPort.changeOptions,

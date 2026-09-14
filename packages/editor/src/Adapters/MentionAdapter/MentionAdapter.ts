@@ -68,43 +68,45 @@ export const createMentionAdapter = (
 		}
 	};
 
-	const configPort: MentionConfigPort = extendObjectProperties(
-		caretMenuPort.configPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+	const configPort: MentionConfigPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.configPort;
+		},
 
-			updateState(params) {
-				updateState(params);
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			onSelect(callback) {
-				onSelectListeners.add(callback);
-				return () => onSelectListeners.delete(callback);
-			},
-		} satisfies MentionConfigPortProps,
-	);
+		updateState(params) {
+			updateState(params);
+		},
 
-	const publicPort: MentionPublicPort = extendObjectProperties(
-		caretMenuPort.publicPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+		onSelect(callback) {
+			onSelectListeners.add(callback);
+			return () => onSelectListeners.delete(callback);
+		},
+	} satisfies MentionConfigPortProps);
 
-			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
-			},
+	const publicPort: MentionPublicPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.publicPort;
+		},
 
-			select(item: SuggestionItem) {
-				for (const listener of onSelectListeners) {
-					listener(item);
-				}
-			},
-		} satisfies MentionPublicPortProps,
-	);
+		get filteredItems() {
+			return internals.filteredItems;
+		},
+
+		onFilteredItemsUpdate(callback) {
+			onFilteredItemsUpdateListeners.add(callback);
+			return () => onFilteredItemsUpdateListeners.delete(callback);
+		},
+
+		select(item: SuggestionItem) {
+			for (const listener of onSelectListeners) {
+				listener(item);
+			}
+		},
+	} satisfies MentionPublicPortProps);
 
 	return { configPort, publicPort };
 };

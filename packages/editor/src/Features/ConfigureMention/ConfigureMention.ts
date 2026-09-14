@@ -20,7 +20,7 @@ export const configureMention = ({
 	});
 
 	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
-		port: configPort,
+		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getMentionQuery,
 		onQuery(query) {

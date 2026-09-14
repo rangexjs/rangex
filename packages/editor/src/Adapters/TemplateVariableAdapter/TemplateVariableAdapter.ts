@@ -89,83 +89,85 @@ export const createTemplateVariableAdapter = (
 		}
 	};
 
-	const configPort: TemplateVariableConfigPort = extendObjectProperties(
-		caretMenuPort.configPort,
-		{
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+	const configPort: TemplateVariableConfigPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.configPort;
+		},
 
-			updateState(params) {
-				updateState(params);
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
-			},
+		updateState(params) {
+			updateState(params);
+		},
 
-			onOptions(callback) {
-				onOptionsListeners.add(callback);
-				return () => onOptionsListeners.delete(callback);
-			},
+		onInsert(callback) {
+			onInsertListeners.add(callback);
+			return () => onInsertListeners.delete(callback);
+		},
 
-			onSelect(callback) {
-				onSelectListeners.add(callback);
-				return () => onSelectListeners.delete(callback);
-			},
-		} satisfies TemplateVariableConfigPortProps,
-	);
+		onOptions(callback) {
+			onOptionsListeners.add(callback);
+			return () => onOptionsListeners.delete(callback);
+		},
 
-	const publicPort: TemplateVariablePublicPort = extendObjectProperties(
-		caretMenuPort.publicPort,
-		{
-			get canInsert() {
-				return internals.canInsert;
-			},
+		onSelect(callback) {
+			onSelectListeners.add(callback);
+			return () => onSelectListeners.delete(callback);
+		},
+	} satisfies TemplateVariableConfigPortProps);
 
-			get options() {
-				return internals.options;
-			},
+	const publicPort: TemplateVariablePublicPort = extendObjectProperties({}, {
+		get caretMenu() {
+			return caretMenuPort.publicPort;
+		},
 
-			get filteredItems() {
-				return internals.filteredItems;
-			},
+		get canInsert() {
+			return internals.canInsert;
+		},
 
-			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
-			},
+		get options() {
+			return internals.options;
+		},
 
-			onOptionsUpdate(callback) {
-				onOptionsUpdateListeners.add(callback);
-				return () => onOptionsUpdateListeners.delete(callback);
-			},
+		get filteredItems() {
+			return internals.filteredItems;
+		},
 
-			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
-			},
+		onCanInsertUpdate(callback) {
+			onCanInsertUpdateListeners.add(callback);
+			return () => onCanInsertUpdateListeners.delete(callback);
+		},
 
-			insert(params: InsertParams) {
-				for (const listener of onInsertListeners) {
-					listener(params);
-				}
-			},
+		onOptionsUpdate(callback) {
+			onOptionsUpdateListeners.add(callback);
+			return () => onOptionsUpdateListeners.delete(callback);
+		},
 
-			changeOptions(options) {
-				for (const listener of onOptionsListeners) {
-					listener(options);
-				}
-			},
+		onFilteredItemsUpdate(callback) {
+			onFilteredItemsUpdateListeners.add(callback);
+			return () => onFilteredItemsUpdateListeners.delete(callback);
+		},
 
-			select(item: SuggestionItem) {
-				for (const listener of onSelectListeners) {
-					listener(item);
-				}
-			},
-		} satisfies TemplateVariablePublicPortProps,
-	);
+		insert(params: InsertParams) {
+			for (const listener of onInsertListeners) {
+				listener(params);
+			}
+		},
+
+		changeOptions(options) {
+			for (const listener of onOptionsListeners) {
+				listener(options);
+			}
+		},
+
+		select(item: SuggestionItem) {
+			for (const listener of onSelectListeners) {
+				listener(item);
+			}
+		},
+	} satisfies TemplateVariablePublicPortProps);
 
 	return { configPort, publicPort };
 };

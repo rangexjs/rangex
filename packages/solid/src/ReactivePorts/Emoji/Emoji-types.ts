@@ -1,11 +1,11 @@
 import type { EmojiSuggestionItem, EmojiSuggestionItems } from "@rangex/editor";
 import type { Accessor } from "solid-js";
+import type { ReactiveCaretMenuPort } from "../../_Utilities";
 
 export interface ReactiveEmojiPort {
-	readonly caretMenuEl: HTMLDivElement;
+	readonly caretMenu: ReactiveCaretMenuPort;
 
 	filteredItems: Accessor<EmojiSuggestionItems>;
-	caretMenuOpen: Accessor<boolean>;
 
 	select(item: EmojiSuggestionItem): void;
 }

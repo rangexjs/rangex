@@ -1,29 +1,28 @@
 export interface CaretMenuState {
-	open: boolean;
+	isOpen: boolean;
 }
 
 export interface UpdateStateParams {
-	open?: boolean;
+	isOpen?: boolean;
 }
 
 export interface CaretMenuInternals {
-	caretMenuOpen: boolean;
+	isOpen: boolean;
 }
 
 export interface CaretMenuConfigPort {
-	readonly caretMenuEl: HTMLDivElement;
+	readonly element: HTMLDivElement;
 
 	updateCaretMenu(params: UpdateStateParams): void;
 }
 
-export type OnCaretMenuOpenUpdateCallbackFn = (caretMenuOpen: boolean) => void;
+export type OnToggleCallbackFn = () => void;
 
 export interface CaretMenuPublicPort {
-	readonly caretMenuEl: HTMLDivElement;
+	readonly element: HTMLDivElement;
+	readonly isOpen: boolean;
 
-	readonly caretMenuOpen: boolean;
-
-	onCaretMenuOpenUpdate(callback: OnCaretMenuOpenUpdateCallbackFn): () => void;
+	onToggle(callback: OnToggleCallbackFn): () => void;
 }
 
 export interface CaretMenuPort {

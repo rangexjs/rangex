@@ -23,11 +23,11 @@ export const handleCaretMenuOverlayAppearance = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const anchorController = createAnchoredOverlayController({
-		element: port.caretMenuEl,
+		element: port.element,
 		options: {
 			lightDismiss: false,
 			closeOnEscape: false,
-			onToggle: (open) => port.updateCaretMenu({ open }),
+			onToggle: (isOpen) => port.updateCaretMenu({ isOpen }),
 		},
 	});
 

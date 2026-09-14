@@ -50,9 +50,9 @@ export const MentionCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={mention.caretMenuEl}
+			caretMenuEl={mention.caretMenu.element}
 			items={items}
-			isOpen={mention.caretMenuOpen}
+			isOpen={mention.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-48 max-w-64"
 		/>

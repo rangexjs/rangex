@@ -40,6 +40,7 @@ export type OnBeforeSelectCallbackFn = () => void;
 export interface UpdateStateParams extends CommandMenuState {}
 
 export interface CommandMenuConfigPortProps {
+	readonly caretMenu: CaretMenuConfigPort;
 	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
@@ -47,11 +48,10 @@ export interface CommandMenuConfigPortProps {
 	onBeforeSelect(callback: OnBeforeSelectCallbackFn): () => void;
 }
 
-export interface CommandMenuConfigPort
-	extends CommandMenuConfigPortProps,
-		CaretMenuConfigPort {}
+export interface CommandMenuConfigPort extends CommandMenuConfigPortProps {}
 
 export interface CommandMenuPublicPortProps {
+	readonly caretMenu: CaretMenuPublicPort;
 	readonly filteredItems: SuggestionItems;
 
 	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
@@ -59,9 +59,7 @@ export interface CommandMenuPublicPortProps {
 	beforeSelect(): void;
 }
 
-export interface CommandMenuPublicPort
-	extends CommandMenuPublicPortProps,
-		CaretMenuPublicPort {}
+export interface CommandMenuPublicPort extends CommandMenuPublicPortProps {}
 
 export interface CommandMenuInternals {
 	items: SuggestionItems;

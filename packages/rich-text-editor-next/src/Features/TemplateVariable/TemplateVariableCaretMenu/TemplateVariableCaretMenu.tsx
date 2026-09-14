@@ -38,9 +38,9 @@ export const TemplateVariableCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={templateVariable.caretMenuEl}
+			caretMenuEl={templateVariable.caretMenu.element}
 			items={items}
-			isOpen={templateVariable.caretMenuOpen}
+			isOpen={templateVariable.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-40 max-w-56"
 		/>

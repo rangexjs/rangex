@@ -4,37 +4,36 @@ import type {
 	CaretMenuPublicPort,
 	CreateCaretMenuPortParams,
 	CreateCaretMenuPortResult,
-	OnCaretMenuOpenUpdateCallbackFn,
+	OnToggleCallbackFn,
 	UpdateStateParams,
 } from "./CaretMenuPort-types";
 
 export const createCaretMenuPort = ({
 	floatingContainer,
 }: CreateCaretMenuPortParams): CreateCaretMenuPortResult => {
-	const caretMenuEl = document.createElement("div");
-	floatingContainer.append(caretMenuEl);
+	const element = document.createElement("div");
+	floatingContainer.append(element);
 
 	const internals: CaretMenuInternals = {
-		caretMenuOpen: false,
+		isOpen: false,
 	};
 
-	// StateListeners
-	const onCaretMenuOpenUpdateListeners: Set<OnCaretMenuOpenUpdateCallbackFn> =
-		new Set();
+	// CommandListeners
+	const onToggleListeners: Set<OnToggleCallbackFn> = new Set();
 
-	const updateState = ({ open }: UpdateStateParams) => {
-		if (open !== undefined) {
-			internals.caretMenuOpen = open;
+	const updateState = ({ isOpen }: UpdateStateParams) => {
+		if (isOpen !== undefined) {
+			internals.isOpen = isOpen;
 
-			for (const listener of onCaretMenuOpenUpdateListeners) {
-				listener(internals.caretMenuOpen);
+			for (const listener of onToggleListeners) {
+				listener();
 			}
 		}
 	};
 
 	const configPort: CaretMenuConfigPort = {
-		get caretMenuEl() {
-			return caretMenuEl;
+		get element() {
+			return element;
 		},
 
 		updateCaretMenu(params) {
@@ -43,17 +42,17 @@ export const createCaretMenuPort = ({
 	};
 
 	const publicPort: CaretMenuPublicPort = {
-		get caretMenuEl() {
-			return caretMenuEl;
+		get element() {
+			return element;
 		},
 
-		get caretMenuOpen() {
-			return internals.caretMenuOpen;
+		get isOpen() {
+			return internals.isOpen;
 		},
 
-		onCaretMenuOpenUpdate(callback) {
-			onCaretMenuOpenUpdateListeners.add(callback);
-			return () => onCaretMenuOpenUpdateListeners.delete(callback);
+		onToggle(callback) {
+			onToggleListeners.add(callback);
+			return () => onToggleListeners.delete(callback);
 		},
 	};
 

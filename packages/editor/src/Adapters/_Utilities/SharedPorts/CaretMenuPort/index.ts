@@ -4,5 +4,5 @@ export type {
 	CaretMenuPort,
 	CaretMenuPublicPort,
 	CaretMenuState,
-	OnCaretMenuOpenUpdateCallbackFn,
+	OnToggleCallbackFn,
 } from "./CaretMenuPort-types";

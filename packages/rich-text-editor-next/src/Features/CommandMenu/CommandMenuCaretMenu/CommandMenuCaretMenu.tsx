@@ -59,9 +59,9 @@ export const CommandMenuCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={commandMenu.caretMenuEl}
+			caretMenuEl={commandMenu.caretMenu.element}
 			items={items}
-			isOpen={commandMenu.caretMenuOpen}
+			isOpen={commandMenu.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-48 max-w-64"
 		/>

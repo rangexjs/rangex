@@ -23,7 +23,7 @@ export const configureEmoji = ({
 	});
 
 	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
-		port: configPort,
+		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: ({ editorAPI, fromText, fromOffset }) =>
 			getEmojiQuery({

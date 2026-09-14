@@ -25,6 +25,7 @@ export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 export interface UpdateStateParams extends MentionState {}
 
 export interface MentionConfigPortProps {
+	readonly caretMenu: CaretMenuConfigPort;
 	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
@@ -32,11 +33,10 @@ export interface MentionConfigPortProps {
 	onSelect(callback: OnSelectCallbackFn): () => void;
 }
 
-export interface MentionConfigPort
-	extends MentionConfigPortProps,
-		CaretMenuConfigPort {}
+export interface MentionConfigPort extends MentionConfigPortProps {}
 
 export interface MentionPublicPortProps {
+	readonly caretMenu: CaretMenuPublicPort;
 	readonly filteredItems: SuggestionItems;
 
 	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
@@ -44,9 +44,7 @@ export interface MentionPublicPortProps {
 	select(item: SuggestionItem): void;
 }
 
-export interface MentionPublicPort
-	extends MentionPublicPortProps,
-		CaretMenuPublicPort {}
+export interface MentionPublicPort extends MentionPublicPortProps {}
 
 export interface MentionInternals {
 	items: SuggestionItems;

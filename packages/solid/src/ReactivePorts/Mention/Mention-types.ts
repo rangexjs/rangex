@@ -3,12 +3,12 @@ import type {
 	MentionSuggestionItems,
 } from "@rangex/editor";
 import type { Accessor } from "solid-js";
+import type { ReactiveCaretMenuPort } from "../../_Utilities";
 
 export interface ReactiveMentionPort {
-	readonly caretMenuEl: HTMLDivElement;
+	readonly caretMenu: ReactiveCaretMenuPort;
 
 	filteredItems: Accessor<MentionSuggestionItems>;
-	caretMenuOpen: Accessor<boolean>;
 
 	select(item: MentionSuggestionItem): void;
 }

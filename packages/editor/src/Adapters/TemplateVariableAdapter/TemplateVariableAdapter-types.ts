@@ -42,6 +42,7 @@ export type OnOptionsCallbackFn = (options: Partial<Options>) => void;
 export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 
 export interface TemplateVariableConfigPortProps {
+	readonly caretMenu: CaretMenuConfigPort;
 	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
@@ -52,14 +53,14 @@ export interface TemplateVariableConfigPortProps {
 }
 
 export interface TemplateVariableConfigPort
-	extends TemplateVariableConfigPortProps,
-		CaretMenuConfigPort {}
+	extends TemplateVariableConfigPortProps {}
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnOptionsUpdateCallbackFn = (value: Options) => void;
 export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export interface TemplateVariablePublicPortProps {
+	readonly caretMenu: CaretMenuPublicPort;
 	readonly canInsert: boolean;
 	readonly options: Options;
 	readonly filteredItems: SuggestionItems;
@@ -74,8 +75,7 @@ export interface TemplateVariablePublicPortProps {
 }
 
 export interface TemplateVariablePublicPort
-	extends TemplateVariablePublicPortProps,
-		CaretMenuPublicPort {}
+	extends TemplateVariablePublicPortProps {}
 
 export interface TemplateVariableInternals {
 	canInsert: boolean;

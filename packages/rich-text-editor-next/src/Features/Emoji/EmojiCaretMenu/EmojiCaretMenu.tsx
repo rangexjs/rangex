@@ -41,9 +41,9 @@ export const EmojiCaretMenu = () => {
 
 	return (
 		<CaretMenu
-			caretMenuEl={emoji.caretMenuEl}
+			caretMenuEl={emoji.caretMenu.element}
 			items={items}
-			isOpen={emoji.caretMenuOpen}
+			isOpen={emoji.caretMenu.isOpen}
 			onSelect={onSelect}
 			class="min-w-40 max-w-56"
 		/>

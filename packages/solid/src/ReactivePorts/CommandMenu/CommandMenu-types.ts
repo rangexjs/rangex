@@ -1,11 +1,11 @@
 import type { CommandMenuSuggestionItems } from "@rangex/editor";
 import type { Accessor } from "solid-js";
+import type { ReactiveCaretMenuPort } from "../../_Utilities";
 
 export interface ReactiveCommandMenuPort {
-	readonly caretMenuEl: HTMLDivElement;
+	readonly caretMenu: ReactiveCaretMenuPort;
 
 	filteredItems: Accessor<CommandMenuSuggestionItems>;
-	caretMenuOpen: Accessor<boolean>;
 
 	beforeSelect(): void;
 }
