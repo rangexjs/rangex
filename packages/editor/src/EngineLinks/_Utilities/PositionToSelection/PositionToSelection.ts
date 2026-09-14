@@ -63,7 +63,6 @@ export const positionToSelection = ({
 	controller.show(rootEditable, { clear: true, position: "fixed" });
 
 	const rootEditableRect = rootEditable.getBoundingClientRect();
-	const popoverRect = controller.element.getBoundingClientRect();
 	const rangeRect = range.getBoundingClientRect();
 
 	const selectionBottom = getEndCharBottom(toText, toOffset);
@@ -73,7 +72,7 @@ export const positionToSelection = ({
 		rangeRect.left -
 		rootEditableRect.left +
 		rangeRect.width / 2 -
-		popoverRect.width / 2;
+		controller.element.offsetWidth / 2;
 
 	controller.show(rootEditable, {
 		top: `calc(anchor(top) + ${topDistance}px)`,
