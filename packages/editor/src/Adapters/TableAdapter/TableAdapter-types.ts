@@ -73,7 +73,6 @@ export type TableCellResizingAction = "equalizeColumns" | "minimizeRows";
 
 export interface TableState {
 	canInsert?: boolean;
-	contextMenuOpen?: boolean;
 	sectionType?: TableSectionTypeState;
 	mergeSplit?: TableMergeSplitState;
 	insertDelete?: TableInsertDeleteState;
@@ -81,12 +80,10 @@ export interface TableState {
 	verticalAlignment?: TableVerticalAlignmentState;
 	cellResizing?: TableCellResizingState;
 	clearContents?: TableClearContentsState;
+	contextMenuOpen?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnContextMenuOpenUpdateCallbackFn = (
-	contextMenuOpen: boolean,
-) => void;
 export type OnSectionTypeUpdateCallbackFn = (
 	value: TableSectionTypeState,
 ) => void;
@@ -106,6 +103,7 @@ export type OnCellResizingUpdateCallbackFn = (
 export type OnClearContentsUpdateCallbackFn = (
 	value: TableClearContentsState,
 ) => void;
+export type OnContextMenuToggleCallbackFn = () => void;
 
 export interface InsertParams {
 	row: number;
@@ -168,9 +166,6 @@ export interface TablePublicPortProps {
 	readonly clearContents: TableClearContentsState;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onContextMenuOpenUpdate(
-		callback: OnContextMenuOpenUpdateCallbackFn,
-	): () => void;
 	onSectionTypeUpdate(callback: OnSectionTypeUpdateCallbackFn): () => void;
 	onMergeSplitUpdate(callback: OnMergeSplitUpdateCallbackFn): () => void;
 	onInsertDeleteUpdate(callback: OnInsertDeleteUpdateCallbackFn): () => void;
@@ -180,6 +175,7 @@ export interface TablePublicPortProps {
 	): () => void;
 	onCellResizingUpdate(callback: OnCellResizingUpdateCallbackFn): () => void;
 	onClearContentsUpdate(callback: OnClearContentsUpdateCallbackFn): () => void;
+	onContextMenuToggle(callback: OnContextMenuToggleCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	changeSectionType(action: TableSectionTypeAction): void;
@@ -195,7 +191,6 @@ export interface TablePublicPort extends TablePublicPortProps {}
 
 export interface TableInternals {
 	canInsert: boolean;
-	contextMenuOpen: boolean;
 	sectionType: TableSectionTypeState;
 	mergeSplit: TableMergeSplitState;
 	insertDelete: TableInsertDeleteState;
@@ -203,6 +198,7 @@ export interface TableInternals {
 	verticalAlignment: TableVerticalAlignmentState;
 	cellResizing: TableCellResizingState;
 	clearContents: TableClearContentsState;
+	contextMenuOpen: boolean;
 }
 
 export interface TableAdapter {

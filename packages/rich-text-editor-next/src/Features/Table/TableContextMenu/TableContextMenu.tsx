@@ -146,8 +146,8 @@ export const TableContextMenu = () => {
 		}
 	};
 
-	const unsubscribeIsOpen = table.onContextMenuOpenUpdate((open) => {
-		if (!open) {
+	const unsubscribeIsOpen = table.onContextMenuToggle(() => {
+		if (!table.contextMenuOpen) {
 			closeNestedPopovers();
 		}
 	});

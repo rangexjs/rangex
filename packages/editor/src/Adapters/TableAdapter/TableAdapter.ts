@@ -13,7 +13,7 @@ import type {
 	OnChangeVerticalAlignmentCallbackFn,
 	OnClearContentsCallbackFn,
 	OnClearContentsUpdateCallbackFn,
-	OnContextMenuOpenUpdateCallbackFn,
+	OnContextMenuToggleCallbackFn,
 	OnInsertCallbackFn,
 	OnInsertDeleteUpdateCallbackFn,
 	OnMergeSplitUpdateCallbackFn,
@@ -38,7 +38,6 @@ export const createTableAdapter = (
 	const internals: TableInternals = {
 		// States
 		canInsert: false,
-		contextMenuOpen: false,
 		sectionType: {
 			header: { disabled: true },
 			body: { disabled: true },
@@ -76,12 +75,12 @@ export const createTableAdapter = (
 			minimizeRows: { disabled: true },
 		},
 		clearContents: { disabled: true },
+		// Rest
+		contextMenuOpen: false,
 	};
 
 	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onContextMenuOpenUpdateListeners: Set<OnContextMenuOpenUpdateCallbackFn> =
 		new Set();
 	const onSectionTypeUpdateListeners: Set<OnSectionTypeUpdateCallbackFn> =
 		new Set();
@@ -111,6 +110,8 @@ export const createTableAdapter = (
 	const onChangeCellResizingListeners: Set<OnChangeCellResizingCallbackFn> =
 		new Set();
 	const onClearContentsListeners: Set<OnClearContentsCallbackFn> = new Set();
+	const onContextMenuToggleListeners: Set<OnContextMenuToggleCallbackFn> =
+		new Set();
 
 	const updateState = ({
 		canInsert,
@@ -128,14 +129,6 @@ export const createTableAdapter = (
 
 			for (const listener of onCanInsertUpdateListeners) {
 				listener(internals.canInsert);
-			}
-		}
-
-		if (contextMenuOpen !== undefined) {
-			internals.contextMenuOpen = contextMenuOpen;
-
-			for (const listener of onContextMenuOpenUpdateListeners) {
-				listener(internals.contextMenuOpen);
 			}
 		}
 
@@ -192,6 +185,14 @@ export const createTableAdapter = (
 
 			for (const listener of onClearContentsUpdateListeners) {
 				listener(internals.clearContents);
+			}
+		}
+
+		if (contextMenuOpen !== undefined) {
+			internals.contextMenuOpen = contextMenuOpen;
+
+			for (const listener of onContextMenuToggleListeners) {
+				listener();
 			}
 		}
 	};
@@ -296,9 +297,9 @@ export const createTableAdapter = (
 			return () => onCanInsertUpdateListeners.delete(callback);
 		},
 
-		onContextMenuOpenUpdate(callback) {
-			onContextMenuOpenUpdateListeners.add(callback);
-			return () => onContextMenuOpenUpdateListeners.delete(callback);
+		onContextMenuToggle(callback) {
+			onContextMenuToggleListeners.add(callback);
+			return () => onContextMenuToggleListeners.delete(callback);
 		},
 
 		onSectionTypeUpdate(callback) {
