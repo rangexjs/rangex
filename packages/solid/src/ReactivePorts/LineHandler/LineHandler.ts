@@ -1,13 +1,13 @@
 import type { LineHandlerPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveLineHandlerPort } from "./LineHandler-types";
 
 export const LineHandler = <T extends LineHandlerPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveLineHandlerPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveLineHandlerPort>;
 	}
 
 	const [turnIntoAvailability, setTurnIntoAvailability] = createSignal(
@@ -38,5 +38,5 @@ export const LineHandler = <T extends LineHandlerPublicPort | undefined>(
 		insertRootLine: publicPort.insertRootLine,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveLineHandlerPort>;
 };

@@ -1,13 +1,13 @@
 import type { EmptyMediaPublicPort, UploadState } from "@rangex/editor";
 import { type Accessor, createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveEmptyMediaPort } from "./EmptyMedia-types";
 
 export const EmptyMedia = <T extends EmptyMediaPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveEmptyMediaPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveEmptyMediaPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -42,5 +42,5 @@ export const EmptyMedia = <T extends EmptyMediaPublicPort | undefined>(
 		resolve: publicPort.resolve,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveEmptyMediaPort>;
 };

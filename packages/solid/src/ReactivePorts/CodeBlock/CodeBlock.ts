@@ -1,16 +1,16 @@
 import type { CodeBlockPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type {
-	FromPublicToReactivePort,
+	PreserveUndefined,
 	ReactiveQuickActionsPort,
 } from "../../_Utilities";
 import type { ReactiveCodeBlockPort } from "./CodeBlock-types";
 
 export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveCodeBlockPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveCodeBlockPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -67,5 +67,5 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 		getPlainText: publicPort.getPlainText,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveCodeBlockPort>;
 };

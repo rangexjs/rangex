@@ -1,12 +1,12 @@
 import type { SymbolsPublicPort } from "@rangex/editor";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveSymbolsPort } from "./Symbols-types";
 
 export const Symbols = <T extends SymbolsPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveSymbolsPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveSymbolsPort>;
 	}
 
 	const port: ReactiveSymbolsPort = {
@@ -15,5 +15,5 @@ export const Symbols = <T extends SymbolsPublicPort | undefined>(
 		insert: publicPort.insert,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveSymbolsPort>;
 };

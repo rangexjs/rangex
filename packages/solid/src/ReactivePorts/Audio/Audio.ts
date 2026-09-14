@@ -1,16 +1,16 @@
 import type { AudioPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type {
-	FromPublicToReactivePort,
+	PreserveUndefined,
 	ReactiveQuickActionsPort,
 } from "../../_Utilities";
 import type { ReactiveAudioPort } from "./Audio-types";
 
 export const Audio = <T extends AudioPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveAudioPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveAudioPort>;
 	}
 
 	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
@@ -58,5 +58,5 @@ export const Audio = <T extends AudioPublicPort | undefined>(
 		swap: publicPort.swap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveAudioPort>;
 };

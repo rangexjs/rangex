@@ -1,16 +1,16 @@
 import type { EmbedPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type {
-	FromPublicToReactivePort,
+	PreserveUndefined,
 	ReactiveQuickActionsPort,
 } from "../../_Utilities";
 import type { ReactiveEmbedPort } from "./Embed-types";
 
 export const Embed = <T extends EmbedPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveEmbedPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveEmbedPort>;
 	}
 
 	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
@@ -58,5 +58,5 @@ export const Embed = <T extends EmbedPublicPort | undefined>(
 		swap: publicPort.swap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveEmbedPort>;
 };

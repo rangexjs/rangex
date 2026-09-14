@@ -1,13 +1,13 @@
 import type { TodoListPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveTodoListPort } from "./TodoList-types";
 
 export const TodoList = <T extends TodoListPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveTodoListPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveTodoListPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -24,5 +24,5 @@ export const TodoList = <T extends TodoListPublicPort | undefined>(
 		wrap: publicPort.wrap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveTodoListPort>;
 };

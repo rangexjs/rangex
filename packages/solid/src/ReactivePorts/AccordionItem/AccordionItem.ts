@@ -1,13 +1,13 @@
 import type { AccordionItemPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveAccordionItemPort } from "./AccordionItem-types";
 
 export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveAccordionItemPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveAccordionItemPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -29,5 +29,5 @@ export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 		unwrap: publicPort.unwrap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveAccordionItemPort>;
 };

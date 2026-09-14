@@ -1,7 +1,7 @@
 import type { TemplateVariablePublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type {
-	FromPublicToReactivePort,
+	PreserveUndefined,
 	ReactiveCaretMenuPort,
 } from "../../_Utilities";
 import type { ReactiveTemplateVariablePort } from "./TemplateVariable-types";
@@ -10,9 +10,9 @@ export const TemplateVariable = <
 	T extends TemplateVariablePublicPort | undefined,
 >(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveTemplateVariablePort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveTemplateVariablePort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -50,5 +50,5 @@ export const TemplateVariable = <
 		select: publicPort.select,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveTemplateVariablePort>;
 };

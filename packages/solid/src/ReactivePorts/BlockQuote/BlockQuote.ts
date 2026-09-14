@@ -1,13 +1,13 @@
 import type { BlockQuotePublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveBlockQuotePort } from "./BlockQuote-types";
 
 export const BlockQuote = <T extends BlockQuotePublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveBlockQuotePort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveBlockQuotePort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -24,5 +24,5 @@ export const BlockQuote = <T extends BlockQuotePublicPort | undefined>(
 		wrap: publicPort.wrap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveBlockQuotePort>;
 };

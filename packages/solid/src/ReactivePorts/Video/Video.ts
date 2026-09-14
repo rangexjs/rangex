@@ -1,16 +1,16 @@
 import type { VideoPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import type {
-	FromPublicToReactivePort,
+	PreserveUndefined,
 	ReactiveQuickActionsPort,
 } from "../../_Utilities";
 import type { ReactiveVideoPort } from "./Video-types";
 
 export const Video = <T extends VideoPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveVideoPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveVideoPort>;
 	}
 
 	const [quickActionsIsOpen, setQuickActionsIsOpen] = createSignal(
@@ -58,5 +58,5 @@ export const Video = <T extends VideoPublicPort | undefined>(
 		swap: publicPort.swap,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveVideoPort>;
 };

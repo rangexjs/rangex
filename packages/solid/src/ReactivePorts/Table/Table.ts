@@ -1,13 +1,13 @@
 import type { TablePublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveTablePort } from "./Table-types";
 
 export const Table = <T extends TablePublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveTablePort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveTablePort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -59,5 +59,5 @@ export const Table = <T extends TablePublicPort | undefined>(
 		clear: publicPort.clear,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveTablePort>;
 };

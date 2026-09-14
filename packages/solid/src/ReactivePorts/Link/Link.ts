@@ -1,13 +1,13 @@
 import type { LinkPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveLinkPort, ReactiveSelectionMenuPort } from "./Link-types";
 
 export const Link = <T extends LinkPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveLinkPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveLinkPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -57,5 +57,5 @@ export const Link = <T extends LinkPublicPort | undefined>(
 		getDisplayText: publicPort.getDisplayText,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveLinkPort>;
 };

@@ -1,13 +1,13 @@
 import type { SeparatorPublicPort } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
-import type { FromPublicToReactivePort } from "../../_Utilities";
+import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveSeparatorPort } from "./Separator-types";
 
 export const Separator = <T extends SeparatorPublicPort | undefined>(
 	publicPort: T,
-): FromPublicToReactivePort<T> => {
+): PreserveUndefined<T, ReactiveSeparatorPort> => {
 	if (!publicPort) {
-		return undefined as FromPublicToReactivePort<T>;
+		return undefined as PreserveUndefined<T, ReactiveSeparatorPort>;
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
@@ -20,5 +20,5 @@ export const Separator = <T extends SeparatorPublicPort | undefined>(
 		insert: publicPort.insert,
 	};
 
-	return port as FromPublicToReactivePort<T>;
+	return port as PreserveUndefined<T, ReactiveSeparatorPort>;
 };
