@@ -22,8 +22,6 @@ export const LineSpacing = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveLineSpacingPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		default: formatting.defaultLineSpacing,
-		set: formatting.setLineSpacing,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveLineSpacingPort>;

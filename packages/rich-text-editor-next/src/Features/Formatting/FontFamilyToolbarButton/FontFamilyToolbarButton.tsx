@@ -32,32 +32,34 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontFamilyToolbarButton = () => {
-	const editor = useEditorContext();
-	const fontFamily = FontFamily(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!fontFamily) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const fontFamilyOptions = fontFamily.options;
+	const $fontFamily = FontFamily(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
+	const fontFamilyOptions = formatting.fontFamilyOptions;
 	const fontFamilyValues = fontFamilyOptions.map((o) => o.value);
+	const defaultFontFamily = formatting.defaultFontFamily;
 
 	const [fontFamilyHandle, fontFamilyControls] =
 		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
-				fontFamily.values(),
-				fontFamily.default,
+				$fontFamily.values(),
+				defaultFontFamily,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	createEffect(
-		() => fontFamily.values(),
+		() => $fontFamily.values(),
 		(values) => {
 			fontFamilyHandle.setValue(
-				getInputValueFromActiveValues(values, fontFamily.default),
+				getInputValueFromActiveValues(values, defaultFontFamily),
 			);
 		},
 	);
@@ -86,9 +88,9 @@ export const FontFamilyToolbarButton = () => {
 		fontFamilyHandle.setValue(normalizedValue);
 
 		const nextFontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === fontFamily.default ? null : normalizedValue;
+			normalizedValue === defaultFontFamily ? null : normalizedValue;
 
-		fontFamily.set(nextFontFamily);
+		formatting.setFontFamily(nextFontFamily);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -105,8 +107,8 @@ export const FontFamilyToolbarButton = () => {
 		);
 
 		const activeValue = getInputValueFromActiveValues(
-			fontFamily.values(),
-			fontFamily.default,
+			$fontFamily.values(),
+			defaultFontFamily,
 		);
 
 		if (!normalizedValue || normalizedValue === activeValue) {
@@ -117,13 +119,13 @@ export const FontFamilyToolbarButton = () => {
 		fontFamilyHandle.setValue(normalizedValue);
 
 		const nextFontFamily: FormattingFontFamilyValue | null =
-			normalizedValue === fontFamily.default ? null : normalizedValue;
+			normalizedValue === defaultFontFamily ? null : normalizedValue;
 
-		fontFamily.set(nextFontFamily);
+		formatting.setFontFamily(nextFontFamily);
 	};
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = fontFamily.values();
+		const activeValues = $fontFamily.values();
 
 		const getText = (value: FormattingFontFamilyValue) => {
 			const option = fontFamilyOptions.find((o) => o.value === value);
@@ -142,8 +144,8 @@ export const FontFamilyToolbarButton = () => {
 				button: {
 					onClick: () => {
 						const nextFontFamily: FormattingFontFamilyValue | null =
-							fontFamilyItem === fontFamily.default ? null : fontFamilyItem;
-						fontFamily.set(nextFontFamily);
+							fontFamilyItem === defaultFontFamily ? null : fontFamilyItem;
+						formatting.setFontFamily(nextFontFamily);
 					},
 				},
 			};
@@ -151,7 +153,7 @@ export const FontFamilyToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => fontFamily.disabled() || !!readOnly?.checked(),
+		() => $fontFamily.disabled() || !!$readOnly?.checked(),
 	);
 
 	const anchorName = "--font-family-anchor";

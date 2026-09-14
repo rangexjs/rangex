@@ -27,13 +27,14 @@ const defaultValues: Set<FormattingIndentationValue> = new Set([
 ]);
 
 export const IndentationToolbarButton = () => {
-	const editor = useEditorContext();
-	const indentation = Indentation(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!indentation) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $indentation = Indentation(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -48,7 +49,7 @@ export const IndentationToolbarButton = () => {
 	const sortedList = createMemo(() => {
 		const deduplicatedValues: FormattingIndentationValue[] = [];
 
-		const commonValues = [...defaultValues, ...indentation.values()];
+		const commonValues = [...defaultValues, ...$indentation.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -67,7 +68,7 @@ export const IndentationToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = indentation.values();
+		const activeValues = $indentation.values();
 
 		const contains = (value: FormattingIndentationValue) => {
 			return !![...activeValues].find(
@@ -82,7 +83,7 @@ export const IndentationToolbarButton = () => {
 				text: `${indentationItem.value}`,
 				button: {
 					onClick: () => {
-						indentation.set(indentationItem);
+						formatting.setIndentation(indentationItem);
 					},
 					class: "justify-center",
 				},
@@ -91,7 +92,7 @@ export const IndentationToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => indentation.disabled() || !!readOnly?.checked(),
+		() => $indentation.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (

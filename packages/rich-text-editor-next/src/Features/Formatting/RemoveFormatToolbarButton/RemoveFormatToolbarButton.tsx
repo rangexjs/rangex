@@ -5,20 +5,22 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const RemoveFormatToolbarButton = () => {
-	const editor = useEditorContext();
-	const removeFormat = RemoveFormat(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!removeFormat) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
+	const $removeFormat = RemoveFormat(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => removeFormat.disabled() || !!readOnly?.checked(),
+		() => $removeFormat.disabled() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		removeFormat.remove();
+		formatting.removeLineFormat();
+		formatting.removeTextFormat();
 	};
 
 	return (

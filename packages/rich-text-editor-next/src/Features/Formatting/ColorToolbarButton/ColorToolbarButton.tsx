@@ -22,13 +22,14 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const ColorToolbarButton = () => {
-	const editor = useEditorContext();
-	const color = Color(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!color) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $color = Color(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -42,7 +43,7 @@ export const ColorToolbarButton = () => {
 	};
 
 	const initialHslColors = getHslThemeColors({
-		colors: color.values(),
+		colors: $color.values(),
 	});
 	const initialColorMode = getColorMode(initialHslColors);
 
@@ -63,7 +64,7 @@ export const ColorToolbarButton = () => {
 	const [activeColors, setActiveColors] = createSignal(initialActiveColors);
 
 	createEffect(
-		() => color.values(),
+		() => $color.values(),
 		(values) => {
 			const hslColors = getHslThemeColors({ colors: values });
 			const colorMode = getColorMode(hslColors);
@@ -103,11 +104,11 @@ export const ColorToolbarButton = () => {
 		}
 
 		if (type === "remove") {
-			color.set(null);
+			formatting.setColor(null);
 		}
 
 		if (type === "apply") {
-			color.set({
+			formatting.setColor({
 				light: {
 					type: "solid",
 					value: ColorFormat.hsl(lightHsl()).color(),
@@ -117,7 +118,9 @@ export const ColorToolbarButton = () => {
 		}
 	};
 
-	const disabled = createMemo(() => color.disabled() || !!readOnly?.checked());
+	const disabled = createMemo(
+		() => $color.disabled() || !!$readOnly?.checked(),
+	);
 
 	return (
 		<span>

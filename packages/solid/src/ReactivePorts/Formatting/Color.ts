@@ -19,7 +19,6 @@ export const Color = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveColorPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		set: formatting.setColor,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveColorPort>;

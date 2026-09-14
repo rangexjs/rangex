@@ -22,13 +22,14 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 ]);
 
 export const LineHeightToolbarButton = () => {
-	const editor = useEditorContext();
-	const lineHeight = LineHeight(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!lineHeight) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $lineHeight = LineHeight(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -43,7 +44,7 @@ export const LineHeightToolbarButton = () => {
 	const sortedList = createMemo(() => {
 		const deduplicatedValues: FormattingLineHeightValue[] = [];
 
-		const commonValues = [...defaultValues, ...lineHeight.values()];
+		const commonValues = [...defaultValues, ...$lineHeight.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -62,7 +63,7 @@ export const LineHeightToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = lineHeight.values();
+		const activeValues = $lineHeight.values();
 
 		const contains = (value: FormattingLineHeightValue) => {
 			return !![...activeValues].find(
@@ -77,7 +78,7 @@ export const LineHeightToolbarButton = () => {
 				text: `${lineHeightItem.value}`,
 				button: {
 					onClick: () => {
-						lineHeight.set(lineHeightItem);
+						formatting.setLineHeight(lineHeightItem);
 					},
 					class: "justify-center",
 				},
@@ -86,7 +87,7 @@ export const LineHeightToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => lineHeight.disabled() || !!readOnly?.checked(),
+		() => $lineHeight.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (

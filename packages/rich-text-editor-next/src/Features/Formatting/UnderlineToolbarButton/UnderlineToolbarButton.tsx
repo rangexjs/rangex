@@ -5,29 +5,30 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const UnderlineToolbarButton = () => {
-	const editor = useEditorContext();
-	const underline = Underline(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!underline) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
+	const $underline = Underline(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => underline.disabled() || !!readOnly?.checked(),
+		() => $underline.disabled() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		underline.toggle();
+		formatting.toggleUnderline();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={underline.checked()}
+				checked={$underline.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={underline.pressed()}
+				aria-pressed={$underline.pressed()}
 			>
 				<Icon name="Underline" class="size-4" />
 			</ToolbarButton>

@@ -9,13 +9,14 @@ import {
 } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
-	const editor = useEditorContext();
-	const lineLocalName = LineLocalName(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!lineLocalName) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $lineLocalName = LineLocalName(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -33,7 +34,7 @@ export const LineLocalNameToolbarButton = () => {
 		titles[localName];
 
 	const title = createMemo(() => {
-		const localNames = lineLocalName.values();
+		const localNames = $lineLocalName.values();
 
 		if (localNames.size === 0) {
 			return "None";
@@ -57,7 +58,7 @@ export const LineLocalNameToolbarButton = () => {
 	};
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = lineLocalName.values();
+		const activeValues = $lineLocalName.values();
 
 		const localNames: FormattingLineLocalNameValue[] = [
 			"p",
@@ -75,7 +76,7 @@ export const LineLocalNameToolbarButton = () => {
 				checked: activeValues.has(localName),
 				button: {
 					onClick: () => {
-						lineLocalName.set(localName);
+						formatting.setLineLocalName(localName);
 					},
 					class: "justify-center",
 				},
@@ -84,7 +85,7 @@ export const LineLocalNameToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => lineLocalName.disabled() || !!readOnly?.checked(),
+		() => $lineLocalName.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (

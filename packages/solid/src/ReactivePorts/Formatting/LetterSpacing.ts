@@ -22,7 +22,6 @@ export const LetterSpacing = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveLetterSpacingPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		set: formatting.setLetterSpacing,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveLetterSpacingPort>;

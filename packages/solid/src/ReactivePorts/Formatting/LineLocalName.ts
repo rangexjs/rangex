@@ -22,7 +22,6 @@ export const LineLocalName = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveLineLocalNamePort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		set: formatting.setLineLocalName,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveLineLocalNamePort>;

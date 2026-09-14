@@ -29,13 +29,14 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 ]);
 
 export const LetterSpacingToolbarButton = () => {
-	const editor = useEditorContext();
-	const letterSpacing = LetterSpacing(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!letterSpacing) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $letterSpacing = LetterSpacing(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -50,7 +51,7 @@ export const LetterSpacingToolbarButton = () => {
 	const sortedLetterSpacings = createMemo(() => {
 		const deduplicatedValues: FormattingLetterSpacingValue[] = [];
 
-		const commonValues = [...defaultValues, ...letterSpacing.values()];
+		const commonValues = [...defaultValues, ...$letterSpacing.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -69,7 +70,7 @@ export const LetterSpacingToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = letterSpacing.values();
+		const activeValues = $letterSpacing.values();
 
 		const contains = (value: FormattingLetterSpacingValue) => {
 			return !![...activeValues].find(
@@ -85,7 +86,7 @@ export const LetterSpacingToolbarButton = () => {
 					text: `${spacing.value}`,
 					button: {
 						onClick: () => {
-							letterSpacing.set(spacing);
+							formatting.setLetterSpacing(spacing);
 						},
 						class: "justify-center",
 					},
@@ -95,7 +96,7 @@ export const LetterSpacingToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => letterSpacing.disabled() || !!readOnly?.checked(),
+		() => $letterSpacing.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (

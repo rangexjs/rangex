@@ -36,18 +36,19 @@ const getToolbarIconFromActiveValues = (
 };
 
 export const TextAlignToolbarButton = () => {
-	const editor = useEditorContext();
-	const textAlign = TextAlign(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!textAlign) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $textAlign = TextAlign(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
 	const toolbarIcon = createMemo(() =>
-		getToolbarIconFromActiveValues(textAlign.values()),
+		getToolbarIconFromActiveValues($textAlign.values()),
 	);
 
 	const popoverId = createUniqueId();
@@ -59,11 +60,11 @@ export const TextAlignToolbarButton = () => {
 	};
 
 	const onTextAlignClick = (textAlignValue: FormattingTextAlignValue) => {
-		textAlign.set(textAlignValue);
+		formatting.setTextAlign(textAlignValue);
 	};
 
 	const disabled = createMemo(
-		() => textAlign.disabled() || !!readOnly?.checked(),
+		() => $textAlign.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (
@@ -88,7 +89,7 @@ export const TextAlignToolbarButton = () => {
 					<For each={textAlignValues}>
 						{(name) => (
 							<ToolbarButton
-								checked={textAlign.values().has(name)}
+								checked={$textAlign.values().has(name)}
 								commandfor={popoverId}
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}

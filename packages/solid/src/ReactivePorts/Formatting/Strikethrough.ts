@@ -23,7 +23,6 @@ export const Strikethrough = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleStrikethrough,
 	};
 
 	return port as FromFormattingToReactivePort<

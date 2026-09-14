@@ -23,10 +23,6 @@ export const RemoveFormat = <T extends FormattingPublicPort | undefined>(
 
 	const port: ReactiveRemoveFormatPort = {
 		disabled: () => removeLine().disabled && removeText().disabled,
-		remove: () => {
-			formatting.removeLineFormat();
-			formatting.removeTextFormat();
-		},
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveRemoveFormatPort>;

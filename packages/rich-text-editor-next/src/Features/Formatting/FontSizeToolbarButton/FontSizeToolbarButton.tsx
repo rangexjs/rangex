@@ -51,29 +51,32 @@ const getInputValueFromActiveValues = (
 };
 
 export const FontSizeToolbarButton = () => {
-	const editor = useEditorContext();
-	const fontSize = FontSize(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!fontSize) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $fontSize = FontSize(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
+	const defaultFontSize = formatting.defaultFontSize;
 
 	const [fontSizeHandle, fontSizeControls] =
 		createTextFieldState<HTMLInputElement>({
 			defaultValue: getInputValueFromActiveValues(
-				fontSize.values(),
-				fontSize.default,
+				$fontSize.values(),
+				defaultFontSize,
 			),
 		});
 
 	const popoverId = createUniqueId();
 
 	createEffect(
-		() => fontSize.values(),
+		() => $fontSize.values(),
 		(values) => {
 			fontSizeHandle.setValue(
-				getInputValueFromActiveValues(values, fontSize.default),
+				getInputValueFromActiveValues(values, defaultFontSize),
 			);
 		},
 	);
@@ -96,13 +99,12 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = fontSize.default;
 		const nextFontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		fontSize.set(nextFontSize);
+		formatting.setFontSize(nextFontSize);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
@@ -115,8 +117,8 @@ export const FontSizeToolbarButton = () => {
 		const { value } = currentTarget;
 
 		const activeValue = getInputValueFromActiveValues(
-			fontSize.values(),
-			fontSize.default,
+			$fontSize.values(),
+			defaultFontSize,
 		);
 
 		if (!value || value === activeValue || /[^\d]/.test(value)) {
@@ -125,19 +127,18 @@ export const FontSizeToolbarButton = () => {
 		}
 
 		const numValue = +value;
-		const defaultFontSize = fontSize.default;
 		const nextFontSize: FormattingFontSizeValue | null =
 			numValue === defaultFontSize.value
 				? null
 				: { type: "px", value: numValue };
 
-		fontSize.set(nextFontSize);
+		formatting.setFontSize(nextFontSize);
 	};
 
 	const sortedFontSizes = createMemo(() => {
 		const deduplicatedValues: FormattingFontSizeValue[] = [];
 
-		const commonValues = [...fontSizeValues, ...fontSize.values()];
+		const commonValues = [...fontSizeValues, ...$fontSize.values()];
 
 		for (const commonValue of commonValues) {
 			const matchedValue = deduplicatedValues.find(
@@ -156,7 +157,7 @@ export const FontSizeToolbarButton = () => {
 	});
 
 	const list = createMemo<ToolbarDropdownList>(() => {
-		const activeValues = fontSize.values();
+		const activeValues = $fontSize.values();
 
 		const contains = (value: FormattingFontSizeValue) => {
 			return !![...activeValues].find(
@@ -172,12 +173,11 @@ export const FontSizeToolbarButton = () => {
 					text: `${fontSizeItem.value}`,
 					button: {
 						onClick: () => {
-							const defaultFontSize = fontSize.default;
 							const nextFontSize: FormattingFontSizeValue | null =
 								fontSizeItem.value === defaultFontSize.value
 									? null
 									: fontSizeItem;
-							fontSize.set(nextFontSize);
+							formatting.setFontSize(nextFontSize);
 						},
 						class: "justify-center",
 					},
@@ -187,7 +187,7 @@ export const FontSizeToolbarButton = () => {
 	});
 
 	const disabled = createMemo(
-		() => fontSize.disabled() || !!readOnly?.checked(),
+		() => $fontSize.disabled() || !!$readOnly?.checked(),
 	);
 
 	const anchorName = "--font-size-anchor";

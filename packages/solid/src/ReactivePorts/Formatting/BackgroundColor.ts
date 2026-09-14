@@ -22,7 +22,6 @@ export const BackgroundColor = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveBackgroundColorPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		set: formatting.setBackgroundColor,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveBackgroundColorPort>;

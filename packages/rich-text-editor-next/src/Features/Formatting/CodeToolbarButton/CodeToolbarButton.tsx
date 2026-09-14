@@ -5,27 +5,28 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CodeToolbarButton = () => {
-	const editor = useEditorContext();
-	const code = Code(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!code) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const disabled = createMemo(() => code.disabled() || !!readOnly?.checked());
+	const $code = Code(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
+	const disabled = createMemo(() => $code.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
-		code.toggle();
+		formatting.toggleCode();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={code.checked()}
+				checked={$code.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={code.pressed()}
+				aria-pressed={$code.pressed()}
 			>
 				<Icon name="Code" class="size-4" />
 			</ToolbarButton>

@@ -1,4 +1,3 @@
-import { LineLocalName } from "@rangex/solid";
 import type {
 	BuildCommandMenuActionsParams,
 	BuildCommandMenuActionsResult,
@@ -19,44 +18,43 @@ export const buildCommandMenuActions = ({
 		accordionItem,
 		codeBlock,
 		emptyMedia,
+		formatting,
 		list,
 		separator,
 		table,
 		todoList,
 	} = editor;
 
-	const lineLocalName = LineLocalName(editor.formatting);
-
 	const actions: CommandActions = new Map();
 
-	if (lineLocalName) {
+	if (formatting) {
 		actions.set("p", {
 			icon: "Paragraph",
-			onSelect: () => lineLocalName.set("p"),
+			onSelect: () => formatting.setLineLocalName("p"),
 		});
 		actions.set("h1", {
 			icon: "TextHOne",
-			onSelect: () => lineLocalName.set("h1"),
+			onSelect: () => formatting.setLineLocalName("h1"),
 		});
 		actions.set("h2", {
 			icon: "TextHTwo",
-			onSelect: () => lineLocalName.set("h2"),
+			onSelect: () => formatting.setLineLocalName("h2"),
 		});
 		actions.set("h3", {
 			icon: "TextHThree",
-			onSelect: () => lineLocalName.set("h3"),
+			onSelect: () => formatting.setLineLocalName("h3"),
 		});
 		actions.set("h4", {
 			icon: "TextHFour",
-			onSelect: () => lineLocalName.set("h4"),
+			onSelect: () => formatting.setLineLocalName("h4"),
 		});
 		actions.set("h5", {
 			icon: "TextHFive",
-			onSelect: () => lineLocalName.set("h5"),
+			onSelect: () => formatting.setLineLocalName("h5"),
 		});
 		actions.set("h6", {
 			icon: "TextHSix",
-			onSelect: () => lineLocalName.set("h6"),
+			onSelect: () => formatting.setLineLocalName("h6"),
 		});
 	}
 

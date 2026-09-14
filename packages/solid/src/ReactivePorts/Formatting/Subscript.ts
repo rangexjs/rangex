@@ -23,7 +23,6 @@ export const Subscript = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleSubscript,
 	};
 
 	return port as FromFormattingToReactivePort<

@@ -23,7 +23,6 @@ export const Underline = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleUnderline,
 	};
 
 	return port as FromFormattingToReactivePort<

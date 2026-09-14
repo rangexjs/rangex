@@ -23,7 +23,6 @@ export const Italic = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleItalic,
 	};
 
 	return port as FromFormattingToReactivePort<

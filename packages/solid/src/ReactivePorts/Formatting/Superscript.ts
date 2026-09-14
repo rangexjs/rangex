@@ -23,7 +23,6 @@ export const Superscript = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleSuperscript,
 	};
 
 	return port as FromFormattingToReactivePort<

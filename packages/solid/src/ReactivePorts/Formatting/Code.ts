@@ -23,7 +23,6 @@ export const Code = <T extends FormattingPublicPort | undefined>(
 		checked: () => state().checked,
 		pressed: () => state().pressed,
 		disabled: () => state().disabled,
-		toggle: formatting.toggleCode,
 	};
 
 	return port as FromFormattingToReactivePort<

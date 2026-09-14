@@ -19,8 +19,6 @@ export const LineHeight = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveLineHeightPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		default: formatting.defaultLineHeight,
-		set: formatting.setLineHeight,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveLineHeightPort>;

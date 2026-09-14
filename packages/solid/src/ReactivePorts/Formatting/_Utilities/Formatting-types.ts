@@ -1,5 +1,4 @@
 import type {
-	FontFamilyOption,
 	FormattingBackgroundColorValue,
 	FormattingColorValue,
 	FormattingFontFamilyValue,
@@ -22,95 +21,43 @@ export interface ReactiveFormattingToggleButton {
 	checked: Accessor<boolean>;
 	pressed: Accessor<FormattingTogglePressed>;
 	disabled: Accessor<boolean>;
-
-	toggle(): void;
 }
 
-export interface ReactiveFormattingValuePort<
-	TValue,
-	TSetValue extends TValue | null,
-> {
+export interface ReactiveFormattingValuePort<TValue> {
 	disabled: Accessor<boolean>;
 	values: Accessor<Set<TValue>>;
-
-	set(value: TSetValue): void;
 }
 
 export interface ReactiveBackgroundColorPort
-	extends ReactiveFormattingValuePort<
-		FormattingBackgroundColorValue,
-		FormattingBackgroundColorValue | null
-	> {}
+	extends ReactiveFormattingValuePort<FormattingBackgroundColorValue> {}
 
 export interface ReactiveColorPort
-	extends ReactiveFormattingValuePort<
-		FormattingColorValue,
-		FormattingColorValue | null
-	> {}
+	extends ReactiveFormattingValuePort<FormattingColorValue> {}
 
 export interface ReactiveFontFamilyPort
-	extends ReactiveFormattingValuePort<
-		FormattingFontFamilyValue,
-		FormattingFontFamilyValue | null
-	> {
-	readonly default: FormattingFontFamilyValue;
-	readonly options: FontFamilyOption[];
-}
+	extends ReactiveFormattingValuePort<FormattingFontFamilyValue> {}
 
 export interface ReactiveFontSizePort
-	extends ReactiveFormattingValuePort<
-		FormattingFontSizeValue,
-		FormattingFontSizeValue | null
-	> {
-	readonly default: FormattingFontSizeValue;
-}
+	extends ReactiveFormattingValuePort<FormattingFontSizeValue> {}
 
 export interface ReactiveIndentationPort
-	extends ReactiveFormattingValuePort<
-		FormattingIndentationValue,
-		FormattingIndentationValue
-	> {
-	readonly default: FormattingIndentationValue;
-}
+	extends ReactiveFormattingValuePort<FormattingIndentationValue> {}
 
 export interface ReactiveLetterSpacingPort
-	extends ReactiveFormattingValuePort<
-		FormattingLetterSpacingValue,
-		FormattingLetterSpacingValue | null
-	> {}
+	extends ReactiveFormattingValuePort<FormattingLetterSpacingValue> {}
 
 export interface ReactiveLineHeightPort
-	extends ReactiveFormattingValuePort<
-		FormattingLineHeightValue,
-		FormattingLineHeightValue
-	> {
-	readonly default: FormattingLineHeightValue;
-}
+	extends ReactiveFormattingValuePort<FormattingLineHeightValue> {}
 
 export interface ReactiveLineLocalNamePort
-	extends ReactiveFormattingValuePort<
-		FormattingLineLocalNameValue,
-		FormattingLineLocalNameValue
-	> {}
+	extends ReactiveFormattingValuePort<FormattingLineLocalNameValue> {}
 
 export interface ReactiveLineSpacingPort
-	extends ReactiveFormattingValuePort<
-		FormattingLineSpacingValue,
-		FormattingLineSpacingValue
-	> {
-	readonly default: FormattingLineSpacingValue;
-}
+	extends ReactiveFormattingValuePort<FormattingLineSpacingValue> {}
 
 export interface ReactiveTextAlignPort
-	extends ReactiveFormattingValuePort<
-		FormattingTextAlignValue,
-		FormattingTextAlignValue
-	> {
-	readonly default: FormattingTextAlignValue;
-}
+	extends ReactiveFormattingValuePort<FormattingTextAlignValue> {}
 
 export interface ReactiveRemoveFormatPort {
 	disabled: Accessor<boolean>;
-
-	remove(): void;
 }

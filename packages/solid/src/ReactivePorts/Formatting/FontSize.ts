@@ -19,8 +19,6 @@ export const FontSize = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveFontSizePort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		default: formatting.defaultFontSize,
-		set: formatting.setFontSize,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveFontSizePort>;

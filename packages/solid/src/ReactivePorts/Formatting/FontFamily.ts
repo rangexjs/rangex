@@ -19,9 +19,6 @@ export const FontFamily = <T extends FormattingPublicPort | undefined>(
 	const port: ReactiveFontFamilyPort = {
 		disabled: () => state().disabled,
 		values: () => state().values,
-		default: formatting.defaultFontFamily,
-		options: formatting.fontFamilyOptions,
-		set: formatting.setFontFamily,
 	};
 
 	return port as FromFormattingToReactivePort<T, ReactiveFontFamilyPort>;

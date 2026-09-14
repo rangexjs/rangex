@@ -5,29 +5,30 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SubscriptToolbarButton = () => {
-	const editor = useEditorContext();
-	const subscript = Subscript(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!subscript) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
+	const $subscript = Subscript(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => subscript.disabled() || !!readOnly?.checked(),
+		() => $subscript.disabled() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		subscript.toggle();
+		formatting.toggleSubscript();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={subscript.checked()}
+				checked={$subscript.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={subscript.pressed()}
+				aria-pressed={$subscript.pressed()}
 			>
 				<Icon name="Subscript" class="size-4" />
 			</ToolbarButton>

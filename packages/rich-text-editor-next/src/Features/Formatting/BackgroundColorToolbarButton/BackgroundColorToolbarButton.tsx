@@ -22,13 +22,14 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const BackgroundColorToolbarButton = () => {
-	const editor = useEditorContext();
-	const backgroundColor = BackgroundColor(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!backgroundColor) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
+
+	const $backgroundColor = BackgroundColor(formatting);
+	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
 
@@ -42,7 +43,7 @@ export const BackgroundColorToolbarButton = () => {
 	};
 
 	const initialHslColors = getHslThemeColors({
-		colors: backgroundColor.values(),
+		colors: $backgroundColor.values(),
 	});
 	const initialColorMode = getColorMode(initialHslColors);
 
@@ -63,7 +64,7 @@ export const BackgroundColorToolbarButton = () => {
 	const [activeColors, setActiveColors] = createSignal(initialActiveColors);
 
 	createEffect(
-		() => backgroundColor.values(),
+		() => $backgroundColor.values(),
 		(values) => {
 			const hslColors = getHslThemeColors({ colors: values });
 			const colorMode = getColorMode(hslColors);
@@ -103,11 +104,11 @@ export const BackgroundColorToolbarButton = () => {
 		}
 
 		if (type === "remove") {
-			backgroundColor.set(null);
+			formatting.setBackgroundColor(null);
 		}
 
 		if (type === "apply") {
-			backgroundColor.set({
+			formatting.setBackgroundColor({
 				light: {
 					type: "solid",
 					value: ColorFormat.hsl(lightHsl()).color(),
@@ -118,7 +119,7 @@ export const BackgroundColorToolbarButton = () => {
 	};
 
 	const disabled = createMemo(
-		() => backgroundColor.disabled() || !!readOnly?.checked(),
+		() => $backgroundColor.disabled() || !!$readOnly?.checked(),
 	);
 
 	return (

@@ -5,27 +5,30 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const ItalicToolbarButton = () => {
-	const editor = useEditorContext();
-	const italic = Italic(editor.formatting);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { formatting, readOnly } = useEditorContext();
 
-	if (!italic) {
+	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
 	}
 
-	const disabled = createMemo(() => italic.disabled() || !!readOnly?.checked());
+	const $italic = Italic(formatting);
+	const $readOnly = ReadOnly(readOnly);
+
+	const disabled = createMemo(
+		() => $italic.disabled() || !!$readOnly?.checked(),
+	);
 
 	const onClick = () => {
-		italic.toggle();
+		formatting.toggleItalic();
 	};
 
 	return (
 		<span>
 			<ToolbarButton
-				checked={italic.checked()}
+				checked={$italic.checked()}
 				disabled={disabled()}
 				onClick={onClick}
-				aria-pressed={italic.pressed()}
+				aria-pressed={$italic.pressed()}
 			>
 				<Icon name="Italic" class="size-4" />
 			</ToolbarButton>
