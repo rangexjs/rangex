@@ -5,16 +5,17 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const EmptyMediaToolbarButton = () => {
-	const editor = useEditorContext();
-	const emptyMedia = EmptyMedia(editor.emptyMedia);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { emptyMedia, readOnly } = useEditorContext();
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");
 	}
 
+	const $emptyMedia = EmptyMedia(emptyMedia);
+	const $readOnly = ReadOnly(readOnly);
+
 	const disabled = createMemo(
-		() => !emptyMedia.canInsert() || !!readOnly?.checked(),
+		() => !$emptyMedia.canInsert() || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

@@ -27,20 +27,21 @@ import { FindReplaceResults } from "./FindReplaceResults";
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
 export const FindReplaceToolbarButton = () => {
-	const editor = useEditorContext();
-	const findReplace = FindReplace(editor.findReplace);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { findReplace, readOnly } = useEditorContext();
 
 	if (!findReplace) {
 		throw new Error("FindReplace can't be undefined.");
 	}
 
+	const $findReplace = FindReplace(findReplace);
+	const $readOnly = ReadOnly(readOnly);
+
 	const [checked, setChecked] = createSignal(false);
 	const [isFindLoading, setIsFindLoading] = createSignal(false);
 
-	const currentIndex = () => findReplace.results().currentIndex;
-	const totalResults = () => findReplace.results().totalResults;
-	const results = () => findReplace.results().results;
+	const currentIndex = () => $findReplace.results().currentIndex;
+	const totalResults = () => $findReplace.results().totalResults;
+	const results = () => $findReplace.results().results;
 
 	const displayIndex = createMemo(() =>
 		totalResults() > 0 ? currentIndex() + 1 : 0,
@@ -108,7 +109,7 @@ export const FindReplaceToolbarButton = () => {
 	);
 
 	const replaceDisabled = createMemo(
-		() => replaceButtonDisabled() || !!readOnly?.checked(),
+		() => replaceButtonDisabled() || !!$readOnly?.checked(),
 	);
 
 	const findInputAnchorName = "--find-input-anchor-name";

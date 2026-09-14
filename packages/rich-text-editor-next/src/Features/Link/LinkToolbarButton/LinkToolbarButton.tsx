@@ -1,17 +1,30 @@
 import { Link, ReadOnly } from "@rangex/solid";
-import { createMemo, onSettled } from "solid-js";
+import { createMemo, createSignal, onCleanup, onSettled } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const LinkToolbarButton = () => {
-	const editor = useEditorContext();
-	const link = Link(editor.link);
-	const readOnly = ReadOnly(editor.readOnly);
+	const { link, readOnly } = useEditorContext();
 
 	if (!link) {
 		throw new Error("Link can't be undefined.");
 	}
+
+	const $link = Link(link);
+	const $readOnly = ReadOnly(readOnly);
+
+	const [selectionMenuIsOpen, setSelectionMenuIsOpen] = createSignal(
+		link.selectionMenu.isOpen,
+	);
+
+	const cleanupToggle = link.selectionMenu.onToggle(() => {
+		setSelectionMenuIsOpen(link.selectionMenu.isOpen);
+	});
+
+	onCleanup(() => {
+		cleanupToggle();
+	});
 
 	let containerRef: HTMLSpanElement;
 
@@ -23,10 +36,12 @@ export const LinkToolbarButton = () => {
 		};
 	});
 
-	const disabled = createMemo(() => !link.canInsert() || !!readOnly?.checked());
+	const disabled = createMemo(
+		() => !$link.canInsert() || !!$readOnly?.checked(),
+	);
 
 	const onClick = () => {
-		if (link.selectionMenu.isOpen()) {
+		if (link.selectionMenu.isOpen) {
 			link.selectionMenu.close();
 		} else {
 			link.selectionMenu.open();
@@ -36,7 +51,7 @@ export const LinkToolbarButton = () => {
 	return (
 		<span ref={(el) => (containerRef = el)}>
 			<ToolbarButton
-				checked={link.selectionMenu.isOpen()}
+				checked={selectionMenuIsOpen()}
 				disabled={disabled()}
 				onClick={onClick}
 			>

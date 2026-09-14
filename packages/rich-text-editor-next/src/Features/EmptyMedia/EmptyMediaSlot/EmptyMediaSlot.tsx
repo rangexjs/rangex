@@ -4,8 +4,7 @@ import type {
 	RangeXEditor,
 	UploadState,
 } from "@rangex/editor";
-import { EmptyMedia } from "@rangex/solid";
-import { createMemo, createSignal, flush } from "solid-js";
+import { createMemo, createSignal, flush, onCleanup } from "solid-js";
 import {
 	createTextFieldState,
 	FormField,
@@ -25,8 +24,8 @@ const NoSupportedMediaTypes = () => (
 		<span>No media types are available</span>
 		<span class="text-xs">
 			This editor has no Image, Video, Audio, or Embed extension registered —
-			add at least one to the `extensions` array passed to RichTextEditor to
-			enable media insertion.
+			add at least one to the `extensions` array passed to createRichTextEditor
+			to enable media insertion.
 		</span>
 	</div>
 );
@@ -160,7 +159,7 @@ export interface EmptyMediaSlotProps {
  * side owns uploading and resolution.
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
-	const emptyMedia = EmptyMedia(props.editor.emptyMedia);
+	const { emptyMedia } = props.editor;
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");
@@ -172,7 +171,11 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		return <NoSupportedMediaTypes />;
 	}
 
-	const uploadState = emptyMedia.uploadState(props.container);
+	const [uploadState, setUploadState] = createSignal(
+		emptyMedia.getUploadState(props.container),
+	);
+
+	onCleanup(emptyMedia.onUploadStateUpdate(props.container, setUploadState));
 
 	const onResolve = (detail: MediaResolveDetail) => {
 		emptyMedia.resolve({ element: props.container, detail });

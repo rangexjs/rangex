@@ -16,15 +16,6 @@ export const FindReplace = <T extends FindReplacePublicPort | undefined>(
 
 	const port: ReactiveFindReplacePort = {
 		results,
-
-		open: publicPort.open,
-		close: publicPort.close,
-		search: publicPort.search,
-		stepBack: publicPort.stepBack,
-		stepForward: publicPort.stepForward,
-		navigateToIndex: publicPort.navigateToIndex,
-		replace: publicPort.replace,
-		replaceAll: publicPort.replaceAll,
 	};
 
 	return port as PreserveUndefined<T, ReactiveFindReplacePort>;

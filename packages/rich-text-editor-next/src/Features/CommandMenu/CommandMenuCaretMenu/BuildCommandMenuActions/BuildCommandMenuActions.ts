@@ -1,4 +1,4 @@
-import { EmptyMedia, LineLocalName } from "@rangex/solid";
+import { LineLocalName } from "@rangex/solid";
 import type {
 	BuildCommandMenuActionsParams,
 	BuildCommandMenuActionsResult,
@@ -18,13 +18,13 @@ export const buildCommandMenuActions = ({
 		blockQuote,
 		accordionItem,
 		codeBlock,
+		emptyMedia,
 		list,
 		separator,
 		table,
 		todoList,
 	} = editor;
 
-	const emptyMedia = EmptyMedia(editor.emptyMedia);
 	const lineLocalName = LineLocalName(editor.formatting);
 
 	const actions: CommandActions = new Map();
