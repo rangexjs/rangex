@@ -54,7 +54,7 @@ export const configureAudio = ({
 				const figure = getAudioFigure({ blockComponent });
 				const caption = getAudioCaption({ figure });
 
-				configPort.updateAlign(align);
+				configPort.updateBlockAlign({ align });
 				configPort.setCaption(caption);
 			},
 		});

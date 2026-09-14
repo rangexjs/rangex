@@ -54,7 +54,7 @@ export const configureVideo = ({
 				const figure = getVideoFigure({ blockComponent });
 				const caption = getVideoCaption({ figure });
 
-				configPort.updateAlign(align);
+				configPort.updateBlockAlign({ align });
 				configPort.setCaption(caption);
 			},
 		});

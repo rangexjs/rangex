@@ -24,7 +24,7 @@ export const handleBlockAlignState = ({
 		}
 
 		setBlockAlign({ blockComponentLine: $$parentElement, align });
-		port.updateAlign(align);
+		port.updateBlockAlign({ align });
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

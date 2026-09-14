@@ -54,7 +54,7 @@ export const configureImage = ({
 				const figure = getImageFigure({ blockComponent });
 				const caption = getImageCaption({ figure });
 
-				configPort.updateAlign(align);
+				configPort.updateBlockAlign({ align });
 				configPort.setCaption(caption);
 			},
 		});

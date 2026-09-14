@@ -30,8 +30,8 @@ export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
 	};
 
 	const configPort: BlockAlignConfigPort = {
-		updateAlign(align) {
-			updateState({ align });
+		updateBlockAlign(params) {
+			updateState(params);
 		},
 
 		onChangeAlign(callback) {
