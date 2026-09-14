@@ -46,7 +46,7 @@ export interface UpdateStateParams extends LinkState {}
 
 export interface LinkConfigPortProps {
 	readonly linkMenuEl: HTMLDivElement;
-	readonly linkMenu: LinkMenuSettings;
+	readonly linkMenuSettings: LinkMenuSettings;
 	readonly selectionMenu: SelectionMenuConfigPort;
 
 	updateState(params: UpdateStateParams): void;

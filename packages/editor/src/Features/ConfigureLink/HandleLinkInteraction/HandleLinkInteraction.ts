@@ -80,7 +80,7 @@ const registerClick = ({
 				configPort.updateCurrentComponent({ currentComponent: currentTarget });
 				configPort.notifyLinkClick();
 
-				if (configPort.linkMenu.openAt.includes("click")) {
+				if (configPort.linkMenuSettings.openAt.includes("click")) {
 					openLinkMenu({ linkMenuPopoverController, configPort });
 				}
 			},
@@ -141,7 +141,7 @@ const registerSelectionIn = ({
 			configPort.updateCurrentComponent({ currentComponent: component });
 			configPort.notifyLinkSelectionIn();
 
-			if (configPort.linkMenu.openAt.includes("selection-in")) {
+			if (configPort.linkMenuSettings.openAt.includes("selection-in")) {
 				openLinkMenu({ linkMenuPopoverController, configPort });
 			}
 		},

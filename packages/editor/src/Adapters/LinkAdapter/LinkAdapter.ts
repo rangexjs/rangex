@@ -75,7 +75,7 @@ export const createLinkAdapter = (
 				return linkMenuEl;
 			},
 
-			get linkMenu() {
+			get linkMenuSettings() {
 				return linkMenu;
 			},
 

@@ -81,7 +81,7 @@ const insertAtCaret = ({
 
 	afterInsertion?.(link);
 
-	if (configPort.linkMenu.openAt.includes("after-insertion")) {
+	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link, linkMenuPopoverController });
 	}
 
@@ -162,7 +162,7 @@ const wrapWithLink = ({
 
 	afterInsertion?.(currentLink);
 
-	if (configPort.linkMenu.openAt.includes("after-insertion")) {
+	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link: currentLink, linkMenuPopoverController });
 	}
 
