@@ -120,8 +120,47 @@ here: a fresh literal on every call, never shared/mutated across instances. It t
 a duplicate property name across sources.
 
 Behavior shared across Adapters (`Remove`, `Unwrap`, `Caption`, `BlockAlign`,
-`CurrentComponent`, `QuickActions`, ...) lives in `_Utilities/SharedPorts/Xxx/` as its
-own `createXxxPort()` factory, composed in the same way.
+`CurrentComponent`, `QuickActions`, `SelectionMenu`, ...) lives in
+`_Utilities/SharedPorts/Xxx/` as its own `createXxxPort()` factory — see SharedPorts
+below for how one is composed in and named.
+
+## SharedPorts
+
+Each `_Utilities/SharedPorts/Xxx/` is its own `createXxxPort()` factory returning
+`{ configPort, publicPort }`, the same shape as an Adapter. Composed into an Adapter's
+ports one of two ways:
+
+- **Flat-merge** — `extendObjectProperties(xxxPort.configPort, ..., { own props })`;
+  the port's members land directly on the Adapter's port. For a singleton capability an
+  Adapter can only ever have one of (`Remove`, `Unwrap`, `CommitSnapshot`, `Duplicate`,
+  `InsertRootLine`, `BlockAlign`, `Caption`, `SwapToEmptyMedia`) — no collision risk, by
+  construction. `BlockAlignPort` is the reference.
+- **Nest** — `{ xxx: xxxPort.configPort, ...own props }`, reached as `adapterPort.xxx`.
+  For a port that's one instance of a reusable widget/concept that could need more than
+  one differently-named copy on the same Adapter — the smell to watch for is member
+  names needing a baked-in disambiguating prefix to avoid colliding once merged flat
+  (`caretMenuOpen`/`quickActionsOpen`/`selectionMenuOpen` are the same concept three
+  times over). `SelectionMenuPort` is the reference.
+
+Naming inside a SharedPort follows the same State/Command/Provider rules as an Adapter
+(Member shapes above), plus two cases specific to SharedPorts:
+
+- **Update method** — if the port holds real pushed state, expose its internal
+  `updateState` directly as `update<PortName>(params: UpdateStateParams)` on
+  `configPort` (`updateBlockAlign({ align })`), not a per-field positional setter.
+  `UpdateStateParams` stays flat — the state's own fields directly, never wrapped in a
+  key that repeats the port's name.
+- **Notify pair (no backing state)** — a parameterless "something happened" pair with
+  no matching `readonly` field (`notifyToggle()` / `onToggle`): the trigger takes a
+  `notify` prefix, not `emit`; the listener stays bare, no `Update` suffix — nothing is
+  being pushed, the listener re-reads the derived value itself. Goes under
+  `// CommandListeners`, not `// StateListeners`, even though nothing UI-triggered it.
+
+Once nested, interior members drop the port-name prefix — the key already gives that
+context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`/
+`close()`, not `openSelectionMenu()`/`closeSelectionMenu()`. Rename any field that would
+otherwise collide with the port's own composed key (`SelectionMenuPort`'s DOM-element
+field became `element`, since the composed key is already `selectionMenu`).
 
 ## Wiring a new Adapter in
 
