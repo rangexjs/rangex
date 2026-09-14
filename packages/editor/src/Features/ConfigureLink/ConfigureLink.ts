@@ -1,7 +1,7 @@
 import { createPopoverOverlayController } from "#engine-links";
 import {
 	handleComponentUnwrap,
-	handleSelectionMenuAppearance,
+	handleSelectionMenuInteraction,
 } from "../_Utilities";
 import type { ConfigureLinkParams } from "./ConfigureLink-types";
 import { handleDisplayTextRegistration } from "./HandleDisplayTextRegistration";
@@ -23,8 +23,8 @@ export const configureLink = ({
 }: ConfigureLinkParams) => {
 	const {
 		selectionMenuPopoverController,
-		cleanup: selectionMenuAppearanceCleanup,
-	} = handleSelectionMenuAppearance({
+		cleanup: selectionMenuInteractionCleanup,
+	} = handleSelectionMenuInteraction({
 		configPort: configPort.selectionMenu,
 		editorAPI,
 	});
@@ -86,7 +86,7 @@ export const configureLink = ({
 	});
 
 	return () => {
-		selectionMenuAppearanceCleanup();
+		selectionMenuInteractionCleanup();
 		placementStateCleanup();
 		menuOpenCleanup();
 		linkInteractionCleanup();

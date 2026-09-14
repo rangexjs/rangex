@@ -5,7 +5,7 @@ import {
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
 import { toUILanguage, toUITheme } from "#libs";
-import { handleQuickActionsOverlayAppearance } from "../_Utilities";
+import { handleQuickActionsAppearance } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
 import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
@@ -39,7 +39,7 @@ export const configureCodeBlock = ({
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
 	const { getCurrentBlock, cleanup: quickActionsCleanup } =
-		handleQuickActionsOverlayAppearance({
+		handleQuickActionsAppearance({
 			port: configPort,
 			quickActionsPort: configPort.quickActions,
 			editorAPI,

@@ -5,7 +5,7 @@ import {
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleCommitSnapshot,
-	handleQuickActionsOverlayAppearance,
+	handleQuickActionsAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -39,7 +39,7 @@ export const configureEmbed = ({
 	});
 
 	const { getCurrentBlock, cleanup: quickActionsCleanup } =
-		handleQuickActionsOverlayAppearance({
+		handleQuickActionsAppearance({
 			port: configPort,
 			quickActionsPort: configPort.quickActions,
 			editorAPI,

@@ -1,4 +1,4 @@
-import { handleCaretMenuOverlayAppearance } from "../_Utilities";
+import { handleCaretMenuAppearance } from "../_Utilities";
 import { getTemplateVariableQuery } from "./_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
 import { handleTemplateVariableInsertion } from "./HandleTemplateVariableInsertion";
@@ -35,7 +35,7 @@ export const configureTemplateVariable = ({
 		editorAPI,
 	});
 
-	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
+	const caretMenuCleanup = handleCaretMenuAppearance({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getTemplateVariableQuery,

@@ -1,4 +1,4 @@
-import { handleCaretMenuOverlayAppearance } from "../_Utilities";
+import { handleCaretMenuAppearance } from "../_Utilities";
 import { getEmojiQuery } from "./_Utilities";
 import type { ConfigureEmojiParams } from "./ConfigureEmoji-types";
 import { handleEmojiAutoComplete } from "./HandleEmojiAutoComplete";
@@ -22,7 +22,7 @@ export const configureEmoji = ({
 		editorAPI,
 	});
 
-	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
+	const caretMenuCleanup = handleCaretMenuAppearance({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: ({ editorAPI, fromText, fromOffset }) =>

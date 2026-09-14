@@ -1,4 +1,4 @@
-import { handleCaretMenuOverlayAppearance } from "../_Utilities";
+import { handleCaretMenuAppearance } from "../_Utilities";
 import { getMentionQuery } from "./_Utilities";
 import type { ConfigureMentionParams } from "./ConfigureMention-types";
 import { handleMentionSelect } from "./HandleMentionSelect";
@@ -19,7 +19,7 @@ export const configureMention = ({
 		editorAPI,
 	});
 
-	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
+	const caretMenuCleanup = handleCaretMenuAppearance({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getMentionQuery,

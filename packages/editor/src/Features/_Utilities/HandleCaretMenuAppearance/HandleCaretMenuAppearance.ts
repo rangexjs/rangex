@@ -7,19 +7,19 @@ import {
 	createAnchoredOverlayController,
 	positionToSelection,
 } from "#engine-links";
-import type { HandleCaretMenuOverlayAppearanceParams } from "./HandleCaretMenuOverlayAppearance-types";
+import type { HandleCaretMenuAppearanceParams } from "./HandleCaretMenuAppearance-types";
 
 /*
  * Wires a caret-anchored overlay's appearance to the engine: closes it on selection change,
  * editor blur, or Escape, and shows it near the cursor whenever the injected `getQuery` finds
  * a trigger at the caret and `onQuery` confirms there's something to display.
  */
-export const handleCaretMenuOverlayAppearance = ({
+export const handleCaretMenuAppearance = ({
 	port,
 	editorAPI,
 	getQuery,
 	onQuery,
-}: HandleCaretMenuOverlayAppearanceParams) => {
+}: HandleCaretMenuAppearanceParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const anchorController = createAnchoredOverlayController({

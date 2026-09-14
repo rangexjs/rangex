@@ -19,7 +19,7 @@ export type GetCaretMenuQueryFn = (
 
 export type OnCaretMenuQueryFn = (query: string) => boolean;
 
-export interface HandleCaretMenuOverlayAppearanceParams {
+export interface HandleCaretMenuAppearanceParams {
 	port: CaretMenuConfigPort;
 	editorAPI: EditorAPI;
 	getQuery: GetCaretMenuQueryFn;

@@ -1,4 +1,4 @@
-import { handleCaretMenuOverlayAppearance } from "../_Utilities";
+import { handleCaretMenuAppearance } from "../_Utilities";
 import { getCommandMenuQuery } from "./_Utilities";
 import type { ConfigureCommandMenuParams } from "./ConfigureCommandMenu-types";
 import { handleCommandMenuBeforeSelect } from "./HandleCommandMenuBeforeSelect";
@@ -16,7 +16,7 @@ export const configureCommandMenu = ({
 		editorAPI,
 	});
 
-	const caretMenuCleanup = handleCaretMenuOverlayAppearance({
+	const caretMenuCleanup = handleCaretMenuAppearance({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getCommandMenuQuery,

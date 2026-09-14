@@ -1,19 +1,19 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
 import { createPopoverOverlayController } from "#engine-links";
 import type {
-	HandleSelectionMenuAppearanceParams,
-	HandleSelectionMenuAppearanceResult,
-} from "./HandleSelectionMenuAppearance-types";
+	HandleSelectionMenuInteractionParams,
+	HandleSelectionMenuInteractionResult,
+} from "./HandleSelectionMenuInteraction-types";
 
 /*
  * Wires a selection menu popover to the engine, hiding it whenever the selection changes and
  * toggling selection highlighting as the popover opens and closes.
  */
-export const handleSelectionMenuAppearance = ({
+export const handleSelectionMenuInteraction = ({
 	configPort,
 	editorAPI,
 	preventHighlight = false,
-}: HandleSelectionMenuAppearanceParams): HandleSelectionMenuAppearanceResult => {
+}: HandleSelectionMenuInteractionParams): HandleSelectionMenuInteractionResult => {
 	const selection = editorAPI.getEditorSelection();
 
 	const selectionMenuPopoverController = createPopoverOverlayController({

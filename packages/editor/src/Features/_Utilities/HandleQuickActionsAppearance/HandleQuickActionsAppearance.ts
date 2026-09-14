@@ -2,20 +2,20 @@ import {
 	createAnchoredOverlayController,
 	createOverlayAppearanceHandler,
 } from "#engine-links";
-import type { HandleQuickActionsOverlayAppearanceParams } from "./HandleQuickActionsOverlayAppearance-types";
+import type { HandleQuickActionsAppearanceParams } from "./HandleQuickActionsAppearance-types";
 
 /*
  * Wires a block component's quick-actions overlay appearance to the engine, anchoring it to
  * the current block on hover and tracking that block as the port's current component while
  * open. `beforeOpen` runs before each show, so the caller can push any extra state it needs.
  */
-export const handleQuickActionsOverlayAppearance = ({
+export const handleQuickActionsAppearance = ({
 	port,
 	quickActionsPort,
 	editorAPI,
 	componentName,
 	beforeOpen,
-}: HandleQuickActionsOverlayAppearanceParams) => {
+}: HandleQuickActionsAppearanceParams) => {
 	const overlayAppearanceHandler = createOverlayAppearanceHandler({
 		editorAPI,
 	});
