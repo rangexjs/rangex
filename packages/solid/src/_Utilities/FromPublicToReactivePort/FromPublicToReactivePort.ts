@@ -9,6 +9,7 @@ import type {
 	EmptyMediaPublicPort,
 	FindReplacePublicPort,
 	ImagePublicPort,
+	LineHandlerPublicPort,
 	LinkPublicPort,
 	ListPublicPort,
 	MentionPublicPort,
@@ -31,6 +32,7 @@ import type { ReactiveEmojiPort } from "../../ReactivePorts/Emoji";
 import type { ReactiveEmptyMediaPort } from "../../ReactivePorts/EmptyMedia";
 import type { ReactiveFindReplacePort } from "../../ReactivePorts/FindReplace";
 import type { ReactiveImagePort } from "../../ReactivePorts/Image";
+import type { ReactiveLineHandlerPort } from "../../ReactivePorts/LineHandler";
 import type { ReactiveLinkPort } from "../../ReactivePorts/Link";
 import type { ReactiveListPort } from "../../ReactivePorts/List";
 import type { ReactiveMentionPort } from "../../ReactivePorts/Mention";
@@ -72,26 +74,28 @@ export type FromPublicToReactivePort<T> = T extends AccordionItemPublicPort
 									? ReactiveFindReplacePort
 									: T extends ImagePublicPort
 										? ReactiveImagePort
-										: T extends LinkPublicPort
-											? ReactiveLinkPort
-											: T extends ListPublicPort
-												? ReactiveListPort
-												: T extends MentionPublicPort
-													? ReactiveMentionPort
-													: T extends ReadOnlyPublicPort
-														? ReactiveReadOnlyPort
-														: T extends SeparatorPublicPort
-															? ReactiveSeparatorPort
-															: T extends SymbolsPublicPort
-																? ReactiveSymbolsPort
-																: T extends TablePublicPort
-																	? ReactiveTablePort
-																	: T extends TemplateVariablePublicPort
-																		? ReactiveTemplateVariablePort
-																		: T extends TodoListPublicPort
-																			? ReactiveTodoListPort
-																			: T extends UndoRedoPublicPort
-																				? ReactiveUndoRedoPort
-																				: T extends VideoPublicPort
-																					? ReactiveVideoPort
-																					: undefined;
+										: T extends LineHandlerPublicPort
+											? ReactiveLineHandlerPort
+											: T extends LinkPublicPort
+												? ReactiveLinkPort
+												: T extends ListPublicPort
+													? ReactiveListPort
+													: T extends MentionPublicPort
+														? ReactiveMentionPort
+														: T extends ReadOnlyPublicPort
+															? ReactiveReadOnlyPort
+															: T extends SeparatorPublicPort
+																? ReactiveSeparatorPort
+																: T extends SymbolsPublicPort
+																	? ReactiveSymbolsPort
+																	: T extends TablePublicPort
+																		? ReactiveTablePort
+																		: T extends TemplateVariablePublicPort
+																			? ReactiveTemplateVariablePort
+																			: T extends TodoListPublicPort
+																				? ReactiveTodoListPort
+																				: T extends UndoRedoPublicPort
+																					? ReactiveUndoRedoPort
+																					: T extends VideoPublicPort
+																						? ReactiveVideoPort
+																						: undefined;

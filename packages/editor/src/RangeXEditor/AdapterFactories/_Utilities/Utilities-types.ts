@@ -9,6 +9,7 @@ import type { EmptyMedia } from "../EmptyMedia";
 import type { FindReplace } from "../FindReplace";
 import type { Formatting } from "../Formatting";
 import type { Image } from "../Image";
+import type { LineHandler } from "../LineHandler";
 import type { Link } from "../Link";
 import type { List } from "../List";
 import type { Markdown } from "../Markdown";
@@ -35,6 +36,7 @@ export type AdapterFactory =
 	| typeof FindReplace
 	| typeof Formatting
 	| typeof Image
+	| typeof LineHandler
 	| typeof Link
 	| typeof List
 	| typeof Markdown

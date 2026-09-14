@@ -3,6 +3,7 @@ export type {
 	BlockAlignValue,
 	CaptionPosition,
 	CaptionState,
+	InsertRootLinePosition,
 	MediaType,
 } from "#adapters";
 export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
@@ -77,6 +78,11 @@ export type {
 } from "#adapters/Formatting";
 export type { ImagePublicPort } from "#adapters/Image";
 export type {
+	LineHandlerPublicPort,
+	TurnableComponentName,
+	TurnIntoAvailability,
+} from "#adapters/LineHandler";
+export type {
 	InsertParams as LinkInsertParams,
 	LinkDisplayText,
 	LinkPublicPort,
@@ -138,6 +144,7 @@ export {
 	FindReplace,
 	Formatting,
 	Image,
+	LineHandler,
 	Link,
 	List,
 	Markdown,

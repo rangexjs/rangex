@@ -1,8 +1,8 @@
 import type { EditorAPI, Line } from "rich-text-area";
-import type { DuplicatePort } from "#adapters";
+import type { DuplicateConfigPort } from "#adapters";
 
 export interface HandleBlockLineDuplicationParams {
-	port: DuplicatePort;
+	port: DuplicateConfigPort;
 	editorAPI: EditorAPI;
 	getBlockLine: () => Line | null;
 }
