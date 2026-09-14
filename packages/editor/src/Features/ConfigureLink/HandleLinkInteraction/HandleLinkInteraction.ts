@@ -77,7 +77,7 @@ const registerClick = ({
 					return;
 				}
 
-				configPort.setCurrentComponent(currentTarget);
+				configPort.updateCurrentComponent({ currentComponent: currentTarget });
 				configPort.notifyLinkClick();
 
 				if (configPort.linkMenu.openAt.includes("click")) {
@@ -118,7 +118,7 @@ const registerSelectionIn = ({
 			});
 
 			if (component?.$$componentName !== componentsName.link) {
-				configPort.setCurrentComponent(null);
+				configPort.updateCurrentComponent({ currentComponent: null });
 				return;
 			}
 
@@ -130,7 +130,7 @@ const registerSelectionIn = ({
 
 			if (!withinSelection) {
 				if (configPort.currentComponent === component) {
-					configPort.setCurrentComponent(null);
+					configPort.updateCurrentComponent({ currentComponent: null });
 					const instant = !rootEditable.contains(component);
 					linkMenuPopoverController.hide({ instant });
 				}
@@ -138,7 +138,7 @@ const registerSelectionIn = ({
 				return;
 			}
 
-			configPort.setCurrentComponent(component);
+			configPort.updateCurrentComponent({ currentComponent: component });
 			configPort.notifyLinkSelectionIn();
 
 			if (configPort.linkMenu.openAt.includes("selection-in")) {

@@ -33,8 +33,6 @@ export const AudioQuickActions = () => {
 		throw new Error("Audio can't be undefined.");
 	}
 
-	const caption = () => audio.caption();
-
 	const audioElement = () => {
 		const currentBlock = audio.currentBlock();
 
@@ -187,7 +185,7 @@ export const AudioQuickActions = () => {
 			return;
 		}
 
-		audio.changeCaptionEnabled(!caption().enabled);
+		audio.changeCaptionEnabled(!audio.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -298,14 +296,14 @@ export const AudioQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={caption().enabled}
+								checked={audio.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!caption().enabled}>
+						<div hidden={!audio.captionEnabled()}>
 							<SegmentedControl
-								id={caption().position}
+								id={audio.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => audio.changeCaptionPosition(value)}
 								appearance="primary-outline"

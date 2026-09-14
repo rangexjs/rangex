@@ -11,7 +11,11 @@ export interface HandleCaptionStateParams {
 	getCurrentBlock: () => BlockComponent | null;
 	getFigure: (params: { blockComponent: BlockComponent }) => HTMLLayout;
 	getCaption: (params: { figure: HTMLLayout }) => CaptionState;
-	setCaptionEnabled: (params: { figure: HTMLLayout; enabled: boolean }) => void;
+	setCaptionEnabled: (params: {
+		figure: HTMLLayout;
+		enabled: boolean;
+		position: CaptionPosition;
+	}) => void;
 	setCaptionPosition: (params: {
 		figure: HTMLLayout;
 		position: CaptionPosition;

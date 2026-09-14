@@ -37,7 +37,7 @@ export const handleSwapToEmptyMedia = ({
 
 		snapshotTimeline.registerSnapshotBoundary();
 
-		port.emitSwapToEmptyMedia();
+		port.notifySwapToEmptyMedia();
 	});
 
 	return () => {

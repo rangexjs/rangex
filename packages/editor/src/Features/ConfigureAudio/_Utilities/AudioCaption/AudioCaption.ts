@@ -42,7 +42,7 @@ export const getAudioCaption = ({
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {
-		return { enabled: false, position: "below" };
+		return { captionEnabled: false, captionPosition: "below" };
 	}
 
 	const audio = getAudioElement({ figure });
@@ -54,16 +54,18 @@ export const getAudioCaption = ({
 			? "above"
 			: "below";
 
-	return { enabled: true, position };
+	return { captionEnabled: true, captionPosition: position };
 };
 
 /*
- * Adds or removes the figcaption. Adding creates a fresh, empty nested editable below the audio;
- * removing discards the figcaption and whatever the user had typed in it.
+ * Adds or removes the figcaption. Adding creates a fresh, empty nested editable positioned above
+ * or below the audio per `position`; removing discards the figcaption and whatever the user had
+ * typed in it.
  */
 export const setAudioCaptionEnabled = ({
 	figure,
 	enabled,
+	position,
 }: SetAudioCaptionEnabledParams) => {
 	const figcaption = getFigcaption(figure);
 
@@ -95,12 +97,15 @@ export const setAudioCaptionEnabled = ({
 		],
 	});
 
-	figure.$$append(
-		createHTMLLayout({
-			localName: figcaptionLocalName,
-			childNodes: [nestedEditable],
-		}),
-	);
+	const newFigcaption = createHTMLLayout({
+		localName: figcaptionLocalName,
+		childNodes: [nestedEditable],
+	});
+
+	({
+		above: () => figure.$$prepend(newFigcaption),
+		below: () => figure.$$append(newFigcaption),
+	})[position]();
 };
 
 /*

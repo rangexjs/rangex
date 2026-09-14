@@ -6,7 +6,7 @@ import type {
 } from "./RemovePort-types";
 
 export const createRemovePort = (): CreateRemovePortResult => {
-	// ConfigPort
+	// CommandListeners
 	const onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
 
 	const configPort: RemoveConfigPort = {

@@ -10,6 +10,7 @@ export type GetVideoCaptionResult = CaptionState;
 export interface SetVideoCaptionEnabledParams {
 	figure: HTMLLayout;
 	enabled: boolean;
+	position: CaptionPosition;
 }
 
 export interface SetVideoCaptionPositionParams {

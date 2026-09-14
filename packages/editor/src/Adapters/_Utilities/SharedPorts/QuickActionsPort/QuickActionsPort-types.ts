@@ -13,7 +13,7 @@ export interface QuickActionsInternals {
 export interface QuickActionsConfigPort {
 	readonly quickActionsEl: HTMLDivElement;
 
-	setQuickActions(quickActions: QuickActionsState): void;
+	updateQuickActions(params: UpdateStateParams): void;
 }
 
 export type OnQuickActionsOpenUpdateCallbackFn = (

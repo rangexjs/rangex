@@ -6,7 +6,7 @@ export interface SwapToEmptyMediaConfigPort {
 	readonly canSwap: boolean;
 
 	onSwap(callback: OnSwapCallbackFn): () => void;
-	emitSwapToEmptyMedia(): void;
+	notifySwapToEmptyMedia(): void;
 }
 
 export interface SwapToEmptyMediaPublicPort {

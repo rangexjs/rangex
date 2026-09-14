@@ -6,7 +6,7 @@ import type {
 } from "./UnwrapPort-types";
 
 export const createUnwrapPort = (): CreateUnwrapPortResult => {
-	// ConfigPort
+	// CommandListeners
 	const onUnwrapListeners: Set<OnUnwrapCallbackFn> = new Set();
 
 	const configPort: UnwrapConfigPort = {

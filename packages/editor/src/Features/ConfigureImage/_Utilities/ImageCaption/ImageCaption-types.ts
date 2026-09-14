@@ -10,6 +10,7 @@ export type GetImageCaptionResult = CaptionState;
 export interface SetImageCaptionEnabledParams {
 	figure: HTMLLayout;
 	enabled: boolean;
+	position: CaptionPosition;
 }
 
 export interface SetImageCaptionPositionParams {

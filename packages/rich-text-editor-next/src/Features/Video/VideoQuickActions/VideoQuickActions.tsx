@@ -58,8 +58,6 @@ export const VideoQuickActions = () => {
 		throw new Error("Video can't be undefined.");
 	}
 
-	const caption = () => video.caption();
-
 	const videoElement = () => {
 		const currentBlock = video.currentBlock();
 
@@ -286,7 +284,7 @@ export const VideoQuickActions = () => {
 			return;
 		}
 
-		video.changeCaptionEnabled(!caption().enabled);
+		video.changeCaptionEnabled(!video.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -411,14 +409,14 @@ export const VideoQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={caption().enabled}
+								checked={video.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!caption().enabled}>
+						<div hidden={!video.captionEnabled()}>
 							<SegmentedControl
-								id={caption().position}
+								id={video.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => video.changeCaptionPosition(value)}
 								appearance="primary-outline"

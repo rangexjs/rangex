@@ -48,8 +48,6 @@ export const EmbedQuickActions = () => {
 		throw new Error("Embed can't be undefined.");
 	}
 
-	const caption = () => embed.caption();
-
 	const embedElement = () => {
 		const currentBlock = embed.currentBlock();
 
@@ -139,7 +137,7 @@ export const EmbedQuickActions = () => {
 			return;
 		}
 
-		embed.changeCaptionEnabled(!caption().enabled);
+		embed.changeCaptionEnabled(!embed.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -229,14 +227,14 @@ export const EmbedQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={caption().enabled}
+								checked={embed.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!caption().enabled}>
+						<div hidden={!embed.captionEnabled()}>
 							<SegmentedControl
-								id={caption().position}
+								id={embed.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => embed.changeCaptionPosition(value)}
 								appearance="primary-outline"

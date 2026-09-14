@@ -9,7 +9,7 @@ import type {
 export const createSwapToEmptyMediaPort = ({
 	adapterBus,
 }: CreateSwapToEmptyMediaPortParams): CreateSwapToEmptyMediaPortResult => {
-	// ConfigPort
+	// CommandListeners
 	const onSwapListeners: Set<OnSwapCallbackFn> = new Set();
 
 	const configPort: SwapToEmptyMediaConfigPort = {
@@ -22,7 +22,7 @@ export const createSwapToEmptyMediaPort = ({
 			return () => onSwapListeners.delete(callback);
 		},
 
-		emitSwapToEmptyMedia() {
+		notifySwapToEmptyMedia() {
 			adapterBus.emitSwapToEmptyMedia();
 		},
 	};

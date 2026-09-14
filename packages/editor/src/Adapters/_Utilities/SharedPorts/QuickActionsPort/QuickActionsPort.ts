@@ -18,7 +18,7 @@ export const createQuickActionsPort = ({
 		quickActionsOpen: false,
 	};
 
-	// PublicPort
+	// StateListeners
 	const onQuickActionsOpenUpdateListeners: Set<OnQuickActionsOpenUpdateCallbackFn> =
 		new Set();
 
@@ -37,8 +37,8 @@ export const createQuickActionsPort = ({
 			return quickActionsEl;
 		},
 
-		setQuickActions({ open }) {
-			updateState({ open });
+		updateQuickActions(params) {
+			updateState(params);
 		},
 	};
 

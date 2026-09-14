@@ -13,7 +13,7 @@ export interface CaretMenuInternals {
 export interface CaretMenuConfigPort {
 	readonly caretMenuEl: HTMLDivElement;
 
-	setCaretMenu(caretMenu: CaretMenuState): void;
+	updateCaretMenu(params: UpdateStateParams): void;
 }
 
 export type OnCaretMenuOpenUpdateCallbackFn = (caretMenuOpen: boolean) => void;

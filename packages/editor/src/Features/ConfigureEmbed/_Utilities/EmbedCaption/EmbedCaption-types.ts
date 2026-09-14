@@ -10,6 +10,7 @@ export type GetEmbedCaptionResult = CaptionState;
 export interface SetEmbedCaptionEnabledParams {
 	figure: HTMLLayout;
 	enabled: boolean;
+	position: CaptionPosition;
 }
 
 export interface SetEmbedCaptionPositionParams {

@@ -6,7 +6,7 @@ import type {
 } from "./CommitSnapshotPort-types";
 
 export const createCommitSnapshotPort = (): CreateCommitSnapshotPortResult => {
-	// ConfigPort
+	// CommandListeners
 	const onCommitSnapshotListeners: Set<OnCommitSnapshotCallbackFn> = new Set();
 
 	const configPort: CommitSnapshotConfigPort = {

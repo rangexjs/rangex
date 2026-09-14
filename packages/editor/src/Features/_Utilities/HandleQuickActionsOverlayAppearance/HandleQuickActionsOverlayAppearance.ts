@@ -24,7 +24,7 @@ export const handleQuickActionsOverlayAppearance = ({
 		options: {
 			lightDismiss: false,
 			closeOnEscape: false,
-			onToggle: (open) => port.setQuickActions({ open }),
+			onToggle: (open) => port.updateQuickActions({ open }),
 		},
 	});
 
@@ -37,7 +37,7 @@ export const handleQuickActionsOverlayAppearance = ({
 			onShow({ blockComponent }) {
 				anchorController.hide({});
 
-				port.setCurrentComponent(blockComponent);
+				port.updateCurrentComponent({ currentComponent: blockComponent });
 
 				beforeOpen({ blockComponent });
 
@@ -51,7 +51,7 @@ export const handleQuickActionsOverlayAppearance = ({
 			onClose() {
 				anchorController.hide({});
 
-				port.setCurrentComponent(null);
+				port.updateCurrentComponent({ currentComponent: null });
 			},
 		});
 

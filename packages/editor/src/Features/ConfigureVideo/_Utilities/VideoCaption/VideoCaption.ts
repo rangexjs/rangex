@@ -42,7 +42,7 @@ export const getVideoCaption = ({
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {
-		return { enabled: false, position: "below" };
+		return { captionEnabled: false, captionPosition: "below" };
 	}
 
 	const video = getVideoElement({ figure });
@@ -54,16 +54,18 @@ export const getVideoCaption = ({
 			? "above"
 			: "below";
 
-	return { enabled: true, position };
+	return { captionEnabled: true, captionPosition: position };
 };
 
 /*
- * Adds or removes the figcaption. Adding creates a fresh, empty nested editable below the video;
- * removing discards the figcaption and whatever the user had typed in it.
+ * Adds or removes the figcaption. Adding creates a fresh, empty nested editable positioned above
+ * or below the video per `position`; removing discards the figcaption and whatever the user had
+ * typed in it.
  */
 export const setVideoCaptionEnabled = ({
 	figure,
 	enabled,
+	position,
 }: SetVideoCaptionEnabledParams) => {
 	const figcaption = getFigcaption(figure);
 
@@ -95,12 +97,15 @@ export const setVideoCaptionEnabled = ({
 		],
 	});
 
-	figure.$$append(
-		createHTMLLayout({
-			localName: figcaptionLocalName,
-			childNodes: [nestedEditable],
-		}),
-	);
+	const newFigcaption = createHTMLLayout({
+		localName: figcaptionLocalName,
+		childNodes: [nestedEditable],
+	});
+
+	({
+		above: () => figure.$$prepend(newFigcaption),
+		below: () => figure.$$append(newFigcaption),
+	})[position]();
 };
 
 /*

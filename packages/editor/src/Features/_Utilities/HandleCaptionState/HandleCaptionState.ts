@@ -14,7 +14,7 @@ export const handleCaptionState = ({
 	setCaptionEnabled,
 	setCaptionPosition,
 }: HandleCaptionStateParams) => {
-	const unsubscribeCaptionEnabledChange = port.onCaptionEnabledChange(
+	const unsubscribeCaptionEnabledChange = port.onChangeCaptionEnabled(
 		(enabled) => {
 			const currentBlock = getCurrentBlock();
 
@@ -24,8 +24,8 @@ export const handleCaptionState = ({
 
 			const figure = getFigure({ blockComponent: currentBlock });
 
-			setCaptionEnabled({ figure, enabled });
-			port.setCaption(getCaption({ figure }));
+			setCaptionEnabled({ figure, enabled, position: port.captionPosition });
+			port.updateCaption(getCaption({ figure }));
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
@@ -33,7 +33,7 @@ export const handleCaptionState = ({
 		},
 	);
 
-	const unsubscribeCaptionPositionChange = port.onCaptionPositionChange(
+	const unsubscribeCaptionPositionChange = port.onChangeCaptionPosition(
 		(position) => {
 			const currentBlock = getCurrentBlock();
 
@@ -44,7 +44,7 @@ export const handleCaptionState = ({
 			const figure = getFigure({ blockComponent: currentBlock });
 
 			setCaptionPosition({ figure, position });
-			port.setCaption(getCaption({ figure }));
+			port.updateCaption(getCaption({ figure }));
 
 			const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

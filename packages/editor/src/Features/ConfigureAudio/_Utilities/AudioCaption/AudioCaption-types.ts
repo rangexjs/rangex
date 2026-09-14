@@ -10,6 +10,7 @@ export type GetAudioCaptionResult = CaptionState;
 export interface SetAudioCaptionEnabledParams {
 	figure: HTMLLayout;
 	enabled: boolean;
+	position: CaptionPosition;
 }
 
 export interface SetAudioCaptionPositionParams {

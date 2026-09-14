@@ -27,7 +27,7 @@ export const handleCaretMenuOverlayAppearance = ({
 		options: {
 			lightDismiss: false,
 			closeOnEscape: false,
-			onToggle: (open) => port.setCaretMenu({ open }),
+			onToggle: (open) => port.updateCaretMenu({ open }),
 		},
 	});
 

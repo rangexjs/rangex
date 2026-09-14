@@ -18,7 +18,7 @@ export const createCaretMenuPort = ({
 		caretMenuOpen: false,
 	};
 
-	// PublicPort
+	// StateListeners
 	const onCaretMenuOpenUpdateListeners: Set<OnCaretMenuOpenUpdateCallbackFn> =
 		new Set();
 
@@ -37,8 +37,8 @@ export const createCaretMenuPort = ({
 			return caretMenuEl;
 		},
 
-		setCaretMenu({ open }) {
-			updateState({ open });
+		updateCaretMenu(params) {
+			updateState(params);
 		},
 	};
 

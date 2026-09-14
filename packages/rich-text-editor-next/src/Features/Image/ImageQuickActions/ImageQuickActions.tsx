@@ -58,8 +58,6 @@ export const ImageQuickActions = () => {
 		throw new Error("Image can't be undefined.");
 	}
 
-	const caption = () => image.caption();
-
 	const img = () => {
 		const currentBlock = image.currentBlock();
 
@@ -162,7 +160,7 @@ export const ImageQuickActions = () => {
 			return;
 		}
 
-		image.changeCaptionEnabled(!caption().enabled);
+		image.changeCaptionEnabled(!image.captionEnabled());
 	};
 
 	let blockAlignPopover: HTMLDivElement | undefined;
@@ -259,14 +257,14 @@ export const ImageQuickActions = () => {
 								Caption
 							</span>
 							<ToggleButton
-								checked={caption().enabled}
+								checked={image.captionEnabled()}
 								onClick={onCaptionToggle}
 							/>
 						</div>
 
-						<div hidden={!caption().enabled}>
+						<div hidden={!image.captionEnabled()}>
 							<SegmentedControl
-								id={caption().position}
+								id={image.captionPosition()}
 								controls={captionPositionControls}
 								onChange={(value) => image.changeCaptionPosition(value)}
 								appearance="primary-outline"

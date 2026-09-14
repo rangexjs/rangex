@@ -3,70 +3,103 @@ import type {
 	CaptionInternals,
 	CaptionPublicPort,
 	CreateCaptionPortResult,
-	OnCaptionEnabledChangeCallbackFn,
-	OnCaptionPositionChangeCallbackFn,
-	OnCaptionUpdateCallbackFn,
+	OnCaptionEnabledUpdateCallbackFn,
+	OnCaptionPositionUpdateCallbackFn,
+	OnChangeCaptionEnabledCallbackFn,
+	OnChangeCaptionPositionCallbackFn,
 	UpdateStateParams,
 } from "./CaptionPort-types";
 
 export const createCaptionPort = (): CreateCaptionPortResult => {
 	const internals: CaptionInternals = {
-		caption: { enabled: false, position: "below" },
+		captionEnabled: false,
+		captionPosition: "below",
 	};
 
-	// ConfigPort
-	const onCaptionEnabledChangeListeners: Set<OnCaptionEnabledChangeCallbackFn> =
+	// StateListeners
+	const onCaptionEnabledUpdateListeners: Set<OnCaptionEnabledUpdateCallbackFn> =
 		new Set();
-	const onCaptionPositionChangeListeners: Set<OnCaptionPositionChangeCallbackFn> =
+	const onCaptionPositionUpdateListeners: Set<OnCaptionPositionUpdateCallbackFn> =
 		new Set();
 
-	// PublicPort
-	const onCaptionUpdateListeners: Set<OnCaptionUpdateCallbackFn> = new Set();
+	// CommandListeners
+	const onChangeCaptionEnabledListeners: Set<OnChangeCaptionEnabledCallbackFn> =
+		new Set();
+	const onChangeCaptionPositionListeners: Set<OnChangeCaptionPositionCallbackFn> =
+		new Set();
 
-	const updateState = ({ caption }: UpdateStateParams) => {
-		if (caption !== undefined) {
-			internals.caption = caption;
+	const updateState = ({
+		captionEnabled,
+		captionPosition,
+	}: UpdateStateParams) => {
+		if (captionEnabled !== undefined) {
+			internals.captionEnabled = captionEnabled;
 
-			for (const listener of onCaptionUpdateListeners) {
-				listener(internals.caption);
+			for (const listener of onCaptionEnabledUpdateListeners) {
+				listener(internals.captionEnabled);
+			}
+		}
+
+		if (captionPosition !== undefined) {
+			internals.captionPosition = captionPosition;
+
+			for (const listener of onCaptionPositionUpdateListeners) {
+				listener(internals.captionPosition);
 			}
 		}
 	};
 
 	const configPort: CaptionConfigPort = {
-		setCaption(caption) {
-			updateState({ caption });
+		get captionEnabled() {
+			return internals.captionEnabled;
 		},
 
-		onCaptionEnabledChange(callback) {
-			onCaptionEnabledChangeListeners.add(callback);
-			return () => onCaptionEnabledChangeListeners.delete(callback);
+		get captionPosition() {
+			return internals.captionPosition;
 		},
 
-		onCaptionPositionChange(callback) {
-			onCaptionPositionChangeListeners.add(callback);
-			return () => onCaptionPositionChangeListeners.delete(callback);
+		updateCaption(params) {
+			updateState(params);
+		},
+
+		onChangeCaptionEnabled(callback) {
+			onChangeCaptionEnabledListeners.add(callback);
+			return () => onChangeCaptionEnabledListeners.delete(callback);
+		},
+
+		onChangeCaptionPosition(callback) {
+			onChangeCaptionPositionListeners.add(callback);
+			return () => onChangeCaptionPositionListeners.delete(callback);
 		},
 	};
 
 	const publicPort: CaptionPublicPort = {
-		get caption() {
-			return internals.caption;
+		get captionEnabled() {
+			return internals.captionEnabled;
 		},
 
-		onCaptionUpdate(callback) {
-			onCaptionUpdateListeners.add(callback);
-			return () => onCaptionUpdateListeners.delete(callback);
+		get captionPosition() {
+			return internals.captionPosition;
+		},
+
+		onCaptionEnabledUpdate(callback) {
+			onCaptionEnabledUpdateListeners.add(callback);
+			return () => onCaptionEnabledUpdateListeners.delete(callback);
+		},
+
+		onCaptionPositionUpdate(callback) {
+			onCaptionPositionUpdateListeners.add(callback);
+			return () => onCaptionPositionUpdateListeners.delete(callback);
 		},
 
 		changeCaptionEnabled(enabled) {
-			for (const listener of onCaptionEnabledChangeListeners) {
+			for (const listener of onChangeCaptionEnabledListeners) {
 				listener(enabled);
 			}
 		},
 
 		changeCaptionPosition(position) {
-			for (const listener of onCaptionPositionChangeListeners) {
+			for (const listener of onChangeCaptionPositionListeners) {
 				listener(position);
 			}
 		},

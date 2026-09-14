@@ -11,7 +11,7 @@ export interface UpdateStateParams<TComponent extends Component> {
 export interface CurrentComponentConfigPort<TComponent extends Component> {
 	readonly currentComponent: TComponent | null;
 
-	setCurrentComponent(currentComponent: TComponent | null): void;
+	updateCurrentComponent(params: UpdateStateParams<TComponent>): void;
 }
 
 export type OnCurrentComponentUpdateCallbackFn = (

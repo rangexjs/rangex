@@ -13,14 +13,20 @@ export const Embed = <T extends EmbedPublicPort | undefined>(
 	const [quickActionsOpen, setQuickActionsOpen] = createSignal(
 		publicPort.quickActionsOpen,
 	);
-	const [caption, setCaption] = createSignal(publicPort.caption);
+	const [captionEnabled, setCaptionEnabled] = createSignal(
+		publicPort.captionEnabled,
+	);
+	const [captionPosition, setCaptionPosition] = createSignal(
+		publicPort.captionPosition,
+	);
 	const [align, setAlign] = createSignal(publicPort.align);
 	const [currentBlock, setCurrentBlock] = createSignal(
 		publicPort.currentComponent,
 	);
 
 	onCleanup(publicPort.onQuickActionsOpenUpdate(setQuickActionsOpen));
-	onCleanup(publicPort.onCaptionUpdate(setCaption));
+	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
+	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
 	onCleanup(publicPort.onAlignUpdate(setAlign));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentBlock));
 
@@ -29,7 +35,8 @@ export const Embed = <T extends EmbedPublicPort | undefined>(
 		canSwap: publicPort.canSwap,
 
 		quickActionsOpen,
-		caption,
+		captionEnabled,
+		captionPosition,
 		align,
 		currentBlock,
 

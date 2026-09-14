@@ -1,8 +1,4 @@
-import type {
-	BlockAlignValue,
-	CaptionPosition,
-	CaptionState,
-} from "@rangex/editor";
+import type { BlockAlignValue, CaptionPosition } from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveAudioPort {
@@ -10,7 +6,8 @@ export interface ReactiveAudioPort {
 	readonly canSwap: boolean;
 
 	quickActionsOpen: Accessor<boolean>;
-	caption: Accessor<CaptionState>;
+	captionEnabled: Accessor<boolean>;
+	captionPosition: Accessor<CaptionPosition>;
 	align: Accessor<BlockAlignValue>;
 	currentBlock: Accessor<HTMLElement | null>;
 

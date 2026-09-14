@@ -5,7 +5,8 @@ export type {
 	CaptionPosition,
 	CaptionPublicPort,
 	CaptionState,
-	OnCaptionEnabledChangeCallbackFn,
-	OnCaptionPositionChangeCallbackFn,
-	OnCaptionUpdateCallbackFn,
+	OnCaptionEnabledUpdateCallbackFn,
+	OnCaptionPositionUpdateCallbackFn,
+	OnChangeCaptionEnabledCallbackFn,
+	OnChangeCaptionPositionCallbackFn,
 } from "./CaptionPort-types";

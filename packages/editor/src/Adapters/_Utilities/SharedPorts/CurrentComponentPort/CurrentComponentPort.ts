@@ -15,7 +15,7 @@ export const createCurrentComponentPort = <
 		currentComponent: null,
 	};
 
-	// PublicPort
+	// StateListeners
 	const onCurrentComponentUpdateListeners: Set<OnCurrentComponentUpdateCallbackFn> =
 		new Set();
 
@@ -34,8 +34,8 @@ export const createCurrentComponentPort = <
 			return internals.currentComponent;
 		},
 
-		setCurrentComponent(currentComponent) {
-			updateState({ currentComponent });
+		updateCurrentComponent(params) {
+			updateState(params);
 		},
 	};
 

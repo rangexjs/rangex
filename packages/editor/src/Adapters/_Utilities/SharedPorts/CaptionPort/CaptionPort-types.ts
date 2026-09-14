@@ -1,40 +1,56 @@
 export type CaptionPosition = "above" | "below";
 
 export interface CaptionState {
-	enabled: boolean;
-	position: CaptionPosition;
+	captionEnabled: boolean;
+	captionPosition: CaptionPosition;
 }
 
 export interface CaptionInternals {
-	caption: CaptionState;
+	captionEnabled: boolean;
+	captionPosition: CaptionPosition;
 }
 
-export interface UpdateStateParams {
-	caption?: CaptionState;
-}
+export type OnCaptionEnabledUpdateCallbackFn = (
+	captionEnabled: boolean,
+) => void;
+export type OnCaptionPositionUpdateCallbackFn = (
+	captionPosition: CaptionPosition,
+) => void;
 
-export type OnCaptionEnabledChangeCallbackFn = (enabled: boolean) => void;
-export type OnCaptionPositionChangeCallbackFn = (
+export type OnChangeCaptionEnabledCallbackFn = (enabled: boolean) => void;
+export type OnChangeCaptionPositionCallbackFn = (
 	position: CaptionPosition,
 ) => void;
 
-export interface CaptionConfigPort {
-	setCaption(caption: CaptionState): void;
+export interface UpdateStateParams {
+	captionEnabled?: boolean;
+	captionPosition?: CaptionPosition;
+}
 
-	onCaptionEnabledChange(
-		callback: OnCaptionEnabledChangeCallbackFn,
+export interface CaptionConfigPort {
+	readonly captionEnabled: boolean;
+	readonly captionPosition: CaptionPosition;
+
+	updateCaption(params: UpdateStateParams): void;
+
+	onChangeCaptionEnabled(
+		callback: OnChangeCaptionEnabledCallbackFn,
 	): () => void;
-	onCaptionPositionChange(
-		callback: OnCaptionPositionChangeCallbackFn,
+	onChangeCaptionPosition(
+		callback: OnChangeCaptionPositionCallbackFn,
 	): () => void;
 }
 
-export type OnCaptionUpdateCallbackFn = (value: CaptionState) => void;
-
 export interface CaptionPublicPort {
-	readonly caption: CaptionState;
+	readonly captionEnabled: boolean;
+	readonly captionPosition: CaptionPosition;
 
-	onCaptionUpdate(callback: OnCaptionUpdateCallbackFn): () => void;
+	onCaptionEnabledUpdate(
+		callback: OnCaptionEnabledUpdateCallbackFn,
+	): () => void;
+	onCaptionPositionUpdate(
+		callback: OnCaptionPositionUpdateCallbackFn,
+	): () => void;
 
 	changeCaptionEnabled(enabled: boolean): void;
 	changeCaptionPosition(position: CaptionPosition): void;

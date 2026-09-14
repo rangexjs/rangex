@@ -60,7 +60,7 @@ const insertAtCaret = ({
 }: InsertAtCaretParams) => {
 	const link = createLink({ text });
 
-	configPort.setCurrentComponent(link);
+	configPort.updateCurrentComponent({ currentComponent: link });
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -152,7 +152,7 @@ const wrapWithLink = ({
 		throw new Error("CurrentLink not supposed to be null.");
 	}
 
-	configPort.setCurrentComponent(currentLink);
+	configPort.updateCurrentComponent({ currentComponent: currentLink });
 
 	setSelectionToLinkEnd({ link: currentLink, selection });
 
