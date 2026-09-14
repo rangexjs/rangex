@@ -1,7 +1,7 @@
 import { createBlockComponentPlacement } from "#engine-links";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
-import { handleListToolbarButtonState } from "./HandleListToolbarButtonState";
+import { handleListPlacementState } from "./HandleListPlacementState";
 
 /*
  * Wires up list toolbar button state and placement handling, returning a cleanup function.
@@ -12,7 +12,7 @@ export const configureList = ({
 }: ConfigureListParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleListToolbarButtonState({
+	const placementStateCleanup = handleListPlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -25,7 +25,7 @@ export const configureList = ({
 	});
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		placementCleanup();
 	};
 };

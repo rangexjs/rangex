@@ -2,7 +2,7 @@ import { createBlockComponentPlacement } from "#engine-links";
 import type { ConfigureTodoListParams } from "./ConfigureTodoList-types";
 import { handleTodoListCheckboxState } from "./HandleTodoListCheckboxState";
 import { handleTodoListPlacement } from "./HandleTodoListPlacement";
-import { handleTodoListToolbarButtonState } from "./HandleTodoListToolbarButtonState";
+import { handleTodoListPlacementState } from "./HandleTodoListPlacementState";
 
 /*
  * Wires up the todo list block component: toolbar button state, insert/wrap placement,
@@ -14,7 +14,7 @@ export const configureTodoList = ({
 }: ConfigureTodoListParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleTodoListToolbarButtonState({
+	const placementStateCleanup = handleTodoListPlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -29,7 +29,7 @@ export const configureTodoList = ({
 	const checkboxStateCleanup = handleTodoListCheckboxState({ editorAPI });
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		placementCleanup();
 		checkboxStateCleanup();
 	};

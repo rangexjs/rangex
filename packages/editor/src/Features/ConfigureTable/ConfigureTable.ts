@@ -7,7 +7,7 @@ import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMe
 import { handleTableContextMenuButtonsState } from "./HandleTableContextMenuButtonsState";
 import { handleTableContextMenuVisibility } from "./HandleTableContextMenuVisibility";
 import { handleTableInsertion } from "./HandleTableInsertion";
-import { handleTableToolbarButtonState } from "./HandleTableToolbarButtonState";
+import { handleTablePlacementState } from "./HandleTablePlacementState";
 
 /*
  * Wires up all table feature handlers (insertion, toolbar state, context-menu visibility,
@@ -28,7 +28,7 @@ export const configureTable = ({
 		},
 	});
 
-	const toolbarButtonStateCleanup = handleTableToolbarButtonState({
+	const placementStateCleanup = handleTablePlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -54,7 +54,7 @@ export const configureTable = ({
 	});
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		contextMenuVisibilityCleanup();
 		contextMenuStateCleanup();
 		contextMenuInteractionCleanup();

@@ -1,7 +1,7 @@
 import { createBlockComponentPlacement } from "#engine-links";
 import type { ConfigureEmptyMediaParams } from "./ConfigureEmptyMedia-types";
 import { handleEmptyMediaInsertion } from "./HandleEmptyMediaInsertion";
-import { handleEmptyMediaToolbarButtonState } from "./HandleEmptyMediaToolbarButtonState";
+import { handleEmptyMediaPlacementState } from "./HandleEmptyMediaPlacementState";
 import { watchEmptyMedia } from "./WatchEmptyMedia";
 
 /*
@@ -14,7 +14,7 @@ export const configureEmptyMedia = ({
 }: ConfigureEmptyMediaParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleEmptyMediaToolbarButtonState({
+	const placementStateCleanup = handleEmptyMediaPlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -29,7 +29,7 @@ export const configureEmptyMedia = ({
 	const watchCleanup = watchEmptyMedia({ configPort, editorAPI });
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		insertionCleanup();
 		watchCleanup();
 	};

@@ -10,7 +10,7 @@ import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
 import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
 import { handleCodeBlockPlacement } from "./HandleCodeBlockPlacement";
-import { handleCodeBlockToolbarButtonState } from "./HandleCodeBlockToolbarButtonState";
+import { handleCodeBlockPlacementState } from "./HandleCodeBlockPlacementState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
 /*
@@ -24,7 +24,7 @@ export const configureCodeBlock = ({
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 	const codeHighlighter = new CodeHighlighter({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleCodeBlockToolbarButtonState({
+	const placementStateCleanup = handleCodeBlockPlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -66,7 +66,7 @@ export const configureCodeBlock = ({
 	});
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		placementCleanup();
 		lineNumbersCleanup();
 		overlayStateCleanup();

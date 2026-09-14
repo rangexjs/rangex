@@ -1,7 +1,7 @@
 import { createBlockComponentPlacement } from "#engine-links";
 import type { ConfigureBlockQuoteParams } from "./ConfigureBlockQuote-types";
 import { handleBlockQuotePlacement } from "./HandleBlockQuotePlacement";
-import { handleBlockQuoteToolbarButtonState } from "./HandleBlockQuoteToolbarButtonState";
+import { handleBlockQuotePlacementState } from "./HandleBlockQuotePlacementState";
 
 /*
  * Wires up block quote toolbar button state and placement handling, returning a cleanup function.
@@ -12,7 +12,7 @@ export const configureBlockQuote = ({
 }: ConfigureBlockQuoteParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleBlockQuoteToolbarButtonState({
+	const placementStateCleanup = handleBlockQuotePlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -25,7 +25,7 @@ export const configureBlockQuote = ({
 	});
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		placementCleanup();
 	};
 };

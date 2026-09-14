@@ -2,8 +2,8 @@ import { handleCaretMenuAppearance } from "../_Utilities";
 import { getTemplateVariableQuery } from "./_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
 import { handleTemplateVariableInsertion } from "./HandleTemplateVariableInsertion";
+import { handleTemplateVariablePlacementState } from "./HandleTemplateVariablePlacementState";
 import { handleTemplateVariableSelect } from "./HandleTemplateVariableSelect";
-import { handleTemplateVariableToolbarButtonState } from "./HandleTemplateVariableToolbarButtonState";
 import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
 
 /*
@@ -15,7 +15,7 @@ export const configureTemplateVariable = ({
 	configPort,
 	editorAPI,
 }: ConfigureTemplateVariableParams) => {
-	const toolbarButtonStateCleanup = handleTemplateVariableToolbarButtonState({
+	const placementStateCleanup = handleTemplateVariablePlacementState({
 		configPort,
 		editorAPI,
 	});
@@ -46,7 +46,7 @@ export const configureTemplateVariable = ({
 	});
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		insertionCleanup();
 		updateCleanup();
 		selectCleanup();

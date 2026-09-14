@@ -1,8 +1,8 @@
 import { createBlockComponentPlacement } from "#engine-links";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
 import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
+import { handleAccordionItemPlacementState } from "./HandleAccordionItemPlacementState";
 import { handleAccordionItemSummaryToggle } from "./HandleAccordionItemSummaryToggle";
-import { handleAccordionItemToolbarButtonState } from "./HandleAccordionItemToolbarButtonState";
 
 /*
  * Wires up the accordion item block component: toolbar button state, insert/wrap placement,
@@ -14,7 +14,7 @@ export const configureAccordionItem = ({
 }: ConfigureAccordionItemParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
-	const toolbarButtonStateCleanup = handleAccordionItemToolbarButtonState({
+	const placementStateCleanup = handleAccordionItemPlacementState({
 		configPort,
 		editorAPI,
 		blockComponentPlacement,
@@ -29,7 +29,7 @@ export const configureAccordionItem = ({
 	const summaryToggleCleanup = handleAccordionItemSummaryToggle({ editorAPI });
 
 	return () => {
-		toolbarButtonStateCleanup();
+		placementStateCleanup();
 		insertionCleanup();
 		summaryToggleCleanup();
 	};
