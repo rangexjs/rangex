@@ -8,12 +8,12 @@ export interface UpdateStateParams {
 	align?: BlockAlignValue;
 }
 
-export type OnAlignChangeCallbackFn = (align: BlockAlignValue) => void;
+export type OnChangeAlignCallbackFn = (align: BlockAlignValue) => void;
 
 export interface BlockAlignConfigPort {
-	setAlign(align: BlockAlignValue): void;
+	updateAlign(align: BlockAlignValue): void;
 
-	onAlignChange(callback: OnAlignChangeCallbackFn): () => void;
+	onChangeAlign(callback: OnChangeAlignCallbackFn): () => void;
 }
 
 export type OnAlignUpdateCallbackFn = (value: BlockAlignValue) => void;

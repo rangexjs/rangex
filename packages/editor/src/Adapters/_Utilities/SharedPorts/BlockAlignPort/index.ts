@@ -4,6 +4,6 @@ export type {
 	BlockAlignPort,
 	BlockAlignPublicPort,
 	BlockAlignValue,
-	OnAlignChangeCallbackFn,
 	OnAlignUpdateCallbackFn,
+	OnChangeAlignCallbackFn,
 } from "./BlockAlignPort-types";

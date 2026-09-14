@@ -10,7 +10,7 @@ export const handleBlockAlignState = ({
 	editorAPI,
 	getCurrentBlock,
 }: HandleBlockAlignStateParams) => {
-	const unsubscribeAlignChange = port.onAlignChange((align) => {
+	const unsubscribeAlignChange = port.onChangeAlign((align) => {
 		const currentBlock = getCurrentBlock();
 
 		if (!currentBlock) {
@@ -24,7 +24,7 @@ export const handleBlockAlignState = ({
 		}
 
 		setBlockAlign({ blockComponentLine: $$parentElement, align });
-		port.setAlign(align);
+		port.updateAlign(align);
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

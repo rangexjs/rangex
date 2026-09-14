@@ -54,7 +54,7 @@ export const configureEmbed = ({
 				const figure = getEmbedFigure({ blockComponent });
 				const caption = getEmbedCaption({ figure });
 
-				configPort.setAlign(align);
+				configPort.updateAlign(align);
 				configPort.setCaption(caption);
 			},
 		});
