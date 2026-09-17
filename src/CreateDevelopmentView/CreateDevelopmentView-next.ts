@@ -27,7 +27,13 @@ import {
 	UndoRedo,
 	Video,
 } from "@rangex/rich-text-editor-next";
+import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
+import {
+	codeBlockLanguageDefinitions,
+	codeBlockThemeDefinitions,
+} from "./SyntaxHighlighter/CodeBlockSyntaxHighlighting";
+import SyntaxHighlighterWorker from "./SyntaxHighlighter/SyntaxHighlighterWorker?worker";
 
 /**
  * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of
@@ -62,6 +68,34 @@ const uploadFile = ({
 	});
 };
 
+const syntaxHighlighter = new SyntaxHighlighterWorker();
+const getHighlightInfo = createSyntaxHighlighter(syntaxHighlighter);
+
+const languages = codeBlockLanguageDefinitions.map(({ id, label }) => ({
+	id,
+	label,
+}));
+
+const themes = codeBlockThemeDefinitions.map(({ id, label }) => ({
+	id,
+	label,
+}));
+
+const defaultTheme = (() => {
+	const light = themes.find(({ id }) => id === "light-plus")?.id;
+	const dark = themes.find(({ id }) => id === "dark-plus")?.id;
+
+	if (!light) {
+		throw new Error("light-plus was not provided.");
+	}
+
+	if (!dark) {
+		throw new Error("dark-plus was not provided.");
+	}
+
+	return { light, dark };
+})();
+
 export const createDevelopmentView = () => {
 	const maxViewContainer = document.createElement("div");
 
@@ -85,7 +119,7 @@ export const createDevelopmentView = () => {
 		EmptyMedia({ uploadFile }),
 		FindReplace({}),
 		Formatting({}),
-		CodeBlock({}),
+		CodeBlock({ getHighlightInfo, languages, themes, defaultTheme }),
 		CommandMenu({}),
 		Image({}),
 		LineHandler({}),

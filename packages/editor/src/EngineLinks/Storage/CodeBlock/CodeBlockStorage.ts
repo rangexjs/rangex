@@ -29,17 +29,17 @@ export const validateCodeBlockStorage = (
 };
 
 export const codeBlockStorageFallbacks: CodeBlockStorageFallbacks = {
-	lang: "typescript",
-	theme: { light: "light-plus", dark: "dark-plus" },
+	language: null,
+	theme: null,
 };
 
 export const createCodeBlockStorage = ({
-	lang,
+	language,
 	theme,
 }: CreateCodeBlockStorageParams): CreateCodeBlockStorageResult => ({
 	id: codeBlockId,
 	version: codeBlockStorageVersion,
-	lang,
+	language,
 	theme,
 });
 

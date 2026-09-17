@@ -21,9 +21,10 @@ export const handleCodeBlockPlacement = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribeInsert = configPort.onInsert(({ language }) => {
+	const unsubscribeInsert = configPort.onInsert(({ language, theme }) => {
 		const codeBlockLine = createCodeBlock({
 			language,
+			theme,
 			childNodes: [
 				createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 			],
@@ -66,8 +67,8 @@ export const handleCodeBlockPlacement = ({
 		editorAPI.focus();
 	});
 
-	const unsubscribeUnwrap = configPort.onWrap(({ language }) => {
-		const codeBlockLine = createCodeBlock({ language });
+	const unsubscribeUnwrap = configPort.onWrap(({ language, theme }) => {
+		const codeBlockLine = createCodeBlock({ language, theme });
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);
 

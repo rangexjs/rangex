@@ -6,10 +6,6 @@ import {
 	createRemovePort,
 	createUnwrapPort,
 } from "../_Utilities";
-import {
-	defaultCodeBlockLanguages,
-	defaultCodeBlockThemes,
-} from "./CodeBlockAdapter-default";
 import type {
 	CodeBlockConfigPort,
 	CodeBlockConfigPortProps,
@@ -20,14 +16,12 @@ import type {
 	CreateCodeBlockAdapterResult,
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
-	OnChangeDarkThemeCallbackFn,
 	OnChangeLanguageCallbackFn,
-	OnChangeLightThemeCallbackFn,
-	OnDarkThemeUpdateCallbackFn,
+	OnChangeThemeCallbackFn,
 	OnInsertCallbackFn,
 	OnIsActiveUpdateCallbackFn,
 	OnLanguageUpdateCallbackFn,
-	OnLightThemeUpdateCallbackFn,
+	OnThemeUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./CodeBlockAdapter-types";
@@ -35,21 +29,22 @@ import type {
 export const createCodeBlockAdapter = (
 	...params: CreateCodeBlockAdapterParams
 ): CreateCodeBlockAdapterResult => {
-	const [
-		{ languages = defaultCodeBlockLanguages, themes = defaultCodeBlockThemes },
-		{ floatingContainer },
-	] = params;
+	const [settings, { floatingContainer }] = params;
 
 	const internals: CodeBlockInternals = {
 		// States
 		canInsert: false,
 		canWrap: false,
 		isActive: false,
-		language: "TypeScript",
-		lightTheme: "Light+",
-		darkTheme: "Dark+",
+		language: null,
+		theme: null,
 		// Providers
 		plainTextProvider: null,
+		// Rest
+		languages: settings.languages ?? [],
+		themes: settings.themes ?? [],
+		getHighlightInfo: settings.getHighlightInfo ?? null,
+		defaultTheme: settings.defaultTheme ?? null,
 	};
 
 	// StateListeners
@@ -58,19 +53,13 @@ export const createCodeBlockAdapter = (
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
 	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 	const onLanguageUpdateListeners: Set<OnLanguageUpdateCallbackFn> = new Set();
-	const onLightThemeUpdateListeners: Set<OnLightThemeUpdateCallbackFn> =
-		new Set();
-	const onDarkThemeUpdateListeners: Set<OnDarkThemeUpdateCallbackFn> =
-		new Set();
+	const onThemeUpdateListeners: Set<OnThemeUpdateCallbackFn> = new Set();
 
 	// CommandListeners
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 	const onChangeLanguageListeners: Set<OnChangeLanguageCallbackFn> = new Set();
-	const onChangeLightThemeListeners: Set<OnChangeLightThemeCallbackFn> =
-		new Set();
-	const onChangeDarkThemeListeners: Set<OnChangeDarkThemeCallbackFn> =
-		new Set();
+	const onChangeThemeListeners: Set<OnChangeThemeCallbackFn> = new Set();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
@@ -82,8 +71,7 @@ export const createCodeBlockAdapter = (
 		canWrap,
 		isActive,
 		language,
-		lightTheme,
-		darkTheme,
+		theme,
 	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
@@ -117,19 +105,11 @@ export const createCodeBlockAdapter = (
 			}
 		}
 
-		if (lightTheme !== undefined) {
-			internals.lightTheme = lightTheme;
+		if (theme !== undefined) {
+			internals.theme = theme;
 
-			for (const listener of onLightThemeUpdateListeners) {
-				listener(internals.lightTheme);
-			}
-		}
-
-		if (darkTheme !== undefined) {
-			internals.darkTheme = darkTheme;
-
-			for (const listener of onDarkThemeUpdateListeners) {
-				listener(internals.darkTheme);
+			for (const listener of onThemeUpdateListeners) {
+				listener(internals.theme);
 			}
 		}
 	};
@@ -141,6 +121,14 @@ export const createCodeBlockAdapter = (
 		{
 			get quickActions() {
 				return quickActionsPort.configPort;
+			},
+
+			get getHighlightInfo() {
+				return internals.getHighlightInfo;
+			},
+
+			get defaultTheme() {
+				return internals.defaultTheme;
 			},
 
 			updateState(params) {
@@ -162,14 +150,9 @@ export const createCodeBlockAdapter = (
 				return () => onChangeLanguageListeners.delete(callback);
 			},
 
-			onChangeLightTheme(callback) {
-				onChangeLightThemeListeners.add(callback);
-				return () => onChangeLightThemeListeners.delete(callback);
-			},
-
-			onChangeDarkTheme(callback) {
-				onChangeDarkThemeListeners.add(callback);
-				return () => onChangeDarkThemeListeners.delete(callback);
+			onChangeTheme(callback) {
+				onChangeThemeListeners.add(callback);
+				return () => onChangeThemeListeners.delete(callback);
 			},
 
 			registerPlainTextProvider(provider) {
@@ -188,11 +171,24 @@ export const createCodeBlockAdapter = (
 			},
 
 			get languages() {
-				return languages;
+				return internals.languages;
 			},
 
 			get themes() {
-				return themes;
+				return internals.themes;
+			},
+
+			get defaultTheme() {
+				return internals.defaultTheme;
+			},
+
+			get canHighlight() {
+				return (
+					internals.getHighlightInfo !== null &&
+					internals.languages.length > 0 &&
+					internals.themes.length > 0 &&
+					internals.defaultTheme !== null
+				);
 			},
 
 			get canInsert() {
@@ -211,12 +207,8 @@ export const createCodeBlockAdapter = (
 				return internals.language;
 			},
 
-			get lightTheme() {
-				return internals.lightTheme;
-			},
-
-			get darkTheme() {
-				return internals.darkTheme;
+			get theme() {
+				return internals.theme;
 			},
 
 			onCanInsertUpdate(callback) {
@@ -239,14 +231,9 @@ export const createCodeBlockAdapter = (
 				return () => onLanguageUpdateListeners.delete(callback);
 			},
 
-			onLightThemeUpdate(callback) {
-				onLightThemeUpdateListeners.add(callback);
-				return () => onLightThemeUpdateListeners.delete(callback);
-			},
-
-			onDarkThemeUpdate(callback) {
-				onDarkThemeUpdateListeners.add(callback);
-				return () => onDarkThemeUpdateListeners.delete(callback);
+			onThemeUpdate(callback) {
+				onThemeUpdateListeners.add(callback);
+				return () => onThemeUpdateListeners.delete(callback);
 			},
 
 			insert(params) {
@@ -267,14 +254,8 @@ export const createCodeBlockAdapter = (
 				}
 			},
 
-			changeLightTheme(theme) {
-				for (const listener of onChangeLightThemeListeners) {
-					listener(theme);
-				}
-			},
-
-			changeDarkTheme(theme) {
-				for (const listener of onChangeDarkThemeListeners) {
+			changeTheme(theme) {
+				for (const listener of onChangeThemeListeners) {
 					listener(theme);
 				}
 			},

@@ -11,9 +11,13 @@ export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
 export type { AudioPublicPort } from "#adapters/Audio";
 export type { BlockQuotePublicPort } from "#adapters/BlockQuote";
 export type {
-	CodeBlockLanguage,
 	CodeBlockPublicPort,
 	CodeBlockTheme,
+	GetHighlightInfoFn,
+	GetHighlightInfoParams,
+	HighlightInfo,
+	ThemedCodeLine,
+	ThemedCodeLines,
 } from "#adapters/CodeBlock";
 export type {
 	CommandMenuItemValue,

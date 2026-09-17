@@ -4,8 +4,7 @@ import type {
 	EditorAPI,
 	ListLocalName,
 } from "rich-text-area";
-import type { CodeBlockLanguage } from "#adapters/CodeBlock";
-import type { BlockComponentPlacement } from "#engine-links";
+import type { BlockComponentPlacement, CodeBlockTheme } from "#engine-links";
 
 export interface HeadingConversion {
 	type: "localName";
@@ -27,7 +26,8 @@ export interface BlockQuoteConversion {
 
 export interface CodeBlockConversion {
 	type: "codeBlock";
-	language: CodeBlockLanguage;
+	language: string | null;
+	theme: CodeBlockTheme | null;
 }
 
 export type BlockMarkdownConversion =
@@ -65,7 +65,8 @@ export interface ConvertToTodoListParams {
 export interface ConvertToCodeBlockParams {
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
-	language: CodeBlockLanguage;
+	language: string | null;
+	theme: CodeBlockTheme | null;
 }
 
 export interface ConvertToBlockQuoteParams {

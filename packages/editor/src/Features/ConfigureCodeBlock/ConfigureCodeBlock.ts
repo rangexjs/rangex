@@ -4,7 +4,6 @@ import {
 	createBlockComponentPlacement,
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
-import { toUILanguage, toUITheme } from "#libs";
 import { handleQuickActionsAppearance } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
@@ -22,7 +21,10 @@ export const configureCodeBlock = ({
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-	const codeHighlighter = new CodeHighlighter({ editorAPI });
+	const codeHighlighter = new CodeHighlighter({
+		editorAPI,
+		getHighlightInfo: configPort.getHighlightInfo,
+	});
 
 	const placementStateCleanup = handleCodeBlockPlacementState({
 		configPort,
@@ -45,15 +47,14 @@ export const configureCodeBlock = ({
 			editorAPI,
 			componentName: componentsName.codeBlock,
 			beforeOpen({ blockComponent }) {
-				const { lang, theme } = ensureNodeCodeBlockStorage({
+				const storage = ensureNodeCodeBlockStorage({
 					blockComponent,
 					fallbacks: codeBlockStorageFallbacks,
 				});
 
 				configPort.updateState({
-					language: toUILanguage(lang),
-					lightTheme: toUITheme(theme.light),
-					darkTheme: toUITheme(theme.dark),
+					language: storage.language,
+					theme: storage.theme ?? configPort.defaultTheme,
 				});
 			},
 		});

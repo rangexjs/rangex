@@ -26,7 +26,7 @@ const createBlockComponent = ({
 			createAccordionItem({ childNodes }).blockComponentLine,
 		[componentsName.blockQuote]: () => createBlockQuote({ childNodes }),
 		[componentsName.codeBlock]: () =>
-			createCodeBlock({ language: "typescript", childNodes }),
+			createCodeBlock({ language: null, theme: null, childNodes }),
 		[componentsName.list]: () =>
 			createList({ localName: "ul", lineType: "multi-line", childNodes }),
 		[componentsName.todoList]: () => createTodoList({ childNodes }),

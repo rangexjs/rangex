@@ -11,7 +11,6 @@ import {
 	componentsName,
 	createCodeBlockStorage,
 } from "#engine-links";
-import { toHighlighterLang } from "#libs";
 import type {
 	CreateCodeBlockParams,
 	CreateCodeBlockResult,
@@ -23,6 +22,7 @@ import type {
  */
 export const createCodeBlock = ({
 	language,
+	theme,
 	childNodes,
 }: CreateCodeBlockParams): CreateCodeBlockResult => {
 	const list = createList({
@@ -57,10 +57,7 @@ export const createCodeBlock = ({
 		blockComponent: createBlockComponent({
 			componentName: componentsName.codeBlock,
 			content: { type: "list" },
-			customStorage: createCodeBlockStorage({
-				lang: toHighlighterLang(language) ?? "typescript",
-				theme: { light: "light-plus", dark: "dark-plus" },
-			}),
+			customStorage: createCodeBlockStorage({ language, theme }),
 			childNodes: [
 				createHTMLLayout({
 					localName: "pre",

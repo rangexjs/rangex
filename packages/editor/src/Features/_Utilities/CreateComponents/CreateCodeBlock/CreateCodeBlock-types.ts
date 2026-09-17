@@ -1,8 +1,9 @@
 import type { BlockComponentLine, Line } from "rich-text-area";
-import type { CodeBlockLanguage } from "#adapters/CodeBlock";
+import type { CodeBlockTheme } from "#engine-links";
 
 export interface CreateCodeBlockParams {
-	language: CodeBlockLanguage;
+	language: string | null;
+	theme: CodeBlockTheme | null;
 	childNodes?: Line[];
 }
 

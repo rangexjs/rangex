@@ -19,17 +19,20 @@ export const CodeBlockToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !$codeBlock.canWrap() || !!$readOnly?.checked(),
+		() =>
+			!$codeBlock.canWrap() ||
+			!!$readOnly?.checked() ||
+			!codeBlock.languages.length,
 	);
 
 	const popoverId = createUniqueId();
 
 	const list = createMemo<ToolbarDropdownList>(() =>
-		codeBlock.languages.map((language) => ({
-			text: language,
+		codeBlock.languages.map(({ id, label }) => ({
+			text: label,
 			button: {
 				onClick: () => {
-					codeBlock.wrap({ language });
+					codeBlock.wrap({ language: id, theme: codeBlock.defaultTheme });
 				},
 			},
 		})),

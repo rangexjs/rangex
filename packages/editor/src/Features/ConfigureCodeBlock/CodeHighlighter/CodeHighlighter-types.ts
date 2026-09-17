@@ -4,7 +4,8 @@ import type {
 	List,
 	RootEditable,
 } from "rich-text-area";
-import type { BundledLangKeys, BundledThemeKeys, ThemedCodeLines } from "#libs";
+import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
+import type { CodeBlockTheme } from "#engine-links";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {
@@ -25,26 +26,33 @@ export interface GetCodeLinesParams {
 
 export type GetCodeLinesResult = string[];
 
+export interface ClearCodeBlockColorsParams {
+	blockComponent: BlockComponent;
+	cssHighlightManager: CSSHighlightManager;
+	list: List;
+}
+
 export interface ApplyTokenColorsParams {
 	editorAPI: EditorAPI;
 	list: List;
 	cssHighlightManager: CSSHighlightManager;
 	codeLines: ThemedCodeLines;
-	theme: { light: BundledThemeKeys; dark: BundledThemeKeys };
 }
 
 export interface UpdateCodeBlockColorsParams {
 	editorAPI: EditorAPI;
+	getHighlightInfo: GetHighlightInfoFn | null;
 	cssHighlightManager: CSSHighlightManager;
 	blockComponent: BlockComponent;
 }
 
 export interface CodeHighlighterConstructorParams {
 	editorAPI: EditorAPI;
+	getHighlightInfo: GetHighlightInfoFn | null;
 }
 
 export interface CodeHighlighterUpdateParams {
 	blockComponent: BlockComponent;
-	lang: BundledLangKeys;
-	theme: { light: BundledThemeKeys; dark: BundledThemeKeys };
+	language: string | null;
+	theme: CodeBlockTheme | null;
 }

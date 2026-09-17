@@ -15,9 +15,9 @@ import {
 	ensureNodeCodeBlockStorage,
 	getClosestBlockComponent,
 } from "#engine-links";
-import { syntaxHighlighter } from "#libs";
 import type {
 	ApplyTokenColorsParams,
+	ClearCodeBlockColorsParams,
 	CodeHighlighterConstructorParams,
 	CodeHighlighterUpdateParams,
 	GetCodeLinesParams,
@@ -136,6 +136,22 @@ const getCodeLines = ({
 };
 
 /**
+ * Removes any applied highlight colors/CSS Highlight ranges from a code block, restoring it to
+ * its unhighlighted appearance.
+ */
+const clearCodeBlockColors = ({
+	blockComponent,
+	cssHighlightManager,
+	list,
+}: ClearCodeBlockColorsParams) => {
+	cssHighlightManager.clear({ list });
+	blockComponent.style.removeProperty("--bg-light");
+	blockComponent.style.removeProperty("--bg-dark");
+	blockComponent.style.removeProperty("--fg-light");
+	blockComponent.style.removeProperty("--fg-dark");
+};
+
+/**
  * Map tokenized code lines to DOM text nodes and apply theme-aware
  * syntax highlighting via CSS Highlight API. Creates ranges for each
  * token and applies light/dark theme colors.
@@ -145,7 +161,6 @@ const applyTokenColors = ({
 	list,
 	cssHighlightManager,
 	codeLines,
-	theme,
 }: ApplyTokenColorsParams) => {
 	try {
 		cssHighlightManager.clear({ list });
@@ -191,16 +206,7 @@ const applyTokenColors = ({
 						currentText = toText;
 						currentOffset = toOffset;
 
-						const { light, dark } = theme;
-
-						const lightColor = colors[light];
-						const darkColor = colors[dark];
-
-						cssHighlightManager.addHighlight({
-							list,
-							theme: { light: lightColor, dark: darkColor },
-							range,
-						});
+						cssHighlightManager.addHighlight({ list, theme: colors, range });
 
 						break;
 					}
@@ -222,10 +228,15 @@ const applyTokenColors = ({
  */
 const updateCodeBlockColors = async ({
 	editorAPI,
+	getHighlightInfo,
 	cssHighlightManager,
 	blockComponent,
 }: UpdateCodeBlockColorsParams) => {
-	const { lang, theme } = ensureNodeCodeBlockStorage({
+	if (!getHighlightInfo) {
+		return;
+	}
+
+	const { language, theme } = ensureNodeCodeBlockStorage({
 		blockComponent,
 		fallbacks: codeBlockStorageFallbacks,
 	});
@@ -236,33 +247,41 @@ const updateCodeBlockColors = async ({
 		throw new Error("List's type is invalid.");
 	}
 
+	if (language === null || theme === null) {
+		clearCodeBlockColors({ blockComponent, cssHighlightManager, list });
+		return;
+	}
+
 	const lines = getCodeLines({ editorAPI, list });
 
-	const { backgrounds, foregrounds, codeLines } =
-		await syntaxHighlighter.getHighlightInfo({
-			lines,
-			lang,
-		});
+	const highlightInfo = await getHighlightInfo({ lines, language, theme });
 
-	const bgLight = backgrounds[theme.light];
-	const bgDark = backgrounds[theme.dark];
-	const fgLight = foregrounds[theme.light];
-	const fgDark = foregrounds[theme.dark];
+	if (!highlightInfo) {
+		clearCodeBlockColors({ blockComponent, cssHighlightManager, list });
+		return;
+	}
 
-	blockComponent.style.setProperty("--bg-light", bgLight);
-	blockComponent.style.setProperty("--bg-dark", bgDark);
-	blockComponent.style.setProperty("--fg-light", fgLight);
-	blockComponent.style.setProperty("--fg-dark", fgDark);
+	const { backgrounds, foregrounds, codeLines } = highlightInfo;
 
-	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines, theme });
+	blockComponent.style.setProperty("--bg-light", backgrounds.light);
+	blockComponent.style.setProperty("--bg-dark", backgrounds.dark);
+	blockComponent.style.setProperty("--fg-light", foregrounds.light);
+	blockComponent.style.setProperty("--fg-dark", foregrounds.dark);
+
+	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines });
 };
 
 export class CodeHighlighter {
 	#editorAPI;
+	#getHighlightInfo;
 	#cssHighlightManager = new CSSHighlightManager();
 
-	constructor({ editorAPI }: CodeHighlighterConstructorParams) {
+	constructor({
+		editorAPI,
+		getHighlightInfo,
+	}: CodeHighlighterConstructorParams) {
 		this.#editorAPI = editorAPI;
+		this.#getHighlightInfo = getHighlightInfo;
 
 		const { shadowRoot, rootEditable } = this.#editorAPI;
 
@@ -271,6 +290,7 @@ export class CodeHighlighter {
 		const onCodeChange = ({ blockComponent }: OnCodeChangeParams) => {
 			updateCodeBlockColors({
 				editorAPI: this.#editorAPI,
+				getHighlightInfo: this.#getHighlightInfo,
 				cssHighlightManager: this.#cssHighlightManager,
 				blockComponent,
 			});
@@ -279,16 +299,17 @@ export class CodeHighlighter {
 		watchCodeBlocks({ rootEditable, onCodeChange });
 	}
 
-	update({ blockComponent, lang, theme }: CodeHighlighterUpdateParams) {
+	update({ blockComponent, language, theme }: CodeHighlighterUpdateParams) {
 		const customStorage = ensureNodeCodeBlockStorage({
 			blockComponent,
 			fallbacks: codeBlockStorageFallbacks,
 		});
-		customStorage.lang = lang;
+		customStorage.language = language;
 		customStorage.theme = theme;
 
 		updateCodeBlockColors({
 			editorAPI: this.#editorAPI,
+			getHighlightInfo: this.#getHighlightInfo,
 			cssHighlightManager: this.#cssHighlightManager,
 			blockComponent,
 		});

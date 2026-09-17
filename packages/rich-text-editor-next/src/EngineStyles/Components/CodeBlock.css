@@ -5,8 +5,8 @@
 
 	& [data-rx-editor-role="block-component"] {
 		background-color: light-dark(
-			var(--bg-light, inherit),
-			var(--bg-dark, inherit)
+			var(--bg-light, var(--color-neutral-50)),
+			var(--bg-dark, var(--color-neutral-900))
 		);
 
 		&:where([data-rx-component-name="code-block"]) {
@@ -42,8 +42,16 @@
 						justify-content: center;
 						min-width: 40px;
 						background-color: light-dark(
-							color-mix(in oklab, var(--bg-light, white) 85%, gray),
-							color-mix(in oklab, var(--bg-dark, black) 85%, gray)
+							color-mix(
+								in oklab,
+								var(--bg-light, var(--color-neutral-50)) 85%,
+								gray
+							),
+							color-mix(
+								in oklab,
+								var(--bg-dark, var(--color-neutral-900)) 85%,
+								gray
+							)
 						);
 						font-size: 10px;
 						color: light-dark(

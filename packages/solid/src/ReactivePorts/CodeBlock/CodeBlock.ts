@@ -14,8 +14,7 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 	const [isActive, setIsActive] = createSignal(publicPort.isActive);
 	const [language, setLanguage] = createSignal(publicPort.language);
-	const [lightTheme, setLightTheme] = createSignal(publicPort.lightTheme);
-	const [darkTheme, setDarkTheme] = createSignal(publicPort.darkTheme);
+	const [theme, setTheme] = createSignal(publicPort.theme);
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
@@ -24,8 +23,7 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
 	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
 	onCleanup(publicPort.onLanguageUpdate(setLanguage));
-	onCleanup(publicPort.onLightThemeUpdate(setLightTheme));
-	onCleanup(publicPort.onDarkThemeUpdate(setDarkTheme));
+	onCleanup(publicPort.onThemeUpdate(setTheme));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 
 	const port: ReactiveCodeBlockPort = {
@@ -33,8 +31,7 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 		canWrap,
 		isActive,
 		language,
-		lightTheme,
-		darkTheme,
+		theme,
 		currentComponent,
 	};
 

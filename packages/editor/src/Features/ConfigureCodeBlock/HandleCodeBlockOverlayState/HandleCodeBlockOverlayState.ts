@@ -8,7 +8,6 @@ import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
-import { toHighlighterLang, toHighlighterTheme } from "#libs";
 import type { HandleCodeBlockOverlayStateParams } from "./HandleCodeBlockOverlayState-types";
 
 /*
@@ -26,67 +25,38 @@ export const handleCodeBlockOverlayState = ({
 		if (!currentCodeBlock) {
 			return;
 		}
-		const lang = toHighlighterLang(language);
-		if (!lang) {
+
+		const storage = ensureNodeCodeBlockStorage({
+			blockComponent: currentCodeBlock,
+			fallbacks: codeBlockStorageFallbacks,
+		});
+		const theme = storage.theme ?? configPort.defaultTheme;
+
+		codeHighlighter.update({
+			blockComponent: currentCodeBlock,
+			language,
+			theme,
+		});
+		configPort.updateState({ language, theme });
+	});
+
+	const unsubscribeThemeChange = configPort.onChangeTheme((theme) => {
+		const currentCodeBlock = getCurrentBlock();
+		if (!currentCodeBlock) {
 			return;
 		}
+
 		const storage = ensureNodeCodeBlockStorage({
 			blockComponent: currentCodeBlock,
 			fallbacks: codeBlockStorageFallbacks,
 		});
 		codeHighlighter.update({
 			blockComponent: currentCodeBlock,
-			lang,
-			theme: storage.theme,
+			language: storage.language,
+			theme,
 		});
-		configPort.updateState({ language });
+		configPort.updateState({ theme });
 	});
-
-	const unsubscribeLightThemeChange = configPort.onChangeLightTheme(
-		(lightTheme) => {
-			const currentCodeBlock = getCurrentBlock();
-			if (!currentCodeBlock) {
-				return;
-			}
-			const highlighterLightTheme = toHighlighterTheme(lightTheme);
-			if (!highlighterLightTheme) {
-				return;
-			}
-			const storage = ensureNodeCodeBlockStorage({
-				blockComponent: currentCodeBlock,
-				fallbacks: codeBlockStorageFallbacks,
-			});
-			codeHighlighter.update({
-				blockComponent: currentCodeBlock,
-				lang: storage.lang,
-				theme: { ...storage.theme, light: highlighterLightTheme },
-			});
-			configPort.updateState({ lightTheme });
-		},
-	);
-
-	const unsubscribeDarkThemeChange = configPort.onChangeDarkTheme(
-		(darkTheme) => {
-			const currentCodeBlock = getCurrentBlock();
-			if (!currentCodeBlock) {
-				return;
-			}
-			const highlighterDarkTheme = toHighlighterTheme(darkTheme);
-			if (!highlighterDarkTheme) {
-				return;
-			}
-			const storage = ensureNodeCodeBlockStorage({
-				blockComponent: currentCodeBlock,
-				fallbacks: codeBlockStorageFallbacks,
-			});
-			codeHighlighter.update({
-				blockComponent: currentCodeBlock,
-				lang: storage.lang,
-				theme: { ...storage.theme, dark: highlighterDarkTheme },
-			});
-			configPort.updateState({ darkTheme });
-		},
-	);
 
 	configPort.registerPlainTextProvider(() => {
 		const currentCodeBlock = getCurrentBlock();
@@ -125,7 +95,6 @@ export const handleCodeBlockOverlayState = ({
 
 	return () => {
 		unsubscribeLanguageChange();
-		unsubscribeLightThemeChange();
-		unsubscribeDarkThemeChange();
+		unsubscribeThemeChange();
 	};
 };

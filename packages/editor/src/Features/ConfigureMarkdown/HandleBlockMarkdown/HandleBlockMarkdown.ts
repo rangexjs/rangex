@@ -8,11 +8,7 @@ import {
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import {
-	codeBlockStorageFallbacks,
-	componentsName,
-	getClosestScopedEditable,
-} from "#engine-links";
+import { componentsName, getClosestScopedEditable } from "#engine-links";
 import { assertNever } from "#utilities";
 import {
 	createBlockQuote,
@@ -69,7 +65,7 @@ const matchBlockTrigger = (
 
 	if (triggerChar === "`") {
 		if (/^``$/.test(prefix)) {
-			return { type: "codeBlock", language: codeBlockStorageFallbacks.lang };
+			return { type: "codeBlock", language: null, theme: null };
 		}
 
 		return null;
@@ -208,11 +204,12 @@ const convertToCodeBlock = ({
 	editorAPI,
 	blockComponentPlacement,
 	language,
+	theme,
 }: ConvertToCodeBlockParams) => {
 	wrapListShaped({
 		editorAPI,
 		blockComponentPlacement,
-		blockComponentLine: createCodeBlock({ language }),
+		blockComponentLine: createCodeBlock({ language, theme }),
 	});
 };
 
@@ -279,6 +276,7 @@ const applyBlockMarkdownConversion = ({
 			editorAPI,
 			blockComponentPlacement,
 			language: conversion.language,
+			theme: conversion.theme,
 		});
 		return;
 	}

@@ -86,7 +86,7 @@ export const buildCommandMenuActions = ({
 	if (codeBlock) {
 		actions.set("code-block", {
 			icon: "CodeBlock",
-			onSelect: () => codeBlock.insert({ language: "TypeScript" }),
+			onSelect: () => codeBlock.insert({ language: null, theme: null }),
 		});
 	}
 

@@ -8,6 +8,9 @@
         "@rangex/editor": "workspace:*",
         "@rangex/rich-text-editor": "workspace:*",
         "@rangex/rich-text-editor-next": "workspace:*",
+        "@rangex/syntax-highlighter-shiki": "workspace:*",
+        "@shikijs/langs": "^4.3.1",
+        "@shikijs/themes": "^4.3.1",
         "@tailwindcss/vite": "^4.3.3",
         "rich-text-area": "workspace:*",
         "tailwindcss": "^4.3.3",
@@ -23,12 +26,7 @@
       "name": "@rangex/editor",
       "version": "0.0.0",
       "dependencies": {
-        "@shikijs/core": "^4.3.1",
-        "@shikijs/engine-javascript": "^4.3.1",
-        "@shikijs/langs": "^4.3.1",
-        "@shikijs/themes": "^4.3.1",
         "rich-text-area": "workspace:*",
-        "shiki": "^4.0.2",
       },
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
@@ -129,6 +127,24 @@
       "peerDependencies": {
         "@solidjs/web": "^2.0.0-rc.6",
         "solid-js": "^2.0.0-rc.6",
+      },
+    },
+    "packages/syntax-highlighter-shiki": {
+      "name": "@rangex/syntax-highlighter-shiki",
+      "version": "0.0.0",
+      "dependencies": {
+        "@rangex/editor": "workspace:*",
+        "@shikijs/core": "^4.3.1",
+        "@shikijs/engine-javascript": "^4.3.1",
+        "@shikijs/types": "^4.3.1",
+        "shiki": "^4.0.2",
+      },
+      "devDependencies": {
+        "@biomejs/biome": "2.5.4",
+        "@types/bun": "^1.3.14",
+        "esbuild": "^0.28.1",
+        "typescript": "^7.0.2",
+        "vite": "^8.1.5",
       },
     },
   },
@@ -272,6 +288,8 @@
     "@rangex/rich-text-editor-next": ["@rangex/rich-text-editor-next@workspace:packages/rich-text-editor-next"],
 
     "@rangex/solid": ["@rangex/solid@workspace:packages/solid"],
+
+    "@rangex/syntax-highlighter-shiki": ["@rangex/syntax-highlighter-shiki@workspace:packages/syntax-highlighter-shiki"],
 
     "@rolldown/binding-android-arm64": ["@rolldown/binding-android-arm64@1.1.5", "", { "os": "android", "cpu": "arm64" }, "sha512-lZg8fqIv2v7FF237bwMgzGZEJvGL79/s5knJ/i6FmsGF4XXlzccZ4jb+TrFIxtSSxFtIpdsgrPZeMk1I9AFcyQ=="],
 

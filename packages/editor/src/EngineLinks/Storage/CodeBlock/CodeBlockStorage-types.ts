@@ -1,13 +1,17 @@
 import type { BlockComponent } from "rich-text-area";
-import type { BundledLangKeys, DualTheme } from "#libs";
 import type { CodeBlockId } from "../../Constants";
 import type { codeBlockStorageVersion } from "./CodeBlockStorage";
+
+export interface CodeBlockTheme {
+	light: string;
+	dark: string;
+}
 
 export interface CodeBlockStorage {
 	id: CodeBlockId;
 	version: typeof codeBlockStorageVersion;
-	lang: BundledLangKeys;
-	theme: DualTheme;
+	language: string | null;
+	theme: CodeBlockTheme | null;
 }
 
 export interface CreateCodeBlockStorageParams
