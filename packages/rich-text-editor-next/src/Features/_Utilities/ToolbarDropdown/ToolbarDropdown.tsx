@@ -11,7 +11,7 @@ export type ToolbarDropdownList = {
 
 interface ToolbarDropdownProps {
 	id: string;
-	class?: string;
+	class?: JSX.ClassValue;
 	style?: JSX.CSSProperties;
 	list: ToolbarDropdownList;
 	onToggle?: (event: ToggleEvent) => void;

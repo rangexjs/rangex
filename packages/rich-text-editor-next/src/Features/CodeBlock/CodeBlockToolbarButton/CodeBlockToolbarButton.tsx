@@ -19,10 +19,7 @@ export const CodeBlockToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() =>
-			!$codeBlock.canWrap() ||
-			!!$readOnly?.checked() ||
-			!codeBlock.languages.length,
+		() => !$codeBlock.canWrap() || !!$readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();
@@ -38,13 +35,24 @@ export const CodeBlockToolbarButton = () => {
 		})),
 	);
 
+	const hasLanguages = createMemo(() => list().length > 0);
+
+	const wrap = () => {
+		if (hasLanguages()) {
+			return;
+		}
+
+		codeBlock.wrap({ language: null, theme: null });
+	};
+
 	return (
 		<span>
 			<ToolbarButton
 				disabled={disabled()}
-				commandfor={popoverId}
-				command="toggle-popover"
-				hasChevron={true}
+				commandfor={hasLanguages() ? popoverId : undefined}
+				command={hasLanguages() ? "toggle-popover" : undefined}
+				hasChevron={hasLanguages()}
+				onClick={wrap}
 			>
 				<Icon name="CodeBlock" class="size-4" />
 			</ToolbarButton>
@@ -52,7 +60,7 @@ export const CodeBlockToolbarButton = () => {
 			<ToolbarDropdown
 				id={popoverId}
 				list={list()}
-				class="[position-area:bottom_center]"
+				class={["[position-area:bottom_center]", { hidden: !hasLanguages() }]}
 			/>
 		</span>
 	);
