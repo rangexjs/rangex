@@ -9,10 +9,14 @@ import { handleSeparatorMarkdown } from "./HandleSeparatorMarkdown";
  * Wires up all markdown auto-formatting handlers (block, separator, inline, and link
  * markdown) and returns their combined cleanup.
  */
-export const configureMarkdown = ({ editorAPI }: ConfigureMarkdownParams) => {
+export const configureMarkdown = ({
+	configPort,
+	editorAPI,
+}: ConfigureMarkdownParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	const blockMarkdownCleanup = handleBlockMarkdown({
+		configPort,
 		editorAPI,
 		blockComponentPlacement,
 	});

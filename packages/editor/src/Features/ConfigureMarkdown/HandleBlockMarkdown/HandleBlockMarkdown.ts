@@ -28,50 +28,59 @@ import type {
 	ConvertToListParams,
 	ConvertToTodoListParams,
 	HandleBlockMarkdownParams,
+	MatchBlockTriggerParams,
 	MatchBlockTriggerResult,
 	WrapListShapedParams,
 } from "./HandleBlockMarkdown-types";
 
-const matchBlockTrigger = (
-	prefix: string,
-	triggerChar: " " | "`",
-): MatchBlockTriggerResult => {
-	if (triggerChar === " ") {
-		if (/^#{1,6}$/.test(prefix)) {
-			return {
-				type: "localName",
-				localName: `h${prefix.length}` as BlockContentLineLocalName,
-			};
-		}
-
-		if (/^[-*+]$/.test(prefix)) {
-			return { type: "list", localName: "ul" };
-		}
-
-		if (/^1\.$/.test(prefix)) {
-			return { type: "list", localName: "ol" };
-		}
-
-		if (/^\[ ?\]$/.test(prefix)) {
-			return { type: "todoList" };
-		}
-
-		if (/^>$/.test(prefix)) {
-			return { type: "blockQuote" };
-		}
-
-		return null;
+const matchBlockTrigger = ({
+	configPort,
+	prefix,
+}: MatchBlockTriggerParams): MatchBlockTriggerResult => {
+	if (/^#{1,6}$/.test(prefix)) {
+		return {
+			type: "localName",
+			localName: `h${prefix.length}` as BlockContentLineLocalName,
+		};
 	}
 
-	if (triggerChar === "`") {
-		if (/^``$/.test(prefix)) {
-			return { type: "codeBlock", language: null, theme: null };
-		}
-
-		return null;
+	if (/^[-*+]$/.test(prefix)) {
+		return { type: "list", localName: "ul" };
 	}
 
-	return assertNever(triggerChar);
+	if (/^1\.$/.test(prefix)) {
+		return { type: "list", localName: "ol" };
+	}
+
+	if (/^\[ ?\]$/.test(prefix)) {
+		return { type: "todoList" };
+	}
+
+	if (/^>$/.test(prefix)) {
+		return { type: "blockQuote" };
+	}
+
+	const codeBlockMatch = /^```(\S*)$/.exec(prefix);
+
+	if (codeBlockMatch) {
+		const [, group = ""] = codeBlockMatch;
+
+		const lowerCaseGroup = group.toLowerCase();
+
+		const codeBlockTrigger = configPort.codeBlockTriggers.find(
+			({ trigger }) => trigger.toLowerCase() === lowerCaseGroup,
+		);
+
+		if (!codeBlockTrigger) {
+			return null;
+		}
+
+		const { language, theme } = codeBlockTrigger;
+
+		return { type: "codeBlock", language, theme };
+	}
+
+	return null;
 };
 
 const canApplyBlockMarkdownConversion = ({
@@ -285,11 +294,12 @@ const applyBlockMarkdownConversion = ({
 };
 
 /*
- * Detects a completed block-level markdown trigger (e.g. "###", "-", "1.", "[]", ">", "```")
- * on the keystroke that completes it, and converts the current line accordingly, letting
+ * Detects a completed block-level markdown trigger (e.g. "###", "-", "1.", "[]", ">", "```ts")
+ * on the space keystroke that completes it, and converts the current line accordingly, letting
  * the keystroke insert natively first so a single undo can restore the literal text.
  */
 export const handleBlockMarkdown = ({
+	configPort,
 	editorAPI,
 	blockComponentPlacement,
 }: HandleBlockMarkdownParams) => {
@@ -300,11 +310,9 @@ export const handleBlockMarkdown = ({
 	const unregister = editorAPI.registerEventInterceptor({
 		type: "beforeinput",
 		interceptor: (event) => {
-			if (event.data !== " " && event.data !== "`") {
+			if (event.data !== " ") {
 				return false;
 			}
-
-			const triggerChar = event.data;
 
 			const beforeTriggerBoundary = selection.getBoundaryPoints();
 
@@ -331,7 +339,10 @@ export const handleBlockMarkdown = ({
 				return false;
 			}
 
-			const conversion = matchBlockTrigger(prefix.data, triggerChar);
+			const conversion = matchBlockTrigger({
+				configPort,
+				prefix: prefix.data,
+			});
 
 			if (!conversion) {
 				return false;
@@ -353,7 +364,7 @@ export const handleBlockMarkdown = ({
 				return false;
 			}
 
-			// Materialize the triggering keystroke so the full marker (e.g. "### ", "```")
+			// Materialize the triggering keystroke so the full marker (e.g. "### ", "```ts ")
 			// lands in the DOM before conversion — a single undo afterwards restores it.
 			editorAPI.insertNode({
 				fromNode: startText,
@@ -361,7 +372,7 @@ export const handleBlockMarkdown = ({
 				lines: [
 					createContentLine({
 						localName: "p",
-						childNodes: [...createFormattableTexts({ data: triggerChar })],
+						childNodes: [...createFormattableTexts({ data: event.data })],
 					}),
 				],
 				breakBeforeInsert: false,

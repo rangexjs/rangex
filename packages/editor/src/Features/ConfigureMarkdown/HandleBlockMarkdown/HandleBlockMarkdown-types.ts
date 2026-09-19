@@ -4,6 +4,7 @@ import type {
 	EditorAPI,
 	ListLocalName,
 } from "rich-text-area";
+import type { MarkdownConfigPort } from "#adapters/Markdown";
 import type { BlockComponentPlacement, CodeBlockTheme } from "#engine-links";
 
 export interface HeadingConversion {
@@ -41,6 +42,11 @@ export interface CanApplyBlockMarkdownConversionParams {
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
 	conversion: BlockMarkdownConversion;
+}
+
+export interface MatchBlockTriggerParams {
+	configPort: MarkdownConfigPort;
+	prefix: string;
 }
 
 export type MatchBlockTriggerResult = BlockMarkdownConversion | null;
@@ -81,6 +87,7 @@ export interface ApplyBlockMarkdownConversionParams {
 }
 
 export interface HandleBlockMarkdownParams {
+	configPort: MarkdownConfigPort;
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;
 }

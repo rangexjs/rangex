@@ -6,7 +6,7 @@ import type {
 	IsPrefixAtContentLineStartParams,
 } from "./GetLineMarkdownPrefix-types";
 
-const charLimit = 10;
+const charLimit = 20;
 
 /*
  * Scans backward from the cursor to the start of the current ContentLine, returning the

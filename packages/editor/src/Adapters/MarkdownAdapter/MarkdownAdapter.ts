@@ -4,6 +4,7 @@ import type {
 	CreateMarkdownAdapterResult,
 	MarkdownConfigPort,
 	MarkdownConfigPortProps,
+	MarkdownInternals,
 	MarkdownPublicPort,
 	MarkdownPublicPortProps,
 } from "./MarkdownAdapter-types";
@@ -11,12 +12,19 @@ import type {
 export const createMarkdownAdapter = (
 	...params: CreateMarkdownAdapterParams
 ): CreateMarkdownAdapterResult => {
-	const [_settings, _options] = params;
+	const [settings, _options] = params;
 
-	const configPort: MarkdownConfigPort = extendObjectProperties(
-		{},
-		{} satisfies MarkdownConfigPortProps,
-	);
+	const internals: MarkdownInternals = {
+		codeBlockTriggers: settings.codeBlockTriggers ?? [
+			{ trigger: "", language: null, theme: null },
+		],
+	};
+
+	const configPort: MarkdownConfigPort = extendObjectProperties({}, {
+		get codeBlockTriggers() {
+			return internals.codeBlockTriggers;
+		},
+	} satisfies MarkdownConfigPortProps);
 
 	const publicPort: MarkdownPublicPort = extendObjectProperties(
 		{},
