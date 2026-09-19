@@ -18,7 +18,9 @@ export const getClosestBlockComponent = ({
 				return parent;
 			}
 
-			if (components.includes(parent.$$componentName)) {
+			const { $$componentName } = parent;
+
+			if (components.some((name) => name === $$componentName)) {
 				return parent;
 			}
 		}

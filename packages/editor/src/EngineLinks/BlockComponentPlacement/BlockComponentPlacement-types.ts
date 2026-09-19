@@ -7,10 +7,11 @@ import type {
 	List,
 	NestedEditable,
 } from "rich-text-area";
+import type { BlockComponentName } from "../Constants";
 
 export interface CanInsertParams {
 	fromNode: EditorNode;
-	allowedComponents: string[];
+	allowedComponents: BlockComponentName[];
 }
 
 export type CanInsertResult = boolean;
@@ -26,7 +27,7 @@ export interface InsertParams {
 export type InsertFn = (params: InsertParams) => void;
 
 export interface CanInsertBySelectionParams {
-	allowedComponents: string[];
+	allowedComponents: BlockComponentName[];
 }
 
 export type CanInsertBySelectionResult = boolean;
@@ -47,7 +48,7 @@ export interface CanWrapParams {
 	fromOffset: number;
 	toNode: ContentFlowNode;
 	toOffset: number;
-	allowedComponents: string[];
+	allowedComponents: BlockComponentName[];
 }
 
 export type CanWrapResult = boolean;
@@ -68,7 +69,7 @@ export interface WrapParams {
 export type WrapFn = (params: WrapParams) => void;
 
 export interface CanWrapBySelectionParams {
-	allowedComponents: string[];
+	allowedComponents: BlockComponentName[];
 }
 
 export type CanWrapBySelectionResult = boolean;

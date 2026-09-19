@@ -4,10 +4,11 @@ import type {
 	EditorNode,
 	InlineComponent,
 } from "rich-text-area";
+import type { BlockComponentName, InlineComponentName } from "../Constants";
 
 export interface ClosestBlockParams {
 	fromNode: EditorNode;
-	components: string[];
+	components: BlockComponentName[];
 }
 
 export type ClosestBlockResult = BlockComponent | null;
@@ -15,7 +16,7 @@ export type ClosestBlockResult = BlockComponent | null;
 export type ClosestBlockFn = (params: ClosestBlockParams) => ClosestBlockResult;
 
 export interface ClosestBlockBySelectionParams {
-	components: string[];
+	components: BlockComponentName[];
 }
 
 export type ClosestBlockBySelectionResult = BlockComponent | null;
@@ -26,7 +27,7 @@ export type ClosestBlockBySelectionFn = (
 
 export interface ClosestInlineParams {
 	fromNode: EditorNode;
-	components: string[];
+	components: InlineComponentName[];
 }
 
 export type ClosestInlineResult = InlineComponent | null;
@@ -36,7 +37,7 @@ export type ClosestInlineFn = (
 ) => ClosestInlineResult;
 
 export interface ClosestInlineBySelectionParams {
-	components: string[];
+	components: InlineComponentName[];
 }
 
 export type ClosestInlineBySelectionResult = InlineComponent | null;
