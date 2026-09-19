@@ -1,4 +1,4 @@
-import type { JSX } from "@solidjs/web/jsx-runtime";
+import type { JSX } from "@solidjs/web";
 import { Icon } from "#ui";
 
 interface FixedPosModalProps {

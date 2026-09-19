@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
@@ -191,7 +192,7 @@ interface ColorPanelProps {
 	paletteCols: number;
 	activeColors: HslFormat[];
 	onAction: OnActionFn;
-	class?: string;
+	class?: JSX.ClassValue;
 }
 
 export const ColorPanel = (props: ColorPanelProps) => {

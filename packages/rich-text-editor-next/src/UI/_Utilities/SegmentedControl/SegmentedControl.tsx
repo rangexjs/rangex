@@ -46,8 +46,8 @@ interface SegmentedControlProps<Id extends string> {
 	onChange: (id: Id) => void;
 	appearance: SegmentedControlAppearance;
 	disabled?: boolean;
-	class?: string;
-	commonButtonClass?: string;
+	class?: JSX.ClassValue;
+	commonButtonClass?: JSX.ClassValue;
 }
 
 export const SegmentedControl = <Id extends string>(

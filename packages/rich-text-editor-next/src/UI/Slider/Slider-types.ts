@@ -29,6 +29,6 @@ export interface SliderProps {
 	sliderTrackColor?: string;
 	position: number;
 	onThumbChange: OnThumbChangeFn;
-	class?: string;
+	class?: JSX.ClassValue;
 	renderChildren?: RenderChildrenFn;
 }

@@ -1,4 +1,4 @@
-import type { JSX } from "@solidjs/web/jsx-runtime";
+import type { JSX } from "@solidjs/web";
 import { omit } from "solid-js";
 import { Icon } from "../../Icon";
 import type { CheckboxControls } from "./_Utilities";

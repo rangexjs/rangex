@@ -8,12 +8,12 @@ interface FormFieldProps {
 	label?: JSX.Element;
 	description?: JSX.Element;
 	state?: InputFieldState;
-	class?: string;
+	class?: JSX.ClassValue;
 	style?: JSX.CSSProperties;
-	labelClass?: string;
-	infoClass?: string;
-	descriptionClass?: string;
-	errorClass?: string;
+	labelClass?: JSX.ClassValue;
+	infoClass?: JSX.ClassValue;
+	descriptionClass?: JSX.ClassValue;
+	errorClass?: JSX.ClassValue;
 	children: JSX.Element;
 }
 

@@ -86,6 +86,6 @@ export interface SpectrumColorProps {
 	onColorChange: OnColorChangeFn;
 	spectrumWidth: number;
 	spectrumHeight: number;
-	class?: string;
+	class?: JSX.ClassValue;
 	style?: JSX.CSSProperties;
 }

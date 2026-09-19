@@ -1,7 +1,8 @@
+import type { JSX } from "@solidjs/web";
 import { onSettled } from "solid-js";
 
 export interface SpinningProps {
-	class?: string;
+	class?: JSX.ClassValue;
 	strokeWidth: number;
 	blueprintColor: string;
 	loadingColor: string;

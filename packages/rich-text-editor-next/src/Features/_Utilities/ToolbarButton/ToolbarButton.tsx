@@ -1,4 +1,4 @@
-import type { JSX } from "@solidjs/web/jsx-runtime";
+import type { JSX } from "@solidjs/web";
 import { Show } from "solid-js";
 import { Icon } from "#ui";
 
@@ -6,8 +6,8 @@ export interface ToolbarButtonProps {
 	checked?: boolean;
 	disabled?: boolean;
 	hasChevron?: boolean;
-	class?: string;
-	containerClass?: string;
+	class?: JSX.ClassValue;
+	containerClass?: JSX.ClassValue;
 	commandfor?: string;
 	command?: JSX.ButtonHTMLAttributes<HTMLButtonElement>["command"];
 	style?: JSX.CSSProperties;

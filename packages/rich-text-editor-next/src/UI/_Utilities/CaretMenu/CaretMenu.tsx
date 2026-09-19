@@ -21,7 +21,7 @@ export interface CaretMenuProps {
 	caretMenuPort: CaretMenuPublicPort;
 	items: Accessor<CaretItemFn[]>;
 	onSelect: (index: number) => void;
-	class?: string;
+	class?: JSX.ClassValue;
 }
 
 export const CaretMenu = (props: CaretMenuProps) => {

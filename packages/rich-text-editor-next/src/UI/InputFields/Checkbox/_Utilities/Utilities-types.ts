@@ -1,4 +1,4 @@
-import type { JSX } from "@solidjs/web/jsx-runtime";
+import type { JSX } from "@solidjs/web";
 import type { Accessor } from "solid-js";
 import type { InputFieldErrorState, InputFieldState } from "../../_Utilities";
 

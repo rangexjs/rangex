@@ -1,3 +1,4 @@
+import type { JSX } from "@solidjs/web";
 import { createUniqueId, For } from "solid-js";
 import { Icon, type IconName } from "#ui";
 import { assertNever } from "#utilities";
@@ -75,7 +76,7 @@ export interface MenuProps {
 }
 
 interface MenuBaseProps extends MenuProps {
-	class: string;
+	class: JSX.ClassValue;
 }
 
 const MenuBase = (props: MenuBaseProps) => (

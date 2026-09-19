@@ -1,14 +1,14 @@
-import type { JSX } from "@solidjs/web/jsx-runtime";
+import type { JSX } from "@solidjs/web";
 import { Show } from "solid-js";
 
 interface TextFieldWrapperProps {
 	appearance: "primary-outline" | "neutral-filled-underline";
 	size: "small" | "medium";
-	class?: string;
+	class?: JSX.ClassValue;
 	style?: JSX.CSSProperties;
-	prefixClass?: string;
+	prefixClass?: JSX.ClassValue;
 	prefix?: JSX.Element;
-	postfixClass?: string;
+	postfixClass?: JSX.ClassValue;
 	postfix?: JSX.Element;
 	children: JSX.Element;
 }
