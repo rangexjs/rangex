@@ -1,11 +1,10 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
+import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleAccordionItemPlacementStateParams } from "./HandleAccordionItemPlacementState-types";
 
 /*
- * Keeps the accordion item toolbar button's insert/wrap availability in sync with the current
- * selection. Returns a cleanup function.
- * Also reports whether the selection is inside the component.
+ * Keeps the accordion item toolbar button's insert/wrap availability and active state in sync with the current selection and the editor
+ * content. Returns a cleanup function.
  */
 export const handleAccordionItemPlacementState = ({
 	configPort,
@@ -13,9 +12,9 @@ export const handleAccordionItemPlacementState = ({
 	componentLookup,
 	blockComponentPlacement,
 }: HandleAccordionItemPlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
+	return handleComponentPlacementState({
+		editorAPI,
+		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
 				allowedComponents: [componentsName.accordionItem],
 			});
@@ -31,8 +30,4 @@ export const handleAccordionItemPlacementState = ({
 			configPort.updateState({ canInsert, canWrap, isActive });
 		},
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

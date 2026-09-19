@@ -1,10 +1,10 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
+import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleCodeBlockPlacementStateParams } from "./HandleCodeBlockPlacementState-types";
 
 /*
  * Keeps the code block toolbar button's insert/wrap availability and active state in sync with
- * the current selection. Returns a cleanup function.
+ * the current selection and the editor content. Returns a cleanup function.
  */
 export const handleCodeBlockPlacementState = ({
 	configPort,
@@ -12,9 +12,9 @@ export const handleCodeBlockPlacementState = ({
 	componentLookup,
 	blockComponentPlacement,
 }: HandleCodeBlockPlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
+	return handleComponentPlacementState({
+		editorAPI,
+		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
 				allowedComponents: [componentsName.codeBlock],
 			});
@@ -30,8 +30,4 @@ export const handleCodeBlockPlacementState = ({
 			configPort.updateState({ canInsert, canWrap, isActive });
 		},
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

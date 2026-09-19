@@ -1,21 +1,20 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
+import { handleComponentPlacementState } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type { HandleLinkPlacementStateParams } from "./HandleLinkPlacementState-types";
 
 /*
- * Subscribes to selection changes and keeps the config port's canInsert state in sync with
- * whether the current selection can take a link, and its isActive state with whether the
- * selection is inside a link. Returns a cleanup function.
+ * Keeps the link toolbar button's insert availability and active state in sync with the current selection and the editor
+ * content. Returns a cleanup function.
  */
 export const handleLinkPlacementState = ({
 	configPort,
 	editorAPI,
 	componentLookup,
 }: HandleLinkPlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
+	return handleComponentPlacementState({
+		editorAPI,
+		updateState: () => {
 			const mode = getLinkPlacementMode({ editorAPI });
 			const canInsert = mode !== null;
 
@@ -27,8 +26,4 @@ export const handleLinkPlacementState = ({
 			configPort.updateState({ canInsert, isActive });
 		},
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

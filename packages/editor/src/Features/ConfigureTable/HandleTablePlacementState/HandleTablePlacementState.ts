@@ -1,10 +1,10 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
 import { componentsName } from "#engine-links";
+import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleTablePlacementStateParams } from "./HandleTablePlacementState-types";
 
 /*
- * Keeps the table toolbar button's enabled state in sync with whether a table can be
- * inserted at the current selection, and reports whether the selection is inside a table.
+ * Keeps the table toolbar button's insert availability and active state in sync with the current selection and the editor
+ * content. Returns a cleanup function.
  */
 export const handleTablePlacementState = ({
 	configPort,
@@ -12,9 +12,9 @@ export const handleTablePlacementState = ({
 	componentLookup,
 	blockComponentPlacement,
 }: HandleTablePlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
+	return handleComponentPlacementState({
+		editorAPI,
+		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
 				allowedComponents: [componentsName.table],
 			});
@@ -27,8 +27,4 @@ export const handleTablePlacementState = ({
 			configPort.updateState({ canInsert, isActive });
 		},
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

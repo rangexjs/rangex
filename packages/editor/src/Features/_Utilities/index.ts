@@ -8,6 +8,7 @@ export * from "./HandleBlockResizeAppearance";
 export * from "./HandleCaptionState";
 export * from "./HandleCaretMenuAppearance";
 export * from "./HandleCommitSnapshot";
+export * from "./HandleComponentPlacementState";
 export * from "./HandleComponentUnwrap";
 export * from "./HandleInsertRootLine";
 export * from "./HandleLineRemove";
