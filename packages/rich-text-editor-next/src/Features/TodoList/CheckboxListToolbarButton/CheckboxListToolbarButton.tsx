@@ -16,16 +16,26 @@ export const CheckboxListToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !$todoList.canWrap() || !!$readOnly?.checked(),
+		() =>
+			!($todoList.isActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
+		if ($todoList.isActive()) {
+			todoList.unwrap();
+			return;
+		}
+
 		todoList.wrap();
 	};
 
 	return (
 		<span>
-			<ToolbarButton disabled={disabled()} onClick={onClick}>
+			<ToolbarButton
+				checked={$todoList.isActive()}
+				disabled={disabled()}
+				onClick={onClick}
+			>
 				<Icon name="ListChecks" class="size-4" />
 			</ToolbarButton>
 		</span>

@@ -16,8 +16,11 @@ export const CustomComponentToolbarButton = () => {
 
 	const disabled = createMemo(
 		() =>
-			!($accordionItem?.canInsert() || $separator?.canInsert()) ||
-			!!$readOnly?.checked(),
+			!(
+				$accordionItem?.isActive() ||
+				$accordionItem?.canInsert() ||
+				$separator?.canInsert()
+			) || !!$readOnly?.checked(),
 	);
 
 	const popoverId = createUniqueId();
@@ -32,12 +35,22 @@ export const CustomComponentToolbarButton = () => {
 		const items: ToolbarDropdownList = [];
 
 		if (accordionItem && $accordionItem) {
+			const disabled = !(
+				$accordionItem.isActive() || $accordionItem.canInsert()
+			);
+
 			items.push({
 				icon: "CaretCircleRight",
 				text: "Accordion",
+				checked: $accordionItem.isActive(),
 				button: {
-					disabled: !$accordionItem.canInsert(),
+					disabled,
 					onClick: () => {
+						if ($accordionItem.isActive()) {
+							accordionItem.unwrap();
+							return;
+						}
+
 						accordionItem.insert();
 					},
 				},
@@ -45,11 +58,13 @@ export const CustomComponentToolbarButton = () => {
 		}
 
 		if (separator && $separator) {
+			const disabled = !$separator.canInsert();
+
 			items.push({
 				icon: "Separator",
 				text: "Separator",
 				button: {
-					disabled: !$separator.canInsert(),
+					disabled,
 					onClick: () => {
 						separator.insert();
 					},

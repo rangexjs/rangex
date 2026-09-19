@@ -15,15 +15,26 @@ export const UnorderedListToolbarButton = () => {
 	const $list = List(list);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(() => !$list.canWrap() || !!$readOnly?.checked());
+	const disabled = createMemo(
+		() => !($list.isActive() || $list.canWrap()) || !!$readOnly?.checked(),
+	);
 
 	const onClick = () => {
+		if ($list.isActive()) {
+			list.unwrap();
+			return;
+		}
+
 		list.wrap({ localName: "ul" });
 	};
 
 	return (
 		<span>
-			<ToolbarButton disabled={disabled()} onClick={onClick}>
+			<ToolbarButton
+				checked={$list.isActive()}
+				disabled={disabled()}
+				onClick={onClick}
+			>
 				<Icon name="ListBullets" class="size-4" />
 			</ToolbarButton>
 		</span>

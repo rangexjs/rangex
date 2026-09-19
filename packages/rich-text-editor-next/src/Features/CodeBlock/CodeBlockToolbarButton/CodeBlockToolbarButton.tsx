@@ -19,10 +19,17 @@ export const CodeBlockToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !$codeBlock.canWrap() || !!$readOnly?.checked(),
+		() =>
+			!($codeBlock.isActive() || $codeBlock.canWrap()) ||
+			!!$readOnly?.checked(),
 	);
 
-	const wrap = () => {
+	const onClick = () => {
+		if ($codeBlock.isActive()) {
+			codeBlock.unwrap();
+			return;
+		}
+
 		const language = defaultLanguage ?? null;
 		const theme = defaultTheme ?? null;
 		codeBlock.wrap({ language, theme });
@@ -30,7 +37,11 @@ export const CodeBlockToolbarButton = () => {
 
 	return (
 		<span>
-			<ToolbarButton disabled={disabled()} onClick={wrap}>
+			<ToolbarButton
+				checked={$codeBlock.isActive()}
+				disabled={disabled()}
+				onClick={onClick}
+			>
 				<Icon name="CodeBlock" class="size-4" />
 			</ToolbarButton>
 		</span>

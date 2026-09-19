@@ -16,16 +16,27 @@ export const BlockQuoteToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !$blockQuote.canWrap() || !!$readOnly?.checked(),
+		() =>
+			!($blockQuote.isActive() || $blockQuote.canWrap()) ||
+			!!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
+		if ($blockQuote.isActive()) {
+			blockQuote.unwrap();
+			return;
+		}
+
 		blockQuote.wrap();
 	};
 
 	return (
 		<span>
-			<ToolbarButton disabled={disabled()} onClick={onClick}>
+			<ToolbarButton
+				checked={$blockQuote.isActive()}
+				disabled={disabled()}
+				onClick={onClick}
+			>
 				<Icon name="BlockQuote" class="size-4" />
 			</ToolbarButton>
 		</span>
