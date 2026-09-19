@@ -24,7 +24,8 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const AudioQuickActions = () => {
-	const { audio, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { audio, readOnly } = editor;
 
 	if (!audio) {
 		throw new Error("Audio can't be undefined.");

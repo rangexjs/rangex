@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const EmptyMediaToolbarButton = () => {
-	const { emptyMedia, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { emptyMedia, readOnly } = editor;
 
 	if (!emptyMedia) {
 		throw new Error("EmptyMedia can't be undefined.");

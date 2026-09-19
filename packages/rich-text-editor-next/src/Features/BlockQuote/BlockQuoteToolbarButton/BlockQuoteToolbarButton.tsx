@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const BlockQuoteToolbarButton = () => {
-	const { blockQuote, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { blockQuote, readOnly } = editor;
 
 	if (!blockQuote) {
 		throw new Error("BlockQuote can't be undefined.");

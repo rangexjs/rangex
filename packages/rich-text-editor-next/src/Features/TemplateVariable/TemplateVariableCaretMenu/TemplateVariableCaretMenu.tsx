@@ -3,7 +3,8 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const TemplateVariableCaretMenu = () => {
-	const { templateVariable } = useEditorContext();
+	const editor = useEditorContext();
+	const { templateVariable } = editor;
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");

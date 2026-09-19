@@ -49,7 +49,8 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const ImageQuickActions = () => {
-	const { image, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { image, readOnly } = editor;
 
 	if (!image) {
 		throw new Error("Image can't be undefined.");

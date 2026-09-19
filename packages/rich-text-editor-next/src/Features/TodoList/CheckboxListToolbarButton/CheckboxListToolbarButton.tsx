@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CheckboxListToolbarButton = () => {
-	const { todoList, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { todoList, readOnly } = editor;
 
 	if (!todoList) {
 		throw new Error("TodoList can't be undefined.");

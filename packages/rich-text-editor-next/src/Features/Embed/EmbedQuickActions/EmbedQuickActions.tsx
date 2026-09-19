@@ -39,7 +39,8 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const EmbedQuickActions = () => {
-	const { embed, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { embed, readOnly } = editor;
 
 	if (!embed) {
 		throw new Error("Embed can't be undefined.");

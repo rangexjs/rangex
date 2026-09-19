@@ -22,7 +22,8 @@ import { ToolbarButton } from "../../_Utilities";
  * Note: Gradient-colors are not supported yet.
  */
 export const ColorToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { formatting, readOnly } = editor;
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

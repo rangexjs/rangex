@@ -3,7 +3,8 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const MentionCaretMenu = () => {
-	const { mention } = useEditorContext();
+	const editor = useEditorContext();
+	const { mention } = editor;
 
 	if (!mention) {
 		throw new Error("Mention can't be undefined.");

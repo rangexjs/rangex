@@ -5,7 +5,8 @@ import { createTextFieldState } from "#ui";
 import { allowedPrefixes, LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
-	const { link } = useEditorContext();
+	const editor = useEditorContext();
+	const { link } = editor;
 
 	if (!link) {
 		throw new Error("Link can't be undefined.");

@@ -3,7 +3,8 @@ import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
 export const EmojiCaretMenu = () => {
-	const { emoji } = useEditorContext();
+	const editor = useEditorContext();
+	const { emoji } = editor;
 
 	if (!emoji) {
 		throw new Error("Emoji can't be undefined.");

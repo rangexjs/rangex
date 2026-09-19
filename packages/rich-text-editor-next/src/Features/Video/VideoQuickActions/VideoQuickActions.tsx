@@ -49,7 +49,8 @@ const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 ];
 
 export const VideoQuickActions = () => {
-	const { video, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { video, readOnly } = editor;
 
 	if (!video) {
 		throw new Error("Video can't be undefined.");

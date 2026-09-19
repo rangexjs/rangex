@@ -5,8 +5,11 @@ import { Icon } from "#ui";
 import { CodeBlockHighlight } from "./CodeBlockHighlight";
 
 export const CodeBlockQuickActions = () => {
-	const { codeBlock, readOnly } = useEditorContext();
-	const options = useUIOptionsContext().codeBlock;
+	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
+
+	const { codeBlock, readOnly } = editor;
+	const options = uiOptions.codeBlock;
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");

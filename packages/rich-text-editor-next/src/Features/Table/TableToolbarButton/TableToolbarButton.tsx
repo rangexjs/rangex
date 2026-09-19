@@ -21,7 +21,8 @@ const createGrid = (rows: number, cols: number): Grid => {
 };
 
 export const TableToolbarButton = () => {
-	const { table, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { table, readOnly } = editor;
 
 	if (!table) {
 		throw new Error("Table can't be undefined.");

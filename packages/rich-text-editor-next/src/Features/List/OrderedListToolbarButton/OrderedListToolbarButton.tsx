@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const OrderedListToolbarButton = () => {
-	const { list, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { list, readOnly } = editor;
 
 	if (!list) {
 		throw new Error("List can't be undefined.");

@@ -22,7 +22,8 @@ const defaultValues: Set<FormattingLineHeightValue> = new Set([
 ]);
 
 export const LineHeightToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { formatting, readOnly } = editor;
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

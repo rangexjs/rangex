@@ -6,7 +6,8 @@ import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
 export const CustomComponentToolbarButton = () => {
-	const { accordionItem, separator, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { accordionItem, separator, readOnly } = editor;
 	const $accordionItem = AccordionItem(accordionItem);
 	const $separator = Separator(separator);
 	const $readOnly = ReadOnly(readOnly);

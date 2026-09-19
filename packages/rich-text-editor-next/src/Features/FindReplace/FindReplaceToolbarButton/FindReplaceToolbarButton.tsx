@@ -27,7 +27,8 @@ import { FindReplaceResults } from "./FindReplaceResults";
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
 export const FindReplaceToolbarButton = () => {
-	const { findReplace, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { findReplace, readOnly } = editor;
 
 	if (!findReplace) {
 		throw new Error("FindReplace can't be undefined.");

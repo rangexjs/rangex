@@ -4,7 +4,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const ReadOnlyToolbarButton = () => {
-	const { readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { readOnly } = editor;
 
 	if (!readOnly) {
 		throw new Error("ReadOnly can't be undefined.");

@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SymbolsToolbarButton = () => {
-	const { symbols, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { symbols, readOnly } = editor;
 
 	if (!symbols) {
 		throw new Error("Symbols can't be undefined.");

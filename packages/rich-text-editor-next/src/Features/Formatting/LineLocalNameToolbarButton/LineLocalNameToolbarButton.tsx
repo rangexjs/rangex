@@ -9,7 +9,8 @@ import {
 } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { formatting, readOnly } = editor;
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");

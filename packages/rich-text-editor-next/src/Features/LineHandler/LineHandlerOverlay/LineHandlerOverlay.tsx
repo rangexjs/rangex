@@ -6,7 +6,8 @@ import { LineButton } from "./_Utilities";
 import { LineDrag } from "./LineDrag";
 
 export const LineHandlerOverlay = () => {
-	const { lineHandler, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { lineHandler, readOnly } = editor;
 
 	if (!lineHandler) {
 		throw new Error("LineHandler can't be undefined.");

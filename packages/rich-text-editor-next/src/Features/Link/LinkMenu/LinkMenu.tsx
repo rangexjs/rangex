@@ -7,7 +7,8 @@ import { allowedPrefixes, LinkEdit, LinkPreview } from "../_Utilities";
 type MenuView = "preview" | "edit";
 
 export const LinkMenu = () => {
-	const { link } = useEditorContext();
+	const editor = useEditorContext();
+	const { link } = editor;
 
 	if (!link) {
 		throw new Error("Link can't be undefined.");

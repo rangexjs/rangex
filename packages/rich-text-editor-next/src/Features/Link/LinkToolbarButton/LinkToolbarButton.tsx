@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const LinkToolbarButton = () => {
-	const { link, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { link, readOnly } = editor;
 
 	if (!link) {
 		throw new Error("Link can't be undefined.");

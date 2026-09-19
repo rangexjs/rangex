@@ -5,7 +5,8 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const HistoryBackToolbarButton = () => {
-	const { undoRedo, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { undoRedo, readOnly } = editor;
 
 	if (!undoRedo) {
 		throw new Error("UndoRedo can't be undefined.");

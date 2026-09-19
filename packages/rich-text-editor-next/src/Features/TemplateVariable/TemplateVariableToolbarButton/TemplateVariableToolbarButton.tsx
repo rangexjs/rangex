@@ -11,7 +11,8 @@ import {
 import { DateModal, EmailModal, NameModal } from "./VariableModals";
 
 export const TemplateVariableToolbarButton = () => {
-	const { templateVariable, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { templateVariable, readOnly } = editor;
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");

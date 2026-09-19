@@ -119,7 +119,8 @@ const Menu = (props: MenuProps) => {
 };
 
 export const TableContextMenu = () => {
-	const { table } = useEditorContext();
+	const editor = useEditorContext();
+	const { table } = editor;
 
 	if (!table) {
 		throw new Error("Table can't be undefined.");

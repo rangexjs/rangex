@@ -5,8 +5,11 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
-	const { codeBlock, readOnly } = useEditorContext();
-	const { defaultLanguage, defaultTheme } = useUIOptionsContext().codeBlock;
+	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
+
+	const { codeBlock, readOnly } = editor;
+	const { defaultLanguage, defaultTheme } = uiOptions.codeBlock;
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");

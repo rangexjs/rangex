@@ -29,7 +29,8 @@ const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
 ]);
 
 export const LetterSpacingToolbarButton = () => {
-	const { formatting, readOnly } = useEditorContext();
+	const editor = useEditorContext();
+	const { formatting, readOnly } = editor;
 
 	if (!formatting) {
 		throw new Error("Formatting can't be undefined.");
