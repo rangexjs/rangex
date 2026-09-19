@@ -1,12 +1,12 @@
 import { CodeBlock, FloatingPortal, ReadOnly } from "@rangex/solid";
 import { createSignal } from "solid-js";
-import { useCodeBlockContext, useEditorContext } from "#context";
+import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
 import { CodeBlockHighlight } from "./CodeBlockHighlight";
 
 export const CodeBlockQuickActions = () => {
 	const { codeBlock, readOnly } = useEditorContext();
-	const options = useCodeBlockContext();
+	const options = useUIOptionsContext().codeBlock;
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");

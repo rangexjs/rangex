@@ -1,12 +1,12 @@
 import { CodeBlock, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useCodeBlockContext, useEditorContext } from "#context";
+import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
 	const { codeBlock, readOnly } = useEditorContext();
-	const { defaultLanguage, defaultTheme } = useCodeBlockContext();
+	const { defaultLanguage, defaultTheme } = useUIOptionsContext().codeBlock;
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");

@@ -119,7 +119,7 @@ export const createDevelopmentView = () => {
 		EmptyMedia({ uploadFile }),
 		FindReplace({}),
 		Formatting({}),
-		CodeBlock({ getHighlightInfo }),
+		CodeBlock({ getHighlightInfo, languages, themes, defaultTheme }),
 		CommandMenu({}),
 		Image({}),
 		LineHandler({}),
@@ -142,7 +142,6 @@ export const createDevelopmentView = () => {
 		// biome-ignore lint/suspicious/noExplicitAny: Fix later
 		storedSnapshot: storedSnapshot as any,
 		extensions,
-		codeBlock: { languages, themes, defaultTheme },
 	});
 
 	maxViewContainer.append(filledRichTextEditor.editorHost);

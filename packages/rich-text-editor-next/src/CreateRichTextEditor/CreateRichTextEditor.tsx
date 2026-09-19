@@ -1,5 +1,6 @@
 import { createEditor } from "@rangex/editor";
 import { render } from "@solidjs/web";
+import type { UIOptions } from "#context";
 import type { ExtensionComponents } from "#extensions";
 import { App } from "../App";
 import { defaultToolbarButtonsLayout } from "./_Utilities";
@@ -15,7 +16,6 @@ export const createRichTextEditor = ({
 	storedSnapshot,
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
-	codeBlock = {},
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
@@ -42,6 +42,11 @@ export const createRichTextEditor = ({
 		{ toolbarButtons: {}, floatingComponents: [] },
 	);
 
+	const uiOptions = extensions.reduce<UIOptions>(
+		(prev, value) => Object.assign(prev, value.uiOptions),
+		{ codeBlock: {} },
+	);
+
 	for (const { register } of extensions) {
 		register?.(editor);
 	}
@@ -52,11 +57,11 @@ export const createRichTextEditor = ({
 		() => (
 			<App
 				components={components}
+				uiOptions={uiOptions}
 				toolbarButtonsLayout={toolbarButtonsLayout}
 				editor={editor}
 				host={host}
 				floatingContainer={floatingContainer}
-				codeBlock={codeBlock}
 			/>
 		),
 		editorHost,

@@ -12,7 +12,7 @@ import type {
  */
 export const buildCommandMenuActions = ({
 	editor,
-	options,
+	uiOptions,
 }: BuildCommandMenuActionsParams): BuildCommandMenuActionsResult => {
 	const {
 		blockQuote,
@@ -89,8 +89,8 @@ export const buildCommandMenuActions = ({
 			icon: "CodeBlock",
 			onSelect: () =>
 				codeBlock.insert({
-					language: options.defaultLanguage ?? null,
-					theme: options.defaultTheme ?? null,
+					language: uiOptions.codeBlock.defaultLanguage ?? null,
+					theme: uiOptions.codeBlock.defaultTheme ?? null,
 				}),
 		});
 	}

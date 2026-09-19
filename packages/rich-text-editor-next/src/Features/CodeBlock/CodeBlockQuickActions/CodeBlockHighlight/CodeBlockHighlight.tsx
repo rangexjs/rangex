@@ -4,14 +4,14 @@ import type {
 	ReactiveReadOnlyPort,
 } from "@rangex/solid";
 import { createMemo, createUniqueId, onCleanup } from "solid-js";
-import type { CodeBlockOptions } from "#context";
+import type { CodeBlockUIOptions } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../../_Utilities";
 
 interface LanguageDropdownProps {
 	codeBlock: CodeBlockPublicPort;
 	$codeBlock: ReactiveCodeBlockPort;
-	options: CodeBlockOptions;
+	options: CodeBlockUIOptions;
 }
 
 const LanguageDropdown = (props: LanguageDropdownProps) => {
@@ -41,7 +41,7 @@ const LanguageDropdown = (props: LanguageDropdownProps) => {
 interface ThemeDropdownProps {
 	codeBlock: CodeBlockPublicPort;
 	$codeBlock: ReactiveCodeBlockPort;
-	options: CodeBlockOptions;
+	options: CodeBlockUIOptions;
 	theme: "light" | "dark";
 }
 
@@ -89,7 +89,7 @@ export interface CodeBlockHighlightProps {
 	codeBlock: CodeBlockPublicPort;
 	$codeBlock: ReactiveCodeBlockPort;
 	readOnly: ReactiveReadOnlyPort | undefined;
-	options: CodeBlockOptions;
+	options: CodeBlockUIOptions;
 }
 
 export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {

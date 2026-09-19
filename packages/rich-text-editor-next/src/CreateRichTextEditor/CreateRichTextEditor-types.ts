@@ -1,6 +1,5 @@
 import type { StoredSnapshot } from "rich-text-area";
 import type { ToolbarButtonsLayout } from "#constants";
-import type { CodeBlockOptions } from "#context";
 import type { Extension } from "#extensions";
 
 export interface RichTextEditor {
@@ -12,7 +11,6 @@ export interface CreateRichTextEditorParams {
 	storedSnapshot?: StoredSnapshot;
 	extensions: Extension[];
 	toolbarButtonsLayout?: ToolbarButtonsLayout;
-	codeBlock?: CodeBlockOptions;
 }
 
 export interface CreateRichTextEditorResult extends RichTextEditor {}

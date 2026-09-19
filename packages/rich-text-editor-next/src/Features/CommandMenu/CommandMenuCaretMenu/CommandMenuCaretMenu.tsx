@@ -1,13 +1,13 @@
 import { CommandMenu } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useCodeBlockContext, useEditorContext } from "#context";
+import { useEditorContext, useUIOptionsContext } from "#context";
 import { type CaretItemFn, CaretMenu, Icon } from "#ui";
 import type { CommandMenuAction } from "./BuildCommandMenuActions";
 import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 
 export const CommandMenuCaretMenu = () => {
 	const editor = useEditorContext();
-	const options = useCodeBlockContext();
+	const uiOptions = useUIOptionsContext();
 	const { commandMenu } = editor;
 
 	if (!commandMenu) {
@@ -17,7 +17,7 @@ export const CommandMenuCaretMenu = () => {
 	const $commandMenu = CommandMenu(commandMenu);
 
 	const actions = createMemo(() =>
-		buildCommandMenuActions({ editor, options }),
+		buildCommandMenuActions({ editor, uiOptions }),
 	);
 
 	const entries = createMemo(() =>
