@@ -10,7 +10,7 @@ export const canInsertCommandMenu = ({
 }: CanInsertCommandMenuParams): boolean => {
 	const blockComponent = getClosestBlockComponent({
 		fromNode: fromText,
-		componentName: componentsName.codeBlock,
+		components: [componentsName.codeBlock],
 	});
 
 	return !blockComponent;

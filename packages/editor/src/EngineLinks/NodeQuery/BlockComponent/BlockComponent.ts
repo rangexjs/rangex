@@ -6,7 +6,7 @@ import type {
 
 export const getClosestBlockComponent = ({
 	fromNode,
-	componentName,
+	components,
 }: GetClosestBlockComponentParams): GetClosestBlockComponentResult => {
 	const { $$parentElement } = fromNode;
 
@@ -14,11 +14,11 @@ export const getClosestBlockComponent = ({
 
 	while (parent) {
 		if (parent.$$editorRole === blockComponentName) {
-			if (!componentName) {
+			if (!components) {
 				return parent;
 			}
 
-			if (parent.$$componentName === componentName) {
+			if (components.includes(parent.$$componentName)) {
 				return parent;
 			}
 		}

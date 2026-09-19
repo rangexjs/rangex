@@ -55,7 +55,7 @@ const watchCodeBlocks = ({
 
 			const blockComponent = getClosestBlockComponent({
 				fromNode: target,
-				componentName: componentsName.codeBlock,
+				components: [componentsName.codeBlock],
 			});
 
 			if (!blockComponent) {

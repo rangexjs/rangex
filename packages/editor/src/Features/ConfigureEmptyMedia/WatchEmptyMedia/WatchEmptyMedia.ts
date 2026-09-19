@@ -156,7 +156,7 @@ export const watchEmptyMedia = ({
 
 			const blockComponent = getClosestBlockComponent({
 				fromNode: assignedSlot,
-				componentName: componentsName.emptyMedia,
+				components: [componentsName.emptyMedia],
 			});
 
 			if (!blockComponent) {

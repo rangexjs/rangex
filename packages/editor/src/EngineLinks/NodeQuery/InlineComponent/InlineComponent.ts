@@ -6,7 +6,7 @@ import type {
 
 export const getClosestInlineComponent = ({
 	fromNode,
-	componentName,
+	components,
 }: GetClosestInlineComponentParams): GetClosestInlineComponentResult => {
 	const { $$parentElement } = fromNode;
 
@@ -14,11 +14,11 @@ export const getClosestInlineComponent = ({
 
 	while (parent) {
 		if (parent.$$editorRole === inlineComponentName) {
-			if (!componentName) {
+			if (!components) {
 				return parent;
 			}
 
-			if (parent.$$componentName === componentName) {
+			if (components.includes(parent.$$componentName)) {
 				return parent;
 			}
 		}
