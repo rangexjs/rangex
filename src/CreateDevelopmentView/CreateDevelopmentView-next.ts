@@ -73,15 +73,12 @@ const getHighlightInfo = createSyntaxHighlighter(syntaxHighlighter);
 
 const languages = [
 	{ label: "Plain Text", value: null },
-	...codeBlockLanguageDefinitions.map(({ id, label }) => ({
-		label,
-		value: id,
-	})),
+	...codeBlockLanguageDefinitions.map(({ label, value }) => ({ label, value })),
 ];
 
 const themes = [
 	{ label: "No Theme", value: null },
-	...codeBlockThemeDefinitions.map(({ id, label }) => ({ label, value: id })),
+	...codeBlockThemeDefinitions.map(({ label, value }) => ({ label, value })),
 ];
 
 const defaultTheme = (() => {
