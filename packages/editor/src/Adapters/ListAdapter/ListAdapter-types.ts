@@ -1,13 +1,19 @@
 import type { ListLocalName } from "rich-text-area";
-import type { CreateAdapterParams } from "../_Utilities";
+import type {
+	CreateAdapterParams,
+	UnwrapConfigPort,
+	UnwrapPublicPort,
+} from "../_Utilities";
 
 export interface ListState {
 	canInsert?: boolean;
 	canWrap?: boolean;
+	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
+export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export interface ListPlacementOption {
 	localName: ListLocalName;
@@ -30,7 +36,7 @@ export interface ListConfigPortProps {
 	onWrap(callback: OnWrapCallbackFn): () => void;
 }
 
-export interface ListConfigPort extends ListConfigPortProps {}
+export interface ListConfigPort extends ListConfigPortProps, UnwrapConfigPort {}
 
 export interface InsertParams extends ListPlacementOption {}
 
@@ -39,19 +45,22 @@ export interface WrapParams extends ListPlacementOption {}
 export interface ListPublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
+	readonly isActive: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;
 }
 
-export interface ListPublicPort extends ListPublicPortProps {}
+export interface ListPublicPort extends ListPublicPortProps, UnwrapPublicPort {}
 
 export interface ListInternals {
 	canInsert: boolean;
 	canWrap: boolean;
+	isActive: boolean;
 }
 
 export interface ListAdapter {

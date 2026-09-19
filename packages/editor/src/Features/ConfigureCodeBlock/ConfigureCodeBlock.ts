@@ -2,9 +2,13 @@ import {
 	codeBlockStorageFallbacks,
 	componentsName,
 	createBlockComponentPlacement,
+	createComponentLookup,
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
-import { handleQuickActionsAppearance } from "../_Utilities";
+import {
+	handleComponentUnwrap,
+	handleQuickActionsAppearance,
+} from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
 import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
@@ -20,6 +24,7 @@ export const configureCodeBlock = ({
 	configPort,
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
+	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 	const codeHighlighter = new CodeHighlighter({
 		editorAPI,
@@ -29,7 +34,17 @@ export const configureCodeBlock = ({
 	const placementStateCleanup = handleCodeBlockPlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 		blockComponentPlacement,
+	});
+
+	const unwrapCleanup = handleComponentUnwrap({
+		port: configPort,
+		editorAPI,
+		getComponent: () =>
+			componentLookup.closestBlockBySelection({
+				components: [componentsName.codeBlock],
+			}),
 	});
 
 	const placementCleanup = handleCodeBlockPlacement({
@@ -68,6 +83,7 @@ export const configureCodeBlock = ({
 
 	return () => {
 		placementStateCleanup();
+		unwrapCleanup();
 		placementCleanup();
 		lineNumbersCleanup();
 		overlayStateCleanup();

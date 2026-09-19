@@ -2,6 +2,8 @@ import type {
 	CaretMenuConfigPort,
 	CaretMenuPublicPort,
 	CreateAdapterParams,
+	UnwrapConfigPort,
+	UnwrapPublicPort,
 } from "../_Utilities";
 
 export type TemplateVariableKind =
@@ -53,7 +55,8 @@ export interface TemplateVariableConfigPortProps {
 }
 
 export interface TemplateVariableConfigPort
-	extends TemplateVariableConfigPortProps {}
+	extends TemplateVariableConfigPortProps,
+		UnwrapConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnOptionsUpdateCallbackFn = (value: Options) => void;
@@ -75,7 +78,8 @@ export interface TemplateVariablePublicPortProps {
 }
 
 export interface TemplateVariablePublicPort
-	extends TemplateVariablePublicPortProps {}
+	extends TemplateVariablePublicPortProps,
+		UnwrapPublicPort {}
 
 export interface TemplateVariableInternals {
 	canInsert: boolean;

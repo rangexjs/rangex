@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort } from "../_Utilities";
+import { createCaretMenuPort, createUnwrapPort } from "../_Utilities";
 import type {
 	CreateTemplateVariableAdapterParams,
 	CreateTemplateVariableAdapterResult,
@@ -89,85 +89,93 @@ export const createTemplateVariableAdapter = (
 		}
 	};
 
-	const configPort: TemplateVariableConfigPort = extendObjectProperties({}, {
-		get caretMenu() {
-			return caretMenuPort.configPort;
-		},
+	const unwrapPort = createUnwrapPort();
 
-		get filteredItems() {
-			return internals.filteredItems;
-		},
+	const configPort: TemplateVariableConfigPort = extendObjectProperties(
+		unwrapPort.configPort,
+		{
+			get caretMenu() {
+				return caretMenuPort.configPort;
+			},
 
-		updateState(params) {
-			updateState(params);
-		},
+			get filteredItems() {
+				return internals.filteredItems;
+			},
 
-		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
-		},
+			updateState(params) {
+				updateState(params);
+			},
 
-		onOptions(callback) {
-			onOptionsListeners.add(callback);
-			return () => onOptionsListeners.delete(callback);
-		},
+			onInsert(callback) {
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
+			},
 
-		onSelect(callback) {
-			onSelectListeners.add(callback);
-			return () => onSelectListeners.delete(callback);
-		},
-	} satisfies TemplateVariableConfigPortProps);
+			onOptions(callback) {
+				onOptionsListeners.add(callback);
+				return () => onOptionsListeners.delete(callback);
+			},
 
-	const publicPort: TemplateVariablePublicPort = extendObjectProperties({}, {
-		get caretMenu() {
-			return caretMenuPort.publicPort;
-		},
+			onSelect(callback) {
+				onSelectListeners.add(callback);
+				return () => onSelectListeners.delete(callback);
+			},
+		} satisfies TemplateVariableConfigPortProps,
+	);
 
-		get canInsert() {
-			return internals.canInsert;
-		},
+	const publicPort: TemplateVariablePublicPort = extendObjectProperties(
+		unwrapPort.publicPort,
+		{
+			get caretMenu() {
+				return caretMenuPort.publicPort;
+			},
 
-		get options() {
-			return internals.options;
-		},
+			get canInsert() {
+				return internals.canInsert;
+			},
 
-		get filteredItems() {
-			return internals.filteredItems;
-		},
+			get options() {
+				return internals.options;
+			},
 
-		onCanInsertUpdate(callback) {
-			onCanInsertUpdateListeners.add(callback);
-			return () => onCanInsertUpdateListeners.delete(callback);
-		},
+			get filteredItems() {
+				return internals.filteredItems;
+			},
 
-		onOptionsUpdate(callback) {
-			onOptionsUpdateListeners.add(callback);
-			return () => onOptionsUpdateListeners.delete(callback);
-		},
+			onCanInsertUpdate(callback) {
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
+			},
 
-		onFilteredItemsUpdate(callback) {
-			onFilteredItemsUpdateListeners.add(callback);
-			return () => onFilteredItemsUpdateListeners.delete(callback);
-		},
+			onOptionsUpdate(callback) {
+				onOptionsUpdateListeners.add(callback);
+				return () => onOptionsUpdateListeners.delete(callback);
+			},
 
-		insert(params: InsertParams) {
-			for (const listener of onInsertListeners) {
-				listener(params);
-			}
-		},
+			onFilteredItemsUpdate(callback) {
+				onFilteredItemsUpdateListeners.add(callback);
+				return () => onFilteredItemsUpdateListeners.delete(callback);
+			},
 
-		changeOptions(options) {
-			for (const listener of onOptionsListeners) {
-				listener(options);
-			}
-		},
+			insert(params: InsertParams) {
+				for (const listener of onInsertListeners) {
+					listener(params);
+				}
+			},
 
-		select(item: SuggestionItem) {
-			for (const listener of onSelectListeners) {
-				listener(item);
-			}
-		},
-	} satisfies TemplateVariablePublicPortProps);
+			changeOptions(options) {
+				for (const listener of onOptionsListeners) {
+					listener(options);
+				}
+			},
+
+			select(item: SuggestionItem) {
+				for (const listener of onSelectListeners) {
+					listener(item);
+				}
+			},
+		} satisfies TemplateVariablePublicPortProps,
+	);
 
 	return { configPort, publicPort };
 };

@@ -1,4 +1,9 @@
-import { createBlockComponentPlacement } from "#engine-links";
+import {
+	componentsName,
+	createBlockComponentPlacement,
+	createComponentLookup,
+} from "#engine-links";
+import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureTodoListParams } from "./ConfigureTodoList-types";
 import { handleTodoListCheckboxState } from "./HandleTodoListCheckboxState";
 import { handleTodoListPlacement } from "./HandleTodoListPlacement";
@@ -12,12 +17,23 @@ export const configureTodoList = ({
 	configPort,
 	editorAPI,
 }: ConfigureTodoListParams) => {
+	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	const placementStateCleanup = handleTodoListPlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 		blockComponentPlacement,
+	});
+
+	const unwrapCleanup = handleComponentUnwrap({
+		port: configPort,
+		editorAPI,
+		getComponent: () =>
+			componentLookup.closestBlockBySelection({
+				components: [componentsName.todoList],
+			}),
 	});
 
 	const placementCleanup = handleTodoListPlacement({
@@ -30,6 +46,7 @@ export const configureTodoList = ({
 
 	return () => {
 		placementStateCleanup();
+		unwrapCleanup();
 		placementCleanup();
 		checkboxStateCleanup();
 	};

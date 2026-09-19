@@ -1,4 +1,9 @@
-import { createBlockComponentPlacement } from "#engine-links";
+import {
+	componentsName,
+	createBlockComponentPlacement,
+	createComponentLookup,
+} from "#engine-links";
+import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
 import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
 import { handleAccordionItemPlacementState } from "./HandleAccordionItemPlacementState";
@@ -12,12 +17,23 @@ export const configureAccordionItem = ({
 	configPort,
 	editorAPI,
 }: ConfigureAccordionItemParams) => {
+	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	const placementStateCleanup = handleAccordionItemPlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 		blockComponentPlacement,
+	});
+
+	const unwrapCleanup = handleComponentUnwrap({
+		port: configPort,
+		editorAPI,
+		getComponent: () =>
+			componentLookup.closestBlockBySelection({
+				components: [componentsName.accordionItem],
+			}),
 	});
 
 	const insertionCleanup = handleAccordionItemPlacement({
@@ -30,6 +46,7 @@ export const configureAccordionItem = ({
 
 	return () => {
 		placementStateCleanup();
+		unwrapCleanup();
 		insertionCleanup();
 		summaryToggleCleanup();
 	};

@@ -18,6 +18,7 @@ import type {
 	ModifyParams,
 	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
+	OnIsActiveUpdateCallbackFn,
 	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
 	OnLinkSelectionInCallbackFn,
@@ -37,6 +38,7 @@ export const createLinkAdapter = (
 	const internals: LinkInternals = {
 		// States
 		canInsert: false,
+		isActive: false,
 		// Providers
 		displayTextProvider: null,
 	};
@@ -44,6 +46,7 @@ export const createLinkAdapter = (
 	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 
 	// CommandListeners
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
@@ -57,12 +60,20 @@ export const createLinkAdapter = (
 	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
 	const selectionMenuPort = createSelectionMenuPort({ floatingContainer });
 
-	const updateState = ({ canInsert }: UpdateStateParams) => {
+	const updateState = ({ canInsert, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
 			for (const listener of onCanInsertUpdateListeners) {
 				listener(internals.canInsert);
+			}
+		}
+
+		if (isActive !== undefined) {
+			internals.isActive = isActive;
+
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
 			}
 		}
 	};
@@ -133,6 +144,10 @@ export const createLinkAdapter = (
 				return internals.canInsert;
 			},
 
+			get isActive() {
+				return internals.isActive;
+			},
+
 			get linkMenuOpen() {
 				return linkMenuEl.matches(":popover-open");
 			},
@@ -144,6 +159,11 @@ export const createLinkAdapter = (
 			onCanInsertUpdate(callback) {
 				onCanInsertUpdateListeners.add(callback);
 				return () => onCanInsertUpdateListeners.delete(callback);
+			},
+
+			onIsActiveUpdate(callback) {
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
 			},
 
 			onLinkClick(callback) {

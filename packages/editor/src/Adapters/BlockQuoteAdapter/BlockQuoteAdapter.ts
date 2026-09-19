@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createUnwrapPort } from "../_Utilities";
 import type {
 	BlockQuoteConfigPort,
 	BlockQuoteConfigPortProps,
@@ -10,6 +11,7 @@ import type {
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
+	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./BlockQuoteAdapter-types";
@@ -23,18 +25,22 @@ export const createBlockQuoteAdapter = (
 		// States
 		canInsert: false,
 		canWrap: false,
+		isActive: false,
 	};
 
 	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 
 	// CommandListeners
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 
-	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
+	const unwrapPort = createUnwrapPort();
+
+	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -50,55 +56,78 @@ export const createBlockQuoteAdapter = (
 				listener(internals.canWrap);
 			}
 		}
+
+		if (isActive !== undefined) {
+			internals.isActive = isActive;
+
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
+			}
+		}
 	};
 
-	const configPort: BlockQuoteConfigPort = extendObjectProperties({}, {
-		updateState(params) {
-			updateState(params);
-		},
+	const configPort: BlockQuoteConfigPort = extendObjectProperties(
+		unwrapPort.configPort,
+		{
+			updateState(params) {
+				updateState(params);
+			},
 
-		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
-		},
+			onInsert(callback) {
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
+			},
 
-		onWrap(callback) {
-			onWrapListeners.add(callback);
-			return () => onWrapListeners.delete(callback);
-		},
-	} satisfies BlockQuoteConfigPortProps);
+			onWrap(callback) {
+				onWrapListeners.add(callback);
+				return () => onWrapListeners.delete(callback);
+			},
+		} satisfies BlockQuoteConfigPortProps,
+	);
 
-	const publicPort: BlockQuotePublicPort = extendObjectProperties({}, {
-		get canInsert() {
-			return internals.canInsert;
-		},
+	const publicPort: BlockQuotePublicPort = extendObjectProperties(
+		unwrapPort.publicPort,
+		{
+			get canInsert() {
+				return internals.canInsert;
+			},
 
-		get canWrap() {
-			return internals.canWrap;
-		},
+			get canWrap() {
+				return internals.canWrap;
+			},
 
-		onCanInsertUpdate(callback) {
-			onCanInsertUpdateListeners.add(callback);
-			return () => onCanInsertUpdateListeners.delete(callback);
-		},
+			get isActive() {
+				return internals.isActive;
+			},
 
-		onCanWrapUpdate(callback) {
-			onCanWrapUpdateListeners.add(callback);
-			return () => onCanWrapUpdateListeners.delete(callback);
-		},
+			onCanInsertUpdate(callback) {
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
+			},
 
-		insert() {
-			for (const listener of onInsertListeners) {
-				listener();
-			}
-		},
+			onCanWrapUpdate(callback) {
+				onCanWrapUpdateListeners.add(callback);
+				return () => onCanWrapUpdateListeners.delete(callback);
+			},
 
-		wrap() {
-			for (const listener of onWrapListeners) {
-				listener();
-			}
-		},
-	} satisfies BlockQuotePublicPortProps);
+			onIsActiveUpdate(callback) {
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
+			},
+
+			insert() {
+				for (const listener of onInsertListeners) {
+					listener();
+				}
+			},
+
+			wrap() {
+				for (const listener of onWrapListeners) {
+					listener();
+				}
+			},
+		} satisfies BlockQuotePublicPortProps,
+	);
 
 	return { configPort, publicPort };
 };

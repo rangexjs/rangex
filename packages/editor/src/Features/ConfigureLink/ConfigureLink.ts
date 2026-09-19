@@ -1,4 +1,7 @@
-import { createPopoverOverlayController } from "#engine-links";
+import {
+	createComponentLookup,
+	createPopoverOverlayController,
+} from "#engine-links";
 import {
 	handleComponentUnwrap,
 	handleSelectionMenuInteraction,
@@ -45,9 +48,12 @@ export const configureLink = ({
 
 	handleDisplayTextRegistration({ configPort, editorAPI });
 
+	const componentLookup = createComponentLookup({ editorAPI });
+
 	const placementStateCleanup = handleLinkPlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 	});
 
 	const menuOpenCleanup = handleSelectionMenuOpen({

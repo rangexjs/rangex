@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createUnwrapPort } from "../_Utilities";
 import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
@@ -16,6 +17,7 @@ import type {
 	OnContextMenuToggleCallbackFn,
 	OnInsertCallbackFn,
 	OnInsertDeleteUpdateCallbackFn,
+	OnIsActiveUpdateCallbackFn,
 	OnMergeSplitUpdateCallbackFn,
 	OnSectionTypeUpdateCallbackFn,
 	OnVerticalAlignmentUpdateCallbackFn,
@@ -38,6 +40,7 @@ export const createTableAdapter = (
 	const internals: TableInternals = {
 		// States
 		canInsert: false,
+		isActive: false,
 		sectionType: {
 			header: { disabled: true },
 			body: { disabled: true },
@@ -82,6 +85,7 @@ export const createTableAdapter = (
 	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 	const onSectionTypeUpdateListeners: Set<OnSectionTypeUpdateCallbackFn> =
 		new Set();
 	const onMergeSplitUpdateListeners: Set<OnMergeSplitUpdateCallbackFn> =
@@ -113,8 +117,11 @@ export const createTableAdapter = (
 	const onContextMenuToggleListeners: Set<OnContextMenuToggleCallbackFn> =
 		new Set();
 
+	const unwrapPort = createUnwrapPort();
+
 	const updateState = ({
 		canInsert,
+		isActive,
 		contextMenuOpen,
 		sectionType,
 		mergeSplit,
@@ -129,6 +136,14 @@ export const createTableAdapter = (
 
 			for (const listener of onCanInsertUpdateListeners) {
 				listener(internals.canInsert);
+			}
+		}
+
+		if (isActive !== undefined) {
+			internals.isActive = isActive;
+
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
 			}
 		}
 
@@ -197,194 +212,209 @@ export const createTableAdapter = (
 		}
 	};
 
-	const configPort: TableConfigPort = extendObjectProperties({}, {
-		get contextMenuEl() {
-			return contextMenuEl;
-		},
+	const configPort: TableConfigPort = extendObjectProperties(
+		unwrapPort.configPort,
+		{
+			get contextMenuEl() {
+				return contextMenuEl;
+			},
 
-		updateState(params) {
-			updateState(params);
-		},
+			updateState(params) {
+				updateState(params);
+			},
 
-		setContextMenu({ open }) {
-			updateState({ contextMenuOpen: open });
-		},
+			setContextMenu({ open }) {
+				updateState({ contextMenuOpen: open });
+			},
 
-		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
-		},
+			onInsert(callback) {
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
+			},
 
-		onChangeSectionType(callback) {
-			onChangeSectionTypeListeners.add(callback);
-			return () => onChangeSectionTypeListeners.delete(callback);
-		},
+			onChangeSectionType(callback) {
+				onChangeSectionTypeListeners.add(callback);
+				return () => onChangeSectionTypeListeners.delete(callback);
+			},
 
-		onChangeMergeSplit(callback) {
-			onChangeMergeSplitListeners.add(callback);
-			return () => onChangeMergeSplitListeners.delete(callback);
-		},
+			onChangeMergeSplit(callback) {
+				onChangeMergeSplitListeners.add(callback);
+				return () => onChangeMergeSplitListeners.delete(callback);
+			},
 
-		onChangeInsertDelete(callback) {
-			onChangeInsertDeleteListeners.add(callback);
-			return () => onChangeInsertDeleteListeners.delete(callback);
-		},
+			onChangeInsertDelete(callback) {
+				onChangeInsertDeleteListeners.add(callback);
+				return () => onChangeInsertDeleteListeners.delete(callback);
+			},
 
-		onChangeCellType(callback) {
-			onChangeCellTypeListeners.add(callback);
-			return () => onChangeCellTypeListeners.delete(callback);
-		},
+			onChangeCellType(callback) {
+				onChangeCellTypeListeners.add(callback);
+				return () => onChangeCellTypeListeners.delete(callback);
+			},
 
-		onChangeVerticalAlignment(callback) {
-			onChangeVerticalAlignmentListeners.add(callback);
-			return () => onChangeVerticalAlignmentListeners.delete(callback);
-		},
+			onChangeVerticalAlignment(callback) {
+				onChangeVerticalAlignmentListeners.add(callback);
+				return () => onChangeVerticalAlignmentListeners.delete(callback);
+			},
 
-		onChangeCellResizing(callback) {
-			onChangeCellResizingListeners.add(callback);
-			return () => onChangeCellResizingListeners.delete(callback);
-		},
+			onChangeCellResizing(callback) {
+				onChangeCellResizingListeners.add(callback);
+				return () => onChangeCellResizingListeners.delete(callback);
+			},
 
-		onClear(callback) {
-			onClearContentsListeners.add(callback);
-			return () => onClearContentsListeners.delete(callback);
-		},
-	} satisfies TableConfigPortProps);
+			onClear(callback) {
+				onClearContentsListeners.add(callback);
+				return () => onClearContentsListeners.delete(callback);
+			},
+		} satisfies TableConfigPortProps,
+	);
 
-	const publicPort: TablePublicPort = extendObjectProperties({}, {
-		get contextMenuEl() {
-			return contextMenuEl;
-		},
+	const publicPort: TablePublicPort = extendObjectProperties(
+		unwrapPort.publicPort,
+		{
+			get contextMenuEl() {
+				return contextMenuEl;
+			},
 
-		get canInsert() {
-			return internals.canInsert;
-		},
+			get canInsert() {
+				return internals.canInsert;
+			},
 
-		get contextMenuOpen() {
-			return internals.contextMenuOpen;
-		},
+			get isActive() {
+				return internals.isActive;
+			},
 
-		get sectionType() {
-			return internals.sectionType;
-		},
+			get contextMenuOpen() {
+				return internals.contextMenuOpen;
+			},
 
-		get mergeSplit() {
-			return internals.mergeSplit;
-		},
+			get sectionType() {
+				return internals.sectionType;
+			},
 
-		get insertDelete() {
-			return internals.insertDelete;
-		},
+			get mergeSplit() {
+				return internals.mergeSplit;
+			},
 
-		get cellType() {
-			return internals.cellType;
-		},
+			get insertDelete() {
+				return internals.insertDelete;
+			},
 
-		get verticalAlignment() {
-			return internals.verticalAlignment;
-		},
+			get cellType() {
+				return internals.cellType;
+			},
 
-		get cellResizing() {
-			return internals.cellResizing;
-		},
+			get verticalAlignment() {
+				return internals.verticalAlignment;
+			},
 
-		get clearContents() {
-			return internals.clearContents;
-		},
+			get cellResizing() {
+				return internals.cellResizing;
+			},
 
-		onCanInsertUpdate(callback) {
-			onCanInsertUpdateListeners.add(callback);
-			return () => onCanInsertUpdateListeners.delete(callback);
-		},
+			get clearContents() {
+				return internals.clearContents;
+			},
 
-		onContextMenuToggle(callback) {
-			onContextMenuToggleListeners.add(callback);
-			return () => onContextMenuToggleListeners.delete(callback);
-		},
+			onCanInsertUpdate(callback) {
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
+			},
 
-		onSectionTypeUpdate(callback) {
-			onSectionTypeUpdateListeners.add(callback);
-			return () => onSectionTypeUpdateListeners.delete(callback);
-		},
+			onIsActiveUpdate(callback) {
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
+			},
 
-		onMergeSplitUpdate(callback) {
-			onMergeSplitUpdateListeners.add(callback);
-			return () => onMergeSplitUpdateListeners.delete(callback);
-		},
+			onContextMenuToggle(callback) {
+				onContextMenuToggleListeners.add(callback);
+				return () => onContextMenuToggleListeners.delete(callback);
+			},
 
-		onInsertDeleteUpdate(callback) {
-			onInsertDeleteUpdateListeners.add(callback);
-			return () => onInsertDeleteUpdateListeners.delete(callback);
-		},
+			onSectionTypeUpdate(callback) {
+				onSectionTypeUpdateListeners.add(callback);
+				return () => onSectionTypeUpdateListeners.delete(callback);
+			},
 
-		onCellTypeUpdate(callback) {
-			onCellTypeUpdateListeners.add(callback);
-			return () => onCellTypeUpdateListeners.delete(callback);
-		},
+			onMergeSplitUpdate(callback) {
+				onMergeSplitUpdateListeners.add(callback);
+				return () => onMergeSplitUpdateListeners.delete(callback);
+			},
 
-		onVerticalAlignmentUpdate(callback) {
-			onVerticalAlignmentUpdateListeners.add(callback);
-			return () => onVerticalAlignmentUpdateListeners.delete(callback);
-		},
+			onInsertDeleteUpdate(callback) {
+				onInsertDeleteUpdateListeners.add(callback);
+				return () => onInsertDeleteUpdateListeners.delete(callback);
+			},
 
-		onCellResizingUpdate(callback) {
-			onCellResizingUpdateListeners.add(callback);
-			return () => onCellResizingUpdateListeners.delete(callback);
-		},
+			onCellTypeUpdate(callback) {
+				onCellTypeUpdateListeners.add(callback);
+				return () => onCellTypeUpdateListeners.delete(callback);
+			},
 
-		onClearContentsUpdate(callback) {
-			onClearContentsUpdateListeners.add(callback);
-			return () => onClearContentsUpdateListeners.delete(callback);
-		},
+			onVerticalAlignmentUpdate(callback) {
+				onVerticalAlignmentUpdateListeners.add(callback);
+				return () => onVerticalAlignmentUpdateListeners.delete(callback);
+			},
 
-		insert(params) {
-			for (const listener of onInsertListeners) {
-				listener(params);
-			}
-		},
+			onCellResizingUpdate(callback) {
+				onCellResizingUpdateListeners.add(callback);
+				return () => onCellResizingUpdateListeners.delete(callback);
+			},
 
-		changeSectionType(action) {
-			for (const listener of onChangeSectionTypeListeners) {
-				listener(action);
-			}
-		},
+			onClearContentsUpdate(callback) {
+				onClearContentsUpdateListeners.add(callback);
+				return () => onClearContentsUpdateListeners.delete(callback);
+			},
 
-		changeMergeSplit(action) {
-			for (const listener of onChangeMergeSplitListeners) {
-				listener(action);
-			}
-		},
+			insert(params) {
+				for (const listener of onInsertListeners) {
+					listener(params);
+				}
+			},
 
-		changeInsertDelete(action) {
-			for (const listener of onChangeInsertDeleteListeners) {
-				listener(action);
-			}
-		},
+			changeSectionType(action) {
+				for (const listener of onChangeSectionTypeListeners) {
+					listener(action);
+				}
+			},
 
-		changeCellType(action) {
-			for (const listener of onChangeCellTypeListeners) {
-				listener(action);
-			}
-		},
+			changeMergeSplit(action) {
+				for (const listener of onChangeMergeSplitListeners) {
+					listener(action);
+				}
+			},
 
-		changeVerticalAlignment(action) {
-			for (const listener of onChangeVerticalAlignmentListeners) {
-				listener(action);
-			}
-		},
+			changeInsertDelete(action) {
+				for (const listener of onChangeInsertDeleteListeners) {
+					listener(action);
+				}
+			},
 
-		changeCellResizing(action) {
-			for (const listener of onChangeCellResizingListeners) {
-				listener(action);
-			}
-		},
+			changeCellType(action) {
+				for (const listener of onChangeCellTypeListeners) {
+					listener(action);
+				}
+			},
 
-		clear() {
-			for (const listener of onClearContentsListeners) {
-				listener();
-			}
-		},
-	} satisfies TablePublicPortProps);
+			changeVerticalAlignment(action) {
+				for (const listener of onChangeVerticalAlignmentListeners) {
+					listener(action);
+				}
+			},
+
+			changeCellResizing(action) {
+				for (const listener of onChangeCellResizingListeners) {
+					listener(action);
+				}
+			},
+
+			clear() {
+				for (const listener of onClearContentsListeners) {
+					listener();
+				}
+			},
+		} satisfies TablePublicPortProps,
+	);
 
 	return { configPort, publicPort };
 };

@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createUnwrapPort } from "../_Utilities";
 import type {
 	CreateListAdapterParams,
 	CreateListAdapterResult,
@@ -10,6 +11,7 @@ import type {
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
+	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./ListAdapter-types";
@@ -23,18 +25,22 @@ export const createListAdapter = (
 		// States
 		canInsert: false,
 		canWrap: false,
+		isActive: false,
 	};
 
 	// StateListeners
 	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
 		new Set();
 	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
+	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
 
 	// CommandListeners
 	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
 	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
 
-	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
+	const unwrapPort = createUnwrapPort();
+
+	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -50,55 +56,78 @@ export const createListAdapter = (
 				listener(internals.canWrap);
 			}
 		}
+
+		if (isActive !== undefined) {
+			internals.isActive = isActive;
+
+			for (const listener of onIsActiveUpdateListeners) {
+				listener(internals.isActive);
+			}
+		}
 	};
 
-	const configPort: ListConfigPort = extendObjectProperties({}, {
-		updateState(params) {
-			updateState(params);
-		},
+	const configPort: ListConfigPort = extendObjectProperties(
+		unwrapPort.configPort,
+		{
+			updateState(params) {
+				updateState(params);
+			},
 
-		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
-		},
+			onInsert(callback) {
+				onInsertListeners.add(callback);
+				return () => onInsertListeners.delete(callback);
+			},
 
-		onWrap(callback) {
-			onWrapListeners.add(callback);
-			return () => onWrapListeners.delete(callback);
-		},
-	} satisfies ListConfigPortProps);
+			onWrap(callback) {
+				onWrapListeners.add(callback);
+				return () => onWrapListeners.delete(callback);
+			},
+		} satisfies ListConfigPortProps,
+	);
 
-	const publicPort: ListPublicPort = extendObjectProperties({}, {
-		get canInsert() {
-			return internals.canInsert;
-		},
+	const publicPort: ListPublicPort = extendObjectProperties(
+		unwrapPort.publicPort,
+		{
+			get canInsert() {
+				return internals.canInsert;
+			},
 
-		get canWrap() {
-			return internals.canWrap;
-		},
+			get canWrap() {
+				return internals.canWrap;
+			},
 
-		onCanInsertUpdate(callback) {
-			onCanInsertUpdateListeners.add(callback);
-			return () => onCanInsertUpdateListeners.delete(callback);
-		},
+			get isActive() {
+				return internals.isActive;
+			},
 
-		onCanWrapUpdate(callback) {
-			onCanWrapUpdateListeners.add(callback);
-			return () => onCanWrapUpdateListeners.delete(callback);
-		},
+			onCanInsertUpdate(callback) {
+				onCanInsertUpdateListeners.add(callback);
+				return () => onCanInsertUpdateListeners.delete(callback);
+			},
 
-		insert(params) {
-			for (const listener of onInsertListeners) {
-				listener(params);
-			}
-		},
+			onCanWrapUpdate(callback) {
+				onCanWrapUpdateListeners.add(callback);
+				return () => onCanWrapUpdateListeners.delete(callback);
+			},
 
-		wrap(params) {
-			for (const listener of onWrapListeners) {
-				listener(params);
-			}
-		},
-	} satisfies ListPublicPortProps);
+			onIsActiveUpdate(callback) {
+				onIsActiveUpdateListeners.add(callback);
+				return () => onIsActiveUpdateListeners.delete(callback);
+			},
+
+			insert(params) {
+				for (const listener of onInsertListeners) {
+					listener(params);
+				}
+			},
+
+			wrap(params) {
+				for (const listener of onWrapListeners) {
+					listener(params);
+				}
+			},
+		} satisfies ListPublicPortProps,
+	);
 
 	return { configPort, publicPort };
 };

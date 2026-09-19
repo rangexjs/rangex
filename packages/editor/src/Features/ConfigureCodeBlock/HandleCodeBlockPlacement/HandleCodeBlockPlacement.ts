@@ -67,7 +67,7 @@ export const handleCodeBlockPlacement = ({
 		editorAPI.focus();
 	});
 
-	const unsubscribeUnwrap = configPort.onWrap(({ language, theme }) => {
+	const unsubscribeWrap = configPort.onWrap(({ language, theme }) => {
 		const codeBlockLine = createCodeBlock({ language, theme });
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);
@@ -109,6 +109,6 @@ export const handleCodeBlockPlacement = ({
 
 	return () => {
 		unsubscribeInsert();
-		unsubscribeUnwrap();
+		unsubscribeWrap();
 	};
 };

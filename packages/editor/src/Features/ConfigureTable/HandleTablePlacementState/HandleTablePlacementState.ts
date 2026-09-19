@@ -4,11 +4,12 @@ import type { HandleTablePlacementStateParams } from "./HandleTablePlacementStat
 
 /*
  * Keeps the table toolbar button's enabled state in sync with whether a table can be
- * inserted at the current selection.
+ * inserted at the current selection, and reports whether the selection is inside a table.
  */
 export const handleTablePlacementState = ({
 	configPort,
 	editorAPI,
+	componentLookup,
 	blockComponentPlacement,
 }: HandleTablePlacementStateParams) => {
 	const unsubscribe = editorAPI.subscribeEditorEvent({
@@ -18,7 +19,12 @@ export const handleTablePlacementState = ({
 				allowedComponents: [componentsName.table],
 			});
 
-			configPort.updateState({ canInsert });
+			const closestTable = componentLookup.closestBlockBySelection({
+				components: [componentsName.table],
+			});
+			const isActive = closestTable !== null;
+
+			configPort.updateState({ canInsert, isActive });
 		},
 	});
 

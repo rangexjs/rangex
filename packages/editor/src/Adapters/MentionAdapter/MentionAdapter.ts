@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort } from "../_Utilities";
+import { createCaretMenuPort, createUnwrapPort } from "../_Utilities";
 import type {
 	CreateMentionAdapterParams,
 	CreateMentionAdapterResult,
@@ -68,45 +68,53 @@ export const createMentionAdapter = (
 		}
 	};
 
-	const configPort: MentionConfigPort = extendObjectProperties({}, {
-		get caretMenu() {
-			return caretMenuPort.configPort;
-		},
+	const unwrapPort = createUnwrapPort();
 
-		get filteredItems() {
-			return internals.filteredItems;
-		},
+	const configPort: MentionConfigPort = extendObjectProperties(
+		unwrapPort.configPort,
+		{
+			get caretMenu() {
+				return caretMenuPort.configPort;
+			},
 
-		updateState(params) {
-			updateState(params);
-		},
+			get filteredItems() {
+				return internals.filteredItems;
+			},
 
-		onSelect(callback) {
-			onSelectListeners.add(callback);
-			return () => onSelectListeners.delete(callback);
-		},
-	} satisfies MentionConfigPortProps);
+			updateState(params) {
+				updateState(params);
+			},
 
-	const publicPort: MentionPublicPort = extendObjectProperties({}, {
-		get caretMenu() {
-			return caretMenuPort.publicPort;
-		},
+			onSelect(callback) {
+				onSelectListeners.add(callback);
+				return () => onSelectListeners.delete(callback);
+			},
+		} satisfies MentionConfigPortProps,
+	);
 
-		get filteredItems() {
-			return internals.filteredItems;
-		},
+	const publicPort: MentionPublicPort = extendObjectProperties(
+		unwrapPort.publicPort,
+		{
+			get caretMenu() {
+				return caretMenuPort.publicPort;
+			},
 
-		onFilteredItemsUpdate(callback) {
-			onFilteredItemsUpdateListeners.add(callback);
-			return () => onFilteredItemsUpdateListeners.delete(callback);
-		},
+			get filteredItems() {
+				return internals.filteredItems;
+			},
 
-		select(item: SuggestionItem) {
-			for (const listener of onSelectListeners) {
-				listener(item);
-			}
-		},
-	} satisfies MentionPublicPortProps);
+			onFilteredItemsUpdate(callback) {
+				onFilteredItemsUpdateListeners.add(callback);
+				return () => onFilteredItemsUpdateListeners.delete(callback);
+			},
+
+			select(item: SuggestionItem) {
+				for (const listener of onSelectListeners) {
+					listener(item);
+				}
+			},
+		} satisfies MentionPublicPortProps,
+	);
 
 	return { configPort, publicPort };
 };

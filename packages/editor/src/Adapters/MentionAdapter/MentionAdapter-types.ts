@@ -2,6 +2,8 @@ import type {
 	CaretMenuConfigPort,
 	CaretMenuPublicPort,
 	CreateAdapterParams,
+	UnwrapConfigPort,
+	UnwrapPublicPort,
 } from "../_Utilities";
 
 export interface SuggestionItem {
@@ -33,7 +35,9 @@ export interface MentionConfigPortProps {
 	onSelect(callback: OnSelectCallbackFn): () => void;
 }
 
-export interface MentionConfigPort extends MentionConfigPortProps {}
+export interface MentionConfigPort
+	extends MentionConfigPortProps,
+		UnwrapConfigPort {}
 
 export interface MentionPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
@@ -44,7 +48,9 @@ export interface MentionPublicPortProps {
 	select(item: SuggestionItem): void;
 }
 
-export interface MentionPublicPort extends MentionPublicPortProps {}
+export interface MentionPublicPort
+	extends MentionPublicPortProps,
+		UnwrapPublicPort {}
 
 export interface MentionInternals {
 	items: SuggestionItems;

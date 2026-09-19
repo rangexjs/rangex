@@ -1,4 +1,9 @@
-import { createBlockComponentPlacement } from "#engine-links";
+import {
+	componentsName,
+	createBlockComponentPlacement,
+	createComponentLookup,
+} from "#engine-links";
+import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
 import { handleListPlacementState } from "./HandleListPlacementState";
@@ -10,12 +15,23 @@ export const configureList = ({
 	configPort,
 	editorAPI,
 }: ConfigureListParams) => {
+	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	const placementStateCleanup = handleListPlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 		blockComponentPlacement,
+	});
+
+	const unwrapCleanup = handleComponentUnwrap({
+		port: configPort,
+		editorAPI,
+		getComponent: () =>
+			componentLookup.closestBlockBySelection({
+				components: [componentsName.list],
+			}),
 	});
 
 	const placementCleanup = handleListPlacement({
@@ -26,6 +42,7 @@ export const configureList = ({
 
 	return () => {
 		placementStateCleanup();
+		unwrapCleanup();
 		placementCleanup();
 	};
 };

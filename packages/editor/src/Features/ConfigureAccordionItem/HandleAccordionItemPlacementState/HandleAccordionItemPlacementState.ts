@@ -5,10 +5,12 @@ import type { HandleAccordionItemPlacementStateParams } from "./HandleAccordionI
 /*
  * Keeps the accordion item toolbar button's insert/wrap availability in sync with the current
  * selection. Returns a cleanup function.
+ * Also reports whether the selection is inside the component.
  */
 export const handleAccordionItemPlacementState = ({
 	configPort,
 	editorAPI,
+	componentLookup,
 	blockComponentPlacement,
 }: HandleAccordionItemPlacementStateParams) => {
 	const unsubscribe = editorAPI.subscribeEditorEvent({
@@ -21,7 +23,12 @@ export const handleAccordionItemPlacementState = ({
 				allowedComponents: [componentsName.accordionItem],
 			});
 
-			configPort.updateState({ canInsert, canWrap });
+			const closestComponent = componentLookup.closestBlockBySelection({
+				components: [componentsName.accordionItem],
+			});
+			const isActive = closestComponent !== null;
+
+			configPort.updateState({ canInsert, canWrap, isActive });
 		},
 	});
 

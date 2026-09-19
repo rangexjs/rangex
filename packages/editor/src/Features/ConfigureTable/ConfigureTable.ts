@@ -1,7 +1,10 @@
 import {
+	componentsName,
 	createAnchoredOverlayController,
 	createBlockComponentPlacement,
+	createComponentLookup,
 } from "#engine-links";
+import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMenuButtonsInteraction";
 import { handleTableContextMenuButtonsState } from "./HandleTableContextMenuButtonsState";
@@ -17,6 +20,7 @@ export const configureTable = ({
 	configPort,
 	editorAPI,
 }: ConfigureTableParams) => {
+	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
 
 	const anchorController = createAnchoredOverlayController({
@@ -31,7 +35,17 @@ export const configureTable = ({
 	const placementStateCleanup = handleTablePlacementState({
 		configPort,
 		editorAPI,
+		componentLookup,
 		blockComponentPlacement,
+	});
+
+	const unwrapCleanup = handleComponentUnwrap({
+		port: configPort,
+		editorAPI,
+		getComponent: () =>
+			componentLookup.closestBlockBySelection({
+				components: [componentsName.table],
+			}),
 	});
 
 	const contextMenuVisibilityCleanup = handleTableContextMenuVisibility({
@@ -55,6 +69,7 @@ export const configureTable = ({
 
 	return () => {
 		placementStateCleanup();
+		unwrapCleanup();
 		contextMenuVisibilityCleanup();
 		contextMenuStateCleanup();
 		contextMenuInteractionCleanup();
