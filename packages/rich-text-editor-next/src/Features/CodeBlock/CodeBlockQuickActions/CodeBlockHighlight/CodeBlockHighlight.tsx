@@ -4,40 +4,95 @@ import type {
 	ReactiveReadOnlyPort,
 } from "@rangex/solid";
 import { createMemo, createUniqueId, onCleanup } from "solid-js";
+import type { CodeBlockOptions } from "#context";
 import { Icon } from "#ui";
 import { OptionDropdown } from "../../../_Utilities";
+
+interface LanguageDropdownProps {
+	codeBlock: CodeBlockPublicPort;
+	$codeBlock: ReactiveCodeBlockPort;
+	options: CodeBlockOptions;
+}
+
+const LanguageDropdown = (props: LanguageDropdownProps) => {
+	const languages = createMemo(() => props.options.languages ?? []);
+
+	if (!languages().length) {
+		return null;
+	}
+
+	const languageValue = createMemo(() => props.$codeBlock.language());
+
+	const onSelect = (selected: string | null) => {
+		props.codeBlock.changeLanguage(selected);
+	};
+
+	return (
+		<OptionDropdown<string | null>
+			label="Language"
+			value={languageValue()}
+			notFoundLabel="Unknown"
+			options={languages()}
+			onSelect={onSelect}
+		/>
+	);
+};
+
+interface ThemeDropdownProps {
+	codeBlock: CodeBlockPublicPort;
+	$codeBlock: ReactiveCodeBlockPort;
+	options: CodeBlockOptions;
+	theme: "light" | "dark";
+}
+
+const ThemeDropdown = (props: ThemeDropdownProps) => {
+	const themes = createMemo(() => props.options.themes ?? []);
+
+	if (!themes().length) {
+		return null;
+	}
+
+	const themeValue = createMemo(
+		() => props.$codeBlock.theme()?.[props.theme] ?? null,
+	);
+
+	const label = { light: "☀ Light", dark: "☾ Dark" }[props.theme];
+
+	const onSelect = (selected: string | null) => {
+		if (selected === null) {
+			props.codeBlock.changeTheme(null);
+			return;
+		}
+
+		const currentTheme = props.$codeBlock.theme();
+		const currentLight = currentTheme?.light ?? selected;
+		const currentDark = currentTheme?.dark ?? selected;
+
+		const light = props.theme === "light" ? selected : currentLight;
+		const dark = props.theme === "dark" ? selected : currentDark;
+
+		props.codeBlock.changeTheme({ light, dark });
+	};
+
+	return (
+		<OptionDropdown<string | null>
+			label={label}
+			value={themeValue()}
+			notFoundLabel="Unknown"
+			options={themes()}
+			onSelect={onSelect}
+		/>
+	);
+};
 
 export interface CodeBlockHighlightProps {
 	codeBlock: CodeBlockPublicPort;
 	$codeBlock: ReactiveCodeBlockPort;
 	readOnly: ReactiveReadOnlyPort | undefined;
+	options: CodeBlockOptions;
 }
 
-const plainText = "Plain Text" as const;
-
 export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
-	const languageOptions = [
-		{ label: plainText, value: plainText },
-		...props.codeBlock.languages.map(({ id, label }) => ({ label, value: id })),
-	];
-
-	const themeOptions = props.codeBlock.themes.map(({ id, label }) => ({
-		label,
-		value: id,
-	}));
-
-	const language = createMemo(() => props.$codeBlock.language() ?? plainText);
-
-	const theme = createMemo(() => {
-		const value = props.$codeBlock.theme() ?? props.codeBlock.defaultTheme;
-
-		if (value === null) {
-			throw new Error("Theme isn't available.");
-		}
-
-		return value;
-	});
-
 	const optionsPopoverId = createUniqueId();
 
 	let optionsPopover: HTMLDivElement | undefined;
@@ -65,6 +120,36 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 		unsubscribeIsOpen();
 	});
 
+	const LanguageComp = (
+		<LanguageDropdown
+			codeBlock={props.codeBlock}
+			$codeBlock={props.$codeBlock}
+			options={props.options}
+		/>
+	);
+
+	const LightComp = (
+		<ThemeDropdown
+			codeBlock={props.codeBlock}
+			$codeBlock={props.$codeBlock}
+			options={props.options}
+			theme="light"
+		/>
+	);
+
+	const DarkComp = (
+		<ThemeDropdown
+			codeBlock={props.codeBlock}
+			$codeBlock={props.$codeBlock}
+			options={props.options}
+			theme="dark"
+		/>
+	);
+
+	if (!(LanguageComp || LightComp || DarkComp)) {
+		return null;
+	}
+
 	return (
 		<>
 			<button
@@ -86,32 +171,9 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 				popover="auto"
 				class="w-32 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>
-				<OptionDropdown
-					label="Language"
-					value={language()}
-					options={languageOptions}
-					onSelect={(selected) =>
-						props.codeBlock.changeLanguage(
-							selected === plainText ? null : selected,
-						)
-					}
-				/>
-				<OptionDropdown
-					label="☀ Light"
-					value={theme().light}
-					options={themeOptions}
-					onSelect={(light) =>
-						props.codeBlock.changeTheme({ ...theme(), light })
-					}
-					class="flex-1"
-				/>
-				<OptionDropdown
-					label="☾ Dark"
-					value={theme().dark}
-					options={themeOptions}
-					onSelect={(dark) => props.codeBlock.changeTheme({ ...theme(), dark })}
-					class="flex-1"
-				/>
+				{LanguageComp}
+				{LightComp}
+				{DarkComp}
 			</div>
 		</>
 	);

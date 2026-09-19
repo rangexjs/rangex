@@ -41,10 +41,7 @@ export const createCodeBlockAdapter = (
 		// Providers
 		plainTextProvider: null,
 		// Rest
-		languages: settings.languages ?? [],
-		themes: settings.themes ?? [],
 		getHighlightInfo: settings.getHighlightInfo ?? null,
-		defaultTheme: settings.defaultTheme ?? null,
 	};
 
 	// StateListeners
@@ -127,10 +124,6 @@ export const createCodeBlockAdapter = (
 				return internals.getHighlightInfo;
 			},
 
-			get defaultTheme() {
-				return internals.defaultTheme;
-			},
-
 			updateState(params) {
 				updateState(params);
 			},
@@ -170,25 +163,8 @@ export const createCodeBlockAdapter = (
 				return quickActionsPort.publicPort;
 			},
 
-			get languages() {
-				return internals.languages;
-			},
-
-			get themes() {
-				return internals.themes;
-			},
-
-			get defaultTheme() {
-				return internals.defaultTheme;
-			},
-
 			get canHighlight() {
-				return (
-					internals.getHighlightInfo !== null &&
-					internals.languages.length > 0 &&
-					internals.themes.length > 0 &&
-					internals.defaultTheme !== null
-				);
+				return internals.getHighlightInfo !== null;
 			},
 
 			get canInsert() {

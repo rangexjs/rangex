@@ -54,7 +54,7 @@ export const configureCodeBlock = ({
 
 				configPort.updateState({
 					language: storage.language,
-					theme: storage.theme ?? configPort.defaultTheme,
+					theme: storage.theme,
 				});
 			},
 		});

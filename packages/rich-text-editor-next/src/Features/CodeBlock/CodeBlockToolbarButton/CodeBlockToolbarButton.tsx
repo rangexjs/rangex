@@ -1,15 +1,12 @@
 import { CodeBlock, ReadOnly } from "@rangex/solid";
-import { createMemo, createUniqueId } from "solid-js";
-import { useEditorContext } from "#context";
+import { createMemo } from "solid-js";
+import { useCodeBlockContext, useEditorContext } from "#context";
 import { Icon } from "#ui";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+import { ToolbarButton } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
 	const { codeBlock, readOnly } = useEditorContext();
+	const { defaultLanguage, defaultTheme } = useCodeBlockContext();
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");
@@ -22,46 +19,17 @@ export const CodeBlockToolbarButton = () => {
 		() => !$codeBlock.canWrap() || !!$readOnly?.checked(),
 	);
 
-	const popoverId = createUniqueId();
-
-	const list = createMemo<ToolbarDropdownList>(() =>
-		codeBlock.languages.map(({ id, label }) => ({
-			text: label,
-			button: {
-				onClick: () => {
-					codeBlock.wrap({ language: id, theme: codeBlock.defaultTheme });
-				},
-			},
-		})),
-	);
-
-	const hasLanguages = createMemo(() => list().length > 0);
-
 	const wrap = () => {
-		if (hasLanguages()) {
-			return;
-		}
-
-		codeBlock.wrap({ language: null, theme: null });
+		const language = defaultLanguage ?? null;
+		const theme = defaultTheme ?? null;
+		codeBlock.wrap({ language, theme });
 	};
 
 	return (
 		<span>
-			<ToolbarButton
-				disabled={disabled()}
-				commandfor={hasLanguages() ? popoverId : undefined}
-				command={hasLanguages() ? "toggle-popover" : undefined}
-				hasChevron={hasLanguages()}
-				onClick={wrap}
-			>
+			<ToolbarButton disabled={disabled()} onClick={wrap}>
 				<Icon name="CodeBlock" class="size-4" />
 			</ToolbarButton>
-
-			<ToolbarDropdown
-				id={popoverId}
-				list={list()}
-				class={["[position-area:bottom_center]", { hidden: !hasLanguages() }]}
-			/>
 		</span>
 	);
 };

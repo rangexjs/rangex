@@ -16,16 +16,6 @@ export interface CodeBlockTheme {
 	dark: string;
 }
 
-export interface CodeBlockLanguageOption {
-	id: string;
-	label: string;
-}
-
-export interface CodeBlockThemeOption {
-	id: string;
-	label: string;
-}
-
 export interface GetHighlightInfoParams {
 	lines: string[];
 	language: string;
@@ -88,7 +78,6 @@ export interface UpdateStateParams extends CodeBlockState {}
 export interface CodeBlockConfigPortProps {
 	readonly quickActions: QuickActionsConfigPort;
 	readonly getHighlightInfo: GetHighlightInfoFn | null;
-	readonly defaultTheme: CodeBlockTheme | null;
 
 	updateState(params: UpdateStateParams): void;
 
@@ -112,9 +101,6 @@ export interface WrapParams extends PlacementOption {}
 export interface CodeBlockPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
 
-	readonly languages: CodeBlockLanguageOption[];
-	readonly themes: CodeBlockThemeOption[];
-	readonly defaultTheme: CodeBlockTheme | null;
 	readonly canHighlight: boolean;
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
@@ -144,9 +130,6 @@ export interface CodeBlockPublicPort
 
 export interface CodeBlockInternals {
 	getHighlightInfo: GetHighlightInfoFn | null;
-	defaultTheme: CodeBlockTheme | null;
-	languages: CodeBlockLanguageOption[];
-	themes: CodeBlockThemeOption[];
 	canInsert: boolean;
 	canWrap: boolean;
 	isActive: boolean;
@@ -162,9 +145,6 @@ export interface CodeBlockAdapter {
 
 export interface CodeBlockSettings {
 	getHighlightInfo?: GetHighlightInfoFn;
-	defaultTheme?: CodeBlockTheme;
-	languages?: CodeBlockLanguageOption[];
-	themes?: CodeBlockThemeOption[];
 }
 
 export interface CreateCodeBlockAdapterParams

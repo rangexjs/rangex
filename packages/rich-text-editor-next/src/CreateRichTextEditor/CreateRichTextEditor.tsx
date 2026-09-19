@@ -15,6 +15,7 @@ export const createRichTextEditor = ({
 	storedSnapshot,
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
+	codeBlock = {},
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
@@ -55,6 +56,7 @@ export const createRichTextEditor = ({
 				editor={editor}
 				host={host}
 				floatingContainer={floatingContainer}
+				codeBlock={codeBlock}
 			/>
 		),
 		editorHost,

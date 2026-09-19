@@ -71,19 +71,22 @@ const uploadFile = ({
 const syntaxHighlighter = new SyntaxHighlighterWorker();
 const getHighlightInfo = createSyntaxHighlighter(syntaxHighlighter);
 
-const languages = codeBlockLanguageDefinitions.map(({ id, label }) => ({
-	id,
-	label,
-}));
+const languages = [
+	{ label: "Plain Text", value: null },
+	...codeBlockLanguageDefinitions.map(({ id, label }) => ({
+		label,
+		value: id,
+	})),
+];
 
-const themes = codeBlockThemeDefinitions.map(({ id, label }) => ({
-	id,
-	label,
-}));
+const themes = [
+	{ label: "No Theme", value: null },
+	...codeBlockThemeDefinitions.map(({ id, label }) => ({ label, value: id })),
+];
 
 const defaultTheme = (() => {
-	const light = themes.find(({ id }) => id === "light-plus")?.id;
-	const dark = themes.find(({ id }) => id === "dark-plus")?.id;
+	const light = themes.find(({ value }) => value === "light-plus")?.value;
+	const dark = themes.find(({ value }) => value === "dark-plus")?.value;
 
 	if (!light) {
 		throw new Error("light-plus was not provided.");
@@ -119,7 +122,7 @@ export const createDevelopmentView = () => {
 		EmptyMedia({ uploadFile }),
 		FindReplace({}),
 		Formatting({}),
-		CodeBlock({ getHighlightInfo, languages, themes, defaultTheme }),
+		CodeBlock({ getHighlightInfo }),
 		CommandMenu({}),
 		Image({}),
 		LineHandler({}),
@@ -142,6 +145,7 @@ export const createDevelopmentView = () => {
 		// biome-ignore lint/suspicious/noExplicitAny: Fix later
 		storedSnapshot: storedSnapshot as any,
 		extensions,
+		codeBlock: { languages, themes, defaultTheme },
 	});
 
 	maxViewContainer.append(filledRichTextEditor.editorHost);

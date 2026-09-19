@@ -30,14 +30,13 @@ export const handleCodeBlockOverlayState = ({
 			blockComponent: currentCodeBlock,
 			fallbacks: codeBlockStorageFallbacks,
 		});
-		const theme = storage.theme ?? configPort.defaultTheme;
 
 		codeHighlighter.update({
 			blockComponent: currentCodeBlock,
 			language,
-			theme,
+			theme: storage.theme,
 		});
-		configPort.updateState({ language, theme });
+		configPort.updateState({ language, theme: storage.theme });
 	});
 
 	const unsubscribeThemeChange = configPort.onChangeTheme((theme) => {

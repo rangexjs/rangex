@@ -1,11 +1,12 @@
 import { CodeBlock, FloatingPortal, ReadOnly } from "@rangex/solid";
-import { createSignal, Show } from "solid-js";
-import { useEditorContext } from "#context";
+import { createSignal } from "solid-js";
+import { useCodeBlockContext, useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { CodeBlockHighlight } from "./CodeBlockHighlight";
 
 export const CodeBlockQuickActions = () => {
 	const { codeBlock, readOnly } = useEditorContext();
+	const options = useCodeBlockContext();
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");
@@ -41,13 +42,12 @@ export const CodeBlockQuickActions = () => {
 					<Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />
 				</button>
 
-				<Show when={codeBlock.canHighlight}>
-					<CodeBlockHighlight
-						codeBlock={codeBlock}
-						$codeBlock={$codeBlock}
-						readOnly={$readOnly}
-					/>
-				</Show>
+				<CodeBlockHighlight
+					codeBlock={codeBlock}
+					$codeBlock={$codeBlock}
+					readOnly={$readOnly}
+					options={options}
+				/>
 			</div>
 		</FloatingPortal>
 	);
