@@ -86,6 +86,7 @@ export type {
 	LineHandlerPublicPort,
 	TurnableComponentName,
 	TurnIntoAvailability,
+	TurnIntoPlacementOption,
 } from "#adapters/LineHandler";
 export type {
 	InsertParams as LinkInsertParams,

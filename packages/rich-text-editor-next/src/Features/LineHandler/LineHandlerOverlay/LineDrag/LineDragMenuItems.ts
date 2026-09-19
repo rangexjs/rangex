@@ -2,10 +2,12 @@ import type {
 	LineHandlerPublicPort,
 	TurnIntoAvailability,
 } from "@rangex/editor";
+import type { UIOptions } from "#context";
 import type { MenuItem } from "../_Utilities";
 
 interface CreateTurnIntoItemsParams {
 	lineHandler: LineHandlerPublicPort;
+	uiOptions: UIOptions;
 	turnIntoAvailability: TurnIntoAvailability;
 }
 
@@ -17,6 +19,7 @@ interface CreateTurnIntoItemsParams {
  */
 const createTurnIntoItems = ({
 	lineHandler,
+	uiOptions,
 	turnIntoAvailability,
 }: CreateTurnIntoItemsParams): MenuItem[] => {
 	const items: MenuItem[] = [];
@@ -26,7 +29,7 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "Accordion Item",
 			icon: "CaretCircleRight",
-			onClick: () => lineHandler.turnInto("accordion-item"),
+			onClick: () => lineHandler.turnInto({ name: "accordion-item" }),
 		});
 	}
 
@@ -35,7 +38,7 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "Blockquote",
 			icon: "BlockQuote",
-			onClick: () => lineHandler.turnInto("block-quote"),
+			onClick: () => lineHandler.turnInto({ name: "block-quote" }),
 		});
 	}
 
@@ -44,7 +47,12 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "Codeblock",
 			icon: "CodeBlock",
-			onClick: () => lineHandler.turnInto("code-block"),
+			onClick: () =>
+				lineHandler.turnInto({
+					name: "code-block",
+					language: uiOptions.codeBlock.defaultLanguage ?? null,
+					theme: uiOptions.codeBlock.defaultTheme ?? null,
+				}),
 		});
 	}
 
@@ -53,7 +61,7 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "List",
 			icon: "ListBullets",
-			onClick: () => lineHandler.turnInto("list"),
+			onClick: () => lineHandler.turnInto({ name: "list", localName: "ul" }),
 		});
 	}
 
@@ -62,7 +70,7 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "Todo List",
 			icon: "ListChecks",
-			onClick: () => lineHandler.turnInto("todo-list"),
+			onClick: () => lineHandler.turnInto({ name: "todo-list" }),
 		});
 	}
 
@@ -71,6 +79,7 @@ const createTurnIntoItems = ({
 
 export interface CreateLineDragMenuItemsParams {
 	lineHandler: LineHandlerPublicPort;
+	uiOptions: UIOptions;
 	turnIntoAvailability: TurnIntoAvailability;
 	canRemove: boolean;
 	canDuplicate: boolean;
@@ -79,6 +88,7 @@ export interface CreateLineDragMenuItemsParams {
 
 export const createLineDragMenuItems = ({
 	lineHandler,
+	uiOptions,
 	turnIntoAvailability,
 	canRemove,
 	canDuplicate,
@@ -88,6 +98,7 @@ export const createLineDragMenuItems = ({
 
 	const turnIntoItems = createTurnIntoItems({
 		lineHandler,
+		uiOptions,
 		turnIntoAvailability,
 	});
 

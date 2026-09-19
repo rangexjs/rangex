@@ -181,9 +181,9 @@ export const createLineHandlerAdapter = (
 				}
 			},
 
-			turnInto(name) {
+			turnInto(params) {
 				for (const listener of onTurnIntoListeners) {
-					listener(name);
+					listener(params);
 				}
 			},
 		} satisfies LineHandlerPublicPortProps,

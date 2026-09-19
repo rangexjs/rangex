@@ -4,6 +4,7 @@ import {
 	createContentLine,
 } from "rich-text-area";
 import { componentsName } from "#engine-links";
+import { assertNever } from "#utilities";
 import {
 	createAccordionItem,
 	createBlockQuote,
@@ -17,22 +18,41 @@ import type {
 	HandleTurnIntoParams,
 } from "./HandleTurnInto-types";
 
-const createBlockComponent = ({
-	name,
-	childNodes,
-}: CreateBlockComponentParams): CreateBlockComponentResult => {
-	const blockComponent = {
-		[componentsName.accordionItem]: () =>
-			createAccordionItem({ childNodes }).blockComponentLine,
-		[componentsName.blockQuote]: () => createBlockQuote({ childNodes }),
-		[componentsName.codeBlock]: () =>
-			createCodeBlock({ language: null, theme: null, childNodes }),
-		[componentsName.list]: () =>
-			createList({ localName: "ul", lineType: "multi-line", childNodes }),
-		[componentsName.todoList]: () => createTodoList({ childNodes }),
-	}[name]();
+const createBlockComponent = (
+	params: CreateBlockComponentParams,
+): CreateBlockComponentResult => {
+	const { childNodes } = params;
 
-	return blockComponent;
+	if (params.name === componentsName.accordionItem) {
+		const { blockComponentLine } = createAccordionItem({ childNodes });
+		return blockComponentLine;
+	}
+
+	if (params.name === componentsName.blockQuote) {
+		return createBlockQuote({ childNodes });
+	}
+
+	if (params.name === componentsName.codeBlock) {
+		return createCodeBlock({
+			language: params.language,
+			theme: params.theme,
+			childNodes,
+		});
+	}
+
+	if (params.name === componentsName.list) {
+		return createList({
+			localName: params.localName,
+			lineType: "multi-line",
+			childNodes,
+		});
+	}
+
+	if (params.name === componentsName.todoList) {
+		return createTodoList({ childNodes });
+	}
+
+	return assertNever(params);
 };
 
 /*
@@ -48,7 +68,7 @@ export const handleTurnInto = ({
 }: HandleTurnIntoParams) => {
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = configPort.onTurnInto((turnIntoName) => {
+	const unsubscribe = configPort.onTurnInto((turnIntoParams) => {
 		const currentLine = getCurrentLine();
 
 		if (currentLine?.$$editorRole !== blockComponentLineName) {
@@ -70,7 +90,7 @@ export const handleTurnInto = ({
 			}
 
 			const blockComponent = createBlockComponent({
-				name: turnIntoName,
+				...turnIntoParams,
 				childNodes,
 			});
 

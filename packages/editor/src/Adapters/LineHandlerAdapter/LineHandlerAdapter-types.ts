@@ -10,6 +10,8 @@ import type {
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
+import type { CodeBlockPlacementOption } from "../CodeBlockAdapter";
+import type { ListPlacementOption } from "../ListAdapter";
 
 export type TurnableComponentName = Extract<
 	BlockComponentName,
@@ -17,6 +19,20 @@ export type TurnableComponentName = Extract<
 >;
 
 export type TurnIntoAvailability = Record<TurnableComponentName, boolean>;
+
+export interface TurnIntoPlacementOptions {
+	"accordion-item": object;
+	"block-quote": object;
+	"code-block": CodeBlockPlacementOption;
+	list: ListPlacementOption;
+	"todo-list": object;
+}
+
+export type TurnIntoPlacementOption = {
+	[Name in TurnableComponentName]: {
+		name: Name;
+	} & TurnIntoPlacementOptions[Name];
+}[TurnableComponentName];
 
 export interface LineHandlerState {
 	turnIntoAvailability?: TurnIntoAvailability;
@@ -33,7 +49,7 @@ export type OnCanDuplicateUpdateCallbackFn = (canDuplicate: boolean) => void;
 export type OnCanUnwrapUpdateCallbackFn = (canUnwrap: boolean) => void;
 
 export type OnDragStartCallbackFn = (dragEvent: DragEvent) => void;
-export type OnTurnIntoCallbackFn = (name: TurnableComponentName) => void;
+export type OnTurnIntoCallbackFn = (params: TurnIntoPlacementOption) => void;
 
 export interface UpdateStateParams extends LineHandlerState {}
 
@@ -69,7 +85,7 @@ export interface LineHandlerPublicPortProps {
 	onCanUnwrapUpdate(callback: OnCanUnwrapUpdateCallbackFn): () => void;
 
 	dragStart(dragEvent: DragEvent): void;
-	turnInto(name: TurnableComponentName): void;
+	turnInto(params: TurnIntoPlacementOption): void;
 }
 
 export interface LineHandlerPublicPort

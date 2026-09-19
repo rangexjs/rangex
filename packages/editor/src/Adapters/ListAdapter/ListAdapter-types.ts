@@ -9,15 +9,15 @@ export interface ListState {
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
-export interface PlacementOption {
+export interface ListPlacementOption {
 	localName: ListLocalName;
 }
 
-export interface OnInsertCallbackParams extends PlacementOption {}
+export interface OnInsertCallbackParams extends ListPlacementOption {}
 
 export type OnInsertCallbackFn = (params: OnInsertCallbackParams) => void;
 
-export interface OnWrapCallbackParams extends PlacementOption {}
+export interface OnWrapCallbackParams extends ListPlacementOption {}
 
 export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
 
@@ -32,9 +32,9 @@ export interface ListConfigPortProps {
 
 export interface ListConfigPort extends ListConfigPortProps {}
 
-export interface InsertParams extends PlacementOption {}
+export interface InsertParams extends ListPlacementOption {}
 
-export interface WrapParams extends PlacementOption {}
+export interface WrapParams extends ListPlacementOption {}
 
 export interface ListPublicPortProps {
 	readonly canInsert: boolean;

@@ -1,15 +1,14 @@
 import type { BlockComponentLine, EditorAPI, Line } from "rich-text-area";
 import type {
 	LineHandlerConfigPort,
-	TurnableComponentName,
+	TurnIntoPlacementOption,
 } from "#adapters/LineHandler";
 
 export type GetCurrentLineFn = () => Line | null;
 
-export interface CreateBlockComponentParams {
-	name: TurnableComponentName;
+export type CreateBlockComponentParams = TurnIntoPlacementOption & {
 	childNodes: Line[];
-}
+};
 
 export type CreateBlockComponentResult = BlockComponentLine;
 

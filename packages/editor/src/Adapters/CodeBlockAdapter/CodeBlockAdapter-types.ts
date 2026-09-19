@@ -55,16 +55,16 @@ export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 export type OnLanguageUpdateCallbackFn = (value: string | null) => void;
 export type OnThemeUpdateCallbackFn = (value: CodeBlockTheme | null) => void;
 
-export interface PlacementOption {
+export interface CodeBlockPlacementOption {
 	language: string | null;
 	theme: CodeBlockTheme | null;
 }
 
-export interface OnInsertCallbackParams extends PlacementOption {}
+export interface OnInsertCallbackParams extends CodeBlockPlacementOption {}
 
 export type OnInsertCallbackFn = (params: OnInsertCallbackParams) => void;
 
-export interface OnWrapCallbackParams extends PlacementOption {}
+export interface OnWrapCallbackParams extends CodeBlockPlacementOption {}
 
 export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
 
@@ -94,9 +94,9 @@ export interface CodeBlockConfigPort
 		UnwrapConfigPort,
 		CurrentComponentConfigPort<BlockComponent> {}
 
-export interface InsertParams extends PlacementOption {}
+export interface InsertParams extends CodeBlockPlacementOption {}
 
-export interface WrapParams extends PlacementOption {}
+export interface WrapParams extends CodeBlockPlacementOption {}
 
 export interface CodeBlockPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
