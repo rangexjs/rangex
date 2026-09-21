@@ -1,67 +1,76 @@
-import type { EditorNodeView } from "rich-text-area";
+import type { ElementView, NodeView } from "rich-text-area";
 import {
-	basicTextName,
-	beamTextName,
+	blockComponentAttrName,
 	blockComponentLineName,
 	blockComponentName,
-	blockComponentTextHolderName,
-	blockComponentTextName,
-	contentLineName,
-	detachedContextName,
-	glyphFormatterName,
-	htmlLayoutName,
-	inlineComponentName,
-	inlineComponentTextName,
-	listItemName,
-	listName,
-	mathMLLayoutName,
-	nestedEditableName,
-	oneVisualUnitTextName,
-	rootEditableName,
-	svgLayoutName,
-	tableCellName,
-	tableColGroupName,
-	tableColName,
-	tableName,
-	tableRowName,
-	tableSectionName,
+	mathMLNamespaceURI,
+	svgNamespaceURI,
+	xhtmlNamespaceURI,
 } from "rich-text-area";
-import { assertNever } from "#ports";
 import { getStyleSheetText } from "../Styles";
 import type {
+	AppendShadowRootParams,
 	CreateHTMLFromSnapshotViewParams,
 	CreateHTMLFromSnapshotViewResult,
+	GetChildNamespaceURIParams,
+	GetElementNamespaceURIParams,
 	PendingTasks,
 	StorageMap,
+	ToDOMParams,
 	ToDOMResult,
 } from "./CreateHTMLFromSnapshotView-types";
 import {
-	createBasicTextHTML,
-	createBeamTextHTML,
-	createBlockComponentHTML,
-	createBlockComponentLineHTML,
-	createBlockComponentTextHolderHTML,
-	createBlockComponentTextHTML,
-	createContentLineHTML,
-	createDetachedContextHTML,
-	createGlyphFormatterHTML,
-	createHTMLLayoutHTML,
-	createInlineComponentHTML,
-	createInlineComponentTextHTML,
-	createListHTML,
-	createListItemHTML,
-	createMathMLLayoutHTML,
-	createNestedEditableHTML,
-	createOneVisualUnitTextHTML,
-	createRootEditableHTML,
-	createSVGLayoutHTML,
-	createTableCellHTML,
-	createTableColGroupHTML,
-	createTableColHTML,
-	createTableHTML,
-	createTableRowHTML,
-	createTableSectionHTML,
+	resolveBlockComponent,
+	shouldSkipBlockComponentLine,
 } from "./CreateNodeHTML";
+import { setAttributes } from "./CreateNodeHTML/_Utilities";
+
+const { dataComponentName, dataEditorRole } = blockComponentAttrName;
+
+// The HTML parser switches namespace on `svg` / `math` and switches back to
+// HTML inside these SVG elements. SnapshotView carries no namespace, so the
+// same rules are applied here.
+const svgHTMLIntegrationPointLocalNames = ["foreignObject", "desc", "title"];
+
+const getElementNamespaceURI = ({
+	parentNamespaceURI,
+	localName,
+}: GetElementNamespaceURIParams): string => {
+	if (localName === "svg") {
+		return svgNamespaceURI;
+	}
+
+	if (localName === "math") {
+		return mathMLNamespaceURI;
+	}
+
+	return parentNamespaceURI;
+};
+
+const getChildNamespaceURI = ({
+	namespaceURI,
+	localName,
+}: GetChildNamespaceURIParams): string => {
+	const isSVGIntegrationPoint =
+		namespaceURI === svgNamespaceURI &&
+		svgHTMLIntegrationPointLocalNames.includes(localName);
+
+	if (isSVGIntegrationPoint) {
+		return xhtmlNamespaceURI;
+	}
+
+	return namespaceURI;
+};
+
+const isShadowRootTemplate = (node: NodeView): node is ElementView => {
+	if (node.type !== "element") {
+		return false;
+	}
+
+	const { localName, attributes } = node;
+
+	return localName === "template" && attributes.shadowrootmode !== undefined;
+};
 
 export const createHTMLFromSnapshotView = ({
 	snapshotView,
@@ -69,185 +78,108 @@ export const createHTMLFromSnapshotView = ({
 	const storageMap: StorageMap = new Map();
 	const pendingTasks: PendingTasks = [];
 
-	const toDOM = (node: EditorNodeView): ToDOMResult => {
-		// Text leaf nodes — no children to process
-		if (node.type === beamTextName) {
-			return createBeamTextHTML({ beamTextView: node, storageMap });
+	const appendShadowRoot = ({ host, template }: AppendShadowRootParams) => {
+		const { shadowrootmode, shadowrootserializable } = template.attributes;
+
+		if (shadowrootmode !== "open" && shadowrootmode !== "closed") {
+			throw new Error(`Invalid shadowrootmode: "${shadowrootmode}".`);
 		}
 
-		if (node.type === basicTextName) {
-			return createBasicTextHTML({ basicTextView: node, storageMap });
+		const shadowRoot = host.attachShadow({
+			mode: shadowrootmode,
+			serializable: shadowrootserializable !== undefined,
+		});
+
+		for (const child of template.childNodes) {
+			const childNode = toDOM({
+				node: child,
+				parentNamespaceURI: xhtmlNamespaceURI,
+			});
+
+			if (childNode !== null) {
+				shadowRoot.append(childNode);
+			}
+		}
+	};
+
+	const toDOM = ({ node, parentNamespaceURI }: ToDOMParams): ToDOMResult => {
+		if (node.type === "comment") {
+			return null;
 		}
 
-		if (node.type === oneVisualUnitTextName) {
-			return createOneVisualUnitTextHTML({
-				oneVisualUnitTextView: node,
+		if (node.type === "text") {
+			const text = document.createTextNode(node.data);
+
+			storageMap.set(text, node.customStorage);
+
+			return text;
+		}
+
+		const { localName, attributes, customStorage, childNodes } = node;
+
+		const namespaceURI = getElementNamespaceURI({
+			parentNamespaceURI,
+			localName,
+		});
+
+		const el = document.createElementNS(namespaceURI, localName);
+
+		setAttributes({ element: el, attributes });
+
+		storageMap.set(el, customStorage);
+
+		const childNamespaceURI = getChildNamespaceURI({ namespaceURI, localName });
+
+		for (const child of childNodes) {
+			if (isShadowRootTemplate(child)) {
+				appendShadowRoot({ host: el, template: child });
+
+				continue;
+			}
+
+			const childNode = toDOM({
+				node: child,
+				parentNamespaceURI: childNamespaceURI,
+			});
+
+			if (childNode !== null) {
+				el.append(childNode);
+			}
+		}
+
+		const editorRole = attributes[dataEditorRole];
+
+		if (editorRole === blockComponentLineName) {
+			const shouldSkip = shouldSkipBlockComponentLine({
+				blockComponentLineEl: el,
 				storageMap,
 			});
+
+			if (shouldSkip) {
+				return null;
+			}
 		}
 
-		if (node.type === inlineComponentTextName) {
-			return createInlineComponentTextHTML({
-				inlineComponentTextView: node,
-			});
-		}
+		if (editorRole === blockComponentName) {
+			if (!(el instanceof HTMLElement)) {
+				throw new Error("BlockComponent must produce an HTMLElement.");
+			}
 
-		if (node.type === blockComponentTextName) {
-			return createBlockComponentTextHTML({
-				blockComponentTextView: node,
-			});
-		}
-
-		// Self-contained nodes that manage their own children
-		if (node.type === glyphFormatterName) {
-			return createGlyphFormatterHTML({
-				glyphFormatterView: node,
-				toDOM,
-				storageMap,
-			});
-		}
-
-		if (node.type === detachedContextName) {
-			return createDetachedContextHTML({
-				detachedContextView: node,
-				storageMap,
-			});
-		}
-
-		// Element nodes: resolve children first, then dispatch
-		const childNodes = node.childNodes
-			.map((child) => toDOM(child))
-			.filter((child) => child !== null);
-
-		if (node.type === rootEditableName) {
-			return createRootEditableHTML({
-				rootEditableView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === nestedEditableName) {
-			return createNestedEditableHTML({
-				nestedEditableView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === contentLineName) {
-			return createContentLineHTML({
-				contentLineView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === inlineComponentName) {
-			return createInlineComponentHTML({
-				inlineComponentView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === blockComponentLineName) {
-			return createBlockComponentLineHTML({
-				blockComponentLineView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === blockComponentTextHolderName) {
-			return createBlockComponentTextHolderHTML({
-				blockComponentTextHolderView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === blockComponentName) {
-			return createBlockComponentHTML({
-				blockComponentView: node,
-				childNodes,
+			resolveBlockComponent({
+				blockComponentEl: el,
+				componentName: attributes[dataComponentName],
 				pendingTasks,
 				storageMap,
 			});
 		}
 
-		if (node.type === htmlLayoutName) {
-			return createHTMLLayoutHTML({
-				htmlLayoutView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === svgLayoutName) {
-			return createSVGLayoutHTML({
-				svgLayoutView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === mathMLLayoutName) {
-			return createMathMLLayoutHTML({
-				mathMLLayoutView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === listName) {
-			return createListHTML({ listView: node, childNodes, storageMap });
-		}
-
-		if (node.type === listItemName) {
-			return createListItemHTML({ listItemView: node, childNodes, storageMap });
-		}
-
-		if (node.type === tableName) {
-			return createTableHTML({ tableView: node, childNodes, storageMap });
-		}
-
-		if (node.type === tableSectionName) {
-			return createTableSectionHTML({
-				tableSectionView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === tableRowName) {
-			return createTableRowHTML({ tableRowView: node, childNodes, storageMap });
-		}
-
-		if (node.type === tableCellName) {
-			return createTableCellHTML({
-				tableCellView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === tableColGroupName) {
-			return createTableColGroupHTML({
-				tableColGroupView: node,
-				childNodes,
-				storageMap,
-			});
-		}
-
-		if (node.type === tableColName) {
-			return createTableColHTML({ tableColView: node, childNodes, storageMap });
-		}
-
-		return assertNever(node);
+		return el;
 	};
 
-	const rootElement = toDOM(snapshotView.tree);
+	const rootElement = toDOM({
+		node: snapshotView.tree,
+		parentNamespaceURI: xhtmlNamespaceURI,
+	});
 
 	if (!(rootElement instanceof HTMLElement)) {
 		throw new Error("RootEditable must produce an HTMLElement.");

@@ -98,7 +98,9 @@ const snapshot = getSnapshot(); // EditorSnapshot — a fresh, mutable deep clon
 
 ## SnapshotView
 
-`SnapshotView` is a read-only, plain-object rendering of a `StoredSnapshot`. It is created via `createSnapshotView` (imported from `"rich-text-area"`) and is useful for rendering a content preview without mounting a full editor instance.
+`SnapshotView` is a read-only, plain-object rendering of a `StoredSnapshot`, meant for building the output (HTML/DOM) without mounting an editor instance. It is derived one-way from a `StoredSnapshot`: editor-only properties (e.g. `shouldSelectBeforeRemove`) are dropped, and everything needed to build the DOM (tag names, attributes, children) is added.
+
+It is created via `createSnapshotView` (imported from `"rich-text-area"`):
 
 ```ts
 import { createSnapshotView } from "rich-text-area";
@@ -106,7 +108,7 @@ import { createSnapshotView } from "rich-text-area";
 const { snapshotView } = createSnapshotView({ storedSnapshot });
 
 snapshotView.styles  // string — CSS stylesheet text
-snapshotView.tree    // RootEditableView — plain-object tree
+snapshotView.tree    // ElementView — the root of the view tree
 ```
 
 **`snapshotView.styles`**
@@ -121,61 +123,66 @@ previewContainer.appendChild(styleEl);
 
 **`snapshotView.tree` — the view tree**
 
-A recursive plain-object mirror of the editor tree. Each node in the tree follows one of two shapes:
+A recursive plain-object mirror of the editor tree. Every node is a `NodeView`, which is one of three shapes:
 
-*Element node:*
+*Element:*
 ```ts
 {
-  type: string;               // data-editor-role name (e.g. "content-line", "glyph-formatter")
-  customStorage: any;         // value from $$customStorage on the live node
-  namespaceURI: string;       // e.g. "http://www.w3.org/1999/xhtml" (HTML), "http://www.w3.org/2000/svg" (SVG), "http://www.w3.org/1998/Math/MathML" (MathML)
-  localName: string;          // tag name (e.g. "p", "span", "svg", "math")
+  customStorage: any;                  // value from $$customStorage on the live node
+  type: "element";
+  localName: string;                   // tag name, e.g. "p", "span", "svg", "math"
   attributes: Record<string, string>;
-  childNodes: EditorNodeView[];
+  childNodes: NodeView[];
 }
 ```
 
-Use `document.createElementNS(node.namespaceURI, node.localName)` to recreate any element correctly regardless of namespace.
-
-*Text node:*
+*Text:*
 ```ts
 {
-  type: string;               // e.g. "basic-text", "beam-text"
-  customStorage: any;         // value from $$customStorage on the live node
-  data: string;               // the text content
+  customStorage: any;                  // value from $$customStorage on the live node
+  type: "text";
+  data: string;                        // the text content
 }
 ```
 
-
-**`GlyphFormatterView` — inline tag expansion**
-
-`GlyphFormatterView` differs from other element views. Its `childNodes` are not the raw text children — they are wrapped in intermediate `GlyphFormatterInlineTagView` nodes representing the active inline tags in their serialization order:
-
+*Comment* (only appears inside `DetachedContext` shadow content):
 ```ts
-interface GlyphFormatterInlineTagView {
-  type: "glyph-formatter-inline-tag-view";
-  namespaceURI: "http://www.w3.org/1999/xhtml";
-  localName: GlyphFormatterInlineTag;   // e.g. "strong", "em"
-  childNodes: (GlyphFormatterInlineTagView | BasicTextView | OneVisualUnitTextView)[];
+{
+  customStorage: any;                  // always null, kept for consistency
+  type: "comment";
+  data: string;
 }
 ```
 
-So a `GlyphFormatter` with `inline-tags="strong em"` and text `"hello"` produces:
+To find out which editor node an element came from, read `attributes["data-rx-editor-role"]` (e.g. `"content-line"`, `"block-component"`).
+
+**Namespaces**
+
+Elements carry no `namespaceURI`. When the tree is turned into an HTML string and parsed by the HTML parser (`innerHTML`, `setHTMLUnsafe`, `DOMParser`), the parser assigns namespaces itself: `svg` and `math` switch to SVG and MathML for their descendants, and `foreignObject`, `desc` and `title` inside SVG switch back to HTML. When creating DOM nodes directly with `document.createElementNS`, apply the same rules: use the SVG namespace from an `svg` element down, the MathML namespace from a `math` element down, and the HTML namespace everywhere else (including inside `foreignObject`).
+
+**`GlyphFormatter` — inline tag expansion**
+
+A `GlyphFormatter` element's `childNodes` are not its raw text children. They are wrapped in plain elements for its active inline tags, nested in the order of `glyphFormatterInlineTagsOrder` (the first active tag is outermost). These wrapper elements have an empty `attributes` object and `customStorage: null`. A `GlyphFormatter` with `inline-tags="strong em"` and the text `"hello"` (with `glyphFormatterInlineTagsOrder` starting with `"strong"`, then `"em"`) produces:
 
 ```ts
 {
-  type: "glyph-formatter",
+  customStorage: null,
+  type: "element",
   localName: "span",
-  attributes: { ... },
+  attributes: { "data-rx-editor-role": "glyph-formatter", /* ... */ },
   childNodes: [
     {
-      type: "glyph-formatter-inline-tag-view",
+      customStorage: null,
+      type: "element",
       localName: "strong",
+      attributes: {},
       childNodes: [
         {
-          type: "glyph-formatter-inline-tag-view",
+          customStorage: null,
+          type: "element",
           localName: "em",
-          childNodes: [{ type: "basic-text", data: "hello" }]
+          attributes: {},
+          childNodes: [{ customStorage: null, type: "text", data: "hello" }]
         }
       ]
     }
@@ -183,24 +190,55 @@ So a `GlyphFormatter` with `inline-tags="strong em"` and text `"hello"` produces
 }
 ```
 
-This mirrors what the serialized HTML output would look like (`<strong><em>hello</em></strong>`) and lets a renderer walk the tree without needing to apply the `glyphFormatterInlineTagsOrder` itself.
+This mirrors the serialized HTML (`<strong><em>hello</em></strong>`) and lets a renderer walk the tree without applying `glyphFormatterInlineTagsOrder` itself.
 
-**`DetachedContextView` — shadow DOM content**
+**`DetachedContext` — shadow DOM content**
 
-`DetachedContextView` has `childNodes: NodeView[]` — a generic tree of `{ type: "element" | "text" | "comment", ... }` nodes. This reflects the schema-free shadow DOM content, which has no editor-specific type information.
-
-To render a `DetachedContextView`, call `attachShadow({ mode: "open" })` on the host element and append the materialized `childNodes` into the shadow root — not the element's light DOM. Skip this when `localName` is `"slot"`: a `slot` element can't host a shadow root, and its `childNodes` is always empty:
+A `DetachedContext` element holds schema-free shadow DOM content. Its only child is a `template` element that carries the shadow root settings as attributes, and whose `childNodes` are the shadow content:
 
 ```ts
-const el = document.createElementNS(node.namespaceURI, node.localName);
-// set attributes...
-if (node.localName !== "slot") {
-  const shadowRoot = el.attachShadow({ mode: "open" });
-  for (const child of node.childNodes) {
-    shadowRoot.append(materialize(child)); // materialize: NodeView → Node
-  }
+{
+  customStorage: /* ... */,
+  type: "element",
+  localName: "div",
+  attributes: { "data-rx-editor-role": "detached-context", /* ... */ },
+  childNodes: [
+    {
+      customStorage: null,
+      type: "element",
+      localName: "template",
+      attributes: { shadowrootmode: "open", shadowrootserializable: "" },
+      childNodes: [ /* element, text and comment nodes, all with customStorage: null */ ]
+    }
+  ]
 }
 ```
+
+This is declarative shadow DOM. Written out as an HTML string and parsed with a parser entry point that supports it (`setHTMLUnsafe`, `Document.parseHTMLUnsafe`, or a page load), the browser creates the shadow root itself. `innerHTML` ignores `shadowrootmode`, and appending a `template` element created through the DOM API does nothing, so when building DOM nodes directly, detect a `template` child with a `shadowrootmode` attribute, call `attachShadow` on its parent instead, and append the template's children into the shadow root:
+
+```ts
+for (const child of node.childNodes) {
+  const isShadowRootTemplate =
+    child.type === "element" &&
+    child.localName === "template" &&
+    child.attributes.shadowrootmode !== undefined;
+
+  if (isShadowRootTemplate) {
+    const shadowRoot = el.attachShadow({
+      mode: child.attributes.shadowrootmode as ShadowRootMode,
+      serializable: child.attributes.shadowrootserializable !== undefined,
+    });
+    for (const shadowChild of child.childNodes) {
+      shadowRoot.append(materialize(shadowChild)); // materialize: NodeView → Node
+    }
+    continue;
+  }
+
+  el.append(materialize(child));
+}
+```
+
+A `DetachedContext` whose `localName` is `"slot"` has no children: a `slot` element cannot host a shadow root.
 
 ---
 
