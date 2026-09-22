@@ -21,6 +21,10 @@
 			var(--color-neutral-700)
 		);
 		color: light-dark(var(--color-neutral-900), var(--color-white));
+		background-color: light-dark(
+			var(--color-neutral-100),
+			var(--color-neutral-800)
+		);
 	}
 
 	&[data-checked="true"] {
@@ -33,6 +37,7 @@
 
 		&:active {
 			border-color: color(from var(--color-primary-500) srgb r g b / 0.3);
+			background-color: color(from var(--color-primary-500) srgb r g b / 0.15);
 		}
 	}
 
@@ -66,6 +71,10 @@
 			var(--color-neutral-700)
 		);
 		color: light-dark(var(--color-neutral-900), var(--color-white));
+		background-color: light-dark(
+			var(--color-neutral-100),
+			var(--color-neutral-800)
+		);
 	}
 
 	&[data-checked="true"] {
@@ -78,6 +87,7 @@
 
 		&:active {
 			border-color: color(from var(--color-primary-500) srgb r g b / 0.3);
+			background-color: color(from var(--color-primary-500) srgb r g b / 0.15);
 		}
 	}
 

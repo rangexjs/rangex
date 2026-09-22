@@ -51,7 +51,7 @@ export const SymbolsToolbarButton = () => {
 							{(item) => (
 								<button
 									type="button"
-									class="rounded-xs border border-transparent text-lg transition-colors hover:bg-neutral-100 active:border-neutral-200 dark:active:border-neutral-700 dark:hover:bg-neutral-800"
+									class="rounded-xs border border-transparent text-lg transition-colors hover:bg-neutral-100 active:border-neutral-200 active:bg-neutral-100 dark:active:border-neutral-700 dark:active:bg-neutral-800 dark:hover:bg-neutral-800"
 									popovertarget={popoverId}
 									popovertargetaction="hide"
 									onClick={() => onSymbolClick(item)}

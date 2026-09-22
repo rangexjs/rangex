@@ -58,7 +58,7 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 									commandfor={popoverId}
 									command="hide-popover"
 									class={[
-										"w-full rounded-xs border border-transparent px-2 py-1 text-start font-semibold text-neutral-700 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 dark:text-neutral-200 dark:active:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
+										"w-full rounded-xs border border-transparent px-2 py-1 text-start font-semibold text-neutral-700 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
 										{ hidden: item === props.colorFormat() },
 									]}
 									onClick={() => props.setColorFormat(item)}

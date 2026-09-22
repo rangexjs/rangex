@@ -42,7 +42,7 @@ export const ToolbarDropdown = (props: ToolbarDropdownProps) => {
 									"flex w-full items-center gap-2 whitespace-nowrap rounded-xs border border-transparent px-2 py-1 font-semibold text-xs transition-colors",
 									item().button.class,
 									{
-										"text-neutral-700 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 active:border-neutral-300 active:text-neutral-900 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:text-white dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100":
+										"text-neutral-700 hover:border-neutral-200 hover:bg-neutral-100 hover:text-neutral-800 active:border-neutral-300 active:bg-neutral-100 active:text-neutral-900 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:bg-neutral-800 dark:active:text-white dark:hover:border-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-100":
 											!item().checked,
 										"bg-primary-500/10 text-primary-500 hover:border-primary-500/20 active:border-primary-500/30":
 											!!item().checked,
@@ -59,7 +59,7 @@ export const ToolbarDropdown = (props: ToolbarDropdownProps) => {
 									type="button"
 									commandfor={props.id}
 									command="hide-popover"
-									class="rounded-xs border border-transparent px-2 text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 dark:text-neutral-200 dark:active:border-neutral-600 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+									class="rounded-xs border border-transparent px-2 text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
 									{...item().settings}
 								>
 									<Icon name="Gear" class="size-3" />

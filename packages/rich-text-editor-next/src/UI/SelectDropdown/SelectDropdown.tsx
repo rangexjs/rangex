@@ -37,7 +37,7 @@ export const SelectDropdown = <Option,>(props: SelectDropdownProps<Option>) => {
 				commandfor={popoverId}
 				command="toggle-popover"
 				class={[
-					"flex w-full items-center justify-between gap-2 rounded-md border border-neutral-200 px-2 py-1 font-medium text-neutral-800 text-xs transition-colors hover:bg-neutral-50 active:border-neutral-300 dark:border-neutral-600 dark:text-neutral-100 dark:active:border-neutral-500 dark:hover:bg-neutral-800",
+					"flex w-full items-center justify-between gap-2 rounded-md border border-neutral-200 px-2 py-1 font-medium text-neutral-800 text-xs transition-colors hover:bg-neutral-50 active:border-neutral-300 active:bg-neutral-50 dark:border-neutral-600 dark:text-neutral-100 dark:active:border-neutral-500 dark:active:bg-neutral-800 dark:hover:bg-neutral-800",
 					"[&:has(~:popover-open)]:rounded-b-none [&:has(~:popover-open)]:border-b-neutral-200 [&:has(~:popover-open)]:dark:border-b-neutral-700",
 				]}
 				disabled={props.disabled}
@@ -60,7 +60,7 @@ export const SelectDropdown = <Option,>(props: SelectDropdownProps<Option>) => {
 							commandfor={popoverId}
 							command="hide-popover"
 							class={[
-								"w-full border border-transparent px-2 py-1 text-left font-medium text-neutral-600 text-xs leading-normal transition-colors hover:border-neutral-100 hover:bg-neutral-100 active:border-neutral-200 dark:text-neutral-300 dark:active:border-neutral-500 dark:hover:border-neutral-600 dark:hover:bg-neutral-700",
+								"w-full border border-transparent px-2 py-1 text-left font-medium text-neutral-600 text-xs leading-normal transition-colors hover:border-neutral-100 hover:bg-neutral-100 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-300 dark:active:border-neutral-500 dark:active:bg-neutral-700 dark:hover:border-neutral-600 dark:hover:bg-neutral-700",
 								{ hidden: option.value === props.value },
 							]}
 							onClick={() => {
