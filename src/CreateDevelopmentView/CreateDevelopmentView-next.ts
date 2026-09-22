@@ -28,6 +28,7 @@ import {
 	Video,
 } from "@rangex/rich-text-editor-next";
 import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
+import type { StoredSnapshot } from "rich-text-area";
 import storedSnapshot from "../MockDatabase/Demo-features.json";
 import {
 	codeBlockLanguageDefinitions,
@@ -149,8 +150,7 @@ export const createDevelopmentView = () => {
 	];
 
 	const filledRichTextEditor = createRichTextEditor({
-		// biome-ignore lint/suspicious/noExplicitAny: Fix later
-		storedSnapshot: storedSnapshot as any,
+		storedSnapshot: storedSnapshot as StoredSnapshot,
 		extensions,
 	});
 
