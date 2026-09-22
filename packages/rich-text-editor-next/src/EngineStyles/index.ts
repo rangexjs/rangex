@@ -1,1 +1,2 @@
-export * from "./GetEngineStyles";
+export * from "./GetEditorStyles";
+export * from "./GetViewStyles";

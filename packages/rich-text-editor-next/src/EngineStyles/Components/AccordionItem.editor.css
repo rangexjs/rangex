@@ -1,7 +1,11 @@
-details {
-	& > summary {
-		& > [data-rx-editor-role="nested-editable"] {
-			cursor: text;
+[data-rx-editor-role="block-component-line"] {
+	& :where([data-rx-component-name="accordion-item"]) {
+		details {
+			& > summary {
+				& > [data-rx-editor-role="nested-editable"] {
+					cursor: text;
+				}
+			}
 		}
 	}
 }

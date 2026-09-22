@@ -165,4 +165,6 @@ export {
 	UndoRedo,
 	Video,
 } from "#rangex-editor";
-export type { EngineStyles } from "./Styles";
+export type { SnapshotView } from "#snapshot";
+export { createHTMLView, createSnapshotView } from "#snapshot";
+export { buildViewStyleText } from "./Styles";

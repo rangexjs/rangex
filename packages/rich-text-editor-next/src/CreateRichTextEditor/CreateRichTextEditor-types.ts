@@ -4,6 +4,7 @@ import type { Extension } from "#extensions";
 
 export interface RichTextEditor {
 	readonly editorHost: HTMLDivElement;
+	createStoredSnapshot(): StoredSnapshot;
 	destroy(): void;
 }
 

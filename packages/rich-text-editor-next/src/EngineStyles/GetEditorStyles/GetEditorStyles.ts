@@ -1,4 +1,3 @@
-import type { EngineStyles } from "@rangex/editor";
 import {
 	AttributeStyles,
 	Colors,
@@ -28,12 +27,14 @@ import {
 import {
 	ContentLine,
 	GlyphFormatterEditor,
-	GlyphFormatterRendered,
 	RootEditable,
 	RootEditableEditor,
 } from "../EditorElements";
 
-export const getEngineStyles = (): EngineStyles => {
+/*
+ * Builds the custom style text for the live editor: shared component/base styles plus the editor-only styles.
+ */
+export const getEditorStyles = () => {
 	const baseCommon = AttributeStyles + Colors + EngineGlobalStyles;
 	const baseEditor = EngineGlobalStylesEditor + WidgetElementsEditor;
 
@@ -56,13 +57,9 @@ export const getEngineStyles = (): EngineStyles => {
 
 	const editorElementsCommon = ContentLine + RootEditable;
 	const editorElementsEditor = GlyphFormatterEditor + RootEditableEditor;
-	const editorElementsRendered = GlyphFormatterRendered;
 
 	const common = baseCommon + componentsCommon + editorElementsCommon;
-
 	const editor = baseEditor + componentsEditor + editorElementsEditor;
 
-	const rendered = editorElementsRendered;
-
-	return { common, editor, rendered };
+	return common + editor;
 };

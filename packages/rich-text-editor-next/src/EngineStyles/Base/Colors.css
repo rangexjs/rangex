@@ -1,4 +1,10 @@
-:host {
+[data-rx-editor-role="root-editable"],
+/* 
+	AnchoredElements not supposed to be part of the "common",
+	but we should not duplicate the colors.
+	@mixin could fix this eventually
+*/
+[data-rx-widget-role="anchored-elements"] {
 	--color-primary-50: #effaff;
 	--color-primary-100: #def4ff;
 	--color-primary-200: #bfeaff;

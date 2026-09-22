@@ -5,16 +5,16 @@ import type {
 	TextView,
 } from "rich-text-area";
 
-export type StorageMap = Record<string, unknown>;
+export type Storage = Record<string, unknown>;
 
 export interface HTMLView {
 	styles: string;
-	tree: string;
-	storageMap: StorageMap;
+	html: string;
+	storage: Storage;
 }
 
 export interface CreateElementParams {
-	storageMap: StorageMap;
+	storage: Storage;
 	elementView: ElementView;
 	childNodes: string;
 }
@@ -24,7 +24,7 @@ export interface CreateTextParams {
 }
 
 export interface CreateHTMLTreeParams {
-	storageMap: StorageMap;
+	storage: Storage;
 	nodeView: NodeView;
 }
 
@@ -32,6 +32,7 @@ export type CreateHTMLTreeResult = string;
 
 export interface CreateHTMLViewParams {
 	storedSnapshot: StoredSnapshot;
+	styles: string;
 }
 
 export interface CreateHTMLViewResult extends HTMLView {}

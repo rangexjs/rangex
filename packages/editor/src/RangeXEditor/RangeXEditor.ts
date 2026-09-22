@@ -1,5 +1,5 @@
 import { AdapterBus } from "#adapters";
-import { buildEngineStyleText, getHostStyleText } from "../Styles";
+import { buildEditorStyleText, getHostStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
 import type {
 	CreateEditorParams,
@@ -7,6 +7,7 @@ import type {
 	RangeXEditor,
 	RegisterAdapterResult,
 } from "./RangeXEditor-types";
+import { Snapshot } from "./Snapshot";
 
 export const createEditor = ({
 	storedSnapshot,
@@ -15,7 +16,7 @@ export const createEditor = ({
 }: CreateEditorParams): CreateEditorResult => {
 	const { editorAPI } = createCore({ storedSnapshot });
 
-	const { editorStyleText } = buildEngineStyleText(styles);
+	const editorStyleText = buildEditorStyleText(styles);
 
 	editorAPI.replaceCustomStyles(editorStyleText);
 
@@ -23,7 +24,13 @@ export const createEditor = ({
 
 	const cleanupList = new Set<RegisterAdapterResult>();
 
+	const snapshot = new Snapshot({ editorAPI });
+
 	const editor: RangeXEditor = {
+		get snapshot() {
+			return snapshot;
+		},
+
 		destroy() {
 			for (const cleanup of cleanupList) {
 				cleanup();

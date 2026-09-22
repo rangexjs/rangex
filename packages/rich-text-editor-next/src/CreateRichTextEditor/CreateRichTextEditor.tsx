@@ -10,7 +10,7 @@ import type {
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
 import "../ComponentStyles/global.css";
-import { getEngineStyles } from "../EngineStyles";
+import { getEditorStyles } from "../EngineStyles";
 
 export const createRichTextEditor = ({
 	storedSnapshot,
@@ -19,7 +19,7 @@ export const createRichTextEditor = ({
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
-	const styles = getEngineStyles();
+	const styles = getEditorStyles();
 
 	const { editor, host, floatingContainer, hostStyles } = createEditor({
 		storedSnapshot,
@@ -70,6 +70,10 @@ export const createRichTextEditor = ({
 	const richTextEditor: RichTextEditor = {
 		get editorHost() {
 			return editorHost;
+		},
+
+		createStoredSnapshot() {
+			return editor.snapshot.createStored();
 		},
 
 		destroy() {

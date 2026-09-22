@@ -58,6 +58,13 @@
 			},
 			"default": "./src/EngineLinks/index"
 		},
+		"#snapshot": {
+			"types": {
+				"development": "./src/Snapshot/index.ts",
+				"production": "./dist/Snapshot/index.d.ts"
+			},
+			"default": "./src/Snapshot/index"
+		},
 		"#features": {
 			"types": {
 				"development": "./src/Features/index.ts",

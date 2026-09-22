@@ -1,5 +1,6 @@
 import { createSnapshotView } from "rich-text-area";
 import { assertNever } from "#utilities";
+import { buildViewStyleText } from "../../Styles";
 import type {
 	CreateElementParams,
 	CreateHTMLTreeParams,
@@ -7,7 +8,7 @@ import type {
 	CreateHTMLViewParams,
 	CreateHTMLViewResult,
 	CreateTextParams,
-	StorageMap,
+	Storage,
 } from "./CreateHTMLView-types";
 
 export const storageId = "data-storage-id";
@@ -56,14 +57,14 @@ const createText = ({ textView }: CreateTextParams) => {
 };
 
 const createElement = ({
-	storageMap,
+	storage,
 	elementView,
 	childNodes,
 }: CreateElementParams) => {
 	const { customStorage, localName, attributes } = elementView;
 
 	const id = createId();
-	storageMap[id] = customStorage;
+	storage[id] = customStorage;
 
 	const attrs = { ...attributes, [storageId]: id };
 
@@ -81,7 +82,7 @@ const createElement = ({
 };
 
 const createHTMLTree = ({
-	storageMap,
+	storage,
 	nodeView,
 }: CreateHTMLTreeParams): CreateHTMLTreeResult => {
 	if (nodeView.type === "text") {
@@ -94,26 +95,30 @@ const createHTMLTree = ({
 
 	if (nodeView.type === "element") {
 		const childNodes = nodeView.childNodes
-			.map((childView) => createHTMLTree({ storageMap, nodeView: childView }))
+			.map((childView) => createHTMLTree({ storage, nodeView: childView }))
 			.join("");
 
-		return createElement({ storageMap, elementView: nodeView, childNodes });
+		return createElement({ storage, elementView: nodeView, childNodes });
 	}
 
 	return assertNever(nodeView);
 };
 
 /*
- * Converts a stored snapshot into an HTML string tree plus the styles it needs, without touching the DOM so it can
+ * Converts a stored snapshot into an HTML string plus the styles it needs, without touching the DOM so it can
  * run on the server.
  */
 export const createHTMLView = ({
 	storedSnapshot,
+	styles,
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
 	const { snapshotView } = createSnapshotView({ storedSnapshot });
 
-	const storageMap: StorageMap = {};
-	const tree = createHTMLTree({ storageMap, nodeView: snapshotView.tree });
+	const storage: Storage = {};
+	const html = createHTMLTree({ storage, nodeView: snapshotView.tree });
 
-	return { styles: snapshotView.styles, tree, storageMap };
+	const viewStyleText = buildViewStyleText(styles);
+	const viewStyles = snapshotView.styles + viewStyleText;
+
+	return { styles: viewStyles, html, storage };
 };
