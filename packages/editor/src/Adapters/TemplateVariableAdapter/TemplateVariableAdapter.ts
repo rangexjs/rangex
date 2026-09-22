@@ -1,5 +1,9 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort, createUnwrapPort } from "../_Utilities";
+import {
+	createCaretMenuPort,
+	createEmitter,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	CreateTemplateVariableAdapterParams,
 	CreateTemplateVariableAdapterResult,
@@ -42,16 +46,15 @@ export const createTemplateVariableAdapter = (
 	};
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onOptionsUpdateListeners: Set<OnOptionsUpdateCallbackFn> = new Set();
-	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
-		new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	const optionsUpdateEmitter = createEmitter<OnOptionsUpdateCallbackFn>();
+	const filteredItemsUpdateEmitter =
+		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onOptionsListeners: Set<OnOptionsCallbackFn> = new Set();
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const optionsEmitter = createEmitter<OnOptionsCallbackFn>();
+	const selectEmitter = createEmitter<OnSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
@@ -61,26 +64,20 @@ export const createTemplateVariableAdapter = (
 			? ALL_ITEMS.filter((item) => item.label.toLowerCase().includes(q))
 			: ALL_ITEMS;
 
-		for (const listener of onFilteredItemsUpdateListeners) {
-			listener(internals.filteredItems);
-		}
+		filteredItemsUpdateEmitter.emit(internals.filteredItems);
 	};
 
 	const updateState = ({ canInsert, options, query }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
 		if (options !== undefined) {
 			internals.options = options;
 
-			for (const listener of onOptionsUpdateListeners) {
-				listener(internals.options);
-			}
+			optionsUpdateEmitter.emit(internals.options);
 		}
 
 		if (query !== undefined) {
@@ -107,18 +104,15 @@ export const createTemplateVariableAdapter = (
 			},
 
 			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
+				return insertEmitter.subscribe(callback);
 			},
 
 			onOptions(callback) {
-				onOptionsListeners.add(callback);
-				return () => onOptionsListeners.delete(callback);
+				return optionsEmitter.subscribe(callback);
 			},
 
 			onSelect(callback) {
-				onSelectListeners.add(callback);
-				return () => onSelectListeners.delete(callback);
+				return selectEmitter.subscribe(callback);
 			},
 		} satisfies TemplateVariableConfigPortProps,
 	);
@@ -143,36 +137,27 @@ export const createTemplateVariableAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
+				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onOptionsUpdate(callback) {
-				onOptionsUpdateListeners.add(callback);
-				return () => onOptionsUpdateListeners.delete(callback);
+				return optionsUpdateEmitter.subscribe(callback);
 			},
 
 			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
+				return filteredItemsUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params: InsertParams) {
-				for (const listener of onInsertListeners) {
-					listener(params);
-				}
+				insertEmitter.emit(params);
 			},
 
 			changeOptions(options) {
-				for (const listener of onOptionsListeners) {
-					listener(options);
-				}
+				optionsEmitter.emit(options);
 			},
 
 			select(item: SuggestionItem) {
-				for (const listener of onSelectListeners) {
-					listener(item);
-				}
+				selectEmitter.emit(item);
 			},
 		} satisfies TemplateVariablePublicPortProps,
 	);

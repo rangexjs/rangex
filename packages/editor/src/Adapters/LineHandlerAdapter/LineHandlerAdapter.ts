@@ -2,6 +2,7 @@ import { componentsName } from "#engine-links";
 import { extendObjectProperties } from "#utilities";
 import {
 	createDuplicatePort,
+	createEmitter,
 	createInsertRootLinePort,
 	createRemovePort,
 	createUnwrapPort,
@@ -46,18 +47,16 @@ export const createLineHandlerAdapter = (
 	};
 
 	// StateListeners
-	const onTurnIntoAvailabilityUpdateListeners: Set<OnTurnIntoAvailabilityUpdateCallbackFn> =
-		new Set();
-	const onCanRemoveUpdateListeners: Set<OnCanRemoveUpdateCallbackFn> =
-		new Set();
-	const onCanDuplicateUpdateListeners: Set<OnCanDuplicateUpdateCallbackFn> =
-		new Set();
-	const onCanUnwrapUpdateListeners: Set<OnCanUnwrapUpdateCallbackFn> =
-		new Set();
+	const turnIntoAvailabilityUpdateEmitter =
+		createEmitter<OnTurnIntoAvailabilityUpdateCallbackFn>();
+	const canRemoveUpdateEmitter = createEmitter<OnCanRemoveUpdateCallbackFn>();
+	const canDuplicateUpdateEmitter =
+		createEmitter<OnCanDuplicateUpdateCallbackFn>();
+	const canUnwrapUpdateEmitter = createEmitter<OnCanUnwrapUpdateCallbackFn>();
 
 	// CommandListeners
-	const onDragStartListeners: Set<OnDragStartCallbackFn> = new Set();
-	const onTurnIntoListeners: Set<OnTurnIntoCallbackFn> = new Set();
+	const dragStartEmitter = createEmitter<OnDragStartCallbackFn>();
+	const turnIntoEmitter = createEmitter<OnTurnIntoCallbackFn>();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
@@ -73,33 +72,25 @@ export const createLineHandlerAdapter = (
 		if (turnIntoAvailability !== undefined) {
 			internals.turnIntoAvailability = turnIntoAvailability;
 
-			for (const listener of onTurnIntoAvailabilityUpdateListeners) {
-				listener(internals.turnIntoAvailability);
-			}
+			turnIntoAvailabilityUpdateEmitter.emit(internals.turnIntoAvailability);
 		}
 
 		if (canRemove !== undefined) {
 			internals.canRemove = canRemove;
 
-			for (const listener of onCanRemoveUpdateListeners) {
-				listener(internals.canRemove);
-			}
+			canRemoveUpdateEmitter.emit(internals.canRemove);
 		}
 
 		if (canDuplicate !== undefined) {
 			internals.canDuplicate = canDuplicate;
 
-			for (const listener of onCanDuplicateUpdateListeners) {
-				listener(internals.canDuplicate);
-			}
+			canDuplicateUpdateEmitter.emit(internals.canDuplicate);
 		}
 
 		if (canUnwrap !== undefined) {
 			internals.canUnwrap = canUnwrap;
 
-			for (const listener of onCanUnwrapUpdateListeners) {
-				listener(internals.canUnwrap);
-			}
+			canUnwrapUpdateEmitter.emit(internals.canUnwrap);
 		}
 	};
 
@@ -118,13 +109,11 @@ export const createLineHandlerAdapter = (
 			},
 
 			onDragStart(callback) {
-				onDragStartListeners.add(callback);
-				return () => onDragStartListeners.delete(callback);
+				return dragStartEmitter.subscribe(callback);
 			},
 
 			onTurnInto(callback) {
-				onTurnIntoListeners.add(callback);
-				return () => onTurnIntoListeners.delete(callback);
+				return turnIntoEmitter.subscribe(callback);
 			},
 		} satisfies LineHandlerConfigPortProps,
 	);
@@ -156,35 +145,27 @@ export const createLineHandlerAdapter = (
 			},
 
 			onTurnIntoAvailabilityUpdate(callback) {
-				onTurnIntoAvailabilityUpdateListeners.add(callback);
-				return () => onTurnIntoAvailabilityUpdateListeners.delete(callback);
+				return turnIntoAvailabilityUpdateEmitter.subscribe(callback);
 			},
 
 			onCanRemoveUpdate(callback) {
-				onCanRemoveUpdateListeners.add(callback);
-				return () => onCanRemoveUpdateListeners.delete(callback);
+				return canRemoveUpdateEmitter.subscribe(callback);
 			},
 
 			onCanDuplicateUpdate(callback) {
-				onCanDuplicateUpdateListeners.add(callback);
-				return () => onCanDuplicateUpdateListeners.delete(callback);
+				return canDuplicateUpdateEmitter.subscribe(callback);
 			},
 
 			onCanUnwrapUpdate(callback) {
-				onCanUnwrapUpdateListeners.add(callback);
-				return () => onCanUnwrapUpdateListeners.delete(callback);
+				return canUnwrapUpdateEmitter.subscribe(callback);
 			},
 
 			dragStart(dragEvent) {
-				for (const listener of onDragStartListeners) {
-					listener(dragEvent);
-				}
+				dragStartEmitter.emit(dragEvent);
 			},
 
 			turnInto(params) {
-				for (const listener of onTurnIntoListeners) {
-					listener(params);
-				}
+				turnIntoEmitter.emit(params);
 			},
 		} satisfies LineHandlerPublicPortProps,
 	);

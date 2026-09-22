@@ -1,5 +1,9 @@
 import { extendObjectProperties } from "#utilities";
-import { createRemovePort, createUnwrapPort } from "../_Utilities";
+import {
+	createEmitter,
+	createRemovePort,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	AccordionItemConfigPort,
 	AccordionItemConfigPortProps,
@@ -29,14 +33,13 @@ export const createAccordionItemAdapter = (
 	};
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
-	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
+	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const wrapEmitter = createEmitter<OnWrapCallbackFn>();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
@@ -45,25 +48,19 @@ export const createAccordionItemAdapter = (
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
 		if (canWrap !== undefined) {
 			internals.canWrap = canWrap;
 
-			for (const listener of onCanWrapUpdateListeners) {
-				listener(internals.canWrap);
-			}
+			canWrapUpdateEmitter.emit(internals.canWrap);
 		}
 
 		if (isActive !== undefined) {
 			internals.isActive = isActive;
 
-			for (const listener of onIsActiveUpdateListeners) {
-				listener(internals.isActive);
-			}
+			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 	};
 
@@ -76,13 +73,11 @@ export const createAccordionItemAdapter = (
 			},
 
 			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
+				return insertEmitter.subscribe(callback);
 			},
 
 			onWrap(callback) {
-				onWrapListeners.add(callback);
-				return () => onWrapListeners.delete(callback);
+				return wrapEmitter.subscribe(callback);
 			},
 		} satisfies AccordionItemConfigPortProps,
 	);
@@ -104,30 +99,23 @@ export const createAccordionItemAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
+				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				onCanWrapUpdateListeners.add(callback);
-				return () => onCanWrapUpdateListeners.delete(callback);
+				return canWrapUpdateEmitter.subscribe(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				onIsActiveUpdateListeners.add(callback);
-				return () => onIsActiveUpdateListeners.delete(callback);
+				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			insert() {
-				for (const listener of onInsertListeners) {
-					listener();
-				}
+				insertEmitter.emit();
 			},
 
 			wrap() {
-				for (const listener of onWrapListeners) {
-					listener();
-				}
+				wrapEmitter.emit();
 			},
 		} satisfies AccordionItemPublicPortProps,
 	);

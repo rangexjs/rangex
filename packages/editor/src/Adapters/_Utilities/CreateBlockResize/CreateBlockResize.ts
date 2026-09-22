@@ -1,3 +1,4 @@
+import { createEmitter } from "../CreateEmitter";
 import type {
 	BlockResize,
 	CreateBlockResizeParams,
@@ -5,10 +6,14 @@ import type {
 	HandleParams,
 	ResizeEndFn,
 	ResizeMoveFn,
-	ResizeMoveParams,
 } from "./CreateBlockResize-types";
 
-const createHandle = ({ side, xPos, resizeMove, resizeEnd }: HandleParams) => {
+const createHandle = ({
+	side,
+	xPos,
+	resizeMoveEmitter,
+	resizeEndEmitter,
+}: HandleParams) => {
 	const handle = document.createElement("span");
 	handle.style[side] = `${xPos}px`;
 
@@ -36,7 +41,7 @@ const createHandle = ({ side, xPos, resizeMove, resizeEnd }: HandleParams) => {
 		const deltaSign = { left: -1, right: 1 }[side];
 		const deltaPx = deltaSign * rawDeltaPx;
 
-		resizeMove({ deltaPx, side });
+		resizeMoveEmitter.emit({ deltaPx, side });
 	};
 
 	const onPointerUp = (event: PointerEvent) => {
@@ -49,7 +54,7 @@ const createHandle = ({ side, xPos, resizeMove, resizeEnd }: HandleParams) => {
 		}
 
 		handle.releasePointerCapture(event.pointerId);
-		resizeEnd();
+		resizeEndEmitter.emit();
 	};
 
 	const onPointerCancel = (event: PointerEvent) => {
@@ -61,7 +66,7 @@ const createHandle = ({ side, xPos, resizeMove, resizeEnd }: HandleParams) => {
 			handle.releasePointerCapture(event.pointerId);
 		}
 
-		resizeEnd();
+		resizeEndEmitter.emit();
 	};
 
 	handle.addEventListener("pointerdown", onPointerDown);
@@ -76,20 +81,8 @@ export const createBlockResize = ({
 	floatingContainer,
 	xPos,
 }: CreateBlockResizeParams): CreateBlockResizeResult => {
-	const onResizeMoveListeners: Set<ResizeMoveFn> = new Set();
-	const onResizeEndListeners: Set<ResizeEndFn> = new Set();
-
-	const resizeMove = (params: ResizeMoveParams) => {
-		for (const listener of onResizeMoveListeners) {
-			listener(params);
-		}
-	};
-
-	const resizeEnd = () => {
-		for (const listener of onResizeEndListeners) {
-			listener();
-		}
-	};
+	const resizeMoveEmitter = createEmitter<ResizeMoveFn>();
+	const resizeEndEmitter = createEmitter<ResizeEndFn>();
 
 	const container = document.createElement("div");
 	container.classList.add("block-resizer");
@@ -97,14 +90,14 @@ export const createBlockResize = ({
 	const leftHandle = createHandle({
 		side: "left",
 		xPos,
-		resizeMove,
-		resizeEnd,
+		resizeMoveEmitter,
+		resizeEndEmitter,
 	});
 	const rightHandle = createHandle({
 		side: "right",
 		xPos,
-		resizeMove,
-		resizeEnd,
+		resizeMoveEmitter,
+		resizeEndEmitter,
 	});
 
 	container.append(leftHandle, rightHandle);
@@ -117,13 +110,11 @@ export const createBlockResize = ({
 		},
 
 		onResizeMove: (callback) => {
-			onResizeMoveListeners.add(callback);
-			return () => onResizeMoveListeners.delete(callback);
+			return resizeMoveEmitter.subscribe(callback);
 		},
 
 		onResizeEnd: (callback) => {
-			onResizeEndListeners.add(callback);
-			return () => onResizeEndListeners.delete(callback);
+			return resizeEndEmitter.subscribe(callback);
 		},
 	};
 

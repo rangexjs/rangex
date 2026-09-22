@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CaptionConfigPort,
 	CaptionInternals,
@@ -17,16 +18,16 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 	};
 
 	// StateListeners
-	const onCaptionEnabledUpdateListeners: Set<OnCaptionEnabledUpdateCallbackFn> =
-		new Set();
-	const onCaptionPositionUpdateListeners: Set<OnCaptionPositionUpdateCallbackFn> =
-		new Set();
+	const captionEnabledUpdateEmitter =
+		createEmitter<OnCaptionEnabledUpdateCallbackFn>();
+	const captionPositionUpdateEmitter =
+		createEmitter<OnCaptionPositionUpdateCallbackFn>();
 
 	// CommandListeners
-	const onChangeCaptionEnabledListeners: Set<OnChangeCaptionEnabledCallbackFn> =
-		new Set();
-	const onChangeCaptionPositionListeners: Set<OnChangeCaptionPositionCallbackFn> =
-		new Set();
+	const changeCaptionEnabledEmitter =
+		createEmitter<OnChangeCaptionEnabledCallbackFn>();
+	const changeCaptionPositionEmitter =
+		createEmitter<OnChangeCaptionPositionCallbackFn>();
 
 	const updateState = ({
 		captionEnabled,
@@ -35,17 +36,13 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 		if (captionEnabled !== undefined) {
 			internals.captionEnabled = captionEnabled;
 
-			for (const listener of onCaptionEnabledUpdateListeners) {
-				listener(internals.captionEnabled);
-			}
+			captionEnabledUpdateEmitter.emit(internals.captionEnabled);
 		}
 
 		if (captionPosition !== undefined) {
 			internals.captionPosition = captionPosition;
 
-			for (const listener of onCaptionPositionUpdateListeners) {
-				listener(internals.captionPosition);
-			}
+			captionPositionUpdateEmitter.emit(internals.captionPosition);
 		}
 	};
 
@@ -63,13 +60,11 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 		},
 
 		onChangeCaptionEnabled(callback) {
-			onChangeCaptionEnabledListeners.add(callback);
-			return () => onChangeCaptionEnabledListeners.delete(callback);
+			return changeCaptionEnabledEmitter.subscribe(callback);
 		},
 
 		onChangeCaptionPosition(callback) {
-			onChangeCaptionPositionListeners.add(callback);
-			return () => onChangeCaptionPositionListeners.delete(callback);
+			return changeCaptionPositionEmitter.subscribe(callback);
 		},
 	};
 
@@ -83,25 +78,19 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 		},
 
 		onCaptionEnabledUpdate(callback) {
-			onCaptionEnabledUpdateListeners.add(callback);
-			return () => onCaptionEnabledUpdateListeners.delete(callback);
+			return captionEnabledUpdateEmitter.subscribe(callback);
 		},
 
 		onCaptionPositionUpdate(callback) {
-			onCaptionPositionUpdateListeners.add(callback);
-			return () => onCaptionPositionUpdateListeners.delete(callback);
+			return captionPositionUpdateEmitter.subscribe(callback);
 		},
 
 		changeCaptionEnabled(enabled) {
-			for (const listener of onChangeCaptionEnabledListeners) {
-				listener(enabled);
-			}
+			changeCaptionEnabledEmitter.emit(enabled);
 		},
 
 		changeCaptionPosition(position) {
-			for (const listener of onChangeCaptionPositionListeners) {
-				listener(position);
-			}
+			changeCaptionPositionEmitter.emit(position);
 		},
 	};
 

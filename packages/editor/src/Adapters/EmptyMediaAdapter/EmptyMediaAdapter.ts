@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createEmitter } from "../_Utilities";
 import type {
 	CreateEmptyMediaAdapterParams,
 	CreateEmptyMediaAdapterResult,
@@ -33,12 +34,11 @@ export const createEmptyMediaAdapter = (
 	const disposes: Map<HTMLDivElement, () => void> = new Map();
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onResolveListeners: Set<OnResolveCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const resolveEmitter = createEmitter<OnResolveCallbackFn>();
 
 	const getElementState = (element: HTMLDivElement): ElementState => {
 		const state = elements.get(element);
@@ -54,9 +54,7 @@ export const createEmptyMediaAdapter = (
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 	};
 
@@ -69,9 +67,7 @@ export const createEmptyMediaAdapter = (
 		if (uploadState !== undefined) {
 			state.uploadState = uploadState;
 
-			for (const listener of state.uploadStateListeners) {
-				listener(state.uploadState);
-			}
+			state.uploadStateEmitter.emit(state.uploadState);
 		}
 	};
 
@@ -85,7 +81,7 @@ export const createEmptyMediaAdapter = (
 
 			elements.set(container, {
 				uploadState: { status: "idle" },
-				uploadStateListeners: new Set(),
+				uploadStateEmitter: createEmitter(),
 			});
 
 			const dispose = internals.registerSlottedElement?.(container);
@@ -121,8 +117,7 @@ export const createEmptyMediaAdapter = (
 		},
 
 		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
+			return insertEmitter.subscribe(callback);
 		},
 
 		onSwap(callback) {
@@ -131,8 +126,7 @@ export const createEmptyMediaAdapter = (
 		},
 
 		onResolve(callback) {
-			onResolveListeners.add(callback);
-			return () => onResolveListeners.delete(callback);
+			return resolveEmitter.subscribe(callback);
 		},
 
 		emitMediaResolve(params) {
@@ -161,8 +155,7 @@ export const createEmptyMediaAdapter = (
 		},
 
 		onCanInsertUpdate(callback) {
-			onCanInsertUpdateListeners.add(callback);
-			return () => onCanInsertUpdateListeners.delete(callback);
+			return canInsertUpdateEmitter.subscribe(callback);
 		},
 
 		getUploadState(element) {
@@ -173,20 +166,15 @@ export const createEmptyMediaAdapter = (
 
 		onUploadStateUpdate(element, callback) {
 			const state = getElementState(element);
-			state.uploadStateListeners.add(callback);
-			return () => state.uploadStateListeners.delete(callback);
+			return state.uploadStateEmitter.subscribe(callback);
 		},
 
 		insert() {
-			for (const listener of onInsertListeners) {
-				listener();
-			}
+			insertEmitter.emit();
 		},
 
 		resolve(params) {
-			for (const listener of onResolveListeners) {
-				listener(params);
-			}
+			resolveEmitter.emit(params);
 		},
 	} satisfies EmptyMediaPublicPortProps);
 

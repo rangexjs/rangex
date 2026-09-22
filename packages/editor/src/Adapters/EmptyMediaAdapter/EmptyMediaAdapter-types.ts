@@ -1,5 +1,6 @@
 import type {
 	CreateAdapterParams,
+	Emitter,
 	MediaResolveCallbackParams,
 	MediaType,
 } from "../_Utilities";
@@ -50,7 +51,7 @@ export type UpdateUploadStateCallbackFn = (value: UploadState) => void;
 
 export interface ElementState {
 	uploadState: UploadState;
-	uploadStateListeners: Set<UpdateUploadStateCallbackFn>;
+	uploadStateEmitter: Emitter<UpdateUploadStateCallbackFn>;
 }
 
 export interface UpdateElementStateParams {

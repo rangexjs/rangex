@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignInternals,
@@ -14,18 +15,16 @@ export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
 	};
 
 	// StateListeners
-	const onAlignUpdateListeners: Set<OnAlignUpdateCallbackFn> = new Set();
+	const alignUpdateEmitter = createEmitter<OnAlignUpdateCallbackFn>();
 
 	// CommandListeners
-	const onChangeAlignListeners: Set<OnChangeAlignCallbackFn> = new Set();
+	const changeAlignEmitter = createEmitter<OnChangeAlignCallbackFn>();
 
 	const updateState = ({ align }: UpdateStateParams) => {
 		if (align !== undefined) {
 			internals.align = align;
 
-			for (const listener of onAlignUpdateListeners) {
-				listener(internals.align);
-			}
+			alignUpdateEmitter.emit(internals.align);
 		}
 	};
 
@@ -35,8 +34,7 @@ export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
 		},
 
 		onChangeAlign(callback) {
-			onChangeAlignListeners.add(callback);
-			return () => onChangeAlignListeners.delete(callback);
+			return changeAlignEmitter.subscribe(callback);
 		},
 	};
 
@@ -46,14 +44,11 @@ export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
 		},
 
 		onAlignUpdate(callback) {
-			onAlignUpdateListeners.add(callback);
-			return () => onAlignUpdateListeners.delete(callback);
+			return alignUpdateEmitter.subscribe(callback);
 		},
 
 		changeAlign(align) {
-			for (const listener of onChangeAlignListeners) {
-				listener(align);
-			}
+			changeAlignEmitter.emit(align);
 		},
 	};
 

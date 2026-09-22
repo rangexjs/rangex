@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort } from "../_Utilities";
+import { createCaretMenuPort, createEmitter } from "../_Utilities";
 import { defaultEmojiItems } from "./EmojiAdapter-default";
 import type {
 	CreateEmojiAdapterParams,
@@ -31,11 +31,11 @@ export const createEmojiAdapter = (
 	};
 
 	// StateListeners
-	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
-		new Set();
+	const filteredItemsUpdateEmitter =
+		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
+	const selectEmitter = createEmitter<OnSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
@@ -47,9 +47,7 @@ export const createEmojiAdapter = (
 
 		internals.filteredItems = matches.slice(0, MAX_RESULTS);
 
-		for (const listener of onFilteredItemsUpdateListeners) {
-			listener(internals.filteredItems);
-		}
+		filteredItemsUpdateEmitter.emit(internals.filteredItems);
 	};
 
 	const updateState = ({ query }: UpdateStateParams) => {
@@ -73,8 +71,7 @@ export const createEmojiAdapter = (
 		},
 
 		onSelect(callback) {
-			onSelectListeners.add(callback);
-			return () => onSelectListeners.delete(callback);
+			return selectEmitter.subscribe(callback);
 		},
 
 		findByName(name) {
@@ -92,14 +89,11 @@ export const createEmojiAdapter = (
 		},
 
 		onFilteredItemsUpdate(callback) {
-			onFilteredItemsUpdateListeners.add(callback);
-			return () => onFilteredItemsUpdateListeners.delete(callback);
+			return filteredItemsUpdateEmitter.subscribe(callback);
 		},
 
 		select(item: SuggestionItem) {
-			for (const listener of onSelectListeners) {
-				listener(item);
-			}
+			selectEmitter.emit(item);
 		},
 	} satisfies EmojiPublicPortProps);
 

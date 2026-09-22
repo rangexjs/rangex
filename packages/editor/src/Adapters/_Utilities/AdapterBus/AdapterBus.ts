@@ -1,3 +1,4 @@
+import { createEmitter } from "../CreateEmitter";
 import type {
 	MediaResolveCallbackParams,
 	MediaType,
@@ -13,21 +14,18 @@ import type {
  * through a plain getter) for something that just is.
  */
 export class AdapterBus {
-	#mediaResolveListeners: Set<OnMediaResolveCallbackFn> = new Set();
+	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
 	#supportedMediaTypes: Set<MediaType> = new Set();
 
-	#swapToEmptyMediaListeners: Set<OnSwapToEmptyMediaCallbackFn> = new Set();
+	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
 	#emptyMediaAvailable = false;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {
-		this.#mediaResolveListeners.add(callback);
-		return () => this.#mediaResolveListeners.delete(callback);
+		return this.#mediaResolveEmitter.subscribe(callback);
 	}
 
 	emitMediaResolve(params: MediaResolveCallbackParams) {
-		for (const listener of this.#mediaResolveListeners) {
-			listener(params);
-		}
+		this.#mediaResolveEmitter.emit(params);
 	}
 
 	registerSupportedMediaType(type: MediaType) {
@@ -39,14 +37,11 @@ export class AdapterBus {
 	}
 
 	onSwapToEmptyMedia(callback: OnSwapToEmptyMediaCallbackFn) {
-		this.#swapToEmptyMediaListeners.add(callback);
-		return () => this.#swapToEmptyMediaListeners.delete(callback);
+		return this.#swapToEmptyMediaEmitter.subscribe(callback);
 	}
 
 	emitSwapToEmptyMedia() {
-		for (const listener of this.#swapToEmptyMediaListeners) {
-			listener();
-		}
+		this.#swapToEmptyMediaEmitter.emit();
 	}
 
 	registerEmptyMediaAvailable() {

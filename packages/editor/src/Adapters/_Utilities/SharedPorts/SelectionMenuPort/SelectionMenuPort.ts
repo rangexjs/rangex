@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateSelectionMenuPortParams,
 	CreateSelectionMenuPortResult,
@@ -17,28 +18,11 @@ export const createSelectionMenuPort = ({
 	floatingContainer.append(element);
 
 	// CommandListeners
-	const onToggleListeners: Set<OnSelectionMenuToggleCallbackFn> = new Set();
-	const onOpenListeners: Set<OnOpenCallbackFn> = new Set();
-	const onCloseListeners: Set<OnCloseCallbackFn> = new Set();
-	const onAddExemptNodeListeners: Set<OnAddExemptNodeCallbackFn> = new Set();
-	const onRemoveExemptNodeListeners: Set<OnRemoveExemptNodeCallbackFn> =
-		new Set();
-
-	const emitListener = <P extends unknown[]>(
-		listeners: Set<(...params: P) => void>,
-	) => {
-		return (...params: P) => {
-			for (const listener of listeners) {
-				listener(...params);
-			}
-		};
-	};
-
-	const emitOpen = emitListener(onOpenListeners);
-	const emitClose = emitListener(onCloseListeners);
-	const emitToggle = emitListener(onToggleListeners);
-	const emitAddExemptNode = emitListener(onAddExemptNodeListeners);
-	const emitRemoveExemptNode = emitListener(onRemoveExemptNodeListeners);
+	const toggleEmitter = createEmitter<OnSelectionMenuToggleCallbackFn>();
+	const openEmitter = createEmitter<OnOpenCallbackFn>();
+	const closeEmitter = createEmitter<OnCloseCallbackFn>();
+	const addExemptNodeEmitter = createEmitter<OnAddExemptNodeCallbackFn>();
+	const removeExemptNodeEmitter = createEmitter<OnRemoveExemptNodeCallbackFn>();
 
 	const configPort: SelectionMenuConfigPort = {
 		get element() {
@@ -46,27 +30,23 @@ export const createSelectionMenuPort = ({
 		},
 
 		notifyToggle() {
-			emitToggle();
+			toggleEmitter.emit();
 		},
 
 		onOpen(callback) {
-			onOpenListeners.add(callback);
-			return () => onOpenListeners.delete(callback);
+			return openEmitter.subscribe(callback);
 		},
 
 		onClose(callback) {
-			onCloseListeners.add(callback);
-			return () => onCloseListeners.delete(callback);
+			return closeEmitter.subscribe(callback);
 		},
 
 		onAddExemptNode(callback) {
-			onAddExemptNodeListeners.add(callback);
-			return () => onAddExemptNodeListeners.delete(callback);
+			return addExemptNodeEmitter.subscribe(callback);
 		},
 
 		onRemoveExemptNode(callback) {
-			onRemoveExemptNodeListeners.add(callback);
-			return () => onRemoveExemptNodeListeners.delete(callback);
+			return removeExemptNodeEmitter.subscribe(callback);
 		},
 	};
 
@@ -80,24 +60,23 @@ export const createSelectionMenuPort = ({
 		},
 
 		onToggle(callback) {
-			onToggleListeners.add(callback);
-			return () => onToggleListeners.delete(callback);
+			return toggleEmitter.subscribe(callback);
 		},
 
 		open() {
-			emitOpen();
+			openEmitter.emit();
 		},
 
 		close() {
-			emitClose();
+			closeEmitter.emit();
 		},
 
 		addExemptNode(node) {
-			emitAddExemptNode(node);
+			addExemptNodeEmitter.emit(node);
 		},
 
 		removeExemptNode(node) {
-			emitRemoveExemptNode(node);
+			removeExemptNodeEmitter.emit(node);
 		},
 	};
 

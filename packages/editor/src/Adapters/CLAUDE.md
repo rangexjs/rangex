@@ -35,10 +35,10 @@ export const createXxxAdapter = (
 		xxxProvider: null,
 	};
 
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> = new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 
 	const updateState = (params: UpdateStateParams) => {
-		/* mutate internals, notify listeners */
+		/* mutate internals, canInsertUpdateEmitter.emit(internals.canInsert) */
 	};
 
 	const configPort: XxxConfigPort = extendObjectProperties(
@@ -55,13 +55,18 @@ export const createXxxAdapter = (
 };
 ```
 
+Every listener set (`onXxxUpdate`, commands, everything under `// StateListeners`/
+`// CommandListeners`) is a `createEmitter<CallbackFn>()` (`_Utilities/CreateEmitter`), not a
+raw `Set`. `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and
+`xxxEmitter.emit(value)` replace manual `Set.add`/`Set.delete`/`for...of` everywhere.
+
 ## Member shapes
 
 - **State** — Engine pushes via `configPort.updateState(params)`; Adapter stores it in
   `internals` under `// States` and notifies listeners. `publicPort` always gets
   `readonly xxx` + `onXxxUpdate`. `configPort` gets the same listener too, only if
-  something inside this package actually needs to react — same underlying `Set`,
-  exposed on whichever port(s) need it.
+  something inside this package actually needs to react — same underlying `createEmitter()`
+  instance, exposed on whichever port(s) need it.
 - **Command** — a `publicPort` method (`insert()`, `changeLanguage()`) that notifies a
   `configPort` listener and returns nothing; the Engine acts async and, if state
   changed, pushes it back through the State path. The `configPort` listener name

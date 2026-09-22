@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CaretMenuConfigPort,
 	CaretMenuInternals,
@@ -19,15 +20,13 @@ export const createCaretMenuPort = ({
 	};
 
 	// CommandListeners
-	const onToggleListeners: Set<OnToggleCallbackFn> = new Set();
+	const toggleEmitter = createEmitter<OnToggleCallbackFn>();
 
 	const updateState = ({ isOpen }: UpdateStateParams) => {
 		if (isOpen !== undefined) {
 			internals.isOpen = isOpen;
 
-			for (const listener of onToggleListeners) {
-				listener();
-			}
+			toggleEmitter.emit();
 		}
 	};
 
@@ -51,8 +50,7 @@ export const createCaretMenuPort = ({
 		},
 
 		onToggle(callback) {
-			onToggleListeners.add(callback);
-			return () => onToggleListeners.delete(callback);
+			return toggleEmitter.subscribe(callback);
 		},
 	};
 

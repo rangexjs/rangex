@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateInsertRootLinePortResult,
 	InsertRootLineConfigPort,
@@ -7,20 +8,17 @@ import type {
 
 export const createInsertRootLinePort = (): CreateInsertRootLinePortResult => {
 	// CommandListeners
-	const onInsertRootLineListeners: Set<OnInsertRootLineCallbackFn> = new Set();
+	const insertRootLineEmitter = createEmitter<OnInsertRootLineCallbackFn>();
 
 	const configPort: InsertRootLineConfigPort = {
 		onInsertRootLine(callback) {
-			onInsertRootLineListeners.add(callback);
-			return () => onInsertRootLineListeners.delete(callback);
+			return insertRootLineEmitter.subscribe(callback);
 		},
 	};
 
 	const publicPort: InsertRootLinePublicPort = {
 		insertRootLine(position) {
-			for (const listener of onInsertRootLineListeners) {
-				listener(position);
-			}
+			insertRootLineEmitter.emit(position);
 		},
 	};
 

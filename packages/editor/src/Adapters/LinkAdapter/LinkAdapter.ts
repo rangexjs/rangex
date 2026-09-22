@@ -2,6 +2,7 @@ import type { InlineComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
+	createEmitter,
 	createSelectionMenuPort,
 	createUnwrapPort,
 } from "../_Utilities";
@@ -44,17 +45,15 @@ export const createLinkAdapter = (
 	};
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onModifyListeners: Set<OnModifyCallbackFn> = new Set();
-	const onLinkClickListeners: Set<OnLinkClickCallbackFn> = new Set();
-	const onLinkSelectionInListeners: Set<OnLinkSelectionInCallbackFn> =
-		new Set();
-	const onLinkMenuToggleListeners: Set<OnLinkMenuToggleCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const modifyEmitter = createEmitter<OnModifyCallbackFn>();
+	const linkClickEmitter = createEmitter<OnLinkClickCallbackFn>();
+	const linkSelectionInEmitter = createEmitter<OnLinkSelectionInCallbackFn>();
+	const linkMenuToggleEmitter = createEmitter<OnLinkMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
@@ -64,17 +63,13 @@ export const createLinkAdapter = (
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
 		if (isActive !== undefined) {
 			internals.isActive = isActive;
 
-			for (const listener of onIsActiveUpdateListeners) {
-				listener(internals.isActive);
-			}
+			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 	};
 
@@ -99,31 +94,23 @@ export const createLinkAdapter = (
 			},
 
 			notifyLinkClick() {
-				for (const listener of onLinkClickListeners) {
-					listener();
-				}
+				linkClickEmitter.emit();
 			},
 
 			notifyLinkSelectionIn() {
-				for (const listener of onLinkSelectionInListeners) {
-					listener();
-				}
+				linkSelectionInEmitter.emit();
 			},
 
 			notifyLinkMenuToggle() {
-				for (const listener of onLinkMenuToggleListeners) {
-					listener();
-				}
+				linkMenuToggleEmitter.emit();
 			},
 
 			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
+				return insertEmitter.subscribe(callback);
 			},
 
 			onModify(callback) {
-				onModifyListeners.add(callback);
-				return () => onModifyListeners.delete(callback);
+				return modifyEmitter.subscribe(callback);
 			},
 
 			registerDisplayText(provider) {
@@ -157,40 +144,31 @@ export const createLinkAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
+				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				onIsActiveUpdateListeners.add(callback);
-				return () => onIsActiveUpdateListeners.delete(callback);
+				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onLinkClick(callback) {
-				onLinkClickListeners.add(callback);
-				return () => onLinkClickListeners.delete(callback);
+				return linkClickEmitter.subscribe(callback);
 			},
 
 			onLinkSelectionIn(callback) {
-				onLinkSelectionInListeners.add(callback);
-				return () => onLinkSelectionInListeners.delete(callback);
+				return linkSelectionInEmitter.subscribe(callback);
 			},
 
 			onLinkMenuToggle(callback) {
-				onLinkMenuToggleListeners.add(callback);
-				return () => onLinkMenuToggleListeners.delete(callback);
+				return linkMenuToggleEmitter.subscribe(callback);
 			},
 
 			insert(params: InsertParams) {
-				for (const listener of onInsertListeners) {
-					listener(params);
-				}
+				insertEmitter.emit(params);
 			},
 
 			modify(params: ModifyParams) {
-				for (const listener of onModifyListeners) {
-					listener(params);
-				}
+				modifyEmitter.emit(params);
 			},
 
 			getDisplayText() {

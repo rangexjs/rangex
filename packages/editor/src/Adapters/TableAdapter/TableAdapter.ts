@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createUnwrapPort } from "../_Utilities";
+import { createEmitter, createUnwrapPort } from "../_Utilities";
 import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
@@ -83,39 +83,36 @@ export const createTableAdapter = (
 	};
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
-	const onSectionTypeUpdateListeners: Set<OnSectionTypeUpdateCallbackFn> =
-		new Set();
-	const onMergeSplitUpdateListeners: Set<OnMergeSplitUpdateCallbackFn> =
-		new Set();
-	const onInsertDeleteUpdateListeners: Set<OnInsertDeleteUpdateCallbackFn> =
-		new Set();
-	const onCellTypeUpdateListeners: Set<OnCellTypeUpdateCallbackFn> = new Set();
-	const onVerticalAlignmentUpdateListeners: Set<OnVerticalAlignmentUpdateCallbackFn> =
-		new Set();
-	const onCellResizingUpdateListeners: Set<OnCellResizingUpdateCallbackFn> =
-		new Set();
-	const onClearContentsUpdateListeners: Set<OnClearContentsUpdateCallbackFn> =
-		new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
+	const sectionTypeUpdateEmitter =
+		createEmitter<OnSectionTypeUpdateCallbackFn>();
+	const mergeSplitUpdateEmitter = createEmitter<OnMergeSplitUpdateCallbackFn>();
+	const insertDeleteUpdateEmitter =
+		createEmitter<OnInsertDeleteUpdateCallbackFn>();
+	const cellTypeUpdateEmitter = createEmitter<OnCellTypeUpdateCallbackFn>();
+	const verticalAlignmentUpdateEmitter =
+		createEmitter<OnVerticalAlignmentUpdateCallbackFn>();
+	const cellResizingUpdateEmitter =
+		createEmitter<OnCellResizingUpdateCallbackFn>();
+	const clearContentsUpdateEmitter =
+		createEmitter<OnClearContentsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onChangeSectionTypeListeners: Set<OnChangeSectionTypeCallbackFn> =
-		new Set();
-	const onChangeMergeSplitListeners: Set<OnChangeMergeSplitCallbackFn> =
-		new Set();
-	const onChangeInsertDeleteListeners: Set<OnChangeInsertDeleteCallbackFn> =
-		new Set();
-	const onChangeCellTypeListeners: Set<OnChangeCellTypeCallbackFn> = new Set();
-	const onChangeVerticalAlignmentListeners: Set<OnChangeVerticalAlignmentCallbackFn> =
-		new Set();
-	const onChangeCellResizingListeners: Set<OnChangeCellResizingCallbackFn> =
-		new Set();
-	const onClearContentsListeners: Set<OnClearContentsCallbackFn> = new Set();
-	const onContextMenuToggleListeners: Set<OnContextMenuToggleCallbackFn> =
-		new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const changeSectionTypeEmitter =
+		createEmitter<OnChangeSectionTypeCallbackFn>();
+	const changeMergeSplitEmitter = createEmitter<OnChangeMergeSplitCallbackFn>();
+	const changeInsertDeleteEmitter =
+		createEmitter<OnChangeInsertDeleteCallbackFn>();
+	const changeCellTypeEmitter = createEmitter<OnChangeCellTypeCallbackFn>();
+	const changeVerticalAlignmentEmitter =
+		createEmitter<OnChangeVerticalAlignmentCallbackFn>();
+	const changeCellResizingEmitter =
+		createEmitter<OnChangeCellResizingCallbackFn>();
+	const clearContentsEmitter = createEmitter<OnClearContentsCallbackFn>();
+	const contextMenuToggleEmitter =
+		createEmitter<OnContextMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
 
@@ -134,81 +131,61 @@ export const createTableAdapter = (
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
 		if (isActive !== undefined) {
 			internals.isActive = isActive;
 
-			for (const listener of onIsActiveUpdateListeners) {
-				listener(internals.isActive);
-			}
+			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 
 		if (sectionType !== undefined) {
 			internals.sectionType = sectionType;
 
-			for (const listener of onSectionTypeUpdateListeners) {
-				listener(internals.sectionType);
-			}
+			sectionTypeUpdateEmitter.emit(internals.sectionType);
 		}
 
 		if (mergeSplit !== undefined) {
 			internals.mergeSplit = mergeSplit;
 
-			for (const listener of onMergeSplitUpdateListeners) {
-				listener(internals.mergeSplit);
-			}
+			mergeSplitUpdateEmitter.emit(internals.mergeSplit);
 		}
 
 		if (insertDelete !== undefined) {
 			internals.insertDelete = insertDelete;
 
-			for (const listener of onInsertDeleteUpdateListeners) {
-				listener(internals.insertDelete);
-			}
+			insertDeleteUpdateEmitter.emit(internals.insertDelete);
 		}
 
 		if (cellType !== undefined) {
 			internals.cellType = cellType;
 
-			for (const listener of onCellTypeUpdateListeners) {
-				listener(internals.cellType);
-			}
+			cellTypeUpdateEmitter.emit(internals.cellType);
 		}
 
 		if (verticalAlignment !== undefined) {
 			internals.verticalAlignment = verticalAlignment;
 
-			for (const listener of onVerticalAlignmentUpdateListeners) {
-				listener(internals.verticalAlignment);
-			}
+			verticalAlignmentUpdateEmitter.emit(internals.verticalAlignment);
 		}
 
 		if (cellResizing !== undefined) {
 			internals.cellResizing = cellResizing;
 
-			for (const listener of onCellResizingUpdateListeners) {
-				listener(internals.cellResizing);
-			}
+			cellResizingUpdateEmitter.emit(internals.cellResizing);
 		}
 
 		if (clearContents !== undefined) {
 			internals.clearContents = clearContents;
 
-			for (const listener of onClearContentsUpdateListeners) {
-				listener(internals.clearContents);
-			}
+			clearContentsUpdateEmitter.emit(internals.clearContents);
 		}
 
 		if (contextMenuOpen !== undefined) {
 			internals.contextMenuOpen = contextMenuOpen;
 
-			for (const listener of onContextMenuToggleListeners) {
-				listener();
-			}
+			contextMenuToggleEmitter.emit();
 		}
 	};
 
@@ -228,43 +205,35 @@ export const createTableAdapter = (
 			},
 
 			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
+				return insertEmitter.subscribe(callback);
 			},
 
 			onChangeSectionType(callback) {
-				onChangeSectionTypeListeners.add(callback);
-				return () => onChangeSectionTypeListeners.delete(callback);
+				return changeSectionTypeEmitter.subscribe(callback);
 			},
 
 			onChangeMergeSplit(callback) {
-				onChangeMergeSplitListeners.add(callback);
-				return () => onChangeMergeSplitListeners.delete(callback);
+				return changeMergeSplitEmitter.subscribe(callback);
 			},
 
 			onChangeInsertDelete(callback) {
-				onChangeInsertDeleteListeners.add(callback);
-				return () => onChangeInsertDeleteListeners.delete(callback);
+				return changeInsertDeleteEmitter.subscribe(callback);
 			},
 
 			onChangeCellType(callback) {
-				onChangeCellTypeListeners.add(callback);
-				return () => onChangeCellTypeListeners.delete(callback);
+				return changeCellTypeEmitter.subscribe(callback);
 			},
 
 			onChangeVerticalAlignment(callback) {
-				onChangeVerticalAlignmentListeners.add(callback);
-				return () => onChangeVerticalAlignmentListeners.delete(callback);
+				return changeVerticalAlignmentEmitter.subscribe(callback);
 			},
 
 			onChangeCellResizing(callback) {
-				onChangeCellResizingListeners.add(callback);
-				return () => onChangeCellResizingListeners.delete(callback);
+				return changeCellResizingEmitter.subscribe(callback);
 			},
 
 			onClear(callback) {
-				onClearContentsListeners.add(callback);
-				return () => onClearContentsListeners.delete(callback);
+				return clearContentsEmitter.subscribe(callback);
 			},
 		} satisfies TableConfigPortProps,
 	);
@@ -317,101 +286,75 @@ export const createTableAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
+				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				onIsActiveUpdateListeners.add(callback);
-				return () => onIsActiveUpdateListeners.delete(callback);
+				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onContextMenuToggle(callback) {
-				onContextMenuToggleListeners.add(callback);
-				return () => onContextMenuToggleListeners.delete(callback);
+				return contextMenuToggleEmitter.subscribe(callback);
 			},
 
 			onSectionTypeUpdate(callback) {
-				onSectionTypeUpdateListeners.add(callback);
-				return () => onSectionTypeUpdateListeners.delete(callback);
+				return sectionTypeUpdateEmitter.subscribe(callback);
 			},
 
 			onMergeSplitUpdate(callback) {
-				onMergeSplitUpdateListeners.add(callback);
-				return () => onMergeSplitUpdateListeners.delete(callback);
+				return mergeSplitUpdateEmitter.subscribe(callback);
 			},
 
 			onInsertDeleteUpdate(callback) {
-				onInsertDeleteUpdateListeners.add(callback);
-				return () => onInsertDeleteUpdateListeners.delete(callback);
+				return insertDeleteUpdateEmitter.subscribe(callback);
 			},
 
 			onCellTypeUpdate(callback) {
-				onCellTypeUpdateListeners.add(callback);
-				return () => onCellTypeUpdateListeners.delete(callback);
+				return cellTypeUpdateEmitter.subscribe(callback);
 			},
 
 			onVerticalAlignmentUpdate(callback) {
-				onVerticalAlignmentUpdateListeners.add(callback);
-				return () => onVerticalAlignmentUpdateListeners.delete(callback);
+				return verticalAlignmentUpdateEmitter.subscribe(callback);
 			},
 
 			onCellResizingUpdate(callback) {
-				onCellResizingUpdateListeners.add(callback);
-				return () => onCellResizingUpdateListeners.delete(callback);
+				return cellResizingUpdateEmitter.subscribe(callback);
 			},
 
 			onClearContentsUpdate(callback) {
-				onClearContentsUpdateListeners.add(callback);
-				return () => onClearContentsUpdateListeners.delete(callback);
+				return clearContentsUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params) {
-				for (const listener of onInsertListeners) {
-					listener(params);
-				}
+				insertEmitter.emit(params);
 			},
 
 			changeSectionType(action) {
-				for (const listener of onChangeSectionTypeListeners) {
-					listener(action);
-				}
+				changeSectionTypeEmitter.emit(action);
 			},
 
 			changeMergeSplit(action) {
-				for (const listener of onChangeMergeSplitListeners) {
-					listener(action);
-				}
+				changeMergeSplitEmitter.emit(action);
 			},
 
 			changeInsertDelete(action) {
-				for (const listener of onChangeInsertDeleteListeners) {
-					listener(action);
-				}
+				changeInsertDeleteEmitter.emit(action);
 			},
 
 			changeCellType(action) {
-				for (const listener of onChangeCellTypeListeners) {
-					listener(action);
-				}
+				changeCellTypeEmitter.emit(action);
 			},
 
 			changeVerticalAlignment(action) {
-				for (const listener of onChangeVerticalAlignmentListeners) {
-					listener(action);
-				}
+				changeVerticalAlignmentEmitter.emit(action);
 			},
 
 			changeCellResizing(action) {
-				for (const listener of onChangeCellResizingListeners) {
-					listener(action);
-				}
+				changeCellResizingEmitter.emit(action);
 			},
 
 			clear() {
-				for (const listener of onClearContentsListeners) {
-					listener();
-				}
+				clearContentsEmitter.emit();
 			},
 		} satisfies TablePublicPortProps,
 	);

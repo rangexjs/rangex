@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateQuickActionsPortParams,
 	CreateQuickActionsPortResult,
@@ -19,15 +20,13 @@ export const createQuickActionsPort = ({
 	};
 
 	// CommandListeners
-	const onToggleListeners: Set<OnQuickActionsToggleCallbackFn> = new Set();
+	const toggleEmitter = createEmitter<OnQuickActionsToggleCallbackFn>();
 
 	const updateState = ({ isOpen }: UpdateStateParams) => {
 		if (isOpen !== undefined) {
 			internals.isOpen = isOpen;
 
-			for (const listener of onToggleListeners) {
-				listener();
-			}
+			toggleEmitter.emit();
 		}
 	};
 
@@ -51,8 +50,7 @@ export const createQuickActionsPort = ({
 		},
 
 		onToggle(callback) {
-			onToggleListeners.add(callback);
-			return () => onToggleListeners.delete(callback);
+			return toggleEmitter.subscribe(callback);
 		},
 	};
 

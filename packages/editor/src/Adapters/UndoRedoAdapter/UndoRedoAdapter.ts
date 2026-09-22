@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createEmitter } from "../_Utilities";
 import type {
 	CreateUndoRedoAdapterParams,
 	CreateUndoRedoAdapterResult,
@@ -26,30 +27,26 @@ export const createUndoRedoAdapter = (
 	};
 
 	// StateListeners
-	const onCanStepBackUpdateListeners: Set<OnCanStepBackUpdateCallbackFn> =
-		new Set();
-	const onCanStepForwardUpdateListeners: Set<OnCanStepForwardUpdateCallbackFn> =
-		new Set();
+	const canStepBackUpdateEmitter =
+		createEmitter<OnCanStepBackUpdateCallbackFn>();
+	const canStepForwardUpdateEmitter =
+		createEmitter<OnCanStepForwardUpdateCallbackFn>();
 
 	// CommandListeners
-	const onStepBackListeners: Set<OnStepBackCallbackFn> = new Set();
-	const onStepForwardListeners: Set<OnStepForwardCallbackFn> = new Set();
+	const stepBackEmitter = createEmitter<OnStepBackCallbackFn>();
+	const stepForwardEmitter = createEmitter<OnStepForwardCallbackFn>();
 
 	const updateState = ({ canStepBack, canStepForward }: UpdateStateParams) => {
 		if (canStepBack !== undefined) {
 			internals.canStepBack = canStepBack;
 
-			for (const listener of onCanStepBackUpdateListeners) {
-				listener(internals.canStepBack);
-			}
+			canStepBackUpdateEmitter.emit(internals.canStepBack);
 		}
 
 		if (canStepForward !== undefined) {
 			internals.canStepForward = canStepForward;
 
-			for (const listener of onCanStepForwardUpdateListeners) {
-				listener(internals.canStepForward);
-			}
+			canStepForwardUpdateEmitter.emit(internals.canStepForward);
 		}
 	};
 
@@ -59,13 +56,11 @@ export const createUndoRedoAdapter = (
 		},
 
 		onStepBack(callback) {
-			onStepBackListeners.add(callback);
-			return () => onStepBackListeners.delete(callback);
+			return stepBackEmitter.subscribe(callback);
 		},
 
 		onStepForward(callback) {
-			onStepForwardListeners.add(callback);
-			return () => onStepForwardListeners.delete(callback);
+			return stepForwardEmitter.subscribe(callback);
 		},
 	} satisfies UndoRedoConfigPortProps);
 
@@ -79,25 +74,19 @@ export const createUndoRedoAdapter = (
 		},
 
 		onCanStepBackUpdate(callback) {
-			onCanStepBackUpdateListeners.add(callback);
-			return () => onCanStepBackUpdateListeners.delete(callback);
+			return canStepBackUpdateEmitter.subscribe(callback);
 		},
 
 		onCanStepForwardUpdate(callback) {
-			onCanStepForwardUpdateListeners.add(callback);
-			return () => onCanStepForwardUpdateListeners.delete(callback);
+			return canStepForwardUpdateEmitter.subscribe(callback);
 		},
 
 		stepBack() {
-			for (const listener of onStepBackListeners) {
-				listener();
-			}
+			stepBackEmitter.emit();
 		},
 
 		stepForward() {
-			for (const listener of onStepForwardListeners) {
-				listener();
-			}
+			stepForwardEmitter.emit();
 		},
 	} satisfies UndoRedoPublicPortProps);
 

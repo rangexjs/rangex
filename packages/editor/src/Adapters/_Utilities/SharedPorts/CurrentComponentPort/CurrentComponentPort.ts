@@ -1,4 +1,5 @@
 import type { Component } from "rich-text-area";
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateCurrentComponentPortResult,
 	CurrentComponentConfigPort,
@@ -16,16 +17,14 @@ export const createCurrentComponentPort = <
 	};
 
 	// StateListeners
-	const onCurrentComponentUpdateListeners: Set<OnCurrentComponentUpdateCallbackFn> =
-		new Set();
+	const currentComponentUpdateEmitter =
+		createEmitter<OnCurrentComponentUpdateCallbackFn>();
 
 	const updateState = ({ currentComponent }: UpdateStateParams<TComponent>) => {
 		if (currentComponent !== undefined) {
 			internals.currentComponent = currentComponent;
 
-			for (const listener of onCurrentComponentUpdateListeners) {
-				listener(internals.currentComponent);
-			}
+			currentComponentUpdateEmitter.emit(internals.currentComponent);
 		}
 	};
 
@@ -45,8 +44,7 @@ export const createCurrentComponentPort = <
 		},
 
 		onCurrentComponentUpdate(callback) {
-			onCurrentComponentUpdateListeners.add(callback);
-			return () => onCurrentComponentUpdateListeners.delete(callback);
+			return currentComponentUpdateEmitter.subscribe(callback);
 		},
 	};
 

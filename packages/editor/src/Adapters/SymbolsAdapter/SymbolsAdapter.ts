@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createEmitter } from "../_Utilities";
 import { defaultSymbolsItems } from "./SymbolsAdapter-default";
 import type {
 	CreateSymbolsAdapterParams,
@@ -16,12 +17,11 @@ export const createSymbolsAdapter = (
 	const [{ items = defaultSymbolsItems }, _options] = params;
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
 
 	const configPort: SymbolsConfigPort = extendObjectProperties({}, {
 		onInsert(callback) {
-			onInsertListeners.add(callback);
-			return () => onInsertListeners.delete(callback);
+			return insertEmitter.subscribe(callback);
 		},
 	} satisfies SymbolsConfigPortProps);
 
@@ -31,9 +31,7 @@ export const createSymbolsAdapter = (
 		},
 
 		insert(data) {
-			for (const listener of onInsertListeners) {
-				listener(data);
-			}
+			insertEmitter.emit(data);
 		},
 	} satisfies SymbolsPublicPortProps);
 

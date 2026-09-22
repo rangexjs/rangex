@@ -1,5 +1,9 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort, createUnwrapPort } from "../_Utilities";
+import {
+	createCaretMenuPort,
+	createEmitter,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	CreateMentionAdapterParams,
 	CreateMentionAdapterResult,
@@ -27,11 +31,11 @@ export const createMentionAdapter = (
 	};
 
 	// StateListeners
-	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
-		new Set();
+	const filteredItemsUpdateEmitter =
+		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onSelectListeners: Set<OnSelectCallbackFn> = new Set();
+	const selectEmitter = createEmitter<OnSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
@@ -45,9 +49,7 @@ export const createMentionAdapter = (
 				)
 			: internals.items;
 
-		for (const listener of onFilteredItemsUpdateListeners) {
-			listener(internals.filteredItems);
-		}
+		filteredItemsUpdateEmitter.emit(internals.filteredItems);
 	};
 
 	const updateState = ({ items, query }: UpdateStateParams) => {
@@ -86,8 +88,7 @@ export const createMentionAdapter = (
 			},
 
 			onSelect(callback) {
-				onSelectListeners.add(callback);
-				return () => onSelectListeners.delete(callback);
+				return selectEmitter.subscribe(callback);
 			},
 		} satisfies MentionConfigPortProps,
 	);
@@ -104,14 +105,11 @@ export const createMentionAdapter = (
 			},
 
 			onFilteredItemsUpdate(callback) {
-				onFilteredItemsUpdateListeners.add(callback);
-				return () => onFilteredItemsUpdateListeners.delete(callback);
+				return filteredItemsUpdateEmitter.subscribe(callback);
 			},
 
 			select(item: SuggestionItem) {
-				for (const listener of onSelectListeners) {
-					listener(item);
-				}
+				selectEmitter.emit(item);
 			},
 		} satisfies MentionPublicPortProps,
 	);

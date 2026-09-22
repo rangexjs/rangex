@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateRemovePortResult,
 	OnRemoveCallbackFn,
@@ -7,20 +8,17 @@ import type {
 
 export const createRemovePort = (): CreateRemovePortResult => {
 	// CommandListeners
-	const onRemoveListeners: Set<OnRemoveCallbackFn> = new Set();
+	const removeEmitter = createEmitter<OnRemoveCallbackFn>();
 
 	const configPort: RemoveConfigPort = {
 		onRemove(callback) {
-			onRemoveListeners.add(callback);
-			return () => onRemoveListeners.delete(callback);
+			return removeEmitter.subscribe(callback);
 		},
 	};
 
 	const publicPort: RemovePublicPort = {
 		remove() {
-			for (const listener of onRemoveListeners) {
-				listener();
-			}
+			removeEmitter.emit();
 		},
 	};
 

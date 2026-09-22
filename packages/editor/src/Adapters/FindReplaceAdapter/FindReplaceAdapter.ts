@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createEmitter } from "../_Utilities";
 import type {
 	CreateFindReplaceAdapterParams,
 	CreateFindReplaceAdapterResult,
@@ -30,26 +31,23 @@ export const createFindReplaceAdapter = (
 	};
 
 	// StateListeners
-	const onResultsUpdateListeners: Set<OnResultsUpdateCallbackFn> = new Set();
+	const resultsUpdateEmitter = createEmitter<OnResultsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onOpenListeners: Set<OnOpenCallbackFn> = new Set();
-	const onCloseListeners: Set<OnCloseCallbackFn> = new Set();
-	const onSearchListeners: Set<OnSearchCallbackFn> = new Set();
-	const onStepBackListeners: Set<OnStepBackCallbackFn> = new Set();
-	const onStepForwardListeners: Set<OnStepForwardCallbackFn> = new Set();
-	const onNavigateToIndexListeners: Set<OnNavigateToIndexCallbackFn> =
-		new Set();
-	const onReplaceListeners: Set<OnReplaceCallbackFn> = new Set();
-	const onReplaceAllListeners: Set<OnReplaceAllCallbackFn> = new Set();
+	const openEmitter = createEmitter<OnOpenCallbackFn>();
+	const closeEmitter = createEmitter<OnCloseCallbackFn>();
+	const searchEmitter = createEmitter<OnSearchCallbackFn>();
+	const stepBackEmitter = createEmitter<OnStepBackCallbackFn>();
+	const stepForwardEmitter = createEmitter<OnStepForwardCallbackFn>();
+	const navigateToIndexEmitter = createEmitter<OnNavigateToIndexCallbackFn>();
+	const replaceEmitter = createEmitter<OnReplaceCallbackFn>();
+	const replaceAllEmitter = createEmitter<OnReplaceAllCallbackFn>();
 
 	const updateState = ({ results }: UpdateStateParams) => {
 		if (results !== undefined) {
 			internals.results = results;
 
-			for (const listener of onResultsUpdateListeners) {
-				listener(internals.results);
-			}
+			resultsUpdateEmitter.emit(internals.results);
 		}
 	};
 
@@ -59,43 +57,35 @@ export const createFindReplaceAdapter = (
 		},
 
 		onOpen(callback) {
-			onOpenListeners.add(callback);
-			return () => onOpenListeners.delete(callback);
+			return openEmitter.subscribe(callback);
 		},
 
 		onClose(callback) {
-			onCloseListeners.add(callback);
-			return () => onCloseListeners.delete(callback);
+			return closeEmitter.subscribe(callback);
 		},
 
 		onSearch(callback) {
-			onSearchListeners.add(callback);
-			return () => onSearchListeners.delete(callback);
+			return searchEmitter.subscribe(callback);
 		},
 
 		onStepBack(callback) {
-			onStepBackListeners.add(callback);
-			return () => onStepBackListeners.delete(callback);
+			return stepBackEmitter.subscribe(callback);
 		},
 
 		onStepForward(callback) {
-			onStepForwardListeners.add(callback);
-			return () => onStepForwardListeners.delete(callback);
+			return stepForwardEmitter.subscribe(callback);
 		},
 
 		onNavigateToIndex(callback) {
-			onNavigateToIndexListeners.add(callback);
-			return () => onNavigateToIndexListeners.delete(callback);
+			return navigateToIndexEmitter.subscribe(callback);
 		},
 
 		onReplace(callback) {
-			onReplaceListeners.add(callback);
-			return () => onReplaceListeners.delete(callback);
+			return replaceEmitter.subscribe(callback);
 		},
 
 		onReplaceAll(callback) {
-			onReplaceAllListeners.add(callback);
-			return () => onReplaceAllListeners.delete(callback);
+			return replaceAllEmitter.subscribe(callback);
 		},
 	} satisfies FindReplaceConfigPortProps);
 
@@ -105,56 +95,39 @@ export const createFindReplaceAdapter = (
 		},
 
 		onResultsUpdate(callback) {
-			onResultsUpdateListeners.add(callback);
-			return () => onResultsUpdateListeners.delete(callback);
+			return resultsUpdateEmitter.subscribe(callback);
 		},
 
 		open(criteria) {
-			for (const listener of onOpenListeners) {
-				listener(criteria);
-			}
+			openEmitter.emit(criteria);
 		},
 
 		close() {
-			for (const listener of onCloseListeners) {
-				listener();
-			}
+			closeEmitter.emit();
 		},
 
 		search(criteria) {
-			for (const listener of onSearchListeners) {
-				listener(criteria);
-			}
+			searchEmitter.emit(criteria);
 		},
 
 		stepBack() {
-			for (const listener of onStepBackListeners) {
-				listener();
-			}
+			stepBackEmitter.emit();
 		},
 
 		stepForward() {
-			for (const listener of onStepForwardListeners) {
-				listener();
-			}
+			stepForwardEmitter.emit();
 		},
 
 		navigateToIndex(params) {
-			for (const listener of onNavigateToIndexListeners) {
-				listener(params);
-			}
+			navigateToIndexEmitter.emit(params);
 		},
 
 		replace(params) {
-			for (const listener of onReplaceListeners) {
-				listener(params);
-			}
+			replaceEmitter.emit(params);
 		},
 
 		replaceAll(params) {
-			for (const listener of onReplaceAllListeners) {
-				listener(params);
-			}
+			replaceAllEmitter.emit(params);
 		},
 	} satisfies FindReplacePublicPortProps);
 

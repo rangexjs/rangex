@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort } from "../_Utilities";
+import { createCaretMenuPort, createEmitter } from "../_Utilities";
 import type {
 	CommandMenuConfigPort,
 	CommandMenuConfigPortProps,
@@ -70,11 +70,11 @@ export const createCommandMenuAdapter = (
 	};
 
 	// StateListeners
-	const onFilteredItemsUpdateListeners: Set<OnFilteredItemsUpdateCallbackFn> =
-		new Set();
+	const filteredItemsUpdateEmitter =
+		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
-	const onBeforeSelectListeners: Set<OnBeforeSelectCallbackFn> = new Set();
+	const beforeSelectEmitter = createEmitter<OnBeforeSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
@@ -87,9 +87,7 @@ export const createCommandMenuAdapter = (
 				)
 			: internals.items;
 
-		for (const listener of onFilteredItemsUpdateListeners) {
-			listener(internals.filteredItems);
-		}
+		filteredItemsUpdateEmitter.emit(internals.filteredItems);
 	};
 
 	const updateState = ({ query }: UpdateStateParams) => {
@@ -113,8 +111,7 @@ export const createCommandMenuAdapter = (
 		},
 
 		onBeforeSelect(callback) {
-			onBeforeSelectListeners.add(callback);
-			return () => onBeforeSelectListeners.delete(callback);
+			return beforeSelectEmitter.subscribe(callback);
 		},
 	} satisfies CommandMenuConfigPortProps);
 
@@ -128,14 +125,11 @@ export const createCommandMenuAdapter = (
 		},
 
 		onFilteredItemsUpdate(callback) {
-			onFilteredItemsUpdateListeners.add(callback);
-			return () => onFilteredItemsUpdateListeners.delete(callback);
+			return filteredItemsUpdateEmitter.subscribe(callback);
 		},
 
 		beforeSelect() {
-			for (const listener of onBeforeSelectListeners) {
-				listener();
-			}
+			beforeSelectEmitter.emit();
 		},
 	} satisfies CommandMenuPublicPortProps);
 

@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateDuplicatePortResult,
 	DuplicateConfigPort,
@@ -7,20 +8,17 @@ import type {
 
 export const createDuplicatePort = (): CreateDuplicatePortResult => {
 	// CommandListeners
-	const onDuplicateListeners: Set<OnDuplicateCallbackFn> = new Set();
+	const duplicateEmitter = createEmitter<OnDuplicateCallbackFn>();
 
 	const configPort: DuplicateConfigPort = {
 		onDuplicate(callback) {
-			onDuplicateListeners.add(callback);
-			return () => onDuplicateListeners.delete(callback);
+			return duplicateEmitter.subscribe(callback);
 		},
 	};
 
 	const publicPort: DuplicatePublicPort = {
 		duplicate() {
-			for (const listener of onDuplicateListeners) {
-				listener();
-			}
+			duplicateEmitter.emit();
 		},
 	};
 

@@ -1,3 +1,5 @@
+import type { Emitter } from "../CreateEmitter";
+
 interface ResizeMove {
 	deltaPx: number;
 	side: "left" | "right";
@@ -11,8 +13,8 @@ export type ResizeEndFn = () => void;
 export interface HandleParams {
 	side: "left" | "right";
 	xPos: number;
-	resizeMove: ResizeMoveFn;
-	resizeEnd: ResizeEndFn;
+	resizeMoveEmitter: Emitter<ResizeMoveFn>;
+	resizeEndEmitter: Emitter<ResizeEndFn>;
 }
 
 export interface BlockResize {

@@ -2,6 +2,7 @@ import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
+	createEmitter,
 	createQuickActionsPort,
 	createRemovePort,
 	createUnwrapPort,
@@ -45,18 +46,17 @@ export const createCodeBlockAdapter = (
 	};
 
 	// StateListeners
-	const onCanInsertUpdateListeners: Set<OnCanInsertUpdateCallbackFn> =
-		new Set();
-	const onCanWrapUpdateListeners: Set<OnCanWrapUpdateCallbackFn> = new Set();
-	const onIsActiveUpdateListeners: Set<OnIsActiveUpdateCallbackFn> = new Set();
-	const onLanguageUpdateListeners: Set<OnLanguageUpdateCallbackFn> = new Set();
-	const onThemeUpdateListeners: Set<OnThemeUpdateCallbackFn> = new Set();
+	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
+	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
+	const languageUpdateEmitter = createEmitter<OnLanguageUpdateCallbackFn>();
+	const themeUpdateEmitter = createEmitter<OnThemeUpdateCallbackFn>();
 
 	// CommandListeners
-	const onInsertListeners: Set<OnInsertCallbackFn> = new Set();
-	const onWrapListeners: Set<OnWrapCallbackFn> = new Set();
-	const onChangeLanguageListeners: Set<OnChangeLanguageCallbackFn> = new Set();
-	const onChangeThemeListeners: Set<OnChangeThemeCallbackFn> = new Set();
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+	const wrapEmitter = createEmitter<OnWrapCallbackFn>();
+	const changeLanguageEmitter = createEmitter<OnChangeLanguageCallbackFn>();
+	const changeThemeEmitter = createEmitter<OnChangeThemeCallbackFn>();
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
@@ -73,41 +73,31 @@ export const createCodeBlockAdapter = (
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
-			for (const listener of onCanInsertUpdateListeners) {
-				listener(internals.canInsert);
-			}
+			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
 		if (canWrap !== undefined) {
 			internals.canWrap = canWrap;
 
-			for (const listener of onCanWrapUpdateListeners) {
-				listener(internals.canWrap);
-			}
+			canWrapUpdateEmitter.emit(internals.canWrap);
 		}
 
 		if (isActive !== undefined) {
 			internals.isActive = isActive;
 
-			for (const listener of onIsActiveUpdateListeners) {
-				listener(internals.isActive);
-			}
+			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 
 		if (language !== undefined) {
 			internals.language = language;
 
-			for (const listener of onLanguageUpdateListeners) {
-				listener(internals.language);
-			}
+			languageUpdateEmitter.emit(internals.language);
 		}
 
 		if (theme !== undefined) {
 			internals.theme = theme;
 
-			for (const listener of onThemeUpdateListeners) {
-				listener(internals.theme);
-			}
+			themeUpdateEmitter.emit(internals.theme);
 		}
 	};
 
@@ -129,23 +119,19 @@ export const createCodeBlockAdapter = (
 			},
 
 			onInsert(callback) {
-				onInsertListeners.add(callback);
-				return () => onInsertListeners.delete(callback);
+				return insertEmitter.subscribe(callback);
 			},
 
 			onWrap(callback) {
-				onWrapListeners.add(callback);
-				return () => onWrapListeners.delete(callback);
+				return wrapEmitter.subscribe(callback);
 			},
 
 			onChangeLanguage(callback) {
-				onChangeLanguageListeners.add(callback);
-				return () => onChangeLanguageListeners.delete(callback);
+				return changeLanguageEmitter.subscribe(callback);
 			},
 
 			onChangeTheme(callback) {
-				onChangeThemeListeners.add(callback);
-				return () => onChangeThemeListeners.delete(callback);
+				return changeThemeEmitter.subscribe(callback);
 			},
 
 			registerPlainTextProvider(provider) {
@@ -188,52 +174,39 @@ export const createCodeBlockAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				onCanInsertUpdateListeners.add(callback);
-				return () => onCanInsertUpdateListeners.delete(callback);
+				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				onCanWrapUpdateListeners.add(callback);
-				return () => onCanWrapUpdateListeners.delete(callback);
+				return canWrapUpdateEmitter.subscribe(callback);
 			},
 
 			onIsActiveUpdate(callback) {
-				onIsActiveUpdateListeners.add(callback);
-				return () => onIsActiveUpdateListeners.delete(callback);
+				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onLanguageUpdate(callback) {
-				onLanguageUpdateListeners.add(callback);
-				return () => onLanguageUpdateListeners.delete(callback);
+				return languageUpdateEmitter.subscribe(callback);
 			},
 
 			onThemeUpdate(callback) {
-				onThemeUpdateListeners.add(callback);
-				return () => onThemeUpdateListeners.delete(callback);
+				return themeUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params) {
-				for (const listener of onInsertListeners) {
-					listener(params);
-				}
+				insertEmitter.emit(params);
 			},
 
 			wrap(params) {
-				for (const listener of onWrapListeners) {
-					listener(params);
-				}
+				wrapEmitter.emit(params);
 			},
 
 			changeLanguage(language) {
-				for (const listener of onChangeLanguageListeners) {
-					listener(language);
-				}
+				changeLanguageEmitter.emit(language);
 			},
 
 			changeTheme(theme) {
-				for (const listener of onChangeThemeListeners) {
-					listener(theme);
-				}
+				changeThemeEmitter.emit(theme);
 			},
 
 			getPlainText() {

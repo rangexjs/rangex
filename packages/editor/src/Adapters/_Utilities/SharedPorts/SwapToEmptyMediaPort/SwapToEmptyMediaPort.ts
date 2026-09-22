@@ -1,3 +1,4 @@
+import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateSwapToEmptyMediaPortParams,
 	CreateSwapToEmptyMediaPortResult,
@@ -10,7 +11,7 @@ export const createSwapToEmptyMediaPort = ({
 	adapterBus,
 }: CreateSwapToEmptyMediaPortParams): CreateSwapToEmptyMediaPortResult => {
 	// CommandListeners
-	const onSwapListeners: Set<OnSwapCallbackFn> = new Set();
+	const swapEmitter = createEmitter<OnSwapCallbackFn>();
 
 	const configPort: SwapToEmptyMediaConfigPort = {
 		get canSwap() {
@@ -18,8 +19,7 @@ export const createSwapToEmptyMediaPort = ({
 		},
 
 		onSwap(callback) {
-			onSwapListeners.add(callback);
-			return () => onSwapListeners.delete(callback);
+			return swapEmitter.subscribe(callback);
 		},
 
 		notifySwapToEmptyMedia() {
@@ -33,9 +33,7 @@ export const createSwapToEmptyMediaPort = ({
 		},
 
 		swap() {
-			for (const listener of onSwapListeners) {
-				listener();
-			}
+			swapEmitter.emit();
 		},
 	};
 

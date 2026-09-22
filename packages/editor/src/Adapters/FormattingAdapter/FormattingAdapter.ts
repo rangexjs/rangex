@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+import { createEmitter } from "../_Utilities";
 import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
 	CreateFormattingAdapterParams,
@@ -97,43 +98,35 @@ export const createFormattingAdapter = (
 	};
 
 	// StateListeners
-	const onBackgroundColorUpdateListeners: Set<OnBackgroundColorUpdateCallbackFn> =
-		new Set();
-	const onBoldUpdateListeners: Set<OnBoldUpdateCallbackFn> = new Set();
-	const onCodeUpdateListeners: Set<OnCodeUpdateCallbackFn> = new Set();
-	const onColorUpdateListeners: Set<OnColorUpdateCallbackFn> = new Set();
-	const onFontFamilyUpdateListeners: Set<OnFontFamilyUpdateCallbackFn> =
-		new Set();
-	const onFontSizeUpdateListeners: Set<OnFontSizeUpdateCallbackFn> = new Set();
-	const onIndentationUpdateListeners: Set<OnIndentationUpdateCallbackFn> =
-		new Set();
-	const onItalicUpdateListeners: Set<OnItalicUpdateCallbackFn> = new Set();
-	const onLetterSpacingUpdateListeners: Set<OnLetterSpacingUpdateCallbackFn> =
-		new Set();
-	const onLineHeightUpdateListeners: Set<OnLineHeightUpdateCallbackFn> =
-		new Set();
-	const onLineLocalNameUpdateListeners: Set<OnLineLocalNameUpdateCallbackFn> =
-		new Set();
-	const onLineSpacingUpdateListeners: Set<OnLineSpacingUpdateCallbackFn> =
-		new Set();
-	const onSubscriptUpdateListeners: Set<OnSubscriptUpdateCallbackFn> =
-		new Set();
-	const onSuperscriptUpdateListeners: Set<OnSuperscriptUpdateCallbackFn> =
-		new Set();
-	const onStrikethroughUpdateListeners: Set<OnStrikethroughUpdateCallbackFn> =
-		new Set();
-	const onTextAlignUpdateListeners: Set<OnTextAlignUpdateCallbackFn> =
-		new Set();
-	const onUnderlineUpdateListeners: Set<OnUnderlineUpdateCallbackFn> =
-		new Set();
-	const onRemoveLineUpdateListeners: Set<OnRemoveLineUpdateCallbackFn> =
-		new Set();
-	const onRemoveTextUpdateListeners: Set<OnRemoveTextUpdateCallbackFn> =
-		new Set();
+	const backgroundColorUpdateEmitter =
+		createEmitter<OnBackgroundColorUpdateCallbackFn>();
+	const boldUpdateEmitter = createEmitter<OnBoldUpdateCallbackFn>();
+	const codeUpdateEmitter = createEmitter<OnCodeUpdateCallbackFn>();
+	const colorUpdateEmitter = createEmitter<OnColorUpdateCallbackFn>();
+	const fontFamilyUpdateEmitter = createEmitter<OnFontFamilyUpdateCallbackFn>();
+	const fontSizeUpdateEmitter = createEmitter<OnFontSizeUpdateCallbackFn>();
+	const indentationUpdateEmitter =
+		createEmitter<OnIndentationUpdateCallbackFn>();
+	const italicUpdateEmitter = createEmitter<OnItalicUpdateCallbackFn>();
+	const letterSpacingUpdateEmitter =
+		createEmitter<OnLetterSpacingUpdateCallbackFn>();
+	const lineHeightUpdateEmitter = createEmitter<OnLineHeightUpdateCallbackFn>();
+	const lineLocalNameUpdateEmitter =
+		createEmitter<OnLineLocalNameUpdateCallbackFn>();
+	const lineSpacingUpdateEmitter =
+		createEmitter<OnLineSpacingUpdateCallbackFn>();
+	const subscriptUpdateEmitter = createEmitter<OnSubscriptUpdateCallbackFn>();
+	const superscriptUpdateEmitter =
+		createEmitter<OnSuperscriptUpdateCallbackFn>();
+	const strikethroughUpdateEmitter =
+		createEmitter<OnStrikethroughUpdateCallbackFn>();
+	const textAlignUpdateEmitter = createEmitter<OnTextAlignUpdateCallbackFn>();
+	const underlineUpdateEmitter = createEmitter<OnUnderlineUpdateCallbackFn>();
+	const removeLineUpdateEmitter = createEmitter<OnRemoveLineUpdateCallbackFn>();
+	const removeTextUpdateEmitter = createEmitter<OnRemoveTextUpdateCallbackFn>();
 
 	// CommandListeners
-	const onFormattingChangeListeners: Set<OnFormattingChangeCallbackFn> =
-		new Set();
+	const formattingChangeEmitter = createEmitter<OnFormattingChangeCallbackFn>();
 
 	const updateState = ({
 		backgroundColor,
@@ -157,154 +150,116 @@ export const createFormattingAdapter = (
 		if (backgroundColor !== undefined) {
 			internals.backgroundColor = backgroundColor;
 
-			for (const listener of onBackgroundColorUpdateListeners) {
-				listener(internals.backgroundColor);
-			}
+			backgroundColorUpdateEmitter.emit(internals.backgroundColor);
 		}
 
 		if (bold !== undefined) {
 			internals.bold = createToggleButton(bold);
 
-			for (const listener of onBoldUpdateListeners) {
-				listener(internals.bold);
-			}
+			boldUpdateEmitter.emit(internals.bold);
 		}
 
 		if (code !== undefined) {
 			internals.code = createToggleButton(code);
 
-			for (const listener of onCodeUpdateListeners) {
-				listener(internals.code);
-			}
+			codeUpdateEmitter.emit(internals.code);
 		}
 
 		if (color !== undefined) {
 			internals.color = color;
 
-			for (const listener of onColorUpdateListeners) {
-				listener(internals.color);
-			}
+			colorUpdateEmitter.emit(internals.color);
 		}
 
 		if (fontFamily !== undefined) {
 			internals.fontFamily = fontFamily;
 
-			for (const listener of onFontFamilyUpdateListeners) {
-				listener(internals.fontFamily);
-			}
+			fontFamilyUpdateEmitter.emit(internals.fontFamily);
 		}
 
 		if (fontSize !== undefined) {
 			internals.fontSize = fontSize;
 
-			for (const listener of onFontSizeUpdateListeners) {
-				listener(internals.fontSize);
-			}
+			fontSizeUpdateEmitter.emit(internals.fontSize);
 		}
 
 		if (indentation !== undefined) {
 			internals.indentation = indentation;
 
-			for (const listener of onIndentationUpdateListeners) {
-				listener(internals.indentation);
-			}
+			indentationUpdateEmitter.emit(internals.indentation);
 		}
 
 		if (italic !== undefined) {
 			internals.italic = createToggleButton(italic);
 
-			for (const listener of onItalicUpdateListeners) {
-				listener(internals.italic);
-			}
+			italicUpdateEmitter.emit(internals.italic);
 		}
 
 		if (letterSpacing !== undefined) {
 			internals.letterSpacing = letterSpacing;
 
-			for (const listener of onLetterSpacingUpdateListeners) {
-				listener(internals.letterSpacing);
-			}
+			letterSpacingUpdateEmitter.emit(internals.letterSpacing);
 		}
 
 		if (lineHeight !== undefined) {
 			internals.lineHeight = lineHeight;
 
-			for (const listener of onLineHeightUpdateListeners) {
-				listener(internals.lineHeight);
-			}
+			lineHeightUpdateEmitter.emit(internals.lineHeight);
 		}
 
 		if (lineLocalName !== undefined) {
 			internals.lineLocalName = lineLocalName;
 
-			for (const listener of onLineLocalNameUpdateListeners) {
-				listener(internals.lineLocalName);
-			}
+			lineLocalNameUpdateEmitter.emit(internals.lineLocalName);
 		}
 
 		if (lineSpacing !== undefined) {
 			internals.lineSpacing = lineSpacing;
 
-			for (const listener of onLineSpacingUpdateListeners) {
-				listener(internals.lineSpacing);
-			}
+			lineSpacingUpdateEmitter.emit(internals.lineSpacing);
 		}
 
 		if (subscript !== undefined) {
 			internals.subscript = createToggleButton(subscript);
 
-			for (const listener of onSubscriptUpdateListeners) {
-				listener(internals.subscript);
-			}
+			subscriptUpdateEmitter.emit(internals.subscript);
 		}
 
 		if (superscript !== undefined) {
 			internals.superscript = createToggleButton(superscript);
 
-			for (const listener of onSuperscriptUpdateListeners) {
-				listener(internals.superscript);
-			}
+			superscriptUpdateEmitter.emit(internals.superscript);
 		}
 
 		if (strikethrough !== undefined) {
 			internals.strikethrough = createToggleButton(strikethrough);
 
-			for (const listener of onStrikethroughUpdateListeners) {
-				listener(internals.strikethrough);
-			}
+			strikethroughUpdateEmitter.emit(internals.strikethrough);
 		}
 
 		if (textAlign !== undefined) {
 			internals.textAlign = textAlign;
 
-			for (const listener of onTextAlignUpdateListeners) {
-				listener(internals.textAlign);
-			}
+			textAlignUpdateEmitter.emit(internals.textAlign);
 		}
 
 		if (underline !== undefined) {
 			internals.underline = createToggleButton(underline);
 
-			for (const listener of onUnderlineUpdateListeners) {
-				listener(internals.underline);
-			}
+			underlineUpdateEmitter.emit(internals.underline);
 		}
 
 		const removeLineDisabled = isRemoveLineDisabled(internals);
 
 		internals.removeLine = { disabled: removeLineDisabled };
 
-		for (const listener of onRemoveLineUpdateListeners) {
-			listener(internals.removeLine);
-		}
+		removeLineUpdateEmitter.emit(internals.removeLine);
 
 		const removeTextDisabled = isRemoveTextDisabled(internals);
 
 		internals.removeText = { disabled: removeTextDisabled };
 
-		for (const listener of onRemoveTextUpdateListeners) {
-			listener(internals.removeText);
-		}
+		removeTextUpdateEmitter.emit(internals.removeText);
 	};
 
 	const configPort: FormattingConfigPort = extendObjectProperties({}, {
@@ -317,8 +272,7 @@ export const createFormattingAdapter = (
 		},
 
 		onFormattingChange(callback) {
-			onFormattingChangeListeners.add(callback);
-			return () => onFormattingChangeListeners.delete(callback);
+			return formattingChangeEmitter.subscribe(callback);
 		},
 	} satisfies FormattingConfigPortProps);
 
@@ -428,233 +382,180 @@ export const createFormattingAdapter = (
 		},
 
 		onBackgroundColorUpdate(callback) {
-			onBackgroundColorUpdateListeners.add(callback);
-			return () => onBackgroundColorUpdateListeners.delete(callback);
+			return backgroundColorUpdateEmitter.subscribe(callback);
 		},
 
 		onBoldUpdate(callback) {
-			onBoldUpdateListeners.add(callback);
-			return () => onBoldUpdateListeners.delete(callback);
+			return boldUpdateEmitter.subscribe(callback);
 		},
 
 		onCodeUpdate(callback) {
-			onCodeUpdateListeners.add(callback);
-			return () => onCodeUpdateListeners.delete(callback);
+			return codeUpdateEmitter.subscribe(callback);
 		},
 
 		onColorUpdate(callback) {
-			onColorUpdateListeners.add(callback);
-			return () => onColorUpdateListeners.delete(callback);
+			return colorUpdateEmitter.subscribe(callback);
 		},
 
 		onFontFamilyUpdate(callback) {
-			onFontFamilyUpdateListeners.add(callback);
-			return () => onFontFamilyUpdateListeners.delete(callback);
+			return fontFamilyUpdateEmitter.subscribe(callback);
 		},
 
 		onFontSizeUpdate(callback) {
-			onFontSizeUpdateListeners.add(callback);
-			return () => onFontSizeUpdateListeners.delete(callback);
+			return fontSizeUpdateEmitter.subscribe(callback);
 		},
 
 		onIndentationUpdate(callback) {
-			onIndentationUpdateListeners.add(callback);
-			return () => onIndentationUpdateListeners.delete(callback);
+			return indentationUpdateEmitter.subscribe(callback);
 		},
 
 		onItalicUpdate(callback) {
-			onItalicUpdateListeners.add(callback);
-			return () => onItalicUpdateListeners.delete(callback);
+			return italicUpdateEmitter.subscribe(callback);
 		},
 
 		onLetterSpacingUpdate(callback) {
-			onLetterSpacingUpdateListeners.add(callback);
-			return () => onLetterSpacingUpdateListeners.delete(callback);
+			return letterSpacingUpdateEmitter.subscribe(callback);
 		},
 
 		onLineHeightUpdate(callback) {
-			onLineHeightUpdateListeners.add(callback);
-			return () => onLineHeightUpdateListeners.delete(callback);
+			return lineHeightUpdateEmitter.subscribe(callback);
 		},
 
 		onLineLocalNameUpdate(callback) {
-			onLineLocalNameUpdateListeners.add(callback);
-			return () => onLineLocalNameUpdateListeners.delete(callback);
+			return lineLocalNameUpdateEmitter.subscribe(callback);
 		},
 
 		onLineSpacingUpdate(callback) {
-			onLineSpacingUpdateListeners.add(callback);
-			return () => onLineSpacingUpdateListeners.delete(callback);
+			return lineSpacingUpdateEmitter.subscribe(callback);
 		},
 
 		onSubscriptUpdate(callback) {
-			onSubscriptUpdateListeners.add(callback);
-			return () => onSubscriptUpdateListeners.delete(callback);
+			return subscriptUpdateEmitter.subscribe(callback);
 		},
 
 		onSuperscriptUpdate(callback) {
-			onSuperscriptUpdateListeners.add(callback);
-			return () => onSuperscriptUpdateListeners.delete(callback);
+			return superscriptUpdateEmitter.subscribe(callback);
 		},
 
 		onStrikethroughUpdate(callback) {
-			onStrikethroughUpdateListeners.add(callback);
-			return () => onStrikethroughUpdateListeners.delete(callback);
+			return strikethroughUpdateEmitter.subscribe(callback);
 		},
 
 		onTextAlignUpdate(callback) {
-			onTextAlignUpdateListeners.add(callback);
-			return () => onTextAlignUpdateListeners.delete(callback);
+			return textAlignUpdateEmitter.subscribe(callback);
 		},
 
 		onUnderlineUpdate(callback) {
-			onUnderlineUpdateListeners.add(callback);
-			return () => onUnderlineUpdateListeners.delete(callback);
+			return underlineUpdateEmitter.subscribe(callback);
 		},
 
 		onRemoveLineUpdate(callback) {
-			onRemoveLineUpdateListeners.add(callback);
-			return () => onRemoveLineUpdateListeners.delete(callback);
+			return removeLineUpdateEmitter.subscribe(callback);
 		},
 
 		onRemoveTextUpdate(callback) {
-			onRemoveTextUpdateListeners.add(callback);
-			return () => onRemoveTextUpdateListeners.delete(callback);
+			return removeTextUpdateEmitter.subscribe(callback);
 		},
 
 		setBackgroundColor(backgroundColor) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ backgroundColor });
-			}
+			formattingChangeEmitter.emit({ backgroundColor });
 		},
 
 		toggleBold() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ bold: internals.bold.pressed });
-			}
+			formattingChangeEmitter.emit({ bold: internals.bold.pressed });
 		},
 
 		toggleCode() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ code: internals.code.pressed });
-			}
+			formattingChangeEmitter.emit({ code: internals.code.pressed });
 		},
 
 		setColor(color) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ color });
-			}
+			formattingChangeEmitter.emit({ color });
 		},
 
 		setFontFamily(fontFamily) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ fontFamily });
-			}
+			formattingChangeEmitter.emit({ fontFamily });
 		},
 
 		setFontSize(fontSize) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ fontSize });
-			}
+			formattingChangeEmitter.emit({ fontSize });
 		},
 
 		setIndentation(indentation) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ indentation });
-			}
+			formattingChangeEmitter.emit({ indentation });
 		},
 
 		toggleItalic() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ italic: internals.italic.pressed });
-			}
+			formattingChangeEmitter.emit({ italic: internals.italic.pressed });
 		},
 
 		setLetterSpacing(letterSpacing) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ letterSpacing });
-			}
+			formattingChangeEmitter.emit({ letterSpacing });
 		},
 
 		setLineHeight(lineHeight) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ lineHeight });
-			}
+			formattingChangeEmitter.emit({ lineHeight });
 		},
 
 		setLineLocalName(lineLocalName) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ lineLocalName });
-			}
+			formattingChangeEmitter.emit({ lineLocalName });
 		},
 
 		setLineSpacing(lineSpacing) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ lineSpacing });
-			}
+			formattingChangeEmitter.emit({ lineSpacing });
 		},
 
 		toggleSubscript() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ subscript: internals.subscript.pressed });
-			}
+			formattingChangeEmitter.emit({ subscript: internals.subscript.pressed });
 		},
 
 		toggleSuperscript() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ superscript: internals.superscript.pressed });
-			}
+			formattingChangeEmitter.emit({
+				superscript: internals.superscript.pressed,
+			});
 		},
 
 		toggleStrikethrough() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ strikethrough: internals.strikethrough.pressed });
-			}
+			formattingChangeEmitter.emit({
+				strikethrough: internals.strikethrough.pressed,
+			});
 		},
 
 		setTextAlign(textAlign) {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ textAlign });
-			}
+			formattingChangeEmitter.emit({ textAlign });
 		},
 
 		toggleUnderline() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({ underline: internals.underline.pressed });
-			}
+			formattingChangeEmitter.emit({ underline: internals.underline.pressed });
 		},
 
 		removeLineFormat() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({
-					indentation: internals.defaultIndentation,
-					lineHeight: internals.defaultLineHeight,
-					lineSpacing: internals.defaultLineSpacing,
-					textAlign: internals.defaultTextAlign,
-				});
-			}
+			formattingChangeEmitter.emit({
+				indentation: internals.defaultIndentation,
+				lineHeight: internals.defaultLineHeight,
+				lineSpacing: internals.defaultLineSpacing,
+				textAlign: internals.defaultTextAlign,
+			});
 		},
 
 		// Each toggle field is sent as "true" — not the value to set, but the
 		// currently-applied state the Editor is being told to turn off. Toggle
 		// fields in FormattingActionState always mean "this is on, flip it."
 		removeTextFormat() {
-			for (const listener of onFormattingChangeListeners) {
-				listener({
-					backgroundColor: null,
-					bold: "true",
-					code: "true",
-					color: null,
-					fontFamily: null,
-					fontSize: null,
-					italic: "true",
-					letterSpacing: null,
-					strikethrough: "true",
-					subscript: "true",
-					superscript: "true",
-					underline: "true",
-				});
-			}
+			formattingChangeEmitter.emit({
+				backgroundColor: null,
+				bold: "true",
+				code: "true",
+				color: null,
+				fontFamily: null,
+				fontSize: null,
+				italic: "true",
+				letterSpacing: null,
+				strikethrough: "true",
+				subscript: "true",
+				superscript: "true",
+				underline: "true",
+			});
 		},
 	} satisfies FormattingPublicPortProps);
 
