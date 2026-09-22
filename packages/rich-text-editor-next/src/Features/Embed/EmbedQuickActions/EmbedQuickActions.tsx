@@ -107,7 +107,7 @@ export const EmbedQuickActions = () => {
 		}
 
 		setAspectRatio(embedEl, value);
-		embed.commitSnapshot();
+		editor.snapshot.commit();
 	};
 
 	const onTitleCommit = () => {
@@ -118,7 +118,6 @@ export const EmbedQuickActions = () => {
 		}
 
 		embedEl.title = titleHandle.value();
-		embed.commitSnapshot();
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {

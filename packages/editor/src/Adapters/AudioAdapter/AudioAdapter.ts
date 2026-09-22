@@ -4,7 +4,6 @@ import {
 	createBlockAlignPort,
 	createBlockResize,
 	createCaptionPort,
-	createCommitSnapshotPort,
 	createCurrentComponentPort,
 	createQuickActionsPort,
 	createSwapToEmptyMediaPort,
@@ -30,7 +29,6 @@ export const createAudioAdapter = (
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
-	const commitSnapshotPort = createCommitSnapshotPort();
 	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
@@ -38,7 +36,6 @@ export const createAudioAdapter = (
 		captionPort.configPort,
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
-		commitSnapshotPort.configPort,
 		swapToEmptyMediaPort.configPort,
 		{
 			get blockResize() {
@@ -60,7 +57,6 @@ export const createAudioAdapter = (
 		captionPort.publicPort,
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
-		commitSnapshotPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
 		{
 			get quickActions() {

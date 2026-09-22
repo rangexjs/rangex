@@ -4,7 +4,6 @@ import {
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
-	handleCommitSnapshot,
 	handleQuickActionsAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
@@ -26,11 +25,6 @@ export const configureVideo = ({
 	editorAPI,
 }: ConfigureVideoParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const commitSnapshotCleanup = handleCommitSnapshot({
-		port: configPort,
-		editorAPI,
-	});
 
 	const insertionCleanup = handleVideoInsertion({
 		configPort,
@@ -91,7 +85,6 @@ export const configureVideo = ({
 	return () => {
 		insertionCleanup();
 		quickActionsCleanup();
-		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

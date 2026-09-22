@@ -5,8 +5,6 @@ import type {
 	BlockResize,
 	CaptionConfigPort,
 	CaptionPublicPort,
-	CommitSnapshotConfigPort,
-	CommitSnapshotPublicPort,
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
@@ -29,7 +27,6 @@ export interface EmbedConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
-		CommitSnapshotConfigPort,
 		SwapToEmptyMediaConfigPort {}
 
 export interface EmbedPublicPortProps {
@@ -41,7 +38,6 @@ export interface EmbedPublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
-		CommitSnapshotPublicPort,
 		SwapToEmptyMediaPublicPort {}
 
 export interface EmbedAdapter {

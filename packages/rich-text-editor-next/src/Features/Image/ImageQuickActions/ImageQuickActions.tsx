@@ -120,7 +120,7 @@ export const ImageQuickActions = () => {
 		}
 
 		setObjectFit(imgEl, value);
-		image.commitSnapshot();
+		editor.snapshot.commit();
 	};
 
 	const onAspectRatioSelect = (value: AspectRatioValue) => {
@@ -131,7 +131,7 @@ export const ImageQuickActions = () => {
 		}
 
 		setAspectRatio(imgEl, value);
-		image.commitSnapshot();
+		editor.snapshot.commit();
 	};
 
 	const onAltTextCommit = () => {

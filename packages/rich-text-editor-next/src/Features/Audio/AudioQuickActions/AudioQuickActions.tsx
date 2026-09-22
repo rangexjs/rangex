@@ -99,8 +99,6 @@ export const AudioQuickActions = () => {
 		} else {
 			audioEl.setAttribute("controls", "");
 		}
-
-		audio.commitSnapshot();
 	};
 
 	const onAutoplayToggle = () => {
@@ -118,8 +116,6 @@ export const AudioQuickActions = () => {
 		} else {
 			audioEl.removeAttribute("autoplay");
 		}
-
-		audio.commitSnapshot();
 	};
 
 	const onLoopToggle = () => {
@@ -134,8 +130,6 @@ export const AudioQuickActions = () => {
 		} else {
 			audioEl.setAttribute("loop", "");
 		}
-
-		audio.commitSnapshot();
 	};
 
 	const onMutedToggle = () => {
@@ -154,8 +148,6 @@ export const AudioQuickActions = () => {
 		} else {
 			audioEl.setAttribute("muted", "");
 		}
-
-		audio.commitSnapshot();
 	};
 
 	const onTitleCommit = () => {
@@ -166,7 +158,6 @@ export const AudioQuickActions = () => {
 		}
 
 		audioEl.title = titleHandle.value();
-		audio.commitSnapshot();
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {

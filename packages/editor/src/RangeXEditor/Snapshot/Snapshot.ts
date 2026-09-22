@@ -10,4 +10,9 @@ export class Snapshot {
 	createStored() {
 		return this.#editorAPI.createStoredSnapshot();
 	}
+
+	commit() {
+		const snapshotTimeline = this.#editorAPI.getSnapshotTimeline();
+		snapshotTimeline.registerSnapshotBoundary();
+	}
 }

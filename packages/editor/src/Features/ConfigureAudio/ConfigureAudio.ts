@@ -4,7 +4,6 @@ import {
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
-	handleCommitSnapshot,
 	handleQuickActionsAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
@@ -26,11 +25,6 @@ export const configureAudio = ({
 	editorAPI,
 }: ConfigureAudioParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const commitSnapshotCleanup = handleCommitSnapshot({
-		port: configPort,
-		editorAPI,
-	});
 
 	const insertionCleanup = handleAudioInsertion({
 		configPort,
@@ -91,7 +85,6 @@ export const configureAudio = ({
 	return () => {
 		insertionCleanup();
 		quickActionsCleanup();
-		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

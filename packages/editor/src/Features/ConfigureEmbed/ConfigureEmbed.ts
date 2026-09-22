@@ -4,7 +4,6 @@ import {
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
-	handleCommitSnapshot,
 	handleQuickActionsAppearance,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
@@ -26,11 +25,6 @@ export const configureEmbed = ({
 	editorAPI,
 }: ConfigureEmbedParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
-
-	const commitSnapshotCleanup = handleCommitSnapshot({
-		port: configPort,
-		editorAPI,
-	});
 
 	const insertionCleanup = handleEmbedInsertion({
 		configPort,
@@ -91,7 +85,6 @@ export const configureEmbed = ({
 	return () => {
 		insertionCleanup();
 		quickActionsCleanup();
-		commitSnapshotCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

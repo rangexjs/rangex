@@ -153,7 +153,7 @@ export const VideoQuickActions = () => {
 		}
 
 		setObjectFit(videoEl, value);
-		video.commitSnapshot();
+		editor.snapshot.commit();
 	};
 
 	const onAspectRatioSelect = (value: AspectRatioValue) => {
@@ -164,7 +164,7 @@ export const VideoQuickActions = () => {
 		}
 
 		setAspectRatio(videoEl, value);
-		video.commitSnapshot();
+		editor.snapshot.commit();
 	};
 
 	const onControlsToggle = () => {
@@ -179,8 +179,6 @@ export const VideoQuickActions = () => {
 		} else {
 			videoEl.setAttribute("controls", "");
 		}
-
-		video.commitSnapshot();
 	};
 
 	const onAutoplayToggle = () => {
@@ -198,8 +196,6 @@ export const VideoQuickActions = () => {
 		} else {
 			videoEl.removeAttribute("autoplay");
 		}
-
-		video.commitSnapshot();
 	};
 
 	const onLoopToggle = () => {
@@ -214,8 +210,6 @@ export const VideoQuickActions = () => {
 		} else {
 			videoEl.setAttribute("loop", "");
 		}
-
-		video.commitSnapshot();
 	};
 
 	const onMutedToggle = () => {
@@ -234,8 +228,6 @@ export const VideoQuickActions = () => {
 		} else {
 			videoEl.setAttribute("muted", "");
 		}
-
-		video.commitSnapshot();
 	};
 
 	const onPosterCommit = () => {
@@ -246,7 +238,6 @@ export const VideoQuickActions = () => {
 		}
 
 		videoEl.poster = posterHandle.value();
-		video.commitSnapshot();
 	};
 
 	const onPosterKeyDown = (event: KeyboardEvent) => {
@@ -265,7 +256,6 @@ export const VideoQuickActions = () => {
 		}
 
 		videoEl.title = titleHandle.value();
-		video.commitSnapshot();
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
