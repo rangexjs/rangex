@@ -27,7 +27,7 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
 			command={props.command}
 			style={props.style}
 			aria-pressed={props["aria-pressed"]}
-			{...(props.checked && { "data-is-checked": "true" })}
+			data-checked={`${!!props.checked}`}
 		>
 			<span class={["inline-flex items-center", props.containerClass]}>
 				{props.children}

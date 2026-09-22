@@ -13,7 +13,7 @@
 	transition-duration: 200ms;
 	color: light-dark(var(--color-neutral-800), var(--color-neutral-200));
 
-	&[data-is-checked="true"] {
+	&[data-checked="true"] {
 		background-color: color(from var(--color-primary-500) srgb r g b / 0.1);
 		color: var(--color-primary-500);
 	}
@@ -29,7 +29,7 @@
 			var(--color-neutral-800)
 		);
 
-		&[data-is-checked="true"] {
+		&[data-checked="true"] {
 			color: var(--color-primary-500);
 			border-color: color(from var(--color-primary-500) srgb r g b / 0.3);
 			background-color: color(from var(--color-primary-500) srgb r g b / 0.2);

@@ -56,7 +56,7 @@ export const BlockAlign = (props: BlockAlignProps) => {
 							command="hide-popover"
 							title={labelOptions[option]}
 							class="btn-menu-item rounded-sm p-1"
-							data-is-checked={option === props.value}
+							data-checked={`${option === props.value}`}
 							onClick={() => props.onChange(option)}
 						>
 							<Icon name={iconNameOptions[option]} class="size-4" />
