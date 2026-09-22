@@ -1,19 +1,21 @@
-import { TemplateVariableAdapter } from "#adapters";
-import { configureTemplateVariable } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { TemplateVariableToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { TemplateVariable as TemplateVariableFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import {
+	TemplateVariableCaretMenu,
+	TemplateVariableToolbarButton,
+} from "#features";
+import type { Extension } from "../_Utilities";
 
-export const TemplateVariable = createExtension<typeof TemplateVariableAdapter>(
-	{
-		createAdapter: (settings, options) =>
-			new TemplateVariableAdapter(settings, options),
-		configure: ({ adapter, editorAPI }) =>
-			configureTemplateVariable({ editorPort: adapter.editorPort, editorAPI }),
+export const TemplateVariable = (
+	...adapterSettings: Parameters<typeof TemplateVariableFactory>
+): Extension => {
+	return {
+		createAdapter: () => TemplateVariableFactory(...adapterSettings),
 		components: {
 			toolbarButtons: {
 				[toolbarButtonsName.templateVariable]: TemplateVariableToolbarButton,
 			},
+			floatingComponents: [TemplateVariableCaretMenu],
 		},
-	},
-);
+	};
+};

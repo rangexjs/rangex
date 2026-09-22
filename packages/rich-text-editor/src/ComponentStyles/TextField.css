@@ -1,0 +1,160 @@
+.text-field-primary-outline {
+	font-weight: 600;
+	border-width: 1px;
+	border-style: solid;
+	border-color: light-dark(var(--color-neutral-300), var(--color-neutral-600));
+	border-radius: 6px;
+	background-color: light-dark(
+		var(--color-neutral-50),
+		var(--color-neutral-800)
+	);
+	color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+
+	transition-property: border-color, box-shadow;
+	transition-duration: 200ms;
+
+	&:has([data-invalid="true"]) {
+		border-color: color(
+			from light-dark(var(--color-red-600), var(--color-red-700)) srgb r g b /
+			0.5
+		);
+	}
+
+	&:hover {
+		border-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-500)
+		);
+
+		&:has([data-invalid="true"]) {
+			border-color: color(
+				from light-dark(var(--color-red-600), var(--color-red-700)) srgb r g b /
+				0.8
+			);
+		}
+	}
+
+	&:focus-within {
+		border-color: light-dark(
+			var(--color-primary-500),
+			var(--color-primary-600)
+		);
+		box-shadow: 0px 0px 0px 4px
+			color(
+				from light-dark(var(--color-primary-500), var(--color-primary-600)) srgb
+					r g b /
+				0.2
+			);
+
+		&:has([data-invalid="true"]) {
+			border-color: light-dark(var(--color-red-600), var(--color-red-700));
+			box-shadow: 0px 0px 0px 4px
+				color(
+					from light-dark(var(--color-red-600), var(--color-red-700)) srgb r g b /
+					0.2
+				);
+		}
+	}
+
+	& > :is(input, textarea) {
+		outline: none;
+		width: 100%;
+
+		&::placeholder {
+			color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+		}
+	}
+
+	&:has(input:disabled, textarea:disabled) {
+		pointer-events: none;
+		background-color: light-dark(
+			var(--color-neutral-100),
+			var(--color-neutral-900)
+		);
+		border-color: light-dark(
+			var(--color-neutral-200),
+			var(--color-neutral-700)
+		);
+	}
+
+	& > :is(input:disabled, textarea:disabled) {
+		--disabled-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-600)
+		);
+		color: var(--disabled-color);
+
+		&::placeholder {
+			color: var(--disabled-color);
+		}
+	}
+}
+
+.text-field-neutral-filled-underline {
+	font-weight: 600;
+	border-bottom-width: 1px;
+	border-style: solid;
+	border-color: light-dark(var(--color-neutral-300), var(--color-neutral-600));
+	background-color: light-dark(
+		var(--color-neutral-100),
+		var(--color-neutral-800)
+	);
+	color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+
+	transition-property: border-color;
+	transition-duration: 200ms;
+
+	&:has([data-invalid="true"]) {
+		border-color: color(from var(--color-red-600) srgb r g b / 0.5);
+	}
+
+	&:hover {
+		border-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-500)
+		);
+
+		&:has([data-invalid="true"]) {
+			border-color: color(
+				from light-dark(var(--color-red-600), var(--color-red-700)) srgb r g b /
+				0.8
+			);
+		}
+	}
+
+	&:focus-within {
+		border-color: light-dark(
+			var(--color-primary-500),
+			var(--color-primary-700)
+		);
+
+		&:has([data-invalid="true"]) {
+			border-color: light-dark(var(--color-red-600), var(--color-red-700));
+		}
+	}
+
+	& > :is(input, textarea) {
+		outline: none;
+		width: 100%;
+
+		&::placeholder {
+			color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+		}
+	}
+
+	&:has(input:disabled, textarea:disabled) {
+		pointer-events: none;
+	}
+
+	& > :is(input:disabled, textarea:disabled) {
+		--disabled-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-600)
+		);
+		color: var(--disabled-color);
+
+		&::placeholder {
+			color: var(--disabled-color);
+		}
+	}
+}

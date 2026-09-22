@@ -1,17 +1,18 @@
-import { BlockQuoteAdapter } from "#adapters";
-import { configureBlockQuote } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { BlockQuoteToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { BlockQuote as BlockQuoteFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { BlockQuoteToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const BlockQuote = createExtension<typeof BlockQuoteAdapter>({
-	createAdapter: (settings, options) =>
-		new BlockQuoteAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureBlockQuote({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
+export const BlockQuote = (
+	...adapterSettings: Parameters<typeof BlockQuoteFactory>
+): Extension => {
+	return {
+		createAdapter: () => BlockQuoteFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

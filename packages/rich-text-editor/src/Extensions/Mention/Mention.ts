@@ -1,10 +1,15 @@
-import { MentionAdapter } from "#adapters";
-import { configureMention } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Mention as MentionFactory } from "@rangex/editor";
+import { MentionCaretMenu } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Mention = createExtension<typeof MentionAdapter>({
-	createAdapter: (settings, options) => new MentionAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureMention({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const Mention = (
+	...adapterSettings: Parameters<typeof MentionFactory>
+): Extension => {
+	return {
+		createAdapter: () => MentionFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [MentionCaretMenu],
+		},
+	};
+};

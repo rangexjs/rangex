@@ -1,17 +1,19 @@
-import { EmptyMediaAdapter } from "#adapters";
-import { configureEmptyMedia } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { EmptyMediaToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { EmptyMedia as EmptyMediaFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { EmptyMediaToolbarButton, registerEmptyMedia } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const EmptyMedia = createExtension<typeof EmptyMediaAdapter>({
-	createAdapter: (settings, options) =>
-		new EmptyMediaAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureEmptyMedia({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.media]: EmptyMediaToolbarButton,
+export const EmptyMedia = (
+	...adapterSettings: Parameters<typeof EmptyMediaFactory>
+): Extension => {
+	return {
+		createAdapter: () => EmptyMediaFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.media]: EmptyMediaToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+		register: registerEmptyMedia,
+	};
+};

@@ -1,10 +1,15 @@
-import { AudioAdapter } from "#adapters";
-import { configureAudio } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Audio as AudioFactory } from "@rangex/editor";
+import { AudioQuickActions } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Audio = createExtension<typeof AudioAdapter>({
-	createAdapter: (settings, options) => new AudioAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureAudio({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const Audio = (
+	...adapterSettings: Parameters<typeof AudioFactory>
+): Extension => {
+	return {
+		createAdapter: () => AudioFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [AudioQuickActions],
+		},
+	};
+};

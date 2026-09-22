@@ -1,9 +1,14 @@
-import { ShortcutsAdapter } from "#adapters";
-import { configureShortcuts } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Shortcuts as ShortcutsFactory } from "@rangex/editor";
+import type { Extension } from "../_Utilities";
 
-export const Shortcuts = createExtension<typeof ShortcutsAdapter>({
-	createAdapter: (settings, options) => new ShortcutsAdapter(settings, options),
-	configure: ({ editorAPI }) => configureShortcuts({ editorAPI }),
-	components: {},
-});
+export const Shortcuts = (
+	...adapterSettings: Parameters<typeof ShortcutsFactory>
+): Extension => {
+	return {
+		createAdapter: () => ShortcutsFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [],
+		},
+	};
+};

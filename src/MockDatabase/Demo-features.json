@@ -3672,7 +3672,7 @@
 						"customStorage": {
 							"id": "code-block",
 							"version": 1,
-							"lang": "typescript",
+							"language": "typescript",
 							"theme": { "light": "light-plus", "dark": "dark-plus" }
 						},
 						"componentName": "code-block",

@@ -1,10 +1,15 @@
-import { EmojiAdapter } from "#adapters";
-import { configureEmoji } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Emoji as EmojiFactory } from "@rangex/editor";
+import { EmojiCaretMenu } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Emoji = createExtension<typeof EmojiAdapter>({
-	createAdapter: (settings, options) => new EmojiAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureEmoji({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const Emoji = (
+	...adapterSettings: Parameters<typeof EmojiFactory>
+): Extension => {
+	return {
+		createAdapter: () => EmojiFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [EmojiCaretMenu],
+		},
+	};
+};

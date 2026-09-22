@@ -1,11 +1,15 @@
-import { LineHandlerAdapter } from "#adapters";
-import { configureLineHandler } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { LineHandler as LineHandlerFactory } from "@rangex/editor";
+import { LineHandlerOverlay } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const LineHandler = createExtension<typeof LineHandlerAdapter>({
-	createAdapter: (settings, options) =>
-		new LineHandlerAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureLineHandler({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const LineHandler = (
+	...adapterSettings: Parameters<typeof LineHandlerFactory>
+): Extension => {
+	return {
+		createAdapter: () => LineHandlerFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [LineHandlerOverlay],
+		},
+	};
+};

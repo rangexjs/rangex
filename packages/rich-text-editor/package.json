@@ -13,43 +13,64 @@
 	"exports": {
 		".": {
 			"development": {
-				"types": "./development/index.d.ts",
-				"import": "./development/index.js"
+				"types": "./src/index.ts",
+				"import": "./src/index.ts"
 			},
-			"default": {
+			"production": {
 				"types": "./dist/index.d.ts",
 				"import": "./dist/index.js"
 			}
 		}
 	},
 	"imports": {
-		"#adapters": {
-			"types": "./src/Adapters/index.ts",
-			"default": "./src/Adapters/index"
+		"#utilities": {
+			"types": {
+				"development": "./src/_Utilities/index.ts",
+				"production": "./dist/_Utilities/index.d.ts"
+			},
+			"default": "./src/_Utilities/index"
 		},
-		"#editor": {
-			"types": "./src/Editor/index.ts",
-			"default": "./src/Editor/index"
+		"#color": {
+			"types": {
+				"development": "./src/Color/index.ts",
+				"production": "./dist/Color/index.d.ts"
+			},
+			"default": "./src/Color/index"
+		},
+		"#constants": {
+			"types": {
+				"development": "./src/Constants/index.ts",
+				"production": "./dist/Constants/index.d.ts"
+			},
+			"default": "./src/Constants/index"
+		},
+		"#context": {
+			"types": {
+				"development": "./src/Context/index.ts",
+				"production": "./dist/Context/index.d.ts"
+			},
+			"default": "./src/Context/index"
+		},
+		"#extensions": {
+			"types": {
+				"development": "./src/Extensions/index.ts",
+				"production": "./dist/Extensions/index.d.ts"
+			},
+			"default": "./src/Extensions/index"
+		},
+		"#features": {
+			"types": {
+				"development": "./src/Features/index.ts",
+				"production": "./dist/Features/index.d.ts"
+			},
+			"default": "./src/Features/index"
 		},
 		"#ui": {
-			"types": "./src/UI/index.ts",
+			"types": {
+				"development": "./src/UI/index.ts",
+				"production": "./dist/UI/index.d.ts"
+			},
 			"default": "./src/UI/index"
-		},
-		"#ui-extensions": {
-			"types": "./src/UI/Components/Extensions/index.ts",
-			"default": "./src/UI/Components/Extensions/index"
-		},
-		"#ports": {
-			"types": "./src/Ports/index.ts",
-			"default": "./src/Ports/index"
-		},
-		"#editor-extensions": {
-			"types": "./src/Editor/Extensions/index.ts",
-			"default": "./src/Editor/Extensions/index"
-		},
-		"#libs": {
-			"types": "./src/Libs/index.ts",
-			"default": "./src/Libs/index"
 		}
 	},
 	"files": [
@@ -62,32 +83,30 @@
 		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
-		"biome:check": "biome check ./src",
-		"fix": "biome check ./src --write",
-		"lint": "biome check ./src && tsc -p ./tsconfig.json",
-		"format": "biome format ./src",
-		"format:write": "biome format --write ./src",
+		"fix": "biome check ./src --write && tsc -p ./tsconfig.json",
 		"pre:check": "biome check ./src && tsc && vitest"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
 		"@happy-dom/global-registrator": "^20.10.6",
+		"@solidjs/vite-plugin": "3.0.0-next.38",
+		"@solidjs/web": "2.0.0-rc.6",
 		"@types/bun": "^1.3.14",
 		"@vitest/coverage-v8": "^4.1.10",
 		"esbuild": "^0.28.1",
+		"solid-js": "2.0.0-rc.6",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5",
-		"vite-plugin-solid": "^2.11.12",
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"@shikijs/core": "^4.3.1",
-		"@shikijs/engine-javascript": "^4.3.1",
-		"@shikijs/langs": "^4.3.1",
-		"@shikijs/themes": "^4.3.1",
+		"@rangex/editor": "workspace:*",
+		"@rangex/solid": "workspace:*",
 		"@tailwindcss/vite": "^4.3.3",
-		"shiki": "^4.0.2",
-		"solid-js": "^1.9.14",
 		"tailwindcss": "^4.3.3"
+	},
+	"peerDependencies": {
+		"@solidjs/web": "^2.0.0-rc.6",
+		"solid-js": "^2.0.0-rc.6"
 	}
 }

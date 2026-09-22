@@ -1,20 +1,22 @@
-import { UndoRedoAdapter } from "#adapters";
-import { configureUndoRedo } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
+import { UndoRedo as UndoRedoFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
 import {
 	HistoryBackToolbarButton,
 	HistoryForwardToolbarButton,
-} from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+} from "#features";
+import type { Extension } from "../_Utilities";
 
-export const UndoRedo = createExtension<typeof UndoRedoAdapter>({
-	createAdapter: (settings, options) => new UndoRedoAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureUndoRedo({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
-			[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
+export const UndoRedo = (
+	...adapterSettings: Parameters<typeof UndoRedoFactory>
+): Extension => {
+	return {
+		createAdapter: () => UndoRedoFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.historyBack]: HistoryBackToolbarButton,
+				[toolbarButtonsName.historyForward]: HistoryForwardToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

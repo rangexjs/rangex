@@ -1,7 +1,0 @@
-details {
-	& > summary {
-		& > [data-rx-editor-role="nested-editable"] {
-			cursor: text;
-		}
-	}
-}

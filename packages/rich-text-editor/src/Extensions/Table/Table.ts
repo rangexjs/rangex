@@ -1,16 +1,18 @@
-import { TableAdapter } from "#adapters";
-import { configureTable } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { TableToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { Table as TableFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { TableContextMenu, TableToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Table = createExtension<typeof TableAdapter>({
-	createAdapter: (settings, options) => new TableAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureTable({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.table]: TableToolbarButton,
+export const Table = (
+	...adapterSettings: Parameters<typeof TableFactory>
+): Extension => {
+	return {
+		createAdapter: () => TableFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.table]: TableToolbarButton,
+			},
+			floatingComponents: [TableContextMenu],
 		},
-	},
-});
+	};
+};

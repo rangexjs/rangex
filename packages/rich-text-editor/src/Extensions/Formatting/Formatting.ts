@@ -1,6 +1,5 @@
-import { FormattingAdapter } from "#adapters";
-import { configureFormatting } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
+import { Formatting as FormattingFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
 import {
 	BackgroundColorToolbarButton,
 	BoldToolbarButton,
@@ -20,34 +19,36 @@ import {
 	SuperscriptToolbarButton,
 	TextAlignToolbarButton,
 	UnderlineToolbarButton,
-} from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+} from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Formatting = createExtension<typeof FormattingAdapter>({
-	createAdapter: (settings, options) =>
-		new FormattingAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureFormatting({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
-			[toolbarButtonsName.bold]: BoldToolbarButton,
-			[toolbarButtonsName.code]: CodeToolbarButton,
-			[toolbarButtonsName.color]: ColorToolbarButton,
-			[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
-			[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
-			[toolbarButtonsName.indentation]: IndentationToolbarButton,
-			[toolbarButtonsName.italic]: ItalicToolbarButton,
-			[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
-			[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
-			[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
-			[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
-			[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
-			[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
-			[toolbarButtonsName.subscript]: SubscriptToolbarButton,
-			[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
-			[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
-			[toolbarButtonsName.underline]: UnderlineToolbarButton,
+export const Formatting = (
+	...adapterSettings: Parameters<typeof FormattingFactory>
+): Extension => {
+	return {
+		createAdapter: () => FormattingFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
+				[toolbarButtonsName.bold]: BoldToolbarButton,
+				[toolbarButtonsName.code]: CodeToolbarButton,
+				[toolbarButtonsName.color]: ColorToolbarButton,
+				[toolbarButtonsName.fontFamily]: FontFamilyToolbarButton,
+				[toolbarButtonsName.fontSize]: FontSizeToolbarButton,
+				[toolbarButtonsName.indentation]: IndentationToolbarButton,
+				[toolbarButtonsName.italic]: ItalicToolbarButton,
+				[toolbarButtonsName.letterSpacing]: LetterSpacingToolbarButton,
+				[toolbarButtonsName.lineHeight]: LineHeightToolbarButton,
+				[toolbarButtonsName.lineLocalName]: LineLocalNameToolbarButton,
+				[toolbarButtonsName.lineSpacing]: LineSpacingToolbarButton,
+				[toolbarButtonsName.removeFormat]: RemoveFormatToolbarButton,
+				[toolbarButtonsName.strikethrough]: StrikethroughToolbarButton,
+				[toolbarButtonsName.subscript]: SubscriptToolbarButton,
+				[toolbarButtonsName.superscript]: SuperscriptToolbarButton,
+				[toolbarButtonsName.textAlign]: TextAlignToolbarButton,
+				[toolbarButtonsName.underline]: UnderlineToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

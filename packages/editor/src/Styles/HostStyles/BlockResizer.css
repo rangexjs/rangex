@@ -1,0 +1,25 @@
+.block-resizer {
+	pointer-events: none;
+	overflow: visible;
+
+	& > span {
+		pointer-events: auto;
+		position: absolute;
+		top: 50%;
+		width: 8px;
+		height: 48px;
+		cursor: ew-resize;
+		border-radius: 9999px;
+
+		background-color: color(from light-dark(black, white) srgb r g b / 0.8);
+		border: 2px solid color(from light-dark(white, black) srgb r g b / 0.8);
+	}
+
+	& > span:first-child {
+		translate: -50% -50%;
+	}
+
+	& > span:last-child {
+		translate: 50% -50%;
+	}
+}

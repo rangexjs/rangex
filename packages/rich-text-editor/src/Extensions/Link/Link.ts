@@ -1,16 +1,18 @@
-import { LinkAdapter } from "#adapters";
-import { configureLink } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { LinkToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { Link as LinkFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { LinkMenu, LinkSelectionMenu, LinkToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Link = createExtension<typeof LinkAdapter>({
-	createAdapter: (settings, options) => new LinkAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureLink({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.link]: LinkToolbarButton,
+export const Link = (
+	...adapterSettings: Parameters<typeof LinkFactory>
+): Extension => {
+	return {
+		createAdapter: () => LinkFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.link]: LinkToolbarButton,
+			},
+			floatingComponents: [LinkSelectionMenu, LinkMenu],
 		},
-	},
-});
+	};
+};

@@ -1,16 +1,18 @@
-import { TodoListAdapter } from "#adapters";
-import { configureTodoList } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { CheckboxListToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { TodoList as TodoListFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { CheckboxListToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const TodoList = createExtension<typeof TodoListAdapter>({
-	createAdapter: (settings, options) => new TodoListAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureTodoList({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
+export const TodoList = (
+	...adapterSettings: Parameters<typeof TodoListFactory>
+): Extension => {
+	return {
+		createAdapter: () => TodoListFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

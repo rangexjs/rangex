@@ -1,0 +1,69 @@
+import type { BlockComponent } from "rich-text-area";
+import { extendObjectProperties } from "#utilities";
+import {
+	createBlockAlignPort,
+	createBlockResize,
+	createCaptionPort,
+	createCurrentComponentPort,
+	createQuickActionsPort,
+	createSwapToEmptyMediaPort,
+} from "../_Utilities";
+import type {
+	CreateVideoAdapterParams,
+	CreateVideoAdapterResult,
+	VideoConfigPort,
+	VideoConfigPortProps,
+	VideoPublicPort,
+	VideoPublicPortProps,
+} from "./VideoAdapter-types";
+
+export const createVideoAdapter = (
+	...params: CreateVideoAdapterParams
+): CreateVideoAdapterResult => {
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerSupportedMediaType("video");
+
+	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
+
+	const captionPort = createCaptionPort();
+	const blockAlignPort = createBlockAlignPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
+	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
+	const quickActionsPort = createQuickActionsPort({ floatingContainer });
+
+	const configPort: VideoConfigPort = extendObjectProperties(
+		captionPort.configPort,
+		blockAlignPort.configPort,
+		currentComponentPort.configPort,
+		swapToEmptyMediaPort.configPort,
+		{
+			get blockResize() {
+				return blockResize;
+			},
+
+			get quickActions() {
+				return quickActionsPort.configPort;
+			},
+
+			onMediaResolve(callback) {
+				const cleanup = adapterBus.onMediaResolve(callback);
+				return () => cleanup();
+			},
+		} satisfies VideoConfigPortProps,
+	);
+
+	const publicPort: VideoPublicPort = extendObjectProperties(
+		captionPort.publicPort,
+		blockAlignPort.publicPort,
+		currentComponentPort.publicPort,
+		swapToEmptyMediaPort.publicPort,
+		{
+			get quickActions() {
+				return quickActionsPort.publicPort;
+			},
+		} satisfies VideoPublicPortProps,
+	);
+
+	return { configPort, publicPort };
+};

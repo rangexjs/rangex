@@ -1,16 +1,18 @@
-import { SeparatorAdapter } from "#adapters";
-import { configureSeparator } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { CustomComponentToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { Separator as SeparatorFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { CustomComponentToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Separator = createExtension<typeof SeparatorAdapter>({
-	createAdapter: (settings, options) => new SeparatorAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureSeparator({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
+export const Separator = (
+	...adapterSettings: Parameters<typeof SeparatorFactory>
+): Extension => {
+	return {
+		createAdapter: () => SeparatorFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

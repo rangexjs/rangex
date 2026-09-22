@@ -1,11 +1,15 @@
-import { CommandMenuAdapter } from "#adapters";
-import { configureCommandMenu } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { CommandMenu as CommandMenuFactory } from "@rangex/editor";
+import { CommandMenuCaretMenu } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const CommandMenu = createExtension<typeof CommandMenuAdapter>({
-	createAdapter: (settings, options) =>
-		new CommandMenuAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureCommandMenu({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const CommandMenu = (
+	...adapterSettings: Parameters<typeof CommandMenuFactory>
+): Extension => {
+	return {
+		createAdapter: () => CommandMenuFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [CommandMenuCaretMenu],
+		},
+	};
+};

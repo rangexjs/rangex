@@ -1,20 +1,22 @@
-import { ListAdapter } from "#adapters";
-import { configureList } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
+import { List as ListFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
 import {
 	OrderedListToolbarButton,
 	UnorderedListToolbarButton,
-} from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+} from "#features";
+import type { Extension } from "../_Utilities";
 
-export const List = createExtension<typeof ListAdapter>({
-	createAdapter: (settings, options) => new ListAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureList({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
-			[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
+export const List = (
+	...adapterSettings: Parameters<typeof ListFactory>
+): Extension => {
+	return {
+		createAdapter: () => ListFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.orderedList]: OrderedListToolbarButton,
+				[toolbarButtonsName.unorderedList]: UnorderedListToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};

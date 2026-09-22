@@ -1,9 +1,14 @@
-import { MarkdownAdapter } from "#adapters";
-import { configureMarkdown } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Markdown as MarkdownFactory } from "@rangex/editor";
+import type { Extension } from "../_Utilities";
 
-export const Markdown = createExtension<typeof MarkdownAdapter>({
-	createAdapter: (settings, options) => new MarkdownAdapter(settings, options),
-	configure: ({ editorAPI }) => configureMarkdown({ editorAPI }),
-	components: {},
-});
+export const Markdown = (
+	...adapterSettings: Parameters<typeof MarkdownFactory>
+): Extension => {
+	return {
+		createAdapter: () => MarkdownFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [],
+		},
+	};
+};

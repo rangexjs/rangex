@@ -1,10 +1,15 @@
-import { EmbedAdapter } from "#adapters";
-import { configureEmbed } from "#editor-extensions";
-import { createExtension } from "../_Utilities";
+import { Embed as EmbedFactory } from "@rangex/editor";
+import { EmbedQuickActions } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const Embed = createExtension<typeof EmbedAdapter>({
-	createAdapter: (settings, options) => new EmbedAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureEmbed({ editorPort: adapter.editorPort, editorAPI }),
-	components: {},
-});
+export const Embed = (
+	...adapterSettings: Parameters<typeof EmbedFactory>
+): Extension => {
+	return {
+		createAdapter: () => EmbedFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {},
+			floatingComponents: [EmbedQuickActions],
+		},
+	};
+};

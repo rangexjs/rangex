@@ -5,7 +5,11 @@
 	},
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"html": { "formatter": { "enabled": true } },
-	"css": { "formatter": { "enabled": true }, "linter": { "enabled": true } },
+	"css": {
+		"formatter": { "enabled": true },
+		"linter": { "enabled": true },
+		"parser": { "tailwindDirectives": true }
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -62,14 +66,6 @@
 		},
 		{
 			"includes": ["packages/rich-text-editor/**"],
-			"css": {
-				"assist": { "enabled": true },
-				"formatter": { "enabled": true },
-				"linter": { "enabled": true }
-			}
-		},
-		{
-			"includes": ["packages/rich-text-editor/src/UI/**"],
 			"css": {
 				"parser": { "tailwindDirectives": true }
 			},

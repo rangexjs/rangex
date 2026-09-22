@@ -1,0 +1,43 @@
+.editor-host::part(exposed) {
+	anchor-name: attr(data-rx-anchor-name type(<custom-ident>));
+}
+
+.hide-anchored {
+	display: none !important;
+}
+
+.disable-transition {
+	transition: none !important;
+}
+
+/*
+	Everything below can be removed once anchor-name supports cross tree-scopes
+	https://issues.chromium.org/issues/450830785
+*/
+.editor-host::part(position-anchor) {
+	position-anchor: attr(data-rx-position-anchor type(<custom-ident>));
+}
+
+.editor-host::part(top) {
+	top: attr(data-rx-top type(*));
+}
+
+.editor-host::part(right) {
+	right: attr(data-rx-right type(*));
+}
+
+.editor-host::part(bottom) {
+	bottom: attr(data-rx-bottom type(*));
+}
+
+.editor-host::part(left) {
+	left: attr(data-rx-left type(*));
+}
+
+.editor-host::part(width) {
+	width: attr(data-rx-width type(*));
+}
+
+.editor-host::part(height) {
+	height: attr(data-rx-height type(*));
+}

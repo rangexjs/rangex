@@ -1,16 +1,30 @@
-import { CodeBlockAdapter } from "#adapters";
-import { configureCodeBlock } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { CodeBlockToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { CodeBlock as CodeBlockFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import type { CodeBlockUIOptions } from "#context";
+import { CodeBlockQuickActions, CodeBlockToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const CodeBlock = createExtension<typeof CodeBlockAdapter>({
-	createAdapter: (settings, options) => new CodeBlockAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureCodeBlock({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
+export const CodeBlock = (
+	settings: Parameters<typeof CodeBlockFactory>[0] & CodeBlockUIOptions,
+): Extension => {
+	const {
+		languages,
+		themes,
+		defaultLanguage,
+		defaultTheme,
+		...adapterSettings
+	} = settings;
+
+	return {
+		createAdapter: () => CodeBlockFactory(adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.codeBlock]: CodeBlockToolbarButton,
+			},
+			floatingComponents: [CodeBlockQuickActions],
 		},
-	},
-});
+		uiOptions: {
+			codeBlock: { languages, themes, defaultLanguage, defaultTheme },
+		},
+	};
+};

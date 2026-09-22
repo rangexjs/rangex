@@ -1,17 +1,18 @@
-import { AccordionItemAdapter } from "#adapters";
-import { configureAccordionItem } from "#editor-extensions";
-import { toolbarButtonsName } from "#ports";
-import { CustomComponentToolbarButton } from "#ui-extensions";
-import { createExtension } from "../_Utilities";
+import { AccordionItem as AccordionItemFactory } from "@rangex/editor";
+import { toolbarButtonsName } from "#constants";
+import { CustomComponentToolbarButton } from "#features";
+import type { Extension } from "../_Utilities";
 
-export const AccordionItem = createExtension<typeof AccordionItemAdapter>({
-	createAdapter: (settings, options) =>
-		new AccordionItemAdapter(settings, options),
-	configure: ({ adapter, editorAPI }) =>
-		configureAccordionItem({ editorPort: adapter.editorPort, editorAPI }),
-	components: {
-		toolbarButtons: {
-			[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
+export const AccordionItem = (
+	...adapterSettings: Parameters<typeof AccordionItemFactory>
+): Extension => {
+	return {
+		createAdapter: () => AccordionItemFactory(...adapterSettings),
+		components: {
+			toolbarButtons: {
+				[toolbarButtonsName.customComponent]: CustomComponentToolbarButton,
+			},
+			floatingComponents: [],
 		},
-	},
-});
+	};
+};
