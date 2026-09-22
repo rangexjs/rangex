@@ -201,12 +201,5 @@ field became `element`, since the composed key is already `selectionMenu`).
 `@rangex/editor` is the only package that talks to the closed-source engine
 (`rich-text-area`) directly. It is framework-agnostic — no Solid, no UI, no
 `components` field anywhere; `@rangex/solid` consumes what this package exposes and
-wraps `publicPort`s into reactive signals; `@rangex/rich-text-editor-next` (the
-zero-config package under construction, not yet the published `@rangex/rich-text-editor`
-name) builds the actual UI on top of that.
-
-`packages/rich-text-editor` (the old monolith) is untouched and stays the reference
-implementation until this chain fully replaces it — do not port its `Ports/`-tier
-patterns wholesale, several of them (`uiPort`/`editorPort` naming, class-based Adapters,
-Solid-coupled overlay mounting) were deliberately dropped or renamed here. Where this
-file and that package disagree, this file wins for anything under `Adapters/`.
+wraps `publicPort`s into reactive signals; `@rangex/rich-text-editor` (the zero-config
+package) builds the actual UI on top of that.

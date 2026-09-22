@@ -6,7 +6,7 @@
       "name": "@rangexjs/rangex-dev",
       "dependencies": {
         "@rangex/editor": "workspace:*",
-        "@rangex/rich-text-editor-next": "workspace:*",
+        "@rangex/rich-text-editor": "workspace:*",
         "@rangex/syntax-highlighter-shiki": "workspace:*",
         "@shikijs/langs": "^4.3.1",
         "@shikijs/themes": "^4.3.1",
@@ -52,8 +52,8 @@
         "vitest": "^4.1.10",
       },
     },
-    "packages/rich-text-editor-next": {
-      "name": "@rangex/rich-text-editor-next",
+    "packages/rich-text-editor": {
+      "name": "@rangex/rich-text-editor",
       "version": "0.0.0",
       "dependencies": {
         "@rangex/editor": "workspace:*",
@@ -257,7 +257,7 @@
 
     "@rangex/editor": ["@rangex/editor@workspace:packages/editor"],
 
-    "@rangex/rich-text-editor-next": ["@rangex/rich-text-editor-next@workspace:packages/rich-text-editor-next"],
+    "@rangex/rich-text-editor": ["@rangex/rich-text-editor@workspace:packages/rich-text-editor"],
 
     "@rangex/solid": ["@rangex/solid@workspace:packages/solid"],
 

@@ -1,11 +1,11 @@
 {
-	"name": "@rangex/rich-text-editor-next",
+	"name": "@rangex/rich-text-editor",
 	"version": "0.0.0",
 	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:rangexjs/rangex-dev.git",
-		"directory": "packages/rich-text-editor-next"
+		"directory": "packages/rich-text-editor"
 	},
 	"private": true,
 	"license": "MIT",

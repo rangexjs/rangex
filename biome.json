@@ -65,7 +65,7 @@
 			}
 		},
 		{
-			"includes": ["packages/rich-text-editor-next/**"],
+			"includes": ["packages/rich-text-editor/**"],
 			"css": {
 				"parser": { "tailwindDirectives": true }
 			},

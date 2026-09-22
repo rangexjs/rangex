@@ -7,18 +7,18 @@
 		"packages/editor",
 		"packages/solid",
 		"packages/syntax-highlighter-shiki",
-		"packages/rich-text-editor-next"
+		"packages/rich-text-editor"
 	],
 	"scripts": {
 		"dev": "vite dev",
-		"build": "bun run --filter @rangex/editor build && bun run --filter @rangex/solid build && bun run --filter @rangex/syntax-highlighter-shiki build && bun run --filter @rangex/rich-text-editor-next build",
-		"fix": "bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor-next fix",
-		"lint": "biome check index.ts src && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor-next fix"
+		"build": "bun run --filter @rangex/editor build && bun run --filter @rangex/solid build && bun run --filter @rangex/syntax-highlighter-shiki build && bun run --filter @rangex/rich-text-editor build",
+		"fix": "bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
+		"lint": "biome check index.ts src && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",
 		"@rangex/editor": "workspace:*",
-		"@rangex/rich-text-editor-next": "workspace:*",
+		"@rangex/rich-text-editor": "workspace:*",
 		"@rangex/syntax-highlighter-shiki": "workspace:*",
 		"@shikijs/langs": "^4.3.1",
 		"@shikijs/themes": "^4.3.1",
