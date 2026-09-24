@@ -3,6 +3,7 @@ import {
 	createContentLine,
 	createEditorAPI,
 	createRootEditable,
+	migrateStoredSnapshot,
 } from "rich-text-area";
 import { createRootStorage } from "#engine-links";
 import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
@@ -17,7 +18,15 @@ const createRootEditableFrom = ({
 }: CreateRootEditableFromParams): CreateRootEditableFromResult => {
 	if (storedSnapshot) {
 		// TODO: We have to add a validator that check if every storage is up to date
-		return { type: "snapshot", storedSnapshot };
+		const migrationResult = migrateStoredSnapshot({ storedSnapshot });
+
+		if (migrationResult.isValid) {
+			const migratedStoredSnapshot = migrationResult.storedSnapshot;
+
+			return { type: "snapshot", storedSnapshot: migratedStoredSnapshot };
+		}
+
+		console.warn("Snapshot migration failed.", migrationResult.reason);
 	}
 
 	const rootEditable = createRootEditable({
