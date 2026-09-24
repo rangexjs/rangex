@@ -16,6 +16,7 @@ import {
 	createCodeBlock,
 	createList,
 	createTodoList,
+	getAccordionItemParts,
 } from "../../_Utilities";
 import type {
 	CreateBlockComponentParams,
@@ -62,8 +63,12 @@ const createBlockComponent = (
 	const { childNodes } = params;
 
 	if (params.name === componentsName.accordionItem) {
-		const { blockComponentLine, bodyNestedEditable } = createAccordionItem({
+		const blockComponentLine = createAccordionItem({
+			open: true,
 			childNodes,
+		});
+		const { bodyNestedEditable } = getAccordionItemParts({
+			accordionItem: blockComponentLine,
 		});
 
 		return { blockComponentLine, wrapTarget: bodyNestedEditable };
