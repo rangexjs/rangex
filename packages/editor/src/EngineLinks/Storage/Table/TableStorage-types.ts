@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { TableId } from "../../Constants";
-import type { tableStorageVersion } from "./TableStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface TableStorage {
 	id: TableId;
-	version: typeof tableStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateTableStorageResult extends TableStorage {}

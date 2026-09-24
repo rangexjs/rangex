@@ -1,5 +1,5 @@
 import { todoCheckboxId, todoListId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateTodoCheckboxStorageParams,
 	CreateTodoCheckboxStorageResult,
@@ -18,15 +18,10 @@ import type {
 } from "./TodoListStorage-types";
 
 // TodoList
-export const todoListStorageVersion = 1 as const;
-
 export const isTodoListStorage = (
 	storage: unknown,
 ): storage is TodoListStorage => {
-	return isStorage(storage, {
-		id: todoListId,
-		version: todoListStorageVersion,
-	});
+	return isStorage(storage, { id: todoListId });
 };
 
 export const validateTodoListStorage = (
@@ -37,7 +32,7 @@ export const validateTodoListStorage = (
 
 export const createTodoListStorage = (): CreateTodoListStorageResult => ({
 	id: todoListId,
-	version: todoListStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureTodoListStorage = ({
@@ -62,15 +57,10 @@ export const ensureNodeTodoListStorage = ({
 };
 
 // TodoCheckbox
-export const todoCheckboxStorageVersion = 1 as const;
-
 export const isTodoCheckboxStorage = (
 	storage: unknown,
 ): storage is TodoCheckboxStorage => {
-	return isStorage(storage, {
-		id: todoCheckboxId,
-		version: todoCheckboxStorageVersion,
-	});
+	return isStorage(storage, { id: todoCheckboxId });
 };
 
 export const validateTodoCheckboxStorage = (
@@ -87,7 +77,7 @@ export const createTodoCheckboxStorage = ({
 	checked,
 }: CreateTodoCheckboxStorageParams): CreateTodoCheckboxStorageResult => ({
 	id: todoCheckboxId,
-	version: todoCheckboxStorageVersion,
+	version: storageVersion,
 	checked,
 });
 

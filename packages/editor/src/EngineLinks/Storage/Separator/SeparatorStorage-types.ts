@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { SeparatorId } from "../../Constants";
-import type { separatorStorageVersion } from "./SeparatorStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface SeparatorStorage {
 	id: SeparatorId;
-	version: typeof separatorStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateSeparatorStorageResult extends SeparatorStorage {}

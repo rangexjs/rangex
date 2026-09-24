@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { ListId } from "../../Constants";
-import type { listStorageVersion } from "./ListStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface ListStorage {
 	id: ListId;
-	version: typeof listStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateListStorageResult extends ListStorage {}

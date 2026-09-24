@@ -1,5 +1,5 @@
 import { blockQuoteId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	BlockQuoteStorage,
 	CreateBlockQuoteStorageResult,
@@ -9,15 +9,10 @@ import type {
 	EnsureNodeBlockQuoteStorageResult,
 } from "./BlockQuoteStorage-types";
 
-export const blockQuoteStorageVersion = 1 as const;
-
 export const isBlockQuoteStorage = (
 	storage: unknown,
 ): storage is BlockQuoteStorage => {
-	return isStorage(storage, {
-		id: blockQuoteId,
-		version: blockQuoteStorageVersion,
-	});
+	return isStorage(storage, { id: blockQuoteId });
 };
 
 export const validateBlockQuoteStorage = (
@@ -28,7 +23,7 @@ export const validateBlockQuoteStorage = (
 
 export const createBlockQuoteStorage = (): CreateBlockQuoteStorageResult => ({
 	id: blockQuoteId,
-	version: blockQuoteStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureBlockQuoteStorage = ({

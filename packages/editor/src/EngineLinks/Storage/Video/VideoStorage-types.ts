@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { VideoId } from "../../Constants";
-import type { videoStorageVersion } from "./VideoStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface VideoStorage {
 	id: VideoId;
-	version: typeof videoStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateVideoStorageResult extends VideoStorage {}

@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { BlockQuoteId } from "../../Constants";
-import type { blockQuoteStorageVersion } from "./BlockQuoteStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface BlockQuoteStorage {
 	id: BlockQuoteId;
-	version: typeof blockQuoteStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateBlockQuoteStorageResult extends BlockQuoteStorage {}

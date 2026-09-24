@@ -1,11 +1,10 @@
 import type { InlineComponent } from "rich-text-area";
 import type { MentionId } from "../../Constants";
-
-import type { mentionStorageVersion } from "./MentionStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface MentionStorage {
 	id: MentionId;
-	version: typeof mentionStorageVersion;
+	version: typeof storageVersion;
 	userId: string;
 }
 

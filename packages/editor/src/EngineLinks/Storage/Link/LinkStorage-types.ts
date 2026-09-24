@@ -1,10 +1,10 @@
 import type { InlineComponent } from "rich-text-area";
 import type { LinkId } from "../../Constants";
-import type { linkStorageVersion } from "./LinkStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface LinkStorage {
 	id: LinkId;
-	version: typeof linkStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateLinkStorageResult extends LinkStorage {}

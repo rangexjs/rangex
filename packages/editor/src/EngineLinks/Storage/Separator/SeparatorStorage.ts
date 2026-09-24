@@ -1,4 +1,5 @@
 import { separatorId } from "../../Constants";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateSeparatorStorageResult,
 	EnsureNodeSeparatorStorageParams,
@@ -8,33 +9,21 @@ import type {
 	SeparatorStorage,
 } from "./SeparatorStorage-types";
 
-export const separatorStorageVersion = 1 as const;
-
 export const isSeparatorStorage = (
 	storage: unknown,
-): storage is SeparatorStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === separatorId &&
-	"version" in storage &&
-	storage.version === separatorStorageVersion;
+): storage is SeparatorStorage => {
+	return isStorage(storage, { id: separatorId });
+};
 
 export const validateSeparatorStorage = (
 	storage: unknown,
 ): storage is SeparatorStorage => {
-	const isValid = isSeparatorStorage(storage);
-
-	if (!isValid) {
-		console.warn("validateSeparatorStorage: unexpected data shape", storage);
-	}
-
-	return isValid;
+	return validateStorage(storage, isSeparatorStorage);
 };
 
 export const createSeparatorStorage = (): CreateSeparatorStorageResult => ({
 	id: separatorId,
-	version: separatorStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureSeparatorStorage = ({

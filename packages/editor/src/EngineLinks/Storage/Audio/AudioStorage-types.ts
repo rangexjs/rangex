@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { AudioId } from "../../Constants";
-import type { audioStorageVersion } from "./AudioStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface AudioStorage {
 	id: AudioId;
-	version: typeof audioStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateAudioStorageResult extends AudioStorage {}

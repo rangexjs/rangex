@@ -1,5 +1,5 @@
 import { listId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateListStorageResult,
 	EnsureListStorageParams,
@@ -9,10 +9,8 @@ import type {
 	ListStorage,
 } from "./ListStorage-types";
 
-export const listStorageVersion = 1 as const;
-
 export const isListStorage = (storage: unknown): storage is ListStorage => {
-	return isStorage(storage, { id: listId, version: listStorageVersion });
+	return isStorage(storage, { id: listId });
 };
 
 export const validateListStorage = (
@@ -23,7 +21,7 @@ export const validateListStorage = (
 
 export const createListStorage = (): CreateListStorageResult => ({
 	id: listId,
-	version: listStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureListStorage = ({

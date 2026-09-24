@@ -1,5 +1,5 @@
 import { imageId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateImageStorageResult,
 	EnsureImageStorageParams,
@@ -9,10 +9,8 @@ import type {
 	ImageStorage,
 } from "./ImageStorage-types";
 
-export const imageStorageVersion = 1 as const;
-
 export const isImageStorage = (storage: unknown): storage is ImageStorage => {
-	return isStorage(storage, { id: imageId, version: imageStorageVersion });
+	return isStorage(storage, { id: imageId });
 };
 
 export const validateImageStorage = (
@@ -23,7 +21,7 @@ export const validateImageStorage = (
 
 export const createImageStorage = (): CreateImageStorageResult => ({
 	id: imageId,
-	version: imageStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureImageStorage = ({

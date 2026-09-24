@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { EmptyMediaId } from "../../Constants";
-import type { emptyMediaStorageVersion } from "./EmptyMediaStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface EmptyMediaStorage {
 	id: EmptyMediaId;
-	version: typeof emptyMediaStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateEmptyMediaStorageResult extends EmptyMediaStorage {}

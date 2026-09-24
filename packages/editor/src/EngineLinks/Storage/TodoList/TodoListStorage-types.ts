@@ -1,14 +1,11 @@
 import type { BlockComponent, HTMLLayout } from "rich-text-area";
 import type { TodoCheckboxId, TodoListId } from "../../Constants";
-import type {
-	todoCheckboxStorageVersion,
-	todoListStorageVersion,
-} from "./TodoListStorage";
+import type { storageVersion } from "../_Utilities";
 
 // TodoList
 export interface TodoListStorage {
 	id: TodoListId;
-	version: typeof todoListStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateTodoListStorageResult extends TodoListStorage {}
@@ -28,7 +25,7 @@ export interface EnsureNodeTodoListStorageResult extends TodoListStorage {}
 // TodoCheckbox
 export interface TodoCheckboxStorage {
 	id: TodoCheckboxId;
-	version: typeof todoCheckboxStorageVersion;
+	version: typeof storageVersion;
 	checked: boolean;
 }
 

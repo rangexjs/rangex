@@ -1,5 +1,5 @@
 import { codeBlockId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CodeBlockStorage,
 	CodeBlockStorageFallbacks,
@@ -11,15 +11,10 @@ import type {
 	EnsureNodeCodeBlockStorageResult,
 } from "./CodeBlockStorage-types";
 
-export const codeBlockStorageVersion = 1 as const;
-
 export const isCodeBlockStorage = (
 	storage: unknown,
 ): storage is CodeBlockStorage => {
-	return isStorage(storage, {
-		id: codeBlockId,
-		version: codeBlockStorageVersion,
-	});
+	return isStorage(storage, { id: codeBlockId });
 };
 
 export const validateCodeBlockStorage = (
@@ -38,7 +33,7 @@ export const createCodeBlockStorage = ({
 	theme,
 }: CreateCodeBlockStorageParams): CreateCodeBlockStorageResult => ({
 	id: codeBlockId,
-	version: codeBlockStorageVersion,
+	version: storageVersion,
 	language,
 	theme,
 });

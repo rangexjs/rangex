@@ -1,6 +1,6 @@
 import type { BlockComponent } from "rich-text-area";
 import type { CodeBlockId } from "../../Constants";
-import type { codeBlockStorageVersion } from "./CodeBlockStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface CodeBlockTheme {
 	light: string;
@@ -9,7 +9,7 @@ export interface CodeBlockTheme {
 
 export interface CodeBlockStorage {
 	id: CodeBlockId;
-	version: typeof codeBlockStorageVersion;
+	version: typeof storageVersion;
 	language: string | null;
 	theme: CodeBlockTheme | null;
 }

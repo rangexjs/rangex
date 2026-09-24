@@ -1,5 +1,5 @@
 import { audioId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	AudioStorage,
 	CreateAudioStorageResult,
@@ -9,10 +9,8 @@ import type {
 	EnsureNodeAudioStorageResult,
 } from "./AudioStorage-types";
 
-export const audioStorageVersion = 1 as const;
-
 export const isAudioStorage = (storage: unknown): storage is AudioStorage => {
-	return isStorage(storage, { id: audioId, version: audioStorageVersion });
+	return isStorage(storage, { id: audioId });
 };
 
 export const validateAudioStorage = (
@@ -23,7 +21,7 @@ export const validateAudioStorage = (
 
 export const createAudioStorage = (): CreateAudioStorageResult => ({
 	id: audioId,
-	version: audioStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureAudioStorage = ({

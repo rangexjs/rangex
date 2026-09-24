@@ -1,4 +1,5 @@
 import { accordionItemId } from "../../Constants";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	AccordionItemStorage,
 	CreateAccordionItemStorageResult,
@@ -8,37 +9,22 @@ import type {
 	EnsureNodeAccordionItemStorageResult,
 } from "./AccordionItemStorage-types";
 
-export const accordionItemStorageVersion = 1 as const;
-
 export const isAccordionItemStorage = (
 	storage: unknown,
-): storage is AccordionItemStorage =>
-	typeof storage === "object" &&
-	storage !== null &&
-	"id" in storage &&
-	storage.id === accordionItemId &&
-	"version" in storage &&
-	storage.version === accordionItemStorageVersion;
+): storage is AccordionItemStorage => {
+	return isStorage(storage, { id: accordionItemId });
+};
 
 export const validateAccordionItemStorage = (
 	storage: unknown,
 ): storage is AccordionItemStorage => {
-	const isValid = isAccordionItemStorage(storage);
-
-	if (!isValid) {
-		console.warn(
-			"validateAccordionItemStorage: unexpected data shape",
-			storage,
-		);
-	}
-
-	return isValid;
+	return validateStorage(storage, isAccordionItemStorage);
 };
 
 export const createAccordionItemStorage =
 	(): CreateAccordionItemStorageResult => ({
 		id: accordionItemId,
-		version: accordionItemStorageVersion,
+		version: storageVersion,
 	});
 
 export const ensureAccordionItemStorage = ({

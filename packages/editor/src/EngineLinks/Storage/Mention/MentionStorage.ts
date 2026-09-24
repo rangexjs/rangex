@@ -1,5 +1,5 @@
 import { mentionId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateMentionStorageParams,
 	CreateMentionStorageResult,
@@ -10,12 +10,10 @@ import type {
 	MentionStorage,
 } from "./MentionStorage-types";
 
-export const mentionStorageVersion = 1 as const;
-
 export const isMentionStorage = (
 	storage: unknown,
 ): storage is MentionStorage => {
-	return isStorage(storage, { id: mentionId, version: mentionStorageVersion });
+	return isStorage(storage, { id: mentionId });
 };
 
 export const validateMentionStorage = (
@@ -27,7 +25,7 @@ export const validateMentionStorage = (
 export const createMentionStorage = ({
 	userId,
 }: CreateMentionStorageParams): CreateMentionStorageResult => {
-	return { id: mentionId, version: mentionStorageVersion, userId };
+	return { id: mentionId, version: storageVersion, userId };
 };
 
 export const ensureMentionStorage = ({

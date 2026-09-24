@@ -1,6 +1,5 @@
-export interface StorageFields {
+export interface IsStorageParams {
 	id: string;
-	version: number;
 }
 
 export type ValidateStorageCallbackFn = (storage: unknown) => boolean;

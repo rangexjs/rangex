@@ -1,5 +1,5 @@
 import { videoId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateVideoStorageResult,
 	EnsureNodeVideoStorageParams,
@@ -9,10 +9,8 @@ import type {
 	VideoStorage,
 } from "./VideoStorage-types";
 
-export const videoStorageVersion = 1 as const;
-
 export const isVideoStorage = (storage: unknown): storage is VideoStorage => {
-	return isStorage(storage, { id: videoId, version: videoStorageVersion });
+	return isStorage(storage, { id: videoId });
 };
 
 export const validateVideoStorage = (
@@ -23,7 +21,7 @@ export const validateVideoStorage = (
 
 export const createVideoStorage = (): CreateVideoStorageResult => ({
 	id: videoId,
-	version: videoStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureVideoStorage = ({

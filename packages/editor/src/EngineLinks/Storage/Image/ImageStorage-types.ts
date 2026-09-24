@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { ImageId } from "../../Constants";
-import type { imageStorageVersion } from "./ImageStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface ImageStorage {
 	id: ImageId;
-	version: typeof imageStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateImageStorageResult extends ImageStorage {}

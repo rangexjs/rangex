@@ -1,5 +1,5 @@
 import { templateVariableId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateTemplateVariableStorageParams,
 	CreateTemplateVariableStorageResult,
@@ -10,15 +10,10 @@ import type {
 	TemplateVariableStorage,
 } from "./TemplateVariableStorage-types";
 
-export const templateVariableStorageVersion = 1 as const;
-
 export const isTemplateVariableStorage = (
 	storage: unknown,
 ): storage is TemplateVariableStorage => {
-	return isStorage(storage, {
-		id: templateVariableId,
-		version: templateVariableStorageVersion,
-	});
+	return isStorage(storage, { id: templateVariableId });
 };
 
 export const validateTemplateVariableStorage = (
@@ -32,7 +27,7 @@ export const createTemplateVariableStorage = ({
 }: CreateTemplateVariableStorageParams): CreateTemplateVariableStorageResult => {
 	return {
 		id: templateVariableId,
-		version: templateVariableStorageVersion,
+		version: storageVersion,
 		type,
 	};
 };

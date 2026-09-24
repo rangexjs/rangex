@@ -1,5 +1,5 @@
 import { rootId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateRootStorageResult,
 	EnsureNodeRootStorageParams,
@@ -9,8 +9,6 @@ import type {
 	RootStorage,
 } from "./RootStorage-types";
 
-export const rootStorageVersion = 1 as const;
-
 export const templateVariableKeys = [
 	"firstName",
 	"lastName",
@@ -19,7 +17,7 @@ export const templateVariableKeys = [
 ] as const;
 
 export const isRootStorage = (storage: unknown): storage is RootStorage => {
-	return isStorage(storage, { id: rootId, version: rootStorageVersion });
+	return isStorage(storage, { id: rootId });
 };
 
 export const validateRootStorage = (
@@ -30,7 +28,7 @@ export const validateRootStorage = (
 
 export const createRootStorage = (): CreateRootStorageResult => ({
 	id: rootId,
-	version: rootStorageVersion,
+	version: storageVersion,
 	templateVariable: {
 		firstName: null,
 		lastName: null,

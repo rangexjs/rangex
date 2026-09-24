@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { AccordionItemId } from "../../Constants";
-import type { accordionItemStorageVersion } from "./AccordionItemStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface AccordionItemStorage {
 	id: AccordionItemId;
-	version: typeof accordionItemStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateAccordionItemStorageResult

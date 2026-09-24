@@ -1,5 +1,5 @@
 import { emptyMediaId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateEmptyMediaStorageResult,
 	EmptyMediaStorage,
@@ -9,15 +9,10 @@ import type {
 	EnsureNodeEmptyMediaStorageResult,
 } from "./EmptyMediaStorage-types";
 
-export const emptyMediaStorageVersion = 1 as const;
-
 export const isEmptyMediaStorage = (
 	storage: unknown,
 ): storage is EmptyMediaStorage => {
-	return isStorage(storage, {
-		id: emptyMediaId,
-		version: emptyMediaStorageVersion,
-	});
+	return isStorage(storage, { id: emptyMediaId });
 };
 
 export const validateEmptyMediaStorage = (
@@ -28,7 +23,7 @@ export const validateEmptyMediaStorage = (
 
 export const createEmptyMediaStorage = (): CreateEmptyMediaStorageResult => ({
 	id: emptyMediaId,
-	version: emptyMediaStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureEmptyMediaStorage = ({

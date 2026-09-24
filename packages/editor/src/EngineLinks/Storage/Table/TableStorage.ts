@@ -1,5 +1,5 @@
 import { tableId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateTableStorageResult,
 	EnsureNodeTableStorageParams,
@@ -9,10 +9,8 @@ import type {
 	TableStorage,
 } from "./TableStorage-types";
 
-export const tableStorageVersion = 1 as const;
-
 export const isTableStorage = (storage: unknown): storage is TableStorage => {
-	return isStorage(storage, { id: tableId, version: tableStorageVersion });
+	return isStorage(storage, { id: tableId });
 };
 
 export const validateTableStorage = (
@@ -23,7 +21,7 @@ export const validateTableStorage = (
 
 export const createTableStorage = (): CreateTableStorageResult => ({
 	id: tableId,
-	version: tableStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureTableStorage = ({

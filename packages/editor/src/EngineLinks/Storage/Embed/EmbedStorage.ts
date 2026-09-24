@@ -1,5 +1,5 @@
 import { embedId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateEmbedStorageResult,
 	EmbedStorage,
@@ -9,10 +9,8 @@ import type {
 	EnsureNodeEmbedStorageResult,
 } from "./EmbedStorage-types";
 
-export const embedStorageVersion = 1 as const;
-
 export const isEmbedStorage = (storage: unknown): storage is EmbedStorage => {
-	return isStorage(storage, { id: embedId, version: embedStorageVersion });
+	return isStorage(storage, { id: embedId });
 };
 
 export const validateEmbedStorage = (
@@ -23,7 +21,7 @@ export const validateEmbedStorage = (
 
 export const createEmbedStorage = (): CreateEmbedStorageResult => ({
 	id: embedId,
-	version: embedStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureEmbedStorage = ({

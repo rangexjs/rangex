@@ -1,5 +1,5 @@
 import { linkId } from "../../Constants";
-import { isStorage, validateStorage } from "../_Utilities";
+import { isStorage, storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateLinkStorageResult,
 	EnsureLinkStorageParams,
@@ -9,10 +9,8 @@ import type {
 	LinkStorage,
 } from "./LinkStorage-types";
 
-export const linkStorageVersion = 1 as const;
-
 export const isLinkStorage = (storage: unknown): storage is LinkStorage => {
-	return isStorage(storage, { id: linkId, version: linkStorageVersion });
+	return isStorage(storage, { id: linkId });
 };
 
 export const validateLinkStorage = (
@@ -23,7 +21,7 @@ export const validateLinkStorage = (
 
 export const createLinkStorage = (): CreateLinkStorageResult => ({
 	id: linkId,
-	version: linkStorageVersion,
+	version: storageVersion,
 });
 
 export const ensureLinkStorage = ({

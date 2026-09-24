@@ -1,10 +1,10 @@
 import type { BlockComponent } from "rich-text-area";
 import type { EmbedId } from "../../Constants";
-import type { embedStorageVersion } from "./EmbedStorage";
+import type { storageVersion } from "../_Utilities";
 
 export interface EmbedStorage {
 	id: EmbedId;
-	version: typeof embedStorageVersion;
+	version: typeof storageVersion;
 }
 
 export interface CreateEmbedStorageResult extends EmbedStorage {}
