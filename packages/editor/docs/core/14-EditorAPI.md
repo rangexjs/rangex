@@ -18,10 +18,10 @@ const { editorAPI } = createEditorAPI({ ... });
 readonly host: HTMLElement
 ```
 
-The plain element that owns the editor's shadow root. Append this to the document to mount the editor:
+The element that owns the editor's shadow root. Append this to the document to mount the editor:
 
 ```ts
-document.body.appendChild(editorAPI.host);
+document.body.append(editorAPI.host);
 ```
 
 ### `shadowRoot`
@@ -539,7 +539,7 @@ Creates a serializable snapshot of the current editor content for **persistence*
 
 ```ts
 interface StoredSnapshot {
-  version: string;                                     // core version at snapshot time
+  version: number;                                     // package's snapshot version at snapshot time
   snapshot: RootEditableSnapshot;                      // full tree snapshot
   glyphFormatterInlineTagsOrder: GlyphFormatterInlineTag[]; // serialization order
 }
@@ -549,17 +549,25 @@ interface StoredSnapshot {
 
 The snapshot is a deep, plain-object representation of the entire editor tree — every element, attribute, and text node, recursively. It can be safely serialized to JSON.
 
-To restore a `StoredSnapshot`, pass it as `rootEditableFrom` to `createEditorAPI`:
+To restore a `StoredSnapshot`, run it through `migrateStoredSnapshot` first, then pass the result as `rootEditableFrom` to `createEditorAPI`:
 
 ```ts
+const result = migrateStoredSnapshot({ storedSnapshot });
+
+if (!result.isValid) {
+  throw new Error(result.reason);
+}
+
 const { editorAPI } = createEditorAPI({
   rootEditableFrom: {
     type: "snapshot",
-    storedSnapshot,
+    storedSnapshot: result.storedSnapshot,
   },
   shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
+
+`createEditorAPI` throws if the snapshot's `version` doesn't equal the package's snapshot version. See [Migrating a StoredSnapshot](09-Snapshots.md#migrating-a-storedsnapshot) for the migration result shape and every error message.
 
 **Note:** `createStoredSnapshot()` snapshots the current live state of the editor. If you need to capture state at a specific undo/redo step, first call `stepTo({ index })` on the `SnapshotTimeline` (obtained via `editorAPI.getSnapshotTimeline()`), then call `createStoredSnapshot()`.
 

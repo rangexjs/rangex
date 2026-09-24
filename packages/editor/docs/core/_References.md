@@ -1,4 +1,4 @@
-# RangeX Core — Reference
+# RangeX Handbook
 
 Authoritative reference for the RangeX rich text editor engine. Read the relevant file below before working on any engine-related task (editorAPI calls, node types, events, selection, schema rules) — do not guess engine behavior from usage patterns when these docs are available.
 
@@ -12,7 +12,7 @@ Authoritative reference for the RangeX rich text editor engine. Read the relevan
 | 6 | [06-ReadingTraversing.md](06-ReadingTraversing.md) | Type guards and traversal props for reading and walking the tree |
 | 7 | [07-EditorSchema.md](07-EditorSchema.md) | The structural rules the engine enforces — parent/child/sibling constraints, enforcement timing, display modes, content types |
 | 8 | [08-Selection.md](08-Selection.md) | `LiveBoundaryPoints`, how native browser selection syncs with it, `EditorSelection`, and `EditorRange` |
-| 9 | [09-Snapshots.md](09-Snapshots.md) | `StoredSnapshot`, `EditorSnapshot`, `SnapshotView`, `SnapshotManager` (converting a snapshot to an editable `Draft` and back, off-DOM), and the full `EditorNodeSnapshot` structural validation spec |
+| 9 | [09-Snapshots.md](09-Snapshots.md) | `StoredSnapshot`, migrating persisted snapshots (`migrateStoredSnapshot`), `EditorSnapshot`, `SnapshotView`, `SnapshotManager` (converting a snapshot to an editable `Draft` and back, off-DOM), and the full `EditorNodeSnapshot` structural validation spec |
 | 10 | [10-Events.md](10-Events.md) | Editor events (`subscribeEditorEvent`, all 9 event types, microtask batching), DOM events (`registerDOMEvent`), and event interception (`registerEventInterceptor`) |
 | 11 | [11-SnapshotTimeline.md](11-SnapshotTimeline.md) | The undo/redo system — reading and navigating timeline state, `registerSnapshotBoundary`, session merging, redo branching, memory limits |
 | 12 | [12-FindReplace.md](12-FindReplace.md) | Find-and-replace: enabling, criteria, scope, navigating matches, replace/replaceAll, listeners |

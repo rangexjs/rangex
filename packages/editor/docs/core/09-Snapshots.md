@@ -15,11 +15,13 @@ They are structurally different objects. `StoredSnapshot` is designed to be JSON
 
 ```ts
 interface StoredSnapshot {
-  version: string;
+  version: number;
   snapshot: RootEditableSnapshot;
   glyphFormatterInlineTagsOrder: GlyphFormatterInlineTag[];
 }
 ```
+
+`version` is the package's snapshot version at the time the snapshot was created. It only changes on a main version bump of the package, and it tells `migrateStoredSnapshot` which migrations a persisted snapshot still needs (see [Migrating a `StoredSnapshot`](#migrating-a-storedsnapshot)).
 
 `snapshot` is a recursive plain-object serialization of the entire `RootEditable` tree. Every element and text node is captured as a data object with no DOM references — it is fully JSON-serializable and safe to send to a backend or write to `localStorage`.
 
@@ -36,19 +38,91 @@ Call this whenever you want to save the current content — e.g. on `editorSelec
 
 **Restoring from a `StoredSnapshot`:**
 
-Pass the snapshot to `createEditorAPI` instead of a `RootEditable` node:
+Always run the persisted snapshot through `migrateStoredSnapshot` first, then pass the result to `createEditorAPI` instead of a `RootEditable` node:
 
 ```ts
+import { createEditorAPI, migrateStoredSnapshot } from "rich-text-area";
+
+const result = migrateStoredSnapshot({ storedSnapshot: JSON.parse(savedJson) });
+
+if (!result.isValid) {
+  throw new Error(result.reason);
+}
+
 const { editorAPI } = createEditorAPI({
   rootEditableFrom: {
     type: "snapshot",
-    storedSnapshot: JSON.parse(savedJson),
+    storedSnapshot: result.storedSnapshot,
   },
   shadowRootOptions: { mode: "open", serializable: true },
 });
 ```
 
 The engine reconstructs the full `RootEditable` tree from the snapshot and mounts it. All `EditorNode`s are re-created and re-extended with their `$$`-prefixed API. The caret is not restored — `LiveBoundaryPoints` starts at the initial default position.
+
+`createEditorAPI` does **not** migrate or validate the snapshot. It only checks `version` and throws if it doesn't equal the package's snapshot version:
+
+- `version` is older → throws `"StoredSnapshot's version is older than the package's version. Migrate it with migrateStoredSnapshot first."`
+- `version` is newer → throws `"StoredSnapshot's version is newer than the package's version. Update the package."`
+- `version` is not a number that can be compared (e.g. `NaN`) → throws `"StoredSnapshot's version is invalid."`
+
+---
+
+## Migrating a StoredSnapshot
+
+When the shape of `StoredSnapshot` changes in a new main version of the package, snapshots persisted by an older version can't be loaded as they are. `migrateStoredSnapshot` (imported from `"rich-text-area"`) upgrades such a snapshot to the current shape and validates it.
+
+```ts
+import { migrateStoredSnapshot } from "rich-text-area";
+
+const result = migrateStoredSnapshot({ storedSnapshot });
+```
+
+**Params:**
+
+```ts
+interface MigrateStoredSnapshotParams {
+  storedSnapshot: UnmigratedStoredSnapshot;
+}
+
+/** A StoredSnapshot of any version. Only `version` is trusted, the rest of its shape depends on that version. */
+interface UnmigratedStoredSnapshot {
+  version: number;
+}
+```
+
+**Result:**
+
+```ts
+type MigrateStoredSnapshotResult =
+  | {
+      isValid: true;
+      didMigrate: boolean;             // true if at least one migration ran
+      storedSnapshot: StoredSnapshot;  // current shape, safe to pass to createEditorAPI / createSnapshotView
+    }
+  | {
+      isValid: false;
+      reason: string;
+    };
+```
+
+Always check `isValid` first; `didMigrate` only exists on a valid result. When `didMigrate` is `true`, write the returned `storedSnapshot` back to storage so the migration doesn't run again on the next load.
+
+**What it does, in order:**
+
+1. Checks `version`:
+   - not a non-negative integer → `{ isValid: false, reason: "StoredSnapshot's version is invalid." }`
+   - newer than the package's snapshot version → `{ isValid: false, reason: "StoredSnapshot's version is newer than the package's version. Update the package." }`
+2. Deep-clones the given snapshot — the argument is never mutated.
+3. Runs the migrations one version at a time, from the snapshot's `version` up to the package's snapshot version. Migrations only go forward; there is no downgrade.
+4. Validates the result:
+   - `glyphFormatterInlineTagsOrder` must be an array that contains every `GlyphFormatter` inline tag exactly once, otherwise `{ isValid: false, reason: "GlyphFormatterInlineTagsOrder must contain every inline tag exactly once." }` (or `"GlyphFormatterInlineTagsOrder must be an array."` when it is not an array).
+   - `snapshot` must pass the `RootEditableSnapshot` validation (see [SnapshotValidation](#snapshotvalidation)); on failure, `reason` is the validation's reason.
+5. Returns `{ isValid: true, didMigrate, storedSnapshot }`.
+
+A malformed snapshot (e.g. a missing `snapshot` field) never throws — any error raised while migrating or validating is returned as `{ isValid: false, reason }`, where `reason` is the error's message.
+
+**Your own migrations:** `migrateStoredSnapshot` only migrates the engine's shape. Changes in your own data inside the snapshot (e.g. the shape of a component's `customStorage`) are not handled by it — run your own migrations on the returned `storedSnapshot` after `migrateStoredSnapshot` succeeded, and before passing it to `createEditorAPI`.
 
 ---
 
@@ -110,6 +184,8 @@ const { snapshotView } = createSnapshotView({ storedSnapshot });
 snapshotView.styles  // string — CSS stylesheet text
 snapshotView.tree    // ElementView — the root of the view tree
 ```
+
+Like `createEditorAPI`, `createSnapshotView` does not migrate the snapshot — pass it through `migrateStoredSnapshot` first. It throws the same errors when `version` is older (`"StoredSnapshot's version is older than the package's version. Migrate it with migrateStoredSnapshot first."`), newer (`"StoredSnapshot's version is newer than the package's version. Update the package."`) or not comparable (`"StoredSnapshot's version is invalid."`).
 
 **`snapshotView.styles`**
 
@@ -362,14 +438,14 @@ Example: `RootEditableSnapshot.editState` has no cross-node requirement, so vali
 
 Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSnapshot` kind, so instead of repeating them under each node below, they're specified once here.
 
-- `uniqueId` must be a string, not `undefined`, and unique across the entire tree — no two nodes, anywhere, share the same value. Generation should happen via `createUniqueId`. Uniqueness is checked once, by `RootEditable` (see its section below).
+- `uniqueId` is a required string, must be non-empty and contain only ASCII letters, digits, `_` and `-` (it is used as part of a CSS anchor name, `--<uniqueId>`, so any other character breaks anchor positioning), and must be unique across the entire tree — no two nodes, anywhere, share the same value. Generation should happen via `createUniqueId`. Format and uniqueness are checked once, by `RootEditable` (see its section below).
 - `customStorage` must not be `undefined`, and must survive `JSON.stringify` without throwing (catches `BigInt`s and circular references). This is a deliberately loose check, not a full JSON-shape validation — values that `JSON.stringify` silently coerces or drops instead of rejecting (`Date`s, `Map`s, `Set`s, functions, `Symbol`s, class instances) are not caught; keeping `customStorage` to genuinely plain JSON data is the caller's responsibility.
 
 ### Node-by-node requirements
 
 #### RootEditable
 
-- `uniqueId` uniqueness is checked here across the whole tree (see "Fields shared by every EditorNode" above).
+- `uniqueId` format and uniqueness are checked here across the whole tree: every node's `uniqueId` must be non-empty, contain only ASCII letters, digits, `_` and `-`, and differ from every other node's `uniqueId`.
 - `childNodes` must be non-empty — a `RootEditable` cannot have zero children.
 - `display`:
   - `"block multi-line"` — `childNodes` may contain one or more `RootEditableChild` (`ContentLine` or `BlockComponentLine`), in any mix/order.
