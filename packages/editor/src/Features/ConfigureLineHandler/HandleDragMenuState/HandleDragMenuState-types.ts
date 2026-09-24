@@ -1,18 +1,34 @@
-import type { BlockComponentLine } from "rich-text-area";
+import type { BlockComponentLine, ContentLine, Line } from "rich-text-area";
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
+import type {
+	BlockComponentName,
+	BlockComponentPlacement,
+} from "#engine-links";
 import type { OnLineChangeFn } from "../HandleLineHover";
+
+export interface IsAllowedAtLineParams {
+	blockComponentPlacement: BlockComponentPlacement;
+	line: Line;
+	name: BlockComponentName;
+}
+
+export type IsAllowedAtLineResult = boolean;
 
 export interface HandleContentLineParams {
 	configPort: LineHandlerConfigPort;
+	blockComponentPlacement: BlockComponentPlacement;
+	contentLine: ContentLine;
 }
 
 export interface HandleBlockComponentLineParams {
 	configPort: LineHandlerConfigPort;
+	blockComponentPlacement: BlockComponentPlacement;
 	blockComponentLine: BlockComponentLine;
 }
 
 export interface HandleDragMenuStateParams {
 	configPort: LineHandlerConfigPort;
+	blockComponentPlacement: BlockComponentPlacement;
 }
 
 export type HandleDragMenuStateResult = OnLineChangeFn;

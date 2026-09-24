@@ -1,3 +1,4 @@
+import { createBlockComponentPlacement } from "#engine-links";
 import {
 	handleBlockLineDuplication,
 	handleInsertRootLine,
@@ -19,7 +20,12 @@ export const configureLineHandler = ({
 	configPort,
 	editorAPI,
 }: ConfigureLineHandlerParams) => {
-	const onLineChange = handleDragMenuState({ configPort });
+	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+
+	const onLineChange = handleDragMenuState({
+		configPort,
+		blockComponentPlacement,
+	});
 
 	const { getCurrentLine, cleanup: hoverCleanup } = handleLineHover({
 		configPort,
@@ -42,6 +48,7 @@ export const configureLineHandler = ({
 	const turnIntoCleanup = handleTurnInto({
 		configPort,
 		editorAPI,
+		blockComponentPlacement,
 		getCurrentLine,
 	});
 

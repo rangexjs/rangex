@@ -11,16 +11,46 @@ import type {
 	HandleContentLineParams,
 	HandleDragMenuStateParams,
 	HandleDragMenuStateResult,
+	IsAllowedAtLineParams,
+	IsAllowedAtLineResult,
 } from "./HandleDragMenuState-types";
 
-const handleContentLine = ({ configPort }: HandleContentLineParams) => {
+/*
+ * Whether the ScopedEditable holding line accepts the named component, per its
+ * $$allowedComponents.
+ */
+const isAllowedAtLine = ({
+	blockComponentPlacement,
+	line,
+	name,
+}: IsAllowedAtLineParams): IsAllowedAtLineResult => {
+	return blockComponentPlacement.canWrap({
+		fromNode: line,
+		fromOffset: 0,
+		toNode: line,
+		toOffset: 0,
+		allowedComponents: [name],
+	});
+};
+
+const handleContentLine = ({
+	configPort,
+	blockComponentPlacement,
+	contentLine,
+}: HandleContentLineParams) => {
+	const isVisible = (name: BlockComponentName) =>
+		isAllowedAtLine({ blockComponentPlacement, line: contentLine, name });
+
+	const { accordionItem, blockQuote, codeBlock, list, todoList } =
+		componentsName;
+
 	configPort.updateState({
 		turnIntoAvailability: {
-			[componentsName.accordionItem]: false,
-			[componentsName.blockQuote]: false,
-			[componentsName.codeBlock]: false,
-			[componentsName.list]: false,
-			[componentsName.todoList]: false,
+			[accordionItem]: isVisible(accordionItem),
+			[blockQuote]: isVisible(blockQuote),
+			[codeBlock]: isVisible(codeBlock),
+			[list]: isVisible(list),
+			[todoList]: isVisible(todoList),
 		},
 		canRemove: true,
 		canDuplicate: true,
@@ -30,6 +60,7 @@ const handleContentLine = ({ configPort }: HandleContentLineParams) => {
 
 const handleBlockComponentLine = ({
 	configPort,
+	blockComponentPlacement,
 	blockComponentLine,
 }: HandleBlockComponentLineParams) => {
 	const blockComponent = blockComponentLine.$$querySelector(
@@ -57,7 +88,12 @@ const handleBlockComponentLine = ({
 		$$componentName !== name &&
 		turnableComponents.includes(
 			$$componentName as (typeof turnableComponents)[number],
-		);
+		) &&
+		isAllowedAtLine({
+			blockComponentPlacement,
+			line: blockComponentLine,
+			name,
+		});
 
 	const unwrappableComponents: BlockComponentName[] = [
 		accordionItem,
@@ -88,12 +124,14 @@ const handleBlockComponentLine = ({
 /*
  * Builds the onLineChange callback forwarded into handleLineHover. Whenever the hovered line
  * changes, recomputes which "Turn Into" targets are valid for it and pushes the result through
- * configPort.updateState — false both when there's no BlockComponent at all (a plain
- * ContentLine, or no line hovered) and when the target matches the line's own current
- * component, since turning a component into what it already is is a no-op.
+ * configPort.updateState. A target is only offered when the line's ScopedEditable allows that
+ * component; a BlockComponentLine additionally hides its own component, since turning a
+ * component into what it already is is a no-op, and offers nothing when its component isn't
+ * turnable at all.
  */
 export const handleDragMenuState = ({
 	configPort,
+	blockComponentPlacement,
 }: HandleDragMenuStateParams): HandleDragMenuStateResult => {
 	return (line) => {
 		if (!line) {
@@ -101,13 +139,18 @@ export const handleDragMenuState = ({
 		}
 
 		if (line.$$editorRole === contentLineName) {
-			handleContentLine({ configPort });
+			handleContentLine({
+				configPort,
+				blockComponentPlacement,
+				contentLine: line,
+			});
 			return;
 		}
 
 		if (line.$$editorRole === blockComponentLineName) {
 			handleBlockComponentLine({
 				configPort,
+				blockComponentPlacement,
 				blockComponentLine: line,
 			});
 			return;
