@@ -29,7 +29,7 @@ import {
 } from "@rangex/rich-text-editor";
 import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
 import type { StoredSnapshot } from "rich-text-area";
-import storedSnapshot from "../MockDatabase/Demo-features.json";
+import storedSnapshot from "../MockDatabase/Demo.json";
 import {
 	codeBlockLanguageDefinitions,
 	codeBlockThemeDefinitions,
