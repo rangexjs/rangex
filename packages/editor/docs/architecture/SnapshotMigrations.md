@@ -22,11 +22,11 @@ There are two valid approaches:
 
 ## The *Storage module
 
-Each component has a `*Storage/` folder inside its `Configure*` folder that centralizes all `customStorage` concerns in one place.
+Each component has a `*Storage` module in `src/EngineLinks/Storage/` that centralizes all `customStorage` concerns in one place.
 
 Every `customStorage` object has two required base fields:
 
-- `id` — identifies which component the node belongs to (e.g. `"mention"`, `"code-block"`). Constants for each are defined in `src/Constants/CustomStorageIds/`. Used to distinguish nodes when walking a snapshot tree.
+- `id` — identifies which component the node belongs to (e.g. `"mention"`, `"code-block"`). Constants for each are defined in `src/EngineLinks/Constants/CustomStorageIds/`. Used to distinguish nodes when walking a snapshot tree.
 - `version` — a positive integer that increments with each breaking change. Always represents the current version the editor expects.
 
 The current version is defined as a named constant (e.g. `const mentionStorageVersion = 1 as const`) and referenced in three places: the storage interface (`version: typeof mentionStorageVersion`), `create*Storage`, and `is*Storage`. Bumping the version is a one-line change and everything cascades.
