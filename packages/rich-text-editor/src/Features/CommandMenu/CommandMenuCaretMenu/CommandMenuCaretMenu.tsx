@@ -2,7 +2,11 @@ import { CommandMenu } from "@rangex/solid";
 import { createMemo } from "solid-js";
 import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
-import { type CaretItemFn, CaretMenu } from "../../_Utilities";
+import {
+	type CaretItemFn,
+	CaretMenu,
+	filterCaretMenuItems,
+} from "../../_Utilities";
 import type { CommandMenuAction } from "./BuildCommandMenuActions";
 import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 
@@ -21,19 +25,13 @@ export const CommandMenuCaretMenu = () => {
 		buildCommandMenuActions({ editor, uiOptions }),
 	);
 
-	const filteredItems = createMemo(() => {
-		const query = $commandMenu.query();
-
-		if (query === null) {
-			return [];
-		}
-
-		const q = query.toLowerCase();
-
-		return $commandMenu.items.filter((item) =>
-			item.label.toLowerCase().includes(q),
-		);
-	});
+	const filteredItems = createMemo(() =>
+		filterCaretMenuItems({
+			items: $commandMenu.items,
+			query: $commandMenu.query(),
+			getKeys: (item) => [item.label],
+		}),
+	);
 
 	const entries = createMemo(() =>
 		filteredItems()

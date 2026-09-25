@@ -1,7 +1,11 @@
 import { Mention } from "@rangex/solid";
 import { createMemo } from "solid-js";
 import { useEditorContext } from "#context";
-import { type CaretItemFn, CaretMenu } from "../../_Utilities";
+import {
+	type CaretItemFn,
+	CaretMenu,
+	filterCaretMenuItems,
+} from "../../_Utilities";
 import { mentionItems } from "./MentionItems";
 
 export const MentionCaretMenu = () => {
@@ -14,21 +18,13 @@ export const MentionCaretMenu = () => {
 
 	const $mention = Mention(mention);
 
-	const filteredItems = createMemo(() => {
-		const query = $mention.query();
-
-		if (query === null) {
-			return [];
-		}
-
-		const q = query.toLowerCase();
-
-		return mentionItems.filter(
-			(item) =>
-				item.name.toLowerCase().includes(q) ||
-				item.username.toLowerCase().includes(q),
-		);
-	});
+	const filteredItems = createMemo(() =>
+		filterCaretMenuItems({
+			items: mentionItems,
+			query: $mention.query(),
+			getKeys: (item) => [item.name, item.username],
+		}),
+	);
 
 	const items = () =>
 		filteredItems().map((item): CaretItemFn => {

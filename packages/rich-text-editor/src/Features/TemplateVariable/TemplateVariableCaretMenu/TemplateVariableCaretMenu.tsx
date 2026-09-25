@@ -1,7 +1,11 @@
 import { TemplateVariable } from "@rangex/solid";
 import { createMemo } from "solid-js";
 import { useEditorContext } from "#context";
-import { type CaretItemFn, CaretMenu } from "../../_Utilities";
+import {
+	type CaretItemFn,
+	CaretMenu,
+	filterCaretMenuItems,
+} from "../../_Utilities";
 
 export const TemplateVariableCaretMenu = () => {
 	const editor = useEditorContext();
@@ -13,19 +17,13 @@ export const TemplateVariableCaretMenu = () => {
 
 	const $templateVariable = TemplateVariable(templateVariable);
 
-	const filteredItems = createMemo(() => {
-		const query = $templateVariable.query();
-
-		if (query === null) {
-			return [];
-		}
-
-		const q = query.toLowerCase();
-
-		return $templateVariable.items.filter((item) =>
-			item.label.toLowerCase().includes(q),
-		);
-	});
+	const filteredItems = createMemo(() =>
+		filterCaretMenuItems({
+			items: $templateVariable.items,
+			query: $templateVariable.query(),
+			getKeys: (item) => [item.label],
+		}),
+	);
 
 	const items = () =>
 		filteredItems().map((item): CaretItemFn => {
