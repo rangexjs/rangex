@@ -32,10 +32,6 @@ export const configureEmoji = ({
 				fromOffset,
 				hasClosingColon: false,
 			}),
-		onQuery(query) {
-			configPort.updateState({ query });
-			return !!configPort.filteredItems.length;
-		},
 	});
 
 	return () => {

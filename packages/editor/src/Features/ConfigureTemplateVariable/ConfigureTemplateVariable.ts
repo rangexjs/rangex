@@ -49,10 +49,6 @@ export const configureTemplateVariable = ({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getTemplateVariableQuery,
-		onQuery(query) {
-			configPort.updateState({ query });
-			return !!configPort.filteredItems.length;
-		},
 	});
 
 	return () => {

@@ -1,9 +1,6 @@
 import { componentsName, getClosestScopedEditable } from "#engine-links";
-import type {
-	CanInsertTemplateVariableParams,
-	GetTemplateVariableQueryParams,
-	GetTemplateVariableQueryResult,
-} from "./GetTemplateVariableQuery-types";
+import type { GetCaretMenuQueryFn } from "../../../_Utilities";
+import type { CanInsertTemplateVariableParams } from "./GetTemplateVariableQuery-types";
 
 /*
  * Returns true if the closest ScopedEditable from fromText allows the template-variable
@@ -31,11 +28,11 @@ export const canInsertTemplateVariable = ({
  * if the surrounding ScopedEditable doesn't allow template variables, or {{ isn't found within
  * the char limit.
  */
-export const getTemplateVariableQuery = ({
+export const getTemplateVariableQuery: GetCaretMenuQueryFn = ({
 	editorAPI,
 	fromText,
 	fromOffset,
-}: GetTemplateVariableQueryParams): GetTemplateVariableQueryResult => {
+}) => {
 	if (!canInsertTemplateVariable({ fromText })) {
 		return null;
 	}

@@ -10,14 +10,13 @@ export const CommandMenu = <T extends CommandMenuPublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveCommandMenuPort>;
 	}
 
-	const [filteredItems, setFilteredItems] = createSignal(
-		publicPort.filteredItems,
-	);
+	const [query, setQuery] = createSignal(publicPort.caretMenu.query);
 
-	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.caretMenu.onQueryUpdate(setQuery));
 
 	const port: ReactiveCommandMenuPort = {
-		filteredItems,
+		query,
+		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveCommandMenuPort>;

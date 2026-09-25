@@ -10,14 +10,12 @@ export const Mention = <T extends MentionPublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveMentionPort>;
 	}
 
-	const [filteredItems, setFilteredItems] = createSignal(
-		publicPort.filteredItems,
-	);
+	const [query, setQuery] = createSignal(publicPort.caretMenu.query);
 
-	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.caretMenu.onQueryUpdate(setQuery));
 
 	const port: ReactiveMentionPort = {
-		filteredItems,
+		query,
 	};
 
 	return port as PreserveUndefined<T, ReactiveMentionPort>;

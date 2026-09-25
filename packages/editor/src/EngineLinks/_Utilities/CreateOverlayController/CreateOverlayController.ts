@@ -133,6 +133,8 @@ export const createAnchoredOverlayController = ({
 			element.classList.remove(hideAnchoredClass);
 
 			if (closeOnEscape) {
+				closeWatcher?.destroy();
+
 				closeWatcher = createCloseWatcher({
 					hide,
 					onEscape,
@@ -236,6 +238,8 @@ export const createPopoverOverlayController = ({
 			element.showPopover({ source: anchorElement });
 
 			if (closeOnEscape) {
+				closeWatcher?.destroy();
+
 				closeWatcher = createCloseWatcher({
 					hide,
 					onEscape,

@@ -14,18 +14,17 @@ export const TemplateVariable = <
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [options, setOptions] = createSignal(publicPort.options);
-	const [filteredItems, setFilteredItems] = createSignal(
-		publicPort.filteredItems,
-	);
+	const [query, setQuery] = createSignal(publicPort.caretMenu.query);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onOptionsUpdate(setOptions));
-	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.caretMenu.onQueryUpdate(setQuery));
 
 	const port: ReactiveTemplateVariablePort = {
 		canInsert,
 		options,
-		filteredItems,
+		query,
+		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTemplateVariablePort>;

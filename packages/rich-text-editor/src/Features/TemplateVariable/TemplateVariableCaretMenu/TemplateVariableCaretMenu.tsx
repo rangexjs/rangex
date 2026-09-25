@@ -1,4 +1,5 @@
 import { TemplateVariable } from "@rangex/solid";
+import { createMemo } from "solid-js";
 import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
 
@@ -12,8 +13,22 @@ export const TemplateVariableCaretMenu = () => {
 
 	const $templateVariable = TemplateVariable(templateVariable);
 
+	const filteredItems = createMemo(() => {
+		const query = $templateVariable.query();
+
+		if (query === null) {
+			return [];
+		}
+
+		const q = query.toLowerCase();
+
+		return $templateVariable.items.filter((item) =>
+			item.label.toLowerCase().includes(q),
+		);
+	});
+
 	const items = () =>
-		$templateVariable.filteredItems().map((item): CaretItemFn => {
+		filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -29,7 +44,7 @@ export const TemplateVariableCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = $templateVariable.filteredItems().at(index);
+		const item = filteredItems().at(index);
 
 		if (!item) {
 			return;

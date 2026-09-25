@@ -42,14 +42,12 @@ export const CaretMenu = (props: CaretMenuProps) => {
 		},
 	);
 
-	const toggleCleanup = props.caretMenuPort.onToggle(() => {
-		if (props.caretMenuPort.isOpen) {
-			resetList();
-		}
+	const queryUpdateCleanup = props.caretMenuPort.onQueryUpdate(() => {
+		resetList();
 	});
 
 	onCleanup(() => {
-		toggleCleanup();
+		queryUpdateCleanup();
 	});
 
 	const onKeyDown = (event: KeyboardEvent) => {
@@ -57,7 +55,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
 			throw new Error("List can't be undefined.");
 		}
 
-		if (!props.caretMenuPort.isOpen) {
+		if (props.caretMenuPort.query === null) {
 			return;
 		}
 
@@ -113,6 +111,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
 			class={[
 				"scrollbar-thin z-20 max-h-[min(100%,360px)] overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",
 				props.class,
+				{ hidden: !props.items().length },
 			]}
 		>
 			<ul ref={listEl} class="flex flex-col gap-0.5 p-1">

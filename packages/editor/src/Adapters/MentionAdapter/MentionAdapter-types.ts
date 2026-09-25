@@ -6,31 +6,15 @@ import type {
 	UnwrapPublicPort,
 } from "../_Utilities";
 
-export interface SuggestionItem {
+export interface SelectParams {
 	id: string;
-	img: string;
 	name: string;
-	username: string;
 }
 
-export type SuggestionItems = SuggestionItem[];
-
-export interface MentionState {
-	items?: SuggestionItems;
-	query?: string;
-}
-
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
-
-export type OnSelectCallbackFn = (item: SuggestionItem) => void;
-
-export interface UpdateStateParams extends MentionState {}
+export type OnSelectCallbackFn = (params: SelectParams) => void;
 
 export interface MentionConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
-	readonly filteredItems: SuggestionItems;
-
-	updateState(params: UpdateStateParams): void;
 
 	onSelect(callback: OnSelectCallbackFn): () => void;
 }
@@ -41,22 +25,15 @@ export interface MentionConfigPort
 
 export interface MentionPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
-	readonly filteredItems: SuggestionItems;
 
-	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
-
-	select(item: SuggestionItem): void;
+	select(params: SelectParams): void;
 }
 
 export interface MentionPublicPort
 	extends MentionPublicPortProps,
 		UnwrapPublicPort {}
 
-export interface MentionInternals {
-	items: SuggestionItems;
-	query: string;
-	filteredItems: SuggestionItems;
-}
+export interface MentionInternals {}
 
 export interface MentionAdapter {
 	configPort: MentionConfigPort;

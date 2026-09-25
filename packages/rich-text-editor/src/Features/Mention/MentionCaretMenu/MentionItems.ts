@@ -1,9 +1,9 @@
-import type { SuggestionItems } from "#adapters/Mention";
+import type { MentionItems } from "./MentionCaretMenu-types";
 
 /**
- * Mock mention items — replace with your actual data source (API call, store, etc.).
+ * Mock mention items — hardcoded until the Mention extension takes its own data source.
  */
-export const mentionItems: SuggestionItems = [
+export const mentionItems: MentionItems = [
 	{
 		id: "1",
 		name: "JohnDoe",

@@ -30,7 +30,6 @@ export interface Options {
 export interface TemplateVariableState {
 	canInsert?: boolean;
 	options?: Options;
-	query?: string;
 }
 
 export interface UpdateStateParams extends TemplateVariableState {}
@@ -45,7 +44,6 @@ export type OnSelectCallbackFn = (item: SuggestionItem) => void;
 
 export interface TemplateVariableConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
-	readonly filteredItems: SuggestionItems;
 
 	updateState(params: UpdateStateParams): void;
 
@@ -60,17 +58,15 @@ export interface TemplateVariableConfigPort
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnOptionsUpdateCallbackFn = (value: Options) => void;
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
 
 export interface TemplateVariablePublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
 	readonly canInsert: boolean;
 	readonly options: Options;
-	readonly filteredItems: SuggestionItems;
+	readonly items: SuggestionItems;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onOptionsUpdate(callback: OnOptionsUpdateCallbackFn): () => void;
-	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	changeOptions(options: Partial<Options>): void;
@@ -84,8 +80,7 @@ export interface TemplateVariablePublicPort
 export interface TemplateVariableInternals {
 	canInsert: boolean;
 	options: Options;
-	query: string;
-	filteredItems: SuggestionItems;
+	items: SuggestionItems;
 }
 
 export interface TemplateVariableAdapter {

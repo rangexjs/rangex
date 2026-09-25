@@ -10,9 +10,7 @@ import type {
 	CreateCommandMenuAdapterParams,
 	CreateCommandMenuAdapterResult,
 	OnBeforeSelectCallbackFn,
-	OnFilteredItemsUpdateCallbackFn,
 	SuggestionItems,
-	UpdateStateParams,
 } from "./CommandMenuAdapter-types";
 
 const ALL_ITEMS: SuggestionItems = [
@@ -62,52 +60,18 @@ export const createCommandMenuAdapter = (
 	const resolvedItems = resolveItems(items);
 
 	const internals: CommandMenuInternals = {
-		// States
-		query: "",
-		filteredItems: resolvedItems,
 		// Rest
 		items: resolvedItems,
 	};
-
-	// StateListeners
-	const filteredItemsUpdateEmitter =
-		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
 	const beforeSelectEmitter = createEmitter<OnBeforeSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
-	const computeFilteredItems = () => {
-		const query = internals.query.toLowerCase();
-
-		internals.filteredItems = query
-			? internals.items.filter((item) =>
-					item.label.toLowerCase().includes(query),
-				)
-			: internals.items;
-
-		filteredItemsUpdateEmitter.emit(internals.filteredItems);
-	};
-
-	const updateState = ({ query }: UpdateStateParams) => {
-		if (query !== undefined) {
-			internals.query = query;
-			computeFilteredItems();
-		}
-	};
-
 	const configPort: CommandMenuConfigPort = extendObjectProperties({}, {
 		get caretMenu() {
 			return caretMenuPort.configPort;
-		},
-
-		get filteredItems() {
-			return internals.filteredItems;
-		},
-
-		updateState(params) {
-			updateState(params);
 		},
 
 		onBeforeSelect(callback) {
@@ -120,12 +84,8 @@ export const createCommandMenuAdapter = (
 			return caretMenuPort.publicPort;
 		},
 
-		get filteredItems() {
-			return internals.filteredItems;
-		},
-
-		onFilteredItemsUpdate(callback) {
-			return filteredItemsUpdateEmitter.subscribe(callback);
+		get items() {
+			return internals.items;
 		},
 
 		beforeSelect() {

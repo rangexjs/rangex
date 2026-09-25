@@ -1,6 +1,9 @@
 import { Emoji } from "@rangex/solid";
+import { createMemo } from "solid-js";
 import { useEditorContext } from "#context";
 import { type CaretItemFn, CaretMenu } from "#ui";
+
+const MAX_RESULTS = 16;
 
 export const EmojiCaretMenu = () => {
 	const editor = useEditorContext();
@@ -12,8 +15,23 @@ export const EmojiCaretMenu = () => {
 
 	const $emoji = Emoji(emoji);
 
+	const filteredItems = createMemo(() => {
+		const query = $emoji.query();
+
+		if (!query) {
+			return [];
+		}
+
+		const q = query.toLowerCase();
+		const matches = $emoji.items.filter((item) =>
+			item.name.toLowerCase().includes(q),
+		);
+
+		return matches.slice(0, MAX_RESULTS);
+	});
+
 	const items = () =>
-		$emoji.filteredItems().map((item): CaretItemFn => {
+		filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -32,7 +50,7 @@ export const EmojiCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = $emoji.filteredItems().at(index);
+		const item = filteredItems().at(index);
 
 		if (!item) {
 			return;

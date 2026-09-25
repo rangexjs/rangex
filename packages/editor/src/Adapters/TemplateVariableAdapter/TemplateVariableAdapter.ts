@@ -9,7 +9,6 @@ import type {
 	CreateTemplateVariableAdapterResult,
 	InsertParams,
 	OnCanInsertUpdateCallbackFn,
-	OnFilteredItemsUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnOptionsCallbackFn,
 	OnOptionsUpdateCallbackFn,
@@ -41,15 +40,13 @@ export const createTemplateVariableAdapter = (
 		// States
 		canInsert: false,
 		options: { firstName: null, lastName: null, email: null, date: null },
-		query: "",
-		filteredItems: [],
+		// Rest
+		items: ALL_ITEMS,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const optionsUpdateEmitter = createEmitter<OnOptionsUpdateCallbackFn>();
-	const filteredItemsUpdateEmitter =
-		createEmitter<OnFilteredItemsUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -58,16 +55,7 @@ export const createTemplateVariableAdapter = (
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
-	const computeFilteredItems = () => {
-		const q = internals.query.toLowerCase();
-		internals.filteredItems = q
-			? ALL_ITEMS.filter((item) => item.label.toLowerCase().includes(q))
-			: ALL_ITEMS;
-
-		filteredItemsUpdateEmitter.emit(internals.filteredItems);
-	};
-
-	const updateState = ({ canInsert, options, query }: UpdateStateParams) => {
+	const updateState = ({ canInsert, options }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -79,11 +67,6 @@ export const createTemplateVariableAdapter = (
 
 			optionsUpdateEmitter.emit(internals.options);
 		}
-
-		if (query !== undefined) {
-			internals.query = query;
-			computeFilteredItems();
-		}
 	};
 
 	const unwrapPort = createUnwrapPort();
@@ -93,10 +76,6 @@ export const createTemplateVariableAdapter = (
 		{
 			get caretMenu() {
 				return caretMenuPort.configPort;
-			},
-
-			get filteredItems() {
-				return internals.filteredItems;
 			},
 
 			updateState(params) {
@@ -132,8 +111,8 @@ export const createTemplateVariableAdapter = (
 				return internals.options;
 			},
 
-			get filteredItems() {
-				return internals.filteredItems;
+			get items() {
+				return internals.items;
 			},
 
 			onCanInsertUpdate(callback) {
@@ -142,10 +121,6 @@ export const createTemplateVariableAdapter = (
 
 			onOptionsUpdate(callback) {
 				return optionsUpdateEmitter.subscribe(callback);
-			},
-
-			onFilteredItemsUpdate(callback) {
-				return filteredItemsUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params: InsertParams) {

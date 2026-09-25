@@ -10,14 +10,13 @@ export const Emoji = <T extends EmojiPublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveEmojiPort>;
 	}
 
-	const [filteredItems, setFilteredItems] = createSignal(
-		publicPort.filteredItems,
-	);
+	const [query, setQuery] = createSignal(publicPort.caretMenu.query);
 
-	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
+	onCleanup(publicPort.caretMenu.onQueryUpdate(setQuery));
 
 	const port: ReactiveEmojiPort = {
-		filteredItems,
+		query,
+		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveEmojiPort>;

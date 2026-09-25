@@ -20,9 +20,22 @@ export const CommandMenuCaretMenu = () => {
 		buildCommandMenuActions({ editor, uiOptions }),
 	);
 
+	const filteredItems = createMemo(() => {
+		const query = $commandMenu.query();
+
+		if (query === null) {
+			return [];
+		}
+
+		const q = query.toLowerCase();
+
+		return $commandMenu.items.filter((item) =>
+			item.label.toLowerCase().includes(q),
+		);
+	});
+
 	const entries = createMemo(() =>
-		$commandMenu
-			.filteredItems()
+		filteredItems()
 			.map((item) => {
 				const action = actions().get(item.value);
 				return action ? { item, action } : null;

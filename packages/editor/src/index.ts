@@ -4,6 +4,7 @@ export type {
 	CaptionPosition,
 	CaptionState,
 	CaretMenuPublicPort,
+	CaretMenuQuery,
 	InsertRootLinePosition,
 	MediaType,
 } from "#adapters";
@@ -98,8 +99,7 @@ export type { ListPublicPort } from "#adapters/List";
 export type { MarkdownPublicPort } from "#adapters/Markdown";
 export type {
 	MentionPublicPort,
-	SuggestionItem as MentionSuggestionItem,
-	SuggestionItems as MentionSuggestionItems,
+	SelectParams as MentionSelectParams,
 } from "#adapters/Mention";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
