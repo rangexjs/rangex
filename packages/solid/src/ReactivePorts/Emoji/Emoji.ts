@@ -12,7 +12,6 @@ export const Emoji = <T extends EmojiPublicPort | undefined>(
 
 	const port: ReactiveEmojiPort = {
 		caretMenu: CaretMenu(publicPort.caretMenu),
-		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveEmojiPort>;

@@ -12,7 +12,6 @@ export const CommandMenu = <T extends CommandMenuPublicPort | undefined>(
 
 	const port: ReactiveCommandMenuPort = {
 		caretMenu: CaretMenu(publicPort.caretMenu),
-		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveCommandMenuPort>;

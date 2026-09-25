@@ -183,9 +183,13 @@ field became `element`, since the composed key is already `selectionMenu`).
    alone isn't reachable from `createEditor`'s `adapters` array without a matching
    `AdapterFactory`. See the Progress section below for what's built and what isn't.
 5. If `@rangex/solid` needs to wrap it reactively, add a matching
-   `packages/solid/src/ReactivePorts/Xxx/` — every `readonly xxx` + `onXxxUpdate` pair
-   becomes a `createSignal`; a `readonly xxx` with no `onXxxUpdate` counterpart (static,
-   configured once) passes through as a plain value; commands pass through unchanged.
+   `packages/solid/src/ReactivePorts/Xxx/` — only state goes in: every `readonly xxx` +
+   `onXxxUpdate` pair becomes a `createSignal`. Nothing else is exposed — a `readonly xxx`
+   with no `onXxxUpdate` (static, configured once), a notify pair (`isOpen`/`onToggle`), and
+   commands are read from the raw `publicPort` instead. A nested SharedPort with state
+   (`caretMenu`) is mirrored at the same path via a reactive shared port
+   (`ReactivePorts/_Utilities/SharedPorts/`), e.g. `$mention.caretMenu.query()`; one without
+   state (`quickActions`, `selectionMenu`) is left off entirely.
 
 ---
 

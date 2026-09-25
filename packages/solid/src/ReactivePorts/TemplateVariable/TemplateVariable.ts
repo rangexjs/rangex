@@ -23,7 +23,6 @@ export const TemplateVariable = <
 		caretMenu: CaretMenu(publicPort.caretMenu),
 		canInsert,
 		options,
-		items: publicPort.items,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTemplateVariablePort>;

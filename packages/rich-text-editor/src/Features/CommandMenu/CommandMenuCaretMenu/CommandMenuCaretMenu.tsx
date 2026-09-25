@@ -27,7 +27,7 @@ export const CommandMenuCaretMenu = () => {
 
 	const filteredItems = createMemo(() =>
 		filterCaretMenuItems({
-			items: $commandMenu.items,
+			items: commandMenu.items,
 			query: $commandMenu.caretMenu.query(),
 			getKeys: (item) => [item.label],
 		}),

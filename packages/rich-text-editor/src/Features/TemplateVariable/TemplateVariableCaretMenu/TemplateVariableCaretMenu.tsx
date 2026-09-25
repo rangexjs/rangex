@@ -19,7 +19,7 @@ export const TemplateVariableCaretMenu = () => {
 
 	const filteredItems = createMemo(() =>
 		filterCaretMenuItems({
-			items: $templateVariable.items,
+			items: templateVariable.items,
 			query: $templateVariable.caretMenu.query(),
 			getKeys: (item) => [item.label],
 		}),

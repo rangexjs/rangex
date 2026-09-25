@@ -21,7 +21,7 @@ export const EmojiCaretMenu = () => {
 
 	const filteredItems = createMemo(() =>
 		filterCaretMenuItems({
-			items: $emoji.items,
+			items: emoji.items,
 			query: $emoji.caretMenu.query(),
 			getKeys: (item) => [item.name],
 			limit: MAX_RESULTS,
