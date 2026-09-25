@@ -19,7 +19,9 @@ import type {
 export const createTodoListAdapter = (
 	...params: CreateTodoListAdapterParams
 ): CreateTodoListAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("todoList");
 
 	const internals: TodoListInternals = {
 		// States

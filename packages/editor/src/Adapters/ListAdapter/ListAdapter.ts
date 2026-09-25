@@ -19,7 +19,9 @@ import type {
 export const createListAdapter = (
 	...params: CreateListAdapterParams
 ): CreateListAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("list");
 
 	const internals: ListInternals = {
 		// States

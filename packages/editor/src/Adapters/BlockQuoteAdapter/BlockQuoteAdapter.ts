@@ -19,7 +19,9 @@ import type {
 export const createBlockQuoteAdapter = (
 	...params: CreateBlockQuoteAdapterParams
 ): CreateBlockQuoteAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("blockQuote");
 
 	const internals: BlockQuoteInternals = {
 		// States

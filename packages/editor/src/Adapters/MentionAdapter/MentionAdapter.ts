@@ -19,7 +19,9 @@ import type {
 export const createMentionAdapter = (
 	...params: CreateMentionAdapterParams
 ): CreateMentionAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("mention");
 
 	const _internals: MentionInternals = {};
 

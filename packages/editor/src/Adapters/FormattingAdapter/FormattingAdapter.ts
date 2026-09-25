@@ -52,8 +52,10 @@ export const createFormattingAdapter = (
 			defaultTextAlign = "start",
 			fontFamilyOptions = defaultFontFamilyOptions,
 		},
-		_options,
+		{ adapterBus },
 	] = params;
+
+	adapterBus.registerAdapter("formatting");
 
 	const createToggleButton = ({
 		disabled,

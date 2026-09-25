@@ -23,7 +23,9 @@ import type {
 export const createAccordionItemAdapter = (
 	...params: CreateAccordionItemAdapterParams
 ): CreateAccordionItemAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("accordionItem");
 
 	const internals: AccordionItemInternals = {
 		// States

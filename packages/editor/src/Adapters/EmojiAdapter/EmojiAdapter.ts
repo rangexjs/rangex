@@ -16,7 +16,10 @@ import type {
 export const createEmojiAdapter = (
 	...params: CreateEmojiAdapterParams
 ): CreateEmojiAdapterResult => {
-	const [{ items = defaultEmojiItems }, { floatingContainer }] = params;
+	const [{ items = defaultEmojiItems }, { adapterBus, floatingContainer }] =
+		params;
+
+	adapterBus.registerAdapter("emoji");
 
 	const internals: EmojiInternals = {
 		// Rest

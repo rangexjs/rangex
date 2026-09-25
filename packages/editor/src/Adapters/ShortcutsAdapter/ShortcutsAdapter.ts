@@ -11,7 +11,9 @@ import type {
 export const createShortcutsAdapter = (
 	...params: CreateShortcutsAdapterParams
 ): CreateShortcutsAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("shortcuts");
 
 	const configPort: ShortcutsConfigPort = extendObjectProperties(
 		{},

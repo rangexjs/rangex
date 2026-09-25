@@ -23,7 +23,9 @@ import type {
 export const createFindReplaceAdapter = (
 	...params: CreateFindReplaceAdapterParams
 ): CreateFindReplaceAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("findReplace");
 
 	const internals: FindReplaceInternals = {
 		// States

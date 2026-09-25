@@ -32,7 +32,9 @@ import type {
 export const createTableAdapter = (
 	...params: CreateTableAdapterParams
 ): CreateTableAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("table");
 
 	const contextMenuEl = document.createElement("div");
 	floatingContainer.append(contextMenuEl);

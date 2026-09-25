@@ -34,7 +34,9 @@ const ALL_ITEMS: SuggestionItems = [
 export const createTemplateVariableAdapter = (
 	...params: CreateTemplateVariableAdapterParams
 ): CreateTemplateVariableAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("templateVariable");
 
 	const internals: TemplateVariableInternals = {
 		// States

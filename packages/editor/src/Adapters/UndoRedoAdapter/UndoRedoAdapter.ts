@@ -18,7 +18,9 @@ import type {
 export const createUndoRedoAdapter = (
 	...params: CreateUndoRedoAdapterParams
 ): CreateUndoRedoAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("undoRedo");
 
 	const internals: UndoRedoInternals = {
 		// States

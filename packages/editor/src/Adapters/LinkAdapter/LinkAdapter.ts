@@ -30,8 +30,12 @@ import type {
 export const createLinkAdapter = (
 	...params: CreateLinkAdapterParams
 ): CreateLinkAdapterResult => {
-	const [{ linkMenu = defaultLinkMenuSettings }, { floatingContainer }] =
-		params;
+	const [
+		{ linkMenu = defaultLinkMenuSettings },
+		{ adapterBus, floatingContainer },
+	] = params;
+
+	adapterBus.registerAdapter("link");
 
 	const linkMenuEl = document.createElement("div");
 	floatingContainer.append(linkMenuEl);

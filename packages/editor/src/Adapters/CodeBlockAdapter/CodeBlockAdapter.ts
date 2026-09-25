@@ -30,7 +30,9 @@ import type {
 export const createCodeBlockAdapter = (
 	...params: CreateCodeBlockAdapterParams
 ): CreateCodeBlockAdapterResult => {
-	const [settings, { floatingContainer }] = params;
+	const [settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("codeBlock");
 
 	const internals: CodeBlockInternals = {
 		// States

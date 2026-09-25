@@ -55,7 +55,9 @@ const resolveItems = (
 export const createCommandMenuAdapter = (
 	...params: CreateCommandMenuAdapterParams
 ): CreateCommandMenuAdapterResult => {
-	const [{ items }, { floatingContainer }] = params;
+	const [{ items }, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("commandMenu");
 
 	const resolvedItems = resolveItems(items);
 
