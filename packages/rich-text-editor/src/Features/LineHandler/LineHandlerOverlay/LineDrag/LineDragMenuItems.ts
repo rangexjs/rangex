@@ -50,8 +50,8 @@ const createTurnIntoItems = ({
 			onClick: () =>
 				lineHandler.turnInto({
 					name: "code-block",
-					language: uiOptions.codeBlock.defaultLanguage ?? null,
-					theme: uiOptions.codeBlock.defaultTheme ?? null,
+					language: uiOptions.codeBlock?.defaultLanguage ?? null,
+					theme: uiOptions.codeBlock?.defaultTheme ?? null,
 				}),
 		});
 	}

@@ -89,8 +89,8 @@ export const buildCommandMenuActions = ({
 			icon: "CodeBlock",
 			onSelect: () =>
 				codeBlock.insert({
-					language: uiOptions.codeBlock.defaultLanguage ?? null,
-					theme: uiOptions.codeBlock.defaultTheme ?? null,
+					language: uiOptions.codeBlock?.defaultLanguage ?? null,
+					theme: uiOptions.codeBlock?.defaultTheme ?? null,
 				}),
 		});
 	}

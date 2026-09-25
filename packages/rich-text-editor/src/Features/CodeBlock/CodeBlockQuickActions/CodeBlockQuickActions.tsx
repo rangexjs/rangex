@@ -15,6 +15,10 @@ export const CodeBlockQuickActions = () => {
 		throw new Error("CodeBlock can't be undefined.");
 	}
 
+	if (!options) {
+		throw new Error("CodeBlockOptions can't be undefined.");
+	}
+
 	const $codeBlock = CodeBlock(codeBlock);
 	const $readOnly = ReadOnly(readOnly);
 

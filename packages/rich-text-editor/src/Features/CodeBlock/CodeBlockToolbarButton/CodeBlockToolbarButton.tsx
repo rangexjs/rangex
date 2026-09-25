@@ -9,11 +9,17 @@ export const CodeBlockToolbarButton = () => {
 	const uiOptions = useUIOptionsContext();
 
 	const { codeBlock, readOnly } = editor;
-	const { defaultLanguage, defaultTheme } = uiOptions.codeBlock;
+	const codeBlockOptions = uiOptions.codeBlock;
 
 	if (!codeBlock) {
 		throw new Error("CodeBlock can't be undefined.");
 	}
+
+	if (!codeBlockOptions) {
+		throw new Error("CodeBlockOptions can't be undefined.");
+	}
+
+	const { defaultLanguage, defaultTheme } = codeBlockOptions;
 
 	const $codeBlock = CodeBlock(codeBlock);
 	const $readOnly = ReadOnly(readOnly);

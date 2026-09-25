@@ -43,7 +43,7 @@ export interface MentionUIOptions {
 }
 
 export interface UIOptions {
-	codeBlock: CodeBlockUIOptions;
+	codeBlock?: CodeBlockUIOptions;
 	mention?: MentionUIOptions;
 }
 
