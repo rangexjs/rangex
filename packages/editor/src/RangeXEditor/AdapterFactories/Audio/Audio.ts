@@ -7,6 +7,7 @@ export const Audio: AdapterFactoryFn<AudioSettings> = (settings) => {
 		const adapter = createAudioAdapter(settings, options);
 
 		const cleanup = configureAudio({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

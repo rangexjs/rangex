@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureLineHandlerParams {
-	configPort: LineHandlerConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureLineHandlerParams
+	extends ConfigureFeatureParams<LineHandlerConfigPort> {}

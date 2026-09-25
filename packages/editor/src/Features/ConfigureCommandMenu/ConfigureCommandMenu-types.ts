@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { CommandMenuConfigPort } from "#adapters/CommandMenu";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureCommandMenuParams {
-	configPort: CommandMenuConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureCommandMenuParams
+	extends ConfigureFeatureParams<CommandMenuConfigPort> {}

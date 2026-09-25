@@ -6,6 +6,7 @@ import type {
 } from "./BlockComponentPlacement-types";
 import { canInsertBlockLines } from "./CanInsertBlockLines";
 import { canWrapBlockComponent } from "./CanWrapBlockComponent";
+import { hasComponentAdapters } from "./HasComponentAdapters";
 import { insertBlockLines } from "./InsertBlockLines";
 import { wrapBlockComponent } from "./WrapBlockComponent";
 
@@ -19,12 +20,20 @@ import { wrapBlockComponent } from "./WrapBlockComponent";
  * Each operation has two variants:
  * - Direct — caller supplies the anchor node(s) explicitly.
  * - BySelection — anchor nodes are derived from the current editor selection.
+ *
+ * Every `can*` check also returns `false` when an allowed component's Adapter isn't registered on
+ * the AdapterBus, so nothing offers a component the editor wasn't built with.
  */
 export const createBlockComponentPlacement = ({
 	editorAPI,
+	adapterBus,
 }: CreateBlockComponentPlacementParams): CreateBlockComponentPlacementResult => {
 	const blockComponentPlacement: BlockComponentPlacement = {
 		canInsert({ fromNode, allowedComponents }) {
+			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+				return false;
+			}
+
 			return canInsertBlockLines({ fromNode, allowedComponents });
 		},
 
@@ -37,6 +46,10 @@ export const createBlockComponentPlacement = ({
 		},
 
 		canInsertBySelection({ allowedComponents }) {
+			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+				return false;
+			}
+
 			const fromNode = getSelectionForwardText({ editorAPI });
 
 			return canInsertBlockLines({ fromNode, allowedComponents });
@@ -53,6 +66,10 @@ export const createBlockComponentPlacement = ({
 		},
 
 		canWrap({ fromNode, fromOffset, toNode, toOffset, allowedComponents }) {
+			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+				return false;
+			}
+
 			return canWrapBlockComponent({
 				editorAPI,
 				fromNode,
@@ -83,6 +100,10 @@ export const createBlockComponentPlacement = ({
 		},
 
 		canWrapBySelection({ allowedComponents }) {
+			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+				return false;
+			}
+
 			const selection = editorAPI.getEditorSelection();
 
 			const { fromText, fromOffset, toText, toOffset } =

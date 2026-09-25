@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { UndoRedoConfigPort } from "#adapters/UndoRedo";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureUndoRedoParams {
-	configPort: UndoRedoConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureUndoRedoParams
+	extends ConfigureFeatureParams<UndoRedoConfigPort> {}

@@ -12,6 +12,7 @@ export const AccordionItem: AdapterFactoryFn<AccordionItemSettings> = (
 		const adapter = createAccordionItemAdapter(settings, options);
 
 		const cleanup = configureAccordionItem({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

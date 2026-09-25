@@ -17,11 +17,15 @@ import { handleTablePlacementState } from "./HandleTablePlacementState";
  * button state, and button interactions) and returns their combined cleanup.
  */
 export const configureTable = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureTableParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const anchorController = createAnchoredOverlayController({
 		element: configPort.contextMenuEl,

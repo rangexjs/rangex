@@ -7,6 +7,7 @@ export const Symbols: AdapterFactoryFn<SymbolsSettings> = (settings) => {
 		const adapter = createSymbolsAdapter(settings, options);
 
 		const cleanup = configureSymbols({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

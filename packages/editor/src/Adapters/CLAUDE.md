@@ -178,7 +178,9 @@ Two channel shapes:
   `onSwapToEmptyMedia`).
 - **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
   Answers "was the editor built with Adapter X?" for anything that depends on another
-  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`).
+  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`, and every
+  `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
+  isn't registered).
 
 The registry is sealed by `createEditor` once every Adapter has been created, so creation
 order never affects a lookup: `registerAdapter` throws after `seal()`, `hasAdapter` throws

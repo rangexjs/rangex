@@ -7,6 +7,7 @@ export const Embed: AdapterFactoryFn<EmbedSettings> = (settings) => {
 		const adapter = createEmbedAdapter(settings, options);
 
 		const cleanup = configureEmbed({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

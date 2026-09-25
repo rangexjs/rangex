@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { EmbedConfigPort } from "#adapters/Embed";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureEmbedParams {
-	configPort: EmbedConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureEmbedParams
+	extends ConfigureFeatureParams<EmbedConfigPort> {}

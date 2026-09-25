@@ -7,6 +7,7 @@ import type {
 	List,
 	NestedEditable,
 } from "rich-text-area";
+import type { AdapterBus } from "#adapters";
 import type { BlockComponentName } from "../Constants";
 
 export interface CanInsertParams {
@@ -99,6 +100,7 @@ export interface BlockComponentPlacement {
 
 export interface CreateBlockComponentPlacementParams {
 	editorAPI: EditorAPI;
+	adapterBus: AdapterBus;
 }
 
 export interface CreateBlockComponentPlacementResult

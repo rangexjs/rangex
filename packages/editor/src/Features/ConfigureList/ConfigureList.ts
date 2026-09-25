@@ -12,11 +12,15 @@ import { handleListPlacementState } from "./HandleListPlacementState";
  * Wires up list toolbar button state and placement handling, returning a cleanup function.
  */
 export const configureList = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureListParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleListPlacementState({
 		configPort,

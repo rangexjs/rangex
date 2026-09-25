@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { MarkdownConfigPort } from "#adapters/Markdown";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureMarkdownParams {
-	configPort: MarkdownConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureMarkdownParams
+	extends ConfigureFeatureParams<MarkdownConfigPort> {}

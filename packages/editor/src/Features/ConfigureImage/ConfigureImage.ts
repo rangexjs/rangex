@@ -21,10 +21,14 @@ import { handleImageInsertion } from "./HandleImageInsertion";
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureImage = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureImageParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const insertionCleanup = handleImageInsertion({
 		configPort,

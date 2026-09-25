@@ -10,6 +10,7 @@ export const BlockQuote: AdapterFactoryFn<BlockQuoteSettings> = (settings) => {
 		const adapter = createBlockQuoteAdapter(settings, options);
 
 		const cleanup = configureBlockQuote({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

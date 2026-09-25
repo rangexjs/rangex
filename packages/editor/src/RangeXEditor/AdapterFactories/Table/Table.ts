@@ -7,6 +7,7 @@ export const Table: AdapterFactoryFn<TableSettings> = (settings) => {
 		const adapter = createTableAdapter(settings, options);
 
 		const cleanup = configureTable({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

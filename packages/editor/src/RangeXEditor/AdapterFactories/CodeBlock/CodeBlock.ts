@@ -10,6 +10,7 @@ export const CodeBlock: AdapterFactoryFn<CodeBlockSettings> = (settings) => {
 		const adapter = createCodeBlockAdapter(settings, options);
 
 		const cleanup = configureCodeBlock({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

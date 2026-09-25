@@ -10,6 +10,7 @@ export const Markdown: AdapterFactoryFn<MarkdownSettings> = (settings) => {
 		const adapter = createMarkdownAdapter(settings, options);
 
 		const cleanup = configureMarkdown({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

@@ -10,6 +10,7 @@ export const EmptyMedia: AdapterFactoryFn<EmptyMediaSettings> = (settings) => {
 		const adapter = createEmptyMediaAdapter(settings, options);
 
 		const cleanup = configureEmptyMedia({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

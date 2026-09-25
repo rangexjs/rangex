@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { TodoListConfigPort } from "#adapters/TodoList";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureTodoListParams {
-	configPort: TodoListConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureTodoListParams
+	extends ConfigureFeatureParams<TodoListConfigPort> {}

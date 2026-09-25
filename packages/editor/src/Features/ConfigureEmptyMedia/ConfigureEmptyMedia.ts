@@ -9,10 +9,14 @@ import { watchEmptyMedia } from "./WatchEmptyMedia";
  * watching placed blocks to resolve their final media source. Returns a cleanup function.
  */
 export const configureEmptyMedia = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureEmptyMediaParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleEmptyMediaPlacementState({
 		configPort,

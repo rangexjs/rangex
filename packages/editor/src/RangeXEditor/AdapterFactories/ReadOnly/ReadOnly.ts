@@ -10,6 +10,7 @@ export const ReadOnly: AdapterFactoryFn<ReadOnlySettings> = (settings) => {
 		const adapter = createReadOnlyAdapter(settings, options);
 
 		const cleanup = configureReadOnly({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

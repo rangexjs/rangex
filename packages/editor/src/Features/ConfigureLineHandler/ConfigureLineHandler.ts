@@ -17,10 +17,14 @@ import { handleTurnInto } from "./HandleTurnInto";
  * down all of it.
  */
 export const configureLineHandler = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureLineHandlerParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const onLineChange = handleDragMenuState({
 		configPort,

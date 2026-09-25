@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { ImageConfigPort } from "#adapters/Image";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureImageParams {
-	configPort: ImageConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureImageParams
+	extends ConfigureFeatureParams<ImageConfigPort> {}

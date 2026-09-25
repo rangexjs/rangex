@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { ReadOnlyConfigPort } from "#adapters/ReadOnly";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureReadOnlyParams {
-	configPort: ReadOnlyConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureReadOnlyParams
+	extends ConfigureFeatureParams<ReadOnlyConfigPort> {}

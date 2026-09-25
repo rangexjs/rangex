@@ -12,6 +12,7 @@ export const CommandMenu: AdapterFactoryFn<CommandMenuSettings> = (
 		const adapter = createCommandMenuAdapter(settings, options);
 
 		const cleanup = configureCommandMenu({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

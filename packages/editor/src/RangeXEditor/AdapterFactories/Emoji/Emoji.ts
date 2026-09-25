@@ -7,6 +7,7 @@ export const Emoji: AdapterFactoryFn<EmojiSettings> = (settings) => {
 		const adapter = createEmojiAdapter(settings, options);
 
 		const cleanup = configureEmoji({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

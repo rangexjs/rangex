@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { CodeBlockConfigPort } from "#adapters/CodeBlock";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureCodeBlockParams {
-	configPort: CodeBlockConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureCodeBlockParams
+	extends ConfigureFeatureParams<CodeBlockConfigPort> {}

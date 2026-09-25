@@ -7,6 +7,7 @@ export const Link: AdapterFactoryFn<LinkSettings> = (settings) => {
 		const adapter = createLinkAdapter(settings, options);
 
 		const cleanup = configureLink({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

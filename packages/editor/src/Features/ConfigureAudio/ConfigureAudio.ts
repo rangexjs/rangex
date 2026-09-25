@@ -21,10 +21,14 @@ import { handleAudioInsertion } from "./HandleAudioInsertion";
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureAudio = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureAudioParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const insertionCleanup = handleAudioInsertion({
 		configPort,

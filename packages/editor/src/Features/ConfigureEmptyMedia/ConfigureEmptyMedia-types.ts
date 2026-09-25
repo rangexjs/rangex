@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { EmptyMediaConfigPort } from "#adapters/EmptyMedia";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureEmptyMediaParams {
-	configPort: EmptyMediaConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureEmptyMediaParams
+	extends ConfigureFeatureParams<EmptyMediaConfigPort> {}

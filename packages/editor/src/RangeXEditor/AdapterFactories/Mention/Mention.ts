@@ -7,6 +7,7 @@ export const Mention: AdapterFactoryFn<MentionSettings> = (settings) => {
 		const adapter = createMentionAdapter(settings, options);
 
 		const cleanup = configureMention({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

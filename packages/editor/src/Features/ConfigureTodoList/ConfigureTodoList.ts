@@ -14,11 +14,15 @@ import { handleTodoListPlacementState } from "./HandleTodoListPlacementState";
  * and checkbox state syncing. Returns a cleanup function that tears down all of it.
  */
 export const configureTodoList = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureTodoListParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleTodoListPlacementState({
 		configPort,

@@ -21,10 +21,14 @@ import { handleVideoInsertion } from "./HandleVideoInsertion";
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureVideo = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureVideoParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const insertionCleanup = handleVideoInsertion({
 		configPort,

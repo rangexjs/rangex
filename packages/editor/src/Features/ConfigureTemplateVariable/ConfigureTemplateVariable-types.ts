@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { TemplateVariableConfigPort } from "#adapters/TemplateVariable";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureTemplateVariableParams {
-	configPort: TemplateVariableConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureTemplateVariableParams
+	extends ConfigureFeatureParams<TemplateVariableConfigPort> {}

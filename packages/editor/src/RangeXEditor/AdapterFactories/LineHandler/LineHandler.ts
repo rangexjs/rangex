@@ -12,6 +12,7 @@ export const LineHandler: AdapterFactoryFn<LineHandlerSettings> = (
 		const adapter = createLineHandlerAdapter(settings, options);
 
 		const cleanup = configureLineHandler({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

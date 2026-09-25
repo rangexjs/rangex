@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { SymbolsConfigPort } from "#adapters/Symbols";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureSymbolsParams {
-	configPort: SymbolsConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureSymbolsParams
+	extends ConfigureFeatureParams<SymbolsConfigPort> {}

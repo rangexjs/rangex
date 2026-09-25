@@ -21,11 +21,15 @@ import { handleLineNumbers } from "./HandleLineNumbers";
  * syntax highlighting, and the quick actions overlay. Returns a cleanup function.
  */
 export const configureCodeBlock = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 	const codeHighlighter = new CodeHighlighter({
 		editorAPI,
 		getHighlightInfo: configPort.getHighlightInfo,

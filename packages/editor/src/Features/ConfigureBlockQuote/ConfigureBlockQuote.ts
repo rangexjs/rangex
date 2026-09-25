@@ -12,11 +12,15 @@ import { handleBlockQuotePlacementState } from "./HandleBlockQuotePlacementState
  * Wires up block quote toolbar button state and placement handling, returning a cleanup function.
  */
 export const configureBlockQuote = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureBlockQuoteParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleBlockQuotePlacementState({
 		configPort,

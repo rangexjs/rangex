@@ -12,6 +12,7 @@ export const TemplateVariable: AdapterFactoryFn<TemplateVariableSettings> = (
 		const adapter = createTemplateVariableAdapter(settings, options);
 
 		const cleanup = configureTemplateVariable({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

@@ -7,6 +7,7 @@ export const List: AdapterFactoryFn<ListSettings> = (settings) => {
 		const adapter = createListAdapter(settings, options);
 
 		const cleanup = configureList({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

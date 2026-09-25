@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { ListConfigPort } from "#adapters/List";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureListParams {
-	configPort: ListConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureListParams
+	extends ConfigureFeatureParams<ListConfigPort> {}

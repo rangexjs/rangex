@@ -7,6 +7,7 @@ export const Video: AdapterFactoryFn<VideoSettings> = (settings) => {
 		const adapter = createVideoAdapter(settings, options);
 
 		const cleanup = configureVideo({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

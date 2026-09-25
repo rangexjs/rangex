@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { AudioConfigPort } from "#adapters/Audio";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureAudioParams {
-	configPort: AudioConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureAudioParams
+	extends ConfigureFeatureParams<AudioConfigPort> {}

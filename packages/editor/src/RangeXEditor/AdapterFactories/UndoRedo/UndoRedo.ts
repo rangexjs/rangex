@@ -10,6 +10,7 @@ export const UndoRedo: AdapterFactoryFn<UndoRedoSettings> = (settings) => {
 		const adapter = createUndoRedoAdapter(settings, options);
 
 		const cleanup = configureUndoRedo({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

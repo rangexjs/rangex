@@ -14,11 +14,15 @@ import { handleAccordionItemSummaryToggle } from "./HandleAccordionItemSummaryTo
  * and summary toggle handling. Returns a cleanup function that tears down all of it.
  */
 export const configureAccordionItem = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureAccordionItemParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleAccordionItemPlacementState({
 		configPort,

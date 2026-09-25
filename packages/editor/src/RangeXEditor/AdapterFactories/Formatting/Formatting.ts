@@ -10,6 +10,7 @@ export const Formatting: AdapterFactoryFn<FormattingSettings> = (settings) => {
 		const adapter = createFormattingAdapter(settings, options);
 
 		const cleanup = configureFormatting({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

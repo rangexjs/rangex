@@ -10,10 +10,14 @@ import { handleSeparatorMarkdown } from "./HandleSeparatorMarkdown";
  * markdown) and returns their combined cleanup.
  */
 export const configureMarkdown = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureMarkdownParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const blockMarkdownCleanup = handleBlockMarkdown({
 		configPort,

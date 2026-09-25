@@ -10,6 +10,7 @@ export const TodoList: AdapterFactoryFn<TodoListSettings> = (settings) => {
 		const adapter = createTodoListAdapter(settings, options);
 
 		const cleanup = configureTodoList({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

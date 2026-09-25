@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { FormattingConfigPort } from "#adapters/Formatting";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureFormattingParams {
-	configPort: FormattingConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureFormattingParams
+	extends ConfigureFeatureParams<FormattingConfigPort> {}

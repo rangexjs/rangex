@@ -21,10 +21,14 @@ import { handleEmbedInsertion } from "./HandleEmbedInsertion";
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureEmbed = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureEmbedParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const insertionCleanup = handleEmbedInsertion({
 		configPort,

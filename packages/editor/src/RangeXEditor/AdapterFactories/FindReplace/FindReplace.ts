@@ -12,6 +12,7 @@ export const FindReplace: AdapterFactoryFn<FindReplaceSettings> = (
 		const adapter = createFindReplaceAdapter(settings, options);
 
 		const cleanup = configureFindReplace({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

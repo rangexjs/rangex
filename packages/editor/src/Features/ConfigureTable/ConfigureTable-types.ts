@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { TableConfigPort } from "#adapters/Table";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureTableParams {
-	configPort: TableConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureTableParams
+	extends ConfigureFeatureParams<TableConfigPort> {}

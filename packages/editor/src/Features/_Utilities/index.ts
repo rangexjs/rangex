@@ -14,3 +14,4 @@ export * from "./HandleLineRemove";
 export * from "./HandleQuickActionsAppearance";
 export * from "./HandleSelectionMenuInteraction";
 export * from "./HandleSwapToEmptyMedia";
+export * from "./Utilities-types";

@@ -10,6 +10,7 @@ export const Separator: AdapterFactoryFn<SeparatorSettings> = (settings) => {
 		const adapter = createSeparatorAdapter(settings, options);
 
 		const cleanup = configureSeparator({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});

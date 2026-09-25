@@ -7,6 +7,7 @@ export const Image: AdapterFactoryFn<ImageSettings> = (settings) => {
 		const adapter = createImageAdapter(settings, options);
 
 		const cleanup = configureImage({
+			adapterBus: options.adapterBus,
 			configPort: adapter.configPort,
 			editorAPI,
 		});
