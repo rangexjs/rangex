@@ -41,6 +41,13 @@ export interface WrapContentLineParams {
 	turnIntoParams: TurnIntoPlacementOption;
 }
 
+export interface ShouldSkipFirstLineParams {
+	componentName: string;
+	extractedLines: Line[];
+}
+
+export type ShouldSkipFirstLineResult = boolean;
+
 export interface ReplaceBlockComponentLineParams {
 	editorAPI: EditorAPI;
 	blockComponentLine: BlockComponentLine;

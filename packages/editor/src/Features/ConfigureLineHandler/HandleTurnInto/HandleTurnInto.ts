@@ -1,5 +1,8 @@
 import {
+	beamTextName,
 	blockComponentLineName,
+	blockComponentName,
+	blockComponentRoleSelector,
 	contentLineName,
 	createBeamText,
 	createContentLine,
@@ -8,7 +11,7 @@ import {
 	nestedEditableName,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import { componentsName } from "#engine-links";
+import { type BlockComponentName, componentsName } from "#engine-links";
 import { assertNever } from "#utilities";
 import {
 	createAccordionItem,
@@ -27,6 +30,8 @@ import type {
 	GetNestedEditableTargetResult,
 	HandleTurnIntoParams,
 	ReplaceBlockComponentLineParams,
+	ShouldSkipFirstLineParams,
+	ShouldSkipFirstLineResult,
 	TurnLineIntoParams,
 	WrapContentLineParams,
 } from "./HandleTurnInto-types";
@@ -137,16 +142,70 @@ const wrapContentLine = ({
 };
 
 /*
+ * Whether the first extracted Line should be dropped instead of carried into the new component.
+ * Components with more than one editable layer (e.g. an accordion item's summary above its
+ * body) extract that extra layer's Line first; when it's empty, carrying it over would leave a
+ * blank leading Line in the new component.
+ */
+const shouldSkipFirstLine = ({
+	componentName,
+	extractedLines,
+}: ShouldSkipFirstLineParams): ShouldSkipFirstLineResult => {
+	const componentsWithSkippableFirstLine: BlockComponentName[] = [
+		componentsName.accordionItem,
+	];
+
+	const isSkippable = componentsWithSkippableFirstLine.some(
+		(name) => name === componentName,
+	);
+
+	if (!isSkippable) {
+		return false;
+	}
+
+	const firstLine = extractedLines.at(0);
+
+	if (firstLine?.$$editorRole !== contentLineName) {
+		return false;
+	}
+
+	const isEmpty = firstLine.$$firstChild?.$$editorRole === beamTextName;
+
+	return isEmpty;
+};
+
+/*
  * Extracts every Line inside the BlockComponent and rebuilds them under the newly chosen
- * component, falling back to a single blank paragraph if the extraction leaves nothing.
+ * component. The first Line is dropped when shouldSkipFirstLine says so (e.g. an empty
+ * accordion item summary), and a single blank paragraph is used as a fallback if the
+ * extraction leaves nothing.
  */
 const replaceBlockComponentLine = ({
 	editorAPI,
 	blockComponentLine,
 	turnIntoParams,
 }: ReplaceBlockComponentLineParams) => {
+	const blockComponent = blockComponentLine.$$querySelector(
+		blockComponentRoleSelector,
+	);
+
+	if (blockComponent?.$$editorRole !== blockComponentName) {
+		throw new Error("BlockComponent's type is invalid.");
+	}
+
+	const { $$componentName } = blockComponent;
+
 	editorAPI.replaceComponentTop(blockComponentLine, (extractedLines) => {
 		const childNodes = [...extractedLines];
+
+		const isFirstLineSkipped = shouldSkipFirstLine({
+			componentName: $$componentName,
+			extractedLines,
+		});
+
+		if (isFirstLineSkipped) {
+			childNodes.shift();
+		}
 
 		if (!childNodes.length) {
 			console.warn("TurnInto target has no Lines.");
