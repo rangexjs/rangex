@@ -1,7 +1,8 @@
 import { CommandMenu } from "@rangex/solid";
 import { createMemo } from "solid-js";
 import { useEditorContext, useUIOptionsContext } from "#context";
-import { type CaretItemFn, CaretMenu, Icon } from "#ui";
+import { Icon } from "#ui";
+import { type CaretItemFn, CaretMenu } from "../../_Utilities";
 import type { CommandMenuAction } from "./BuildCommandMenuActions";
 import { buildCommandMenuActions } from "./BuildCommandMenuActions";
 

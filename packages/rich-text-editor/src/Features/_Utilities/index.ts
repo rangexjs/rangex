@@ -1,4 +1,5 @@
 export * from "./BlockAlign";
+export * from "./CaretMenu";
 export * from "./CSSAttributes";
 export * from "./CustomComponentToolbarButton";
 export * from "./FixedPosModal";

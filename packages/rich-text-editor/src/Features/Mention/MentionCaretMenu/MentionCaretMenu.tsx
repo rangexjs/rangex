@@ -1,7 +1,7 @@
 import { Mention } from "@rangex/solid";
 import { createMemo } from "solid-js";
 import { useEditorContext } from "#context";
-import { type CaretItemFn, CaretMenu } from "#ui";
+import { type CaretItemFn, CaretMenu } from "../../_Utilities";
 import { mentionItems } from "./MentionItems";
 
 export const MentionCaretMenu = () => {
