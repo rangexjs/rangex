@@ -6,19 +6,23 @@ import { configureReadOnly } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const ReadOnly: AdapterFactoryFn<ReadOnlySettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createReadOnlyAdapter(settings, options);
-
-		const cleanup = configureReadOnly({
-			adapterBus: options.adapterBus,
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.readOnly = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureReadOnly({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

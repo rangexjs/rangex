@@ -2,6 +2,7 @@ import { AdapterBus } from "#adapters";
 import { buildEditorStyleText, getHostStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
 import type {
+	ConfigureAdapterResult,
 	CreateEditorParams,
 	CreateEditorResult,
 	RangeXEditor,
@@ -22,7 +23,7 @@ export const createEditor = ({
 
 	const { host } = editorAPI;
 
-	const cleanupList = new Set<RegisterAdapterResult>();
+	const cleanupList = new Set<ConfigureAdapterResult>();
 
 	const snapshot = new Snapshot({ editorAPI });
 
@@ -41,16 +42,22 @@ export const createEditor = ({
 	const adapterBus = new AdapterBus();
 	const floatingContainer = document.createElement("div");
 
+	const registeredAdapters: RegisterAdapterResult[] = [];
+
 	for (const adapter of adapters) {
-		const cleanup = adapter(
+		const registeredAdapter = adapter(
 			{ adapterBus, floatingContainer },
-			{ editorAPI, editor },
+			{ editor },
 		);
+
+		registeredAdapters.push(registeredAdapter);
+	}
+
+	for (const registeredAdapter of registeredAdapters) {
+		const cleanup = registeredAdapter.configure({ editorAPI });
 
 		cleanupList.add(cleanup);
 	}
-
-	adapterBus.seal();
 
 	const hostStyles = getHostStyleText();
 

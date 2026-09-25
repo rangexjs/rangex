@@ -6,19 +6,23 @@ import { configureMarkdown } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Markdown: AdapterFactoryFn<MarkdownSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createMarkdownAdapter(settings, options);
-
-		const cleanup = configureMarkdown({
-			adapterBus: options.adapterBus,
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.markdown = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureMarkdown({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

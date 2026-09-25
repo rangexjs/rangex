@@ -182,10 +182,16 @@ Two channel shapes:
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
 
-The registry is sealed by `createEditor` once every Adapter has been created, so creation
-order never affects a lookup: `registerAdapter` throws after `seal()`, `hasAdapter` throws
-before it. Read `hasAdapter` lazily only — inside a getter or an event handler, never
-directly in `createXxxAdapter` / `configureXxx` setup code.
+`createEditor` builds the editor in two phases, so Adapter order never affects a lookup:
+
+1. **Create** — every `AdapterFactory` creates its Adapter, which registers itself on the
+   bus, and exposes its `publicPort` on `editor`. No `editorAPI` is available here. An Adapter
+   must not read other Adapters during creation (no `hasAdapter` in `createXxxAdapter` or
+   its setup code; getters read later are fine), since the registry isn't complete yet.
+2. **Configure** — once every Adapter exists, each factory's `configure({ editorAPI })`
+   runs its `configureXxx` and returns the cleanup. The registry is complete, so
+   `configureXxx` may read `hasAdapter` directly. It may subscribe to bus events but must not
+   emit them during setup — configure steps still run in array order among themselves.
 
 ## Wiring a new Adapter in
 
@@ -194,15 +200,19 @@ directly in `createXxxAdapter` / `configureXxx` setup code.
    (`xxx: XxxAdapter`). `AdapterName`, the `Adapter` union and `AdapterPublicPorts` are all
    derived from it, and the `RangeXEditor` type is generated off `AdapterPublicPorts` —
    skipping this means the feature is unreachable from `createEditor`, even fully built.
-   Then call `adapterBus.registerAdapter("xxx")` at the top of `createXxxAdapter`, so
-   other Adapters can see it through `hasAdapter` (see AdapterBus below).
+   Then call `adapterBus.registerAdapter("xxx")` in `createXxxAdapter`, right after the
+   `params` destructure, so other Adapters can see it through `hasAdapter` (see AdapterBus
+   above).
 3. Nothing to touch in `package.json` — `#adapters/*` is a single wildcard
    (`"./src/Adapters/*Adapter/index.ts"`) that already resolves any new `XxxAdapter`
    folder automatically.
 4. If it needs `Features` wiring (`Features/ConfigureXxx/`) and an
    `AdapterFactory` (`RangeXEditor/AdapterFactories/Xxx/`), build those too — an Adapter
    alone isn't reachable from `createEditor`'s `adapters` array without a matching
-   `AdapterFactory`. See the Progress section below for what's built and what isn't.
+   `AdapterFactory`. The factory creates the Adapter and assigns `editor.xxx`, then returns
+   `{ configure({ editorAPI }) { ... } }` that runs `configureXxx` and returns the cleanup
+   (see the two phases under AdapterBus above). See the Progress section below for what's
+   built and what isn't.
 5. If `@rangex/solid` needs to wrap it reactively, add a matching
    `packages/solid/src/ReactivePorts/Xxx/` — only state goes in: every `readonly xxx` +
    `onXxxUpdate` pair becomes a `createSignal`. Nothing else is exposed — a `readonly xxx`

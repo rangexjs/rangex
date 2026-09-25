@@ -6,19 +6,23 @@ import { configureBlockQuote } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const BlockQuote: AdapterFactoryFn<BlockQuoteSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createBlockQuoteAdapter(settings, options);
-
-		const cleanup = configureBlockQuote({
-			adapterBus: options.adapterBus,
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.blockQuote = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureBlockQuote({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };
