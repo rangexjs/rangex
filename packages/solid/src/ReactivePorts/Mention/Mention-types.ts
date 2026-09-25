@@ -1,6 +1,5 @@
-import type { CaretMenuQuery } from "@rangex/editor";
-import type { Accessor } from "solid-js";
+import type { ReactiveCaretMenuPort } from "../_Utilities";
 
 export interface ReactiveMentionPort {
-	query: Accessor<CaretMenuQuery>;
+	caretMenu: ReactiveCaretMenuPort;
 }

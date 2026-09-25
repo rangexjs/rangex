@@ -45,7 +45,7 @@ export const MentionCaretMenu = () => {
 
 	// Keeps the previous items until the new ones arrive; the cleanup aborts the request once the query changes again
 	createEffect(
-		() => $mention.query(),
+		() => $mention.caretMenu.query(),
 		(query) => {
 			if (query === null) {
 				setLoadedItems([]);

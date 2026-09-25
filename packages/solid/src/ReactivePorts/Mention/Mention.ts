@@ -1,6 +1,6 @@
 import type { MentionPublicPort } from "@rangex/editor";
-import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
+import { CaretMenu } from "../_Utilities";
 import type { ReactiveMentionPort } from "./Mention-types";
 
 export const Mention = <T extends MentionPublicPort | undefined>(
@@ -10,12 +10,8 @@ export const Mention = <T extends MentionPublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveMentionPort>;
 	}
 
-	const [query, setQuery] = createSignal(publicPort.caretMenu.query);
-
-	onCleanup(publicPort.caretMenu.onQueryUpdate(setQuery));
-
 	const port: ReactiveMentionPort = {
-		query,
+		caretMenu: CaretMenu(publicPort.caretMenu),
 	};
 
 	return port as PreserveUndefined<T, ReactiveMentionPort>;
