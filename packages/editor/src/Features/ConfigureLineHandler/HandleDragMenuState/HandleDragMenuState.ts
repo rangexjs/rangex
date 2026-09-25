@@ -73,7 +73,7 @@ const handleBlockComponentLine = ({
 
 	const { $$componentName } = blockComponent;
 
-	const { accordionItem, blockQuote, codeBlock, list, todoList } =
+	const { accordionItem, blockQuote, codeBlock, list, table, todoList } =
 		componentsName;
 
 	const turnableComponents: BlockComponentName[] = [
@@ -100,6 +100,7 @@ const handleBlockComponentLine = ({
 		blockQuote,
 		codeBlock,
 		list,
+		table,
 		todoList,
 	];
 
