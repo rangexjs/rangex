@@ -21,10 +21,9 @@ export interface CodeBlockUIOptions {
 
 // Mention
 export interface MentionItem {
-	id: string;
-	img: string;
-	name: string;
-	username: string;
+	userId: string;
+	displayName?: string;
+	img?: string;
 }
 
 export type MentionItems = MentionItem[];

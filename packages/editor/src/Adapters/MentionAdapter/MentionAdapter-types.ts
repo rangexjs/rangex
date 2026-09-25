@@ -7,8 +7,8 @@ import type {
 } from "../_Utilities";
 
 export interface SelectParams {
-	id: string;
-	name: string;
+	userId: string;
+	displayName: string;
 }
 
 export type OnSelectCallbackFn = (params: SelectParams) => void;

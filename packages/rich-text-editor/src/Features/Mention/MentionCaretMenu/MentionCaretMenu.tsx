@@ -1,6 +1,7 @@
 import { Mention } from "@rangex/solid";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import {
+	type MentionItem,
 	type MentionItems,
 	useEditorContext,
 	useUIOptionsContext,
@@ -62,32 +63,58 @@ export const MentionCaretMenu = () => {
 		},
 	);
 
+	// Every row gets the image circle once any item has an image, so the names stay aligned
+	const hasAnyImage = createMemo(() =>
+		loadedItems().some((item) => !!item.img),
+	);
+
+	const getDisplayName = (item: MentionItem) => item.displayName || item.userId;
+
+	const selectItem = (item: MentionItem) => {
+		mention.select({
+			userId: item.userId,
+			displayName: getDisplayName(item),
+		});
+	};
+
 	const items = () =>
 		loadedItems().map((item): CaretItemFn => {
-			return ({ isActive }) => (
-				<button
-					type="button"
-					class={[
-						"flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-left active:bg-neutral-200 active:dark:bg-neutral-700",
-						{ "bg-neutral-100 dark:bg-neutral-800": isActive() },
-					]}
-					onClick={() => mention.select(item)}
-				>
-					<img
-						src={item.img}
-						alt={item.name}
-						class="size-7 shrink-0 rounded-full object-cover"
-					/>
-					<div class="min-w-0 flex-1">
-						<div class="truncate font-semibold text-neutral-800 text-sm dark:text-neutral-100">
-							{item.name}
-						</div>
-						<div class="truncate text-neutral-500 text-xs dark:text-neutral-400">
-							@{item.username}
-						</div>
-					</div>
-				</button>
-			);
+			return ({ isActive }) => {
+				const [hasImageError, setHasImageError] = createSignal(false);
+
+				return (
+					<button
+						type="button"
+						class={[
+							"flex w-full items-center gap-2 rounded-sm border border-transparent p-1 text-left active:border-neutral-200 active:bg-neutral-100 active:dark:border-neutral-700 active:dark:bg-neutral-800",
+							{ "bg-neutral-100 dark:bg-neutral-800": isActive() },
+						]}
+						onClick={() => selectItem(item)}
+					>
+						<span
+							hidden={!hasAnyImage()}
+							class="size-7 shrink-0 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-700"
+						>
+							<img
+								hidden={!item.img || hasImageError()}
+								src={item.img}
+								alt=""
+								class="size-full object-cover"
+								onError={() => setHasImageError(true)}
+							/>
+						</span>
+						<span
+							class={[
+								"min-w-0 flex-1 truncate font-medium text-sm active:text-neutral-800 active:dark:text-neutral-50",
+								{ "text-neutral-600 dark:text-neutral-200": !isActive() },
+								{ "text-neutral-800 dark:text-neutral-50": isActive() },
+							]}
+						>
+							{getDisplayName(item)}
+						</span>
+					</button>
+				);
+			};
 		});
 
 	const onSelect = (index: number) => {
@@ -97,7 +124,7 @@ export const MentionCaretMenu = () => {
 			return;
 		}
 
-		mention.select(item);
+		selectItem(item);
 	};
 
 	return (

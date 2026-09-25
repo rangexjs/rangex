@@ -46,7 +46,7 @@ export const handleMentionSelect = ({
 }: HandleMentionSelectParams) => {
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onSelect(({ id, name }) => {
+	const unsubscribe = configPort.onSelect(({ userId, displayName }) => {
 		const { queryFound } = removeMentionQueryText({ editorAPI });
 
 		if (!queryFound) {
@@ -58,7 +58,7 @@ export const handleMentionSelect = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const mention = createMention({ userId: id, name });
+		const mention = createMention({ userId, displayName });
 
 		editorAPI.insertNode({
 			fromNode: fromText,

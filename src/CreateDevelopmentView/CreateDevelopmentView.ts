@@ -78,11 +78,11 @@ const uploadFile = ({
 const getMentionItems = async ({ query }: GetMentionItemsParams) => {
 	const lowerQuery = query.toLowerCase();
 
-	return mentionItems.filter(
-		(item) =>
-			item.name.toLowerCase().includes(lowerQuery) ||
-			item.username.toLowerCase().includes(lowerQuery),
-	);
+	return mentionItems.filter((item) => {
+		const displayName = item.displayName || item.userId;
+
+		return displayName.toLowerCase().includes(lowerQuery);
+	});
 };
 
 const syntaxHighlighter = new SyntaxHighlighterWorker();
