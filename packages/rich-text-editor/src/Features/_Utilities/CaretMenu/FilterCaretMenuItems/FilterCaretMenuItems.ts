@@ -41,7 +41,8 @@ const isWordStart = (key: string, index: number) => {
 const findWordStartMatch = (key: string, lowerKey: string, query: string) => {
 	// indexOf("", n) never advances past the key's end, so the loop below would never exit
 	if (!query) {
-		throw new Error("Query can't be empty.");
+		console.warn("Query can't be empty.");
+		return -1;
 	}
 
 	// 0 is a prefix match (handled earlier) and has no previous char to check
