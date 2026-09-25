@@ -120,7 +120,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
 						const isActive = () => isEntryActive(index());
 						return (
 							<li
-								class="scroll-my-1"
+								class="scroll-my-0.5"
 								onPointerDown={(event) => event.preventDefault()}
 								onPointerMove={() => setActiveIndex(index())}
 							>
