@@ -19,8 +19,32 @@ export interface CodeBlockUIOptions {
 	defaultTheme?: CodeBlockTheme;
 }
 
+// Mention
+export interface MentionItem {
+	id: string;
+	img: string;
+	name: string;
+	username: string;
+}
+
+export type MentionItems = MentionItem[];
+
+export interface GetMentionItemsParams {
+	query: string;
+	signal: AbortSignal;
+}
+
+export type GetMentionItemsFn = (
+	params: GetMentionItemsParams,
+) => Promise<MentionItems>;
+
+export interface MentionUIOptions {
+	getItems: GetMentionItemsFn;
+}
+
 export interface UIOptions {
 	codeBlock: CodeBlockUIOptions;
+	mention?: MentionUIOptions;
 }
 
 export const UIOptionsContext = createContext<UIOptions>();

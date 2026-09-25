@@ -1,33 +1,69 @@
 import { Mention } from "@rangex/solid";
-import { createMemo } from "solid-js";
-import { useEditorContext } from "#context";
+import { createEffect, createSignal } from "solid-js";
 import {
-	type CaretItemFn,
-	CaretMenu,
-	filterCaretMenuItems,
-} from "../../_Utilities";
-import { mentionItems } from "./MentionItems";
+	type MentionItems,
+	useEditorContext,
+	useUIOptionsContext,
+} from "#context";
+import { type CaretItemFn, CaretMenu } from "../../_Utilities";
 
 export const MentionCaretMenu = () => {
 	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
 	const { mention } = editor;
+	const mentionOptions = uiOptions.mention;
 
 	if (!mention) {
 		throw new Error("Mention can't be undefined.");
 	}
 
+	if (!mentionOptions) {
+		throw new Error("MentionOptions can't be undefined.");
+	}
+
 	const $mention = Mention(mention);
 
-	const filteredItems = createMemo(() =>
-		filterCaretMenuItems({
-			items: mentionItems,
-			query: $mention.query(),
-			getKeys: (item) => [item.name, item.username],
-		}),
+	const [loadedItems, setLoadedItems] = createSignal<MentionItems>([]);
+
+	const loadItems = async (query: string, signal: AbortSignal) => {
+		try {
+			const items = await mentionOptions.getItems({ query, signal });
+
+			if (signal.aborted) {
+				return;
+			}
+
+			setLoadedItems(items);
+		} catch (error) {
+			if (signal.aborted) {
+				return;
+			}
+
+			console.error(error);
+		}
+	};
+
+	// Keeps the previous items until the new ones arrive; the cleanup aborts the request once the query changes again
+	createEffect(
+		() => $mention.query(),
+		(query) => {
+			if (query === null) {
+				setLoadedItems([]);
+				return;
+			}
+
+			const abortController = new AbortController();
+
+			loadItems(query, abortController.signal);
+
+			return () => {
+				abortController.abort();
+			};
+		},
 	);
 
 	const items = () =>
-		filteredItems().map((item): CaretItemFn => {
+		loadedItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -55,7 +91,7 @@ export const MentionCaretMenu = () => {
 		});
 
 	const onSelect = (index: number) => {
-		const item = filteredItems().at(index);
+		const item = loadedItems().at(index);
 
 		if (!item) {
 			return;

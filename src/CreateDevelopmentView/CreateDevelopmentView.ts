@@ -11,6 +11,7 @@ import {
 	type Extension,
 	FindReplace,
 	Formatting,
+	type GetMentionItemsParams,
 	Image,
 	LineHandler,
 	Link,
@@ -30,6 +31,7 @@ import {
 import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
 import type { StoredSnapshot } from "rich-text-area";
 import storedSnapshot from "../MockDatabase/Demo.json";
+import { mentionItems } from "../MockDatabase/MentionItems";
 import {
 	codeBlockLanguageDefinitions,
 	codeBlockThemeDefinitions,
@@ -67,6 +69,20 @@ const uploadFile = ({
 
 		reader.readAsDataURL(file);
 	});
+};
+
+/**
+ * Demo-only stand-in for a user search — filters the mock users locally. A consumer building a real editor should
+ * replace this with a request to their own user directory, passing `signal` along so stale requests get cancelled.
+ */
+const getMentionItems = async ({ query }: GetMentionItemsParams) => {
+	const lowerQuery = query.toLowerCase();
+
+	return mentionItems.filter(
+		(item) =>
+			item.name.toLowerCase().includes(lowerQuery) ||
+			item.username.toLowerCase().includes(lowerQuery),
+	);
 };
 
 const syntaxHighlighter = new SyntaxHighlighterWorker();
@@ -137,7 +153,7 @@ export const createDevelopmentView = () => {
 		Link({}),
 		List({}),
 		Markdown({ codeBlockTriggers }),
-		Mention({}),
+		Mention({ getItems: getMentionItems }),
 		ReadOnly({}),
 		Separator({}),
 		Shortcuts({}),

@@ -1,7 +1,7 @@
-import type { MentionItems } from "./MentionCaretMenu-types";
+import type { MentionItems } from "@rangex/rich-text-editor";
 
 /**
- * Mock mention items — hardcoded until the Mention extension takes its own data source.
+ * Mock mention items — stands in for a real user directory (API, database, etc.).
  */
 export const mentionItems: MentionItems = [
 	{
