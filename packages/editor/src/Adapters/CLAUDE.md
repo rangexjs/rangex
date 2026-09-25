@@ -168,13 +168,32 @@ context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`
 otherwise collide with the port's own composed key (`SelectionMenuPort`'s DOM-element
 field became `element`, since the composed key is already `selectionMenu`).
 
+## AdapterBus
+
+`_Utilities/AdapterBus/` is the one shared object every Adapter receives through
+`AdapterOptions`; Adapters use it to talk to each other without holding direct references.
+Two channel shapes:
+
+- **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
+  `onSwapToEmptyMedia`).
+- **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
+  Answers "was the editor built with Adapter X?" for anything that depends on another
+  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`).
+
+The registry is sealed by `createEditor` once every Adapter has been created, so creation
+order never affects a lookup: `registerAdapter` throws after `seal()`, `hasAdapter` throws
+before it. Read `hasAdapter` lazily only — inside a getter or an event handler, never
+directly in `createXxxAdapter` / `configureXxx` setup code.
+
 ## Wiring a new Adapter in
 
 1. Build it per everything above.
-2. Add its id to `Adapters/_Utilities/Utilities-types.ts`'s `Adapter` union and
-   `AdapterPublicPorts` map (the `RangeXEditor` type is generated off this map's keys —
-   skipping this means the feature is unreachable from `createEditor`, even fully
-   built).
+2. Add it to `Adapters/_Utilities/Utilities-types.ts`'s `AdapterMap`
+   (`xxx: XxxAdapter`). `AdapterName`, the `Adapter` union and `AdapterPublicPorts` are all
+   derived from it, and the `RangeXEditor` type is generated off `AdapterPublicPorts` —
+   skipping this means the feature is unreachable from `createEditor`, even fully built.
+   Then call `adapterBus.registerAdapter("xxx")` at the top of `createXxxAdapter`, so
+   other Adapters can see it through `hasAdapter` (see AdapterBus below).
 3. Nothing to touch in `package.json` — `#adapters/*` is a single wildcard
    (`"./src/Adapters/*Adapter/index.ts"`) that already resolves any new `XxxAdapter`
    folder automatically.

@@ -22,7 +22,7 @@ export const createAudioAdapter = (
 ): CreateAudioAdapterResult => {
 	const [_settings, { adapterBus, floatingContainer }] = params;
 
-	adapterBus.registerSupportedMediaType("audio");
+	adapterBus.registerAdapter("audio");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

@@ -22,7 +22,7 @@ export const createImageAdapter = (
 ): CreateImageAdapterResult => {
 	const [_settings, { adapterBus, floatingContainer }] = params;
 
-	adapterBus.registerSupportedMediaType("image");
+	adapterBus.registerAdapter("image");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

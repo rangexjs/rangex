@@ -1,4 +1,9 @@
-export type MediaType = "image" | "video" | "audio" | "embed";
+import type { AdapterName } from "../Utilities-types";
+
+export type MediaType = Extract<
+	AdapterName,
+	"image" | "video" | "audio" | "embed"
+>;
 
 export interface MediaResolveCallbackParams {
 	type: MediaType;

@@ -50,6 +50,8 @@ export const createEditor = ({
 		cleanupList.add(cleanup);
 	}
 
+	adapterBus.seal();
+
 	const hostStyles = getHostStyleText();
 
 	return { editor, host, floatingContainer, hostStyles };

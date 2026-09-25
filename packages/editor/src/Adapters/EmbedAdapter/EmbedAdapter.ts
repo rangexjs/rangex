@@ -22,7 +22,7 @@ export const createEmbedAdapter = (
 ): CreateEmbedAdapterResult => {
 	const [_settings, { adapterBus, floatingContainer }] = params;
 
-	adapterBus.registerSupportedMediaType("embed");
+	adapterBus.registerAdapter("embed");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

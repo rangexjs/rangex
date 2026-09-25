@@ -1,61 +1,28 @@
-import type {
-	CodeBlockAdapter,
-	CodeBlockPublicPort,
-} from "#adapters/CodeBlock";
-import type {
-	TemplateVariableAdapter,
-	TemplateVariablePublicPort,
-} from "#adapters/TemplateVariable";
-import type { TodoListAdapter, TodoListPublicPort } from "#adapters/TodoList";
-import type { UndoRedoAdapter, UndoRedoPublicPort } from "#adapters/UndoRedo";
-import type {
-	AccordionItemAdapter,
-	AccordionItemPublicPort,
-} from "../AccordionItemAdapter";
-import type { AudioAdapter, AudioPublicPort } from "../AudioAdapter";
-import type {
-	BlockQuoteAdapter,
-	BlockQuotePublicPort,
-} from "../BlockQuoteAdapter";
-import type {
-	CommandMenuAdapter,
-	CommandMenuPublicPort,
-} from "../CommandMenuAdapter";
-import type { EmbedAdapter, EmbedPublicPort } from "../EmbedAdapter";
-import type { EmojiAdapter, EmojiPublicPort } from "../EmojiAdapter";
-import type {
-	EmptyMediaAdapter,
-	EmptyMediaPublicPort,
-} from "../EmptyMediaAdapter";
-import type {
-	FindReplaceAdapter,
-	FindReplacePublicPort,
-} from "../FindReplaceAdapter";
-import type {
-	FormattingAdapter,
-	FormattingPublicPort,
-} from "../FormattingAdapter";
-import type { ImageAdapter, ImagePublicPort } from "../ImageAdapter";
-import type {
-	LineHandlerAdapter,
-	LineHandlerPublicPort,
-} from "../LineHandlerAdapter";
-import type { LinkAdapter, LinkPublicPort } from "../LinkAdapter";
-import type { ListAdapter, ListPublicPort } from "../ListAdapter";
-import type { MarkdownAdapter, MarkdownPublicPort } from "../MarkdownAdapter";
-import type { MentionAdapter, MentionPublicPort } from "../MentionAdapter";
-import type { ReadOnlyAdapter, ReadOnlyPublicPort } from "../ReadOnlyAdapter";
-import type {
-	SeparatorAdapter,
-	SeparatorPublicPort,
-} from "../SeparatorAdapter";
-import type {
-	ShortcutsAdapter,
-	ShortcutsPublicPort,
-} from "../ShortcutsAdapter";
-import type { SymbolsAdapter, SymbolsPublicPort } from "../SymbolsAdapter";
-import type { TableAdapter, TablePublicPort } from "../TableAdapter";
-import type { VideoAdapter, VideoPublicPort } from "../VideoAdapter";
+import type { AccordionItemAdapter } from "../AccordionItemAdapter";
+import type { AudioAdapter } from "../AudioAdapter";
+import type { BlockQuoteAdapter } from "../BlockQuoteAdapter";
+import type { CodeBlockAdapter } from "../CodeBlockAdapter";
+import type { CommandMenuAdapter } from "../CommandMenuAdapter";
+import type { EmbedAdapter } from "../EmbedAdapter";
+import type { EmojiAdapter } from "../EmojiAdapter";
+import type { EmptyMediaAdapter } from "../EmptyMediaAdapter";
+import type { FindReplaceAdapter } from "../FindReplaceAdapter";
+import type { FormattingAdapter } from "../FormattingAdapter";
+import type { ImageAdapter } from "../ImageAdapter";
+import type { LineHandlerAdapter } from "../LineHandlerAdapter";
+import type { LinkAdapter } from "../LinkAdapter";
+import type { ListAdapter } from "../ListAdapter";
+import type { MarkdownAdapter } from "../MarkdownAdapter";
+import type { MentionAdapter } from "../MentionAdapter";
+import type { ReadOnlyAdapter } from "../ReadOnlyAdapter";
+import type { SeparatorAdapter } from "../SeparatorAdapter";
+import type { ShortcutsAdapter } from "../ShortcutsAdapter";
+import type { SymbolsAdapter } from "../SymbolsAdapter";
+import type { TableAdapter } from "../TableAdapter";
+import type { TemplateVariableAdapter } from "../TemplateVariableAdapter";
+import type { TodoListAdapter } from "../TodoListAdapter";
+import type { UndoRedoAdapter } from "../UndoRedoAdapter";
+import type { VideoAdapter } from "../VideoAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
@@ -68,57 +35,38 @@ export type CreateAdapterParams<Settings extends object> = [
 	AdapterOptions,
 ];
 
-export type Adapter =
-	| AccordionItemAdapter
-	| AudioAdapter
-	| BlockQuoteAdapter
-	| CodeBlockAdapter
-	| CommandMenuAdapter
-	| EmbedAdapter
-	| EmojiAdapter
-	| EmptyMediaAdapter
-	| FindReplaceAdapter
-	| FormattingAdapter
-	| ImageAdapter
-	| LineHandlerAdapter
-	| LinkAdapter
-	| ListAdapter
-	| MarkdownAdapter
-	| MentionAdapter
-	| ReadOnlyAdapter
-	| SeparatorAdapter
-	| ShortcutsAdapter
-	| SymbolsAdapter
-	| TableAdapter
-	| TemplateVariableAdapter
-	| TodoListAdapter
-	| UndoRedoAdapter
-	| VideoAdapter;
-
-export interface AdapterPublicPorts {
-	accordionItem: AccordionItemPublicPort;
-	audio: AudioPublicPort;
-	blockQuote: BlockQuotePublicPort;
-	codeBlock: CodeBlockPublicPort;
-	commandMenu: CommandMenuPublicPort;
-	embed: EmbedPublicPort;
-	emoji: EmojiPublicPort;
-	emptyMedia: EmptyMediaPublicPort;
-	findReplace: FindReplacePublicPort;
-	formatting: FormattingPublicPort;
-	image: ImagePublicPort;
-	lineHandler: LineHandlerPublicPort;
-	link: LinkPublicPort;
-	list: ListPublicPort;
-	markdown: MarkdownPublicPort;
-	mention: MentionPublicPort;
-	readOnly: ReadOnlyPublicPort;
-	separator: SeparatorPublicPort;
-	shortcuts: ShortcutsPublicPort;
-	symbols: SymbolsPublicPort;
-	table: TablePublicPort;
-	templateVariable: TemplateVariablePublicPort;
-	todoList: TodoListPublicPort;
-	undoRedo: UndoRedoPublicPort;
-	video: VideoPublicPort;
+export interface AdapterMap {
+	accordionItem: AccordionItemAdapter;
+	audio: AudioAdapter;
+	blockQuote: BlockQuoteAdapter;
+	codeBlock: CodeBlockAdapter;
+	commandMenu: CommandMenuAdapter;
+	embed: EmbedAdapter;
+	emoji: EmojiAdapter;
+	emptyMedia: EmptyMediaAdapter;
+	findReplace: FindReplaceAdapter;
+	formatting: FormattingAdapter;
+	image: ImageAdapter;
+	lineHandler: LineHandlerAdapter;
+	link: LinkAdapter;
+	list: ListAdapter;
+	markdown: MarkdownAdapter;
+	mention: MentionAdapter;
+	readOnly: ReadOnlyAdapter;
+	separator: SeparatorAdapter;
+	shortcuts: ShortcutsAdapter;
+	symbols: SymbolsAdapter;
+	table: TableAdapter;
+	templateVariable: TemplateVariableAdapter;
+	todoList: TodoListAdapter;
+	undoRedo: UndoRedoAdapter;
+	video: VideoAdapter;
 }
+
+export type AdapterName = keyof AdapterMap;
+
+export type Adapter = AdapterMap[AdapterName];
+
+export type AdapterPublicPorts = {
+	[Name in AdapterName]: AdapterMap[Name]["publicPort"];
+};
