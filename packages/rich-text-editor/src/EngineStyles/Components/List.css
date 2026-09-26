@@ -6,6 +6,7 @@
 	[data-rx-editor-role="block-component"] {
 		& > :where(ul, ol) {
 			margin: 0;
+			padding-inline-start: 16px;
 		}
 	}
 }
