@@ -10,3 +10,10 @@ export interface GetClosestScopedEditableParams {
 }
 
 export type GetClosestScopedEditableResult = ScopedEditable | null;
+
+export interface GetClosestCommonScopedEditableParams {
+	fromNode: EditorNode;
+	toNode: EditorNode;
+}
+
+export type GetClosestCommonScopedEditableResult = ScopedEditable | null;

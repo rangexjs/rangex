@@ -16,9 +16,11 @@ export const handleBlockQuotePlacementState = ({
 		editorAPI,
 		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.blockQuote],
 			});
 			const canWrap = blockComponentPlacement.canWrapBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.blockQuote],
 			});
 

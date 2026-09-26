@@ -1,35 +1,55 @@
-import { type EditorNode, isScopedEditable } from "rich-text-area";
+import { assertNever } from "#utilities";
+import { getClosestScopedEditable } from "../../NodeQuery";
 import type {
 	CanInsertBlockLinesParams,
 	CanInsertBlockLinesResult,
 } from "./CanInsertBlockLines-types";
 
 /**
- * Returns true if a block-level component can be inserted at the given node's position.
+ * Returns true if a block-level component can be inserted at the given node's position, checked against the
+ * ScopedEditable the `scope` resolves to.
  */
 export const canInsertBlockLines = ({
 	fromNode,
+	scope,
 	allowedComponents,
 }: CanInsertBlockLinesParams): CanInsertBlockLinesResult => {
-	let current: EditorNode | null = fromNode;
+	const scopedEditable = (() => {
+		if (scope === "current") {
+			const scopedEditable = getClosestScopedEditable({ fromNode });
 
-	while (current) {
-		if (isScopedEditable(current) && current.$$display === "block multi-line") {
-			const { $$allowedComponents } = current;
-
-			if ($$allowedComponents === null) {
-				return true;
+			if (scopedEditable?.$$display !== "block multi-line") {
+				return null;
 			}
 
-			const isAllowed = allowedComponents.every((componentName) =>
-				$$allowedComponents.includes(componentName),
-			);
-
-			return isAllowed;
+			return scopedEditable;
 		}
 
-		current = current.$$parentElement;
+		if (scope === "nearest-multi-line") {
+			const scopedEditable = getClosestScopedEditable({
+				fromNode,
+				display: "block multi-line",
+			});
+
+			return scopedEditable;
+		}
+
+		return assertNever(scope);
+	})();
+
+	if (!scopedEditable) {
+		return false;
 	}
 
-	return false;
+	const { $$allowedComponents } = scopedEditable;
+
+	if ($$allowedComponents === null) {
+		return true;
+	}
+
+	const isAllowed = allowedComponents.every((componentName) =>
+		$$allowedComponents.includes(componentName),
+	);
+
+	return isAllowed;
 };

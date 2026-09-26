@@ -15,6 +15,7 @@ export const handleEmptyMediaPlacementState = ({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.emptyMedia],
 			});
 

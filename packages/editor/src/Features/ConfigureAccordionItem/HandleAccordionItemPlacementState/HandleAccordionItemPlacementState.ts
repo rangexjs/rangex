@@ -16,9 +16,11 @@ export const handleAccordionItemPlacementState = ({
 		editorAPI,
 		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.accordionItem],
 			});
 			const canWrap = blockComponentPlacement.canWrapBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.accordionItem],
 			});
 

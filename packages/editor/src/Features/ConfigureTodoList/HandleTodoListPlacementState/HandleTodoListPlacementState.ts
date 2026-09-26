@@ -16,9 +16,11 @@ export const handleTodoListPlacementState = ({
 		editorAPI,
 		updateState: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.todoList],
 			});
 			const canWrap = blockComponentPlacement.canWrapBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.todoList],
 			});
 

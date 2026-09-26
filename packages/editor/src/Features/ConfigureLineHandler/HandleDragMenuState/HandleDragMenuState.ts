@@ -29,6 +29,7 @@ const isAllowedAtLine = ({
 		fromOffset: 0,
 		toNode: line,
 		toOffset: 0,
+		scope: "current",
 		allowedComponents: [name],
 	});
 };

@@ -15,6 +15,7 @@ export const handleSeparatorPlacementState = ({
 		type: editorSelectionChangeEventType,
 		callback: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
+				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.separator],
 			});
 

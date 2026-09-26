@@ -29,12 +29,12 @@ export const createBlockComponentPlacement = ({
 	adapterBus,
 }: CreateBlockComponentPlacementParams): CreateBlockComponentPlacementResult => {
 	const blockComponentPlacement: BlockComponentPlacement = {
-		canInsert({ fromNode, allowedComponents }) {
+		canInsert({ fromNode, scope, allowedComponents }) {
 			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
 				return false;
 			}
 
-			return canInsertBlockLines({ fromNode, allowedComponents });
+			return canInsertBlockLines({ fromNode, scope, allowedComponents });
 		},
 
 		insert({ fromNode, lines, shouldReplaceContentLineIfEmpty = false }) {
@@ -45,14 +45,14 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		canInsertBySelection({ allowedComponents }) {
+		canInsertBySelection({ scope, allowedComponents }) {
 			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
 				return false;
 			}
 
 			const fromNode = getSelectionForwardText({ editorAPI });
 
-			return canInsertBlockLines({ fromNode, allowedComponents });
+			return canInsertBlockLines({ fromNode, scope, allowedComponents });
 		},
 
 		insertBySelection({ lines, shouldReplaceContentLineIfEmpty = false }) {
@@ -65,7 +65,14 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		canWrap({ fromNode, fromOffset, toNode, toOffset, allowedComponents }) {
+		canWrap({
+			fromNode,
+			fromOffset,
+			toNode,
+			toOffset,
+			scope,
+			allowedComponents,
+		}) {
 			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
 				return false;
 			}
@@ -76,6 +83,7 @@ export const createBlockComponentPlacement = ({
 				fromOffset,
 				toNode,
 				toOffset,
+				scope,
 				allowedComponents,
 			});
 		},
@@ -99,7 +107,7 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		canWrapBySelection({ allowedComponents }) {
+		canWrapBySelection({ scope, allowedComponents }) {
 			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
 				return false;
 			}
@@ -115,6 +123,7 @@ export const createBlockComponentPlacement = ({
 				fromOffset,
 				toNode: toText,
 				toOffset,
+				scope,
 				allowedComponents,
 			});
 		},
