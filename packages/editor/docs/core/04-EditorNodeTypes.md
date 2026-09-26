@@ -635,6 +635,7 @@ createList({
 |---|---|---|
 | `$$localName` _(read-only)_ | `"ol" \| "ul"` | List element type |
 | `$$insertItem({ whereToIndex?, lines })` | `ListInsertItemFn` | Insert a new `ListItem` at the given index (defaults to end), populated with the provided `Line` nodes |
+| `$$changeLocalName({ toLocalName })` | `ListChangeLocalNameFn` | Replaces this `List` with a new one (new `uniqueId`) using `"ol"` or `"ul"`, moving its `ListItem`s over. Returns `{ list }` — use it afterward, the old `List` is detached |
 | `$$replaceWith(...nodes)` | `(...LayoutUnitReplacementList) => void` | Replace this node |
 | `$$before(...nodes)` | `(...ListSibling[]) => void` | Insert before |
 | `$$after(...nodes)` | `(...ListSibling[]) => void` | Insert after |
