@@ -1,25 +1,7 @@
 import { Dynamic } from "@solidjs/web";
-import { For, Show } from "solid-js";
-import type { ToolbarButtonsLayout, ToolbarButtonValue } from "#constants";
+import { createMemo, For, Show } from "solid-js";
+import type { ToolbarButtonsLayout } from "#constants";
 import type { ExtensionToolbarButtons } from "#extensions";
-
-interface ToolbarButtonSlotProps {
-	name: ToolbarButtonValue;
-	toolbarButtons: ExtensionToolbarButtons;
-}
-
-const ToolbarButtonSlot = ({
-	name,
-	toolbarButtons,
-}: ToolbarButtonSlotProps) => {
-	const component = toolbarButtons[name];
-
-	if (component) {
-		return <Dynamic component={component} />;
-	}
-
-	return null;
-};
 
 export interface EditorToolbarProps {
 	toolbarButtonsLayout: ToolbarButtonsLayout;
@@ -27,9 +9,28 @@ export interface EditorToolbarProps {
 }
 
 export const EditorToolbar = (props: EditorToolbarProps) => {
+	// Drops buttons without a registered component, then any group or row left empty.
+	const visibleLayout = createMemo(() => {
+		const toolbarButtons = props.toolbarButtons;
+
+		const rows = props.toolbarButtonsLayout.map((row) => {
+			const groups = row.map((group) =>
+				group.filter((name) => toolbarButtons[name]),
+			);
+
+			return groups.filter((group) => group.length > 0);
+		});
+
+		return rows.filter((row) => row.length > 0);
+	});
+
+	if (!visibleLayout().length) {
+		return null;
+	}
+
 	return (
 		<div class="flex flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950">
-			<For each={props.toolbarButtonsLayout}>
+			<For each={visibleLayout()}>
 				{(row) => (
 					<div class="flex flex-wrap gap-1.5">
 						<For each={row}>
@@ -38,10 +39,7 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 									<span class="space-x-0.5">
 										<For each={group}>
 											{(name) => (
-												<ToolbarButtonSlot
-													name={name}
-													toolbarButtons={props.toolbarButtons}
-												/>
+												<Dynamic component={props.toolbarButtons[name]} />
 											)}
 										</For>
 									</span>
