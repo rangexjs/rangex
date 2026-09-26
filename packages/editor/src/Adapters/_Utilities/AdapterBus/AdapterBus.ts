@@ -6,6 +6,13 @@ import type {
 	OnSwapToEmptyMediaCallbackFn,
 } from "./AdapterBus-types";
 
+export const mediaTypes = [
+	"audio",
+	"embed",
+	"image",
+	"video",
+] satisfies AdapterName[];
+
 /**
  * Lets Adapters talk to each other without holding direct references to one another. Two
  * channel shapes coexist here, picked per the data's own nature: a transient event

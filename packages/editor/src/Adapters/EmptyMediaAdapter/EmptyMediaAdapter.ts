@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter, type MediaType } from "../_Utilities";
+import { createEmitter, mediaTypes } from "../_Utilities";
 import type {
 	CreateEmptyMediaAdapterParams,
 	CreateEmptyMediaAdapterResult,
@@ -15,8 +15,6 @@ import type {
 	UpdateElementStateParams,
 	UpdateStateParams,
 } from "./EmptyMediaAdapter-types";
-
-const mediaTypes: MediaType[] = ["image", "video", "audio", "embed"];
 
 export const createEmptyMediaAdapter = (
 	...params: CreateEmptyMediaAdapterParams
