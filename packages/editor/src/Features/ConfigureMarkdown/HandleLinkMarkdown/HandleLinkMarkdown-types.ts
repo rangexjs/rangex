@@ -1,4 +1,5 @@
 import type { EditorAPI } from "rich-text-area";
+import type { AdapterBus } from "#adapters";
 
 export interface LinkMarkdownMatch {
 	type: "link";
@@ -19,9 +20,11 @@ export type LinkMarkdownTrigger = LinkMarkdownMatch | MediaMarkdownMatch;
 export type MatchLinkTriggerResult = LinkMarkdownTrigger | null;
 
 export interface CanApplyLinkParams {
+	adapterBus: AdapterBus;
 	editorAPI: EditorAPI;
 }
 
 export interface HandleLinkMarkdownParams {
+	adapterBus: AdapterBus;
 	editorAPI: EditorAPI;
 }
