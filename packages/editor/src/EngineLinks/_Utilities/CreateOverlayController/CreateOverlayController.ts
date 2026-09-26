@@ -1,8 +1,13 @@
 /// <reference path="./CloseWatcher.d.ts" />
 import { dataAnchorName } from "rich-text-area";
-import { forceReflowWithoutTransition } from "#utilities";
+import {
+	addERClass,
+	forceReflowWithoutTransition,
+	removeERClass,
+} from "#utilities";
 import type {
 	AnchoredOverlayController,
+	ApplyAnchorPositionParams,
 	CreateAnchoredOverlayControllerParams,
 	CreateCloseWatcherParams,
 	CreatePopoverOverlayControllerParams,
@@ -12,6 +17,54 @@ import type {
 } from "./CreateOverlayController-types";
 
 const hideAnchoredClass = "hide-anchored";
+const anchoredOverlayClass = "anchored-overlay";
+const popoverOverlayClass = "popover-overlay";
+
+export const anchorPositionFields = [
+	"position",
+	"position-area",
+	"top",
+	"right",
+	"bottom",
+	"left",
+	"width",
+	"height",
+	"align-self",
+	"justify-self",
+	"margin",
+] as const;
+
+const toAnchorPositionAttr = (property: string) => `data-er-${property}`;
+
+/*
+ * Writes the positioning values as `data-er-*` attributes, which the host stylesheet maps onto the matching
+ * CSS properties via `attr()`. `clear` drops every previously set field first; otherwise unpassed fields persist.
+ */
+const applyAnchorPosition = ({
+	element,
+	positionAnchor,
+	styleOptions,
+}: ApplyAnchorPositionParams) => {
+	const { clear, ...style } = styleOptions;
+
+	if (clear) {
+		for (const field of anchorPositionFields) {
+			const attrName = toAnchorPositionAttr(field);
+
+			element.removeAttribute(attrName);
+		}
+	}
+
+	for (const [property, value] of Object.entries(style)) {
+		const attrName = toAnchorPositionAttr(property);
+
+		element.setAttribute(attrName, value);
+	}
+
+	const attrName = toAnchorPositionAttr("position-anchor");
+
+	element.setAttribute(attrName, positionAnchor);
+};
 
 const registerLightDismiss = ({
 	element,
@@ -72,15 +125,14 @@ export const createAnchoredOverlayController = ({
 }: CreateAnchoredOverlayControllerParams): AnchoredOverlayController => {
 	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
-	element.classList.add(hideAnchoredClass);
-	element.style.setProperty("position-visibility", "anchor-valid");
+	addERClass(element, anchoredOverlayClass, hideAnchoredClass);
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
-		element.classList.add(hideAnchoredClass);
+		addERClass(element, hideAnchoredClass);
 		closeWatcher?.destroy();
 		closeWatcher = null;
 		isOpen = false;
@@ -112,7 +164,7 @@ export const createAnchoredOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, { clear, ...style }) {
+		show(anchorElement, styleOptions) {
 			const anchorName = anchorElement.getAttribute(dataAnchorName);
 
 			if (anchorName === null) {
@@ -121,16 +173,13 @@ export const createAnchoredOverlayController = ({
 				);
 			}
 
-			if (clear) {
-				element.style.cssText = "";
-			}
+			applyAnchorPosition({
+				element,
+				positionAnchor: anchorName,
+				styleOptions,
+			});
 
-			for (const [property, value] of Object.entries(style)) {
-				element.style.setProperty(property, value);
-			}
-
-			element.style.setProperty("position-anchor", anchorName);
-			element.classList.remove(hideAnchoredClass);
+			removeERClass(element, hideAnchoredClass);
 
 			if (closeOnEscape) {
 				closeWatcher?.destroy();
@@ -177,6 +226,7 @@ export const createPopoverOverlayController = ({
 	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
 	element.setAttribute("popover", "manual");
+	addERClass(element, popoverOverlayClass);
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
@@ -219,16 +269,12 @@ export const createPopoverOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, { clear, ...style }) {
-			if (clear) {
-				element.style.cssText = "";
-			}
-
-			for (const [property, value] of Object.entries(style)) {
-				element.style.setProperty(property, value);
-			}
-
-			element.style.setProperty("position-anchor", "auto");
+		show(anchorElement, styleOptions) {
+			applyAnchorPosition({
+				element,
+				positionAnchor: "auto",
+				styleOptions,
+			});
 
 			// We must hide it before showing it again
 			if (isOpen) {

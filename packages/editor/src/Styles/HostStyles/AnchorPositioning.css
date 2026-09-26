@@ -2,12 +2,74 @@
 	anchor-name: attr(data-rx-anchor-name type(<custom-ident>));
 }
 
-.hide-anchored {
+[data-er-class~="hide-anchored"] {
 	display: none !important;
 }
 
-.disable-transition {
+[data-er-class~="disable-transition"] {
 	transition: none !important;
+}
+
+[data-er-class~="anchored-overlay"] {
+	position-visibility: anchor-valid;
+}
+
+/* Positioning hack: collapses the menu to a zero-width, centered strip on the cell's right edge */
+[data-er-class~="table-context-menu"] {
+	display: inline-flex;
+	justify-content: center;
+	width: 0px;
+}
+
+[data-er-class~="anchored-overlay"],
+[data-er-class~="popover-overlay"] {
+	&[data-er-position-anchor] {
+		position-anchor: attr(data-er-position-anchor type(*)) !important;
+	}
+
+	&[data-er-position] {
+		position: attr(data-er-position type(*)) !important;
+	}
+
+	&[data-er-position-area] {
+		position-area: attr(data-er-position-area type(*)) !important;
+	}
+
+	&[data-er-top] {
+		top: attr(data-er-top type(*)) !important;
+	}
+
+	&[data-er-right] {
+		right: attr(data-er-right type(*)) !important;
+	}
+
+	&[data-er-bottom] {
+		bottom: attr(data-er-bottom type(*)) !important;
+	}
+
+	&[data-er-left] {
+		left: attr(data-er-left type(*)) !important;
+	}
+
+	&[data-er-width] {
+		width: attr(data-er-width type(*)) !important;
+	}
+
+	&[data-er-height] {
+		height: attr(data-er-height type(*)) !important;
+	}
+
+	&[data-er-align-self] {
+		align-self: attr(data-er-align-self type(*)) !important;
+	}
+
+	&[data-er-justify-self] {
+		justify-self: attr(data-er-justify-self type(*)) !important;
+	}
+
+	&[data-er-margin] {
+		margin: attr(data-er-margin type(*)) !important;
+	}
 }
 
 /*

@@ -4,6 +4,7 @@ import {
 	createBlockComponentPlacement,
 	createComponentLookup,
 } from "#engine-links";
+import { addERClass } from "#utilities";
 import { handleComponentUnwrap } from "../_Utilities";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMenuButtonsInteraction";
@@ -26,6 +27,8 @@ export const configureTable = ({
 		editorAPI,
 		adapterBus,
 	});
+
+	addERClass(configPort.contextMenuEl, "table-context-menu");
 
 	const anchorController = createAnchoredOverlayController({
 		element: configPort.contextMenuEl,

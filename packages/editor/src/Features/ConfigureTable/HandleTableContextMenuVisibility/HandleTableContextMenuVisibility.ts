@@ -22,10 +22,6 @@ const positionToTableCell = ({
 		"align-self": "anchor-center",
 		right: "anchor(right)",
 	});
-
-	anchorController.element.style.display = "inline-flex";
-	anchorController.element.style.justifyContent = "center";
-	anchorController.element.style.width = "0px";
 };
 
 /**
