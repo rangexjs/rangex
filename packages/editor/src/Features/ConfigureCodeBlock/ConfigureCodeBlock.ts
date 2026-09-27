@@ -76,5 +76,6 @@ export const configureCodeBlock = ({
 		lineNumbersCleanup();
 		codeBlockStateCleanup();
 		quickActionsCleanup();
+		codeHighlighter.cleanup();
 	};
 };

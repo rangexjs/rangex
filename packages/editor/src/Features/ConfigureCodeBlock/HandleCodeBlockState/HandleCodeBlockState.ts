@@ -3,39 +3,59 @@ import {
 	contentLineRoleSelector,
 	listName,
 	listRoleSelector,
+	snapshotIndexChangeEventType,
 } from "rich-text-area";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
-import type { HandleCodeBlockStateParams } from "./HandleCodeBlockState-types";
+import type {
+	HandleCodeBlockStateParams,
+	IsHighlightedParams,
+} from "./HandleCodeBlockState-types";
+
+const isHighlighted = ({ language, theme }: IsHighlightedParams) =>
+	language !== null && theme !== null;
 
 /*
- * Keeps the port's language/theme in sync with the current code block and wires language/theme
- * changes and plain-text export to it, re-highlighting on change. Returns a cleanup function.
+ * Keeps the port's language/theme in sync with the current code block (including undo/redo) and wires language/theme
+ * changes and plain-text export to it, re-highlighting and registering a snapshot boundary on
+ * change. Returns a cleanup function.
+ *
+ * Note: a code block is highlighted only when both a language and a theme are set. The snapshot boundary
+ * is skipped when it is unhighlighted both before and after the change, since nothing visibly changes.
  */
 export const handleCodeBlockState = ({
 	configPort,
 	editorAPI,
 	codeHighlighter,
 }: HandleCodeBlockStateParams) => {
-	const unsubscribeCurrentComponentUpdate = configPort.onCurrentComponentUpdate(
-		(currentComponent) => {
-			if (!currentComponent) {
-				return;
-			}
+	const syncState = () => {
+		const { currentComponent } = configPort;
 
-			const storage = ensureNodeCodeBlockStorage({
-				blockComponent: currentComponent,
-				fallbacks: codeBlockStorageFallbacks,
-			});
+		if (!currentComponent) {
+			return;
+		}
 
-			configPort.updateState({
-				language: storage.language,
-				theme: storage.theme,
-			});
-		},
-	);
+		const storage = ensureNodeCodeBlockStorage({
+			blockComponent: currentComponent,
+			fallbacks: codeBlockStorageFallbacks,
+		});
+
+		configPort.updateState({
+			language: storage.language,
+			theme: storage.theme,
+		});
+	};
+
+	const unsubscribeCurrentComponentUpdate =
+		configPort.onCurrentComponentUpdate(syncState);
+
+	// Undo/redo can restore a different language/theme on the current code block.
+	const unsubscribeSnapshotIndexChange = editorAPI.subscribeEditorEvent({
+		type: snapshotIndexChangeEventType,
+		callback: syncState,
+	});
 
 	const unsubscribeLanguageChange = configPort.onChangeLanguage((language) => {
 		const currentCodeBlock = configPort.currentComponent;
@@ -48,12 +68,22 @@ export const handleCodeBlockState = ({
 			fallbacks: codeBlockStorageFallbacks,
 		});
 
+		const hadHighlight = isHighlighted(storage);
+
 		codeHighlighter.update({
 			blockComponent: currentCodeBlock,
 			language,
 			theme: storage.theme,
 		});
 		configPort.updateState({ language, theme: storage.theme });
+
+		const hasHighlight = isHighlighted({ language, theme: storage.theme });
+
+		if (hadHighlight || hasHighlight) {
+			const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+			snapshotTimeline.registerSnapshotBoundary();
+		}
 	});
 
 	const unsubscribeThemeChange = configPort.onChangeTheme((theme) => {
@@ -66,12 +96,23 @@ export const handleCodeBlockState = ({
 			blockComponent: currentCodeBlock,
 			fallbacks: codeBlockStorageFallbacks,
 		});
+
+		const hadHighlight = isHighlighted(storage);
+
 		codeHighlighter.update({
 			blockComponent: currentCodeBlock,
 			language: storage.language,
 			theme,
 		});
 		configPort.updateState({ theme });
+
+		const hasHighlight = isHighlighted({ language: storage.language, theme });
+
+		if (hadHighlight || hasHighlight) {
+			const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
+			snapshotTimeline.registerSnapshotBoundary();
+		}
 	});
 
 	configPort.registerPlainTextProvider(() => {
@@ -111,6 +152,7 @@ export const handleCodeBlockState = ({
 
 	return () => {
 		unsubscribeCurrentComponentUpdate();
+		unsubscribeSnapshotIndexChange();
 		unsubscribeLanguageChange();
 		unsubscribeThemeChange();
 	};
