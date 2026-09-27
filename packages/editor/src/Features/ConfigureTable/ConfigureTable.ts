@@ -5,7 +5,7 @@ import {
 	createComponentLookup,
 } from "#engine-links";
 import { addERClass } from "#utilities";
-import { handleComponentUnwrap } from "../_Utilities";
+import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMenuButtonsInteraction";
 import { handleTableContextMenuButtonsState } from "./HandleTableContextMenuButtonsState";
@@ -39,6 +39,12 @@ export const configureTable = ({
 		},
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.table,
+	});
+
 	const placementStateCleanup = handleTablePlacementState({
 		configPort,
 		editorAPI,
@@ -49,10 +55,7 @@ export const configureTable = ({
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBySelection({
-				components: [componentsName.table],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const contextMenuVisibilityCleanup = handleTableContextMenuVisibility({
@@ -75,6 +78,7 @@ export const configureTable = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		contextMenuVisibilityCleanup();

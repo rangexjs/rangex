@@ -30,6 +30,12 @@ export const configureVideo = ({
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.video,
+	});
+
 	const insertionCleanup = handleVideoInsertion({
 		configPort,
 		editorAPI,
@@ -39,12 +45,6 @@ export const configureVideo = ({
 	const quickActionsCleanup = handleQuickActionsAppearance({
 		port: configPort,
 		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.video,
-	});
-
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
 		editorAPI,
 		componentName: componentsName.video,
 	});
@@ -75,9 +75,9 @@ export const configureVideo = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		insertionCleanup();
 		quickActionsCleanup();
-		selectionComponentCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

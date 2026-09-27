@@ -34,6 +34,12 @@ export const configureCodeBlock = ({
 		getHighlightInfo: configPort.getHighlightInfo,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.codeBlock,
+	});
+
 	const placementStateCleanup = handleCodeBlockPlacementState({
 		configPort,
 		editorAPI,
@@ -62,12 +68,6 @@ export const configureCodeBlock = ({
 		componentName: componentsName.codeBlock,
 	});
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.codeBlock,
-	});
-
 	const codeBlockStateCleanup = handleCodeBlockState({
 		configPort,
 		editorAPI,
@@ -75,12 +75,12 @@ export const configureCodeBlock = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		placementCleanup();
 		lineNumbersCleanup();
 		codeBlockStateCleanup();
 		quickActionsCleanup();
-		selectionComponentCleanup();
 	};
 };

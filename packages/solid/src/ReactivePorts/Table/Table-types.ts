@@ -19,4 +19,5 @@ export interface ReactiveTablePort {
 	verticalAlignment: Accessor<TableVerticalAlignmentState>;
 	cellResizing: Accessor<TableCellResizingState>;
 	clearContents: Accessor<TableClearContentsState>;
+	currentComponent: Accessor<HTMLElement | null>;
 }

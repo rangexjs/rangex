@@ -13,15 +13,20 @@ export const List = <T extends ListPublicPort | undefined>(
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 	const [isActive, setIsActive] = createSignal(publicPort.isActive);
+	const [currentComponent, setCurrentComponent] = createSignal(
+		publicPort.currentComponent,
+	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
 	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 
 	const port: ReactiveListPort = {
 		canInsert,
 		canWrap,
 		isActive,
+		currentComponent,
 	};
 
 	return port as PreserveUndefined<T, ReactiveListPort>;

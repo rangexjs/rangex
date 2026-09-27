@@ -30,6 +30,12 @@ export const configureImage = ({
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.image,
+	});
+
 	const insertionCleanup = handleImageInsertion({
 		configPort,
 		editorAPI,
@@ -39,12 +45,6 @@ export const configureImage = ({
 	const quickActionsCleanup = handleQuickActionsAppearance({
 		port: configPort,
 		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.image,
-	});
-
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
 		editorAPI,
 		componentName: componentsName.image,
 	});
@@ -75,9 +75,9 @@ export const configureImage = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		insertionCleanup();
 		quickActionsCleanup();
-		selectionComponentCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

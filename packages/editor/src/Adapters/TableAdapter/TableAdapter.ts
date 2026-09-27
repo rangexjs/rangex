@@ -1,5 +1,10 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
-import { createEmitter, createUnwrapPort } from "../_Utilities";
+import {
+	createCurrentComponentPort,
+	createEmitter,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
@@ -117,6 +122,7 @@ export const createTableAdapter = (
 		createEmitter<OnContextMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
 	const updateState = ({
 		canInsert,
@@ -193,6 +199,7 @@ export const createTableAdapter = (
 
 	const configPort: TableConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
 		{
 			get contextMenuEl() {
 				return contextMenuEl;
@@ -242,6 +249,7 @@ export const createTableAdapter = (
 
 	const publicPort: TablePublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
 		{
 			get contextMenuEl() {
 				return contextMenuEl;

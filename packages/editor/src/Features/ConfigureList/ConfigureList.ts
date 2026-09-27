@@ -3,7 +3,7 @@ import {
 	createBlockComponentPlacement,
 	createComponentLookup,
 } from "#engine-links";
-import { handleComponentUnwrap } from "../_Utilities";
+import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
 import { handleListPlacementState } from "./HandleListPlacementState";
@@ -22,6 +22,12 @@ export const configureList = ({
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.list,
+	});
+
 	const placementStateCleanup = handleListPlacementState({
 		configPort,
 		editorAPI,
@@ -32,10 +38,7 @@ export const configureList = ({
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBySelection({
-				components: [componentsName.list],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const placementCleanup = handleListPlacement({
@@ -45,6 +48,7 @@ export const configureList = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		placementCleanup();

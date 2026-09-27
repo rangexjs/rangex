@@ -1,5 +1,7 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
+	createCurrentComponentPort,
 	createEmitter,
 	createRemovePort,
 	createUnwrapPort,
@@ -45,6 +47,7 @@ export const createAccordionItemAdapter = (
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
 	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
@@ -69,6 +72,7 @@ export const createAccordionItemAdapter = (
 	const configPort: AccordionItemConfigPort = extendObjectProperties(
 		removePort.configPort,
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
 		{
 			updateState(params) {
 				updateState(params);
@@ -87,6 +91,7 @@ export const createAccordionItemAdapter = (
 	const publicPort: AccordionItemPublicPort = extendObjectProperties(
 		removePort.publicPort,
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
 		{
 			get canInsert() {
 				return internals.canInsert;

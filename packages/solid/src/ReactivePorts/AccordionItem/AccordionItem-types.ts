@@ -4,4 +4,5 @@ export interface ReactiveAccordionItemPort {
 	canInsert: Accessor<boolean>;
 	canWrap: Accessor<boolean>;
 	isActive: Accessor<boolean>;
+	currentComponent: Accessor<HTMLElement | null>;
 }

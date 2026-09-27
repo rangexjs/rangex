@@ -1,5 +1,10 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
-import { createEmitter, createUnwrapPort } from "../_Utilities";
+import {
+	createCurrentComponentPort,
+	createEmitter,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	CreateListAdapterParams,
 	CreateListAdapterResult,
@@ -40,6 +45,7 @@ export const createListAdapter = (
 	const wrapEmitter = createEmitter<OnWrapCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
 	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
@@ -63,6 +69,7 @@ export const createListAdapter = (
 
 	const configPort: ListConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
 		{
 			updateState(params) {
 				updateState(params);
@@ -80,6 +87,7 @@ export const createListAdapter = (
 
 	const publicPort: ListPublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
 		{
 			get canInsert() {
 				return internals.canInsert;

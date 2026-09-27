@@ -30,6 +30,12 @@ export const configureEmbed = ({
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.embed,
+	});
+
 	const insertionCleanup = handleEmbedInsertion({
 		configPort,
 		editorAPI,
@@ -39,12 +45,6 @@ export const configureEmbed = ({
 	const quickActionsCleanup = handleQuickActionsAppearance({
 		port: configPort,
 		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.embed,
-	});
-
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
 		editorAPI,
 		componentName: componentsName.embed,
 	});
@@ -75,9 +75,9 @@ export const configureEmbed = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		insertionCleanup();
 		quickActionsCleanup();
-		selectionComponentCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

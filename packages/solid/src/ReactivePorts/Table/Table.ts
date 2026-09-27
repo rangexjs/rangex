@@ -23,6 +23,9 @@ export const Table = <T extends TablePublicPort | undefined>(
 	const [clearContents, setClearContents] = createSignal(
 		publicPort.clearContents,
 	);
+	const [currentComponent, setCurrentComponent] = createSignal(
+		publicPort.currentComponent,
+	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
@@ -33,6 +36,7 @@ export const Table = <T extends TablePublicPort | undefined>(
 	onCleanup(publicPort.onVerticalAlignmentUpdate(setVerticalAlignment));
 	onCleanup(publicPort.onCellResizingUpdate(setCellResizing));
 	onCleanup(publicPort.onClearContentsUpdate(setClearContents));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 
 	const port: ReactiveTablePort = {
 		canInsert,
@@ -44,6 +48,7 @@ export const Table = <T extends TablePublicPort | undefined>(
 		verticalAlignment,
 		cellResizing,
 		clearContents,
+		currentComponent,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTablePort>;

@@ -1,5 +1,8 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	RemoveConfigPort,
 	RemovePublicPort,
 	UnwrapConfigPort,
@@ -31,7 +34,8 @@ export interface AccordionItemConfigPortProps {
 export interface AccordionItemConfigPort
 	extends AccordionItemConfigPortProps,
 		RemoveConfigPort,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface AccordionItemPublicPortProps {
 	readonly canInsert: boolean;
@@ -49,7 +53,8 @@ export interface AccordionItemPublicPortProps {
 export interface AccordionItemPublicPort
 	extends AccordionItemPublicPortProps,
 		RemovePublicPort,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface AccordionItemInternals {
 	canInsert: boolean;

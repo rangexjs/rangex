@@ -26,6 +26,12 @@ export const configureLink = ({
 	configPort,
 	editorAPI,
 }: ConfigureLinkParams) => {
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.link,
+	});
+
 	const {
 		selectionMenuPopoverController,
 		cleanup: selectionMenuInteractionCleanup,
@@ -64,13 +70,6 @@ export const configureLink = ({
 		selectionMenuPopoverController,
 	});
 
-	// Must subscribe before the interaction/close handlers, so the current link is resolved before they read it.
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.link,
-	});
-
 	const linkInteractionCleanup = handleLinkInteraction({
 		configPort,
 		editorAPI,
@@ -101,10 +100,10 @@ export const configureLink = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		selectionMenuInteractionCleanup();
 		placementStateCleanup();
 		menuOpenCleanup();
-		selectionComponentCleanup();
 		linkInteractionCleanup();
 		insertionCleanup();
 		modificationCleanup();

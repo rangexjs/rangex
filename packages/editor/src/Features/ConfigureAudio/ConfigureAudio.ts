@@ -30,6 +30,12 @@ export const configureAudio = ({
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.audio,
+	});
+
 	const insertionCleanup = handleAudioInsertion({
 		configPort,
 		editorAPI,
@@ -39,12 +45,6 @@ export const configureAudio = ({
 	const quickActionsCleanup = handleQuickActionsAppearance({
 		port: configPort,
 		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.audio,
-	});
-
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
 		editorAPI,
 		componentName: componentsName.audio,
 	});
@@ -75,9 +75,9 @@ export const configureAudio = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		insertionCleanup();
 		quickActionsCleanup();
-		selectionComponentCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();

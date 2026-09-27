@@ -1,5 +1,8 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
@@ -158,7 +161,8 @@ export interface TableConfigPortProps {
 
 export interface TableConfigPort
 	extends TableConfigPortProps,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TablePublicPortProps {
 	readonly contextMenuEl: HTMLDivElement;
@@ -199,7 +203,8 @@ export interface TablePublicPortProps {
 
 export interface TablePublicPort
 	extends TablePublicPortProps,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface TableInternals {
 	canInsert: boolean;

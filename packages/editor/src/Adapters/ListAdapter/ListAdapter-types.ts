@@ -1,6 +1,8 @@
-import type { ListLocalName } from "rich-text-area";
+import type { BlockComponent, ListLocalName } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
@@ -36,7 +38,10 @@ export interface ListConfigPortProps {
 	onWrap(callback: OnWrapCallbackFn): () => void;
 }
 
-export interface ListConfigPort extends ListConfigPortProps, UnwrapConfigPort {}
+export interface ListConfigPort
+	extends ListConfigPortProps,
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface InsertParams extends ListPlacementOption {}
 
@@ -55,7 +60,10 @@ export interface ListPublicPortProps {
 	wrap(params: WrapParams): void;
 }
 
-export interface ListPublicPort extends ListPublicPortProps, UnwrapPublicPort {}
+export interface ListPublicPort
+	extends ListPublicPortProps,
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface ListInternals {
 	canInsert: boolean;
