@@ -1,11 +1,11 @@
 import {
 	type BlockComponent,
-	blockComponentName,
-	contentLineName,
+	blockComponentRole,
+	contentLineRole,
 	contentLineRoleSelector,
 	isContentLineText,
 	isEditorNode,
-	listName,
+	listRole,
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "rich-text-area";
@@ -83,7 +83,7 @@ const watchCodeBlocks = ({
 
 		if (
 			!queriedCodeBlocks.every(
-				(codeBlock) => codeBlock.$$editorRole === blockComponentName,
+				(codeBlock) => codeBlock.$$editorRole === blockComponentRole,
 			)
 		) {
 			throw new Error("CodeBlock's type is invalid.");
@@ -133,7 +133,7 @@ const watchCodeBlocks = ({
 const getCodeBlockList = ({ blockComponent }: GetCodeBlockListParams) => {
 	const list = blockComponent.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listName) {
+	if (list?.$$editorRole !== listRole) {
 		throw new Error("List's type is invalid.");
 	}
 
@@ -154,7 +154,7 @@ const getCodeLines = ({
 	const contentLines = list.$$children.map((li) => {
 		const contentLine = li.$$querySelector(contentLineRoleSelector);
 
-		if (contentLine?.$$editorRole !== contentLineName) {
+		if (contentLine?.$$editorRole !== contentLineRole) {
 			throw new Error("ContentLine's type is invalid.");
 		}
 
@@ -208,7 +208,7 @@ const applyTokenColors = ({
 		const contentLines = list.$$children.map((li) => {
 			const contentLine = li.$$querySelector(contentLineRoleSelector);
 
-			if (contentLine?.$$editorRole !== contentLineName) {
+			if (contentLine?.$$editorRole !== contentLineRole) {
 				throw new Error("ContentLine's type is invalid.");
 			}
 
@@ -337,7 +337,7 @@ const getOutdatedCodeBlocks = ({
 	const outdatedCodeBlocks: BlockComponent[] = [];
 
 	for (const codeBlock of codeBlocks) {
-		if (codeBlock.$$editorRole !== blockComponentName) {
+		if (codeBlock.$$editorRole !== blockComponentRole) {
 			throw new Error("CodeBlock's type is invalid.");
 		}
 

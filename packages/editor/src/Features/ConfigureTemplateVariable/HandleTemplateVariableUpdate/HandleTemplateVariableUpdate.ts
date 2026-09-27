@@ -1,9 +1,9 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
 	createContentLine,
 	createFormattableTexts,
-	inlineComponentName,
+	inlineComponentRole,
 	inlineComponentRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
@@ -28,7 +28,7 @@ const updateAllTemplateVariableNodes = ({
 	const nodes = rootEditable.$$querySelectorAll(inlineComponentRoleSelector);
 
 	for (const node of nodes) {
-		if (node.$$editorRole !== inlineComponentName) {
+		if (node.$$editorRole !== inlineComponentRole) {
 			throw new Error("Expected an InlineComponent node.");
 		}
 
@@ -57,7 +57,7 @@ const updateAllTemplateVariableNodes = ({
 
 		const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
 
-		if (contentLine?.$$editorRole !== contentLineName) {
+		if (contentLine?.$$editorRole !== contentLineRole) {
 			throw new Error("Expected a ContentLine inside the NestedEditable.");
 		}
 

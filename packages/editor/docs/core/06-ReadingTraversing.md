@@ -52,7 +52,7 @@ Role selector constants exported from `"rich-text-area"` (e.g. `contentLineRoleS
 ```ts
 for (const child of rootEditable.$$childNodes) {
   // typed as ContentLine | BlockComponentLine
-  if (child.$$editorRole === contentLineName) {
+  if (child.$$editorRole === contentLineRole) {
     // work with ContentLine
   }
 }

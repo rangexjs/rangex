@@ -1,4 +1,4 @@
-import { isEditorElement, rootEditableName } from "rich-text-area";
+import { isEditorElement, rootEditableRole } from "rich-text-area";
 import type {
 	GetClosestRootEditableParams,
 	GetClosestRootEditableResult,
@@ -13,7 +13,7 @@ export const getClosestRootEditable = ({
 	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
 	while (parent) {
-		if (parent.$$editorRole === rootEditableName) {
+		if (parent.$$editorRole === rootEditableRole) {
 			if (!display) {
 				return parent;
 			}

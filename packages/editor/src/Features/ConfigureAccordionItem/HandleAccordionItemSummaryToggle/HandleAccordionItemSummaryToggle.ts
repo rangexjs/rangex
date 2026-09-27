@@ -1,7 +1,7 @@
 import {
 	isEditorElement,
 	isEditorNode,
-	nestedEditableName,
+	nestedEditableRole,
 } from "rich-text-area";
 import type { HandleAccordionItemSummaryToggleParams } from "./HandleAccordionItemSummaryToggle-types";
 
@@ -14,7 +14,7 @@ export const handleAccordionItemSummaryToggle = ({
 }: HandleAccordionItemSummaryToggleParams) => {
 	const unsubscribeClick = editorAPI.registerDOMEvent({
 		when: ({ element }) => {
-			if (element.$$editorRole !== nestedEditableName) {
+			if (element.$$editorRole !== nestedEditableRole) {
 				return false;
 			}
 
@@ -33,7 +33,7 @@ export const handleAccordionItemSummaryToggle = ({
 	// TODO: Does not work yet, RootEditable is the EditingHost therefore the keydown won't apply unless we make the NestedEditable an EditingHost
 	const unsubscribeKeydown = editorAPI.registerDOMEvent({
 		when: ({ element }) => {
-			if (element.$$editorRole !== nestedEditableName) {
+			if (element.$$editorRole !== nestedEditableRole) {
 				return false;
 			}
 

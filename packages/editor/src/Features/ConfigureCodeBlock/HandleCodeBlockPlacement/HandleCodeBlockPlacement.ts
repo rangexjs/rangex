@@ -1,9 +1,9 @@
 import {
 	createBeamText,
 	createContentLine,
-	listName,
+	listRole,
 	listRoleSelector,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { createCodeBlock } from "../../_Utilities";
@@ -37,7 +37,7 @@ export const handleCodeBlockPlacement = ({
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);
 
-		if (list?.$$editorRole !== listName) {
+		if (list?.$$editorRole !== listRole) {
 			throw new Error("List's type is invalid.");
 		}
 
@@ -51,7 +51,7 @@ export const handleCodeBlockPlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 
@@ -72,7 +72,7 @@ export const handleCodeBlockPlacement = ({
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);
 
-		if (list?.$$editorRole !== listName) {
+		if (list?.$$editorRole !== listRole) {
 			throw new Error("List's type is invalid.");
 		}
 
@@ -91,7 +91,7 @@ export const handleCodeBlockPlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 

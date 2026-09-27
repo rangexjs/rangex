@@ -1,4 +1,4 @@
-import { blockComponentName, isEditorElement } from "rich-text-area";
+import { blockComponentRole, isEditorElement } from "rich-text-area";
 import type {
 	GetClosestBlockComponentParams,
 	GetClosestBlockComponentResult,
@@ -13,7 +13,7 @@ export const getClosestBlockComponent = ({
 	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
 	while (parent) {
-		if (parent.$$editorRole === blockComponentName) {
+		if (parent.$$editorRole === blockComponentRole) {
 			if (!components) {
 				return parent;
 			}

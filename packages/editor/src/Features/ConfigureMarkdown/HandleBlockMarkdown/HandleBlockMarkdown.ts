@@ -2,9 +2,9 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-	listName,
+	listRole,
 	listRoleSelector,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName, getClosestScopedEditable } from "#engine-links";
@@ -152,7 +152,7 @@ const wrapListShaped = ({
 
 	const list = blockComponentLine.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listName) {
+	if (list?.$$editorRole !== listRole) {
 		throw new Error("List's type is invalid.");
 	}
 
@@ -168,7 +168,7 @@ const wrapListShaped = ({
 		nestedEditableRoleSelector,
 	);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 
@@ -228,7 +228,7 @@ const convertToBlockQuote = ({
 		nestedEditableRoleSelector,
 	);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 

@@ -5,7 +5,7 @@ import {
 	createNestedEditable,
 	createStructuredStyleValue,
 	type HTMLLayout,
-	htmlLayoutName,
+	htmlLayoutRole,
 } from "rich-text-area";
 import type { CaptionPosition } from "#adapters";
 import type { TextAlignStructuredStyleValue } from "#engine-links";
@@ -22,7 +22,7 @@ const figcaptionLocalName = "figcaption";
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	for (const child of figure.$$children) {
 		if (
-			child.$$editorRole === htmlLayoutName &&
+			child.$$editorRole === htmlLayoutRole &&
 			child.$$localName === figcaptionLocalName
 		) {
 			return child;

@@ -1,14 +1,14 @@
 import {
-	beamTextName,
-	blockComponentLineName,
-	blockComponentName,
+	beamTextRole,
+	blockComponentLineRole,
+	blockComponentRole,
 	blockComponentRoleSelector,
-	contentLineName,
+	contentLineRole,
 	createBeamText,
 	createContentLine,
-	listName,
+	listRole,
 	listRoleSelector,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { type BlockComponentName, componentsName } from "#engine-links";
@@ -43,7 +43,7 @@ const getNestedEditableTarget = ({
 		nestedEditableRoleSelector,
 	);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 
@@ -55,7 +55,7 @@ const getListTarget = ({
 }: GetListTargetParams): GetListTargetResult => {
 	const list = blockComponentLine.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listName) {
+	if (list?.$$editorRole !== listRole) {
 		throw new Error("List's type is invalid.");
 	}
 
@@ -165,11 +165,11 @@ const shouldSkipFirstLine = ({
 
 	const firstLine = extractedLines.at(0);
 
-	if (firstLine?.$$editorRole !== contentLineName) {
+	if (firstLine?.$$editorRole !== contentLineRole) {
 		return false;
 	}
 
-	const isEmpty = firstLine.$$firstChild?.$$editorRole === beamTextName;
+	const isEmpty = firstLine.$$firstChild?.$$editorRole === beamTextRole;
 
 	return isEmpty;
 };
@@ -189,7 +189,7 @@ const replaceBlockComponentLine = ({
 		blockComponentRoleSelector,
 	);
 
-	if (blockComponent?.$$editorRole !== blockComponentName) {
+	if (blockComponent?.$$editorRole !== blockComponentRole) {
 		throw new Error("BlockComponent's type is invalid.");
 	}
 
@@ -233,7 +233,7 @@ const turnLineInto = ({
 	line,
 	turnIntoParams,
 }: TurnLineIntoParams) => {
-	if (line.$$editorRole === contentLineName) {
+	if (line.$$editorRole === contentLineRole) {
 		wrapContentLine({
 			blockComponentPlacement,
 			contentLine: line,
@@ -242,7 +242,7 @@ const turnLineInto = ({
 		return;
 	}
 
-	if (line.$$editorRole === blockComponentLineName) {
+	if (line.$$editorRole === blockComponentLineRole) {
 		replaceBlockComponentLine({
 			editorAPI,
 			blockComponentLine: line,

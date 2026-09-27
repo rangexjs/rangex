@@ -1,4 +1,4 @@
-import { listName, listRoleSelector } from "rich-text-area";
+import { listRole, listRoleSelector } from "rich-text-area";
 import { handleSelectionContextChange } from "../../_Utilities";
 import type {
 	GetComponentListParams,
@@ -11,7 +11,7 @@ import type {
 const getComponentList = ({ blockComponent }: GetComponentListParams) => {
 	const list = blockComponent.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listName) {
+	if (list?.$$editorRole !== listRole) {
 		throw new Error("List's type is invalid.");
 	}
 

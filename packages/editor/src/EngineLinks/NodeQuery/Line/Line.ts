@@ -1,6 +1,6 @@
 import {
-	blockComponentLineName,
-	contentLineName,
+	blockComponentLineRole,
+	contentLineRole,
 	type EditorNode,
 } from "rich-text-area";
 import type {
@@ -14,7 +14,7 @@ export const getClosestBlockLevelLine = ({
 	let currentNode: EditorNode | null = fromNode;
 
 	while (currentNode) {
-		if (currentNode.$$editorRole === contentLineName) {
+		if (currentNode.$$editorRole === contentLineRole) {
 			const { $$parentElement } = currentNode;
 
 			if (!$$parentElement) {
@@ -26,7 +26,7 @@ export const getClosestBlockLevelLine = ({
 			}
 		}
 
-		if (currentNode.$$editorRole === blockComponentLineName) {
+		if (currentNode.$$editorRole === blockComponentLineRole) {
 			return currentNode;
 		}
 

@@ -1,6 +1,6 @@
 import {
 	editorSelectionChangeEventType,
-	tableName,
+	tableRole,
 	tableRoleSelector,
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
@@ -41,7 +41,7 @@ const syncOverlayVisibility = ({
 	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
 
 	for (const table of tables) {
-		if (table.$$editorRole !== tableName) {
+		if (table.$$editorRole !== tableRole) {
 			throw new Error("Table's type is invalid.");
 		}
 

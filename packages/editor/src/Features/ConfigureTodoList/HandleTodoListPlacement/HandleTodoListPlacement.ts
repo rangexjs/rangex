@@ -1,9 +1,9 @@
 import {
 	createBeamText,
 	createContentLine,
-	listName,
+	listRole,
 	listRoleSelector,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { createTodoList } from "../../_Utilities";
@@ -35,7 +35,7 @@ export const handleTodoListPlacement = ({
 
 		const list = todoListLine.$$querySelector(listRoleSelector);
 
-		if (list?.$$editorRole !== listName) {
+		if (list?.$$editorRole !== listRole) {
 			throw new Error("List's type is invalid.");
 		}
 
@@ -49,7 +49,7 @@ export const handleTodoListPlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 
@@ -70,7 +70,7 @@ export const handleTodoListPlacement = ({
 
 		const list = todoListLine.$$querySelector(listRoleSelector);
 
-		if (list?.$$editorRole !== listName) {
+		if (list?.$$editorRole !== listRole) {
 			throw new Error("List's type is invalid.");
 		}
 
@@ -89,7 +89,7 @@ export const handleTodoListPlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 

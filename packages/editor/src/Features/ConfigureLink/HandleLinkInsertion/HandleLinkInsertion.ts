@@ -1,5 +1,5 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
 	createContentLine,
 	type InlineComponent,
@@ -24,7 +24,7 @@ const setSelectionToLinkEnd = ({
 }: SetSelectionToLinkEndParams) => {
 	const contentLine = link.$$querySelector(contentLineRoleSelector);
 
-	if (contentLine?.$$editorRole !== contentLineName) {
+	if (contentLine?.$$editorRole !== contentLineRole) {
 		throw new Error("ContentLine's type is invalid.");
 	}
 

@@ -1,7 +1,7 @@
 import {
 	createBeamText,
 	createContentLine,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { createBlockQuote } from "../../_Utilities";
@@ -35,7 +35,7 @@ export const handleBlockQuotePlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 
@@ -58,7 +58,7 @@ export const handleBlockQuotePlacement = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
 		}
 

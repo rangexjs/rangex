@@ -1,4 +1,4 @@
-import { isEditorElement, tableName, tableRoleSelector } from "rich-text-area";
+import { isEditorElement, tableRole, tableRoleSelector } from "rich-text-area";
 import type {
 	GetClosestTableParams,
 	GetClosestTableResult,
@@ -21,7 +21,7 @@ export const getClosestTable = ({
 		return null;
 	}
 
-	if (table.$$editorRole !== tableName) {
+	if (table.$$editorRole !== tableRole) {
 		throw new Error("Table's type is invalid.");
 	}
 

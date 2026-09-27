@@ -7,7 +7,7 @@ import {
 	createDetachedContext,
 	createHTMLLayout,
 	createNestedEditable,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import {
@@ -36,7 +36,7 @@ export const getAccordionItemParts = ({
 		`summary > ${nestedEditableRoleSelector}`,
 	);
 
-	if (summaryNestedEditable?.$$editorRole !== nestedEditableName) {
+	if (summaryNestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("SummaryNestedEditable's type is invalid.");
 	}
 
@@ -44,7 +44,7 @@ export const getAccordionItemParts = ({
 		`details > ${nestedEditableRoleSelector}`,
 	);
 
-	if (bodyNestedEditable?.$$editorRole !== nestedEditableName) {
+	if (bodyNestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("BodyNestedEditable's type is invalid.");
 	}
 

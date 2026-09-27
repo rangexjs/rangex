@@ -1,5 +1,5 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
@@ -27,7 +27,7 @@ const getDisplayTextFromLink = ({
 
 	const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
 
-	if (contentLine?.$$editorRole !== contentLineName) {
+	if (contentLine?.$$editorRole !== contentLineRole) {
 		throw new Error("Link is missing its ContentLine.");
 	}
 

@@ -1,8 +1,8 @@
 import {
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 	type TableSectionLocalName,
-	tableName,
+	tableRole,
 	tableRoleSelector,
 } from "rich-text-area";
 import {
@@ -37,7 +37,7 @@ const getActiveTable = ({
 	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
 
 	for (const table of tables) {
-		if (table.$$editorRole !== tableName) {
+		if (table.$$editorRole !== tableRole) {
 			throw new Error("Table's type is invalid.");
 		}
 
@@ -199,7 +199,7 @@ const handleVerticalAlignment = ({
 				nestedEditableRoleSelector,
 			);
 
-			if (nestedEditable?.$$editorRole !== nestedEditableName) {
+			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 				throw new Error("NestedEditable's type is invalid.");
 			}
 
@@ -274,7 +274,7 @@ const handleClearContents = ({
 				nestedEditableRoleSelector,
 			);
 
-			if (nestedEditable?.$$editorRole !== nestedEditableName) {
+			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 				throw new Error("NestedEditable's type is invalid.");
 			}
 

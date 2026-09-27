@@ -1,7 +1,7 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
-	listName,
+	listRole,
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "rich-text-area";
@@ -124,7 +124,7 @@ export const handleCodeBlockState = ({
 
 		const list = currentCodeBlock.$$querySelector(listRoleSelector);
 
-		if (list?.$$editorRole !== listName) {
+		if (list?.$$editorRole !== listRole) {
 			throw new Error("List's type is invalid.");
 		}
 
@@ -133,7 +133,7 @@ export const handleCodeBlockState = ({
 		for (const listItem of list.$$children) {
 			const contentLine = listItem.$$querySelector(contentLineRoleSelector);
 
-			if (contentLine?.$$editorRole !== contentLineName) {
+			if (contentLine?.$$editorRole !== contentLineRole) {
 				throw new Error("ContentLine's type is invalid.");
 			}
 

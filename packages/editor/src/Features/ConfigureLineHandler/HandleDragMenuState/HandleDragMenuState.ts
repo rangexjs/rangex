@@ -1,8 +1,8 @@
 import {
-	blockComponentLineName,
-	blockComponentName,
+	blockComponentLineRole,
+	blockComponentRole,
 	blockComponentRoleSelector,
-	contentLineName,
+	contentLineRole,
 } from "rich-text-area";
 import { type BlockComponentName, componentsName } from "#engine-links";
 import { assertNever } from "#utilities";
@@ -68,7 +68,7 @@ const handleBlockComponentLine = ({
 		blockComponentRoleSelector,
 	);
 
-	if (blockComponent?.$$editorRole !== blockComponentName) {
+	if (blockComponent?.$$editorRole !== blockComponentRole) {
 		throw new Error("BlockComponent's type is invalid.");
 	}
 
@@ -138,7 +138,7 @@ export const handleDragMenuState = ({
 			return;
 		}
 
-		if (line.$$editorRole === contentLineName) {
+		if (line.$$editorRole === contentLineRole) {
 			handleContentLine({
 				configPort,
 				blockComponentPlacement,
@@ -147,7 +147,7 @@ export const handleDragMenuState = ({
 			return;
 		}
 
-		if (line.$$editorRole === blockComponentLineName) {
+		if (line.$$editorRole === blockComponentLineRole) {
 			handleBlockComponentLine({
 				configPort,
 				blockComponentPlacement,

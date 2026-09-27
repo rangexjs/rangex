@@ -1,7 +1,7 @@
 import {
-	blockComponentName,
+	blockComponentRole,
 	blockComponentRoleSelector,
-	detachedContextName,
+	detachedContextRole,
 	detachedContextRoleSelector,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
@@ -19,7 +19,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 			for (const list of lists) {
 				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
-				if (blockComponent?.$$editorRole !== blockComponentName) {
+				if (blockComponent?.$$editorRole !== blockComponentRole) {
 					continue;
 				}
 
@@ -32,7 +32,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 						detachedContextRoleSelector,
 					);
 
-					if (detachedContext?.$$editorRole !== detachedContextName) {
+					if (detachedContext?.$$editorRole !== detachedContextRole) {
 						throw new Error("DetachedContext's type is invalid.");
 					}
 

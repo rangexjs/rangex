@@ -1,4 +1,4 @@
-import { beamTextName, contentLineName } from "rich-text-area";
+import { beamTextRole, contentLineRole } from "rich-text-area";
 import { getClosestBlockLevelLine } from "../../NodeQuery";
 import type {
 	InsertBlockLinesParams,
@@ -18,7 +18,7 @@ const replaceContentLineIfNeeded = ({
 	if (
 		!(
 			shouldReplaceContentLineIfEmpty &&
-			blockLevelLine.$$editorRole === contentLineName
+			blockLevelLine.$$editorRole === contentLineRole
 		)
 	) {
 		return { updatedLine: blockLevelLine, updatedLines: lines };
@@ -32,7 +32,7 @@ const replaceContentLineIfNeeded = ({
 
 	const [firstLine, ...restOfTheLines] = lines;
 
-	if ($$firstChild.$$editorRole === beamTextName) {
+	if ($$firstChild.$$editorRole === beamTextRole) {
 		blockLevelLine.$$replaceWith(firstLine);
 
 		return { updatedLine: firstLine, updatedLines: restOfTheLines };

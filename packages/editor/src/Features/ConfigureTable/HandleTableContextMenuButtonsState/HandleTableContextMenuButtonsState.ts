@@ -1,6 +1,6 @@
 import {
 	editorSelectionChangeEventType,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
@@ -89,7 +89,7 @@ const getVerticalAlignmentButtonsState = ({
 			nestedEditableRoleSelector,
 		);
 
-		if (nestedEditable?.$$editorRole !== nestedEditableName) {
+		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("nestedEditable's type is invalid.");
 		}
 
@@ -110,7 +110,7 @@ const isTableCellEmpty = ({
 }: IsTableCellEmptyParams): IsTableCellEmptyResult => {
 	const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 

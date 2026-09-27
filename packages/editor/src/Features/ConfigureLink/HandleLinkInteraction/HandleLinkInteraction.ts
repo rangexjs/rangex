@@ -1,6 +1,6 @@
 import {
 	editorSelectionChangeEventType,
-	inlineComponentName,
+	inlineComponentRole,
 	isEditorNode,
 } from "rich-text-area";
 import { componentsName } from "#engine-links";
@@ -40,7 +40,7 @@ const registerClick = ({
 }: RegisterClickParams) => {
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
-			element.$$editorRole === inlineComponentName &&
+			element.$$editorRole === inlineComponentRole &&
 			element.$$name === componentsName.link,
 		eventListener: {
 			type: "click",
