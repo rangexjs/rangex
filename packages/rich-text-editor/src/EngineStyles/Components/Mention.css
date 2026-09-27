@@ -1,5 +1,5 @@
 [data-rx-editor-role="inline-component"] {
-	&:where([data-rx-component-name="mention"]) {
+	&:where([data-rx-name="mention"]) {
 		padding: 2px 4px;
 		border-radius: 2px;
 		background-color: light-dark(

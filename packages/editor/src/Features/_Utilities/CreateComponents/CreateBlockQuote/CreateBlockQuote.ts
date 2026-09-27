@@ -33,7 +33,7 @@ export const createBlockQuote = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.blockQuote,
+			name: componentsName.blockQuote,
 			content: { type: "styled-block" },
 			customStorage: createBlockQuoteStorage(),
 			childNodes: [

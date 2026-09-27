@@ -32,7 +32,7 @@ export const handleQuickActionsAppearance = ({
 		overlayAppearanceHandler.registerComponent({
 			popover: anchorController.element,
 			shouldShow({ blockComponent }) {
-				return blockComponent.$$componentName === componentName;
+				return blockComponent.$$name === componentName;
 			},
 			onShow({ blockComponent }) {
 				anchorController.hide({});

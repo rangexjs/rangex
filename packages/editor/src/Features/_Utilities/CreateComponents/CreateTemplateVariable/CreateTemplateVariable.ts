@@ -19,7 +19,7 @@ export const createTemplateVariable = ({
 	displayText,
 }: CreateTemplateVariableParams): CreateTemplateVariableResult => {
 	return createInlineComponent({
-		componentName: componentsName.templateVariable,
+		name: componentsName.templateVariable,
 		content: { type: "custom" },
 		editState: "false",
 		shouldSelectOnNavigation: true,

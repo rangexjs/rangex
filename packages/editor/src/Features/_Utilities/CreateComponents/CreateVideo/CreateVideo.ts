@@ -24,7 +24,7 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.video,
+			name: componentsName.video,
 			content: { type: "custom" },
 			customStorage: createVideoStorage(),
 			editState: "false",

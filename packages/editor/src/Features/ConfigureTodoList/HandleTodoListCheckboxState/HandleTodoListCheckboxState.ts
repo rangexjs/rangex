@@ -31,7 +31,7 @@ export const handleTodoListCheckboxState = ({
 					continue;
 				}
 
-				if (blockComponent.$$componentName !== componentsName.todoList) {
+				if (blockComponent.$$name !== componentsName.todoList) {
 					continue;
 				}
 

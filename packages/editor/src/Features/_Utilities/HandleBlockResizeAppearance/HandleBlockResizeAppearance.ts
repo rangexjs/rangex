@@ -112,7 +112,7 @@ export const handleBlockResizeAppearance = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				if (currentTarget.$$componentName !== componentName) {
+				if (currentTarget.$$name !== componentName) {
 					return;
 				}
 

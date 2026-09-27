@@ -32,7 +32,7 @@ const updateAllTemplateVariableNodes = ({
 			throw new Error("Expected an InlineComponent node.");
 		}
 
-		if (node.$$componentName !== componentsName.templateVariable) {
+		if (node.$$name !== componentsName.templateVariable) {
 			continue;
 		}
 

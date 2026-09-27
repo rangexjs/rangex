@@ -32,7 +32,7 @@ export const createList = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.list,
+			name: componentsName.list,
 			content: { type: "list" },
 			customStorage: createListStorage(),
 			childNodes: [list],

@@ -134,7 +134,7 @@ replaceAll(params: {
 
 `content` is a `FilledContentLineChild[]` — the same node types that can appear as direct children of a `ContentLine`. The nodes are cloned before insertion; the originals are not consumed.
 
-`retainedComponents` is an optional list of component names (`InlineComponent.$$componentName`). When a match fully covers the content of a component whose name is in this list, the component shell is preserved and only its inner content is replaced. Without this option, a full-content replacement removes the component wrapper entirely and inserts the replacement as plain content. Defaults to `[]` (no components retained).
+`retainedComponents` is an optional list of component names (`InlineComponent.$$name`). When a match fully covers the content of a component whose name is in this list, the component shell is preserved and only its inner content is replaced. Without this option, a full-content replacement removes the component wrapper entirely and inserts the replacement as plain content. Defaults to `[]` (no components retained).
 
 ---
 

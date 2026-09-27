@@ -1,9 +1,9 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="separator"]) {
+	&:has([data-rx-name="separator"]) {
 		margin-block: 8px;
 	}
 
-	& :where([data-rx-component-name="separator"]) {
+	& :where([data-rx-name="separator"]) {
 		height: 24px;
 		align-content: center;
 

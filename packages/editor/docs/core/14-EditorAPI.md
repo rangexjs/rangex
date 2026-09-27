@@ -368,8 +368,8 @@ if ($$allowedComponents === null) {
   return true;
 }
 
-const isAllowed = allowedComponents.every((componentName) =>
-  $$allowedComponents.includes(componentName),
+const isAllowed = allowedComponents.every((name) =>
+  $$allowedComponents.includes(name),
 );
 ```
 
@@ -516,7 +516,7 @@ editorAPI.replaceComponentTop(inlineCodeComponent, (extractedLines) => {
   return createBlockComponentLine({
     leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
     blockComponent: createBlockComponent({
-      componentName: "codeblock",
+      name: "codeblock",
       content: { type: "custom" },
       childNodes: [nestedEditable],
     }),

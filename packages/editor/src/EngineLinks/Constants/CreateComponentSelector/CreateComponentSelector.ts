@@ -18,14 +18,14 @@ export const createComponentSelector = <Name extends ComponentName>(
 	name: Name,
 ) => {
 	if (isInlineComponentName(name)) {
-		const { dataComponentName } = inlineComponentAttrName;
-		const typedName = dataComponentName as ComponentAttrNameByName<Name>;
+		const { dataName } = inlineComponentAttrName;
+		const typedName = dataName as ComponentAttrNameByName<Name>;
 		return `[${typedName}="${name}"]` as const;
 	}
 
 	if (isBlockComponentName(name)) {
-		const { dataComponentName } = blockComponentAttrName;
-		const typedName = dataComponentName as ComponentAttrNameByName<Name>;
+		const { dataName } = blockComponentAttrName;
+		const typedName = dataName as ComponentAttrNameByName<Name>;
 		return `[${typedName}="${name}"]` as const;
 	}
 

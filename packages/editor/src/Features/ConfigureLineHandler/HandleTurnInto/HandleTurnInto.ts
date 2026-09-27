@@ -193,13 +193,13 @@ const replaceBlockComponentLine = ({
 		throw new Error("BlockComponent's type is invalid.");
 	}
 
-	const { $$componentName } = blockComponent;
+	const { $$name } = blockComponent;
 
 	editorAPI.replaceComponentTop(blockComponentLine, (extractedLines) => {
 		const childNodes = [...extractedLines];
 
 		const isFirstLineSkipped = shouldSkipFirstLine({
-			componentName: $$componentName,
+			componentName: $$name,
 			extractedLines,
 		});
 

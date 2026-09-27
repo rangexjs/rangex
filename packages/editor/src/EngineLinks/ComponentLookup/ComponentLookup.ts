@@ -28,11 +28,9 @@ export const createComponentLookup = ({
 
 			while (parent) {
 				if (isComponent(parent)) {
-					const { $$componentName } = parent;
+					const { $$name } = parent;
 
-					const nameMatches = components.some(
-						(name) => name === $$componentName,
-					);
+					const nameMatches = components.some((name) => name === $$name);
 
 					const withinRange = range.isDescendant({
 						container: parent,

@@ -1,5 +1,5 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="list"]) {
+	&:has([data-rx-name="list"]) {
 		margin-block: 8px;
 	}
 

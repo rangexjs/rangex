@@ -22,7 +22,7 @@ export const createEmptyMedia = (): CreateEmptyMediaResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.emptyMedia,
+			name: componentsName.emptyMedia,
 			content: { type: "custom" },
 			customStorage: createEmptyMediaStorage(),
 			editState: "false",

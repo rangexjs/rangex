@@ -85,7 +85,7 @@ export const createAccordionItem = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.accordionItem,
+			name: componentsName.accordionItem,
 			content: { type: "custom" },
 			customStorage: createAccordionItemStorage(),
 			shouldSelectBeforeRemove: true,

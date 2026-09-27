@@ -72,7 +72,7 @@ const handleBlockComponentLine = ({
 		throw new Error("BlockComponent's type is invalid.");
 	}
 
-	const { $$componentName } = blockComponent;
+	const { $$name } = blockComponent;
 
 	const { accordionItem, blockQuote, codeBlock, list, table, todoList } =
 		componentsName;
@@ -86,9 +86,9 @@ const handleBlockComponentLine = ({
 	];
 
 	const isVisible = (name: BlockComponentName) =>
-		$$componentName !== name &&
+		$$name !== name &&
 		turnableComponents.includes(
-			$$componentName as (typeof turnableComponents)[number],
+			$$name as (typeof turnableComponents)[number],
 		) &&
 		isAllowedAtLine({
 			blockComponentPlacement,
@@ -105,9 +105,7 @@ const handleBlockComponentLine = ({
 		todoList,
 	];
 
-	const canUnwrap = unwrappableComponents.some(
-		(name) => name === $$componentName,
-	);
+	const canUnwrap = unwrappableComponents.some((name) => name === $$name);
 
 	configPort.updateState({
 		turnIntoAvailability: {

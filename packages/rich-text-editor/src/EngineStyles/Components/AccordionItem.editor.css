@@ -1,5 +1,5 @@
 [data-rx-editor-role="block-component-line"] {
-	& :where([data-rx-component-name="accordion-item"]) {
+	& :where([data-rx-name="accordion-item"]) {
 		details {
 			& > summary {
 				& > [data-rx-editor-role="nested-editable"] {

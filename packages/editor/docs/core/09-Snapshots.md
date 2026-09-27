@@ -451,7 +451,7 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
   - `"block multi-line"` — `childNodes` may contain one or more `RootEditableChild` (`ContentLine` or `BlockComponentLine`), in any mix/order.
   - `"block single-line"` — `childNodes` must contain exactly one `ContentLine` (a `BlockComponentLine` is not valid here).
 - Every `ContentLine` that is a direct child of `RootEditable` must have a `localName` that is a `BlockContentLineLocalName` (`"p"`, `"h1"`–`"h6"`) — applies under both `display` values.
-- `allowedComponents` — whitelist of allowed `componentName` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `RootEditable`'s scope must have its `componentName` included in the list.
+- `allowedComponents` — whitelist of allowed component `name` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `RootEditable`'s scope must have its `name` included in the list.
 - `allowedContentLineLocalNames` — whitelist of allowed block `ContentLine` `localName`s (`"p"`, `"h1"`–`"h6"`). `null` means no restriction. Otherwise, every outermost `ContentLine` within this `RootEditable`'s scope must have its `localName` included in the list — except `"p"`, which is always allowed regardless of the list's contents, even an empty `[]` (it's the fallback localName the live engine retags to, so it can never be excluded). This is in addition to, not instead of, the `BlockContentLineLocalName` type check above — the type check confirms the value is a valid block localName at all, this checks it's one this particular `RootEditable` permits.
 - `allowedContentLineStyleAttrNames` — whitelist of `structuredStyle` keys a `ContentLine` may set. `null` means no restriction. Otherwise, for every outermost `ContentLine` within this `RootEditable`'s scope, every key present in its `structuredStyle` must be included in the list — a key outside the list is a violation even if its value would otherwise be valid.
 - `allowedGlyphFormatterStyleAttrNames` — same as `allowedContentLineStyleAttrNames`, but for the `structuredStyle` keys of every outermost `GlyphFormatter` within this `RootEditable`'s scope.
@@ -467,7 +467,7 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
   - `"block multi-line"` — `childNodes` may contain one or more `NestedEditableChild` (`ContentLine` or `BlockComponentLine`), in any mix/order. Every direct `ContentLine` child's `localName` must be a `BlockContentLineLocalName` (`"p"`, `"h1"`–`"h6"`).
   - `"block single-line"` — `childNodes` must contain exactly one `ContentLine` (a `BlockComponentLine` is not valid here), and its `localName` must be a `BlockContentLineLocalName`.
   - `"inline"` — `childNodes` must contain exactly one `ContentLine`, and its `localName` must be `"span"`.
-- `allowedComponents` — whitelist of allowed `componentName` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `NestedEditable`'s scope must have its `componentName` included in the list.
+- `allowedComponents` — whitelist of allowed component `name` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `NestedEditable`'s scope must have its `name` included in the list.
 - `allowedContentLineLocalNames` — whitelist of allowed block `ContentLine` `localName`s (`"p"`, `"h1"`–`"h6"`). `null` means no restriction. Otherwise, every outermost `ContentLine` within this `NestedEditable`'s scope must have its `localName` included in the list — except `"p"`, which is always allowed regardless of the list's contents, even an empty `[]`. This only has anything to check when `display` is `"block multi-line"` or `"block single-line"` — when `display` is `"inline"`, the only reachable `ContentLine` is always `localName: "span"`, which is never subject to this whitelist (block-only localNames vs. the fixed inline `"span"`), so the check is a no-op.
 - `allowedContentLineStyleAttrNames` — whitelist of `structuredStyle` keys a `ContentLine` may set. `null` means no restriction. Otherwise, for every outermost `ContentLine` within this `NestedEditable`'s scope, every key present in its `structuredStyle` must be included in the list — a key outside the list is a violation even if its value would otherwise be valid. Applies regardless of `display` — both `"span"` and block `ContentLine`s carry `structuredStyle`.
 - `allowedGlyphFormatterStyleAttrNames` — whitelist of `structuredStyle` keys a `GlyphFormatter` may set. `null` means no restriction. Otherwise, for every outermost `GlyphFormatter` within this `NestedEditable`'s scope, every key present in its `structuredStyle` must be included in the list.
@@ -505,7 +505,7 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
 #### InlineComponent
 
 - `childNodes` must be non-empty.
-- `componentName` must be a non-empty string containing only characters matching the regex `[a-z0-9-]`.
+- `name` must be a non-empty string containing only characters matching the regex `[a-z0-9-]`.
 - `content`:
   - `{ type: "custom" }` — `childNodes` may contain zero or more outermost `NestedEditable` nodes. Every outermost `NestedEditable` must have `content.type: "default"` and `display: "inline"`.
   - `{ type: "linked-characters" }` — `childNodes` must contain exactly one outermost `NestedEditable` node, and it must have `content.type: "linked-characters"`. `display: "inline"` on that `NestedEditable` doesn't need a separate check here — it's already guaranteed by the `NestedEditable`'s own validation (`content.type: "linked-characters"` requires `display: "inline"`, see the `NestedEditable` section above).
@@ -529,7 +529,7 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
 #### BlockComponent
 
 - `childNodes` must be non-empty.
-- `componentName` must be a non-empty string containing only characters matching the regex `[a-z0-9-]`.
+- `name` must be a non-empty string containing only characters matching the regex `[a-z0-9-]`.
 - A `NestedEditable` living inside a `List` or `Table` is still technically the outermost `NestedEditable` from `BlockComponent`'s point of view (there's no other `NestedEditable` between it and here), but `BlockComponent` skips it entirely wherever this section talks about "outermost `NestedEditable`" below: validating it is the `List`/`Table`'s responsibility, not `BlockComponent`'s.
 - `content`:
   - `{ type: "custom" }` — `childNodes` may contain zero or more outermost `NestedEditable`, `List`, and `Table` nodes, in any mix/order. Every outermost `NestedEditable` must have `content.type: "default"`.

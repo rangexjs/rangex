@@ -21,7 +21,7 @@ export const createSeparator = (): CreateSeparatorResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.separator,
+			name: componentsName.separator,
 			content: { type: "custom" },
 			customStorage: createSeparatorStorage(),
 			editState: "false",

@@ -23,7 +23,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 					continue;
 				}
 
-				if (blockComponent.$$componentName !== componentsName.codeBlock) {
+				if (blockComponent.$$name !== componentsName.codeBlock) {
 					continue;
 				}
 

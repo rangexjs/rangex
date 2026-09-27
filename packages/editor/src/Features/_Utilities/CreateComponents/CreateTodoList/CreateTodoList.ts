@@ -48,7 +48,7 @@ export const createTodoList = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.todoList,
+			name: componentsName.todoList,
 			content: { type: "list" },
 			customStorage: createTodoListStorage(),
 			childNodes: [list],

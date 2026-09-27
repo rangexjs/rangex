@@ -55,7 +55,7 @@ export const createCodeBlock = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.codeBlock,
+			name: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({ language, theme }),
 			childNodes: [

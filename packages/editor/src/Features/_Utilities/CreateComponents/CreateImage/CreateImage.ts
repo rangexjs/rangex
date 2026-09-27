@@ -24,7 +24,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.image,
+			name: componentsName.image,
 			content: { type: "custom" },
 			customStorage: createImageStorage(),
 			editState: "false",

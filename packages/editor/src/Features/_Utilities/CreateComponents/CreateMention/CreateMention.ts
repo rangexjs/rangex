@@ -21,7 +21,7 @@ export const createMention = ({
 	const data = `@${displayName}`;
 
 	return createInlineComponent({
-		componentName: componentsName.mention,
+		name: componentsName.mention,
 		content: { type: "custom" },
 		customStorage: createMentionStorage({ userId }),
 		editState: "false",

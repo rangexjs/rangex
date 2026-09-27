@@ -23,7 +23,7 @@ export const createLink = ({
 	};
 
 	return createInlineComponent({
-		componentName: componentsName.link,
+		name: componentsName.link,
 		content: { type: "linked-characters" },
 		customStorage: createLinkStorage(),
 		childNodes: [

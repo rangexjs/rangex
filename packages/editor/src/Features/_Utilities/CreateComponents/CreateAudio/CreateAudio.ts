@@ -21,7 +21,7 @@ export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.audio,
+			name: componentsName.audio,
 			content: { type: "custom" },
 			customStorage: createAudioStorage(),
 			editState: "false",

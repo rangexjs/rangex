@@ -25,7 +25,7 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 
 **Post-mutation normalization** — after each mutation pipeline completes, the engine runs a normalization pass that silently corrects `$$allowed*` violations. No error is thrown; disallowed content is adjusted automatically:
 
-- `$$allowedComponents` — a `Component` whose `$$componentName` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
+- `$$allowedComponents` — a `Component` whose `$$name` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
 - `$$allowedContentLineLocalNames` — a block `ContentLine` with a `localName` not in the list has its tag changed to `"p"`. Inline `"span"` ContentLines are not subject to this normalization.
 - `$$allowedContentLineStyleAttrNames` — style attributes on a `ContentLine` not in the list are removed
 - `$$allowedGlyphFormatterStyleAttrNames` — style attributes on a `GlyphFormatter` not in the list are removed

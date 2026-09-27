@@ -1,9 +1,9 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="accordion-item"]) {
+	&:has([data-rx-name="accordion-item"]) {
 		margin-block: 8px;
 	}
 
-	& :where([data-rx-component-name="accordion-item"]) {
+	& :where([data-rx-name="accordion-item"]) {
 		details {
 			--accordion-padding: 12px;
 

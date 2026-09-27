@@ -41,7 +41,7 @@ const registerClick = ({
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
 			element.$$editorRole === inlineComponentName &&
-			element.$$componentName === componentsName.link,
+			element.$$name === componentsName.link,
 		eventListener: {
 			type: "click",
 			listener(event) {

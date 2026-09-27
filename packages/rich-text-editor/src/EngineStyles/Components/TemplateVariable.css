@@ -1,5 +1,5 @@
 [data-rx-editor-role="inline-component"] {
-	&:where([data-rx-component-name="template-variable"]) {
+	&:where([data-rx-name="template-variable"]) {
 		padding: 2px 4px;
 		background-color: light-dark(
 			color(from var(--color-neutral-500) srgb r g b / 0.1),

@@ -33,7 +33,7 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.embed,
+			name: componentsName.embed,
 			content: { type: "custom" },
 			customStorage: createEmbedStorage(),
 			editState: "false",

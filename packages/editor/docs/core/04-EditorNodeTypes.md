@@ -275,7 +275,7 @@ The inline component primitive. Used to build any inline component — mentions,
 
 **Public API** (inherits `DOMPublicPropsBase`):
 
-- **`$$componentName`** *(readonly)* — the string identifier for this component type. Must match an entry in the owning `ScopedEditable`'s `$$allowedComponents` list, or the component will be unwrapped by the schema.
+- **`$$name`** *(readonly)* — the string identifier for this component type. Must match an entry in the owning `ScopedEditable`'s `$$allowedComponents` list, or the component will be unwrapped by the schema.
 - **`$$content`** *(readonly)* — the content type of this component.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — when `true`, the component is selected as a unit before being removed (e.g. on backspace/delete), giving the user visual feedback before deletion.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — when `true`, navigating the caret into the component selects it as a whole unit rather than entering it.
@@ -321,7 +321,7 @@ The block component primitive. Used to build any block-level component — codeb
 
 **Public API** (inherits `DOMPublicPropsBase` and `ComponentPublicProps`):
 
-- **`$$componentName`** *(readonly)* — string identifier for this component type.
+- **`$$name`** *(readonly)* — string identifier for this component type.
 - **`$$content`** *(readonly)* — the content type.
 - **`$$shouldSelectBeforeRemove`** *(get/set)* — select the component as a unit before removal.
 - **`$$shouldSelectOnNavigation`** *(get/set)* — select as a unit when the caret navigates into it.

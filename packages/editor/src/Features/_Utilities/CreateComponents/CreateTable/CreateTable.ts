@@ -45,7 +45,7 @@ export const createTable = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.table,
+			name: componentsName.table,
 			content: { type: "custom" },
 			customStorage: createTableStorage(),
 			shouldSelectOnNavigation: true,

@@ -10,7 +10,7 @@ import type {
 
 export type ComponentAttrNameByName<TName extends ComponentName> =
 	TName extends BlockComponentName
-		? typeof blockComponentAttrName.dataComponentName
+		? typeof blockComponentAttrName.dataName
 		: TName extends InlineComponentName
-			? typeof inlineComponentAttrName.dataComponentName
+			? typeof inlineComponentAttrName.dataName
 			: never;

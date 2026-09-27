@@ -27,7 +27,7 @@ These parameters appear on most factories:
   - `"block single-line"` — block-level, must have exactly one block `ContentLine`
   - `"inline"` — inline-level, must have exactly one inline `ContentLine`
 - **`editState`** — see per-factory
-- **`allowedComponents?: string[] | null`** — restricts which `componentName`s can be inserted. `null` (default) = no restriction. `[]` = nothing allowed.
+- **`allowedComponents?: string[] | null`** — restricts which component `name`s can be inserted. `null` (default) = no restriction. `[]` = nothing allowed.
 - **`allowedContentLineLocalNames?: BlockContentLineLocalName[] | null`** — restricts which block `ContentLine` tag names (`"p"`, `"h1"`…`"h6"`) are allowed. Does not apply to inline `"span"` ContentLines.
 - **`allowedContentLineStyleAttrNames?: ContentLineStyleAttrName[] | null`** — restricts which line CSS properties can be set.
 - **`allowedGlyphFormatterStyleAttrNames?: GlyphFormatterStyleAttrName[] | null`** — restricts which text CSS properties can be set.
@@ -160,7 +160,7 @@ Creates an `InlineComponent` — an inline component inside a `ContentLine` (e.g
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `componentName` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
+| `name` | `string` | Yes | Identifies the component type. Must be in the parent `ScopedEditable`'s `allowedComponents` to avoid being unwrapped. |
 | `content` | `InlineComponentContent` | Yes | `{ type: "custom" }` or `{ type: "linked-characters" }` (affects `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
@@ -177,7 +177,7 @@ Creates a `BlockComponent` — a block-level component container (e.g. codeblock
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `componentName` | `string` | Yes | Component type identifier |
+| `name` | `string` | Yes | Component type identifier |
 | `content` | `BlockComponentContent` | Yes | `{ type: "custom" }` \| `{ type: "list" }` \| `{ type: "styled-block" }` (last two affect `$$isCrossable`) |
 | `editState` | `"false" \| "inherit"` | No | Defaults to `"inherit"` |
 | `customStorage` | `any` | No | JSON-serializable consumer data |
@@ -195,7 +195,7 @@ These two are always used together. A `BlockComponentLine` has a fixed 3-child s
 ```ts
 const left  = createBlockComponentTextHolder({});
 const right = createBlockComponentTextHolder({});
-const bnc   = createBlockComponent({ componentName: "codeblock", content: { type: "custom" }, editState: "inherit" });
+const bnc   = createBlockComponent({ name: "codeblock", content: { type: "custom" }, editState: "inherit" });
 
 const line = createBlockComponentLine({
   leftBlockComponentTextHolder:  left,

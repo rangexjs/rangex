@@ -1,10 +1,10 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="embed"]) {
+	&:has([data-rx-name="embed"]) {
 		margin-block: 8px;
 	}
 
 	[data-rx-editor-role="block-component"] {
-		&[data-rx-component-name="embed"] {
+		&[data-rx-name="embed"] {
 			& figure {
 				display: flex;
 				flex-direction: column;
