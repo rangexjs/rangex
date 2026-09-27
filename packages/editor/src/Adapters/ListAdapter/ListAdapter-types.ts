@@ -10,10 +10,14 @@ import type {
 export interface ListState {
 	canInsert?: boolean;
 	canWrap?: boolean;
+	localName?: ListLocalName | null;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
+export type OnLocalNameUpdateCallbackFn = (
+	localName: ListLocalName | null,
+) => void;
 
 export interface ListPlacementOption {
 	localName: ListLocalName;
@@ -27,6 +31,8 @@ export interface OnWrapCallbackParams extends ListPlacementOption {}
 
 export type OnWrapCallbackFn = (params: OnWrapCallbackParams) => void;
 
+export type OnChangeLocalNameCallbackFn = (localName: ListLocalName) => void;
+
 export interface UpdateStateParams extends ListState {}
 
 export interface ListConfigPortProps {
@@ -34,6 +40,7 @@ export interface ListConfigPortProps {
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onWrap(callback: OnWrapCallbackFn): () => void;
+	onChangeLocalName(callback: OnChangeLocalNameCallbackFn): () => void;
 }
 
 export interface ListConfigPort
@@ -48,12 +55,15 @@ export interface WrapParams extends ListPlacementOption {}
 export interface ListPublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
+	readonly localName: ListLocalName | null;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+	onLocalNameUpdate(callback: OnLocalNameUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;
+	changeLocalName(localName: ListLocalName): void;
 }
 
 export interface ListPublicPort
@@ -64,6 +74,7 @@ export interface ListPublicPort
 export interface ListInternals {
 	canInsert: boolean;
 	canWrap: boolean;
+	localName: ListLocalName | null;
 }
 
 export interface ListAdapter {

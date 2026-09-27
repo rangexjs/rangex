@@ -15,7 +15,9 @@ import type {
 	ListPublicPortProps,
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
+	OnChangeLocalNameCallbackFn,
 	OnInsertCallbackFn,
+	OnLocalNameUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./ListAdapter-types";
@@ -31,20 +33,27 @@ export const createListAdapter = (
 		// States
 		canInsert: false,
 		canWrap: false,
+		localName: null,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
+	const localNameUpdateEmitter = createEmitter<OnLocalNameUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
 	const wrapEmitter = createEmitter<OnWrapCallbackFn>();
+	const changeLocalNameEmitter = createEmitter<OnChangeLocalNameCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
-	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
+	const updateState = ({
+		canInsert,
+		canWrap,
+		localName,
+	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -55,6 +64,12 @@ export const createListAdapter = (
 			internals.canWrap = canWrap;
 
 			canWrapUpdateEmitter.emit(internals.canWrap);
+		}
+
+		if (localName !== undefined) {
+			internals.localName = localName;
+
+			localNameUpdateEmitter.emit(internals.localName);
 		}
 	};
 
@@ -73,6 +88,10 @@ export const createListAdapter = (
 			onWrap(callback) {
 				return wrapEmitter.subscribe(callback);
 			},
+
+			onChangeLocalName(callback) {
+				return changeLocalNameEmitter.subscribe(callback);
+			},
 		} satisfies ListConfigPortProps,
 	);
 
@@ -88,6 +107,10 @@ export const createListAdapter = (
 				return internals.canWrap;
 			},
 
+			get localName() {
+				return internals.localName;
+			},
+
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
 			},
@@ -96,12 +119,20 @@ export const createListAdapter = (
 				return canWrapUpdateEmitter.subscribe(callback);
 			},
 
+			onLocalNameUpdate(callback) {
+				return localNameUpdateEmitter.subscribe(callback);
+			},
+
 			insert(params) {
 				insertEmitter.emit(params);
 			},
 
 			wrap(params) {
 				wrapEmitter.emit(params);
+			},
+
+			changeLocalName(localName) {
+				changeLocalNameEmitter.emit(localName);
 			},
 		} satisfies ListPublicPortProps,
 	);
