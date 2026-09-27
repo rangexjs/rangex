@@ -24,7 +24,7 @@ export const handleAccordionItemPlacementState = ({
 				allowedComponents: [componentsName.accordionItem],
 			});
 
-			const closestComponent = componentLookup.closestBlockBySelection({
+			const closestComponent = componentLookup.closestBySelection({
 				components: [componentsName.accordionItem],
 			});
 			const isActive = closestComponent !== null;

@@ -24,7 +24,7 @@ export const handleCodeBlockPlacementState = ({
 				allowedComponents: [componentsName.codeBlock],
 			});
 
-			const codeBlockComponent = componentLookup.closestBlockBySelection({
+			const codeBlockComponent = componentLookup.closestBySelection({
 				components: [componentsName.codeBlock],
 			});
 			const isActive = codeBlockComponent !== null;

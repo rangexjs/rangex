@@ -33,7 +33,7 @@ export const configureBlockQuote = ({
 		port: configPort,
 		editorAPI,
 		getComponent: () =>
-			componentLookup.closestBlockBySelection({
+			componentLookup.closestBySelection({
 				components: [componentsName.blockQuote],
 			}),
 	});

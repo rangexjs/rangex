@@ -35,7 +35,7 @@ export const configureTodoList = ({
 		port: configPort,
 		editorAPI,
 		getComponent: () =>
-			componentLookup.closestBlockBySelection({
+			componentLookup.closestBySelection({
 				components: [componentsName.todoList],
 			}),
 	});

@@ -24,7 +24,7 @@ export const handleBlockQuotePlacementState = ({
 				allowedComponents: [componentsName.blockQuote],
 			});
 
-			const closestComponent = componentLookup.closestBlockBySelection({
+			const closestComponent = componentLookup.closestBySelection({
 				components: [componentsName.blockQuote],
 			});
 			const isActive = closestComponent !== null;

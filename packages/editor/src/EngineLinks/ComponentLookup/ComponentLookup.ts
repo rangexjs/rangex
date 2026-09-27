@@ -1,57 +1,19 @@
-import { type Component, EditorRange } from "rich-text-area";
-import {
-	getClosestBlockComponent,
-	getClosestInlineComponent,
-} from "../NodeQuery";
+import { type EditorElement, EditorRange, isComponent } from "rich-text-area";
 import type {
+	ComponentByName,
 	ComponentLookup,
 	CreateComponentLookupParams,
 	CreateComponentLookupResult,
-	FindContainingComponentParams,
 } from "./ComponentLookup-types";
 
-/*
- * Walks the matching ancestor components of the range's start and returns the first one that contains
- * the whole range, or null if there is none.
- */
-const findContainingComponent = <TComponent extends Component>({
-	range,
-	getClosest,
-}: FindContainingComponentParams<TComponent>): TComponent | null => {
-	let component = getClosest(range.startText);
-
-	while (component) {
-		const withinRange = range.isDescendant({
-			container: component,
-			start: true,
-			end: true,
-		});
-
-		if (withinRange) {
-			return component;
-		}
-
-		const { $$parentElement } = component;
-
-		if (!$$parentElement) {
-			return null;
-		}
-
-		component = getClosest($$parentElement);
-	}
-
-	return null;
-};
-
 /**
- * Creates a {@link ComponentLookup} — the API for finding the BlockComponent or InlineComponent
- * that contains a range, limited to the given component names.
+ * Creates a {@link ComponentLookup} — the API for finding the component that contains a range, limited to
+ * the given component names. The result is typed as BlockComponent or InlineComponent based on the names.
  *
- * Each lookup has two variants:
- * - Direct — caller supplies the range's boundary points explicitly.
- * - BySelection — the range is the current editor selection.
+ * - closest — caller supplies the range's boundary points explicitly.
+ * - closestBySelection — the range is the current editor selection.
  *
- * All of them return the closest matching ancestor that contains the whole range, or null if there is none.
+ * Both return the closest matching ancestor that contains the whole range, or null if there is none.
  */
 export const createComponentLookup = ({
 	editorAPI,
@@ -59,44 +21,42 @@ export const createComponentLookup = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const componentLookup: ComponentLookup = {
-		closestBlock({ fromNode, fromOffset, toNode, toOffset, components }) {
+		closest({ fromNode, fromOffset, toNode, toOffset, components }) {
 			const range = new EditorRange({ fromNode, fromOffset, toNode, toOffset });
 
-			return findContainingComponent({
-				range,
-				getClosest: (node) =>
-					getClosestBlockComponent({ fromNode: node, components }),
-			});
+			let parent: EditorElement | null = range.startText.$$parentElement;
+
+			while (parent) {
+				if (isComponent(parent)) {
+					const { $$componentName } = parent;
+
+					const nameMatches = components.some(
+						(name) => name === $$componentName,
+					);
+
+					const withinRange = range.isDescendant({
+						container: parent,
+						start: true,
+						end: true,
+					});
+
+					if (nameMatches && withinRange) {
+						// The name filter guarantees the component type the names map to.
+						return parent as ComponentByName<(typeof components)[number]>;
+					}
+				}
+
+				parent = parent.$$parentElement;
+			}
+
+			return null;
 		},
 
-		closestBlockBySelection({ components }) {
+		closestBySelection({ components }) {
 			const { fromText, fromOffset, toText, toOffset } =
 				selection.getBoundaryPoints();
 
-			return componentLookup.closestBlock({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-				components,
-			});
-		},
-
-		closestInline({ fromNode, fromOffset, toNode, toOffset, components }) {
-			const range = new EditorRange({ fromNode, fromOffset, toNode, toOffset });
-
-			return findContainingComponent({
-				range,
-				getClosest: (node) =>
-					getClosestInlineComponent({ fromNode: node, components }),
-			});
-		},
-
-		closestInlineBySelection({ components }) {
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
-
-			return componentLookup.closestInline({
+			return componentLookup.closest({
 				fromNode: fromText,
 				fromOffset,
 				toNode: toText,

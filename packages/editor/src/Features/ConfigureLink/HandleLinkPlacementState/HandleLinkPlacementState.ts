@@ -18,7 +18,7 @@ export const handleLinkPlacementState = ({
 			const mode = getLinkPlacementMode({ editorAPI });
 			const canInsert = mode !== null;
 
-			const closestLink = componentLookup.closestInlineBySelection({
+			const closestLink = componentLookup.closestBySelection({
 				components: [componentsName.link],
 			});
 			const isActive = closestLink !== null;

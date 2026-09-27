@@ -24,7 +24,7 @@ export const handleTodoListPlacementState = ({
 				allowedComponents: [componentsName.todoList],
 			});
 
-			const closestComponent = componentLookup.closestBlockBySelection({
+			const closestComponent = componentLookup.closestBySelection({
 				components: [componentsName.todoList],
 			});
 			const isActive = closestComponent !== null;

@@ -20,7 +20,7 @@ export const handleTablePlacementState = ({
 				allowedComponents: [componentsName.table],
 			});
 
-			const closestTable = componentLookup.closestBlockBySelection({
+			const closestTable = componentLookup.closestBySelection({
 				components: [componentsName.table],
 			});
 			const isActive = closestTable !== null;

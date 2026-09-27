@@ -24,7 +24,7 @@ export const handleListPlacementState = ({
 				allowedComponents: [componentsName.list],
 			});
 
-			const closestComponent = componentLookup.closestBlockBySelection({
+			const closestComponent = componentLookup.closestBySelection({
 				components: [componentsName.list],
 			});
 			const isActive = closestComponent !== null;

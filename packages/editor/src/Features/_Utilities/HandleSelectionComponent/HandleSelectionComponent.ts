@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { createComponentLookup, isInlineComponentName } from "#engine-links";
+import { createComponentLookup } from "#engine-links";
 import type { HandleSelectionComponentParams } from "./HandleSelectionComponent-types";
 
 /*
@@ -16,13 +16,9 @@ export const handleSelectionComponent = ({
 	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			const selectionComponent = isInlineComponentName(componentName)
-				? componentLookup.closestInlineBySelection({
-						components: [componentName],
-					})
-				: componentLookup.closestBlockBySelection({
-						components: [componentName],
-					});
+			const selectionComponent = componentLookup.closestBySelection({
+				components: [componentName],
+			});
 
 			port.updateCurrentComponent({ selectionComponent });
 		},

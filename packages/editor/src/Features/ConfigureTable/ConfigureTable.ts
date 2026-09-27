@@ -50,7 +50,7 @@ export const configureTable = ({
 		port: configPort,
 		editorAPI,
 		getComponent: () =>
-			componentLookup.closestBlockBySelection({
+			componentLookup.closestBySelection({
 				components: [componentsName.table],
 			}),
 	});
