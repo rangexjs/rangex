@@ -3,6 +3,9 @@ import type { Component } from "rich-text-area";
 export interface CurrentComponentInternals<TComponent extends Component> {
 	hoverComponent: TComponent | null;
 	selectionComponent: TComponent | null;
+	// Last emitted values, compared against on update.
+	currentComponent: TComponent | null;
+	isSelectionActive: boolean;
 }
 
 export interface UpdateStateParams<TComponent extends Component> {

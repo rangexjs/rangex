@@ -22,6 +22,8 @@ export const createCurrentComponentPort = <
 	const internals: CurrentComponentInternals<TComponent> = {
 		hoverComponent: null,
 		selectionComponent: null,
+		currentComponent: null,
+		isSelectionActive: false,
 	};
 
 	const resolveCurrentComponent = () => {
@@ -51,9 +53,6 @@ export const createCurrentComponentPort = <
 		hoverComponent,
 		selectionComponent,
 	}: UpdateStateParams<TComponent>) => {
-		const previousComponent = resolveCurrentComponent();
-		const previousIsSelectionActive = resolveIsSelectionActive();
-
 		if (hoverComponent !== undefined) {
 			internals.hoverComponent = hoverComponent;
 		}
@@ -64,13 +63,17 @@ export const createCurrentComponentPort = <
 
 		const currentComponent = resolveCurrentComponent();
 
-		if (currentComponent !== previousComponent) {
+		if (currentComponent !== internals.currentComponent) {
+			internals.currentComponent = currentComponent;
+
 			currentComponentUpdateEmitter.emit(currentComponent);
 		}
 
 		const isSelectionActive = resolveIsSelectionActive();
 
-		if (isSelectionActive !== previousIsSelectionActive) {
+		if (isSelectionActive !== internals.isSelectionActive) {
+			internals.isSelectionActive = isSelectionActive;
+
 			isSelectionActiveUpdateEmitter.emit(isSelectionActive);
 		}
 	};
