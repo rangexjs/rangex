@@ -15,6 +15,19 @@ export const OrderedListToolbarButton = () => {
 	const $list = List(list);
 	const $readOnly = ReadOnly(readOnly);
 
+	const isOrderedListActive = createMemo(() => {
+		const currentComponent = $list.currentComponent();
+
+		if (!($list.isSelectionActive() && currentComponent)) {
+			return false;
+		}
+
+		// The first list element is the component's own list; nested lists come after it.
+		const listElement = currentComponent.querySelector("ol, ul");
+
+		return listElement?.localName === "ol";
+	});
+
 	const disabled = createMemo(
 		() =>
 			!($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
@@ -32,7 +45,7 @@ export const OrderedListToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$list.isSelectionActive()}
+				checked={isOrderedListActive()}
 				disabled={disabled()}
 				onClick={onClick}
 			>
