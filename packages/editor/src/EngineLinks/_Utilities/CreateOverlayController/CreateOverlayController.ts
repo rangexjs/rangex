@@ -129,6 +129,7 @@ export const createAnchoredOverlayController = ({
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
+	let anchorElement: HTMLElement | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
@@ -138,7 +139,12 @@ export const createAnchoredOverlayController = ({
 		isOpen = false;
 		onToggle?.(isOpen);
 
-		if (instant) {
+		// A detached anchor leaves nothing to transition from, so skip the animation.
+		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+
+		anchorElement = null;
+
+		if (instant || anchorDetached) {
 			forceReflowWithoutTransition(element);
 		}
 	};
@@ -164,8 +170,14 @@ export const createAnchoredOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, styleOptions) {
-			const anchorName = anchorElement.getAttribute(dataAnchorName);
+		get anchorElement() {
+			return anchorElement;
+		},
+
+		show(anchor, styleOptions) {
+			anchorElement = anchor;
+
+			const anchorName = anchor.getAttribute(dataAnchorName);
 
 			if (anchorName === null) {
 				throw new Error(
@@ -230,6 +242,7 @@ export const createPopoverOverlayController = ({
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
+	let anchorElement: HTMLElement | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
@@ -243,7 +256,12 @@ export const createPopoverOverlayController = ({
 		isOpen = false;
 		onToggle?.(isOpen);
 
-		if (instant) {
+		// A detached anchor leaves nothing to transition from, so skip the animation.
+		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+
+		anchorElement = null;
+
+		if (instant || anchorDetached) {
 			forceReflowWithoutTransition(element);
 		}
 	};
@@ -269,7 +287,13 @@ export const createPopoverOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, styleOptions) {
+		get anchorElement() {
+			return anchorElement;
+		},
+
+		show(anchor, styleOptions) {
+			anchorElement = anchor;
+
 			applyAnchorPosition({
 				element,
 				positionAnchor: "auto",
@@ -281,7 +305,7 @@ export const createPopoverOverlayController = ({
 				element.hidePopover();
 			}
 
-			element.showPopover({ source: anchorElement });
+			element.showPopover({ source: anchor });
 
 			if (closeOnEscape) {
 				closeWatcher?.destroy();

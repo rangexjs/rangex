@@ -39,6 +39,7 @@ export interface ApplyAnchorPositionParams {
 export interface OverlayController {
 	readonly element: HTMLElement;
 	readonly isOpen: boolean;
+	readonly anchorElement: HTMLElement | null;
 	show(anchorElement: HTMLElement, styleOptions: AnchorStyleOptions): void;
 	hide: HideFn;
 	addExemptNode(node: HTMLElement): void;
