@@ -3,12 +3,12 @@ import type {
 	CaptionConfigPort,
 	CaptionPosition,
 	CaptionState,
+	CurrentComponentConfigPort,
 } from "#adapters";
 
 export interface HandleCaptionStateParams {
-	port: CaptionConfigPort;
+	port: CaptionConfigPort & CurrentComponentConfigPort<BlockComponent>;
 	editorAPI: EditorAPI;
-	getCurrentBlock: () => BlockComponent | null;
 	getFigure: (params: { blockComponent: BlockComponent }) => HTMLLayout;
 	getCaption: (params: { figure: HTMLLayout }) => CaptionState;
 	setCaptionEnabled: (params: {

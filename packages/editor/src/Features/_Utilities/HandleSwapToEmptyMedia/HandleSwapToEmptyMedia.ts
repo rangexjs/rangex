@@ -7,20 +7,19 @@ import type { HandleSwapToEmptyMediaParams } from "./HandleSwapToEmptyMedia-type
 export const handleSwapToEmptyMedia = ({
 	port,
 	editorAPI,
-	getCurrentBlock,
 }: HandleSwapToEmptyMediaParams) => {
 	const unsubscribeSwap = port.onSwap(() => {
 		if (!port.canSwap) {
 			return;
 		}
 
-		const currentBlock = getCurrentBlock();
+		const { currentComponent } = port;
 
-		if (!currentBlock) {
+		if (!currentComponent) {
 			return;
 		}
 
-		const { $$parentElement } = currentBlock;
+		const { $$parentElement } = currentComponent;
 
 		if (!$$parentElement) {
 			throw new Error("ParentElement not supposed to be null.");

@@ -1,13 +1,24 @@
 import type {
 	BlockComponent,
+	Component,
+	ContentFlowNode,
 	EditorAPI,
 	EditorNode,
+	EditorRange,
 	InlineComponent,
 } from "rich-text-area";
 import type { BlockComponentName, InlineComponentName } from "../Constants";
 
+export interface FindContainingComponentParams<TComponent extends Component> {
+	range: EditorRange;
+	getClosest: (fromNode: EditorNode) => TComponent | null;
+}
+
 export interface ClosestBlockParams {
-	fromNode: EditorNode;
+	fromNode: ContentFlowNode;
+	fromOffset: number;
+	toNode: ContentFlowNode;
+	toOffset: number;
 	components: BlockComponentName[];
 }
 
@@ -26,7 +37,10 @@ export type ClosestBlockBySelectionFn = (
 ) => ClosestBlockBySelectionResult;
 
 export interface ClosestInlineParams {
-	fromNode: EditorNode;
+	fromNode: ContentFlowNode;
+	fromOffset: number;
+	toNode: ContentFlowNode;
+	toOffset: number;
 	components: InlineComponentName[];
 }
 

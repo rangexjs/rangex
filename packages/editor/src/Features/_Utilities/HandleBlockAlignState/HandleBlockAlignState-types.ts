@@ -1,8 +1,10 @@
 import type { BlockComponent, EditorAPI } from "rich-text-area";
-import type { BlockAlignConfigPort } from "#adapters";
+import type {
+	BlockAlignConfigPort,
+	CurrentComponentConfigPort,
+} from "#adapters";
 
 export interface HandleBlockAlignStateParams {
-	port: BlockAlignConfigPort;
+	port: BlockAlignConfigPort & CurrentComponentConfigPort<BlockComponent>;
 	editorAPI: EditorAPI;
-	getCurrentBlock: () => BlockComponent | null;
 }

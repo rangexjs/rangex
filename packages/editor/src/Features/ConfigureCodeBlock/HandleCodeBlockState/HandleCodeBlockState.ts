@@ -8,20 +8,37 @@ import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "#engine-links";
-import type { HandleCodeBlockOverlayStateParams } from "./HandleCodeBlockOverlayState-types";
+import type { HandleCodeBlockStateParams } from "./HandleCodeBlockState-types";
 
 /*
- * Wires the code block overlay's language/theme changes and plain-text export to the engine,
- * applying them to the currently active code block and re-highlighting it. Returns a cleanup function.
+ * Keeps the port's language/theme in sync with the current code block and wires language/theme
+ * changes and plain-text export to it, re-highlighting on change. Returns a cleanup function.
  */
-export const handleCodeBlockOverlayState = ({
+export const handleCodeBlockState = ({
 	configPort,
 	editorAPI,
-	getCurrentBlock,
 	codeHighlighter,
-}: HandleCodeBlockOverlayStateParams) => {
+}: HandleCodeBlockStateParams) => {
+	const unsubscribeCurrentComponentUpdate = configPort.onCurrentComponentUpdate(
+		(currentComponent) => {
+			if (!currentComponent) {
+				return;
+			}
+
+			const storage = ensureNodeCodeBlockStorage({
+				blockComponent: currentComponent,
+				fallbacks: codeBlockStorageFallbacks,
+			});
+
+			configPort.updateState({
+				language: storage.language,
+				theme: storage.theme,
+			});
+		},
+	);
+
 	const unsubscribeLanguageChange = configPort.onChangeLanguage((language) => {
-		const currentCodeBlock = getCurrentBlock();
+		const currentCodeBlock = configPort.currentComponent;
 		if (!currentCodeBlock) {
 			return;
 		}
@@ -40,7 +57,7 @@ export const handleCodeBlockOverlayState = ({
 	});
 
 	const unsubscribeThemeChange = configPort.onChangeTheme((theme) => {
-		const currentCodeBlock = getCurrentBlock();
+		const currentCodeBlock = configPort.currentComponent;
 		if (!currentCodeBlock) {
 			return;
 		}
@@ -58,7 +75,7 @@ export const handleCodeBlockOverlayState = ({
 	});
 
 	configPort.registerPlainTextProvider(() => {
-		const currentCodeBlock = getCurrentBlock();
+		const currentCodeBlock = configPort.currentComponent;
 
 		if (!currentCodeBlock) {
 			return [];
@@ -93,6 +110,7 @@ export const handleCodeBlockOverlayState = ({
 	});
 
 	return () => {
+		unsubscribeCurrentComponentUpdate();
 		unsubscribeLanguageChange();
 		unsubscribeThemeChange();
 	};

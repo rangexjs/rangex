@@ -1,19 +1,18 @@
 import {
-	codeBlockStorageFallbacks,
 	componentsName,
 	createBlockComponentPlacement,
 	createComponentLookup,
-	ensureNodeCodeBlockStorage,
 } from "#engine-links";
 import {
 	handleComponentUnwrap,
 	handleQuickActionsAppearance,
+	handleSelectionComponent,
 } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
-import { handleCodeBlockOverlayState } from "./HandleCodeBlockOverlayState";
 import { handleCodeBlockPlacement } from "./HandleCodeBlockPlacement";
 import { handleCodeBlockPlacementState } from "./HandleCodeBlockPlacementState";
+import { handleCodeBlockState } from "./HandleCodeBlockState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
 /*
@@ -45,10 +44,7 @@ export const configureCodeBlock = ({
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBlockBySelection({
-				components: [componentsName.codeBlock],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const placementCleanup = handleCodeBlockPlacement({
@@ -59,30 +55,23 @@ export const configureCodeBlock = ({
 
 	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
-	const { getCurrentBlock, cleanup: quickActionsCleanup } =
-		handleQuickActionsAppearance({
-			port: configPort,
-			quickActionsPort: configPort.quickActions,
-			editorAPI,
-			componentName: componentsName.codeBlock,
-			beforeOpen({ blockComponent }) {
-				const storage = ensureNodeCodeBlockStorage({
-					blockComponent,
-					fallbacks: codeBlockStorageFallbacks,
-				});
+	const quickActionsCleanup = handleQuickActionsAppearance({
+		port: configPort,
+		quickActionsPort: configPort.quickActions,
+		editorAPI,
+		componentName: componentsName.codeBlock,
+	});
 
-				configPort.updateState({
-					language: storage.language,
-					theme: storage.theme,
-				});
-			},
-		});
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.codeBlock,
+	});
 
-	const overlayStateCleanup = handleCodeBlockOverlayState({
+	const codeBlockStateCleanup = handleCodeBlockState({
 		configPort,
 		editorAPI,
 		codeHighlighter,
-		getCurrentBlock,
 	});
 
 	return () => {
@@ -90,7 +79,8 @@ export const configureCodeBlock = ({
 		unwrapCleanup();
 		placementCleanup();
 		lineNumbersCleanup();
-		overlayStateCleanup();
+		codeBlockStateCleanup();
 		quickActionsCleanup();
+		selectionComponentCleanup();
 	};
 };

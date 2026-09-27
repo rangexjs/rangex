@@ -1,23 +1,40 @@
-import { setBlockAlign } from "../BlockAlign";
+import { getBlockAlign, setBlockAlign } from "../BlockAlign";
 import type { HandleBlockAlignStateParams } from "./HandleBlockAlignState-types";
 
 /*
- * Wires a popover's alignment control to the engine, applying alignment changes to the
- * active block and registering a snapshot boundary. Returns a cleanup function.
+ * Keeps the port's alignment in sync with the current block and applies alignment changes to it,
+ * registering a snapshot boundary after each change. Returns a cleanup function.
  */
 export const handleBlockAlignState = ({
 	port,
 	editorAPI,
-	getCurrentBlock,
 }: HandleBlockAlignStateParams) => {
-	const unsubscribeAlignChange = port.onChangeAlign((align) => {
-		const currentBlock = getCurrentBlock();
+	const unsubscribeCurrentComponentUpdate = port.onCurrentComponentUpdate(
+		(currentComponent) => {
+			if (!currentComponent) {
+				return;
+			}
 
-		if (!currentBlock) {
+			const { $$parentElement } = currentComponent;
+
+			if (!$$parentElement) {
+				throw new Error("ParentElement not supposed to be null.");
+			}
+
+			const align = getBlockAlign({ blockComponentLine: $$parentElement });
+
+			port.updateBlockAlign({ align });
+		},
+	);
+
+	const unsubscribeAlignChange = port.onChangeAlign((align) => {
+		const { currentComponent } = port;
+
+		if (!currentComponent) {
 			return;
 		}
 
-		const { $$parentElement } = currentBlock;
+		const { $$parentElement } = currentComponent;
 
 		if (!$$parentElement) {
 			throw new Error("ParentElement not supposed to be null.");
@@ -32,6 +49,7 @@ export const handleBlockAlignState = ({
 	});
 
 	return () => {
+		unsubscribeCurrentComponentUpdate();
 		unsubscribeAlignChange();
 	};
 };

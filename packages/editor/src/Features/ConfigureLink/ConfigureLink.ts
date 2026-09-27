@@ -1,9 +1,11 @@
 import {
+	componentsName,
 	createComponentLookup,
 	createPopoverOverlayController,
 } from "#engine-links";
 import {
 	handleComponentUnwrap,
+	handleSelectionComponent,
 	handleSelectionMenuInteraction,
 } from "../_Utilities";
 import type { ConfigureLinkParams } from "./ConfigureLink-types";
@@ -62,6 +64,13 @@ export const configureLink = ({
 		selectionMenuPopoverController,
 	});
 
+	// Must subscribe before the interaction/close handlers, so the current link is resolved before they read it.
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.link,
+	});
+
 	const linkInteractionCleanup = handleLinkInteraction({
 		configPort,
 		editorAPI,
@@ -95,6 +104,7 @@ export const configureLink = ({
 		selectionMenuInteractionCleanup();
 		placementStateCleanup();
 		menuOpenCleanup();
+		selectionComponentCleanup();
 		linkInteractionCleanup();
 		insertionCleanup();
 		modificationCleanup();

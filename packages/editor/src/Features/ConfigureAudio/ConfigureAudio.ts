@@ -1,10 +1,10 @@
 import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
-	getBlockAlign,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleQuickActionsAppearance,
+	handleSelectionComponent,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -36,27 +36,18 @@ export const configureAudio = ({
 		blockComponentPlacement,
 	});
 
-	const { getCurrentBlock, cleanup: quickActionsCleanup } =
-		handleQuickActionsAppearance({
-			port: configPort,
-			quickActionsPort: configPort.quickActions,
-			editorAPI,
-			componentName: componentsName.audio,
-			beforeOpen({ blockComponent }) {
-				const { $$parentElement } = blockComponent;
+	const quickActionsCleanup = handleQuickActionsAppearance({
+		port: configPort,
+		quickActionsPort: configPort.quickActions,
+		editorAPI,
+		componentName: componentsName.audio,
+	});
 
-				if (!$$parentElement) {
-					throw new Error("ParentElement not supposed to be null.");
-				}
-
-				const align = getBlockAlign({ blockComponentLine: $$parentElement });
-				const figure = getAudioFigure({ blockComponent });
-				const caption = getAudioCaption({ figure });
-
-				configPort.updateBlockAlign({ align });
-				configPort.updateCaption(caption);
-			},
-		});
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.audio,
+	});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
 		blockResize: configPort.blockResize,
@@ -67,13 +58,11 @@ export const configureAudio = ({
 	const alignStateCleanup = handleBlockAlignState({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 	});
 
 	const captionStateCleanup = handleCaptionState({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 		getFigure: getAudioFigure,
 		getCaption: getAudioCaption,
 		setCaptionEnabled: setAudioCaptionEnabled,
@@ -83,12 +72,12 @@ export const configureAudio = ({
 	const swapCleanup = handleSwapToEmptyMedia({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 	});
 
 	return () => {
 		insertionCleanup();
 		quickActionsCleanup();
+		selectionComponentCleanup();
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
