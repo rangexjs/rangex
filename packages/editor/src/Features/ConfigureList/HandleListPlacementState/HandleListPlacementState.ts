@@ -1,5 +1,5 @@
 import { componentsName } from "#engine-links";
-import { handleComponentPlacementState } from "../../_Utilities";
+import { handleSelectionContextChange } from "../../_Utilities";
 import type { HandleListPlacementStateParams } from "./HandleListPlacementState-types";
 
 /*
@@ -11,9 +11,9 @@ export const handleListPlacementState = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleListPlacementStateParams) => {
-	return handleComponentPlacementState({
+	return handleSelectionContextChange({
 		editorAPI,
-		updateState: () => {
+		onChange: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
 				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.list],

@@ -1,5 +1,5 @@
 import { createComponentLookup } from "#engine-links";
-import { handleComponentPlacementState } from "../HandleComponentPlacementState";
+import { handleSelectionContextChange } from "../HandleSelectionContextChange";
 import type { HandleSelectionComponentParams } from "./HandleSelectionComponent-types";
 
 /*
@@ -13,9 +13,9 @@ export const handleSelectionComponent = ({
 }: HandleSelectionComponentParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
 
-	return handleComponentPlacementState({
+	return handleSelectionContextChange({
 		editorAPI,
-		updateState: () => {
+		onChange: () => {
 			const selectionComponent = componentLookup.closestBySelection({
 				components: [componentName],
 			});

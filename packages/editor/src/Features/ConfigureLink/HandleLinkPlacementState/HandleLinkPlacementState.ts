@@ -1,4 +1,4 @@
-import { handleComponentPlacementState } from "../../_Utilities";
+import { handleSelectionContextChange } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type { HandleLinkPlacementStateParams } from "./HandleLinkPlacementState-types";
 
@@ -10,9 +10,9 @@ export const handleLinkPlacementState = ({
 	configPort,
 	editorAPI,
 }: HandleLinkPlacementStateParams) => {
-	return handleComponentPlacementState({
+	return handleSelectionContextChange({
 		editorAPI,
-		updateState: () => {
+		onChange: () => {
 			const mode = getLinkPlacementMode({ editorAPI });
 			const canInsert = mode !== null;
 

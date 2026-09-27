@@ -1,5 +1,5 @@
 import { componentsName } from "#engine-links";
-import { handleComponentPlacementState } from "../../_Utilities";
+import { handleSelectionContextChange } from "../../_Utilities";
 import type { HandleAccordionItemPlacementStateParams } from "./HandleAccordionItemPlacementState-types";
 
 /*
@@ -11,9 +11,9 @@ export const handleAccordionItemPlacementState = ({
 	editorAPI,
 	blockComponentPlacement,
 }: HandleAccordionItemPlacementStateParams) => {
-	return handleComponentPlacementState({
+	return handleSelectionContextChange({
 		editorAPI,
-		updateState: () => {
+		onChange: () => {
 			const canInsert = blockComponentPlacement.canInsertBySelection({
 				scope: "nearest-multi-line",
 				allowedComponents: [componentsName.accordionItem],
