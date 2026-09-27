@@ -311,7 +311,7 @@ export const FindReplaceToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="FindReplace" class="size-4" />
+				<Icon name="FindReplace" title="Find and replace" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}
@@ -336,7 +336,7 @@ export const FindReplaceToolbarButton = () => {
 						command="hide-popover"
 						class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
 					>
-						<Icon name="X" class="size-3" />
+						<Icon name="X" title="Close" class="size-3" />
 					</button>
 				</div>
 				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
@@ -405,14 +405,18 @@ export const FindReplaceToolbarButton = () => {
 									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
 									onClick={() => findPreviousMatch()}
 								>
-									<Icon name="ArrowLeft" class="size-3" />
+									<Icon
+										name="ArrowLeft"
+										title="Previous match"
+										class="size-3"
+									/>
 								</button>
 								<button
 									type="button"
 									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
 									onClick={() => findNextMatch()}
 								>
-									<Icon name="ArrowRight" class="size-3" />
+									<Icon name="ArrowRight" title="Next match" class="size-3" />
 								</button>
 							</span>
 						</div>

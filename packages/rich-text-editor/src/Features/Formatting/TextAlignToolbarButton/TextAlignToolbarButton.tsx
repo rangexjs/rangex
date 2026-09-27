@@ -19,6 +19,13 @@ const iconNameOptions: Record<FormattingTextAlignValue, IconName> = {
 	justify: "TextAlignJustify",
 };
 
+const labelOptions: Record<FormattingTextAlignValue, string> = {
+	start: "Align left",
+	center: "Align center",
+	end: "Align right",
+	justify: "Justify",
+};
+
 const getToolbarIconFromActiveValues = (
 	activeValues: Set<FormattingTextAlignValue>,
 ): IconName => {
@@ -77,7 +84,7 @@ export const TextAlignToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name={toolbarIcon()} class="size-4" />
+				<Icon name={toolbarIcon()} title="Text align" class="size-4" />
 			</ToolbarButton>
 
 			<div
@@ -95,7 +102,11 @@ export const TextAlignToolbarButton = () => {
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}
 							>
-								<Icon name={iconNameOptions[name]} class="size-4" />
+								<Icon
+									name={iconNameOptions[name]}
+									title={labelOptions[name]}
+									class="size-4"
+								/>
 							</ToolbarButton>
 						)}
 					</For>

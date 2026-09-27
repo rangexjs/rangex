@@ -31,7 +31,7 @@ export const SubscriptToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$subscript.pressed()}
 			>
-				<Icon name="Subscript" class="size-4" />
+				<Icon name="Subscript" title="Subscript" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

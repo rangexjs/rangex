@@ -109,7 +109,7 @@ export const LetterSpacingToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="LetterSpacing" class="size-4" />
+				<Icon name="LetterSpacing" title="Letter spacing" class="size-4" />
 			</ToolbarButton>
 			<ToolbarDropdown
 				id={popoverId}

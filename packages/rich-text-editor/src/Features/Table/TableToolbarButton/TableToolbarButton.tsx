@@ -121,7 +121,7 @@ export const TableToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="Table" class="size-4" />
+				<Icon name="Table" title="Table" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}

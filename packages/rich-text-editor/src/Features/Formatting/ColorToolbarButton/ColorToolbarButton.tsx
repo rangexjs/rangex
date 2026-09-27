@@ -132,7 +132,7 @@ export const ColorToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="Palette" class="size-4" />
+				<Icon name="Palette" title="Text color" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}

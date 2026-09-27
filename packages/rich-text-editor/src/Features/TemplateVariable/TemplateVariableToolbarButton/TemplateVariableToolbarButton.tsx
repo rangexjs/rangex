@@ -113,7 +113,11 @@ export const TemplateVariableToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="TemplateVariable" class="size-4" />
+				<Icon
+					name="TemplateVariable"
+					title="Template variable"
+					class="size-4"
+				/>
 			</ToolbarButton>
 
 			<ToolbarDropdown

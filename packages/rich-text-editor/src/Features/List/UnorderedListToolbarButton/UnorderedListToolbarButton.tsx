@@ -43,7 +43,7 @@ export const UnorderedListToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="ListBullets" class="size-4" />
+				<Icon name="ListBullets" title="Bulleted list" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

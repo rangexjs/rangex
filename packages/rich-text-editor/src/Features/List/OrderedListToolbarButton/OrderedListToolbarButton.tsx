@@ -43,7 +43,7 @@ export const OrderedListToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="ListNumbers" class="size-4" />
+				<Icon name="ListNumbers" title="Numbered list" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

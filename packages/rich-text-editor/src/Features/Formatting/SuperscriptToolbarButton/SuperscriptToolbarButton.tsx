@@ -31,7 +31,7 @@ export const SuperscriptToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$superscript.pressed()}
 			>
-				<Icon name="Superscript" class="size-4" />
+				<Icon name="Superscript" title="Superscript" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

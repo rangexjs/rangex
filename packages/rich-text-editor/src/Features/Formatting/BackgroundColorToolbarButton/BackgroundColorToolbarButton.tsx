@@ -132,7 +132,7 @@ export const BackgroundColorToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="PaintBucket" class="size-4" />
+				<Icon name="PaintBucket" title="Background color" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}

@@ -33,7 +33,7 @@ const NoSupportedMediaTypes = () => (
 const TabLabel = (icon: IconName, label: string) => (
 	<span class="inline-flex items-center gap-1">
 		<Icon name={icon} class="size-4" />
-		<span class="hidden md:inline">{label}</span>
+		<span class="sr-only md:not-sr-only">{label}</span>
 	</span>
 );
 

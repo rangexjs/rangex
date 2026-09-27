@@ -37,7 +37,7 @@ export const CheckboxListToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="ListChecks" class="size-4" />
+				<Icon name="ListChecks" title="Checklist" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

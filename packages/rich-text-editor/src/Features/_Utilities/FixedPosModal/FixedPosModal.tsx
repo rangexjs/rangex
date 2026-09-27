@@ -28,7 +28,7 @@ export const FixedPosModal = (props: FixedPosModalProps) => {
 					command="close"
 					class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
 				>
-					<Icon name="X" class="size-3" />
+					<Icon name="X" title="Close" class="size-3" />
 				</button>
 			</div>
 			<div class="mb-2 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />

@@ -37,7 +37,7 @@ const ActionTrigger = (props: ActionTriggerProps) => {
 					command="toggle-popover"
 					class="mr-1 self-center"
 				>
-					<Icon name="Info" class="size-3 text-blue-500" />
+					<Icon name="Info" title="More info" class="size-3 text-blue-500" />
 				</button>
 				<div
 					id={popoverId}
@@ -169,6 +169,7 @@ export const TableContextMenu = () => {
 					>
 						<Icon
 							name="Gear"
+							title="Table options"
 							class="inline-block size-3 opacity-0 transition-opacity group-hover:opacity-100 [div:has(+_[popover]:popover-open)_&]:opacity-100"
 						/>
 					</button>

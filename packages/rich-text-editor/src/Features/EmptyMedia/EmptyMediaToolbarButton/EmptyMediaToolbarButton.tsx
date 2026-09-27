@@ -26,7 +26,7 @@ export const EmptyMediaToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton disabled={disabled()} onClick={onClick}>
-				<Icon name="FileArrowUp" class="size-4" />
+				<Icon name="FileArrowUp" title="Insert media" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

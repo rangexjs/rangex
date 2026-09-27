@@ -105,7 +105,7 @@ export const IndentationToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="Indentation" class="size-4" />
+				<Icon name="Indentation" title="Indentation" class="size-4" />
 			</ToolbarButton>
 			<ToolbarDropdown
 				id={popoverId}

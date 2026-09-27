@@ -48,7 +48,7 @@ export const CodeBlockToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="CodeBlock" class="size-4" />
+				<Icon name="CodeBlock" title="Code block" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

@@ -29,7 +29,7 @@ export const CodeToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$code.pressed()}
 			>
-				<Icon name="Code" class="size-4" />
+				<Icon name="Code" title="Inline code" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

@@ -27,21 +27,21 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 					class="btn-neutral-solid rounded-sm p-1"
 					onClick={props.onEdit}
 				>
-					<Icon name="NotePencil" class="size-4" />
+					<Icon name="NotePencil" title="Edit link" class="size-4" />
 				</button>
 				<button
 					type="button"
 					class="btn-neutral-solid rounded-sm p-1"
 					onClick={props.onCopy}
 				>
-					<Icon name="CopySimple" class="size-4" />
+					<Icon name="CopySimple" title="Copy link" class="size-4" />
 				</button>
 				<button
 					type="button"
 					class="btn-neutral-solid rounded-sm p-1"
 					onClick={props.onUnwrap}
 				>
-					<Icon name="Export" class="size-4" />
+					<Icon name="Trash" title="Remove link" class="size-4" />
 				</button>
 			</div>
 		</div>

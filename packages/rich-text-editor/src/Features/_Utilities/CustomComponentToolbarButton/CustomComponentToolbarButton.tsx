@@ -84,7 +84,7 @@ export const CustomComponentToolbarButton = () => {
 				command="toggle-popover"
 				hasChevron={true}
 			>
-				<Icon name="SquaresFour" class="size-4" />
+				<Icon name="SquaresFour" title="Insert component" class="size-4" />
 			</ToolbarButton>
 
 			<ToolbarDropdown

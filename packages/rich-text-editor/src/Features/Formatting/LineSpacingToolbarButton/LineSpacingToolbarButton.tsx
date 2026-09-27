@@ -96,7 +96,11 @@ export const LineSpacingToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="ArrowsOutLineVertical" class="size-4" />
+				<Icon
+					name="ArrowsOutLineVertical"
+					title="Line spacing"
+					class="size-4"
+				/>
 			</ToolbarButton>
 			<ToolbarDropdown
 				id={popoverId}

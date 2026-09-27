@@ -37,7 +37,7 @@ export const BlockQuoteToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="BlockQuote" class="size-4" />
+				<Icon name="BlockQuote" title="Block quote" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

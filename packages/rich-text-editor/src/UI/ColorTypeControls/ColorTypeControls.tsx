@@ -446,7 +446,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 				class="btn-neutral-solid rounded-sm px-1.5"
 				onClick={() => copyColorToClipboard()}
 			>
-				<Icon name="CopySimple" class="size-4" />
+				<Icon name="CopySimple" title="Copy color" class="size-4" />
 			</button>
 		</div>
 	);

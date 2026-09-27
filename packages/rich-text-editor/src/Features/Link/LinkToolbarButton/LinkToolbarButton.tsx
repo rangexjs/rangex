@@ -56,7 +56,7 @@ export const LinkToolbarButton = () => {
 				disabled={disabled()}
 				onClick={onClick}
 			>
-				<Icon name="SimpleLink" class="size-4" />
+				<Icon name="SimpleLink" title="Link" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

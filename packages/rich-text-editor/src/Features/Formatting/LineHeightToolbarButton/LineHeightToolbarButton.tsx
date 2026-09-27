@@ -100,7 +100,7 @@ export const LineHeightToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="LineHeight" class="size-4" />
+				<Icon name="LineHeight" title="Line height" class="size-4" />
 			</ToolbarButton>
 			<ToolbarDropdown
 				id={popoverId}
