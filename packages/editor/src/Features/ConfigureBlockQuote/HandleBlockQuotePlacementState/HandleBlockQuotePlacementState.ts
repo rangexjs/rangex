@@ -3,13 +3,12 @@ import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleBlockQuotePlacementStateParams } from "./HandleBlockQuotePlacementState-types";
 
 /*
- * Keeps the block quote toolbar button's insert/wrap availability and active state in sync with the current selection and the editor
+ * Keeps the block quote toolbar button's insert/wrap availability in sync with the current selection and the editor
  * content. Returns a cleanup function.
  */
 export const handleBlockQuotePlacementState = ({
 	configPort,
 	editorAPI,
-	componentLookup,
 	blockComponentPlacement,
 }: HandleBlockQuotePlacementStateParams) => {
 	return handleComponentPlacementState({
@@ -24,12 +23,7 @@ export const handleBlockQuotePlacementState = ({
 				allowedComponents: [componentsName.blockQuote],
 			});
 
-			const closestComponent = componentLookup.closestBySelection({
-				components: [componentsName.blockQuote],
-			});
-			const isActive = closestComponent !== null;
-
-			configPort.updateState({ canInsert, canWrap, isActive });
+			configPort.updateState({ canInsert, canWrap });
 		},
 	});
 };

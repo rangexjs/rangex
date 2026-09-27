@@ -1,8 +1,4 @@
-import {
-	componentsName,
-	createBlockComponentPlacement,
-	createComponentLookup,
-} from "#engine-links";
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
 	handleComponentUnwrap,
 	handleQuickActionsAppearance,
@@ -24,7 +20,6 @@ export const configureCodeBlock = ({
 	configPort,
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -43,7 +38,6 @@ export const configureCodeBlock = ({
 	const placementStateCleanup = handleCodeBlockPlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 

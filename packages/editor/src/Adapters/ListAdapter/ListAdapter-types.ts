@@ -10,12 +10,10 @@ import type {
 export interface ListState {
 	canInsert?: boolean;
 	canWrap?: boolean;
-	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export interface ListPlacementOption {
 	localName: ListLocalName;
@@ -50,11 +48,9 @@ export interface WrapParams extends ListPlacementOption {}
 export interface ListPublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
-	readonly isActive: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
 	wrap(params: WrapParams): void;
@@ -68,7 +64,6 @@ export interface ListPublicPort
 export interface ListInternals {
 	canInsert: boolean;
 	canWrap: boolean;
-	isActive: boolean;
 }
 
 export interface ListAdapter {

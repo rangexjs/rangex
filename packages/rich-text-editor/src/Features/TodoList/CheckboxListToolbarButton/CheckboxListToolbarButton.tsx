@@ -17,11 +17,12 @@ export const CheckboxListToolbarButton = () => {
 
 	const disabled = createMemo(
 		() =>
-			!($todoList.isActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
+			!($todoList.isSelectionActive() || $todoList.canWrap()) ||
+			!!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		if ($todoList.isActive()) {
+		if ($todoList.isSelectionActive()) {
 			todoList.unwrap();
 			return;
 		}
@@ -32,7 +33,7 @@ export const CheckboxListToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$todoList.isActive()}
+				checked={$todoList.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
 			>

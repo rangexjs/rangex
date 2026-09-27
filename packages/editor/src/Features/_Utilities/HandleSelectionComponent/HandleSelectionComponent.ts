@@ -1,10 +1,10 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
 import { createComponentLookup } from "#engine-links";
+import { handleComponentPlacementState } from "../HandleComponentPlacementState";
 import type { HandleSelectionComponentParams } from "./HandleSelectionComponent-types";
 
 /*
  * Tracks the block or inline component containing the whole selection as the port's selection component,
- * keeping it in sync on every selection change. Returns a cleanup function.
+ * keeping it in sync on every selection change and structural change. Returns a cleanup function.
  */
 export const handleSelectionComponent = ({
 	port,
@@ -13,9 +13,9 @@ export const handleSelectionComponent = ({
 }: HandleSelectionComponentParams) => {
 	const componentLookup = createComponentLookup({ editorAPI });
 
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
+	return handleComponentPlacementState({
+		editorAPI,
+		updateState: () => {
 			const selectionComponent = componentLookup.closestBySelection({
 				components: [componentName],
 			});
@@ -23,8 +23,4 @@ export const handleSelectionComponent = ({
 			port.updateCurrentComponent({ selectionComponent });
 		},
 	});
-
-	return () => {
-		unsubscribe();
-	};
 };

@@ -1,8 +1,4 @@
-import {
-	componentsName,
-	createBlockComponentPlacement,
-	createComponentLookup,
-} from "#engine-links";
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
 import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
@@ -18,7 +14,6 @@ export const configureAccordionItem = ({
 	configPort,
 	editorAPI,
 }: ConfigureAccordionItemParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -33,7 +28,6 @@ export const configureAccordionItem = ({
 	const placementStateCleanup = handleAccordionItemPlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 

@@ -22,7 +22,6 @@ import type {
 	OnContextMenuToggleCallbackFn,
 	OnInsertCallbackFn,
 	OnInsertDeleteUpdateCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnMergeSplitUpdateCallbackFn,
 	OnSectionTypeUpdateCallbackFn,
 	OnVerticalAlignmentUpdateCallbackFn,
@@ -47,7 +46,6 @@ export const createTableAdapter = (
 	const internals: TableInternals = {
 		// States
 		canInsert: false,
-		isActive: false,
 		sectionType: {
 			header: { disabled: true },
 			body: { disabled: true },
@@ -91,7 +89,6 @@ export const createTableAdapter = (
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 	const sectionTypeUpdateEmitter =
 		createEmitter<OnSectionTypeUpdateCallbackFn>();
 	const mergeSplitUpdateEmitter = createEmitter<OnMergeSplitUpdateCallbackFn>();
@@ -126,7 +123,6 @@ export const createTableAdapter = (
 
 	const updateState = ({
 		canInsert,
-		isActive,
 		contextMenuOpen,
 		sectionType,
 		mergeSplit,
@@ -140,12 +136,6 @@ export const createTableAdapter = (
 			internals.canInsert = canInsert;
 
 			canInsertUpdateEmitter.emit(internals.canInsert);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 
 		if (sectionType !== undefined) {
@@ -259,10 +249,6 @@ export const createTableAdapter = (
 				return internals.canInsert;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			get contextMenuOpen() {
 				return internals.contextMenuOpen;
 			},
@@ -297,10 +283,6 @@ export const createTableAdapter = (
 
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onContextMenuToggle(callback) {

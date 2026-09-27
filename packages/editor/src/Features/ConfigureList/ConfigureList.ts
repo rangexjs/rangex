@@ -1,8 +1,4 @@
-import {
-	componentsName,
-	createBlockComponentPlacement,
-	createComponentLookup,
-} from "#engine-links";
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
@@ -16,7 +12,6 @@ export const configureList = ({
 	configPort,
 	editorAPI,
 }: ConfigureListParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -31,7 +26,6 @@ export const configureList = ({
 	const placementStateCleanup = handleListPlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 

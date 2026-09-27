@@ -3,13 +3,12 @@ import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleTodoListPlacementStateParams } from "./HandleTodoListPlacementState-types";
 
 /*
- * Keeps the todo list toolbar button's insert/wrap availability and active state in sync with the current selection and the editor
+ * Keeps the todo list toolbar button's insert/wrap availability in sync with the current selection and the editor
  * content. Returns a cleanup function.
  */
 export const handleTodoListPlacementState = ({
 	configPort,
 	editorAPI,
-	componentLookup,
 	blockComponentPlacement,
 }: HandleTodoListPlacementStateParams) => {
 	return handleComponentPlacementState({
@@ -24,12 +23,7 @@ export const handleTodoListPlacementState = ({
 				allowedComponents: [componentsName.todoList],
 			});
 
-			const closestComponent = componentLookup.closestBySelection({
-				components: [componentsName.todoList],
-			});
-			const isActive = closestComponent !== null;
-
-			configPort.updateState({ canInsert, canWrap, isActive });
+			configPort.updateState({ canInsert, canWrap });
 		},
 	});
 };

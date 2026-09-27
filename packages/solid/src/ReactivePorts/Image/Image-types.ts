@@ -6,4 +6,5 @@ export interface ReactiveImagePort {
 	captionPosition: Accessor<CaptionPosition>;
 	align: Accessor<BlockAlignValue>;
 	currentComponent: Accessor<HTMLElement | null>;
+	isSelectionActive: Accessor<boolean>;
 }

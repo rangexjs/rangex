@@ -3,13 +3,12 @@ import { handleComponentPlacementState } from "../../_Utilities";
 import type { HandleCodeBlockPlacementStateParams } from "./HandleCodeBlockPlacementState-types";
 
 /*
- * Keeps the code block toolbar button's insert/wrap availability and active state in sync with
+ * Keeps the code block toolbar button's insert/wrap availability in sync with
  * the current selection and the editor content. Returns a cleanup function.
  */
 export const handleCodeBlockPlacementState = ({
 	configPort,
 	editorAPI,
-	componentLookup,
 	blockComponentPlacement,
 }: HandleCodeBlockPlacementStateParams) => {
 	return handleComponentPlacementState({
@@ -24,12 +23,7 @@ export const handleCodeBlockPlacementState = ({
 				allowedComponents: [componentsName.codeBlock],
 			});
 
-			const codeBlockComponent = componentLookup.closestBySelection({
-				components: [componentsName.codeBlock],
-			});
-			const isActive = codeBlockComponent !== null;
-
-			configPort.updateState({ canInsert, canWrap, isActive });
+			configPort.updateState({ canInsert, canWrap });
 		},
 	});
 };

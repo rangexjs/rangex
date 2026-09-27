@@ -19,7 +19,6 @@ import type {
 	ModifyParams,
 	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
 	OnLinkSelectionInCallbackFn,
@@ -43,14 +42,12 @@ export const createLinkAdapter = (
 	const internals: LinkInternals = {
 		// States
 		canInsert: false,
-		isActive: false,
 		// Providers
 		displayTextProvider: null,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -63,17 +60,11 @@ export const createLinkAdapter = (
 	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
 	const selectionMenuPort = createSelectionMenuPort({ floatingContainer });
 
-	const updateState = ({ canInsert, isActive }: UpdateStateParams) => {
+	const updateState = ({ canInsert }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
 			canInsertUpdateEmitter.emit(internals.canInsert);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 	};
 
@@ -135,10 +126,6 @@ export const createLinkAdapter = (
 				return internals.canInsert;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			get linkMenuOpen() {
 				return linkMenuEl.matches(":popover-open");
 			},
@@ -149,10 +136,6 @@ export const createLinkAdapter = (
 
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onLinkClick(callback) {

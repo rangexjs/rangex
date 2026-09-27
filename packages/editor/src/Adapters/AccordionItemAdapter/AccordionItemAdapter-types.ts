@@ -12,12 +12,10 @@ import type {
 export interface AccordionItemState {
 	canInsert?: boolean;
 	canWrap?: boolean;
-	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
@@ -40,11 +38,9 @@ export interface AccordionItemConfigPort
 export interface AccordionItemPublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
-	readonly isActive: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 
 	insert(): void;
 	wrap(): void;
@@ -59,7 +55,6 @@ export interface AccordionItemPublicPort
 export interface AccordionItemInternals {
 	canInsert: boolean;
 	canWrap: boolean;
-	isActive: boolean;
 }
 
 export interface AccordionItemAdapter {

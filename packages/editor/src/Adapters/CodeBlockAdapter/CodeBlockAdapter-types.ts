@@ -44,14 +44,12 @@ export type GetHighlightInfoFn = (
 export interface CodeBlockState {
 	canInsert?: boolean;
 	canWrap?: boolean;
-	isActive?: boolean;
 	language?: string | null;
 	theme?: CodeBlockTheme | null;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 export type OnLanguageUpdateCallbackFn = (value: string | null) => void;
 export type OnThemeUpdateCallbackFn = (value: CodeBlockTheme | null) => void;
 
@@ -104,13 +102,11 @@ export interface CodeBlockPublicPortProps {
 	readonly canHighlight: boolean;
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
-	readonly isActive: boolean;
 	readonly language: string | null;
 	readonly theme: CodeBlockTheme | null;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 	onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
 	onThemeUpdate(callback: OnThemeUpdateCallbackFn): () => void;
 
@@ -132,7 +128,6 @@ export interface CodeBlockInternals {
 	getHighlightInfo: GetHighlightInfoFn | null;
 	canInsert: boolean;
 	canWrap: boolean;
-	isActive: boolean;
 	language: string | null;
 	theme: CodeBlockTheme | null;
 	plainTextProvider: PlainTextProviderFn | null;

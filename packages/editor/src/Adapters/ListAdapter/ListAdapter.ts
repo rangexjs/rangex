@@ -16,7 +16,6 @@ import type {
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./ListAdapter-types";
@@ -32,13 +31,11 @@ export const createListAdapter = (
 		// States
 		canInsert: false,
 		canWrap: false,
-		isActive: false,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -47,7 +44,7 @@ export const createListAdapter = (
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
-	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
+	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -58,12 +55,6 @@ export const createListAdapter = (
 			internals.canWrap = canWrap;
 
 			canWrapUpdateEmitter.emit(internals.canWrap);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 	};
 
@@ -97,20 +88,12 @@ export const createListAdapter = (
 				return internals.canWrap;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
 				return canWrapUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params) {

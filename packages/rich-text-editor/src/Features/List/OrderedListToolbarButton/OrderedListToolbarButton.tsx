@@ -16,11 +16,12 @@ export const OrderedListToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !($list.isActive() || $list.canWrap()) || !!$readOnly?.checked(),
+		() =>
+			!($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		if ($list.isActive()) {
+		if ($list.isSelectionActive()) {
 			list.unwrap();
 			return;
 		}
@@ -31,7 +32,7 @@ export const OrderedListToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$list.isActive()}
+				checked={$list.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
 			>

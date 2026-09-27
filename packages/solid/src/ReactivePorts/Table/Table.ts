@@ -11,7 +11,6 @@ export const Table = <T extends TablePublicPort | undefined>(
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
-	const [isActive, setIsActive] = createSignal(publicPort.isActive);
 	const [sectionType, setSectionType] = createSignal(publicPort.sectionType);
 	const [mergeSplit, setMergeSplit] = createSignal(publicPort.mergeSplit);
 	const [insertDelete, setInsertDelete] = createSignal(publicPort.insertDelete);
@@ -26,9 +25,11 @@ export const Table = <T extends TablePublicPort | undefined>(
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(
+		publicPort.isSelectionActive,
+	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
-	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
 	onCleanup(publicPort.onSectionTypeUpdate(setSectionType));
 	onCleanup(publicPort.onMergeSplitUpdate(setMergeSplit));
 	onCleanup(publicPort.onInsertDeleteUpdate(setInsertDelete));
@@ -37,10 +38,10 @@ export const Table = <T extends TablePublicPort | undefined>(
 	onCleanup(publicPort.onCellResizingUpdate(setCellResizing));
 	onCleanup(publicPort.onClearContentsUpdate(setClearContents));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveTablePort = {
 		canInsert,
-		isActive,
 		sectionType,
 		mergeSplit,
 		insertDelete,
@@ -49,6 +50,7 @@ export const Table = <T extends TablePublicPort | undefined>(
 		cellResizing,
 		clearContents,
 		currentComponent,
+		isSelectionActive,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTablePort>;

@@ -6,13 +6,15 @@ import type {
 	CurrentComponentInternals,
 	CurrentComponentPublicPort,
 	OnConfigCurrentComponentUpdateCallbackFn,
+	OnIsSelectionActiveUpdateCallbackFn,
 	UpdateStateParams,
 } from "./CurrentComponentPort-types";
 
 /*
  * Tracks the hovered and the selection-containing component separately and exposes a single
  * resolved current component: the hovered one when present, otherwise the selection one, skipping
- * any that is detached from the document. Emits only when the resolved component changes.
+ * any that is detached from the document. Also exposes whether the selection is inside a component.
+ * Each state emits only when it changes.
  */
 export const createCurrentComponentPort = <
 	TComponent extends Component,
@@ -36,15 +38,21 @@ export const createCurrentComponentPort = <
 		return null;
 	};
 
+	const resolveIsSelectionActive = () =>
+		!!internals.selectionComponent?.$$rootEditable;
+
 	// StateListeners
 	const currentComponentUpdateEmitter =
 		createEmitter<OnConfigCurrentComponentUpdateCallbackFn<TComponent>>();
+	const isSelectionActiveUpdateEmitter =
+		createEmitter<OnIsSelectionActiveUpdateCallbackFn>();
 
 	const updateState = ({
 		hoverComponent,
 		selectionComponent,
 	}: UpdateStateParams<TComponent>) => {
 		const previousComponent = resolveCurrentComponent();
+		const previousIsSelectionActive = resolveIsSelectionActive();
 
 		if (hoverComponent !== undefined) {
 			internals.hoverComponent = hoverComponent;
@@ -58,6 +66,12 @@ export const createCurrentComponentPort = <
 
 		if (currentComponent !== previousComponent) {
 			currentComponentUpdateEmitter.emit(currentComponent);
+		}
+
+		const isSelectionActive = resolveIsSelectionActive();
+
+		if (isSelectionActive !== previousIsSelectionActive) {
+			isSelectionActiveUpdateEmitter.emit(isSelectionActive);
 		}
 	};
 
@@ -80,8 +94,16 @@ export const createCurrentComponentPort = <
 			return resolveCurrentComponent();
 		},
 
+		get isSelectionActive() {
+			return resolveIsSelectionActive();
+		},
+
 		onCurrentComponentUpdate(callback) {
 			return currentComponentUpdateEmitter.subscribe(callback);
+		},
+
+		onIsSelectionActiveUpdate(callback) {
+			return isSelectionActiveUpdateEmitter.subscribe(callback);
 		},
 	};
 

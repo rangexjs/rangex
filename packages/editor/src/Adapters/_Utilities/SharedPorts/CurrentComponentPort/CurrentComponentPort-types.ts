@@ -14,6 +14,10 @@ export type OnCurrentComponentUpdateCallbackFn = (
 	currentComponent: HTMLElement | null,
 ) => void;
 
+export type OnIsSelectionActiveUpdateCallbackFn = (
+	isSelectionActive: boolean,
+) => void;
+
 export type OnConfigCurrentComponentUpdateCallbackFn<
 	TComponent extends Component,
 > = (currentComponent: TComponent | null) => void;
@@ -30,9 +34,14 @@ export interface CurrentComponentConfigPort<TComponent extends Component> {
 
 export interface CurrentComponentPublicPort {
 	readonly currentComponent: HTMLElement | null;
+	readonly isSelectionActive: boolean;
 
 	onCurrentComponentUpdate(
 		callback: OnCurrentComponentUpdateCallbackFn,
+	): () => void;
+
+	onIsSelectionActiveUpdate(
+		callback: OnIsSelectionActiveUpdateCallbackFn,
 	): () => void;
 }
 

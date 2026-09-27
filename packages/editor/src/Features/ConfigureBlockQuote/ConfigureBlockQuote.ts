@@ -1,9 +1,5 @@
-import {
-	componentsName,
-	createBlockComponentPlacement,
-	createComponentLookup,
-} from "#engine-links";
-import { handleComponentUnwrap } from "../_Utilities";
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureBlockQuoteParams } from "./ConfigureBlockQuote-types";
 import { handleBlockQuotePlacement } from "./HandleBlockQuotePlacement";
 import { handleBlockQuotePlacementState } from "./HandleBlockQuotePlacementState";
@@ -16,26 +12,27 @@ export const configureBlockQuote = ({
 	configPort,
 	editorAPI,
 }: ConfigureBlockQuoteParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.blockQuote,
+	});
+
 	const placementStateCleanup = handleBlockQuotePlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBySelection({
-				components: [componentsName.blockQuote],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const placementCleanup = handleBlockQuotePlacement({
@@ -45,6 +42,7 @@ export const configureBlockQuote = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		placementCleanup();

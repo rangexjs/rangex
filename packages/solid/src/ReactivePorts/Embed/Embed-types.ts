@@ -6,4 +6,5 @@ export interface ReactiveEmbedPort {
 	captionPosition: Accessor<CaptionPosition>;
 	align: Accessor<BlockAlignValue>;
 	currentComponent: Accessor<HTMLElement | null>;
+	isSelectionActive: Accessor<boolean>;
 }

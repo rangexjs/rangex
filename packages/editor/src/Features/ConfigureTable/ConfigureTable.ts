@@ -2,7 +2,6 @@ import {
 	componentsName,
 	createAnchoredOverlayController,
 	createBlockComponentPlacement,
-	createComponentLookup,
 } from "#engine-links";
 import { addERClass } from "#utilities";
 import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
@@ -22,7 +21,6 @@ export const configureTable = ({
 	configPort,
 	editorAPI,
 }: ConfigureTableParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -48,7 +46,6 @@ export const configureTable = ({
 	const placementStateCleanup = handleTablePlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 

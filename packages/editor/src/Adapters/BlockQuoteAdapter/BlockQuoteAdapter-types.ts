@@ -1,5 +1,8 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
@@ -7,12 +10,10 @@ import type {
 export interface BlockQuoteState {
 	canInsert?: boolean;
 	canWrap?: boolean;
-	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
@@ -28,16 +29,15 @@ export interface BlockQuoteConfigPortProps {
 
 export interface BlockQuoteConfigPort
 	extends BlockQuoteConfigPortProps,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface BlockQuotePublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
-	readonly isActive: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 
 	insert(): void;
 	wrap(): void;
@@ -45,12 +45,12 @@ export interface BlockQuotePublicPortProps {
 
 export interface BlockQuotePublicPort
 	extends BlockQuotePublicPortProps,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface BlockQuoteInternals {
 	canInsert: boolean;
 	canWrap: boolean;
-	isActive: boolean;
 }
 
 export interface BlockQuoteAdapter {

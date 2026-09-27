@@ -17,7 +17,6 @@ import type {
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./AccordionItemAdapter-types";
@@ -33,13 +32,11 @@ export const createAccordionItemAdapter = (
 		// States
 		canInsert: false,
 		canWrap: false,
-		isActive: false,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -49,7 +46,7 @@ export const createAccordionItemAdapter = (
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
-	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
+	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -60,12 +57,6 @@ export const createAccordionItemAdapter = (
 			internals.canWrap = canWrap;
 
 			canWrapUpdateEmitter.emit(internals.canWrap);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 	};
 
@@ -101,20 +92,12 @@ export const createAccordionItemAdapter = (
 				return internals.canWrap;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
 				return canWrapUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			insert() {

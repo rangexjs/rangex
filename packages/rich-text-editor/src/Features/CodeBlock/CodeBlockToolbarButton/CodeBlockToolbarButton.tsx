@@ -26,12 +26,12 @@ export const CodeBlockToolbarButton = () => {
 
 	const disabled = createMemo(
 		() =>
-			!($codeBlock.isActive() || $codeBlock.canWrap()) ||
+			!($codeBlock.isSelectionActive() || $codeBlock.canWrap()) ||
 			!!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		if ($codeBlock.isActive()) {
+		if ($codeBlock.isSelectionActive()) {
 			codeBlock.unwrap();
 			return;
 		}
@@ -44,7 +44,7 @@ export const CodeBlockToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$codeBlock.isActive()}
+				checked={$codeBlock.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
 			>
