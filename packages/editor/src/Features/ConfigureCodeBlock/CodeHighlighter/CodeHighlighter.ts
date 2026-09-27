@@ -3,7 +3,6 @@ import {
 	blockComponentName,
 	contentLineName,
 	contentLineRoleSelector,
-	inlineComponentAttrName,
 	isContentLineText,
 	isEditorNode,
 	listName,
@@ -13,6 +12,7 @@ import {
 import {
 	codeBlockStorageFallbacks,
 	componentsName,
+	createComponentSelector,
 	ensureNodeCodeBlockStorage,
 	getClosestBlockComponent,
 } from "#engine-links";
@@ -34,8 +34,7 @@ import type {
 } from "./CodeHighlighter-types";
 import { CSSHighlightManager } from "./CSSHighlightManager";
 
-const codeBlockSelector =
-	`[${inlineComponentAttrName.dataComponentName}="${componentsName.codeBlock}"]` as const;
+const codeBlockSelector = createComponentSelector(componentsName.codeBlock);
 
 /**
  * Tracks CodeBlocks added to {@link rootEditable}, calling {@link onCodeChange}

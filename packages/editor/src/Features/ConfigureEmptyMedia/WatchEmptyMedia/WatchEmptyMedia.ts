@@ -1,12 +1,12 @@
 import {
 	type BlockComponent,
-	blockComponentAttrName,
 	blockComponentName,
 	detachedContextName,
 	isEditorNode,
 } from "rich-text-area";
 import {
 	componentsName,
+	createComponentSelector,
 	getClosestBlockComponent,
 	isWellFormedUrl,
 	probeMediaSrc,
@@ -20,8 +20,7 @@ import type {
 	WatchEmptyMediaResult,
 } from "./WatchEmptyMedia-types";
 
-const emptyMediaSelector =
-	`[${blockComponentAttrName.dataComponentName}="${componentsName.emptyMedia}"]` as const;
+const emptyMediaSelector = createComponentSelector(componentsName.emptyMedia);
 
 const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 	const detachedContext = blockComponent.$$firstChild;
