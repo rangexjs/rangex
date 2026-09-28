@@ -83,6 +83,18 @@ Any change to the editor — including every keystroke — discards all snapshot
 
 ---
 
+## Resetting the timeline — `reset`
+
+`reset()` discards every snapshot and synchronously creates a snapshot from the current state, which becomes the only one in the timeline.
+
+```ts
+timeline.reset();
+```
+
+**Note:** It is recommended to call `editorAPI.flushEditorEvents()` before `reset()`, so pending event listeners (e.g. `"snapshot-before-add"`) run before the snapshot is created.
+
+---
+
 ## Memory limits — `maxSnapshotCount` and `snapshotPruneInterval`
 
 The timeline caps memory usage using two configurable properties:

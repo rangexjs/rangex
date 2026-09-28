@@ -14,7 +14,7 @@ Authoritative reference for the RangeX rich text editor engine. Read the relevan
 | 8 | [08-Selection.md](08-Selection.md) | `LiveBoundaryPoints`, how native browser selection syncs with it, `EditorSelection`, and `EditorRange` |
 | 9 | [09-Snapshots.md](09-Snapshots.md) | `StoredSnapshot`, migrating persisted snapshots (`migrateStoredSnapshot`), `EditorSnapshot`, `SnapshotView`, `SnapshotManager` (converting a snapshot to an editable `Draft` and back, off-DOM), and the full `EditorNodeSnapshot` structural validation spec |
 | 10 | [10-Events.md](10-Events.md) | Editor events (`subscribeEditorEvent`, all 9 event types, microtask batching), DOM events (`registerDOMEvent`), and event interception (`registerEventInterceptor`) |
-| 11 | [11-SnapshotTimeline.md](11-SnapshotTimeline.md) | The undo/redo system — reading and navigating timeline state, `registerSnapshotBoundary`, session merging, redo branching, memory limits |
+| 11 | [11-SnapshotTimeline.md](11-SnapshotTimeline.md) | The undo/redo system — reading and navigating timeline state, `registerSnapshotBoundary`, session merging, redo branching, `reset`, memory limits |
 | 12 | [12-FindReplace.md](12-FindReplace.md) | Find-and-replace: enabling, criteria, scope, navigating matches, replace/replaceAll, listeners |
 | 13 | [13-SelectionFormatting.md](13-SelectionFormatting.md) | `updateSelectionStyles`, `StructuredStyleValue`, the `selectionStylesChange` payload shape, and `updateGlyphFormatterInlineTagsOrder` |
 | 14 | [14-EditorAPI.md](14-EditorAPI.md) | The full `editorAPI` runtime surface: focus/selection sync, custom styles, external drag, content mutations, plain text reading, wrapping components, replacing a component, creating a persistence snapshot |
