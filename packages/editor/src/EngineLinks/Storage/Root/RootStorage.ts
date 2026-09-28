@@ -9,13 +9,6 @@ import type {
 	RootStorage,
 } from "./RootStorage-types";
 
-export const templateVariableKeys = [
-	"firstName",
-	"lastName",
-	"email",
-	"date",
-] as const;
-
 export const isRootStorage = (storage: unknown): storage is RootStorage => {
 	return isStorage(storage, { id: rootId });
 };
@@ -29,12 +22,7 @@ export const validateRootStorage = (
 export const createRootStorage = (): CreateRootStorageResult => ({
 	id: rootId,
 	version: storageVersion,
-	templateVariable: {
-		firstName: null,
-		lastName: null,
-		email: null,
-		date: null,
-	},
+	templateVariable: {},
 });
 
 export const ensureRootStorage = ({

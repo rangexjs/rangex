@@ -1,6 +1,6 @@
 import { TemplateVariable } from "@rangex/solid";
 import { createMemo } from "solid-js";
-import { useEditorContext } from "#context";
+import { useEditorContext, useUIOptionsContext } from "#context";
 import {
 	type CaretItemFn,
 	CaretMenu,
@@ -9,19 +9,33 @@ import {
 
 export const TemplateVariableCaretMenu = () => {
 	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
 	const { templateVariable } = editor;
+	const options = uiOptions.templateVariable;
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");
 	}
 
+	if (!options) {
+		throw new Error("TemplateVariable UI options can't be undefined.");
+	}
+
 	const $templateVariable = TemplateVariable(templateVariable);
+
+	const getLabel = (fieldName: string) => {
+		const dropdownItem = options.dropdown.find(
+			(item) => item.fieldName === fieldName,
+		);
+
+		return dropdownItem?.label ?? fieldName;
+	};
 
 	const filteredItems = createMemo(() =>
 		filterCaretMenuItems({
 			items: templateVariable.items,
 			query: $templateVariable.caretMenu.query(),
-			getKeys: (item) => [item.label],
+			getKeys: (item) => [getLabel(item.fieldName)],
 		}),
 	);
 
@@ -36,7 +50,7 @@ export const TemplateVariableCaretMenu = () => {
 					]}
 					onClick={() => templateVariable.select(item)}
 				>
-					{item.label}
+					{getLabel(item.fieldName)}
 				</button>
 			);
 		});

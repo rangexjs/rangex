@@ -23,12 +23,12 @@ export const validateTemplateVariableStorage = (
 };
 
 export const createTemplateVariableStorage = ({
-	type,
+	fieldName,
 }: CreateTemplateVariableStorageParams): CreateTemplateVariableStorageResult => {
 	return {
 		id: templateVariableId,
 		version: storageVersion,
-		type,
+		fieldName,
 	};
 };
 

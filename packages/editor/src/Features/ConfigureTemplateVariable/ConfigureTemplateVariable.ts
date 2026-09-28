@@ -4,13 +4,14 @@ import {
 } from "../_Utilities";
 import { getTemplateVariableQuery } from "./_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
+import { handleTemplateVariableInitialization } from "./HandleTemplateVariableInitialization";
 import { handleTemplateVariableInsertion } from "./HandleTemplateVariableInsertion";
 import { handleTemplateVariablePlacementState } from "./HandleTemplateVariablePlacementState";
 import { handleTemplateVariableSelect } from "./HandleTemplateVariableSelect";
 import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
 
 /*
- * Wires up the template variable feature: toolbar button state, insertion, value updates,
+ * Wires up the template variable feature: initial values, toolbar button state, insertion, value updates,
  * caret-menu selection, unwrapping, and the caret menu's appearance while typing a {{query.
  * Returns a cleanup function.
  */
@@ -18,6 +19,8 @@ export const configureTemplateVariable = ({
 	configPort,
 	editorAPI,
 }: ConfigureTemplateVariableParams) => {
+	handleTemplateVariableInitialization({ configPort, editorAPI });
+
 	const placementStateCleanup = handleTemplateVariablePlacementState({
 		configPort,
 		editorAPI,

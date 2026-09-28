@@ -14,15 +14,15 @@ export const TemplateVariable = <
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
-	const [options, setOptions] = createSignal(publicPort.options);
+	const [fields, setFields] = createSignal(publicPort.fields);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
-	onCleanup(publicPort.onOptionsUpdate(setOptions));
+	onCleanup(publicPort.onFieldsUpdate(setFields));
 
 	const port: ReactiveTemplateVariablePort = {
 		caretMenu: CaretMenu(publicPort.caretMenu),
 		canInsert,
-		options,
+		fields,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTemplateVariablePort>;

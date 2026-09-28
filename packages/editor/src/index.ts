@@ -122,11 +122,13 @@ export type {
 	TableVerticalAlignmentState,
 } from "#adapters/Table";
 export type {
-	Options as TemplateVariableOptions,
-	SuggestionItem as TemplateVariableSuggestionItem,
-	SuggestionItems as TemplateVariableSuggestionItems,
-	TemplateVariableKind,
+	TemplateVariableFieldConfig,
+	TemplateVariableFields,
+	TemplateVariableFieldsConfig,
+	TemplateVariableItem,
+	TemplateVariableItems,
 	TemplateVariablePublicPort,
+	TemplateVariableSettings,
 } from "#adapters/TemplateVariable";
 export type { TodoListPublicPort } from "#adapters/TodoList";
 export type { UndoRedoPublicPort } from "#adapters/UndoRedo";

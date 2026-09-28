@@ -1,4 +1,8 @@
-import type { CodeBlockTheme } from "@rangex/editor";
+import type {
+	CodeBlockTheme,
+	TemplateVariableFields,
+	TemplateVariableFieldsConfig,
+} from "@rangex/editor";
 import { createContext } from "solid-js";
 
 // CodeBlock
@@ -41,9 +45,44 @@ export interface MentionUIOptions {
 	getItems: GetMentionItemsFn;
 }
 
+// TemplateVariable
+export interface TemplateVariableModalInput<FieldName extends string = string> {
+	label: string;
+	placeholder?: string;
+	patterns?: { value: RegExp; message?: string }[];
+	readFields(
+		fields: TemplateVariableFields<FieldName>,
+		fieldsConfig: TemplateVariableFieldsConfig<FieldName>,
+	): string;
+}
+
+export interface TemplateVariableModalSettings<
+	FieldName extends string = string,
+> {
+	title: string;
+	inputs: TemplateVariableModalInput<FieldName>[];
+	onUpdate(
+		inputValues: string[],
+		fieldsConfig: TemplateVariableFieldsConfig<FieldName>,
+	): Partial<TemplateVariableFields<FieldName>>;
+}
+
+export interface TemplateVariableDropdownItem<
+	FieldName extends string = string,
+> {
+	label: string;
+	fieldName: FieldName;
+	settings: TemplateVariableModalSettings<FieldName>;
+}
+
+export interface TemplateVariableUIOptions<FieldName extends string = string> {
+	dropdown: TemplateVariableDropdownItem<FieldName>[];
+}
+
 export interface UIOptions {
 	codeBlock?: CodeBlockUIOptions;
 	mention?: MentionUIOptions;
+	templateVariable?: TemplateVariableUIOptions;
 }
 
 export const UIOptionsContext = createContext<UIOptions>();

@@ -1,109 +1,56 @@
-import {
-	contentLineRole,
-	contentLineRoleSelector,
-	createContentLine,
-	createFormattableTexts,
-	inlineComponentRole,
-	inlineComponentRoleSelector,
-	nestedEditableRoleSelector,
-} from "rich-text-area";
-import {
-	componentsName,
-	ensureNodeRootStorage,
-	validateTemplateVariableStorage,
-} from "#engine-links";
-import {
-	resolveTemplateVariableDisplayText,
-	storageToOptions,
-} from "../_Utilities";
-import type {
-	HandleTemplateVariableUpdateParams,
-	UpdateAllTemplateVariableNodesParams,
-} from "./HandleTemplateVariableUpdate-types";
-
-const updateAllTemplateVariableNodes = ({
-	rootEditable,
-	storage,
-}: UpdateAllTemplateVariableNodesParams) => {
-	const nodes = rootEditable.$$querySelectorAll(inlineComponentRoleSelector);
-
-	for (const node of nodes) {
-		if (node.$$editorRole !== inlineComponentRole) {
-			throw new Error("Expected an InlineComponent node.");
-		}
-
-		if (node.$$name !== componentsName.templateVariable) {
-			continue;
-		}
-
-		const nodeStorage = node.$$customStorage;
-
-		if (!validateTemplateVariableStorage(nodeStorage)) {
-			continue;
-		}
-
-		const displayText = resolveTemplateVariableDisplayText({
-			type: nodeStorage.type,
-			storage,
-		});
-
-		const nestedEditable = node.$$querySelector(nestedEditableRoleSelector);
-
-		if (!nestedEditable) {
-			throw new Error(
-				"Expected a NestedEditable inside the template variable node.",
-			);
-		}
-
-		const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
-
-		if (contentLine?.$$editorRole !== contentLineRole) {
-			throw new Error("Expected a ContentLine inside the NestedEditable.");
-		}
-
-		contentLine.$$replaceWith(
-			createContentLine({
-				localName: "span",
-				childNodes: [...createFormattableTexts({ data: displayText })],
-			}),
-		);
-	}
-};
+import { ensureNodeRootStorage } from "#engine-links";
+import { updateAllTemplateVariableNodes } from "../_Utilities";
+import type { HandleTemplateVariableUpdateParams } from "./HandleTemplateVariableUpdate-types";
 
 /*
- * Subscribes to option updates, persists changed values into root storage, refreshes every
- * template variable node's display text to match, and registers a snapshot boundary. Returns
- * a cleanup function.
+ * Subscribes to value changes, persists them into root storage, refreshes every template variable node's display text
+ * to match, and registers a snapshot boundary. Empty values and values for undeclared fields are skipped with a warning;
+ * if nothing changed, nothing is updated. Returns a cleanup function.
  */
 export const handleTemplateVariableUpdate = ({
 	configPort,
 	editorAPI,
 }: HandleTemplateVariableUpdateParams) => {
-	const unsubscribe = configPort.onOptions((options) => {
+	const unsubscribe = configPort.onChangeFields((fields) => {
 		const { rootEditable } = editorAPI;
 
 		const rootStorage = ensureNodeRootStorage({ rootEditable });
 		const { templateVariable: storage } = rootStorage;
 
-		if (options.firstName !== undefined) {
-			storage.firstName = options.firstName;
+		let hasChanged = false;
+
+		for (const [name, value] of Object.entries(fields)) {
+			if (!Object.hasOwn(configPort.fieldsConfig, name)) {
+				console.warn(`Template variable field "${name}" is not declared.`);
+				continue;
+			}
+
+			if (value === "") {
+				console.warn(
+					`Template variable field "${name}": value can't be empty, use its placeholder instead.`,
+				);
+				continue;
+			}
+
+			if (storage[name] === value) {
+				continue;
+			}
+
+			storage[name] = value;
+			hasChanged = true;
 		}
 
-		if (options.lastName !== undefined) {
-			storage.lastName = options.lastName;
+		if (!hasChanged) {
+			return;
 		}
 
-		if (options.email !== undefined) {
-			storage.email = options.email;
-		}
+		configPort.updateState({ fields: { ...storage } });
 
-		if (options.date !== undefined) {
-			storage.date = options.date;
-		}
-
-		configPort.updateState({ options: storageToOptions({ storage }) });
-
-		updateAllTemplateVariableNodes({ rootEditable, storage });
+		updateAllTemplateVariableNodes({
+			rootEditable,
+			storage,
+			fieldsConfig: configPort.fieldsConfig,
+		});
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

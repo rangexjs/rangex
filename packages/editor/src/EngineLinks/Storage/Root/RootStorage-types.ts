@@ -1,19 +1,12 @@
 import type { RootEditable } from "rich-text-area";
+import type { TemplateVariableFields } from "#adapters/TemplateVariable";
 import type { RootId } from "../../Constants";
 import type { storageVersion } from "../_Utilities";
-import type { templateVariableKeys } from "./RootStorage";
-
-export type TemplateVariableKeys = (typeof templateVariableKeys)[number];
-
-export type TemplateVariableValues = Record<
-	TemplateVariableKeys,
-	string | null
->;
 
 export interface RootStorage {
 	id: RootId;
 	version: typeof storageVersion;
-	templateVariable: TemplateVariableValues;
+	templateVariable: TemplateVariableFields;
 }
 
 export interface CreateRootStorageResult extends RootStorage {}

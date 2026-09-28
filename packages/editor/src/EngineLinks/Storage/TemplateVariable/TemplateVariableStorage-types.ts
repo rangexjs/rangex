@@ -1,23 +1,22 @@
 import type { InlineComponent } from "rich-text-area";
-import type { TemplateVariableKind } from "#adapters/TemplateVariable";
 import type { TemplateVariableId } from "../../Constants";
 import type { storageVersion } from "../_Utilities";
 
 export interface TemplateVariableStorage {
 	id: TemplateVariableId;
 	version: typeof storageVersion;
-	type: TemplateVariableKind;
+	fieldName: string;
 }
 
 export interface CreateTemplateVariableStorageParams {
-	type: TemplateVariableKind;
+	fieldName: string;
 }
 
 export interface CreateTemplateVariableStorageResult
 	extends TemplateVariableStorage {}
 
 export interface TemplateVariableStorageFallbacks {
-	type: TemplateVariableKind;
+	fieldName: string;
 }
 
 export interface EnsureTemplateVariableStorageParams {

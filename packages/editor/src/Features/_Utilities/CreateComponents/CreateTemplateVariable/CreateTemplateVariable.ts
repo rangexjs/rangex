@@ -11,11 +11,11 @@ import type {
 } from "./CreateTemplateVariable-types";
 
 /*
- * Builds an inline template variable component of the given kind, displaying its text as
+ * Builds an inline template variable component for the given field, displaying its text as
  * editable, formattable content.
  */
 export const createTemplateVariable = ({
-	type,
+	fieldName,
 	displayText,
 }: CreateTemplateVariableParams): CreateTemplateVariableResult => {
 	return createInlineComponent({
@@ -23,7 +23,7 @@ export const createTemplateVariable = ({
 		content: { type: "custom" },
 		editState: "false",
 		shouldSelectOnNavigation: true,
-		customStorage: createTemplateVariableStorage({ type }),
+		customStorage: createTemplateVariableStorage({ fieldName }),
 		childNodes: [
 			createNestedEditable({
 				content: { type: "default" },

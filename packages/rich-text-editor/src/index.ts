@@ -4,6 +4,9 @@ export type {
 	GetMentionItemsParams,
 	MentionItem,
 	MentionItems,
+	TemplateVariableDropdownItem,
+	TemplateVariableModalInput,
+	TemplateVariableModalSettings,
 } from "./Context";
 export * from "./CreateRichTextEditor";
 export * from "./Extensions";

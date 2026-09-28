@@ -37,6 +37,7 @@ import {
 	codeBlockThemeDefinitions,
 } from "./SyntaxHighlighter/CodeBlockSyntaxHighlighting";
 import SyntaxHighlighterWorker from "./SyntaxHighlighter/SyntaxHighlighterWorker?worker";
+import { templateVariableSettings } from "./TemplateVariable/TemplateVariableSettings";
 
 /**
  * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of
@@ -159,7 +160,7 @@ export const createDevelopmentView = () => {
 		Shortcuts({}),
 		Symbols({}),
 		Table({}),
-		TemplateVariable({}),
+		TemplateVariable(templateVariableSettings),
 		TodoList({}),
 		UndoRedo({}),
 		Video({}),

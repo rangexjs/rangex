@@ -2,8 +2,8 @@ import { createContentLine } from "rich-text-area";
 import { ensureNodeRootStorage } from "#engine-links";
 import { createTemplateVariable } from "../../_Utilities";
 import {
+	getTemplateVariableDisplayText,
 	getTemplateVariableQuery,
-	resolveTemplateVariableDisplayText,
 } from "../_Utilities";
 import type {
 	HandleTemplateVariableSelectParams,
@@ -56,7 +56,19 @@ export const handleTemplateVariableSelect = ({
 
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onSelect(({ kind }) => {
+	const unsubscribe = configPort.onSelect(({ fieldName }) => {
+		const rootStorage = ensureNodeRootStorage({ rootEditable });
+
+		const displayText = getTemplateVariableDisplayText({
+			fieldName,
+			fieldsConfig: configPort.fieldsConfig,
+			storage: rootStorage.templateVariable,
+		});
+
+		if (displayText === null) {
+			return;
+		}
+
 		const { queryFound } = removeTemplateVariableQueryText({ editorAPI });
 
 		if (!queryFound) {
@@ -68,17 +80,7 @@ export const handleTemplateVariableSelect = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const rootStorage = ensureNodeRootStorage({ rootEditable });
-
-		const displayText = resolveTemplateVariableDisplayText({
-			type: kind,
-			storage: rootStorage.templateVariable,
-		});
-
-		const templateVariable = createTemplateVariable({
-			type: kind,
-			displayText,
-		});
+		const templateVariable = createTemplateVariable({ fieldName, displayText });
 
 		editorAPI.insertNode({
 			fromNode: fromText,

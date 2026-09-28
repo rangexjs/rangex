@@ -92,7 +92,7 @@ raw `Set`. `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and
   (`OnInsertCallbackFn`, not `OnAccordionItemInsertCallbackFn`); only `XxxState`,
   `XxxInternals`, `XxxConfigPort(Props)`, `XxxPublicPort(Props)`, `XxxAdapter`,
   `XxxSettings` keep it. Exception: keep the prefix where the bare name is ambiguous or
-  stutters (`CodeBlockLanguage`, `TemplateVariableKind`).
+  stutters (`CodeBlockLanguage`, `TemplateVariableFields`).
 
 ## `-types.ts` order
 

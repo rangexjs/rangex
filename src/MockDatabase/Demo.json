@@ -7,12 +7,11 @@
 			"id": "root",
 			"version": 1,
 			"templateVariable": {
-				"id": "template-variable-root",
-				"version": 1,
-				"firstName": null,
-				"lastName": null,
-				"email": null,
-				"date": null
+				"fullName": "{{Full name}}",
+				"firstName": "{{First name}}",
+				"lastName": "{{Last name}}",
+				"email": "{{Email}}",
+				"date": "{{Date}}"
 			}
 		},
 		"display": "block multi-line",
@@ -3554,7 +3553,7 @@
 						"customStorage": {
 							"id": "template-variable",
 							"version": 1,
-							"type": "full-name"
+							"fieldName": "fullName"
 						},
 						"styleAttrs": {},
 						"domAttrs": { "contenteditable": "false" },
