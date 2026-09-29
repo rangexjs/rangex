@@ -44,6 +44,8 @@ export const TableToolbarButton = () => {
 
 	const popoverId = createUniqueId();
 
+	let gridElement: HTMLDivElement | undefined;
+
 	const dataRowIndex = "data-row-index";
 	const dataColIndex = "data-col-index";
 
@@ -66,7 +68,7 @@ export const TableToolbarButton = () => {
 		}
 	};
 
-	const updateCellsState = (event: PointerEvent) => {
+	const getCellPos = (event: Event) => {
 		const { currentTarget } = event;
 
 		if (!(currentTarget instanceof HTMLButtonElement)) {
@@ -80,10 +82,31 @@ export const TableToolbarButton = () => {
 			throw new Error("Indexes can't be null.");
 		}
 
-		const currentRowIndex = +rowIndexAttr;
-		const currentColIndex = +colIndexAttr;
+		return { row: +rowIndexAttr + 1, col: +colIndexAttr + 1 };
+	};
 
-		setSelectedCellPos({ row: currentRowIndex + 1, col: currentColIndex + 1 });
+	const onPopoverFocusOut = (event: FocusEvent) => {
+		const { currentTarget, relatedTarget } = event;
+
+		if (!(currentTarget instanceof HTMLElement)) {
+			throw new Error("CurrentTarget's type is invalid.");
+		}
+
+		if (!(relatedTarget instanceof Node)) {
+			return;
+		}
+
+		if (currentTarget.contains(relatedTarget)) {
+			return;
+		}
+
+		currentTarget.hidePopover();
+	};
+
+	const updateCellsState = (event: Event) => {
+		const cellPos = getCellPos(event);
+
+		setSelectedCellPos(cellPos);
 
 		setGrid((prev) => {
 			const clonedGrid = structuredClone(prev);
@@ -93,7 +116,7 @@ export const TableToolbarButton = () => {
 
 				for (let colIndex = 0; colIndex < row.length; colIndex++) {
 					row[colIndex].isActive =
-						rowIndex <= currentRowIndex && colIndex <= currentColIndex;
+						rowIndex < cellPos.row && colIndex < cellPos.col;
 				}
 			}
 
@@ -101,11 +124,43 @@ export const TableToolbarButton = () => {
 		});
 	};
 
-	const insertTable = () => {
-		table.insert({
-			row: selectedCellPos().row,
-			column: selectedCellPos().col,
-		});
+	const insertTable = (event: MouseEvent) => {
+		const cellPos = getCellPos(event);
+
+		table.insert({ row: cellPos.row, column: cellPos.col });
+	};
+
+	const arrowKeyOffsets: Record<string, { row: number; col: number }> = {
+		ArrowUp: { row: -1, col: 0 },
+		ArrowDown: { row: 1, col: 0 },
+		ArrowLeft: { row: 0, col: -1 },
+		ArrowRight: { row: 0, col: 1 },
+	};
+
+	const navigateCells = (event: KeyboardEvent) => {
+		const offset = arrowKeyOffsets[event.key];
+
+		if (!offset) {
+			return;
+		}
+
+		event.preventDefault();
+
+		const cellPos = getCellPos(event);
+		const nextRowIndex = Math.min(
+			Math.max(cellPos.row - 1 + offset.row, 0),
+			rows - 1,
+		);
+		const nextColIndex = Math.min(
+			Math.max(cellPos.col - 1 + offset.col, 0),
+			cols - 1,
+		);
+
+		const nextCell = gridElement?.querySelector<HTMLButtonElement>(
+			`[${dataRowIndex}="${nextRowIndex}"][${dataColIndex}="${nextColIndex}"]`,
+		);
+
+		nextCell?.focus();
 	};
 
 	const disabled = createMemo(
@@ -130,8 +185,10 @@ export const TableToolbarButton = () => {
 				aria-label="Insert table"
 				class="absolute mt-1 rounded-sm bg-white p-1 shadow-md [position-area:center_bottom] dark:bg-neutral-900"
 				onToggle={onPopoverToggle}
+				onFocusOut={onPopoverFocusOut}
 			>
 				<div
+					ref={gridElement}
 					class="mb-1 grid leading-0"
 					style={{
 						"grid-template-rows": `repeat(${rows}, ${size}px)`,
@@ -148,13 +205,15 @@ export const TableToolbarButton = () => {
 											popovertarget={popoverId}
 											popovertargetaction="hide"
 											class="p-px"
-											aria-label={`Insert ${cell().rowIndex + 1} × ${cell().colIndex + 1} table`}
+											aria-label={`Insert ${cell().rowIndex + 1} x ${cell().colIndex + 1} table`}
 											{...{
 												[dataRowIndex]: cell().rowIndex,
 												[dataColIndex]: cell().colIndex,
 											}}
 											onPointerEnter={updateCellsState}
+											onFocus={updateCellsState}
 											onClick={insertTable}
+											onKeyDown={navigateCells}
 										>
 											<span
 												class={[
