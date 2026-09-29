@@ -1,5 +1,11 @@
 import type {
 	CodeBlockTheme,
+	TableCellResizingAction,
+	TableCellTypeAction,
+	TableInsertDeleteAction,
+	TableMergeSplitAction,
+	TableSectionTypeAction,
+	TableVerticalAlignmentAction,
 	TemplateVariableFields,
 	TemplateVariableFieldsConfig,
 } from "@rangex/editor";
@@ -79,9 +85,25 @@ export interface TemplateVariableUIOptions<FieldName extends string = string> {
 	dropdown: TemplateVariableDropdownItem<FieldName>[];
 }
 
+// Table
+export interface TableContextMenuUIOptions {
+	sectionType?: TableSectionTypeAction[];
+	mergeSplit?: TableMergeSplitAction[];
+	insertDelete?: TableInsertDeleteAction[];
+	cellType?: TableCellTypeAction[];
+	verticalAlignment?: TableVerticalAlignmentAction[];
+	cellResizing?: TableCellResizingAction[];
+	clearContents?: boolean;
+}
+
+export interface TableUIOptions {
+	contextMenu?: TableContextMenuUIOptions;
+}
+
 export interface UIOptions {
 	codeBlock?: CodeBlockUIOptions;
 	mention?: MentionUIOptions;
+	table?: TableUIOptions;
 	templateVariable?: TemplateVariableUIOptions;
 }
 

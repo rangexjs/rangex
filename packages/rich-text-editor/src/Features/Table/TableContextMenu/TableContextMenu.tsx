@@ -1,6 +1,6 @@
 import { FloatingPortal, Table } from "@rangex/solid";
 import { createUniqueId, For, onCleanup, Show } from "solid-js";
-import { useEditorContext } from "#context";
+import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
 import { assertNever } from "#utilities";
 import {
@@ -120,6 +120,7 @@ const Menu = (props: MenuProps) => {
 
 export const TableContextMenu = () => {
 	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
 	const { table } = editor;
 
 	if (!table) {
@@ -128,7 +129,17 @@ export const TableContextMenu = () => {
 
 	const $table = Table(table);
 
-	const contextMenuItems = createContextMenuItems({ table, $table });
+	const tableOptions = uiOptions.table;
+
+	if (!tableOptions) {
+		throw new Error("Table UI options can't be undefined.");
+	}
+
+	const contextMenuItems = createContextMenuItems({
+		table,
+		$table,
+		options: tableOptions.contextMenu ?? {},
+	});
 
 	const popoverId = createUniqueId();
 
@@ -159,7 +170,10 @@ export const TableContextMenu = () => {
 
 	return (
 		<FloatingPortal mount={table.contextMenuEl}>
-			<div class="z-20 inline-flex justify-center overflow-visible bg-transparent">
+			<div
+				hidden={!contextMenuItems.length}
+				class="z-20 inline-flex justify-center overflow-visible bg-transparent"
+			>
 				<div class="group size-3 leading-0 transition-all hover:size-5 [&:has(+_[popover]:popover-open)]:size-5">
 					<button
 						type="button"
