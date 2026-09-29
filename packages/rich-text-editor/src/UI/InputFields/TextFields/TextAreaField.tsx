@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, untrack } from "solid-js";
 import type { TextFieldControls } from "./_Utilities";
 
 interface TextAreaProps
@@ -18,8 +18,10 @@ export const TextAreaField = (props: InputTextFieldProps) => {
 	return (
 		<textarea
 			ref={(textArea) => {
-				textArea.value = props.defaultValue;
-				props.setTextField(textArea);
+				untrack(() => {
+					textArea.value = props.defaultValue;
+					props.setTextField(textArea);
+				});
 			}}
 			{...inputProps}
 		/>
