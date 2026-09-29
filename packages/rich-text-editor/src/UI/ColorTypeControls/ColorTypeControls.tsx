@@ -1,4 +1,10 @@
-import { createEffect, createSignal, createUniqueId, For } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	For,
+	untrack,
+} from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
 import { Icon } from "../Icon";
 import { createTextFieldState, InputTextField } from "../InputFields";
@@ -77,45 +83,47 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	const [colorType, setColorType] = createSignal<ColorType>("Hex");
 
+	const initialHsl = untrack(() => props.hsl);
+
 	const [hexHandle, hexControls] = createTextFieldState<HTMLInputElement>({
-		defaultValue: getHexValue(props.hsl),
+		defaultValue: getHexValue(initialHsl),
 	});
 
 	const [rgbRedHandle, rgbRedControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getRgbValue(props.hsl).r,
+			defaultValue: getRgbValue(initialHsl).r,
 		},
 	);
 
 	const [rgbGreenHandle, rgbGreenControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(props.hsl).g,
+			defaultValue: getRgbValue(initialHsl).g,
 		});
 
 	const [rgbBlueHandle, rgbBlueControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(props.hsl).b,
+			defaultValue: getRgbValue(initialHsl).b,
 		});
 
 	const [hslHueHandle, hslHueControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getHslValue(props.hsl).h,
+			defaultValue: getHslValue(initialHsl).h,
 		},
 	);
 
 	const [hslSatHandle, hslSatControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getHslValue(props.hsl).s,
+			defaultValue: getHslValue(initialHsl).s,
 		},
 	);
 
 	const [hslLightHandle, hslLightControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getHslValue(props.hsl).l,
+			defaultValue: getHslValue(initialHsl).l,
 		});
 
 	const [alphaHandle, alphaControls] = createTextFieldState<HTMLInputElement>({
-		defaultValue: getAlphaInPercentage(props.hsl.a),
+		defaultValue: getAlphaInPercentage(initialHsl.a),
 	});
 
 	const updateHexValue = () => {
