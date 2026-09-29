@@ -24,12 +24,16 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 		return rows.filter((row) => row.length > 0);
 	});
 
-	if (!visibleLayout().length) {
-		return null;
-	}
-
 	return (
-		<div class="flex flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950">
+		<div
+			class={[
+				"flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950",
+				{
+					flex: visibleLayout().length > 0,
+					hidden: visibleLayout().length === 0,
+				},
+			]}
+		>
 			<For each={visibleLayout()}>
 				{(row) => (
 					<div class="flex flex-wrap gap-1.5">

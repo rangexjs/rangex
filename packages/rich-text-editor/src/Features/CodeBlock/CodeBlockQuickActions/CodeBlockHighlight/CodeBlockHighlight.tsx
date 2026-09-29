@@ -3,6 +3,7 @@ import type {
 	ReactiveCodeBlockPort,
 	ReactiveReadOnlyPort,
 } from "@rangex/solid";
+import type { JSX } from "@solidjs/web";
 import { createMemo, createUniqueId, onCleanup } from "solid-js";
 import type { CodeBlockUIOptions } from "#context";
 import { Icon } from "#ui";
@@ -12,14 +13,11 @@ interface LanguageDropdownProps {
 	codeBlock: CodeBlockPublicPort;
 	$codeBlock: ReactiveCodeBlockPort;
 	options: CodeBlockUIOptions;
+	class?: JSX.ClassValue;
 }
 
 const LanguageDropdown = (props: LanguageDropdownProps) => {
 	const languages = createMemo(() => props.options.languages ?? []);
-
-	if (!languages().length) {
-		return null;
-	}
 
 	const languageValue = createMemo(() => props.$codeBlock.language());
 
@@ -34,6 +32,7 @@ const LanguageDropdown = (props: LanguageDropdownProps) => {
 			notFoundLabel="Unknown"
 			options={languages()}
 			onSelect={onSelect}
+			class={props.class}
 		/>
 	);
 };
@@ -43,14 +42,11 @@ interface ThemeDropdownProps {
 	$codeBlock: ReactiveCodeBlockPort;
 	options: CodeBlockUIOptions;
 	theme: "light" | "dark";
+	class?: JSX.ClassValue;
 }
 
 const ThemeDropdown = (props: ThemeDropdownProps) => {
 	const themes = createMemo(() => props.options.themes ?? []);
-
-	if (!themes().length) {
-		return null;
-	}
 
 	const themeValue = createMemo(
 		() => props.$codeBlock.theme()?.[props.theme] ?? null,
@@ -81,6 +77,7 @@ const ThemeDropdown = (props: ThemeDropdownProps) => {
 			notFoundLabel="Unknown"
 			options={themes()}
 			onSelect={onSelect}
+			class={props.class}
 		/>
 	);
 };
@@ -94,6 +91,12 @@ export interface CodeBlockHighlightProps {
 
 export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 	const optionsPopoverId = createUniqueId();
+
+	const hasLanguages = createMemo(
+		() => (props.options.languages ?? []).length > 0,
+	);
+	const hasThemes = createMemo(() => (props.options.themes ?? []).length > 0);
+	const hasOptions = createMemo(() => hasLanguages() || hasThemes());
 
 	let optionsPopover: HTMLDivElement | undefined;
 
@@ -120,38 +123,8 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 		unsubscribeIsOpen();
 	});
 
-	const LanguageComp = (
-		<LanguageDropdown
-			codeBlock={props.codeBlock}
-			$codeBlock={props.$codeBlock}
-			options={props.options}
-		/>
-	);
-
-	const LightComp = (
-		<ThemeDropdown
-			codeBlock={props.codeBlock}
-			$codeBlock={props.$codeBlock}
-			options={props.options}
-			theme="light"
-		/>
-	);
-
-	const DarkComp = (
-		<ThemeDropdown
-			codeBlock={props.codeBlock}
-			$codeBlock={props.$codeBlock}
-			options={props.options}
-			theme="dark"
-		/>
-	);
-
-	if (!(LanguageComp || LightComp || DarkComp)) {
-		return null;
-	}
-
 	return (
-		<>
+		<span class={[{ hidden: !hasOptions() }]}>
 			<button
 				type="button"
 				commandfor={optionsPopoverId}
@@ -171,10 +144,27 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 				popover="auto"
 				class="w-32 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>
-				{LanguageComp}
-				{LightComp}
-				{DarkComp}
+				<LanguageDropdown
+					codeBlock={props.codeBlock}
+					$codeBlock={props.$codeBlock}
+					options={props.options}
+					class={[{ hidden: !hasLanguages() }]}
+				/>
+				<ThemeDropdown
+					codeBlock={props.codeBlock}
+					$codeBlock={props.$codeBlock}
+					options={props.options}
+					theme="light"
+					class={[{ hidden: !hasThemes() }]}
+				/>
+				<ThemeDropdown
+					codeBlock={props.codeBlock}
+					$codeBlock={props.$codeBlock}
+					options={props.options}
+					theme="dark"
+					class={[{ hidden: !hasThemes() }]}
+				/>
 			</div>
-		</>
+		</span>
 	);
 };
