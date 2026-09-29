@@ -9,6 +9,7 @@ import type {
 	FindReplacePublicPort,
 	FindReplacePublicPortProps,
 	OnCloseCallbackFn,
+	OnCurrentIndexUpdateCallbackFn,
 	OnNavigateToIndexCallbackFn,
 	OnOpenCallbackFn,
 	OnReplaceAllCallbackFn,
@@ -29,10 +30,13 @@ export const createFindReplaceAdapter = (
 
 	const internals: FindReplaceInternals = {
 		// States
-		results: { currentIndex: 0, totalResults: 0, results: [] },
+		currentIndex: 0,
+		results: [],
 	};
 
 	// StateListeners
+	const currentIndexUpdateEmitter =
+		createEmitter<OnCurrentIndexUpdateCallbackFn>();
 	const resultsUpdateEmitter = createEmitter<OnResultsUpdateCallbackFn>();
 
 	// CommandListeners
@@ -45,7 +49,13 @@ export const createFindReplaceAdapter = (
 	const replaceEmitter = createEmitter<OnReplaceCallbackFn>();
 	const replaceAllEmitter = createEmitter<OnReplaceAllCallbackFn>();
 
-	const updateState = ({ results }: UpdateStateParams) => {
+	const updateState = ({ currentIndex, results }: UpdateStateParams) => {
+		if (currentIndex !== undefined) {
+			internals.currentIndex = currentIndex;
+
+			currentIndexUpdateEmitter.emit(internals.currentIndex);
+		}
+
 		if (results !== undefined) {
 			internals.results = results;
 
@@ -92,8 +102,16 @@ export const createFindReplaceAdapter = (
 	} satisfies FindReplaceConfigPortProps);
 
 	const publicPort: FindReplacePublicPort = extendObjectProperties({}, {
+		get currentIndex() {
+			return internals.currentIndex;
+		},
+
 		get results() {
 			return internals.results;
+		},
+
+		onCurrentIndexUpdate(callback) {
+			return currentIndexUpdateEmitter.subscribe(callback);
 		},
 
 		onResultsUpdate(callback) {

@@ -42,7 +42,6 @@ export type {
 	FindReplaceCriteria,
 	FindReplacePattern,
 	FindReplacePublicPort,
-	FindReplaceResultsState,
 	FindReplaceSearchResult,
 } from "#adapters/FindReplace";
 export type {

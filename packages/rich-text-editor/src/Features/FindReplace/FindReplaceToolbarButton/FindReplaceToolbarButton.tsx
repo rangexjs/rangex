@@ -20,8 +20,9 @@ import {
 	showInputFieldError,
 	TextFieldWrapper,
 } from "#ui";
+import { createDebouncer } from "#utilities";
 import { ToolbarButton } from "../../_Utilities";
-import { buildFindReplacePattern, createDebounce } from "./_Utilities";
+import { buildFindReplacePattern } from "./_Utilities";
 import { FindReplaceResults } from "./FindReplaceResults";
 
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
@@ -38,14 +39,11 @@ export const FindReplaceToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
-	const [isFindLoading, setIsFindLoading] = createSignal(false);
 
-	const currentIndex = () => $findReplace.results().currentIndex;
-	const totalResults = () => $findReplace.results().totalResults;
-	const results = () => $findReplace.results().results;
+	const resultsCount = createMemo(() => $findReplace.results().length);
 
 	const displayIndex = createMemo(() =>
-		totalResults() > 0 ? currentIndex() + 1 : 0,
+		resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0,
 	);
 
 	const popoverId = createUniqueId();
@@ -103,7 +101,7 @@ export const FindReplaceToolbarButton = () => {
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
 
 	createEffect(
-		() => totalResults() === 0 || showInputFieldError(findHandle.state()),
+		() => resultsCount() === 0 || showInputFieldError(findHandle.state()),
 		(disabled) => {
 			setReplaceButtonDisabled(disabled);
 		},
@@ -227,7 +225,7 @@ export const FindReplaceToolbarButton = () => {
 		);
 	};
 
-	const debounce = createDebounce();
+	const searchDebouncer = createDebouncer({ delayInMs: 250 });
 
 	const emitSearchChange = () => {
 		const pattern = getSafePattern();
@@ -249,13 +247,7 @@ export const FindReplaceToolbarButton = () => {
 	createEffect(
 		findHandle.value,
 		() => {
-			setIsFindLoading(true);
-
-			debounce(() => {
-				emitSearchChange();
-
-				setIsFindLoading(false);
-			}, 250);
+			searchDebouncer.schedule(() => emitSearchChange());
 		},
 		{ defer: true },
 	);
@@ -385,7 +377,7 @@ export const FindReplaceToolbarButton = () => {
 								{findHandle.state().message}
 							</div>
 							<Show
-								when={!isFindLoading()}
+								when={!searchDebouncer.isScheduled()}
 								fallback={
 									<Spinning
 										class="size-4"
@@ -396,7 +388,7 @@ export const FindReplaceToolbarButton = () => {
 								}
 							>
 								<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
-									{displayIndex()} of {totalResults()}
+									{displayIndex()} of {resultsCount()}
 								</span>
 							</Show>
 							<span class="inline-flex gap-1.5">
@@ -458,8 +450,8 @@ export const FindReplaceToolbarButton = () => {
 						</For>
 					</div>
 					<FindReplaceResults
-						currentIndex={currentIndex}
-						results={results}
+						currentIndex={$findReplace.currentIndex}
+						results={$findReplace.results}
 						onClick={(index) => navigateToIndex(index)}
 					/>
 					<div class="flex justify-end gap-3">

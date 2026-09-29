@@ -16,18 +16,14 @@ export interface FindReplaceCriteria {
 	includeNonEditableContent: boolean;
 }
 
-export interface FindReplaceResultsState {
-	currentIndex: number;
-	totalResults: number;
-	results: FindReplaceSearchResult[];
-}
-
 export interface FindReplaceState {
-	results?: FindReplaceResultsState;
+	currentIndex?: number;
+	results?: FindReplaceSearchResult[];
 }
 
+export type OnCurrentIndexUpdateCallbackFn = (currentIndex: number) => void;
 export type OnResultsUpdateCallbackFn = (
-	results: FindReplaceResultsState,
+	results: FindReplaceSearchResult[],
 ) => void;
 
 export interface NavigateToIndexParams {
@@ -67,8 +63,10 @@ export interface FindReplaceConfigPortProps {
 export interface FindReplaceConfigPort extends FindReplaceConfigPortProps {}
 
 export interface FindReplacePublicPortProps {
-	readonly results: FindReplaceResultsState;
+	readonly currentIndex: number;
+	readonly results: FindReplaceSearchResult[];
 
+	onCurrentIndexUpdate(callback: OnCurrentIndexUpdateCallbackFn): () => void;
 	onResultsUpdate(callback: OnResultsUpdateCallbackFn): () => void;
 
 	open(criteria: FindReplaceCriteria): void;
@@ -84,7 +82,8 @@ export interface FindReplacePublicPortProps {
 export interface FindReplacePublicPort extends FindReplacePublicPortProps {}
 
 export interface FindReplaceInternals {
-	results: FindReplaceResultsState;
+	currentIndex: number;
+	results: FindReplaceSearchResult[];
 }
 
 export interface FindReplaceAdapter {

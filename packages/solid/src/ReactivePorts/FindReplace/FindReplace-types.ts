@@ -1,6 +1,7 @@
-import type { FindReplaceResultsState } from "@rangex/editor";
+import type { FindReplaceSearchResult } from "@rangex/editor";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveFindReplacePort {
-	results: Accessor<FindReplaceResultsState>;
+	currentIndex: Accessor<number>;
+	results: Accessor<FindReplaceSearchResult[]>;
 }

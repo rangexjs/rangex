@@ -1,4 +1,3 @@
-import type { FindReplaceResultsState } from "#adapters/FindReplace";
 import type { HandleResultsSyncParams } from "./HandleResultsSync-types";
 
 /*
@@ -10,24 +9,21 @@ export const handleResultsSync = ({
 }: HandleResultsSyncParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	const buildResultsState = (): FindReplaceResultsState => {
-		const { currentIndex, matchedRanges } = findReplace;
+	const unsubscribeIndexChange = findReplace.onIndexChange(() => {
+		configPort.updateState({ currentIndex: findReplace.currentIndex });
+	});
 
-		const results = matchedRanges.map(
+	const unsubscribeMatchesChange = findReplace.onMatchesChange(() => {
+		const results = findReplace.matchedRanges.map(
 			({ segmentText, matchStart, matchEnd }) => {
 				return { segmentText, matchStart, matchEnd };
 			},
 		);
 
-		return { currentIndex, totalResults: results.length, results };
-	};
-
-	const unsubscribeIndexChange = findReplace.onIndexChange(() => {
-		configPort.updateState({ results: buildResultsState() });
-	});
-
-	const unsubscribeMatchesChange = findReplace.onMatchesChange(() => {
-		configPort.updateState({ results: buildResultsState() });
+		configPort.updateState({
+			currentIndex: findReplace.currentIndex,
+			results,
+		});
 	});
 
 	return () => {
