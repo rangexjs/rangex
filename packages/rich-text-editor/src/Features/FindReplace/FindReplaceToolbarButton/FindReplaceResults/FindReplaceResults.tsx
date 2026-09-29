@@ -1,5 +1,11 @@
 import type { FindReplaceSearchResult } from "@rangex/editor";
-import { type Accessor, createEffect, createSignal, For } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createSignal,
+	For,
+	untrack,
+} from "solid-js";
 import { Icon } from "#ui";
 import { createDebouncer } from "#utilities";
 
@@ -49,7 +55,11 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 
 	createEffect(
 		() => debouncedResults(),
-		() => scrollIntoListItem(props.currentIndex(), "center"),
+		() =>
+			scrollIntoListItem(
+				untrack(() => props.currentIndex()),
+				"center",
+			),
 	);
 
 	createEffect(
