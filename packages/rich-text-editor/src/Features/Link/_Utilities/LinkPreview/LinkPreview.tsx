@@ -20,6 +20,7 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 				class="self-center truncate font-semibold text-blue-600 text-sm dark:text-blue-400"
 			>
 				{props.url}
+				<span class="sr-only"> (opens in new tab)</span>
 			</a>
 			<div class="space-x-2 justify-self-end whitespace-nowrap">
 				<button

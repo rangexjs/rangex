@@ -130,7 +130,7 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 				commandfor={optionsPopoverId}
 				command="toggle-popover"
 				class="btn-menu-trigger flex items-center justify-center rounded p-1"
-				title="Options"
+				aria-label="Code block options"
 				disabled={props.readOnly?.checked()}
 			>
 				<Icon name="DotsThreeHorizontal" class="size-4" />

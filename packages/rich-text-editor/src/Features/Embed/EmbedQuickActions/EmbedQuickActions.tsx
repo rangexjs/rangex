@@ -183,7 +183,7 @@ export const EmbedQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Swap"
+					aria-label="Swap embed"
 					disabled={!embed.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
@@ -196,7 +196,7 @@ export const EmbedQuickActions = () => {
 						commandfor={optionsPopoverId}
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
-						title="Options"
+						aria-label="Embed options"
 						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
@@ -223,6 +223,7 @@ export const EmbedQuickActions = () => {
 							</span>
 							<ToggleButton
 								checked={$embed.captionEnabled()}
+								label="Caption"
 								onClick={onCaptionToggle}
 							/>
 						</div>
@@ -231,6 +232,7 @@ export const EmbedQuickActions = () => {
 							<SegmentedControl
 								id={$embed.captionPosition()}
 								controls={captionPositionControls}
+								label="Caption position"
 								onChange={(value) => embed.changeCaptionPosition(value)}
 								appearance="primary-outline"
 								class="rounded-sm"

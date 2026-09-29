@@ -3,6 +3,7 @@ import {
 	type Accessor,
 	createMemo,
 	createSignal,
+	createUniqueId,
 	For,
 	type Setter,
 } from "solid-js";
@@ -31,6 +32,7 @@ const ColorPalette = (props: ColorPaletteProps) => {
 			<For each={props.paletteColors}>
 				{(hsl) => {
 					const backgroundColor = ColorFormat.hsl(hsl).color();
+					const hex = ColorFormat.hsl(hsl).hex().hex;
 
 					return (
 						<button
@@ -39,6 +41,7 @@ const ColorPalette = (props: ColorPaletteProps) => {
 							style={{
 								"background-color": backgroundColor,
 							}}
+							aria-label={hex}
 							onClick={() => props.onColorChange(hsl)}
 						/>
 					);
@@ -78,6 +81,7 @@ const ColorThemeButton = (props: ColorThemeButtonProps) => {
 					"btn-primary-outline": props.colorMode() === props.theme,
 				},
 			]}
+			aria-pressed={`${props.colorMode() === props.theme}`}
 			onClick={() => onThemeButtonClick()}
 		>
 			<span>{text}</span>
@@ -155,7 +159,8 @@ const ColorModeButtons = (props: ColorModeButtonsProps) => {
 					},
 				]}
 				onClick={onMatchClick}
-				aria-label="Light-Dark"
+				aria-label="Same color for light and dark"
+				aria-pressed={`${props.colorMode() === "common"}`}
 			>
 				<Icon name={iconName()} class="size-4" />
 			</button>
@@ -197,6 +202,7 @@ interface ColorPanelProps {
 
 export const ColorPanel = (props: ColorPanelProps) => {
 	const [contentId, setContentId] = createSignal<ContentId>("Grid");
+	const activeColorsLabelId = createUniqueId();
 
 	const controls: SegmentedControlControls<ContentId> = [
 		{ id: "Grid", node: "Grid" },
@@ -239,6 +245,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
 				id={contentId()}
 				controls={controls}
 				onChange={(id) => setContentId(id)}
+				label="Color picker mode"
 				appearance="primary-outline"
 				class="mb-4 rounded-sm"
 				commonButtonClass="py-2 font-semibold text-sm"
@@ -314,12 +321,16 @@ export const ColorPanel = (props: ColorPanelProps) => {
 			</div>
 
 			<div class={["mt-2", { hidden: !props.activeColors.length }]}>
-				<div class="mb-2 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
-				<div class="mb-1 font-medium text-neutral-600 text-sm [text-box:trim-start_cap_alphabetic] dark:text-neutral-300">
+				<hr class="mb-2 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
+				<div
+					id={activeColorsLabelId}
+					class="mb-1 font-medium text-neutral-600 text-sm [text-box:trim-start_cap_alphabetic] dark:text-neutral-300"
+				>
 					Active colors
 				</div>
-				<div
-					class="grid gap-0.5"
+				<fieldset
+					aria-labelledby={activeColorsLabelId}
+					class="grid min-w-0 gap-0.5"
 					style={{
 						"grid-template-columns": `repeat(${props.paletteCols}, 1fr)`,
 					}}
@@ -327,12 +338,14 @@ export const ColorPanel = (props: ColorPanelProps) => {
 					<For each={activeColors()}>
 						{(hsl) => {
 							const backgroundColor = ColorFormat.hsl(hsl).color();
+							const hex = ColorFormat.hsl(hsl).hex().hex;
 
 							return (
 								<button
 									type="button"
 									class="inline-block aspect-square scale-100 border-white outline-primary-500 transition-transform hover:z-10 hover:scale-110 hover:border-2 hover:outline-2 dark:border-neutral-900"
 									style={{ "background-color": backgroundColor }}
+									aria-label={hex}
 									onClick={() => {
 										onColorChange(hsl);
 									}}
@@ -340,7 +353,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
 							);
 						}}
 					</For>
-				</div>
+				</fieldset>
 			</div>
 		</div>
 	);

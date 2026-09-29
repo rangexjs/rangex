@@ -42,6 +42,7 @@ export const OrderedListToolbarButton = () => {
 				checked={$list.localName() === "ol"}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$list.localName() === "ol"}`}
 			>
 				<Icon name="ListNumbers" title="Numbered list" class="size-4" />
 			</ToolbarButton>

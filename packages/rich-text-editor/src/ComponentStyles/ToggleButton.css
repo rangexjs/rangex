@@ -31,7 +31,7 @@
 		transition-timing-function: ease-in-out;
 	}
 
-	&[aria-pressed="true"] {
+	&[aria-checked="true"] {
 		border-color: var(--color-primary-500);
 		background-color: color(from var(--color-primary-500) srgb r g b / 0.6);
 

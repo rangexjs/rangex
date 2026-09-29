@@ -42,6 +42,7 @@ export const UnorderedListToolbarButton = () => {
 				checked={$list.localName() === "ul"}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$list.localName() === "ul"}`}
 			>
 				<Icon name="ListBullets" title="Bulleted list" class="size-4" />
 			</ToolbarButton>

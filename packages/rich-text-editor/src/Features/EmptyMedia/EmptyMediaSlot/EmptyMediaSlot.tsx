@@ -53,6 +53,7 @@ const StatusIndicator = (props: StatusIndicatorProps) => {
 
 	return (
 		<div
+			role="status"
 			class="mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400"
 			style={{ display: display() }}
 		>
@@ -381,6 +382,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				</div>
 
 				<div
+					role="alert"
 					hidden={uploadState().status !== "error"}
 					class="rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400"
 				>
@@ -391,6 +393,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 					id={activeTab()}
 					controls={mediaTabControls}
 					onChange={onTabChange}
+					label="Media source"
 					appearance="primary-outline"
 					class="rounded-sm border-solid"
 					commonButtonClass="inline-flex items-center justify-center py-1.5 font-medium text-xs"

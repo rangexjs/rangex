@@ -13,6 +13,7 @@ export interface ToolbarButtonProps {
 	style?: JSX.CSSProperties;
 	onClick?: (event: MouseEvent) => void;
 	"aria-pressed"?: JSX.ButtonHTMLAttributes<HTMLButtonElement>["aria-pressed"];
+	"aria-expanded"?: JSX.ButtonHTMLAttributes<HTMLButtonElement>["aria-expanded"];
 	children: JSX.Element;
 }
 
@@ -27,6 +28,7 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
 			command={props.command}
 			style={props.style}
 			aria-pressed={props["aria-pressed"]}
+			aria-expanded={props["aria-expanded"]}
 			data-checked={`${!!props.checked}`}
 		>
 			<span class={["inline-flex items-center", props.containerClass]}>

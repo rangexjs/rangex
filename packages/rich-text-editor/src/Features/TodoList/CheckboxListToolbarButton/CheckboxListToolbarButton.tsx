@@ -36,6 +36,7 @@ export const CheckboxListToolbarButton = () => {
 				checked={$todoList.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$todoList.isSelectionActive()}`}
 			>
 				<Icon name="ListChecks" title="Checklist" class="size-4" />
 			</ToolbarButton>

@@ -98,6 +98,7 @@ export const TextAlignToolbarButton = () => {
 						{(name) => (
 							<ToolbarButton
 								checked={$textAlign.values().has(name)}
+								aria-pressed={`${$textAlign.values().has(name)}`}
 								commandfor={popoverId}
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}

@@ -186,6 +186,7 @@ export const FontFamilyToolbarButton = () => {
 				<InputTextField
 					type="text"
 					class="max-w-10"
+					aria-label="Font family"
 					disabled={disabled()}
 					onKeyDown={handleKeydown}
 					onBlur={handleBlur}

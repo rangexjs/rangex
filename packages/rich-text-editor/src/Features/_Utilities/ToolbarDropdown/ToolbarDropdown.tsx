@@ -62,7 +62,11 @@ export const ToolbarDropdown = (props: ToolbarDropdownProps) => {
 									class="rounded-xs border border-transparent px-2 text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
 									{...item().settings}
 								>
-									<Icon name="Gear" title="Settings" class="size-3" />
+									<Icon
+										name="Gear"
+										title={`${item().text} settings`}
+										class="size-3"
+									/>
 								</button>
 							</Show>
 						</li>

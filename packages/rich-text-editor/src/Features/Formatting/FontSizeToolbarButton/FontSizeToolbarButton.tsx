@@ -216,6 +216,7 @@ export const FontSizeToolbarButton = () => {
 				<InputTextField
 					type="text"
 					class="max-w-10"
+					aria-label="Font size"
 					disabled={disabled()}
 					onKeyDown={handleKeydown}
 					onBlur={handleBlur}

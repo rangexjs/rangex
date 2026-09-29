@@ -36,7 +36,7 @@ export const BlockAlign = (props: BlockAlignProps) => {
 				commandfor={popoverId}
 				command="toggle-popover"
 				disabled={props.disabled}
-				title="Align"
+				aria-label="Align"
 				class="btn-menu-trigger flex items-center justify-center rounded-sm p-1"
 			>
 				<Icon name={iconNameOptions[props.value]} class="size-4" />
@@ -54,9 +54,10 @@ export const BlockAlign = (props: BlockAlignProps) => {
 							type="button"
 							commandfor={popoverId}
 							command="hide-popover"
-							title={labelOptions[option]}
+							aria-label={labelOptions[option]}
 							class="btn-menu-item rounded-sm p-1"
 							data-checked={`${option === props.value}`}
+							aria-pressed={`${option === props.value}`}
 							onClick={() => props.onChange(option)}
 						>
 							<Icon name={iconNameOptions[option]} class="size-4" />

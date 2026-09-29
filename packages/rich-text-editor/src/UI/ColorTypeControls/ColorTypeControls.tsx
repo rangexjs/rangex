@@ -352,6 +352,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 							class="w-full text-center outline-none"
 							onKeyDown={handleHexKeydown}
 							onBlur={handleHexBlur}
+							aria-label="Hex"
 							spellcheck={false}
 							{...hexControls}
 						/>
@@ -365,6 +366,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Red"
 								spellcheck={false}
 								{...rgbRedControls}
 							/>
@@ -377,6 +379,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Green"
 								spellcheck={false}
 								{...rgbGreenControls}
 							/>
@@ -389,6 +392,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Blue"
 								spellcheck={false}
 								{...rgbBlueControls}
 							/>
@@ -403,6 +407,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Hue"
 								spellcheck={false}
 								{...hslHueControls}
 							/>
@@ -415,6 +420,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Saturation"
 								spellcheck={false}
 								{...hslSatControls}
 							/>
@@ -427,6 +433,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Lightness"
 								spellcheck={false}
 								{...hslLightControls}
 							/>
@@ -442,6 +449,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 						onBeforeInput={handleAlphaBeforeInput}
 						onKeyDown={handleAlphaKeydown}
 						onBlur={handleAlphaBlur}
+						aria-label="Alpha"
 						spellcheck={false}
 						{...alphaControls}
 					/>

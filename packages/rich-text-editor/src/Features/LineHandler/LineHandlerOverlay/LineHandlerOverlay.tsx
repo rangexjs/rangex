@@ -32,10 +32,7 @@ export const LineHandlerOverlay = () => {
 				{ "sm:flex": visible() },
 			]}
 		>
-			<LineButton
-				title="Insert line below (Alt: insert above)"
-				onClick={onInsertClick}
-			>
+			<LineButton aria-label="Insert line below" onClick={onInsertClick}>
 				<Icon name="Plus" class="size-3" />
 			</LineButton>
 

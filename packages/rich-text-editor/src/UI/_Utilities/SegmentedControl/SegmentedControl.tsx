@@ -27,7 +27,7 @@ const appearanceStyles: Record<
 		],
 		button: [
 			"text-neutral-600 dark:text-neutral-300",
-			"aria-[current=true]:text-primary-600 aria-[current=true]:dark:text-primary-500",
+			"aria-pressed:text-primary-600 aria-pressed:dark:text-primary-500",
 			"disabled:bg-neutral-100 dark:disabled:bg-neutral-800",
 			"disabled:text-neutral-400 dark:disabled:text-neutral-600",
 		],
@@ -44,6 +44,7 @@ interface SegmentedControlProps<Id extends string> {
 	id: NoInfer<Id>;
 	controls: SegmentedControlControls<Id>;
 	onChange: (id: Id) => void;
+	label: string;
 	appearance: SegmentedControlAppearance;
 	disabled?: boolean;
 	class?: JSX.ClassValue;
@@ -57,8 +58,9 @@ export const SegmentedControl = <Id extends string>(
 	const styles = createMemo(() => appearanceStyles[props.appearance]);
 
 	return (
-		<div
-			class={["relative flex", styles().track, props.class]}
+		<fieldset
+			aria-label={props.label}
+			class={["relative flex min-w-0", styles().track, props.class]}
 			style={{ "anchor-scope": anchorName }}
 		>
 			<For each={props.controls}>
@@ -68,7 +70,7 @@ export const SegmentedControl = <Id extends string>(
 						type="button"
 						disabled={props.disabled}
 						onClick={() => props.onChange(item.id)}
-						aria-current={`${props.id === item.id}`}
+						aria-pressed={`${props.id === item.id}`}
 						aria-label={item["aria-label"]}
 						style={{
 							...(props.id === item.id && {
@@ -94,6 +96,6 @@ export const SegmentedControl = <Id extends string>(
 					left: `calc(anchor(left) + ${styles().activeBoxShrink}px)`,
 				}}
 			/>
-		</div>
+		</fieldset>
 	);
 };

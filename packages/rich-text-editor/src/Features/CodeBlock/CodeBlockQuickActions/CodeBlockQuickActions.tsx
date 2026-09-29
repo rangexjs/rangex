@@ -42,7 +42,7 @@ export const CodeBlockQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Copy"
+					aria-label="Copy code"
 					disabled={$readOnly?.checked()}
 					onClick={onCopyClick}
 				>

@@ -14,6 +14,7 @@ const ActionTrigger = (props: ActionTriggerProps) => (
 		command="hide-popover"
 		class="btn-menu-item w-full whitespace-nowrap rounded-sm p-1 text-start font-semibold text-xs"
 		data-checked={`${!!props.checked()}`}
+		aria-pressed={`${!!props.checked()}`}
 		onClick={props.onClick}
 	>
 		{props.label}

@@ -126,6 +126,8 @@ export const TableToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="auto"
+				role="dialog"
+				aria-label="Insert table"
 				class="absolute mt-1 rounded-sm bg-white p-1 shadow-md [position-area:center_bottom] dark:bg-neutral-900"
 				onToggle={onPopoverToggle}
 			>
@@ -146,6 +148,7 @@ export const TableToolbarButton = () => {
 											popovertarget={popoverId}
 											popovertargetaction="hide"
 											class="p-px"
+											aria-label={`Insert ${cell().rowIndex + 1} × ${cell().colIndex + 1} table`}
 											{...{
 												[dataRowIndex]: cell().rowIndex,
 												[dataColIndex]: cell().colIndex,
@@ -171,7 +174,10 @@ export const TableToolbarButton = () => {
 						)}
 					</For>
 				</div>
-				<div class="flex justify-center gap-2 font-mono font-semibold text-neutral-700 text-xs dark:text-neutral-300">
+				<div
+					aria-hidden="true"
+					class="flex justify-center gap-2 font-mono font-semibold text-neutral-700 text-xs dark:text-neutral-300"
+				>
 					<span>Col: {selectedCellPos().col}</span>
 					<span>Row: {selectedCellPos().row}</span>
 				</div>

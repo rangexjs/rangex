@@ -141,6 +141,8 @@ export const BackgroundColorToolbarButton = () => {
 				id={popoverId}
 				ref={popover}
 				popover="auto"
+				role="dialog"
+				aria-label="Background color"
 				onToggle={onPopoverToggle}
 				class="mt-1 overflow-x-clip rounded-md border border-neutral-200 bg-white p-2 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>

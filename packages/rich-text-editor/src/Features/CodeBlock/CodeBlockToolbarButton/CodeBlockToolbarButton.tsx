@@ -47,6 +47,7 @@ export const CodeBlockToolbarButton = () => {
 				checked={$codeBlock.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$codeBlock.isSelectionActive()}`}
 			>
 				<Icon name="CodeBlock" title="Code block" class="size-4" />
 			</ToolbarButton>

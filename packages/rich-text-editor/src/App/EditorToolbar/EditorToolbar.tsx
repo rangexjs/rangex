@@ -48,7 +48,10 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 										</For>
 									</span>
 									<Show when={index() < row.length - 1}>
-										<span class="w-px bg-neutral-200 dark:bg-neutral-700" />
+										<hr
+											aria-orientation="vertical"
+											class="h-auto w-px border-0 bg-neutral-200 dark:bg-neutral-700"
+										/>
 									</Show>
 								</>
 							)}

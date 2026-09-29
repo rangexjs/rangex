@@ -55,6 +55,7 @@ export const LinkToolbarButton = () => {
 				checked={selectionMenuIsOpen()}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-expanded={`${selectionMenuIsOpen()}`}
 			>
 				<Icon name="SimpleLink" title="Link" class="size-4" />
 			</ToolbarButton>

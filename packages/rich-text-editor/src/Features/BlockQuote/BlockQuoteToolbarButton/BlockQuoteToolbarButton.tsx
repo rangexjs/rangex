@@ -36,6 +36,7 @@ export const BlockQuoteToolbarButton = () => {
 				checked={$blockQuote.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$blockQuote.isSelectionActive()}`}
 			>
 				<Icon name="BlockQuote" title="Block quote" class="size-4" />
 			</ToolbarButton>

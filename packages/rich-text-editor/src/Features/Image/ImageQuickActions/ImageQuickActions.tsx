@@ -207,7 +207,7 @@ export const ImageQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Swap"
+					aria-label="Swap image"
 					disabled={!image.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
@@ -220,7 +220,7 @@ export const ImageQuickActions = () => {
 						commandfor={optionsPopoverId}
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
-						title="Options"
+						aria-label="Image options"
 						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
@@ -254,6 +254,7 @@ export const ImageQuickActions = () => {
 							</span>
 							<ToggleButton
 								checked={$image.captionEnabled()}
+								label="Caption"
 								onClick={onCaptionToggle}
 							/>
 						</div>
@@ -262,6 +263,7 @@ export const ImageQuickActions = () => {
 							<SegmentedControl
 								id={$image.captionPosition()}
 								controls={captionPositionControls}
+								label="Caption position"
 								onChange={(value) => image.changeCaptionPosition(value)}
 								appearance="primary-outline"
 								class="rounded-sm"

@@ -130,6 +130,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 						return (
 							<li class="flex font-mono">
 								<span
+									aria-hidden="true"
 									class={[
 										"inline-block min-w-6 shrink-0 whitespace-nowrap border-r bg-neutral-100 px-1 py-1 text-center font-bold text-xs dark:bg-neutral-800",
 										{
@@ -145,6 +146,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 								<button
 									type="button"
 									class="w-full px-1 text-left text-xs transition-colors hover:bg-neutral-50 active:bg-neutral-100 active:text-neutral-900 dark:active:bg-neutral-700 dark:active:text-white dark:hover:bg-neutral-800"
+									aria-current={`${props.currentIndex() === index()}`}
 									onClick={() => props.onClick(index())}
 								>
 									<span class="truncate font-mono text-neutral-600 dark:text-neutral-300">

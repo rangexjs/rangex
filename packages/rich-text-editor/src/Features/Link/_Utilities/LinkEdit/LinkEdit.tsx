@@ -82,6 +82,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 					</span>
 					<ToggleButton
 						checked={props.isNewTab}
+						label="Open in new tab"
 						onClick={props.onNewTabChange}
 					/>
 				</div>

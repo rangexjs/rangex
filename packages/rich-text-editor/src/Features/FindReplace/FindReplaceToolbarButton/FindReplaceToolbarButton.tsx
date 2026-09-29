@@ -47,6 +47,7 @@ export const FindReplaceToolbarButton = () => {
 	);
 
 	const popoverId = createUniqueId();
+	const headingId = createUniqueId();
 
 	const [useRegexHandle, useRegexControls] = createCheckboxState({});
 	const [matchCaseHandle, matchCaseControls] = createCheckboxState({});
@@ -308,6 +309,8 @@ export const FindReplaceToolbarButton = () => {
 			<div
 				id={popoverId}
 				popover="manual"
+				role="dialog"
+				aria-labelledby={headingId}
 				class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 				onToggle={onPopoverToggle}
 				onBeforeToggle={setPopoverInitialPosition}
@@ -316,7 +319,10 @@ export const FindReplaceToolbarButton = () => {
 					class="mb-2 flex cursor-grab items-center justify-between"
 					onPointerDown={movePopover}
 				>
-					<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+					<h2
+						id={headingId}
+						class="font-bold text-neutral-700 text-sm dark:text-neutral-200"
+					>
 						Find & Replace
 					</h2>
 					<button
@@ -331,7 +337,7 @@ export const FindReplaceToolbarButton = () => {
 						<Icon name="X" title="Close" class="size-3" />
 					</button>
 				</div>
-				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
+				<hr class="mb-3 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
 				<div>
 					<div
 						class="mb-3 space-y-2"
@@ -355,6 +361,7 @@ export const FindReplaceToolbarButton = () => {
 									<InputTextField
 										type="text"
 										placeholder="Find..."
+										aria-label="Find"
 										autocomplete="off"
 										class="font-mono"
 										onFocus={() => setHasFindFocus(true)}
@@ -376,21 +383,23 @@ export const FindReplaceToolbarButton = () => {
 							>
 								{findHandle.state().message}
 							</div>
-							<Show
-								when={!searchDebouncer.isScheduled()}
-								fallback={
-									<Spinning
-										class="size-4"
-										blueprintColor="var(--color-neutral-300)"
-										loadingColor="var(--color-primary-500)"
-										strokeWidth={3}
-									/>
-								}
-							>
-								<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
-									{displayIndex()} of {resultsCount()}
-								</span>
-							</Show>
+							<span role="status" class="contents">
+								<Show
+									when={!searchDebouncer.isScheduled()}
+									fallback={
+										<Spinning
+											class="size-4"
+											blueprintColor="var(--color-neutral-300)"
+											loadingColor="var(--color-primary-500)"
+											strokeWidth={3}
+										/>
+									}
+								>
+									<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
+										{displayIndex()} of {resultsCount()}
+									</span>
+								</Show>
+							</span>
 							<span class="inline-flex gap-1.5">
 								<button
 									type="button"
@@ -422,6 +431,7 @@ export const FindReplaceToolbarButton = () => {
 									<InputTextField
 										type="text"
 										placeholder="Replace..."
+										aria-label="Replace"
 										autocomplete="off"
 										class="font-mono"
 										spellcheck={false}
