@@ -1,6 +1,6 @@
 import type { FormattingFontFamilyValue } from "@rangex/editor";
 import { FontFamily, ReadOnly } from "@rangex/solid";
-import { createEffect, createMemo, createUniqueId } from "solid-js";
+import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -48,9 +48,8 @@ export const FontFamilyToolbarButton = () => {
 
 	const [fontFamilyHandle, fontFamilyControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getInputValueFromActiveValues(
-				$fontFamily.values(),
-				defaultFontFamily,
+			defaultValue: untrack(() =>
+				getInputValueFromActiveValues($fontFamily.values(), defaultFontFamily),
 			),
 		});
 

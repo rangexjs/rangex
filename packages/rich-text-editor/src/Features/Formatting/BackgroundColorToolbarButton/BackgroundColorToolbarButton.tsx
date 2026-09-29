@@ -4,6 +4,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	untrack,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
 import { useEditorContext } from "#context";
@@ -43,9 +44,9 @@ export const BackgroundColorToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const initialHslColors = getHslThemeColors({
-		colors: $backgroundColor.values(),
-	});
+	const initialHslColors = untrack(() =>
+		getHslThemeColors({ colors: $backgroundColor.values() }),
+	);
 	const initialColorMode = getColorMode(initialHslColors);
 
 	const [lightHsl, setLightHsl] = createSignal<HslFormat>(
@@ -56,7 +57,9 @@ export const BackgroundColorToolbarButton = () => {
 		initialHslColors.darkColors.at(0) ??
 			ColorFormat.fromColor({ color: "black" }).hslFormat(),
 	);
-	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(lightHsl());
+	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(
+		untrack(() => lightHsl()),
+	);
 	const [colorMode, setColorMode] = createSignal<ColorMode>(initialColorMode);
 	const initialActiveColors = getDeduplicatedColors([
 		...initialHslColors.lightColors,

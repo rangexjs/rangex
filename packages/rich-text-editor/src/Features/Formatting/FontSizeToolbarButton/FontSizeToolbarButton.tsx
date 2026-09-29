@@ -1,6 +1,6 @@
 import type { FormattingFontSizeValue } from "@rangex/editor";
 import { FontSize, ReadOnly } from "@rangex/solid";
-import { createEffect, createMemo, createUniqueId } from "solid-js";
+import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -65,9 +65,8 @@ export const FontSizeToolbarButton = () => {
 
 	const [fontSizeHandle, fontSizeControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getInputValueFromActiveValues(
-				$fontSize.values(),
-				defaultFontSize,
+			defaultValue: untrack(() =>
+				getInputValueFromActiveValues($fontSize.values(), defaultFontSize),
 			),
 		});
 
