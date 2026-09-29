@@ -1,6 +1,6 @@
-import type { SuggestionItems } from "./EmojiAdapter-types";
+import type { EmojiItems } from "./EmojiAdapter-types";
 
-export const defaultEmojiItems: SuggestionItems = [
+export const defaultEmojiItems: EmojiItems = [
 	{ emoji: "😀", name: "grinning" },
 	{ emoji: "😃", name: "smiley" },
 	{ emoji: "😄", name: "smile" },

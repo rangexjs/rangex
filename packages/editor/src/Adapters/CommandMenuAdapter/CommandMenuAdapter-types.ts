@@ -22,12 +22,12 @@ export type CommandMenuItemValue =
 	| "accordion-item"
 	| "separator";
 
-export interface SuggestionItem {
+export interface CommandMenuItem {
 	value: CommandMenuItemValue;
 	label: string;
 }
 
-export type SuggestionItems = SuggestionItem[];
+export type CommandMenuItems = CommandMenuItem[];
 
 export type OnBeforeSelectCallbackFn = () => void;
 
@@ -41,7 +41,7 @@ export interface CommandMenuConfigPort extends CommandMenuConfigPortProps {}
 
 export interface CommandMenuPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
-	readonly items: SuggestionItems;
+	readonly items: CommandMenuItems;
 
 	beforeSelect(): void;
 }
@@ -49,7 +49,7 @@ export interface CommandMenuPublicPortProps {
 export interface CommandMenuPublicPort extends CommandMenuPublicPortProps {}
 
 export interface CommandMenuInternals {
-	items: SuggestionItems;
+	items: CommandMenuItems;
 }
 
 export interface CommandMenuAdapter {

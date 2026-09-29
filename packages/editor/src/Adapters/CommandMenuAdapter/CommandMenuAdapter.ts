@@ -4,16 +4,16 @@ import type {
 	CommandMenuConfigPort,
 	CommandMenuConfigPortProps,
 	CommandMenuInternals,
+	CommandMenuItems,
 	CommandMenuItemValue,
 	CommandMenuPublicPort,
 	CommandMenuPublicPortProps,
 	CreateCommandMenuAdapterParams,
 	CreateCommandMenuAdapterResult,
 	OnBeforeSelectCallbackFn,
-	SuggestionItems,
 } from "./CommandMenuAdapter-types";
 
-const ALL_ITEMS: SuggestionItems = [
+const ALL_ITEMS: CommandMenuItems = [
 	{ value: "p", label: "Text" },
 	{ value: "h1", label: "Heading 1" },
 	{ value: "h2", label: "Heading 2" },
@@ -34,12 +34,12 @@ const ALL_ITEMS: SuggestionItems = [
 
 const resolveItems = (
 	values: CommandMenuItemValue[] | undefined,
-): SuggestionItems => {
+): CommandMenuItems => {
 	if (!values) {
 		return ALL_ITEMS;
 	}
 
-	const items: SuggestionItems = [];
+	const items: CommandMenuItems = [];
 
 	for (const value of values) {
 		const item = ALL_ITEMS.find((candidate) => candidate.value === value);

@@ -7,10 +7,10 @@ import type {
 	EmojiConfigPort,
 	EmojiConfigPortProps,
 	EmojiInternals,
+	EmojiItem,
 	EmojiPublicPort,
 	EmojiPublicPortProps,
 	OnSelectCallbackFn,
-	SuggestionItem,
 } from "./EmojiAdapter-types";
 
 export const createEmojiAdapter = (
@@ -54,7 +54,7 @@ export const createEmojiAdapter = (
 			return internals.items;
 		},
 
-		select(item: SuggestionItem) {
+		select(item: EmojiItem) {
 			selectEmitter.emit(item);
 		},
 	} satisfies EmojiPublicPortProps);

@@ -21,16 +21,16 @@ export type {
 	ThemedCodeLines,
 } from "#adapters/CodeBlock";
 export type {
+	CommandMenuItem,
+	CommandMenuItems,
 	CommandMenuItemValue,
 	CommandMenuPublicPort,
-	SuggestionItem as CommandMenuSuggestionItem,
-	SuggestionItems as CommandMenuSuggestionItems,
 } from "#adapters/CommandMenu";
 export type { EmbedPublicPort } from "#adapters/Embed";
 export type {
+	EmojiItem,
+	EmojiItems,
 	EmojiPublicPort,
-	SuggestionItem as EmojiSuggestionItem,
-	SuggestionItems as EmojiSuggestionItems,
 } from "#adapters/Emoji";
 export type {
 	EmptyMediaPublicPort,

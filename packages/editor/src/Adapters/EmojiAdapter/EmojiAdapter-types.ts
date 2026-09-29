@@ -4,36 +4,36 @@ import type {
 	CreateAdapterParams,
 } from "../_Utilities";
 
-export interface SuggestionItem {
+export interface EmojiItem {
 	emoji: string;
 	name: string;
 }
 
-export type SuggestionItems = SuggestionItem[];
+export type EmojiItems = EmojiItem[];
 
-export type OnSelectCallbackFn = (item: SuggestionItem) => void;
+export type OnSelectCallbackFn = (item: EmojiItem) => void;
 
 export interface EmojiConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
 
 	onSelect(callback: OnSelectCallbackFn): () => void;
 
-	findByName(name: string): SuggestionItem | undefined;
+	findByName(name: string): EmojiItem | undefined;
 }
 
 export interface EmojiConfigPort extends EmojiConfigPortProps {}
 
 export interface EmojiPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
-	readonly items: SuggestionItems;
+	readonly items: EmojiItems;
 
-	select(item: SuggestionItem): void;
+	select(item: EmojiItem): void;
 }
 
 export interface EmojiPublicPort extends EmojiPublicPortProps {}
 
 export interface EmojiInternals {
-	items: SuggestionItems;
+	items: EmojiItems;
 }
 
 export interface EmojiAdapter {
@@ -42,7 +42,7 @@ export interface EmojiAdapter {
 }
 
 export interface EmojiSettings {
-	items?: SuggestionItems;
+	items?: EmojiItems;
 }
 
 export interface CreateEmojiAdapterParams
