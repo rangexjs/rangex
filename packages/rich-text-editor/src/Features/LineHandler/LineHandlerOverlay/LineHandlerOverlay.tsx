@@ -21,7 +21,6 @@ export const LineHandlerOverlay = () => {
 		lineHandler.insertRootLine(position);
 	};
 
-	// TODO: replace `sm:` to media query (window.matchMedia)
 	const visible = createMemo(() => !$readOnly?.checked());
 
 	return (
