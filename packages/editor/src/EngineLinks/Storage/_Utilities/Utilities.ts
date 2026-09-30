@@ -1,5 +1,6 @@
 import type {
 	IsStorageParams,
+	NodeStorage,
 	ValidateStorageCallbackFn,
 } from "./Utilities-types";
 
@@ -37,4 +38,20 @@ export const validateStorage = (
 	}
 
 	return isValid;
+};
+
+/*
+ * Checks whether a value is any node's storage object at the current storage version. Only the shared fields are
+ * checked, so the node-specific fields are trusted to match the id.
+ */
+export const isNodeStorage = (storage: unknown): storage is NodeStorage => {
+	const isValidStorage =
+		typeof storage === "object" &&
+		storage !== null &&
+		"id" in storage &&
+		typeof storage.id === "string" &&
+		"version" in storage &&
+		storage.version === storageVersion;
+
+	return isValidStorage;
 };

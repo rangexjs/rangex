@@ -1,5 +1,6 @@
 import { createSnapshotView } from "rich-text-area";
 import { assertNever } from "#utilities";
+import { isNodeStorage } from "../../EngineLinks/Storage/_Utilities";
 import { buildViewStyleText } from "../../Styles";
 import type {
 	CreateElementParams,
@@ -7,8 +8,9 @@ import type {
 	CreateHTMLTreeResult,
 	CreateHTMLViewParams,
 	CreateHTMLViewResult,
+	CreateIdFn,
 	CreateTextParams,
-	Storage,
+	HTMLViewStorage,
 } from "./CreateHTMLView-types";
 
 export const storageId = "data-storage-id";
@@ -29,15 +31,13 @@ const selfClosing = new Set([
 	"wbr",
 ]);
 
-const generateId = () => {
+const generateId = (): CreateIdFn => {
 	let i = 0;
 
 	return () => {
 		return `${i++}`;
 	};
 };
-
-const createId = generateId();
 
 const escapeText = (text: string) => {
 	return text
@@ -58,15 +58,19 @@ const createText = ({ textView }: CreateTextParams) => {
 
 const createElement = ({
 	storage,
+	createId,
 	elementView,
 	childNodes,
 }: CreateElementParams) => {
 	const { customStorage, localName, attributes } = elementView;
 
-	const id = createId();
-	storage[id] = customStorage;
+	const attrs = { ...attributes };
 
-	const attrs = { ...attributes, [storageId]: id };
+	if (isNodeStorage(customStorage)) {
+		const id = createId();
+		storage[id] = customStorage;
+		attrs[storageId] = id;
+	}
 
 	const attrsList = Object.entries(attrs).map(
 		([name, value]) => ` ${name}="${escapeAttribute(String(value))}"`,
@@ -83,6 +87,7 @@ const createElement = ({
 
 const createHTMLTree = ({
 	storage,
+	createId,
 	nodeView,
 }: CreateHTMLTreeParams): CreateHTMLTreeResult => {
 	if (nodeView.type === "text") {
@@ -95,10 +100,17 @@ const createHTMLTree = ({
 
 	if (nodeView.type === "element") {
 		const childNodes = nodeView.childNodes
-			.map((childView) => createHTMLTree({ storage, nodeView: childView }))
+			.map((childView) =>
+				createHTMLTree({ storage, createId, nodeView: childView }),
+			)
 			.join("");
 
-		return createElement({ storage, elementView: nodeView, childNodes });
+		return createElement({
+			storage,
+			createId,
+			elementView: nodeView,
+			childNodes,
+		});
 	}
 
 	return assertNever(nodeView);
@@ -114,8 +126,14 @@ export const createHTMLView = ({
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
 	const { snapshotView } = createSnapshotView({ storedSnapshot });
 
-	const storage: Storage = {};
-	const html = createHTMLTree({ storage, nodeView: snapshotView.tree });
+	const storage: HTMLViewStorage = {};
+	const createId = generateId();
+
+	const html = createHTMLTree({
+		storage,
+		createId,
+		nodeView: snapshotView.tree,
+	});
 
 	const viewStyleText = buildViewStyleText(styles);
 	const viewStyles = snapshotView.styles + viewStyleText;

@@ -4,17 +4,21 @@ import type {
 	StoredSnapshot,
 	TextView,
 } from "rich-text-area";
+import type { NodeStorage } from "../../EngineLinks/Storage/_Utilities";
 
-export type Storage = Record<string, unknown>;
+export type HTMLViewStorage = Record<string, NodeStorage>;
+
+export type CreateIdFn = () => string;
 
 export interface HTMLView {
 	styles: string;
 	html: string;
-	storage: Storage;
+	storage: HTMLViewStorage;
 }
 
 export interface CreateElementParams {
-	storage: Storage;
+	storage: HTMLViewStorage;
+	createId: CreateIdFn;
 	elementView: ElementView;
 	childNodes: string;
 }
@@ -24,7 +28,8 @@ export interface CreateTextParams {
 }
 
 export interface CreateHTMLTreeParams {
-	storage: Storage;
+	storage: HTMLViewStorage;
+	createId: CreateIdFn;
 	nodeView: NodeView;
 }
 
