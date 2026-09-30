@@ -1,5 +1,4 @@
 import type { RangeXEditor } from "@rangex/editor";
-import { Dynamic } from "@solidjs/web";
 import { type Component, For } from "solid-js";
 import type { ToolbarButtonsLayout } from "#constants";
 import type { UIOptions } from "#context";
@@ -28,7 +27,7 @@ export const App: Component<AppProps> = (props) => {
 					/>
 					<div>{[props.host, props.floatingContainer]}</div>
 					<For each={props.components.floatingComponents}>
-						{(FloatingComponent) => <Dynamic component={FloatingComponent} />}
+						{(FloatingComponent) => <FloatingComponent />}
 					</For>
 				</EditorContainer>
 			</UIOptionsContext>
