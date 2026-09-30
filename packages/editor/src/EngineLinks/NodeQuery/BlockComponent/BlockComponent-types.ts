@@ -1,4 +1,4 @@
-import type { BlockComponent, EditorNode } from "rich-text-area";
+import type { BlockComponent, EditorNode } from "@rangex/core";
 import type { BlockComponentName } from "../../Constants";
 
 export interface GetClosestBlockComponentParams {

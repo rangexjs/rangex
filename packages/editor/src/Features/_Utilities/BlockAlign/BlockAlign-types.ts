@@ -1,4 +1,4 @@
-import type { BlockComponentLine } from "rich-text-area";
+import type { BlockComponentLine } from "@rangex/core";
 import type { blockAlignAttr } from "#engine-links";
 
 export type BlockAlignValue = keyof typeof blockAlignAttr.value;

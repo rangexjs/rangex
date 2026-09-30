@@ -1,4 +1,4 @@
-import type { EditorAPI, StoredSnapshot } from "rich-text-area";
+import type { EditorAPI, StoredSnapshot } from "@rangex/core";
 import type { AdapterOptions, AdapterPublicPorts } from "#adapters";
 import type { AdapterFactoryValue } from "./AdapterFactories";
 import type { Snapshot } from "./Snapshot";

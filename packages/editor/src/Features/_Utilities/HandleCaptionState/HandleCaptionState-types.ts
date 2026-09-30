@@ -1,4 +1,4 @@
-import type { BlockComponent, EditorAPI, HTMLLayout } from "rich-text-area";
+import type { BlockComponent, EditorAPI, HTMLLayout } from "@rangex/core";
 import type {
 	CaptionConfigPort,
 	CaptionPosition,

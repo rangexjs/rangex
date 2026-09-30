@@ -1,4 +1,4 @@
-import { createSnapshotView } from "rich-text-area";
+import { createSnapshotView } from "@rangex/core";
 import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
 import { buildViewStyleText } from "../../Styles";

@@ -2,7 +2,7 @@ import {
 	type BlockComponent,
 	blockComponentRole,
 	isEditorNode,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	CreateOverlayAppearanceHandlerParams,
 	CreateOverlayAppearanceHandlerResult,

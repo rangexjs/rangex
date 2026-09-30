@@ -2,7 +2,7 @@
 
 ## Type guards
 
-All type guards are exported from `"rich-text-area"`. They accept an `EditorNode` (or `EventTarget` for `isEditorNode`) and return `boolean`, narrowing the TypeScript type.
+All type guards are exported from `"@rangex/core"`. They accept an `EditorNode` (or `EventTarget` for `isEditorNode`) and return `boolean`, narrowing the TypeScript type.
 
 | Guard | True when `$$editorRole` is |
 |---|---|
@@ -41,7 +41,7 @@ In addition to the `DOMPublicPropsBase` props shared by all nodes (see [section 
 | `$$querySelectorAll(selector)` | All descendant `EditorElement`s matching selector, as an array |
 | `$$anchorName` | CSS anchor name for this element — use with CSS `anchor()` to position UI relative to it |
 
-Role selector constants exported from `"rich-text-area"` (e.g. `contentLineRoleSelector`, `glyphFormatterRoleSelector`, `inlineComponentRoleSelector`) are CSS selector strings for use with `$$closest` / `$$querySelector` / `$$querySelectorAll`.
+Role selector constants exported from `"@rangex/core"` (e.g. `contentLineRoleSelector`, `glyphFormatterRoleSelector`, `inlineComponentRoleSelector`) are CSS selector strings for use with `$$closest` / `$$querySelector` / `$$querySelectorAll`.
 
 ## Walking patterns
 
@@ -74,7 +74,7 @@ function getParentLine(node: EditorNode) {
 **Walk all GlyphFormatters inside a ContentLine:**
 
 ```ts
-import { glyphFormatterRoleSelector } from "rich-text-area";
+import { glyphFormatterRoleSelector } from "@rangex/core";
 
 const glyphFormatters = contentLine.$$querySelectorAll(glyphFormatterRoleSelector);
 ```
@@ -82,7 +82,7 @@ const glyphFormatters = contentLine.$$querySelectorAll(glyphFormatterRoleSelecto
 **Check whether a node is reachable by boundary points:**
 
 ```ts
-import { isContentFlowNode } from "rich-text-area";
+import { isContentFlowNode } from "@rangex/core";
 
 if (isContentFlowNode(node)) {
   // safe to use as fromNode / toNode in editorAPI methods

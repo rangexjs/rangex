@@ -1,4 +1,4 @@
-import type { ContentLineLocalNamesStyle } from "rich-text-area";
+import type { ContentLineLocalNamesStyle } from "@rangex/core";
 
 export interface GetDefaultContentLineLocalNamesStylesResult
 	extends ContentLineLocalNamesStyle {}

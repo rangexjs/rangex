@@ -3,7 +3,7 @@ import type {
 	BlockComponentLine,
 	Line,
 	NestedEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface GetAccordionItemPartsParams {
 	accordionItem: BlockComponentLine | BlockComponent;

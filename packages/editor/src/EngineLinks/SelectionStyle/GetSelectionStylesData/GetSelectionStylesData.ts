@@ -1,4 +1,4 @@
-import { createStructuredStyleValue } from "rich-text-area";
+import { createStructuredStyleValue } from "@rangex/core";
 import type { FormattingTogglePressed } from "#adapters/Formatting";
 import { assertNever } from "#utilities";
 import type {

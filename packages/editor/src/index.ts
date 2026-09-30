@@ -1,4 +1,4 @@
-export type { EditorAPI, ListLocalName, StoredSnapshot } from "rich-text-area";
+export type { EditorAPI, ListLocalName, StoredSnapshot } from "@rangex/core";
 export type {
 	BlockAlignValue,
 	CaptionPosition,

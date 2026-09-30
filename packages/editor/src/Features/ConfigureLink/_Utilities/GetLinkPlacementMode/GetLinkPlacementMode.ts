@@ -1,4 +1,4 @@
-import { EditorRange } from "rich-text-area";
+import { EditorRange } from "@rangex/core";
 import { componentsName, getClosestScopedEditable } from "#engine-links";
 import type {
 	GetLinkPlacementModeParams,

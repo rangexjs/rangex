@@ -5,7 +5,7 @@
 Call `createEditorAPI()` to build an editor. It returns an `editorAPI` object.
 
 ```ts
-import { createEditorAPI } from "rich-text-area";
+import { createEditorAPI } from "@rangex/core";
 
 const { editorAPI } = createEditorAPI({
 	rootEditableFrom: { type: "node", node: rootEditable },

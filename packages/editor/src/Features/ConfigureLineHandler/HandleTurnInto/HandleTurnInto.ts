@@ -10,7 +10,7 @@ import {
 	listRoleSelector,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { type BlockComponentName, componentsName } from "#engine-links";
 import { assertNever } from "#utilities";
 import {

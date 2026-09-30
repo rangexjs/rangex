@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 	createNestedEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createBlockQuoteStorage } from "#storage";
 import type {

@@ -5,7 +5,7 @@ import {
 	listRoleSelector,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createCodeBlock } from "../../_Utilities";
 import type { HandleCodeBlockPlacementParams } from "./HandleCodeBlockPlacement-types";
 

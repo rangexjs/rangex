@@ -2,7 +2,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-} from "rich-text-area";
+} from "@rangex/core";
 import { getEmojiQuery } from "../_Utilities";
 import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-types";
 

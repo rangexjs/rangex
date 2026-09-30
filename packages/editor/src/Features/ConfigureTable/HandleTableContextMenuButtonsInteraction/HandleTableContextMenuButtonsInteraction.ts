@@ -4,7 +4,7 @@ import {
 	type TableSectionLocalName,
 	tableRole,
 	tableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	getCommonTableCellFromSelection,
 	getCommonTableFromSelection,

@@ -1,4 +1,4 @@
-import type { ScopedEditable } from "rich-text-area";
+import type { ScopedEditable } from "@rangex/core";
 
 export interface IsScopedEditableEmptyParams {
 	scopedEditable: ScopedEditable;

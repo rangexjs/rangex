@@ -1,4 +1,4 @@
-import type { BlockComponentLine } from "rich-text-area";
+import type { BlockComponentLine } from "@rangex/core";
 
 export interface CreateAudioParams {
 	src: string;

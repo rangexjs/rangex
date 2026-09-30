@@ -1,4 +1,4 @@
-import type { EditorNode, Line } from "rich-text-area";
+import type { EditorNode, Line } from "@rangex/core";
 
 export interface ReplaceContentLineIfNeededParams {
 	blockLevelLine: Line;

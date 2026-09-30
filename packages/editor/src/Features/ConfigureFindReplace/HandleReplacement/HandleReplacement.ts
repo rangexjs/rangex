@@ -1,4 +1,4 @@
-import { createFormattableTexts } from "rich-text-area";
+import { createFormattableTexts } from "@rangex/core";
 import { componentsName } from "#engine-links";
 import type { HandleReplacementParams } from "./HandleReplacement-types";
 

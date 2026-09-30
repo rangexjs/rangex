@@ -2,7 +2,7 @@ import {
 	isEditorElement,
 	isEditorNode,
 	nestedEditableRole,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { HandleAccordionItemSummaryToggleParams } from "./HandleAccordionItemSummaryToggle-types";
 
 /*

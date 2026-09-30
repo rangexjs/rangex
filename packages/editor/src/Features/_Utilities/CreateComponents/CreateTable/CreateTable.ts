@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName, getCSSText } from "#engine-links";
 import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";

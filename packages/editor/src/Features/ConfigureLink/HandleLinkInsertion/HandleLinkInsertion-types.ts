@@ -1,8 +1,4 @@
-import type {
-	EditorAPI,
-	EditorSelection,
-	InlineComponent,
-} from "rich-text-area";
+import type { EditorAPI, EditorSelection, InlineComponent } from "@rangex/core";
 import type { LinkConfigPort } from "#adapters/Link";
 import type { PopoverOverlayController } from "#engine-links";
 

@@ -1,4 +1,4 @@
-import type { EditorAPI } from "rich-text-area";
+import type { EditorAPI } from "@rangex/core";
 import type { MentionConfigPort } from "#adapters/Mention";
 
 export interface HandleMentionSelectParams {

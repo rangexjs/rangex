@@ -1,4 +1,4 @@
-import type { EditorAPI, EditorText } from "rich-text-area";
+import type { EditorAPI, EditorText } from "@rangex/core";
 import type { CaretMenuConfigPort } from "#adapters";
 
 export interface GetCaretMenuQueryParams {

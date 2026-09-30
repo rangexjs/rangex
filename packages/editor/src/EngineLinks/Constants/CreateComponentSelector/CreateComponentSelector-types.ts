@@ -1,7 +1,7 @@
 import type {
 	blockComponentAttrName,
 	inlineComponentAttrName,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	BlockComponentName,
 	ComponentName,

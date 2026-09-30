@@ -1,4 +1,4 @@
-import type { EditorAPI, Table, TableCell } from "rich-text-area";
+import type { EditorAPI, Table, TableCell } from "@rangex/core";
 import type { TableConfigPort } from "#adapters/Table";
 
 export interface GetActiveTableCellsParams {

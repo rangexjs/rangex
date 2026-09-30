@@ -1,4 +1,4 @@
-import { createContentLine } from "rich-text-area";
+import { createContentLine } from "@rangex/core";
 import { ensureNodeRootStorage } from "#storage";
 import { createTemplateVariable } from "../../_Utilities";
 import { getTemplateVariableDisplayText } from "../_Utilities";

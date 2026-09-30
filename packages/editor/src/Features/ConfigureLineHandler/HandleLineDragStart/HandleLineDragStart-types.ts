@@ -1,4 +1,4 @@
-import type { EditorAPI, Line } from "rich-text-area";
+import type { EditorAPI, Line } from "@rangex/core";
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
 
 export type GetCurrentLineFn = () => Line | null;

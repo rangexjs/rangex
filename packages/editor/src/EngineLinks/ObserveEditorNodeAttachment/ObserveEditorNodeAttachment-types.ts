@@ -1,4 +1,4 @@
-import type { EditorAPI, EditorNode } from "rich-text-area";
+import type { EditorAPI, EditorNode } from "@rangex/core";
 
 interface OnMutationCallbackParams {
 	attachedNodes: EditorNode[];

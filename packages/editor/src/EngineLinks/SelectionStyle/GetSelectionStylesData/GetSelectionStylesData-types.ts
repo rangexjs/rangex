@@ -2,7 +2,7 @@ import type {
 	MergedFormatsStyles,
 	TextFormatInlineTags,
 	UpdateSelectionStylesParams,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	FormattingActionState,
 	FormattingStructuredColor,

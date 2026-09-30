@@ -4,7 +4,7 @@ import {
 	createEditorAPI,
 	createRootEditable,
 	migrateStoredSnapshot,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createRootStorage } from "#storage";
 import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
 import type {

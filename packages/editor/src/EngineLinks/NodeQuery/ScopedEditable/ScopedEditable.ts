@@ -1,4 +1,4 @@
-import { type EditorNode, isScopedEditable } from "rich-text-area";
+import { type EditorNode, isScopedEditable } from "@rangex/core";
 import type {
 	GetClosestCommonScopedEditableParams,
 	GetClosestCommonScopedEditableResult,

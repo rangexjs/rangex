@@ -2,7 +2,7 @@ import {
 	isEditorElement,
 	tableCellRole,
 	tableCellRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	GetClosestTableCellParams,
 	GetClosestTableCellResult,

@@ -2,7 +2,7 @@ import {
 	blockComponentLineRole,
 	blockComponentRole,
 	blockComponentRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { handleComponentUnwrap } from "../../_Utilities";
 import type { HandleLineUnwrapParams } from "./HandleLineUnwrap-types";
 

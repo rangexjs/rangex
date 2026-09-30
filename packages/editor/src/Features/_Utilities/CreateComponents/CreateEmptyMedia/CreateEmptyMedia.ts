@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createDetachedContext,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createEmptyMediaStorage } from "#storage";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";

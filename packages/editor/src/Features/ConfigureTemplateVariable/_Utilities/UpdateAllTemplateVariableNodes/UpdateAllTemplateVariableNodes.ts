@@ -5,7 +5,7 @@ import {
 	createFormattableTexts,
 	inlineComponentRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName, createComponentSelector } from "#engine-links";
 import { validateTemplateVariableStorage } from "#storage";
 import { getTemplateVariableDisplayText } from "../GetTemplateVariableDisplayText";

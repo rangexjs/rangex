@@ -2,7 +2,7 @@ import {
 	contentLineRole,
 	contentLineRoleSelector,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	GetDisplayTextFromLinkParams,

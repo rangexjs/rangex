@@ -1,4 +1,4 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
+import { editorSelectionChangeEventType } from "@rangex/core";
 import { ensureNodeRootStorage } from "#storage";
 import { canInsertTemplateVariable } from "../_Utilities";
 import type { HandleTemplateVariablePlacementStateParams } from "./HandleTemplateVariablePlacementState-types";

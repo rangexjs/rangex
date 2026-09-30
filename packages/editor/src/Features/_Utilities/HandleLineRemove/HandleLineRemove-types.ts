@@ -1,4 +1,4 @@
-import type { EditorAPI, Line } from "rich-text-area";
+import type { EditorAPI, Line } from "@rangex/core";
 import type { RemoveConfigPort } from "#adapters";
 
 export type GetCurrentLineFn = () => Line | null;

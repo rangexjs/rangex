@@ -12,14 +12,14 @@ RangeX is a rich text editor engine that manages all editor logic: text manipula
 
 **Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read `packages/editor/docs/core/_References.md` — it is the authoritative reference for everything the engine exposes. Do not guess engine behavior from usage patterns when these docs are available.
 
-**Engine types** are in `packages/rich-text-area/dist/index.d.ts` (all types re-exported from a single entry point). This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
+**Engine types** are in `packages/core/dist/index.d.ts` (all types re-exported from a single entry point). This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
 
 This repo (`rangex-dev`) serves three purposes:
 1. **Zero-config editor** — `@rangex/rich-text-editor` provides a ready-to-use editor built on the engine with no setup required
 2. **Demo** — showcases the engine's capabilities (formatting, components, etc.) so developers can evaluate RangeX before building on it
 3. **Reference implementation** — shows developers how to wire the engine to build a custom editor
 
-The engine itself (`rich-text-area`) is closed-source. Most editor features live in this repo, layered on top of it.
+The engine itself (`@rangex/core`, the "core" package) is closed-source. Most editor features live in this repo, layered on top of it.
 
 ## Repository structure
 
@@ -27,13 +27,13 @@ This is a monorepo (Bun workspaces) for the RangeX rich text editor project:
 
 | Package | Path | Notes |
 |---|---|---|
-| `rich-text-area` | `packages/rich-text-area/` | Close-source engine — separate private repo, gitignored here, must be cloned separately |
+| `@rangex/core` | `packages/core/` | Closed-source engine — separate private repo, gitignored here, must be cloned separately |
 | `@rangex/editor` | `packages/editor/` | Framework-agnostic layer over the engine: adapters, `createEditor`, snapshot/HTML views. The only package that depends on the engine directly; re-exports the engine types other packages need. |
 | `@rangex/solid` | `packages/solid/` | SolidJS bindings for `@rangex/editor`: per-extension reactive ports (`ReactivePorts/`) plus shared Solid utilities such as `FloatingPortal`. |
 | `@rangex/syntax-highlighter-shiki` | `packages/syntax-highlighter-shiki/` | Shiki-based code block highlighting for the editor (worker) and the HTML view (sync). |
 | `@rangex/rich-text-editor` | `packages/rich-text-editor/` | Zero-config editor built on `@rangex/editor` and `@rangex/solid`: extensions, toolbar and floating UI. |
 
-Dependencies are one-way. `rich-text-area` is used only by `@rangex/editor`. `@rangex/solid` extends `@rangex/editor` with Solid bindings — it does not replace it. `@rangex/rich-text-editor` uses both `@rangex/editor` and `@rangex/solid`, and `@rangex/syntax-highlighter-shiki` builds on `@rangex/editor`. Packages built on `@rangex/editor` take it (and Solid, where used) as a peer dependency. All packages are currently `private: true` (pre-release).
+Dependencies are one-way. `@rangex/core` is used only by `@rangex/editor`. `@rangex/solid` extends `@rangex/editor` with Solid bindings — it does not replace it. `@rangex/rich-text-editor` uses both `@rangex/editor` and `@rangex/solid`, and `@rangex/syntax-highlighter-shiki` builds on `@rangex/editor`. Packages built on `@rangex/editor` take it (and Solid, where used) as a peer dependency. All packages are currently `private: true` (pre-release).
 
 The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/MockDatabase`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
 
@@ -52,10 +52,10 @@ bun run dev
 
 **Per-package build** (run inside the package directory):
 ```bash
-bun run build           # rich-text-area, rich-text-editor
+bun run build           # core, rich-text-editor
 ```
 
-**Tests** (rich-text-area and rich-text-editor — no test files exist yet for the UI layer):
+**Tests** (core and rich-text-editor — no test files exist yet for the UI layer):
 ```bash
 bun run test                        # all tests
 bun run test -- <pattern>           # single file by name/path

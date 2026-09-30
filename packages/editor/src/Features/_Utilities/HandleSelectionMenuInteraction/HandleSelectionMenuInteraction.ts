@@ -1,4 +1,4 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
+import { editorSelectionChangeEventType } from "@rangex/core";
 import { createPopoverOverlayController } from "#engine-links";
 import type {
 	HandleSelectionMenuInteractionParams,

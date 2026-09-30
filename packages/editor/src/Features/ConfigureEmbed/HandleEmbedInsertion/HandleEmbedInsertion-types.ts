@@ -1,4 +1,4 @@
-import type { EditorAPI } from "rich-text-area";
+import type { EditorAPI } from "@rangex/core";
 import type { EmbedConfigPort } from "#adapters/Embed";
 import type { BlockComponentPlacement } from "#engine-links";
 

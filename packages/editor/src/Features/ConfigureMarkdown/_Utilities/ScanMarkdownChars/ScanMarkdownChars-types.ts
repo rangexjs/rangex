@@ -1,4 +1,4 @@
-import type { EditorAPI, EditorText, PlainTextScanStep } from "rich-text-area";
+import type { EditorAPI, EditorText, PlainTextScanStep } from "@rangex/core";
 
 export interface ScanMarkdownCharsParams {
 	editorAPI: EditorAPI;

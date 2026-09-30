@@ -27,7 +27,7 @@ The `$$`-prefixed mutation methods on each node use these types as their paramet
 
 - `$$allowedComponents` — a `Component` whose `$$name` is not in the list is automatically unwrapped (its content moved to the parent, the element removed)
 - `$$allowedContentLineLocalNames` — a block `ContentLine` with a `localName` not in the list has its tag changed to `"p"`. Inline `"span"` ContentLines are not subject to this normalization.
-- `$$allowedContentLineStyleAttrNames` — style attributes on a `ContentLine` not in the list are removed
+- `$$allowedContentLineStyleAttrNames` — style attributes on a block `ContentLine` not in the list are reset to the default for its `localName` (from `$$contentLineLocalNamesStyle`), not removed — block `ContentLine`s always carry every style key. Inline `"span"` ContentLines are not subject to this normalization.
 - `$$allowedGlyphFormatterStyleAttrNames` — style attributes on a `GlyphFormatter` not in the list are removed
 - `$$allowedGlyphFormatterInlineTags` — inline tags on a `GlyphFormatter` not in the list are removed
 

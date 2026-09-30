@@ -1,4 +1,4 @@
-import { contentLineRole, isEditorElement } from "rich-text-area";
+import { contentLineRole, isEditorElement } from "@rangex/core";
 import type {
 	GetClosestContentLineParams,
 	GetClosestContentLineResult,

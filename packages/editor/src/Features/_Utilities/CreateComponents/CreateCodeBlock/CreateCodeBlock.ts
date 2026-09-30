@@ -5,7 +5,7 @@ import {
 	createDetachedContext,
 	createHTMLLayout,
 	createList,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createCodeBlockStorage } from "#storage";
 import type {

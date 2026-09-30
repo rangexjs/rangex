@@ -1,4 +1,4 @@
-import type { EditorAPI, TableCell } from "rich-text-area";
+import type { EditorAPI, TableCell } from "@rangex/core";
 import type { AnchoredOverlayController } from "#engine-links";
 
 export interface PositionToTableCellParams {

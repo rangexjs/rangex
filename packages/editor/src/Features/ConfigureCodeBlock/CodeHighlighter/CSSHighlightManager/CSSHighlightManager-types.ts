@@ -1,4 +1,4 @@
-import type { List } from "rich-text-area";
+import type { List } from "@rangex/core";
 
 export type CodeBlockMap = WeakMap<
 	List,

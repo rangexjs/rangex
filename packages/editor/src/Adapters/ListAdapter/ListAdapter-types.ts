@@ -1,4 +1,4 @@
-import type { BlockComponent, ListLocalName } from "rich-text-area";
+import type { BlockComponent, ListLocalName } from "@rangex/core";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,

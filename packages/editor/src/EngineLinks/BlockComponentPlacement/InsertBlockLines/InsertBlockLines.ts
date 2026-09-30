@@ -1,4 +1,4 @@
-import { beamTextRole, contentLineRole } from "rich-text-area";
+import { beamTextRole, contentLineRole } from "@rangex/core";
 import { getClosestBlockLevelLine } from "../../NodeQuery";
 import type {
 	InsertBlockLinesParams,

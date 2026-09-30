@@ -2,7 +2,7 @@ import type {
 	EditorNode,
 	NestedEditable,
 	NestedEditableDisplay,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface GetClosestNestedEditableParams {
 	fromNode: EditorNode;

@@ -1,4 +1,4 @@
-import { isEditorElement, nestedEditableRole } from "rich-text-area";
+import { isEditorElement, nestedEditableRole } from "@rangex/core";
 import type {
 	GetClosestNestedEditableParams,
 	GetClosestNestedEditableResult,

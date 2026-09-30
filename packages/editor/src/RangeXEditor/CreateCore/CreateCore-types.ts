@@ -1,4 +1,4 @@
-import type { CreateRootEditableFrom, StoredSnapshot } from "rich-text-area";
+import type { CreateRootEditableFrom, StoredSnapshot } from "@rangex/core";
 
 export interface CreateRootEditableFromParams {
 	storedSnapshot: StoredSnapshot | undefined;

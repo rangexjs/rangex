@@ -1,3 +1,3 @@
-export type { SnapshotView } from "rich-text-area";
-export { createSnapshotView } from "rich-text-area";
+export type { SnapshotView } from "@rangex/core";
+export { createSnapshotView } from "@rangex/core";
 export * from "./CreateHTMLView";

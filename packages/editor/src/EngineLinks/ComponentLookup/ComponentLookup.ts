@@ -1,4 +1,4 @@
-import { type EditorElement, EditorRange, isComponent } from "rich-text-area";
+import { type EditorElement, EditorRange, isComponent } from "@rangex/core";
 import type {
 	ComponentByName,
 	ComponentLookup,

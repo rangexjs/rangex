@@ -1,4 +1,4 @@
-import { EditorRange, editorSelectionChangeEventType } from "rich-text-area";
+import { EditorRange, editorSelectionChangeEventType } from "@rangex/core";
 import { observeEditorNodeAttachment } from "#engine-links";
 import type {
 	CloseOnLinkRemovalParams,

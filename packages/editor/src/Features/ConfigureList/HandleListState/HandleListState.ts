@@ -1,4 +1,4 @@
-import { listRole, listRoleSelector } from "rich-text-area";
+import { listRole, listRoleSelector } from "@rangex/core";
 import { handleSelectionContextChange } from "../../_Utilities";
 import type {
 	GetComponentListParams,

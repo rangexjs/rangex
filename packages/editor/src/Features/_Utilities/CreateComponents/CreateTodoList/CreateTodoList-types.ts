@@ -1,4 +1,4 @@
-import type { BlockComponentLine, Line } from "rich-text-area";
+import type { BlockComponentLine, Line } from "@rangex/core";
 
 export interface CreateTodoListParams {
 	childNodes?: Line[];

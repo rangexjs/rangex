@@ -1,4 +1,4 @@
-import type { EditorNode, Table } from "rich-text-area";
+import type { EditorNode, Table } from "@rangex/core";
 
 export interface GetClosestTableParams {
 	fromNode: EditorNode;

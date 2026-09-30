@@ -8,7 +8,7 @@ import {
 	listRole,
 	listRoleSelector,
 	snapshotIndexChangeEventType,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	componentsName,
 	createComponentSelector,

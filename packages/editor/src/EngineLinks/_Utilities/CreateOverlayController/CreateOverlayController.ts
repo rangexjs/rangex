@@ -1,5 +1,5 @@
 /// <reference path="./CloseWatcher.d.ts" />
-import { dataAnchorName } from "rich-text-area";
+import { dataAnchorName } from "@rangex/core";
 import {
 	addERClass,
 	forceReflowWithoutTransition,

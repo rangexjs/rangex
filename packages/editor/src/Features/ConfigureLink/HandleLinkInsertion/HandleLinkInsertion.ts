@@ -3,7 +3,7 @@ import {
 	contentLineRoleSelector,
 	createContentLine,
 	type InlineComponent,
-} from "rich-text-area";
+} from "@rangex/core";
 import { assertNever } from "#utilities";
 import { createLink } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";

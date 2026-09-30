@@ -3,7 +3,7 @@ import {
 	blockComponentRole,
 	detachedContextRole,
 	isEditorNode,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	componentsName,
 	createComponentSelector,

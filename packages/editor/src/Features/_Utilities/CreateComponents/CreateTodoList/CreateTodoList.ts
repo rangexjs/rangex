@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 	createList,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	blockAlignAttr,
 	componentsName,

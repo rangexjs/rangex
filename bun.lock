@@ -5,6 +5,7 @@
     "": {
       "name": "@rangexjs/rangex-dev",
       "dependencies": {
+        "@rangex/core": "workspace:*",
         "@rangex/editor": "workspace:*",
         "@rangex/rich-text-editor": "workspace:*",
         "@rangex/solid": "workspace:*",
@@ -13,7 +14,6 @@
         "@shikijs/themes": "^4.3.1",
         "@solidjs/web": "2.0.0-rc.13",
         "@tailwindcss/vite": "^4.3.3",
-        "rich-text-area": "workspace:*",
         "solid-js": "2.0.0-rc.13",
         "tailwindcss": "^4.3.3",
       },
@@ -24,12 +24,9 @@
         "vite": "^8.1.5",
       },
     },
-    "packages/editor": {
-      "name": "@rangex/editor",
+    "packages/core": {
+      "name": "@rangex/core",
       "version": "0.0.0",
-      "dependencies": {
-        "rich-text-area": "workspace:*",
-      },
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@happy-dom/global-registrator": "^20.10.6",
@@ -41,9 +38,12 @@
         "vitest": "^4.1.10",
       },
     },
-    "packages/rich-text-area": {
-      "name": "rich-text-area",
-      "version": "1.0.0",
+    "packages/editor": {
+      "name": "@rangex/editor",
+      "version": "0.0.0",
+      "dependencies": {
+        "@rangex/core": "workspace:*",
+      },
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@happy-dom/global-registrator": "^20.10.6",
@@ -255,6 +255,8 @@
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.1.6", "", { "dependencies": { "@tybys/wasm-util": "^0.10.3" }, "peerDependencies": { "@emnapi/core": "^1.7.1", "@emnapi/runtime": "^1.7.1" } }, "sha512-ZLv/JdUfkvOy9eCnnBaGfiO+XimbjebAeO+MRQqD/B+FR1tnRN0tpKSJHRbE8sFfS6aqsXZ67TQjfwfsxULVbg=="],
 
     "@oxc-project/types": ["@oxc-project/types@0.139.0", "", {}, "sha512-r9gHphtCs+1M7J0pw6Sn/hh/Wpa/iQrOOkrNAlVLF/gHq+/CJmHIWKKUUhdWjcD6CIa8idarspCsASiXCXvFUw=="],
+
+    "@rangex/core": ["@rangex/core@workspace:packages/core"],
 
     "@rangex/editor": ["@rangex/editor@workspace:packages/editor"],
 
@@ -619,8 +621,6 @@
     "regex-recursion": ["regex-recursion@6.0.2", "", { "dependencies": { "regex-utilities": "^2.3.0" } }, "sha512-0YCaSCq2VRIebiaUviZNs0cBz1kg5kVS2UKUfNIx8YVs1cN3AV7NTctO5FOKBA+UT2BPJIWZauYHPqJODG50cg=="],
 
     "regex-utilities": ["regex-utilities@2.3.0", "", {}, "sha512-8VhliFJAWRaUiVvREIiW2NXXTmHs4vMNnSzuJVhscgmGav3g9VDxLrQndI3dZZVVdp0ZO/5v0xmX516/7M9cng=="],
-
-    "rich-text-area": ["rich-text-area@workspace:packages/rich-text-area"],
 
     "rolldown": ["rolldown@1.1.5", "", { "dependencies": { "@oxc-project/types": "=0.139.0", "@rolldown/pluginutils": "^1.0.0" }, "optionalDependencies": { "@rolldown/binding-android-arm64": "1.1.5", "@rolldown/binding-darwin-arm64": "1.1.5", "@rolldown/binding-darwin-x64": "1.1.5", "@rolldown/binding-freebsd-x64": "1.1.5", "@rolldown/binding-linux-arm-gnueabihf": "1.1.5", "@rolldown/binding-linux-arm64-gnu": "1.1.5", "@rolldown/binding-linux-arm64-musl": "1.1.5", "@rolldown/binding-linux-ppc64-gnu": "1.1.5", "@rolldown/binding-linux-s390x-gnu": "1.1.5", "@rolldown/binding-linux-x64-gnu": "1.1.5", "@rolldown/binding-linux-x64-musl": "1.1.5", "@rolldown/binding-openharmony-arm64": "1.1.5", "@rolldown/binding-wasm32-wasi": "1.1.5", "@rolldown/binding-win32-arm64-msvc": "1.1.5", "@rolldown/binding-win32-x64-msvc": "1.1.5" }, "bin": { "rolldown": "./bin/cli.mjs" } }, "sha512-t9z29cJjXf/vxQ8dyhCSpt6H6aSwHTk8cT5I3iy6SMXuFpk5mB6PL6XfC8PCwrPTx93udwKUm9HRteAlTGBLiA=="],
 

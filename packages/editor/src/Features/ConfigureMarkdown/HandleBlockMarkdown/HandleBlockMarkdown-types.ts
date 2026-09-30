@@ -3,7 +3,7 @@ import type {
 	BlockContentLineLocalName,
 	EditorAPI,
 	ListLocalName,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { MarkdownConfigPort } from "#adapters/Markdown";
 import type { BlockComponentPlacement } from "#engine-links";
 import type { CodeBlockTheme } from "#storage";

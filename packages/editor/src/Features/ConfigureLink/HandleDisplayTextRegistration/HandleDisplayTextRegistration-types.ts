@@ -1,4 +1,4 @@
-import type { EditorAPI, InlineComponent } from "rich-text-area";
+import type { EditorAPI, InlineComponent } from "@rangex/core";
 import type { LinkConfigPort, LinkDisplayText } from "#adapters/Link";
 
 export interface HandleDisplayTextRegistrationParams {

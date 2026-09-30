@@ -1,4 +1,4 @@
-import type { BlockComponent } from "rich-text-area";
+import type { BlockComponent } from "@rangex/core";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,

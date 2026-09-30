@@ -6,7 +6,7 @@ import {
 	createStructuredStyleValue,
 	type HTMLLayout,
 	htmlLayoutRole,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { CaptionPosition } from "#adapters";
 import type { TextAlignStructuredStyleValue } from "#engine-links";
 import { getEmbedElement } from "../GetEmbedElements";

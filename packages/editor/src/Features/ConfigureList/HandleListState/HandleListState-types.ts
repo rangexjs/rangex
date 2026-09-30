@@ -1,4 +1,4 @@
-import type { BlockComponent, EditorAPI } from "rich-text-area";
+import type { BlockComponent, EditorAPI } from "@rangex/core";
 import type { ListConfigPort } from "#adapters/List";
 
 export interface HandleListStateParams {

@@ -1,4 +1,4 @@
-import type { PlainTextScanStep } from "rich-text-area";
+import type { PlainTextScanStep } from "@rangex/core";
 import type {
 	ScanMarkdownCharsParams,
 	ScanMarkdownCharsResult,

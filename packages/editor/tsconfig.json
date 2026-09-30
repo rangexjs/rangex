@@ -1,6 +1,6 @@
 {
 	"extends": "./tsconfig.base.json",
-	"references": [{ "path": "../rich-text-area/tsconfig.lib.json" }],
+	"references": [{ "path": "../core/tsconfig.lib.json" }],
 	"compilerOptions": {
 		"noEmit": true,
 		"customConditions": ["development"]

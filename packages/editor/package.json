@@ -104,6 +104,6 @@
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"rich-text-area": "workspace:*"
+		"@rangex/core": "workspace:*"
 	}
 }

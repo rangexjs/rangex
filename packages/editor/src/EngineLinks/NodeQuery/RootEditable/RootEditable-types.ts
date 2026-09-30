@@ -2,7 +2,7 @@ import type {
 	EditorNode,
 	RootEditable,
 	RootEditableDisplay,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface GetClosestRootEditableParams {
 	fromNode: EditorNode;

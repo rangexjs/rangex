@@ -2,7 +2,7 @@ import {
 	EditorRange,
 	editorSelectionChangeEventType,
 	selectionOutEventType,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	createAnchoredOverlayController,
 	positionToSelection,

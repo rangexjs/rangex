@@ -1,4 +1,4 @@
-import type { Component, EditorAPI } from "rich-text-area";
+import type { Component, EditorAPI } from "@rangex/core";
 import type { UnwrapConfigPort } from "#adapters";
 
 export interface HandleComponentUnwrapParams {

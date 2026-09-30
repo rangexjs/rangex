@@ -78,7 +78,7 @@ Unlike the native Selection API, `EditorSelection` uses `from` / `to` boundary p
 Construct it directly:
 
 ```ts
-import { EditorRange } from "rich-text-area";
+import { EditorRange } from "@rangex/core";
 
 const range = new EditorRange({ fromNode, fromOffset, toNode, toOffset });
 // fromNode / toNode accept ContentFlowNode — resolved to EditorText internally

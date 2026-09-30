@@ -5,7 +5,7 @@ import type {
 	Line,
 	List,
 	NestedEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	LineHandlerConfigPort,
 	TurnIntoPlacementOption,

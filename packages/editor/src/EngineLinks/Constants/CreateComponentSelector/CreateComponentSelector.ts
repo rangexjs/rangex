@@ -1,7 +1,4 @@
-import {
-	blockComponentAttrName,
-	inlineComponentAttrName,
-} from "rich-text-area";
+import { blockComponentAttrName, inlineComponentAttrName } from "@rangex/core";
 import { assertNever } from "#utilities";
 import {
 	type ComponentName,

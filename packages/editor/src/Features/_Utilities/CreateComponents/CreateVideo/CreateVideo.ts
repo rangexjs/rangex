@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createHTMLLayout,
-} from "rich-text-area";
+} from "@rangex/core";
 import {
 	aspectRatioAttr,
 	blockAlignAttr,

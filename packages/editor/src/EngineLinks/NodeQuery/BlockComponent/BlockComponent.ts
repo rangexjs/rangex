@@ -1,4 +1,4 @@
-import { blockComponentRole, isEditorElement } from "rich-text-area";
+import { blockComponentRole, isEditorElement } from "@rangex/core";
 import type {
 	GetClosestBlockComponentParams,
 	GetClosestBlockComponentResult,
