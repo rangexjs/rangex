@@ -4,11 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createAudioStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createAudioStorage } from "#storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 /*

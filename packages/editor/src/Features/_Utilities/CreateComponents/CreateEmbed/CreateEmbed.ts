@@ -4,12 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	createEmbedStorage,
-} from "#engine-links";
+import { aspectRatioAttr, blockAlignAttr, componentsName } from "#engine-links";
+import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
 // Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are

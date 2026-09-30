@@ -1,6 +1,6 @@
 import { createSnapshotView } from "rich-text-area";
+import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
-import { isNodeStorage } from "../../EngineLinks/Storage/_Utilities";
 import { buildViewStyleText } from "../../Styles";
 import type {
 	CreateElementParams,

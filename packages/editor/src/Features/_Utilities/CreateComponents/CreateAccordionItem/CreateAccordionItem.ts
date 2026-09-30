@@ -10,12 +10,8 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	CaretCircleLeft,
-	componentsName,
-	createAccordionItemStorage,
-} from "#engine-links";
+import { blockAlignAttr, CaretCircleLeft, componentsName } from "#engine-links";
+import { createAccordionItemStorage } from "#storage";
 import { createUploadSVG } from "../../CreateUploadSVG";
 import type {
 	CreateAccordionItemParams,

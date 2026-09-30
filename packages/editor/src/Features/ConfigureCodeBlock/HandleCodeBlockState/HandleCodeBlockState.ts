@@ -8,7 +8,7 @@ import {
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
-} from "#engine-links";
+} from "#storage";
 import type {
 	HandleCodeBlockStateParams,
 	IsHighlightedParams,

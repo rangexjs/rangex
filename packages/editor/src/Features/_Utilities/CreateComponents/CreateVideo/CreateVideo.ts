@@ -8,9 +8,9 @@ import {
 	aspectRatioAttr,
 	blockAlignAttr,
 	componentsName,
-	createVideoStorage,
 	objectFitAttr,
 } from "#engine-links";
+import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*

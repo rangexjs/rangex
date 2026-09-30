@@ -8,11 +8,10 @@ import {
 import {
 	blockAlignAttr,
 	componentsName,
-	createTodoCheckboxStorage,
-	createTodoListStorage,
 	dataPartName,
 	todoCheckboxPart,
 } from "#engine-links";
+import { createTodoCheckboxStorage, createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,

@@ -6,11 +6,8 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createCodeBlockStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,
 	CreateCodeBlockResult,

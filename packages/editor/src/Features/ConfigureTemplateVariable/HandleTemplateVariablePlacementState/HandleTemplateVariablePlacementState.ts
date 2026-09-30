@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "rich-text-area";
-import { ensureNodeRootStorage } from "#engine-links";
+import { ensureNodeRootStorage } from "#storage";
 import { canInsertTemplateVariable } from "../_Utilities";
 import type { HandleTemplateVariablePlacementStateParams } from "./HandleTemplateVariablePlacementState-types";
 

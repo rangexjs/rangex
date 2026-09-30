@@ -1,4 +1,4 @@
-import { ensureNodeRootStorage } from "#engine-links";
+import { ensureNodeRootStorage } from "#storage";
 import { updateAllTemplateVariableNodes } from "../_Utilities";
 import type { HandleTemplateVariableInitializationParams } from "./HandleTemplateVariableInitialization-types";
 

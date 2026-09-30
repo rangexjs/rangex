@@ -5,7 +5,7 @@ import {
 	createRootEditable,
 	migrateStoredSnapshot,
 } from "rich-text-area";
-import { createRootStorage } from "#engine-links";
+import { createRootStorage } from "#storage";
 import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
 import type {
 	CreateCoreParams,

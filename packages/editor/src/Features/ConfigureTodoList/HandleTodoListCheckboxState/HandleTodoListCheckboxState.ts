@@ -5,12 +5,11 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
+import { componentsName, todoCheckboxPart } from "#engine-links";
 import {
-	componentsName,
 	ensureNodeTodoCheckboxStorage,
-	todoCheckboxPart,
 	todoCheckboxStorageFallbacks,
-} from "#engine-links";
+} from "#storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 /*

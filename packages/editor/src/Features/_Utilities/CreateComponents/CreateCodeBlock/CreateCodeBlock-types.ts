@@ -1,5 +1,5 @@
 import type { BlockComponentLine, Line } from "rich-text-area";
-import type { CodeBlockTheme } from "#engine-links";
+import type { CodeBlockTheme } from "#storage";
 
 export interface CreateCodeBlockParams {
 	language: string | null;

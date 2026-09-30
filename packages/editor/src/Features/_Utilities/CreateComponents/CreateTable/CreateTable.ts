@@ -4,12 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createTableStorage,
-	getCSSText,
-} from "#engine-links";
+import { blockAlignAttr, componentsName, getCSSText } from "#engine-links";
+import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
 /*

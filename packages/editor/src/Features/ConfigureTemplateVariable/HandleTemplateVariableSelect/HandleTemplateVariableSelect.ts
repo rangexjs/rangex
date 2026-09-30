@@ -1,5 +1,5 @@
 import { createContentLine } from "rich-text-area";
-import { ensureNodeRootStorage } from "#engine-links";
+import { ensureNodeRootStorage } from "#storage";
 import { createTemplateVariable } from "../../_Utilities";
 import {
 	getTemplateVariableDisplayText,

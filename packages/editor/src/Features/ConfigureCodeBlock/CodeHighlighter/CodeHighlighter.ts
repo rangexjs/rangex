@@ -10,12 +10,14 @@ import {
 	snapshotIndexChangeEventType,
 } from "rich-text-area";
 import {
-	codeBlockStorageFallbacks,
 	componentsName,
 	createComponentSelector,
-	ensureNodeCodeBlockStorage,
 	getClosestBlockComponent,
 } from "#engine-links";
+import {
+	codeBlockStorageFallbacks,
+	ensureNodeCodeBlockStorage,
+} from "#storage";
 import type {
 	ApplyTokenColorsParams,
 	ClearCodeBlockColorsParams,

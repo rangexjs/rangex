@@ -4,7 +4,8 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName, createMentionStorage } from "#engine-links";
+import { componentsName } from "#engine-links";
+import { createMentionStorage } from "#storage";
 import type {
 	CreateMentionParams,
 	CreateMentionResult,

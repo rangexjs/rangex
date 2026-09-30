@@ -6,7 +6,8 @@ import {
 	createNestedEditable,
 	type DOMAttrs,
 } from "rich-text-area";
-import { componentsName, createLinkStorage } from "#engine-links";
+import { componentsName } from "#engine-links";
+import { createLinkStorage } from "#storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
 
 /*

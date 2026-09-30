@@ -4,11 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createList as createEngineList,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createListStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createListStorage } from "#storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
 /*

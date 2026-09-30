@@ -4,7 +4,7 @@ import type {
 	StoredSnapshot,
 	TextView,
 } from "rich-text-area";
-import type { NodeStorage } from "../../EngineLinks/Storage/_Utilities";
+import type { NodeStorage } from "#storage";
 
 export type HTMLViewStorage = Record<string, NodeStorage>;
 

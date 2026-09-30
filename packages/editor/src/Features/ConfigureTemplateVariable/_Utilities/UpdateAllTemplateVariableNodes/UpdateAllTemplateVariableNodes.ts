@@ -6,11 +6,8 @@ import {
 	inlineComponentRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
-import {
-	componentsName,
-	createComponentSelector,
-	validateTemplateVariableStorage,
-} from "#engine-links";
+import { componentsName, createComponentSelector } from "#engine-links";
+import { validateTemplateVariableStorage } from "#storage";
 import { getTemplateVariableDisplayText } from "../GetTemplateVariableDisplayText";
 import type { UpdateAllTemplateVariableNodesParams } from "./UpdateAllTemplateVariableNodes-types";
 

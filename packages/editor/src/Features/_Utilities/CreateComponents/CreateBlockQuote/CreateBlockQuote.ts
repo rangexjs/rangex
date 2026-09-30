@@ -5,11 +5,8 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createBlockQuoteStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createBlockQuoteStorage } from "#storage";
 import type {
 	CreateBlockQuoteParams,
 	CreateBlockQuoteResult,

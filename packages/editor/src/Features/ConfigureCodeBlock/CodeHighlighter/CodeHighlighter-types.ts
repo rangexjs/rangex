@@ -5,7 +5,7 @@ import type {
 	RootEditable,
 } from "rich-text-area";
 import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
-import type { CodeBlockTheme } from "#engine-links";
+import type { CodeBlockTheme } from "#storage";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {
