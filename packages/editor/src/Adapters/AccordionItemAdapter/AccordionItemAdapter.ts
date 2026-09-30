@@ -1,5 +1,7 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
 import {
+	createCurrentComponentPort,
 	createEmitter,
 	createRemovePort,
 	createUnwrapPort,
@@ -15,7 +17,6 @@ import type {
 	OnCanInsertUpdateCallbackFn,
 	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./AccordionItemAdapter-types";
@@ -23,19 +24,19 @@ import type {
 export const createAccordionItemAdapter = (
 	...params: CreateAccordionItemAdapterParams
 ): CreateAccordionItemAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("accordionItem");
 
 	const internals: AccordionItemInternals = {
 		// States
 		canInsert: false,
 		canWrap: false,
-		isActive: false,
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -43,8 +44,9 @@ export const createAccordionItemAdapter = (
 
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
-	const updateState = ({ canInsert, canWrap, isActive }: UpdateStateParams) => {
+	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
@@ -56,17 +58,12 @@ export const createAccordionItemAdapter = (
 
 			canWrapUpdateEmitter.emit(internals.canWrap);
 		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
-		}
 	};
 
 	const configPort: AccordionItemConfigPort = extendObjectProperties(
 		removePort.configPort,
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
 		{
 			updateState(params) {
 				updateState(params);
@@ -85,6 +82,7 @@ export const createAccordionItemAdapter = (
 	const publicPort: AccordionItemPublicPort = extendObjectProperties(
 		removePort.publicPort,
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
 		{
 			get canInsert() {
 				return internals.canInsert;
@@ -94,20 +92,12 @@ export const createAccordionItemAdapter = (
 				return internals.canWrap;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
 				return canWrapUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			insert() {

@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { BlockQuoteConfigPort } from "#adapters/BlockQuote";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureBlockQuoteParams {
-	configPort: BlockQuoteConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureBlockQuoteParams
+	extends ConfigureFeatureParams<BlockQuoteConfigPort> {}

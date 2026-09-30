@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { FindReplaceConfigPort } from "#adapters/FindReplace";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureFindReplaceParams {
-	configPort: FindReplaceConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureFindReplaceParams
+	extends ConfigureFeatureParams<FindReplaceConfigPort> {}

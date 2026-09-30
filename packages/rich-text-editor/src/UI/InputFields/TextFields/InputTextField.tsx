@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, untrack } from "solid-js";
 import type { TextFieldControls } from "./_Utilities";
 
 interface InputProps
@@ -20,8 +20,10 @@ export const InputTextField = (props: InputTextFieldProps) => {
 	return (
 		<input
 			ref={(el) => {
-				el.value = props.defaultValue;
-				props.setTextField(el);
+				untrack(() => {
+					el.value = props.defaultValue;
+					props.setTextField(el);
+				});
 			}}
 			{...inputProps}
 		/>

@@ -1,10 +1,10 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="block-quote"]) {
+	&:has([data-rx-name="block-quote"]) {
 		margin-block: 8px;
 	}
 
 	& [data-rx-editor-role="block-component"] {
-		&:where([data-rx-component-name="block-quote"]) {
+		&:where([data-rx-name="block-quote"]) {
 			& blockquote {
 				margin: 0;
 				padding: 10px 14px;

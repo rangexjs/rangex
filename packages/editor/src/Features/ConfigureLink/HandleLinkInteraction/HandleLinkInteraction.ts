@@ -1,10 +1,9 @@
 import {
-	EditorRange,
 	editorSelectionChangeEventType,
-	inlineComponentName,
+	inlineComponentRole,
 	isEditorNode,
 } from "rich-text-area";
-import { componentsName, getClosestInlineComponent } from "#engine-links";
+import { componentsName } from "#engine-links";
 import type {
 	HandleLinkInteractionParams,
 	OpenLinkMenuParams,
@@ -31,20 +30,18 @@ const openLinkMenu = ({
 };
 
 /*
- * Registers a delegated click handler that tracks the clicked link as the current component
- * and opens the link menu when configured to open on click.
+ * Registers a delegated click handler that notifies clicks on the current link and opens the link menu
+ * when configured to open on click.
  */
 const registerClick = ({
 	configPort,
 	editorAPI,
 	linkMenuPopoverController,
 }: RegisterClickParams) => {
-	const selection = editorAPI.getEditorSelection();
-
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
-			element.$$editorRole === inlineComponentName &&
-			element.$$componentName === componentsName.link,
+			element.$$editorRole === inlineComponentRole &&
+			element.$$name === componentsName.link,
 		eventListener: {
 			type: "click",
 			listener(event) {
@@ -54,30 +51,10 @@ const registerClick = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== inlineComponentName) {
-					throw new Error("CurrentTarget's type is invalid.");
-				}
-
-				const selBoundaryPoints = selection.getBoundaryPoints();
-
-				const range = new EditorRange({
-					fromNode: selBoundaryPoints.fromText,
-					fromOffset: selBoundaryPoints.fromOffset,
-					toNode: selBoundaryPoints.toText,
-					toOffset: selBoundaryPoints.toOffset,
-				});
-
-				const withinSelection = range.isDescendant({
-					container: currentTarget,
-					start: true,
-					end: true,
-				});
-
-				if (!withinSelection) {
+				if (currentTarget !== configPort.currentComponent) {
 					return;
 				}
 
-				configPort.updateCurrentComponent({ currentComponent: currentTarget });
 				configPort.notifyLinkClick();
 
 				if (configPort.linkMenuSettings.openAt.includes("click")) {
@@ -92,53 +69,22 @@ const registerClick = ({
 	};
 };
 
+/*
+ * Notifies selection changes within the current link and opens the link menu when configured to open
+ * on selection-in.
+ */
 const registerSelectionIn = ({
 	configPort,
 	editorAPI,
 	linkMenuPopoverController,
 }: RegisterSelectionInParams) => {
-	const { rootEditable } = editorAPI;
-
-	const selection = editorAPI.getEditorSelection();
-
 	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			const selBoundaryPoints = selection.getBoundaryPoints();
-
-			const range = new EditorRange({
-				fromNode: selBoundaryPoints.fromText,
-				fromOffset: selBoundaryPoints.fromOffset,
-				toNode: selBoundaryPoints.toText,
-				toOffset: selBoundaryPoints.toOffset,
-			});
-
-			const component = getClosestInlineComponent({
-				fromNode: range.startText,
-			});
-
-			if (component?.$$componentName !== componentsName.link) {
-				configPort.updateCurrentComponent({ currentComponent: null });
+			if (!configPort.currentComponent) {
 				return;
 			}
 
-			const withinSelection = range.isDescendant({
-				container: component,
-				start: true,
-				end: true,
-			});
-
-			if (!withinSelection) {
-				if (configPort.currentComponent === component) {
-					configPort.updateCurrentComponent({ currentComponent: null });
-					const instant = !rootEditable.contains(component);
-					linkMenuPopoverController.hide({ instant });
-				}
-
-				return;
-			}
-
-			configPort.updateCurrentComponent({ currentComponent: component });
 			configPort.notifyLinkSelectionIn();
 
 			if (configPort.linkMenuSettings.openAt.includes("selection-in")) {
@@ -153,8 +99,9 @@ const registerSelectionIn = ({
 };
 
 /*
- * Tracks link click and selection-in interactions, marking the interacted link as the current
- * component and opening the link menu when configured to do so. Returns a cleanup function.
+ * Tracks link click and selection-in interactions on the current link, opening the link menu when
+ * configured to do so. Expects the current link to be resolved before its selection change fires.
+ * Returns a cleanup function.
  */
 export const handleLinkInteraction = ({
 	configPort,

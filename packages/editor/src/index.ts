@@ -4,6 +4,7 @@ export type {
 	CaptionPosition,
 	CaptionState,
 	CaretMenuPublicPort,
+	CaretMenuQuery,
 	InsertRootLinePosition,
 	MediaType,
 } from "#adapters";
@@ -15,21 +16,22 @@ export type {
 	CodeBlockTheme,
 	GetHighlightInfoFn,
 	GetHighlightInfoParams,
+	HighlightCodeFn,
 	HighlightInfo,
 	ThemedCodeLine,
 	ThemedCodeLines,
 } from "#adapters/CodeBlock";
 export type {
+	CommandMenuItem,
+	CommandMenuItems,
 	CommandMenuItemValue,
 	CommandMenuPublicPort,
-	SuggestionItem as CommandMenuSuggestionItem,
-	SuggestionItems as CommandMenuSuggestionItems,
 } from "#adapters/CommandMenu";
 export type { EmbedPublicPort } from "#adapters/Embed";
 export type {
+	EmojiItem,
+	EmojiItems,
 	EmojiPublicPort,
-	SuggestionItem as EmojiSuggestionItem,
-	SuggestionItems as EmojiSuggestionItems,
 } from "#adapters/Emoji";
 export type {
 	EmptyMediaPublicPort,
@@ -41,7 +43,6 @@ export type {
 	FindReplaceCriteria,
 	FindReplacePattern,
 	FindReplacePublicPort,
-	FindReplaceResultsState,
 	FindReplaceSearchResult,
 } from "#adapters/FindReplace";
 export type {
@@ -98,8 +99,7 @@ export type { ListPublicPort } from "#adapters/List";
 export type { MarkdownPublicPort } from "#adapters/Markdown";
 export type {
 	MentionPublicPort,
-	SuggestionItem as MentionSuggestionItem,
-	SuggestionItems as MentionSuggestionItems,
+	SelectParams as MentionSelectParams,
 } from "#adapters/Mention";
 export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
 export type { SeparatorPublicPort } from "#adapters/Separator";
@@ -122,11 +122,13 @@ export type {
 	TableVerticalAlignmentState,
 } from "#adapters/Table";
 export type {
-	Options as TemplateVariableOptions,
-	SuggestionItem as TemplateVariableSuggestionItem,
-	SuggestionItems as TemplateVariableSuggestionItems,
-	TemplateVariableKind,
+	TemplateVariableFieldConfig,
+	TemplateVariableFields,
+	TemplateVariableFieldsConfig,
+	TemplateVariableItem,
+	TemplateVariableItems,
 	TemplateVariablePublicPort,
+	TemplateVariableSettings,
 } from "#adapters/TemplateVariable";
 export type { TodoListPublicPort } from "#adapters/TodoList";
 export type { UndoRedoPublicPort } from "#adapters/UndoRedo";

@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { AccordionItemConfigPort } from "#adapters/AccordionItem";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureAccordionItemParams {
-	configPort: AccordionItemConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureAccordionItemParams
+	extends ConfigureFeatureParams<AccordionItemConfigPort> {}

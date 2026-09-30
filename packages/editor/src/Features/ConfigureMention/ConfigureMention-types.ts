@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { MentionConfigPort } from "#adapters/Mention";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureMentionParams {
-	configPort: MentionConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureMentionParams
+	extends ConfigureFeatureParams<MentionConfigPort> {}

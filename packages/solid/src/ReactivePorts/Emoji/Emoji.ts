@@ -1,6 +1,6 @@
 import type { EmojiPublicPort } from "@rangex/editor";
-import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
+import { CaretMenu } from "../_Utilities";
 import type { ReactiveEmojiPort } from "./Emoji-types";
 
 export const Emoji = <T extends EmojiPublicPort | undefined>(
@@ -10,14 +10,8 @@ export const Emoji = <T extends EmojiPublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveEmojiPort>;
 	}
 
-	const [filteredItems, setFilteredItems] = createSignal(
-		publicPort.filteredItems,
-	);
-
-	onCleanup(publicPort.onFilteredItemsUpdate(setFilteredItems));
-
 	const port: ReactiveEmojiPort = {
-		filteredItems,
+		caretMenu: CaretMenu(publicPort.caretMenu),
 	};
 
 	return port as PreserveUndefined<T, ReactiveEmojiPort>;

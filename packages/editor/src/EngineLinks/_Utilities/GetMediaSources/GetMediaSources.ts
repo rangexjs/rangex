@@ -1,4 +1,4 @@
-import { htmlLayoutName, snapshotManager } from "rich-text-area";
+import { htmlLayoutRole, snapshotManager } from "rich-text-area";
 import type {
 	GetMediaSourcesParams,
 	GetMediaSourcesResult,
@@ -13,7 +13,7 @@ export const getMediaSources = ({
 		snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
 
 	const mediaElements = rootEditableDraft.queryAll((node) => {
-		if (node.type !== htmlLayoutName) {
+		if (node.type !== htmlLayoutRole) {
 			return false;
 		}
 
@@ -29,7 +29,7 @@ export const getMediaSources = ({
 	const sources: string[] = [];
 
 	for (const mediaElement of mediaElements) {
-		if (mediaElement.type !== htmlLayoutName) {
+		if (mediaElement.type !== htmlLayoutRole) {
 			throw new Error("MediaElement's type is invalid.");
 		}
 

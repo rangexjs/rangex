@@ -1,4 +1,4 @@
-[data-rx-component-name="link"] {
+[data-rx-name="link"] {
 	& a {
 		color: light-dark(var(--color-violet-700), var(--color-violet-400));
 	}

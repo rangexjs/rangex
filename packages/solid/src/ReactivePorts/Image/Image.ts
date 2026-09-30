@@ -20,17 +20,22 @@ export const Image = <T extends ImagePublicPort | undefined>(
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(
+		publicPort.isSelectionActive,
+	);
 
 	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
 	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
 	onCleanup(publicPort.onAlignUpdate(setAlign));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveImagePort = {
 		captionEnabled,
 		captionPosition,
 		align,
 		currentComponent,
+		isSelectionActive,
 	};
 
 	return port as PreserveUndefined<T, ReactiveImagePort>;

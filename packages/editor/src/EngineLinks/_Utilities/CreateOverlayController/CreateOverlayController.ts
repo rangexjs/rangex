@@ -1,8 +1,13 @@
 /// <reference path="./CloseWatcher.d.ts" />
 import { dataAnchorName } from "rich-text-area";
-import { forceReflowWithoutTransition } from "#utilities";
+import {
+	addERClass,
+	forceReflowWithoutTransition,
+	removeERClass,
+} from "#utilities";
 import type {
 	AnchoredOverlayController,
+	ApplyAnchorPositionParams,
 	CreateAnchoredOverlayControllerParams,
 	CreateCloseWatcherParams,
 	CreatePopoverOverlayControllerParams,
@@ -12,6 +17,54 @@ import type {
 } from "./CreateOverlayController-types";
 
 const hideAnchoredClass = "hide-anchored";
+const anchoredOverlayClass = "anchored-overlay";
+const popoverOverlayClass = "popover-overlay";
+
+export const anchorPositionFields = [
+	"position",
+	"position-area",
+	"top",
+	"right",
+	"bottom",
+	"left",
+	"width",
+	"height",
+	"align-self",
+	"justify-self",
+	"margin",
+] as const;
+
+const toAnchorPositionAttr = (property: string) => `data-er-${property}`;
+
+/*
+ * Writes the positioning values as `data-er-*` attributes, which the host stylesheet maps onto the matching
+ * CSS properties via `attr()`. `clear` drops every previously set field first; otherwise unpassed fields persist.
+ */
+const applyAnchorPosition = ({
+	element,
+	positionAnchor,
+	styleOptions,
+}: ApplyAnchorPositionParams) => {
+	const { clear, ...style } = styleOptions;
+
+	if (clear) {
+		for (const field of anchorPositionFields) {
+			const attrName = toAnchorPositionAttr(field);
+
+			element.removeAttribute(attrName);
+		}
+	}
+
+	for (const [property, value] of Object.entries(style)) {
+		const attrName = toAnchorPositionAttr(property);
+
+		element.setAttribute(attrName, value);
+	}
+
+	const attrName = toAnchorPositionAttr("position-anchor");
+
+	element.setAttribute(attrName, positionAnchor);
+};
 
 const registerLightDismiss = ({
 	element,
@@ -72,21 +125,26 @@ export const createAnchoredOverlayController = ({
 }: CreateAnchoredOverlayControllerParams): AnchoredOverlayController => {
 	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
-	element.classList.add(hideAnchoredClass);
-	element.style.setProperty("position-visibility", "anchor-valid");
+	addERClass(element, anchoredOverlayClass, hideAnchoredClass);
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
+	let anchorElement: HTMLElement | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
-		element.classList.add(hideAnchoredClass);
+		addERClass(element, hideAnchoredClass);
 		closeWatcher?.destroy();
 		closeWatcher = null;
 		isOpen = false;
 		onToggle?.(isOpen);
 
-		if (instant) {
+		// A detached anchor leaves nothing to transition from, so skip the animation.
+		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+
+		anchorElement = null;
+
+		if (instant || anchorDetached) {
 			forceReflowWithoutTransition(element);
 		}
 	};
@@ -112,8 +170,14 @@ export const createAnchoredOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, { clear, ...style }) {
-			const anchorName = anchorElement.getAttribute(dataAnchorName);
+		get anchorElement() {
+			return anchorElement;
+		},
+
+		show(anchor, styleOptions) {
+			anchorElement = anchor;
+
+			const anchorName = anchor.getAttribute(dataAnchorName);
 
 			if (anchorName === null) {
 				throw new Error(
@@ -121,18 +185,17 @@ export const createAnchoredOverlayController = ({
 				);
 			}
 
-			if (clear) {
-				element.style.cssText = "";
-			}
+			applyAnchorPosition({
+				element,
+				positionAnchor: anchorName,
+				styleOptions,
+			});
 
-			for (const [property, value] of Object.entries(style)) {
-				element.style.setProperty(property, value);
-			}
-
-			element.style.setProperty("position-anchor", anchorName);
-			element.classList.remove(hideAnchoredClass);
+			removeERClass(element, hideAnchoredClass);
 
 			if (closeOnEscape) {
+				closeWatcher?.destroy();
+
 				closeWatcher = createCloseWatcher({
 					hide,
 					onEscape,
@@ -175,9 +238,11 @@ export const createPopoverOverlayController = ({
 	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
 	element.setAttribute("popover", "manual");
+	addERClass(element, popoverOverlayClass);
 
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
+	let anchorElement: HTMLElement | null = null;
 	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
@@ -191,7 +256,12 @@ export const createPopoverOverlayController = ({
 		isOpen = false;
 		onToggle?.(isOpen);
 
-		if (instant) {
+		// A detached anchor leaves nothing to transition from, so skip the animation.
+		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+
+		anchorElement = null;
+
+		if (instant || anchorDetached) {
 			forceReflowWithoutTransition(element);
 		}
 	};
@@ -217,25 +287,29 @@ export const createPopoverOverlayController = ({
 			return isOpen;
 		},
 
-		show(anchorElement, { clear, ...style }) {
-			if (clear) {
-				element.style.cssText = "";
-			}
+		get anchorElement() {
+			return anchorElement;
+		},
 
-			for (const [property, value] of Object.entries(style)) {
-				element.style.setProperty(property, value);
-			}
+		show(anchor, styleOptions) {
+			anchorElement = anchor;
 
-			element.style.setProperty("position-anchor", "auto");
+			applyAnchorPosition({
+				element,
+				positionAnchor: "auto",
+				styleOptions,
+			});
 
 			// We must hide it before showing it again
 			if (isOpen) {
 				element.hidePopover();
 			}
 
-			element.showPopover({ source: anchorElement });
+			element.showPopover({ source: anchor });
 
 			if (closeOnEscape) {
+				closeWatcher?.destroy();
+
 				closeWatcher = createCloseWatcher({
 					hide,
 					onEscape,

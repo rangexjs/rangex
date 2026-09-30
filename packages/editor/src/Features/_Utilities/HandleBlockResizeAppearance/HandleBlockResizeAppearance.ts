@@ -1,6 +1,6 @@
 import {
 	type BlockComponent,
-	blockComponentName,
+	blockComponentRole,
 	isEditorNode,
 } from "rich-text-area";
 import { createAnchoredOverlayController } from "#engine-links";
@@ -98,7 +98,7 @@ export const handleBlockResizeAppearance = ({
 	});
 
 	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockComponentName,
+		when: ({ element }) => element.$$editorRole === blockComponentRole,
 		eventListener: {
 			type: "pointerenter",
 			listener(event) {
@@ -108,11 +108,11 @@ export const handleBlockResizeAppearance = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== blockComponentName) {
+				if (currentTarget.$$editorRole !== blockComponentRole) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				if (currentTarget.$$componentName !== componentName) {
+				if (currentTarget.$$name !== componentName) {
 					return;
 				}
 
@@ -136,7 +136,7 @@ export const handleBlockResizeAppearance = ({
 	});
 
 	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockComponentName,
+		when: ({ element }) => element.$$editorRole === blockComponentRole,
 		eventListener: {
 			type: "pointerleave",
 			listener: scheduleHide,

@@ -1,6 +1,6 @@
 import type { FormattingFontFamilyValue } from "@rangex/editor";
 import { FontFamily, ReadOnly } from "@rangex/solid";
-import { createEffect, createMemo, createUniqueId } from "solid-js";
+import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -48,9 +48,8 @@ export const FontFamilyToolbarButton = () => {
 
 	const [fontFamilyHandle, fontFamilyControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getInputValueFromActiveValues(
-				$fontFamily.values(),
-				defaultFontFamily,
+			defaultValue: untrack(() =>
+				getInputValueFromActiveValues($fontFamily.values(), defaultFontFamily),
 			),
 		});
 
@@ -175,7 +174,11 @@ export const FontFamilyToolbarButton = () => {
 							class="absolute -top-1 -left-1 rounded-xs p-1 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							disabled={disabled()}
 						>
-							<Icon name="CaretDown" class="size-2" />
+							<Icon
+								name="CaretDown"
+								title="Show font families"
+								class="size-2"
+							/>
 						</button>
 					</span>
 				}
@@ -183,6 +186,7 @@ export const FontFamilyToolbarButton = () => {
 				<InputTextField
 					type="text"
 					class="max-w-10"
+					aria-label="Font family"
 					disabled={disabled()}
 					onKeyDown={handleKeydown}
 					onBlur={handleBlur}

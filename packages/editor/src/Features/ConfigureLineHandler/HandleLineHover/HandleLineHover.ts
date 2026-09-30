@@ -1,5 +1,8 @@
 import type { Line } from "rich-text-area";
-import { createAnchoredOverlayController } from "#engine-links";
+import {
+	createAnchoredOverlayController,
+	observeEditorNodeAttachment,
+} from "#engine-links";
 import type {
 	CollectShadowRootsParams,
 	CollectShadowRootsResult,
@@ -133,6 +136,13 @@ export const handleLineHover = ({
 		clearTimeout(hideTimeoutId);
 	};
 
+	const hide = () => {
+		currentLine = null;
+		lastPointerPosition = null;
+		onLineChange(null);
+		overlayController.hide({});
+	};
+
 	const scheduleHide = () => {
 		cancelHide();
 
@@ -141,10 +151,7 @@ export const handleLineHover = ({
 				return;
 			}
 
-			currentLine = null;
-			lastPointerPosition = null;
-			onLineChange(null);
-			overlayController.hide({});
+			hide();
 		}, 100);
 	};
 
@@ -250,10 +257,25 @@ export const handleLineHover = ({
 		root.addEventListener("scroll", onScroll, { capture: true, signal });
 	}
 
+	// The overlay can't be anchored to a detached Line, so close it (and its nested popovers) instead.
+	const unobserveLineRemoval = observeEditorNodeAttachment({
+		editorAPI,
+		onMutation: () => {
+			if (!currentLine || currentLine.isConnected) {
+				return;
+			}
+
+			cancelHide();
+			hideNestedPopovers();
+			hide();
+		},
+	});
+
 	return {
 		getCurrentLine: () => currentLine,
 		cleanup: () => {
 			abortController.abort();
+			unobserveLineRemoval();
 			cancelHide();
 		},
 	};

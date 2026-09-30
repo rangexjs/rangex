@@ -7,10 +7,19 @@ import type {
 	List,
 	NestedEditable,
 } from "rich-text-area";
+import type { AdapterBus } from "#adapters";
 import type { BlockComponentName } from "../Constants";
+
+/*
+ * Which ScopedEditable a `can*` check is evaluated against: `"current"` is the one directly holding the
+ * given position, and fails if that one isn't `"block multi-line"`; `"nearest-multi-line"` walks up to
+ * the closest `"block multi-line"` one.
+ */
+export type PlacementScope = "current" | "nearest-multi-line";
 
 export interface CanInsertParams {
 	fromNode: EditorNode;
+	scope: PlacementScope;
 	allowedComponents: BlockComponentName[];
 }
 
@@ -27,6 +36,7 @@ export interface InsertParams {
 export type InsertFn = (params: InsertParams) => void;
 
 export interface CanInsertBySelectionParams {
+	scope: PlacementScope;
 	allowedComponents: BlockComponentName[];
 }
 
@@ -48,6 +58,7 @@ export interface CanWrapParams {
 	fromOffset: number;
 	toNode: ContentFlowNode;
 	toOffset: number;
+	scope: PlacementScope;
 	allowedComponents: BlockComponentName[];
 }
 
@@ -69,6 +80,7 @@ export interface WrapParams {
 export type WrapFn = (params: WrapParams) => void;
 
 export interface CanWrapBySelectionParams {
+	scope: PlacementScope;
 	allowedComponents: BlockComponentName[];
 }
 
@@ -99,6 +111,7 @@ export interface BlockComponentPlacement {
 
 export interface CreateBlockComponentPlacementParams {
 	editorAPI: EditorAPI;
+	adapterBus: AdapterBus;
 }
 
 export interface CreateBlockComponentPlacementResult

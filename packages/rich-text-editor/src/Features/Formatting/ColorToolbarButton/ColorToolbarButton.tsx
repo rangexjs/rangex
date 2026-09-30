@@ -4,6 +4,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	untrack,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
 import { useEditorContext } from "#context";
@@ -43,9 +44,9 @@ export const ColorToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const initialHslColors = getHslThemeColors({
-		colors: $color.values(),
-	});
+	const initialHslColors = untrack(() =>
+		getHslThemeColors({ colors: $color.values() }),
+	);
 	const initialColorMode = getColorMode(initialHslColors);
 
 	const [lightHsl, setLightHsl] = createSignal<HslFormat>(
@@ -56,7 +57,9 @@ export const ColorToolbarButton = () => {
 		initialHslColors.darkColors.at(0) ??
 			ColorFormat.fromColor({ color: "white" }).hslFormat(),
 	);
-	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(lightHsl());
+	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(
+		untrack(() => lightHsl()),
+	);
 	const [colorMode, setColorMode] = createSignal<ColorMode>(initialColorMode);
 	const initialActiveColors = getDeduplicatedColors([
 		...initialHslColors.lightColors,
@@ -132,12 +135,14 @@ export const ColorToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="Palette" class="size-4" />
+				<Icon name="Palette" title="Text color" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}
 				ref={popover}
 				popover="auto"
+				role="dialog"
+				aria-label="Text color"
 				onToggle={onPopoverToggle}
 				class="mt-1 overflow-x-clip rounded-md border border-neutral-200 bg-white p-2 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>

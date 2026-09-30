@@ -6,11 +6,8 @@ import {
 	createHTMLLayout,
 	createList,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createCodeBlockStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,
 	CreateCodeBlockResult,
@@ -55,7 +52,7 @@ export const createCodeBlock = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.codeBlock,
+			name: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({ language, theme }),
 			childNodes: [

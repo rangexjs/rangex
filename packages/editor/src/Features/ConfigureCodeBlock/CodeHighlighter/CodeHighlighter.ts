@@ -1,49 +1,58 @@
 import {
 	type BlockComponent,
-	blockComponentName,
-	contentLineName,
+	blockComponentRole,
+	contentLineRole,
 	contentLineRoleSelector,
-	inlineComponentAttrName,
 	isContentLineText,
 	isEditorNode,
-	listName,
+	listRole,
 	listRoleSelector,
+	snapshotIndexChangeEventType,
 } from "rich-text-area";
 import {
-	codeBlockStorageFallbacks,
 	componentsName,
-	ensureNodeCodeBlockStorage,
+	createComponentSelector,
 	getClosestBlockComponent,
 } from "#engine-links";
+import {
+	codeBlockStorageFallbacks,
+	ensureNodeCodeBlockStorage,
+} from "#storage";
 import type {
 	ApplyTokenColorsParams,
 	ClearCodeBlockColorsParams,
+	CodeBlockHighlight,
 	CodeHighlighterConstructorParams,
 	CodeHighlighterUpdateParams,
+	GetCodeBlockListParams,
 	GetCodeLinesParams,
 	GetCodeLinesResult,
+	GetOutdatedCodeBlocksParams,
+	IsSameHighlightParams,
+	OnCodeBlockRemoveParams,
 	OnCodeChangeParams,
 	UpdateCodeBlockColorsParams,
 	WatchCodeBlocksParams,
 } from "./CodeHighlighter-types";
 import { CSSHighlightManager } from "./CSSHighlightManager";
 
+const codeBlockSelector = createComponentSelector(componentsName.codeBlock);
+
 /**
  * Tracks CodeBlocks added to {@link rootEditable}, calling {@link onCodeChange}
- * immediately on insertion (for initial highlight) and on every subsequent character change.
+ * immediately on insertion (for initial highlight) and on every subsequent code change. Calls
+ * {@link onCodeBlockRemove} once a tracked CodeBlock leaves the document. Returns a cleanup function.
  */
 const watchCodeBlocks = ({
 	rootEditable,
 	onCodeChange,
+	onCodeBlockRemove,
 }: WatchCodeBlocksParams) => {
-	const { dataComponentName } = inlineComponentAttrName;
-
-	const selector =
-		`[${dataComponentName}="${componentsName.codeBlock}"]` as const;
-
 	const trackedCodeBlocks = new Set<BlockComponent>();
 
 	const codeChangeObserver = new MutationObserver((mutations) => {
+		const changedCodeBlocks = new Set<BlockComponent>();
+
 		for (const { target } of mutations) {
 			if (!isEditorNode(target)) {
 				throw new Error("Target supposed to be an EditorNode.");
@@ -62,16 +71,21 @@ const watchCodeBlocks = ({
 				throw new Error("BlockComponent can't be null.");
 			}
 
+			changedCodeBlocks.add(blockComponent);
+		}
+
+		for (const blockComponent of changedCodeBlocks) {
 			onCodeChange({ blockComponent });
 		}
 	});
 
-	const trackNewCodeBlocks = () => {
-		const queriedCodeBlocks = rootEditable.$$querySelectorAll(selector);
+	const syncTrackedCodeBlocks = () => {
+		const queriedCodeBlocks =
+			rootEditable.$$querySelectorAll(codeBlockSelector);
 
 		if (
 			!queriedCodeBlocks.every(
-				(codeBlock) => codeBlock.$$editorRole === blockComponentName,
+				(codeBlock) => codeBlock.$$editorRole === blockComponentRole,
 			)
 		) {
 			throw new Error("CodeBlock's type is invalid.");
@@ -80,24 +94,52 @@ const watchCodeBlocks = ({
 		const containedCodeBlocks = new Set<BlockComponent>(queriedCodeBlocks);
 
 		const addedCodeBlocks = containedCodeBlocks.difference(trackedCodeBlocks);
+		const removedCodeBlocks = trackedCodeBlocks.difference(containedCodeBlocks);
+
+		for (const codeBlock of removedCodeBlocks) {
+			trackedCodeBlocks.delete(codeBlock);
+
+			onCodeBlockRemove({ blockComponent: codeBlock });
+		}
 
 		for (const codeBlock of addedCodeBlocks) {
+			trackedCodeBlocks.add(codeBlock);
+
 			onCodeChange({ blockComponent: codeBlock });
 
 			codeChangeObserver.observe(codeBlock, {
 				subtree: true,
 				characterData: true,
+				childList: true,
 			});
 		}
 	};
 
-	trackNewCodeBlocks();
+	syncTrackedCodeBlocks();
 
 	const codeBlockObserver = new MutationObserver(() => {
-		trackNewCodeBlocks();
+		syncTrackedCodeBlocks();
 	});
 
 	codeBlockObserver.observe(rootEditable, { childList: true, subtree: true });
+
+	return () => {
+		codeChangeObserver.disconnect();
+		codeBlockObserver.disconnect();
+	};
+};
+
+/*
+ * Returns the code block's List, which holds its code lines.
+ */
+const getCodeBlockList = ({ blockComponent }: GetCodeBlockListParams) => {
+	const list = blockComponent.$$querySelector(listRoleSelector);
+
+	if (list?.$$editorRole !== listRole) {
+		throw new Error("List's type is invalid.");
+	}
+
+	return list;
 };
 
 /**
@@ -114,7 +156,7 @@ const getCodeLines = ({
 	const contentLines = list.$$children.map((li) => {
 		const contentLine = li.$$querySelector(contentLineRoleSelector);
 
-		if (contentLine?.$$editorRole !== contentLineName) {
+		if (contentLine?.$$editorRole !== contentLineRole) {
 			throw new Error("ContentLine's type is invalid.");
 		}
 
@@ -168,7 +210,7 @@ const applyTokenColors = ({
 		const contentLines = list.$$children.map((li) => {
 			const contentLine = li.$$querySelector(contentLineRoleSelector);
 
-			if (contentLine?.$$editorRole !== contentLineName) {
+			if (contentLine?.$$editorRole !== contentLineRole) {
 				throw new Error("ContentLine's type is invalid.");
 			}
 
@@ -241,11 +283,7 @@ const updateCodeBlockColors = async ({
 		fallbacks: codeBlockStorageFallbacks,
 	});
 
-	const list = blockComponent.$$querySelector(listRoleSelector);
-
-	if (list?.$$editorRole !== listName) {
-		throw new Error("List's type is invalid.");
-	}
+	const list = getCodeBlockList({ blockComponent });
 
 	if (language === null || theme === null) {
 		clearCodeBlockColors({ blockComponent, cssHighlightManager, list });
@@ -271,10 +309,66 @@ const updateCodeBlockColors = async ({
 	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines });
 };
 
+const isSameHighlight = ({ source, target }: IsSameHighlightParams) => {
+	if (source.language !== target.language) {
+		return false;
+	}
+
+	const { theme: sourceTheme } = source;
+	const { theme: targetTheme } = target;
+
+	if (sourceTheme === null || targetTheme === null) {
+		return sourceTheme === targetTheme;
+	}
+
+	return (
+		sourceTheme.light === targetTheme.light &&
+		sourceTheme.dark === targetTheme.dark
+	);
+};
+
+/*
+ * Returns the code blocks whose stored language/theme differs from the one they were last highlighted with.
+ */
+const getOutdatedCodeBlocks = ({
+	rootEditable,
+	appliedHighlights,
+}: GetOutdatedCodeBlocksParams) => {
+	const codeBlocks = rootEditable.$$querySelectorAll(codeBlockSelector);
+
+	const outdatedCodeBlocks: BlockComponent[] = [];
+
+	for (const codeBlock of codeBlocks) {
+		if (codeBlock.$$editorRole !== blockComponentRole) {
+			throw new Error("CodeBlock's type is invalid.");
+		}
+
+		const storage = ensureNodeCodeBlockStorage({
+			blockComponent: codeBlock,
+			fallbacks: codeBlockStorageFallbacks,
+		});
+
+		const appliedHighlight = appliedHighlights.get(codeBlock);
+
+		const isUpToDate =
+			appliedHighlight !== undefined &&
+			isSameHighlight({ source: appliedHighlight, target: storage });
+
+		if (!isUpToDate) {
+			outdatedCodeBlocks.push(codeBlock);
+		}
+	}
+
+	return outdatedCodeBlocks;
+};
+
 export class CodeHighlighter {
 	#editorAPI;
 	#getHighlightInfo;
 	#cssHighlightManager = new CSSHighlightManager();
+	// The language/theme each code block was last highlighted with.
+	#appliedHighlights = new WeakMap<BlockComponent, CodeBlockHighlight>();
+	#cleanups = new Set<() => void>();
 
 	constructor({
 		editorAPI,
@@ -288,15 +382,59 @@ export class CodeHighlighter {
 		shadowRoot.adoptedStyleSheets.push(this.#cssHighlightManager.cssStyleSheet);
 
 		const onCodeChange = ({ blockComponent }: OnCodeChangeParams) => {
-			updateCodeBlockColors({
-				editorAPI: this.#editorAPI,
-				getHighlightInfo: this.#getHighlightInfo,
-				cssHighlightManager: this.#cssHighlightManager,
-				blockComponent,
-			});
+			this.#highlight(blockComponent);
 		};
 
-		watchCodeBlocks({ rootEditable, onCodeChange });
+		const onCodeBlockRemove = ({ blockComponent }: OnCodeBlockRemoveParams) => {
+			const list = getCodeBlockList({ blockComponent });
+
+			this.#cssHighlightManager.clear({ list });
+		};
+
+		const unwatchCodeBlocks = watchCodeBlocks({
+			rootEditable,
+			onCodeChange,
+			onCodeBlockRemove,
+		});
+
+		// Undo/redo restores the language/theme in storage without touching the code, so the watcher misses it.
+		const unsubscribeSnapshotIndexChange = this.#editorAPI.subscribeEditorEvent(
+			{
+				type: snapshotIndexChangeEventType,
+				callback: () => {
+					const outdatedCodeBlocks = getOutdatedCodeBlocks({
+						rootEditable,
+						appliedHighlights: this.#appliedHighlights,
+					});
+
+					for (const codeBlock of outdatedCodeBlocks) {
+						this.#highlight(codeBlock);
+					}
+				},
+			},
+		);
+
+		this.#cleanups.add(unwatchCodeBlocks);
+		this.#cleanups.add(unsubscribeSnapshotIndexChange);
+	}
+
+	#highlight(blockComponent: BlockComponent) {
+		const { language, theme } = ensureNodeCodeBlockStorage({
+			blockComponent,
+			fallbacks: codeBlockStorageFallbacks,
+		});
+
+		this.#appliedHighlights.set(blockComponent, {
+			language,
+			theme: theme && { ...theme },
+		});
+
+		updateCodeBlockColors({
+			editorAPI: this.#editorAPI,
+			getHighlightInfo: this.#getHighlightInfo,
+			cssHighlightManager: this.#cssHighlightManager,
+			blockComponent,
+		});
 	}
 
 	update({ blockComponent, language, theme }: CodeHighlighterUpdateParams) {
@@ -307,11 +445,14 @@ export class CodeHighlighter {
 		customStorage.language = language;
 		customStorage.theme = theme;
 
-		updateCodeBlockColors({
-			editorAPI: this.#editorAPI,
-			getHighlightInfo: this.#getHighlightInfo,
-			cssHighlightManager: this.#cssHighlightManager,
-			blockComponent,
-		});
+		this.#highlight(blockComponent);
+	}
+
+	cleanup() {
+		for (const cleanup of this.#cleanups) {
+			cleanup();
+		}
+
+		this.#cleanups.clear();
 	}
 }

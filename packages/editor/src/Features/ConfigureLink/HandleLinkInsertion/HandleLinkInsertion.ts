@@ -1,5 +1,5 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
 	createContentLine,
 	type InlineComponent,
@@ -24,7 +24,7 @@ const setSelectionToLinkEnd = ({
 }: SetSelectionToLinkEndParams) => {
 	const contentLine = link.$$querySelector(contentLineRoleSelector);
 
-	if (contentLine?.$$editorRole !== contentLineName) {
+	if (contentLine?.$$editorRole !== contentLineRole) {
 		throw new Error("ContentLine's type is invalid.");
 	}
 
@@ -60,8 +60,6 @@ const insertAtCaret = ({
 }: InsertAtCaretParams) => {
 	const link = createLink({ text });
 
-	configPort.updateCurrentComponent({ currentComponent: link });
-
 	const selection = editorAPI.getEditorSelection();
 
 	const { fromText, fromOffset } = selection.getBoundaryPoints();
@@ -74,6 +72,7 @@ const insertAtCaret = ({
 	});
 
 	setSelectionToLinkEnd({ link, selection });
+	configPort.updateCurrentComponent({ selectionComponent: link });
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
@@ -152,9 +151,8 @@ const wrapWithLink = ({
 		throw new Error("CurrentLink not supposed to be null.");
 	}
 
-	configPort.updateCurrentComponent({ currentComponent: currentLink });
-
 	setSelectionToLinkEnd({ link: currentLink, selection });
+	configPort.updateCurrentComponent({ selectionComponent: currentLink });
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 

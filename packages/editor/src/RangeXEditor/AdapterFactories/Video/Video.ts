@@ -3,18 +3,23 @@ import { configureVideo } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Video: AdapterFactoryFn<VideoSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createVideoAdapter(settings, options);
-
-		const cleanup = configureVideo({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.video = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureVideo({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

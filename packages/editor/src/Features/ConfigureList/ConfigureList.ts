@@ -1,37 +1,41 @@
-import {
-	componentsName,
-	createBlockComponentPlacement,
-	createComponentLookup,
-} from "#engine-links";
-import { handleComponentUnwrap } from "../_Utilities";
+import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";
 import { handleListPlacementState } from "./HandleListPlacementState";
+import { handleListState } from "./HandleListState";
 
 /*
  * Wires up list toolbar button state and placement handling, returning a cleanup function.
  */
 export const configureList = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureListParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
+
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.list,
+	});
 
 	const placementStateCleanup = handleListPlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
+
+	const listStateCleanup = handleListState({ configPort, editorAPI });
 
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBlockBySelection({
-				components: [componentsName.list],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const placementCleanup = handleListPlacement({
@@ -41,8 +45,10 @@ export const configureList = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		placementCleanup();
+		listStateCleanup();
 	};
 };

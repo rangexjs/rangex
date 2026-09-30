@@ -1,5 +1,10 @@
+import type { BlockComponent } from "rich-text-area";
 import { extendObjectProperties } from "#utilities";
-import { createEmitter, createUnwrapPort } from "../_Utilities";
+import {
+	createCurrentComponentPort,
+	createEmitter,
+	createUnwrapPort,
+} from "../_Utilities";
 import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
@@ -17,7 +22,6 @@ import type {
 	OnContextMenuToggleCallbackFn,
 	OnInsertCallbackFn,
 	OnInsertDeleteUpdateCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnMergeSplitUpdateCallbackFn,
 	OnSectionTypeUpdateCallbackFn,
 	OnVerticalAlignmentUpdateCallbackFn,
@@ -32,7 +36,9 @@ import type {
 export const createTableAdapter = (
 	...params: CreateTableAdapterParams
 ): CreateTableAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("table");
 
 	const contextMenuEl = document.createElement("div");
 	floatingContainer.append(contextMenuEl);
@@ -40,7 +46,6 @@ export const createTableAdapter = (
 	const internals: TableInternals = {
 		// States
 		canInsert: false,
-		isActive: false,
 		sectionType: {
 			header: { disabled: true },
 			body: { disabled: true },
@@ -84,7 +89,6 @@ export const createTableAdapter = (
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 	const sectionTypeUpdateEmitter =
 		createEmitter<OnSectionTypeUpdateCallbackFn>();
 	const mergeSplitUpdateEmitter = createEmitter<OnMergeSplitUpdateCallbackFn>();
@@ -115,10 +119,10 @@ export const createTableAdapter = (
 		createEmitter<OnContextMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
+	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
 	const updateState = ({
 		canInsert,
-		isActive,
 		contextMenuOpen,
 		sectionType,
 		mergeSplit,
@@ -132,12 +136,6 @@ export const createTableAdapter = (
 			internals.canInsert = canInsert;
 
 			canInsertUpdateEmitter.emit(internals.canInsert);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 
 		if (sectionType !== undefined) {
@@ -191,6 +189,7 @@ export const createTableAdapter = (
 
 	const configPort: TableConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
+		currentComponentPort.configPort,
 		{
 			get contextMenuEl() {
 				return contextMenuEl;
@@ -240,6 +239,7 @@ export const createTableAdapter = (
 
 	const publicPort: TablePublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
+		currentComponentPort.publicPort,
 		{
 			get contextMenuEl() {
 				return contextMenuEl;
@@ -247,10 +247,6 @@ export const createTableAdapter = (
 
 			get canInsert() {
 				return internals.canInsert;
-			},
-
-			get isActive() {
-				return internals.isActive;
 			},
 
 			get contextMenuOpen() {
@@ -287,10 +283,6 @@ export const createTableAdapter = (
 
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onContextMenuToggle(callback) {

@@ -5,7 +5,7 @@ import type {
 	CaretMenuPublicPort,
 	CreateCaretMenuPortParams,
 	CreateCaretMenuPortResult,
-	OnToggleCallbackFn,
+	OnQueryUpdateCallbackFn,
 	UpdateStateParams,
 } from "./CaretMenuPort-types";
 
@@ -16,17 +16,18 @@ export const createCaretMenuPort = ({
 	floatingContainer.append(element);
 
 	const internals: CaretMenuInternals = {
-		isOpen: false,
+		// States
+		query: null,
 	};
 
-	// CommandListeners
-	const toggleEmitter = createEmitter<OnToggleCallbackFn>();
+	// StateListeners
+	const queryUpdateEmitter = createEmitter<OnQueryUpdateCallbackFn>();
 
-	const updateState = ({ isOpen }: UpdateStateParams) => {
-		if (isOpen !== undefined) {
-			internals.isOpen = isOpen;
+	const updateState = ({ query }: UpdateStateParams) => {
+		if (query !== undefined && query !== internals.query) {
+			internals.query = query;
 
-			toggleEmitter.emit();
+			queryUpdateEmitter.emit(internals.query);
 		}
 	};
 
@@ -45,12 +46,12 @@ export const createCaretMenuPort = ({
 			return element;
 		},
 
-		get isOpen() {
-			return internals.isOpen;
+		get query() {
+			return internals.query;
 		},
 
-		onToggle(callback) {
-			return toggleEmitter.subscribe(callback);
+		onQueryUpdate(callback) {
+			return queryUpdateEmitter.subscribe(callback);
 		},
 	};
 

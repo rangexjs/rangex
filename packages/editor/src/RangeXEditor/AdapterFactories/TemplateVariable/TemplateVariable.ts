@@ -8,18 +8,23 @@ import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 export const TemplateVariable: AdapterFactoryFn<TemplateVariableSettings> = (
 	settings,
 ) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createTemplateVariableAdapter(settings, options);
-
-		const cleanup = configureTemplateVariable({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.templateVariable = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureTemplateVariable({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

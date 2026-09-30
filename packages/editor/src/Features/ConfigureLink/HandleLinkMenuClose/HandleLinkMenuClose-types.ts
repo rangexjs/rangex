@@ -9,7 +9,6 @@ export interface CloseOnSelectionChangeParams {
 }
 
 export interface CloseOnLinkRemovalParams {
-	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
 	linkMenuPopoverController: PopoverOverlayController;
 }

@@ -2,9 +2,9 @@ import {
 	componentsName,
 	createAnchoredOverlayController,
 	createBlockComponentPlacement,
-	createComponentLookup,
 } from "#engine-links";
-import { handleComponentUnwrap } from "../_Utilities";
+import { addERClass } from "#utilities";
+import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMenuButtonsInteraction";
 import { handleTableContextMenuButtonsState } from "./HandleTableContextMenuButtonsState";
@@ -17,11 +17,16 @@ import { handleTablePlacementState } from "./HandleTablePlacementState";
  * button state, and button interactions) and returns their combined cleanup.
  */
 export const configureTable = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureTableParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
+
+	addERClass(configPort.contextMenuEl, "table-context-menu");
 
 	const anchorController = createAnchoredOverlayController({
 		element: configPort.contextMenuEl,
@@ -32,20 +37,22 @@ export const configureTable = ({
 		},
 	});
 
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.table,
+	});
+
 	const placementStateCleanup = handleTablePlacementState({
 		configPort,
 		editorAPI,
-		componentLookup,
 		blockComponentPlacement,
 	});
 
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
-		getComponent: () =>
-			componentLookup.closestBlockBySelection({
-				components: [componentsName.table],
-			}),
+		getComponent: () => configPort.currentComponent,
 	});
 
 	const contextMenuVisibilityCleanup = handleTableContextMenuVisibility({
@@ -68,6 +75,7 @@ export const configureTable = ({
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		placementStateCleanup();
 		unwrapCleanup();
 		contextMenuVisibilityCleanup();

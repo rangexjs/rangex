@@ -5,7 +5,7 @@ import type {
 	RootEditable,
 } from "rich-text-area";
 import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
-import type { CodeBlockTheme } from "#engine-links";
+import type { CodeBlockTheme } from "#storage";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {
@@ -14,9 +14,20 @@ export interface OnCodeChangeParams {
 
 export type OnCodeChangeFn = (params: OnCodeChangeParams) => void;
 
+export interface OnCodeBlockRemoveParams {
+	blockComponent: BlockComponent;
+}
+
+export type OnCodeBlockRemoveFn = (params: OnCodeBlockRemoveParams) => void;
+
 export interface WatchCodeBlocksParams {
 	rootEditable: RootEditable;
 	onCodeChange: OnCodeChangeFn;
+	onCodeBlockRemove: OnCodeBlockRemoveFn;
+}
+
+export interface GetCodeBlockListParams {
+	blockComponent: BlockComponent;
 }
 
 export interface GetCodeLinesParams {
@@ -44,6 +55,21 @@ export interface UpdateCodeBlockColorsParams {
 	getHighlightInfo: GetHighlightInfoFn | null;
 	cssHighlightManager: CSSHighlightManager;
 	blockComponent: BlockComponent;
+}
+
+export interface CodeBlockHighlight {
+	language: string | null;
+	theme: CodeBlockTheme | null;
+}
+
+export interface IsSameHighlightParams {
+	source: CodeBlockHighlight;
+	target: CodeBlockHighlight;
+}
+
+export interface GetOutdatedCodeBlocksParams {
+	rootEditable: RootEditable;
+	appliedHighlights: WeakMap<BlockComponent, CodeBlockHighlight>;
 }
 
 export interface CodeHighlighterConstructorParams {

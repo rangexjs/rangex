@@ -1,3 +1,5 @@
+import type { anchorPositionFields } from "./CreateOverlayController";
+
 export interface HideParams {
 	instant?: boolean;
 }
@@ -20,28 +22,24 @@ export interface CreateCloseWatcherParams {
 	signal: AbortSignal;
 }
 
-export type AnchorPositionField =
-	| "position"
-	| "position-area"
-	| "top"
-	| "right"
-	| "bottom"
-	| "left"
-	| "width"
-	| "height"
-	| "align-self"
-	| "justify-self"
-	| "margin";
+export type AnchorPositionField = (typeof anchorPositionFields)[number];
 
-export type AnchorStyleOptions = Partial<
-	Record<AnchorPositionField, string>
-> & {
+export type AnchorPositionStyle = Partial<Record<AnchorPositionField, string>>;
+
+export type AnchorStyleOptions = AnchorPositionStyle & {
 	clear?: boolean;
 };
+
+export interface ApplyAnchorPositionParams {
+	element: HTMLElement;
+	positionAnchor: string;
+	styleOptions: AnchorStyleOptions;
+}
 
 export interface OverlayController {
 	readonly element: HTMLElement;
 	readonly isOpen: boolean;
+	readonly anchorElement: HTMLElement | null;
 	show(anchorElement: HTMLElement, styleOptions: AnchorStyleOptions): void;
 	hide: HideFn;
 	addExemptNode(node: HTMLElement): void;

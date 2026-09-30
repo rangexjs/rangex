@@ -1,4 +1,4 @@
-import { htmlLayoutName } from "rich-text-area";
+import { htmlLayoutRole } from "rich-text-area";
 import type {
 	GetImageFigureParams,
 	GetImageFigureResult,
@@ -16,7 +16,7 @@ export const getImageFigure = ({
 
 	if (
 		!figure ||
-		figure.$$editorRole !== htmlLayoutName ||
+		figure.$$editorRole !== htmlLayoutRole ||
 		figure.$$localName !== "figure"
 	) {
 		throw new Error("BlockComponent's first child must be the figure.");
@@ -32,7 +32,7 @@ export const getImageImg = ({
 	figure,
 }: GetImageImgParams): GetImageImgResult => {
 	for (const child of figure.$$children) {
-		if (child.$$editorRole === htmlLayoutName && child.$$localName === "img") {
+		if (child.$$editorRole === htmlLayoutRole && child.$$localName === "img") {
 			return child;
 		}
 	}

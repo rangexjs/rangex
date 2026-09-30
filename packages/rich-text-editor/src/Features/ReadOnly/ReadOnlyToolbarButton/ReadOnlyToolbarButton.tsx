@@ -24,7 +24,7 @@ export const ReadOnlyToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={`${$readOnly.checked()}`}
 			>
-				<Icon name="LockSimple" class="size-4" />
+				<Icon name="LockSimple" title="Read only" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

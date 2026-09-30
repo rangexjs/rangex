@@ -15,7 +15,7 @@ export const createSwapToEmptyMediaPort = ({
 
 	const configPort: SwapToEmptyMediaConfigPort = {
 		get canSwap() {
-			return adapterBus.isEmptyMediaAvailable();
+			return adapterBus.hasAdapter("emptyMedia");
 		},
 
 		onSwap(callback) {
@@ -29,7 +29,7 @@ export const createSwapToEmptyMediaPort = ({
 
 	const publicPort: SwapToEmptyMediaPublicPort = {
 		get canSwap() {
-			return adapterBus.isEmptyMediaAvailable();
+			return adapterBus.hasAdapter("emptyMedia");
 		},
 
 		swap() {

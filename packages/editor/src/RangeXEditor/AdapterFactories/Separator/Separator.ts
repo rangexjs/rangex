@@ -6,18 +6,23 @@ import { configureSeparator } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Separator: AdapterFactoryFn<SeparatorSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createSeparatorAdapter(settings, options);
-
-		const cleanup = configureSeparator({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.separator = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureSeparator({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

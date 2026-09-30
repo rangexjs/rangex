@@ -27,7 +27,7 @@ export const RemoveFormatToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton disabled={disabled()} onClick={onClick}>
-				<Icon name="TSlash" class="size-4" />
+				<Icon name="TSlash" title="Clear formatting" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

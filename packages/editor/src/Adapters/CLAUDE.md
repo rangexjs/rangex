@@ -92,7 +92,7 @@ raw `Set`. `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and
   (`OnInsertCallbackFn`, not `OnAccordionItemInsertCallbackFn`); only `XxxState`,
   `XxxInternals`, `XxxConfigPort(Props)`, `XxxPublicPort(Props)`, `XxxAdapter`,
   `XxxSettings` keep it. Exception: keep the prefix where the bare name is ambiguous or
-  stutters (`CodeBlockLanguage`, `TemplateVariableKind`).
+  stutters (`CodeBlockLanguage`, `TemplateVariableFields`).
 
 ## `-types.ts` order
 
@@ -168,24 +168,59 @@ context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`
 otherwise collide with the port's own composed key (`SelectionMenuPort`'s DOM-element
 field became `element`, since the composed key is already `selectionMenu`).
 
+## AdapterBus
+
+`_Utilities/AdapterBus/` is the one shared object every Adapter receives through
+`AdapterOptions`; Adapters use it to talk to each other without holding direct references.
+Two channel shapes:
+
+- **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
+  `onSwapToEmptyMedia`).
+- **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
+  Answers "was the editor built with Adapter X?" for anything that depends on another
+  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`, and every
+  `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
+  isn't registered).
+
+`createEditor` builds the editor in two phases, so Adapter order never affects a lookup:
+
+1. **Create** — every `AdapterFactory` creates its Adapter, which registers itself on the
+   bus, and exposes its `publicPort` on `editor`. No `editorAPI` is available here. An Adapter
+   must not read other Adapters during creation (no `hasAdapter` in `createXxxAdapter` or
+   its setup code; getters read later are fine), since the registry isn't complete yet.
+2. **Configure** — once every Adapter exists, each factory's `configure({ editorAPI })`
+   runs its `configureXxx` and returns the cleanup. The registry is complete, so
+   `configureXxx` may read `hasAdapter` directly. It may subscribe to bus events but must not
+   emit them during setup — configure steps still run in array order among themselves.
+
 ## Wiring a new Adapter in
 
 1. Build it per everything above.
-2. Add its id to `Adapters/_Utilities/Utilities-types.ts`'s `Adapter` union and
-   `AdapterPublicPorts` map (the `RangeXEditor` type is generated off this map's keys —
-   skipping this means the feature is unreachable from `createEditor`, even fully
-   built).
+2. Add it to `Adapters/_Utilities/Utilities-types.ts`'s `AdapterMap`
+   (`xxx: XxxAdapter`). `AdapterName`, the `Adapter` union and `AdapterPublicPorts` are all
+   derived from it, and the `RangeXEditor` type is generated off `AdapterPublicPorts` —
+   skipping this means the feature is unreachable from `createEditor`, even fully built.
+   Then call `adapterBus.registerAdapter("xxx")` in `createXxxAdapter`, right after the
+   `params` destructure, so other Adapters can see it through `hasAdapter` (see AdapterBus
+   above).
 3. Nothing to touch in `package.json` — `#adapters/*` is a single wildcard
    (`"./src/Adapters/*Adapter/index.ts"`) that already resolves any new `XxxAdapter`
    folder automatically.
 4. If it needs `Features` wiring (`Features/ConfigureXxx/`) and an
    `AdapterFactory` (`RangeXEditor/AdapterFactories/Xxx/`), build those too — an Adapter
    alone isn't reachable from `createEditor`'s `adapters` array without a matching
-   `AdapterFactory`. See the Progress section below for what's built and what isn't.
+   `AdapterFactory`. The factory creates the Adapter and assigns `editor.xxx`, then returns
+   `{ configure({ editorAPI }) { ... } }` that runs `configureXxx` and returns the cleanup
+   (see the two phases under AdapterBus above). See the Progress section below for what's
+   built and what isn't.
 5. If `@rangex/solid` needs to wrap it reactively, add a matching
-   `packages/solid/src/ReactivePorts/Xxx/` — every `readonly xxx` + `onXxxUpdate` pair
-   becomes a `createSignal`; a `readonly xxx` with no `onXxxUpdate` counterpart (static,
-   configured once) passes through as a plain value; commands pass through unchanged.
+   `packages/solid/src/ReactivePorts/Xxx/` — only state goes in: every `readonly xxx` +
+   `onXxxUpdate` pair becomes a `createSignal`. Nothing else is exposed — a `readonly xxx`
+   with no `onXxxUpdate` (static, configured once), a notify pair (`isOpen`/`onToggle`), and
+   commands are read from the raw `publicPort` instead. A nested SharedPort with state
+   (`caretMenu`) is mirrored at the same path via a reactive shared port
+   (`ReactivePorts/_Utilities/SharedPorts/`), e.g. `$mention.caretMenu.query()`; one without
+   state (`quickActions`, `selectionMenu`) is left off entirely.
 
 ---
 

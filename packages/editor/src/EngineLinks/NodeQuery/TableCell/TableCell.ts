@@ -1,6 +1,6 @@
 import {
 	isEditorElement,
-	tableCellName,
+	tableCellRole,
 	tableCellRoleSelector,
 } from "rich-text-area";
 import type {
@@ -25,7 +25,7 @@ export const getClosestTableCell = ({
 		return null;
 	}
 
-	if (tableCell.$$editorRole !== tableCellName) {
+	if (tableCell.$$editorRole !== tableCellRole) {
 		throw new Error("TableCell's type is invalid.");
 	}
 

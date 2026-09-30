@@ -4,12 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	createEmbedStorage,
-} from "#engine-links";
+import { aspectRatioAttr, blockAlignAttr, componentsName } from "#engine-links";
+import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
 // Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are
@@ -33,7 +29,7 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.embed,
+			name: componentsName.embed,
 			content: { type: "custom" },
 			customStorage: createEmbedStorage(),
 			editState: "false",

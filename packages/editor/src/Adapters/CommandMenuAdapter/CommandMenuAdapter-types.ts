@@ -22,28 +22,17 @@ export type CommandMenuItemValue =
 	| "accordion-item"
 	| "separator";
 
-export interface SuggestionItem {
+export interface CommandMenuItem {
 	value: CommandMenuItemValue;
 	label: string;
 }
 
-export type SuggestionItems = SuggestionItem[];
-
-export interface CommandMenuState {
-	query?: string;
-}
-
-export type OnFilteredItemsUpdateCallbackFn = (value: SuggestionItems) => void;
+export type CommandMenuItems = CommandMenuItem[];
 
 export type OnBeforeSelectCallbackFn = () => void;
 
-export interface UpdateStateParams extends CommandMenuState {}
-
 export interface CommandMenuConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
-	readonly filteredItems: SuggestionItems;
-
-	updateState(params: UpdateStateParams): void;
 
 	onBeforeSelect(callback: OnBeforeSelectCallbackFn): () => void;
 }
@@ -52,9 +41,7 @@ export interface CommandMenuConfigPort extends CommandMenuConfigPortProps {}
 
 export interface CommandMenuPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
-	readonly filteredItems: SuggestionItems;
-
-	onFilteredItemsUpdate(callback: OnFilteredItemsUpdateCallbackFn): () => void;
+	readonly items: CommandMenuItems;
 
 	beforeSelect(): void;
 }
@@ -62,9 +49,7 @@ export interface CommandMenuPublicPortProps {
 export interface CommandMenuPublicPort extends CommandMenuPublicPortProps {}
 
 export interface CommandMenuInternals {
-	items: SuggestionItems;
-	query: string;
-	filteredItems: SuggestionItems;
+	items: CommandMenuItems;
 }
 
 export interface CommandMenuAdapter {

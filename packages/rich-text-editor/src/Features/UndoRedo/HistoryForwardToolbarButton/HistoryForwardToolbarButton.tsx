@@ -25,7 +25,7 @@ export const HistoryForwardToolbarButton = () => {
 				disabled={disabled()}
 				onClick={() => undoRedo.stepForward()}
 			>
-				<Icon name="ArrowBendUpRight" class="size-4" />
+				<Icon name="ArrowBendUpRight" title="Redo" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

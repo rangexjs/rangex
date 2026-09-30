@@ -1,4 +1,4 @@
-import { htmlLayoutName } from "rich-text-area";
+import { htmlLayoutRole } from "rich-text-area";
 import type {
 	GetVideoElementParams,
 	GetVideoElementResult,
@@ -16,7 +16,7 @@ export const getVideoFigure = ({
 
 	if (
 		!figure ||
-		figure.$$editorRole !== htmlLayoutName ||
+		figure.$$editorRole !== htmlLayoutRole ||
 		figure.$$localName !== "figure"
 	) {
 		throw new Error("BlockComponent's first child must be the figure.");
@@ -33,7 +33,7 @@ export const getVideoElement = ({
 }: GetVideoElementParams): GetVideoElementResult => {
 	for (const child of figure.$$children) {
 		if (
-			child.$$editorRole === htmlLayoutName &&
+			child.$$editorRole === htmlLayoutRole &&
 			child.$$localName === "video"
 		) {
 			return child;

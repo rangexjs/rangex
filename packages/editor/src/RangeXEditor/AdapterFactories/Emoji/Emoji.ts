@@ -3,18 +3,23 @@ import { configureEmoji } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Emoji: AdapterFactoryFn<EmojiSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createEmojiAdapter(settings, options);
-
-		const cleanup = configureEmoji({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.emoji = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureEmoji({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

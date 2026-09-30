@@ -1,10 +1,10 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="todo-list"]) {
+	&:has([data-rx-name="todo-list"]) {
 		margin-block: 8px;
 	}
 
 	[data-rx-editor-role="block-component"] {
-		&:where([data-rx-component-name="todo-list"]) {
+		&:where([data-rx-name="todo-list"]) {
 			& ul {
 				list-style-type: none;
 				margin-block: 0;

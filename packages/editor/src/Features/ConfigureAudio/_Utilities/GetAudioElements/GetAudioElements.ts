@@ -1,4 +1,4 @@
-import { htmlLayoutName } from "rich-text-area";
+import { htmlLayoutRole } from "rich-text-area";
 import type {
 	GetAudioElementParams,
 	GetAudioElementResult,
@@ -16,7 +16,7 @@ export const getAudioFigure = ({
 
 	if (
 		!figure ||
-		figure.$$editorRole !== htmlLayoutName ||
+		figure.$$editorRole !== htmlLayoutRole ||
 		figure.$$localName !== "figure"
 	) {
 		throw new Error("BlockComponent's first child must be the figure.");
@@ -33,7 +33,7 @@ export const getAudioElement = ({
 }: GetAudioElementParams): GetAudioElementResult => {
 	for (const child of figure.$$children) {
 		if (
-			child.$$editorRole === htmlLayoutName &&
+			child.$$editorRole === htmlLayoutRole &&
 			child.$$localName === "audio"
 		) {
 			return child;

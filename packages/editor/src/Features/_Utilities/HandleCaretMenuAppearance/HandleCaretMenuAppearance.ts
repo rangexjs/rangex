@@ -10,15 +10,14 @@ import {
 import type { HandleCaretMenuAppearanceParams } from "./HandleCaretMenuAppearance-types";
 
 /*
- * Wires a caret-anchored overlay's appearance to the engine: closes it on selection change,
- * editor blur, or Escape, and shows it near the cursor whenever the injected `getQuery` finds
- * a trigger at the caret and `onQuery` confirms there's something to display.
+ * Wires a caret-anchored overlay's appearance to the engine: on selection change, pushes the query `getQuery` finds
+ * at the caret and shows the overlay near the cursor, or hides it when there's none. Also closes on editor blur or
+ * Escape. Any close resets the query to null, so the query is non-null exactly while the overlay is open.
  */
 export const handleCaretMenuAppearance = ({
 	port,
 	editorAPI,
 	getQuery,
-	onQuery,
 }: HandleCaretMenuAppearanceParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -26,35 +25,17 @@ export const handleCaretMenuAppearance = ({
 		element: port.element,
 		options: {
 			lightDismiss: false,
-			closeOnEscape: false,
-			onToggle: (isOpen) => port.updateCaretMenu({ isOpen }),
-		},
-	});
+			closeOnEscape: true,
+			onToggle(isOpen) {
+				if (isOpen) {
+					return;
+				}
 
-	const restoreFocusOnEscape = (event: KeyboardEvent) => {
-		if (event.key !== "Escape") {
-			return;
-		}
-
-		if (!anchorController.isOpen) {
-			return;
-		}
-
-		anchorController.hide({});
-
-		editorAPI.focus();
-	};
-
-	document.addEventListener("keydown", restoreFocusOnEscape);
-
-	const unsubscribeSelectionChangeClose = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			if (!anchorController.isOpen) {
-				return;
-			}
-
-			anchorController.hide({});
+				port.updateCaretMenu({ query: null });
+			},
+			onEscape() {
+				editorAPI.focus();
+			},
 		},
 	});
 
@@ -93,26 +74,30 @@ export const handleCaretMenuAppearance = ({
 				toOffset,
 			});
 
-			// Caret menus only trigger from a collapsed cursor, not a range selection
-			if (!range.isSinglePoint) {
-				return;
-			}
+			const result = (() => {
+				// Caret menus only trigger from a collapsed cursor, not a range selection
+				if (!range.isSinglePoint) {
+					return null;
+				}
 
-			const { startText, startOffset } = range;
+				const { startText, startOffset } = range;
 
-			const result = getQuery({
-				editorAPI,
-				fromText: startText,
-				fromOffset: startOffset,
-			});
+				return getQuery({
+					editorAPI,
+					fromText: startText,
+					fromOffset: startOffset,
+				});
+			})();
+
+			const query = result ? result.query : null;
+
+			port.updateCaretMenu({ query });
 
 			if (!result) {
-				return;
-			}
+				if (anchorController.isOpen) {
+					anchorController.hide({});
+				}
 
-			const shouldShow = onQuery(result.query);
-
-			if (!shouldShow) {
 				return;
 			}
 
@@ -125,8 +110,6 @@ export const handleCaretMenuAppearance = ({
 	});
 
 	return () => {
-		document.removeEventListener("keydown", restoreFocusOnEscape);
-		unsubscribeSelectionChangeClose();
 		unsubscribeEditorBlurClose();
 		unsubscribeAppearance();
 		anchorController.cleanup();

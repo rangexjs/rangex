@@ -27,7 +27,9 @@ import type {
 export const createLineHandlerAdapter = (
 	...params: CreateLineHandlerAdapterParams
 ): CreateLineHandlerAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("lineHandler");
 
 	const element = document.createElement("div");
 	floatingContainer.append(element);

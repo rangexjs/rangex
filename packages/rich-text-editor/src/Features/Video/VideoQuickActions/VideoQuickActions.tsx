@@ -321,7 +321,7 @@ export const VideoQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Swap"
+					aria-label="Swap video"
 					disabled={!video.canSwap || $readOnly?.checked()}
 					onClick={onSwapClick}
 				>
@@ -334,7 +334,7 @@ export const VideoQuickActions = () => {
 						commandfor={optionsPopoverId}
 						command="toggle-popover"
 						class="btn-menu-trigger flex items-center justify-center rounded p-1"
-						title="Options"
+						aria-label="Video options"
 						disabled={$readOnly?.checked()}
 					>
 						<Icon name="DotsThreeHorizontal" class="size-4" />
@@ -366,28 +366,44 @@ export const VideoQuickActions = () => {
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Controls
 							</span>
-							<ToggleButton checked={controls()} onClick={onControlsToggle} />
+							<ToggleButton
+								checked={controls()}
+								label="Controls"
+								onClick={onControlsToggle}
+							/>
 						</div>
 
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Autoplay
 							</span>
-							<ToggleButton checked={autoplay()} onClick={onAutoplayToggle} />
+							<ToggleButton
+								checked={autoplay()}
+								label="Autoplay"
+								onClick={onAutoplayToggle}
+							/>
 						</div>
 
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Loop
 							</span>
-							<ToggleButton checked={loop()} onClick={onLoopToggle} />
+							<ToggleButton
+								checked={loop()}
+								label="Loop"
+								onClick={onLoopToggle}
+							/>
 						</div>
 
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Muted
 							</span>
-							<ToggleButton checked={muted()} onClick={onMutedToggle} />
+							<ToggleButton
+								checked={muted()}
+								label="Muted"
+								onClick={onMutedToggle}
+							/>
 						</div>
 
 						<div class="flex items-center justify-between">
@@ -396,6 +412,7 @@ export const VideoQuickActions = () => {
 							</span>
 							<ToggleButton
 								checked={$video.captionEnabled()}
+								label="Caption"
 								onClick={onCaptionToggle}
 							/>
 						</div>
@@ -404,6 +421,7 @@ export const VideoQuickActions = () => {
 							<SegmentedControl
 								id={$video.captionPosition()}
 								controls={captionPositionControls}
+								label="Caption position"
 								onChange={(value) => video.changeCaptionPosition(value)}
 								appearance="primary-outline"
 								class="rounded-sm"

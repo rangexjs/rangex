@@ -17,12 +17,12 @@ export const BlockQuoteToolbarButton = () => {
 
 	const disabled = createMemo(
 		() =>
-			!($blockQuote.isActive() || $blockQuote.canWrap()) ||
+			!($blockQuote.isSelectionActive() || $blockQuote.canWrap()) ||
 			!!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		if ($blockQuote.isActive()) {
+		if ($blockQuote.isSelectionActive()) {
 			blockQuote.unwrap();
 			return;
 		}
@@ -33,11 +33,12 @@ export const BlockQuoteToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$blockQuote.isActive()}
+				checked={$blockQuote.isSelectionActive()}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$blockQuote.isSelectionActive()}`}
 			>
-				<Icon name="BlockQuote" class="size-4" />
+				<Icon name="BlockQuote" title="Block quote" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

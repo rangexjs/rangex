@@ -8,18 +8,23 @@ import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 export const FindReplace: AdapterFactoryFn<FindReplaceSettings> = (
 	settings,
 ) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createFindReplaceAdapter(settings, options);
-
-		const cleanup = configureFindReplace({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.findReplace = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureFindReplace({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

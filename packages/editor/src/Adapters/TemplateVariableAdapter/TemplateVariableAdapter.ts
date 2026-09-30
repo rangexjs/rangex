@@ -9,80 +9,60 @@ import type {
 	CreateTemplateVariableAdapterResult,
 	InsertParams,
 	OnCanInsertUpdateCallbackFn,
-	OnFilteredItemsUpdateCallbackFn,
+	OnChangeFieldsCallbackFn,
+	OnFieldsUpdateCallbackFn,
 	OnInsertCallbackFn,
-	OnOptionsCallbackFn,
-	OnOptionsUpdateCallbackFn,
 	OnSelectCallbackFn,
-	SuggestionItem,
-	SuggestionItems,
 	TemplateVariableConfigPort,
 	TemplateVariableConfigPortProps,
 	TemplateVariableInternals,
+	TemplateVariableItem,
 	TemplateVariablePublicPort,
 	TemplateVariablePublicPortProps,
 	UpdateStateParams,
 } from "./TemplateVariableAdapter-types";
 
-const ALL_ITEMS: SuggestionItems = [
-	{ kind: "full-name", label: "{{FullName}}" },
-	{ kind: "first-name", label: "{{FirstName}}" },
-	{ kind: "last-name", label: "{{LastName}}" },
-	{ kind: "email", label: "{{Email}}" },
-	{ kind: "date", label: "{{Date}}" },
-];
-
 export const createTemplateVariableAdapter = (
 	...params: CreateTemplateVariableAdapterParams
 ): CreateTemplateVariableAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("templateVariable");
 
 	const internals: TemplateVariableInternals = {
 		// States
 		canInsert: false,
-		options: { firstName: null, lastName: null, email: null, date: null },
-		query: "",
-		filteredItems: [],
+		fields: {},
+		// Settings
+		fieldsConfig: settings.fieldsConfig,
+		// Rest
+		items: Object.keys(settings.fieldsConfig).map((fieldName) => ({
+			fieldName,
+		})),
 	};
 
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const optionsUpdateEmitter = createEmitter<OnOptionsUpdateCallbackFn>();
-	const filteredItemsUpdateEmitter =
-		createEmitter<OnFilteredItemsUpdateCallbackFn>();
+	const fieldsUpdateEmitter = createEmitter<OnFieldsUpdateCallbackFn>();
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
-	const optionsEmitter = createEmitter<OnOptionsCallbackFn>();
+	const changeFieldsEmitter = createEmitter<OnChangeFieldsCallbackFn>();
 	const selectEmitter = createEmitter<OnSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
-	const computeFilteredItems = () => {
-		const q = internals.query.toLowerCase();
-		internals.filteredItems = q
-			? ALL_ITEMS.filter((item) => item.label.toLowerCase().includes(q))
-			: ALL_ITEMS;
-
-		filteredItemsUpdateEmitter.emit(internals.filteredItems);
-	};
-
-	const updateState = ({ canInsert, options, query }: UpdateStateParams) => {
+	const updateState = ({ canInsert, fields }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			internals.canInsert = canInsert;
 
 			canInsertUpdateEmitter.emit(internals.canInsert);
 		}
 
-		if (options !== undefined) {
-			internals.options = options;
+		if (fields !== undefined) {
+			internals.fields = fields;
 
-			optionsUpdateEmitter.emit(internals.options);
-		}
-
-		if (query !== undefined) {
-			internals.query = query;
-			computeFilteredItems();
+			fieldsUpdateEmitter.emit(internals.fields);
 		}
 	};
 
@@ -95,8 +75,8 @@ export const createTemplateVariableAdapter = (
 				return caretMenuPort.configPort;
 			},
 
-			get filteredItems() {
-				return internals.filteredItems;
+			get fieldsConfig() {
+				return internals.fieldsConfig;
 			},
 
 			updateState(params) {
@@ -107,8 +87,8 @@ export const createTemplateVariableAdapter = (
 				return insertEmitter.subscribe(callback);
 			},
 
-			onOptions(callback) {
-				return optionsEmitter.subscribe(callback);
+			onChangeFields(callback) {
+				return changeFieldsEmitter.subscribe(callback);
 			},
 
 			onSelect(callback) {
@@ -128,35 +108,35 @@ export const createTemplateVariableAdapter = (
 				return internals.canInsert;
 			},
 
-			get options() {
-				return internals.options;
+			get fields() {
+				return internals.fields;
 			},
 
-			get filteredItems() {
-				return internals.filteredItems;
+			get fieldsConfig() {
+				return internals.fieldsConfig;
+			},
+
+			get items() {
+				return internals.items;
 			},
 
 			onCanInsertUpdate(callback) {
 				return canInsertUpdateEmitter.subscribe(callback);
 			},
 
-			onOptionsUpdate(callback) {
-				return optionsUpdateEmitter.subscribe(callback);
-			},
-
-			onFilteredItemsUpdate(callback) {
-				return filteredItemsUpdateEmitter.subscribe(callback);
+			onFieldsUpdate(callback) {
+				return fieldsUpdateEmitter.subscribe(callback);
 			},
 
 			insert(params: InsertParams) {
 				insertEmitter.emit(params);
 			},
 
-			changeOptions(options) {
-				optionsEmitter.emit(options);
+			changeFields(fields) {
+				changeFieldsEmitter.emit(fields);
 			},
 
-			select(item: SuggestionItem) {
+			select(item: TemplateVariableItem) {
 				selectEmitter.emit(item);
 			},
 		} satisfies TemplateVariablePublicPortProps,

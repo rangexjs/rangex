@@ -7,10 +7,14 @@ import { handleSeparatorPlacementState } from "./HandleSeparatorPlacementState";
  * Wires up separator toolbar button state and placement handling, returning a cleanup function.
  */
 export const configureSeparator = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureSeparatorParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
 
 	const placementStateCleanup = handleSeparatorPlacementState({
 		configPort,

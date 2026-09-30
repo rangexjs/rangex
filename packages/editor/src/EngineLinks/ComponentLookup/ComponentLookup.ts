@@ -1,46 +1,66 @@
-import {
-	getClosestBlockComponent,
-	getClosestInlineComponent,
-} from "../NodeQuery";
-import { getSelectionForwardText } from "./_Utilities";
+import { type EditorElement, EditorRange, isComponent } from "rich-text-area";
 import type {
+	ComponentByName,
 	ComponentLookup,
 	CreateComponentLookupParams,
 	CreateComponentLookupResult,
 } from "./ComponentLookup-types";
 
 /**
- * Creates a {@link ComponentLookup} — the API for finding the BlockComponent or InlineComponent
- * that contains a node, limited to the given component names.
+ * Creates a {@link ComponentLookup} — the API for finding the component that contains a range, limited to
+ * the given component names. The result is typed as BlockComponent or InlineComponent based on the names.
  *
- * Each lookup has two variants:
- * - Direct — caller supplies the anchor node explicitly.
- * - BySelection — the anchor node is the forward end of the current editor selection.
+ * - closest — caller supplies the range's boundary points explicitly.
+ * - closestBySelection — the range is the current editor selection.
  *
- * All of them return the closest matching ancestor, or null if there is none.
+ * Both return the closest matching ancestor that contains the whole range, or null if there is none.
  */
 export const createComponentLookup = ({
 	editorAPI,
 }: CreateComponentLookupParams): CreateComponentLookupResult => {
+	const selection = editorAPI.getEditorSelection();
+
 	const componentLookup: ComponentLookup = {
-		closestBlock({ fromNode, components }) {
-			return getClosestBlockComponent({ fromNode, components });
+		closest({ fromNode, fromOffset, toNode, toOffset, components }) {
+			const range = new EditorRange({ fromNode, fromOffset, toNode, toOffset });
+
+			let parent: EditorElement | null = range.startText.$$parentElement;
+
+			while (parent) {
+				if (isComponent(parent)) {
+					const { $$name } = parent;
+
+					const nameMatches = components.some((name) => name === $$name);
+
+					const withinRange = range.isDescendant({
+						container: parent,
+						start: true,
+						end: true,
+					});
+
+					if (nameMatches && withinRange) {
+						// The name filter guarantees the component type the names map to.
+						return parent as ComponentByName<(typeof components)[number]>;
+					}
+				}
+
+				parent = parent.$$parentElement;
+			}
+
+			return null;
 		},
 
-		closestBlockBySelection({ components }) {
-			const fromNode = getSelectionForwardText({ editorAPI });
+		closestBySelection({ components }) {
+			const { fromText, fromOffset, toText, toOffset } =
+				selection.getBoundaryPoints();
 
-			return getClosestBlockComponent({ fromNode, components });
-		},
-
-		closestInline({ fromNode, components }) {
-			return getClosestInlineComponent({ fromNode, components });
-		},
-
-		closestInlineBySelection({ components }) {
-			const fromNode = getSelectionForwardText({ editorAPI });
-
-			return getClosestInlineComponent({ fromNode, components });
+			return componentLookup.closest({
+				fromNode: fromText,
+				fromOffset,
+				toNode: toText,
+				toOffset,
+				components,
+			});
 		},
 	};
 

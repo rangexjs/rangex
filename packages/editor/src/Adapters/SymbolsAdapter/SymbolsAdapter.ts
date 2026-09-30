@@ -14,7 +14,9 @@ import type {
 export const createSymbolsAdapter = (
 	...params: CreateSymbolsAdapterParams
 ): CreateSymbolsAdapterResult => {
-	const [{ items = defaultSymbolsItems }, _options] = params;
+	const [{ items = defaultSymbolsItems }, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("symbols");
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();

@@ -1,9 +1,11 @@
+import { addERClass, removeERClass } from "../ERClass";
+
 /**
  * Forces a synchronous reflow while the element's CSS transitions are disabled, so a pending
  * transition (e.g. a fade-out) is skipped instead of animating.
  */
 export const forceReflowWithoutTransition = (element: HTMLElement) => {
-	element.classList.add("disable-transition");
+	addERClass(element, "disable-transition");
 	element.offsetHeight;
-	element.classList.remove("disable-transition");
+	removeERClass(element, "disable-transition");
 };

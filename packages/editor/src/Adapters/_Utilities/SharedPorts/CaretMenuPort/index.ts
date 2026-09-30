@@ -3,6 +3,7 @@ export type {
 	CaretMenuConfigPort,
 	CaretMenuPort,
 	CaretMenuPublicPort,
+	CaretMenuQuery,
 	CaretMenuState,
-	OnToggleCallbackFn,
+	OnQueryUpdateCallbackFn,
 } from "./CaretMenuPort-types";

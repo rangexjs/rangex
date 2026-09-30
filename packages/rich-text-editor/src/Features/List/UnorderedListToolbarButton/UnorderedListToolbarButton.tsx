@@ -16,12 +16,20 @@ export const UnorderedListToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() => !($list.isActive() || $list.canWrap()) || !!$readOnly?.checked(),
+		() =>
+			!($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {
-		if ($list.isActive()) {
+		const localName = $list.localName();
+
+		if (localName === "ul") {
 			list.unwrap();
+			return;
+		}
+
+		if (localName) {
+			list.changeLocalName("ul");
 			return;
 		}
 
@@ -31,11 +39,12 @@ export const UnorderedListToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton
-				checked={$list.isActive()}
+				checked={$list.localName() === "ul"}
 				disabled={disabled()}
 				onClick={onClick}
+				aria-pressed={`${$list.localName() === "ul"}`}
 			>
-				<Icon name="ListBullets" class="size-4" />
+				<Icon name="ListBullets" title="Bulleted list" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

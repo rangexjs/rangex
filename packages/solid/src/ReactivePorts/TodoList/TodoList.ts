@@ -12,16 +12,23 @@ export const TodoList = <T extends TodoListPublicPort | undefined>(
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
-	const [isActive, setIsActive] = createSignal(publicPort.isActive);
+	const [currentComponent, setCurrentComponent] = createSignal(
+		publicPort.currentComponent,
+	);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(
+		publicPort.isSelectionActive,
+	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
-	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
+	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveTodoListPort = {
 		canInsert,
 		canWrap,
-		isActive,
+		currentComponent,
+		isSelectionActive,
 	};
 
 	return port as PreserveUndefined<T, ReactiveTodoListPort>;

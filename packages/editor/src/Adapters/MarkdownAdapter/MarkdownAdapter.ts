@@ -12,7 +12,9 @@ import type {
 export const createMarkdownAdapter = (
 	...params: CreateMarkdownAdapterParams
 ): CreateMarkdownAdapterResult => {
-	const [settings, _options] = params;
+	const [settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("markdown");
 
 	const internals: MarkdownInternals = {
 		codeBlockTriggers: settings.codeBlockTriggers ?? [

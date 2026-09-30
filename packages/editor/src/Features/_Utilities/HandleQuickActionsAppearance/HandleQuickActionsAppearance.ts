@@ -6,15 +6,14 @@ import type { HandleQuickActionsAppearanceParams } from "./HandleQuickActionsApp
 
 /*
  * Wires a block component's quick-actions overlay appearance to the engine, anchoring it to
- * the current block on hover and tracking that block as the port's current component while
- * open. `beforeOpen` runs before each show, so the caller can push any extra state it needs.
+ * the hovered block and tracking that block as the port's hover component while open.
+ * Returns a cleanup function.
  */
 export const handleQuickActionsAppearance = ({
 	port,
 	quickActionsPort,
 	editorAPI,
 	componentName,
-	beforeOpen,
 }: HandleQuickActionsAppearanceParams) => {
 	const overlayAppearanceHandler = createOverlayAppearanceHandler({
 		editorAPI,
@@ -29,18 +28,16 @@ export const handleQuickActionsAppearance = ({
 		},
 	});
 
-	const { getCurrentBlock, cleanup: registrationCleanup } =
+	const { cleanup: registrationCleanup } =
 		overlayAppearanceHandler.registerComponent({
 			popover: anchorController.element,
 			shouldShow({ blockComponent }) {
-				return blockComponent.$$componentName === componentName;
+				return blockComponent.$$name === componentName;
 			},
 			onShow({ blockComponent }) {
 				anchorController.hide({});
 
-				port.updateCurrentComponent({ currentComponent: blockComponent });
-
-				beforeOpen({ blockComponent });
+				port.updateCurrentComponent({ hoverComponent: blockComponent });
 
 				anchorController.show(blockComponent, {
 					clear: true,
@@ -52,16 +49,13 @@ export const handleQuickActionsAppearance = ({
 			onClose() {
 				anchorController.hide({});
 
-				port.updateCurrentComponent({ currentComponent: null });
+				port.updateCurrentComponent({ hoverComponent: null });
 			},
 		});
 
-	return {
-		getCurrentBlock,
-		cleanup: () => {
-			overlayAppearanceHandler.cleanup();
-			registrationCleanup();
-			anchorController.cleanup();
-		},
+	return () => {
+		overlayAppearanceHandler.cleanup();
+		registrationCleanup();
+		anchorController.cleanup();
 	};
 };

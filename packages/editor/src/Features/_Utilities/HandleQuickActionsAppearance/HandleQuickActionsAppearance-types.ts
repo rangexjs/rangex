@@ -5,16 +5,9 @@ import type {
 } from "#adapters";
 import type { BlockComponentName } from "#engine-links";
 
-export interface OnBeforeOpenParams {
-	blockComponent: BlockComponent;
-}
-
-export type OnBeforeOpenFn = (params: OnBeforeOpenParams) => void;
-
 export interface HandleQuickActionsAppearanceParams {
 	port: CurrentComponentConfigPort<BlockComponent>;
 	quickActionsPort: QuickActionsConfigPort;
 	editorAPI: EditorAPI;
 	componentName: BlockComponentName;
-	beforeOpen: OnBeforeOpenFn;
 }

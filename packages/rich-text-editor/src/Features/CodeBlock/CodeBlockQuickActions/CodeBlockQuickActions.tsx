@@ -15,6 +15,10 @@ export const CodeBlockQuickActions = () => {
 		throw new Error("CodeBlock can't be undefined.");
 	}
 
+	if (!options) {
+		throw new Error("CodeBlockOptions can't be undefined.");
+	}
+
 	const $codeBlock = CodeBlock(codeBlock);
 	const $readOnly = ReadOnly(readOnly);
 
@@ -38,7 +42,7 @@ export const CodeBlockQuickActions = () => {
 				<button
 					type="button"
 					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					title="Copy"
+					aria-label="Copy code"
 					disabled={$readOnly?.checked()}
 					onClick={onCopyClick}
 				>

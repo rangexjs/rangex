@@ -16,7 +16,9 @@ import type {
 export const createSeparatorAdapter = (
 	...params: CreateSeparatorAdapterParams
 ): CreateSeparatorAdapterResult => {
-	const [_settings, _options] = params;
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("separator");
 
 	const internals: SeparatorInternals = {
 		// States

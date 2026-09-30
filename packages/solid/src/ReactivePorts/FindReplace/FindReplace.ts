@@ -10,11 +10,14 @@ export const FindReplace = <T extends FindReplacePublicPort | undefined>(
 		return undefined as PreserveUndefined<T, ReactiveFindReplacePort>;
 	}
 
+	const [currentIndex, setCurrentIndex] = createSignal(publicPort.currentIndex);
 	const [results, setResults] = createSignal(publicPort.results);
 
+	onCleanup(publicPort.onCurrentIndexUpdate(setCurrentIndex));
 	onCleanup(publicPort.onResultsUpdate(setResults));
 
 	const port: ReactiveFindReplacePort = {
+		currentIndex,
 		results,
 	};
 

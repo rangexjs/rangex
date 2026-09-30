@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, untrack } from "solid-js";
 import { Icon } from "../../Icon";
 import type { CheckboxControls } from "./_Utilities";
 
@@ -18,7 +18,9 @@ export const Checkbox = (props: CheckboxProps) => {
 		<span class="relative inline-block h-min leading-0">
 			<input
 				ref={(el) => {
-					props.setCheckbox(el);
+					untrack(() => {
+						props.setCheckbox(el);
+					});
 				}}
 				type="checkbox"
 				checked={props.defaultChecked}

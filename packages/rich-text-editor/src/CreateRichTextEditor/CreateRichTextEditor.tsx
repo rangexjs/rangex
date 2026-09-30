@@ -44,7 +44,7 @@ export const createRichTextEditor = ({
 
 	const uiOptions = extensions.reduce<UIOptions>(
 		(prev, value) => Object.assign(prev, value.uiOptions),
-		{ codeBlock: {} },
+		{},
 	);
 
 	for (const { register } of extensions) {

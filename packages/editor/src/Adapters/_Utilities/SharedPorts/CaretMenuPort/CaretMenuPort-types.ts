@@ -1,13 +1,15 @@
+export type CaretMenuQuery = string | null;
+
 export interface CaretMenuState {
-	isOpen: boolean;
+	query: CaretMenuQuery;
 }
 
-export interface UpdateStateParams {
-	isOpen?: boolean;
-}
+export type OnQueryUpdateCallbackFn = (value: CaretMenuQuery) => void;
+
+export interface UpdateStateParams extends Partial<CaretMenuState> {}
 
 export interface CaretMenuInternals {
-	isOpen: boolean;
+	query: CaretMenuQuery;
 }
 
 export interface CaretMenuConfigPort {
@@ -16,13 +18,11 @@ export interface CaretMenuConfigPort {
 	updateCaretMenu(params: UpdateStateParams): void;
 }
 
-export type OnToggleCallbackFn = () => void;
-
 export interface CaretMenuPublicPort {
 	readonly element: HTMLDivElement;
-	readonly isOpen: boolean;
+	readonly query: CaretMenuQuery;
 
-	onToggle(callback: OnToggleCallbackFn): () => void;
+	onQueryUpdate(callback: OnQueryUpdateCallbackFn): () => void;
 }
 
 export interface CaretMenuPort {

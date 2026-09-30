@@ -31,7 +31,7 @@ export const UnderlineToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$underline.pressed()}
 			>
-				<Icon name="Underline" class="size-4" />
+				<Icon name="Underline" title="Underline" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

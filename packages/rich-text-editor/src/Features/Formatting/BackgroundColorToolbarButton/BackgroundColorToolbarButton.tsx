@@ -4,6 +4,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	untrack,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
 import { useEditorContext } from "#context";
@@ -43,9 +44,9 @@ export const BackgroundColorToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const initialHslColors = getHslThemeColors({
-		colors: $backgroundColor.values(),
-	});
+	const initialHslColors = untrack(() =>
+		getHslThemeColors({ colors: $backgroundColor.values() }),
+	);
 	const initialColorMode = getColorMode(initialHslColors);
 
 	const [lightHsl, setLightHsl] = createSignal<HslFormat>(
@@ -56,7 +57,9 @@ export const BackgroundColorToolbarButton = () => {
 		initialHslColors.darkColors.at(0) ??
 			ColorFormat.fromColor({ color: "black" }).hslFormat(),
 	);
-	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(lightHsl());
+	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(
+		untrack(() => lightHsl()),
+	);
 	const [colorMode, setColorMode] = createSignal<ColorMode>(initialColorMode);
 	const initialActiveColors = getDeduplicatedColors([
 		...initialHslColors.lightColors,
@@ -132,12 +135,14 @@ export const BackgroundColorToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="PaintBucket" class="size-4" />
+				<Icon name="PaintBucket" title="Background color" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}
 				ref={popover}
 				popover="auto"
+				role="dialog"
+				aria-label="Background color"
 				onToggle={onPopoverToggle}
 				class="mt-1 overflow-x-clip rounded-md border border-neutral-200 bg-white p-2 shadow-md [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 			>

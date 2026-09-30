@@ -4,11 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createAudioStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createAudioStorage } from "#storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 /*
@@ -21,7 +18,7 @@ export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.audio,
+			name: componentsName.audio,
 			content: { type: "custom" },
 			customStorage: createAudioStorage(),
 			editState: "false",

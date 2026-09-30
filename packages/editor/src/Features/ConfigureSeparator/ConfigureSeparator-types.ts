@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { SeparatorConfigPort } from "#adapters/Separator";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureSeparatorParams {
-	configPort: SeparatorConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureSeparatorParams
+	extends ConfigureFeatureParams<SeparatorConfigPort> {}

@@ -5,11 +5,14 @@ import type {
 	ListLocalName,
 } from "rich-text-area";
 import type { MarkdownConfigPort } from "#adapters/Markdown";
-import type { BlockComponentPlacement, CodeBlockTheme } from "#engine-links";
+import type { BlockComponentPlacement } from "#engine-links";
+import type { CodeBlockTheme } from "#storage";
+
+export type HeadingLocalName = Exclude<BlockContentLineLocalName, "p">;
 
 export interface HeadingConversion {
-	type: "localName";
-	localName: BlockContentLineLocalName;
+	type: "heading";
+	localName: HeadingLocalName;
 }
 
 export interface ListConversion {

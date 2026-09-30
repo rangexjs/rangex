@@ -1,12 +1,12 @@
 import {
 	type BlockComponent,
-	blockComponentAttrName,
-	blockComponentName,
-	detachedContextName,
+	blockComponentRole,
+	detachedContextRole,
 	isEditorNode,
 } from "rich-text-area";
 import {
 	componentsName,
+	createComponentSelector,
 	getClosestBlockComponent,
 	isWellFormedUrl,
 	probeMediaSrc,
@@ -20,14 +20,13 @@ import type {
 	WatchEmptyMediaResult,
 } from "./WatchEmptyMedia-types";
 
-const emptyMediaSelector =
-	`[${blockComponentAttrName.dataComponentName}="${componentsName.emptyMedia}"]` as const;
+const emptyMediaSelector = createComponentSelector(componentsName.emptyMedia);
 
 const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 	const detachedContext = blockComponent.$$firstChild;
 
 	if (
-		detachedContext?.$$editorRole !== detachedContextName ||
+		detachedContext?.$$editorRole !== detachedContextRole ||
 		!(detachedContext instanceof HTMLSlotElement)
 	) {
 		throw new Error("Media block's first child must be a DetachedContext.");
@@ -150,7 +149,7 @@ export const watchEmptyMedia = ({
 				return;
 			}
 
-			if (assignedSlot.$$editorRole !== detachedContextName) {
+			if (assignedSlot.$$editorRole !== detachedContextRole) {
 				return;
 			}
 
@@ -229,7 +228,7 @@ export const watchEmptyMedia = ({
 
 		if (
 			!queriedMediaBlocks.every(
-				(mediaBlock) => mediaBlock.$$editorRole === blockComponentName,
+				(mediaBlock) => mediaBlock.$$editorRole === blockComponentRole,
 			)
 		) {
 			throw new Error("Media block's type is invalid.");

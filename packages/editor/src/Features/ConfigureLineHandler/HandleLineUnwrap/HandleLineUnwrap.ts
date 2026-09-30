@@ -1,6 +1,6 @@
 import {
-	blockComponentLineName,
-	blockComponentName,
+	blockComponentLineRole,
+	blockComponentRole,
 	blockComponentRoleSelector,
 } from "rich-text-area";
 import { handleComponentUnwrap } from "../../_Utilities";
@@ -22,7 +22,7 @@ export const handleLineUnwrap = ({
 		getComponent: () => {
 			const currentLine = getCurrentLine();
 
-			if (currentLine?.$$editorRole !== blockComponentLineName) {
+			if (currentLine?.$$editorRole !== blockComponentLineRole) {
 				return null;
 			}
 
@@ -30,7 +30,7 @@ export const handleLineUnwrap = ({
 				blockComponentRoleSelector,
 			);
 
-			if (blockComponent?.$$editorRole !== blockComponentName) {
+			if (blockComponent?.$$editorRole !== blockComponentRole) {
 				return null;
 			}
 

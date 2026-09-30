@@ -12,8 +12,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "bun run --filter @rangex/editor build && bun run --filter @rangex/solid build && bun run --filter @rangex/syntax-highlighter-shiki build && bun run --filter @rangex/rich-text-editor build",
-		"fix": "bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
-		"lint": "biome check index.ts src && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix"
+		"fix": "biome check index.ts src --write && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
+		"lint": "biome check index.ts src && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix"
 	},
 	"dependencies": {
 		"rich-text-area": "workspace:*",

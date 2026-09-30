@@ -19,8 +19,12 @@ export const TransparentBackground = (props: TransparentBackgroundProps) => {
 	const id = createUniqueId();
 
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" {...props}>
-			<title>Transparent Background</title>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			aria-hidden="true"
+			{...props}
+		>
 			<defs>
 				<pattern
 					id={id}

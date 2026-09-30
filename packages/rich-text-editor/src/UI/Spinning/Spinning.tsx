@@ -53,6 +53,7 @@ export const Spinning = (props: SpinningProps) => {
 		<svg
 			viewBox={`0 0 ${size} ${size}`}
 			xmlns="http://www.w3.org/2000/svg"
+			role="img"
 			class={props.class}
 		>
 			<title>Loading</title>

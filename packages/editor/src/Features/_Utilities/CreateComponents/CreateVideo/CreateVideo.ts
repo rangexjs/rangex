@@ -8,9 +8,9 @@ import {
 	aspectRatioAttr,
 	blockAlignAttr,
 	componentsName,
-	createVideoStorage,
 	objectFitAttr,
 } from "#engine-links";
+import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*
@@ -24,7 +24,7 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.video,
+			name: componentsName.video,
 			content: { type: "custom" },
 			customStorage: createVideoStorage(),
 			editState: "false",

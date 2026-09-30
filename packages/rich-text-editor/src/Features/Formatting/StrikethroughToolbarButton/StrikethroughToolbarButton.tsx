@@ -31,7 +31,7 @@ export const StrikethroughToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$strikethrough.pressed()}
 			>
-				<Icon name="Strikethrough" class="size-4" />
+				<Icon name="Strikethrough" title="Strikethrough" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

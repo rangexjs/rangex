@@ -1,3 +1,3 @@
+export * from "./GetTemplateVariableDisplayText";
 export * from "./GetTemplateVariableQuery";
-export * from "./ResolveTemplateVariableDisplayText";
-export * from "./StorageToOptions";
+export * from "./UpdateAllTemplateVariableNodes";

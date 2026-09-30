@@ -6,18 +6,23 @@ import { configureFormatting } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Formatting: AdapterFactoryFn<FormattingSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createFormattingAdapter(settings, options);
-
-		const cleanup = configureFormatting({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.formatting = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureFormatting({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

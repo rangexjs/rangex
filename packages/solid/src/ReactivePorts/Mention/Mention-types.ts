@@ -1,6 +1,5 @@
-import type { MentionSuggestionItems } from "@rangex/editor";
-import type { Accessor } from "solid-js";
+import type { ReactiveCaretMenuPort } from "../_Utilities";
 
 export interface ReactiveMentionPort {
-	filteredItems: Accessor<MentionSuggestionItems>;
+	caretMenu: ReactiveCaretMenuPort;
 }

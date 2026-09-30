@@ -31,7 +31,7 @@ export const ItalicToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$italic.pressed()}
 			>
-				<Icon name="Italic" class="size-4" />
+				<Icon name="Italic" title="Italic" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

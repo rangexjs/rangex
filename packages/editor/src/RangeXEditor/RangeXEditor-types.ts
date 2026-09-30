@@ -13,11 +13,18 @@ export interface RangeXEditor extends OptionalPublicPorts {
 }
 
 export interface AdapterContext {
-	editorAPI: EditorAPI;
 	editor: RangeXEditor;
 }
 
-export type RegisterAdapterResult = () => void;
+export interface ConfigureAdapterContext {
+	editorAPI: EditorAPI;
+}
+
+export type ConfigureAdapterResult = () => void;
+
+export interface RegisterAdapterResult {
+	configure(context: ConfigureAdapterContext): ConfigureAdapterResult;
+}
 
 export type RegisterAdapterFn = (
 	options: AdapterOptions,

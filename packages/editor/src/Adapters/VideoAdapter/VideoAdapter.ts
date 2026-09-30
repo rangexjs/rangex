@@ -22,7 +22,7 @@ export const createVideoAdapter = (
 ): CreateVideoAdapterResult => {
 	const [_settings, { adapterBus, floatingContainer }] = params;
 
-	adapterBus.registerSupportedMediaType("video");
+	adapterBus.registerAdapter("video");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

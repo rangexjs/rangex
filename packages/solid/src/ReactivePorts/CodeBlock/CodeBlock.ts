@@ -12,27 +12,29 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
-	const [isActive, setIsActive] = createSignal(publicPort.isActive);
 	const [language, setLanguage] = createSignal(publicPort.language);
 	const [theme, setTheme] = createSignal(publicPort.theme);
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(
+		publicPort.isSelectionActive,
+	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
-	onCleanup(publicPort.onIsActiveUpdate(setIsActive));
 	onCleanup(publicPort.onLanguageUpdate(setLanguage));
 	onCleanup(publicPort.onThemeUpdate(setTheme));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveCodeBlockPort = {
 		canInsert,
 		canWrap,
-		isActive,
 		language,
 		theme,
 		currentComponent,
+		isSelectionActive,
 	};
 
 	return port as PreserveUndefined<T, ReactiveCodeBlockPort>;

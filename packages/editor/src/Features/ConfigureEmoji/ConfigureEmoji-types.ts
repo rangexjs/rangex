@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { EmojiConfigPort } from "#adapters/Emoji";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureEmojiParams {
-	configPort: EmojiConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureEmojiParams
+	extends ConfigureFeatureParams<EmojiConfigPort> {}

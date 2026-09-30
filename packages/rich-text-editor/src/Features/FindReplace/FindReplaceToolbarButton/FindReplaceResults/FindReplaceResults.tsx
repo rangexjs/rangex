@@ -1,6 +1,13 @@
 import type { FindReplaceSearchResult } from "@rangex/editor";
-import { type Accessor, createEffect, For } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createSignal,
+	For,
+	untrack,
+} from "solid-js";
 import { Icon } from "#ui";
+import { createDebouncer } from "#utilities";
 
 interface FindReplaceResultsProps {
 	results: Accessor<FindReplaceSearchResult[]>;
@@ -12,7 +19,27 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 	let listRef: HTMLOListElement | undefined;
 	let detailsRef: HTMLDetailsElement | undefined;
 
-	const scrollIntoListItem = (currentIndex: number) => {
+	const resultsDebouncer = createDebouncer({ delayInMs: 300 });
+
+	/** Results can update on every keystroke; delays re-rendering the list so bursts collapse into one render. */
+	const [debouncedResults, setDebouncedResults] = createSignal<
+		FindReplaceSearchResult[]
+	>([]);
+
+	createEffect(
+		() => props.results(),
+		(nextResults) => {
+			resultsDebouncer.schedule(() => setDebouncedResults(nextResults));
+		},
+	);
+
+	const resultsCount = () =>
+		resultsDebouncer.isScheduled() ? "loading..." : debouncedResults().length;
+
+	const scrollIntoListItem = (
+		currentIndex: number,
+		block: ScrollLogicalPosition,
+	) => {
 		if (!listRef) {
 			return;
 		}
@@ -23,12 +50,21 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 			return;
 		}
 
-		listItem.scrollIntoView({ block: "center", behavior: "instant" });
+		listItem.scrollIntoView({ block, behavior: "instant" });
 	};
 
 	createEffect(
+		() => debouncedResults(),
+		() =>
+			scrollIntoListItem(
+				untrack(() => props.currentIndex()),
+				"center",
+			),
+	);
+
+	createEffect(
 		() => props.currentIndex(),
-		(currentIndex) => scrollIntoListItem(currentIndex),
+		(currentIndex) => scrollIntoListItem(currentIndex, "nearest"),
 	);
 
 	const getSnippet = (
@@ -63,7 +99,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 
 		detailsRef?.addEventListener(
 			"transitionend",
-			() => scrollIntoListItem(props.currentIndex()),
+			() => scrollIntoListItem(props.currentIndex(), "center"),
 			{ once: true },
 		);
 	};
@@ -75,18 +111,17 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 					name="CaretRight"
 					class="size-2 transition-transform group-open:rotate-90"
 				/>
-				Results ({props.results().length})
+				Results ({resultsCount()})
 			</summary>
 			<ol
 				ref={listRef}
 				class={[
 					"scrollbar-thin mt-1 max-h-72 overflow-auto overscroll-contain rounded border border-neutral-200 dark:border-neutral-700",
-					{ hidden: !props.results().length },
+					{ hidden: !debouncedResults().length },
 				]}
 			>
-				<For each={props.results()}>
-					{(result, i) => {
-						const index = i();
+				<For each={debouncedResults()}>
+					{(result, index) => {
 						const snippet = getSnippet(
 							result.segmentText,
 							result.matchStart,
@@ -95,22 +130,24 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 						return (
 							<li class="flex font-mono">
 								<span
+									aria-hidden="true"
 									class={[
 										"inline-block min-w-6 shrink-0 whitespace-nowrap border-r bg-neutral-100 px-1 py-1 text-center font-bold text-xs dark:bg-neutral-800",
 										{
 											"border-neutral-200 text-neutral-500 dark:border-neutral-700 dark:text-neutral-400":
-												props.currentIndex() !== index,
+												props.currentIndex() !== index(),
 											"border-amber-600 text-amber-600":
-												props.currentIndex() === index,
+												props.currentIndex() === index(),
 										},
 									]}
 								>
-									{index + 1}
+									{index() + 1}
 								</span>
 								<button
 									type="button"
 									class="w-full px-1 text-left text-xs transition-colors hover:bg-neutral-50 active:bg-neutral-100 active:text-neutral-900 dark:active:bg-neutral-700 dark:active:text-white dark:hover:bg-neutral-800"
-									onClick={() => props.onClick(index)}
+									aria-current={`${props.currentIndex() === index()}`}
+									onClick={() => props.onClick(index())}
 								>
 									<span class="truncate font-mono text-neutral-600 dark:text-neutral-300">
 										<span hidden={!snippet.leadingEllipsis}>…</span>

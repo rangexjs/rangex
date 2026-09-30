@@ -1,9 +1,9 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-component-name="code-block"]) {
+	&:has([data-rx-name="code-block"]) {
 		margin-block: 8px;
 	}
 
-	& > :where([data-rx-component-name="code-block"]) {
+	& > :where([data-rx-name="code-block"]) {
 		background-color: light-dark(
 			var(--bg-light, var(--color-neutral-50)),
 			var(--bg-dark, var(--color-neutral-900))

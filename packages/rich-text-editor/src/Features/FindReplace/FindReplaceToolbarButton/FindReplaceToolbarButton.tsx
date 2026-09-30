@@ -20,8 +20,9 @@ import {
 	showInputFieldError,
 	TextFieldWrapper,
 } from "#ui";
+import { createDebouncer } from "#utilities";
 import { ToolbarButton } from "../../_Utilities";
-import { buildFindReplacePattern, createDebounce } from "./_Utilities";
+import { buildFindReplacePattern } from "./_Utilities";
 import { FindReplaceResults } from "./FindReplaceResults";
 
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
@@ -38,17 +39,15 @@ export const FindReplaceToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const [checked, setChecked] = createSignal(false);
-	const [isFindLoading, setIsFindLoading] = createSignal(false);
 
-	const currentIndex = () => $findReplace.results().currentIndex;
-	const totalResults = () => $findReplace.results().totalResults;
-	const results = () => $findReplace.results().results;
+	const resultsCount = createMemo(() => $findReplace.results().length);
 
 	const displayIndex = createMemo(() =>
-		totalResults() > 0 ? currentIndex() + 1 : 0,
+		resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0,
 	);
 
 	const popoverId = createUniqueId();
+	const headingId = createUniqueId();
 
 	const [useRegexHandle, useRegexControls] = createCheckboxState({});
 	const [matchCaseHandle, matchCaseControls] = createCheckboxState({});
@@ -103,7 +102,7 @@ export const FindReplaceToolbarButton = () => {
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
 
 	createEffect(
-		() => totalResults() === 0 || showInputFieldError(findHandle.state()),
+		() => resultsCount() === 0 || showInputFieldError(findHandle.state()),
 		(disabled) => {
 			setReplaceButtonDisabled(disabled);
 		},
@@ -227,7 +226,7 @@ export const FindReplaceToolbarButton = () => {
 		);
 	};
 
-	const debounce = createDebounce();
+	const searchDebouncer = createDebouncer({ delayInMs: 250 });
 
 	const emitSearchChange = () => {
 		const pattern = getSafePattern();
@@ -249,13 +248,7 @@ export const FindReplaceToolbarButton = () => {
 	createEffect(
 		findHandle.value,
 		() => {
-			setIsFindLoading(true);
-
-			debounce(() => {
-				emitSearchChange();
-
-				setIsFindLoading(false);
-			}, 250);
+			searchDebouncer.schedule(() => emitSearchChange());
 		},
 		{ defer: true },
 	);
@@ -311,11 +304,13 @@ export const FindReplaceToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="FindReplace" class="size-4" />
+				<Icon name="FindReplace" title="Find and replace" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}
 				popover="manual"
+				role="dialog"
+				aria-labelledby={headingId}
 				class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
 				onToggle={onPopoverToggle}
 				onBeforeToggle={setPopoverInitialPosition}
@@ -324,7 +319,10 @@ export const FindReplaceToolbarButton = () => {
 					class="mb-2 flex cursor-grab items-center justify-between"
 					onPointerDown={movePopover}
 				>
-					<h2 class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+					<h2
+						id={headingId}
+						class="font-bold text-neutral-700 text-sm dark:text-neutral-200"
+					>
 						Find & Replace
 					</h2>
 					<button
@@ -336,10 +334,10 @@ export const FindReplaceToolbarButton = () => {
 						command="hide-popover"
 						class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
 					>
-						<Icon name="X" class="size-3" />
+						<Icon name="X" title="Close" class="size-3" />
 					</button>
 				</div>
-				<div class="mb-3 h-0.5 rounded-sm bg-neutral-300 dark:bg-neutral-700" />
+				<hr class="mb-3 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
 				<div>
 					<div
 						class="mb-3 space-y-2"
@@ -363,6 +361,7 @@ export const FindReplaceToolbarButton = () => {
 									<InputTextField
 										type="text"
 										placeholder="Find..."
+										aria-label="Find"
 										autocomplete="off"
 										class="font-mono"
 										onFocus={() => setHasFindFocus(true)}
@@ -384,35 +383,41 @@ export const FindReplaceToolbarButton = () => {
 							>
 								{findHandle.state().message}
 							</div>
-							<Show
-								when={!isFindLoading()}
-								fallback={
-									<Spinning
-										class="size-4"
-										blueprintColor="var(--color-neutral-300)"
-										loadingColor="var(--color-primary-500)"
-										strokeWidth={3}
-									/>
-								}
-							>
-								<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
-									{displayIndex()} of {totalResults()}
-								</span>
-							</Show>
+							<span role="status" class="contents">
+								<Show
+									when={!searchDebouncer.isScheduled()}
+									fallback={
+										<Spinning
+											class="size-4"
+											blueprintColor="var(--color-neutral-300)"
+											loadingColor="var(--color-primary-500)"
+											strokeWidth={3}
+										/>
+									}
+								>
+									<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
+										{displayIndex()} of {resultsCount()}
+									</span>
+								</Show>
+							</span>
 							<span class="inline-flex gap-1.5">
 								<button
 									type="button"
 									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
 									onClick={() => findPreviousMatch()}
 								>
-									<Icon name="ArrowLeft" class="size-3" />
+									<Icon
+										name="ArrowLeft"
+										title="Previous match"
+										class="size-3"
+									/>
 								</button>
 								<button
 									type="button"
 									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
 									onClick={() => findNextMatch()}
 								>
-									<Icon name="ArrowRight" class="size-3" />
+									<Icon name="ArrowRight" title="Next match" class="size-3" />
 								</button>
 							</span>
 						</div>
@@ -426,6 +431,7 @@ export const FindReplaceToolbarButton = () => {
 									<InputTextField
 										type="text"
 										placeholder="Replace..."
+										aria-label="Replace"
 										autocomplete="off"
 										class="font-mono"
 										spellcheck={false}
@@ -454,8 +460,8 @@ export const FindReplaceToolbarButton = () => {
 						</For>
 					</div>
 					<FindReplaceResults
-						currentIndex={currentIndex}
-						results={results}
+						currentIndex={$findReplace.currentIndex}
+						results={$findReplace.results}
 						onClick={(index) => navigateToIndex(index)}
 					/>
 					<div class="flex justify-end gap-3">

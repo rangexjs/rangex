@@ -11,7 +11,7 @@
 	&:focus {
 		box-shadow: inset 0 0 4px -2px
 			light-dark(
-				color(from var(--color-neutral-500) srgb r g b / 0.84),
+				color(from var(--color-neutral-400) srgb r g b / 0.84),
 				color(from var(--color-neutral-400) srgb r g b / 0.84)
 			);
 	}

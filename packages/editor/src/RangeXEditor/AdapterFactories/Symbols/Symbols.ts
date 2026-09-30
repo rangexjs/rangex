@@ -3,18 +3,23 @@ import { configureSymbols } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Symbols: AdapterFactoryFn<SymbolsSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createSymbolsAdapter(settings, options);
-
-		const cleanup = configureSymbols({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.symbols = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureSymbols({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

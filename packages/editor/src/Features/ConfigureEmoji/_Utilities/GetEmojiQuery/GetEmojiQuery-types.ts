@@ -1,16 +1,10 @@
-import type { EditorAPI, EditorText } from "rich-text-area";
+import type {
+	GetCaretMenuQueryParams,
+	GetCaretMenuQueryResult,
+} from "../../../_Utilities";
 
-export interface GetEmojiQueryParams {
-	editorAPI: EditorAPI;
-	fromText: EditorText;
-	fromOffset: number;
+export interface GetEmojiQueryParams extends GetCaretMenuQueryParams {
 	hasClosingColon: boolean;
 }
 
-export interface EmojiQuery {
-	toText: EditorText;
-	toOffset: number;
-	query: string;
-}
-
-export type GetEmojiQueryResult = EmojiQuery | null;
+export type GetEmojiQueryResult = GetCaretMenuQueryResult;

@@ -17,7 +17,7 @@ export const CustomComponentToolbarButton = () => {
 	const disabled = createMemo(
 		() =>
 			!(
-				$accordionItem?.isActive() ||
+				$accordionItem?.isSelectionActive() ||
 				$accordionItem?.canInsert() ||
 				$separator?.canInsert()
 			) || !!$readOnly?.checked(),
@@ -36,17 +36,17 @@ export const CustomComponentToolbarButton = () => {
 
 		if (accordionItem && $accordionItem) {
 			const disabled = !(
-				$accordionItem.isActive() || $accordionItem.canInsert()
+				$accordionItem.isSelectionActive() || $accordionItem.canInsert()
 			);
 
 			items.push({
 				icon: "CaretCircleRight",
 				text: "Accordion",
-				checked: $accordionItem.isActive(),
+				checked: $accordionItem.isSelectionActive(),
 				button: {
 					disabled,
 					onClick: () => {
-						if ($accordionItem.isActive()) {
+						if ($accordionItem.isSelectionActive()) {
 							accordionItem.unwrap();
 							return;
 						}
@@ -84,7 +84,7 @@ export const CustomComponentToolbarButton = () => {
 				command="toggle-popover"
 				hasChevron={true}
 			>
-				<Icon name="SquaresFour" class="size-4" />
+				<Icon name="SquaresFour" title="Insert component" class="size-4" />
 			</ToolbarButton>
 
 			<ToolbarDropdown

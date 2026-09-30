@@ -5,11 +5,8 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "rich-text-area";
-import {
-	blockAlignAttr,
-	componentsName,
-	createBlockQuoteStorage,
-} from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
+import { createBlockQuoteStorage } from "#storage";
 import type {
 	CreateBlockQuoteParams,
 	CreateBlockQuoteResult,
@@ -33,7 +30,7 @@ export const createBlockQuote = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.blockQuote,
+			name: componentsName.blockQuote,
 			content: { type: "styled-block" },
 			customStorage: createBlockQuoteStorage(),
 			childNodes: [

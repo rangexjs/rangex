@@ -37,7 +37,7 @@ export const SymbolsToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon name="Smiley" class="size-4" />
+				<Icon name="Smiley" title="Symbols" class="size-4" />
 			</ToolbarButton>
 			<div
 				id={popoverId}

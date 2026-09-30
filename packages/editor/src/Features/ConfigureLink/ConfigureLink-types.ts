@@ -1,7 +1,5 @@
-import type { EditorAPI } from "rich-text-area";
 import type { LinkConfigPort } from "#adapters/Link";
+import type { ConfigureFeatureParams } from "../_Utilities";
 
-export interface ConfigureLinkParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-}
+export interface ConfigureLinkParams
+	extends ConfigureFeatureParams<LinkConfigPort> {}

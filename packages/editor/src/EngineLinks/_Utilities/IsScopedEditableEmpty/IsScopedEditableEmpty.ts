@@ -1,4 +1,4 @@
-import { beamTextName, contentLineName } from "rich-text-area";
+import { beamTextRole, contentLineRole } from "rich-text-area";
 import type {
 	IsScopedEditableEmptyParams,
 	IsScopedEditableEmptyResult,
@@ -22,9 +22,9 @@ export const isScopedEditableEmpty = ({
 		throw new Error("FirstLine can't be null.");
 	}
 
-	if (firstLine.$$editorRole !== contentLineName) {
+	if (firstLine.$$editorRole !== contentLineRole) {
 		return false;
 	}
 
-	return firstLine.$$firstChild?.$$editorRole === beamTextName;
+	return firstLine.$$firstChild?.$$editorRole === beamTextRole;
 };

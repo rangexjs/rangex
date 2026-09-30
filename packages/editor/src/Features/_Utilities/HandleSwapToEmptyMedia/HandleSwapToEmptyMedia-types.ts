@@ -1,8 +1,10 @@
 import type { BlockComponent, EditorAPI } from "rich-text-area";
-import type { SwapToEmptyMediaConfigPort } from "#adapters";
+import type {
+	CurrentComponentConfigPort,
+	SwapToEmptyMediaConfigPort,
+} from "#adapters";
 
 export interface HandleSwapToEmptyMediaParams {
-	port: SwapToEmptyMediaConfigPort;
+	port: SwapToEmptyMediaConfigPort & CurrentComponentConfigPort<BlockComponent>;
 	editorAPI: EditorAPI;
-	getCurrentBlock: () => BlockComponent | null;
 }

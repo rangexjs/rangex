@@ -1,19 +1,46 @@
 import { TemplateVariable } from "@rangex/solid";
-import { useEditorContext } from "#context";
-import { type CaretItemFn, CaretMenu } from "#ui";
+import { createMemo } from "solid-js";
+import { useEditorContext, useUIOptionsContext } from "#context";
+import {
+	type CaretItemFn,
+	CaretMenu,
+	filterCaretMenuItems,
+} from "../../_Utilities";
 
 export const TemplateVariableCaretMenu = () => {
 	const editor = useEditorContext();
+	const uiOptions = useUIOptionsContext();
 	const { templateVariable } = editor;
+	const options = uiOptions.templateVariable;
 
 	if (!templateVariable) {
 		throw new Error("TemplateVariable can't be undefined.");
 	}
 
+	if (!options) {
+		throw new Error("TemplateVariable UI options can't be undefined.");
+	}
+
 	const $templateVariable = TemplateVariable(templateVariable);
 
+	const getLabel = (fieldName: string) => {
+		const dropdownItem = options.dropdown.find(
+			(item) => item.fieldName === fieldName,
+		);
+
+		return dropdownItem?.label ?? fieldName;
+	};
+
+	const filteredItems = createMemo(() =>
+		filterCaretMenuItems({
+			items: templateVariable.items,
+			query: $templateVariable.caretMenu.query(),
+			getKeys: (item) => [getLabel(item.fieldName)],
+		}),
+	);
+
 	const items = () =>
-		$templateVariable.filteredItems().map((item): CaretItemFn => {
+		filteredItems().map((item): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -23,13 +50,13 @@ export const TemplateVariableCaretMenu = () => {
 					]}
 					onClick={() => templateVariable.select(item)}
 				>
-					{item.label}
+					{getLabel(item.fieldName)}
 				</button>
 			);
 		});
 
 	const onSelect = (index: number) => {
-		const item = $templateVariable.filteredItems().at(index);
+		const item = filteredItems().at(index);
 
 		if (!item) {
 			return;

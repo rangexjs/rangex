@@ -1,16 +1,15 @@
 import {
-	blockComponentName,
+	blockComponentRole,
 	blockComponentRoleSelector,
-	htmlLayoutName,
+	htmlLayoutRole,
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "rich-text-area";
+import { componentsName, todoCheckboxPart } from "#engine-links";
 import {
-	componentsName,
 	ensureNodeTodoCheckboxStorage,
-	todoCheckboxPart,
 	todoCheckboxStorageFallbacks,
-} from "#engine-links";
+} from "#storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 /*
@@ -27,11 +26,11 @@ export const handleTodoListCheckboxState = ({
 			for (const list of lists) {
 				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
-				if (blockComponent?.$$editorRole !== blockComponentName) {
+				if (blockComponent?.$$editorRole !== blockComponentRole) {
 					continue;
 				}
 
-				if (blockComponent.$$componentName !== componentsName.todoList) {
+				if (blockComponent.$$name !== componentsName.todoList) {
 					continue;
 				}
 
@@ -42,7 +41,7 @@ export const handleTodoListCheckboxState = ({
 						throw new Error("TodoCheckbox wasn't found.");
 					}
 
-					if (todoCheckbox.$$editorRole !== htmlLayoutName) {
+					if (todoCheckbox.$$editorRole !== htmlLayoutRole) {
 						throw new Error("TodoCheckbox's type is invalid.");
 					}
 
@@ -72,7 +71,7 @@ export const handleTodoListCheckboxState = ({
 					throw new Error("CurrentTarget must be an EditorNode.");
 				}
 
-				if (currentTarget.$$editorRole !== htmlLayoutName) {
+				if (currentTarget.$$editorRole !== htmlLayoutRole) {
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 

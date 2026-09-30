@@ -20,7 +20,6 @@ import type {
 	OnChangeLanguageCallbackFn,
 	OnChangeThemeCallbackFn,
 	OnInsertCallbackFn,
-	OnIsActiveUpdateCallbackFn,
 	OnLanguageUpdateCallbackFn,
 	OnThemeUpdateCallbackFn,
 	OnWrapCallbackFn,
@@ -30,13 +29,14 @@ import type {
 export const createCodeBlockAdapter = (
 	...params: CreateCodeBlockAdapterParams
 ): CreateCodeBlockAdapterResult => {
-	const [settings, { floatingContainer }] = params;
+	const [settings, { adapterBus, floatingContainer }] = params;
+
+	adapterBus.registerAdapter("codeBlock");
 
 	const internals: CodeBlockInternals = {
 		// States
 		canInsert: false,
 		canWrap: false,
-		isActive: false,
 		language: null,
 		theme: null,
 		// Providers
@@ -48,7 +48,6 @@ export const createCodeBlockAdapter = (
 	// StateListeners
 	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
 	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const isActiveUpdateEmitter = createEmitter<OnIsActiveUpdateCallbackFn>();
 	const languageUpdateEmitter = createEmitter<OnLanguageUpdateCallbackFn>();
 	const themeUpdateEmitter = createEmitter<OnThemeUpdateCallbackFn>();
 
@@ -66,7 +65,6 @@ export const createCodeBlockAdapter = (
 	const updateState = ({
 		canInsert,
 		canWrap,
-		isActive,
 		language,
 		theme,
 	}: UpdateStateParams) => {
@@ -80,12 +78,6 @@ export const createCodeBlockAdapter = (
 			internals.canWrap = canWrap;
 
 			canWrapUpdateEmitter.emit(internals.canWrap);
-		}
-
-		if (isActive !== undefined) {
-			internals.isActive = isActive;
-
-			isActiveUpdateEmitter.emit(internals.isActive);
 		}
 
 		if (language !== undefined) {
@@ -161,10 +153,6 @@ export const createCodeBlockAdapter = (
 				return internals.canWrap;
 			},
 
-			get isActive() {
-				return internals.isActive;
-			},
-
 			get language() {
 				return internals.language;
 			},
@@ -179,10 +167,6 @@ export const createCodeBlockAdapter = (
 
 			onCanWrapUpdate(callback) {
 				return canWrapUpdateEmitter.subscribe(callback);
-			},
-
-			onIsActiveUpdate(callback) {
-				return isActiveUpdateEmitter.subscribe(callback);
 			},
 
 			onLanguageUpdate(callback) {

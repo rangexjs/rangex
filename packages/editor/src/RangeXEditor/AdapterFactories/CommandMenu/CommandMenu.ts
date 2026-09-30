@@ -8,18 +8,23 @@ import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 export const CommandMenu: AdapterFactoryFn<CommandMenuSettings> = (
 	settings,
 ) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createCommandMenuAdapter(settings, options);
-
-		const cleanup = configureCommandMenu({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.commandMenu = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureCommandMenu({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

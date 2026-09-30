@@ -1,6 +1,6 @@
 import type { FormattingFontSizeValue } from "@rangex/editor";
 import { FontSize, ReadOnly } from "@rangex/solid";
-import { createEffect, createMemo, createUniqueId } from "solid-js";
+import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -65,9 +65,8 @@ export const FontSizeToolbarButton = () => {
 
 	const [fontSizeHandle, fontSizeControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getInputValueFromActiveValues(
-				$fontSize.values(),
-				defaultFontSize,
+			defaultValue: untrack(() =>
+				getInputValueFromActiveValues($fontSize.values(), defaultFontSize),
 			),
 		});
 
@@ -209,7 +208,7 @@ export const FontSizeToolbarButton = () => {
 							class="absolute -top-1 -left-1 rounded-xs p-1 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							disabled={disabled()}
 						>
-							<Icon name="CaretDown" class="size-2" />
+							<Icon name="CaretDown" title="Show font sizes" class="size-2" />
 						</button>
 					</span>
 				}
@@ -217,6 +216,7 @@ export const FontSizeToolbarButton = () => {
 				<InputTextField
 					type="text"
 					class="max-w-10"
+					aria-label="Font size"
 					disabled={disabled()}
 					onKeyDown={handleKeydown}
 					onBlur={handleBlur}

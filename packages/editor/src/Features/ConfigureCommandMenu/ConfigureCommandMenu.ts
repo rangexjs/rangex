@@ -20,10 +20,6 @@ export const configureCommandMenu = ({
 		port: configPort.caretMenu,
 		editorAPI,
 		getQuery: getCommandMenuQuery,
-		onQuery(query) {
-			configPort.updateState({ query });
-			return !!configPort.filteredItems.length;
-		},
 	});
 
 	return () => {

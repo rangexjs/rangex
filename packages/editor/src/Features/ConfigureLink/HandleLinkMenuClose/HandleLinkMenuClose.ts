@@ -7,14 +7,15 @@ import type {
 } from "./HandleLinkMenuClose-types";
 
 /*
- * Closes the popover whenever the selection moves outside the current link or becomes
- * non-collapsed.
+ * Closes the popover whenever the selection leaves the link it is anchored to or becomes non-collapsed.
  */
 const closeOnSelectionChange = ({
 	configPort,
 	editorAPI,
 	linkMenuPopoverController,
 }: CloseOnSelectionChangeParams) => {
+	const selection = editorAPI.getEditorSelection();
+
 	return editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
@@ -23,10 +24,9 @@ const closeOnSelectionChange = ({
 			}
 
 			const { currentComponent } = configPort;
+			const { anchorElement } = linkMenuPopoverController;
 
-			if (currentComponent) {
-				const selection = editorAPI.getEditorSelection();
-
+			if (currentComponent && anchorElement === currentComponent) {
 				const { fromText, fromOffset, toText, toOffset } =
 					selection.getBoundaryPoints();
 
@@ -37,8 +37,8 @@ const closeOnSelectionChange = ({
 					toOffset,
 				});
 
-				// Keep the popover open only while the caret is collapsed and inside the link.
-				if (currentComponent.contains(range.startText) && range.isSinglePoint) {
+				// Keep the popover open only while the caret is collapsed inside its link.
+				if (range.isSinglePoint) {
 					return;
 				}
 			}
@@ -49,28 +49,23 @@ const closeOnSelectionChange = ({
 };
 
 /*
- * Closes the popover whenever the current link is detached from the RootEditable (e.g. undo,
- * external removal).
+ * Closes the popover when the link it is anchored to is detached from the document (e.g. undo, external
+ * removal). The controller skips the hide animation on its own for a detached anchor.
  */
 const closeOnLinkRemoval = ({
-	configPort,
 	editorAPI,
 	linkMenuPopoverController,
 }: CloseOnLinkRemovalParams) => {
 	return observeEditorNodeAttachment({
 		editorAPI,
-		onMutation: ({ detachedNodes }) => {
-			const { currentComponent } = configPort;
+		onMutation: () => {
+			const { anchorElement } = linkMenuPopoverController;
 
-			if (!currentComponent) {
+			if (!anchorElement || anchorElement.isConnected) {
 				return;
 			}
 
-			if (!detachedNodes.includes(currentComponent)) {
-				return;
-			}
-
-			linkMenuPopoverController.hide({ instant: true });
+			linkMenuPopoverController.hide({});
 		},
 	});
 };
@@ -90,7 +85,6 @@ export const handleLinkMenuClose = ({
 		linkMenuPopoverController,
 	});
 	const unsubscribeLinkRemoval = closeOnLinkRemoval({
-		configPort,
 		editorAPI,
 		linkMenuPopoverController,
 	});

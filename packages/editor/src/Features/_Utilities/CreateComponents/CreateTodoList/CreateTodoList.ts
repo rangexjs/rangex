@@ -8,11 +8,10 @@ import {
 import {
 	blockAlignAttr,
 	componentsName,
-	createTodoCheckboxStorage,
-	createTodoListStorage,
 	dataPartName,
 	todoCheckboxPart,
 } from "#engine-links";
+import { createTodoCheckboxStorage, createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -48,7 +47,7 @@ export const createTodoList = ({
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.todoList,
+			name: componentsName.todoList,
 			content: { type: "list" },
 			customStorage: createTodoListStorage(),
 			childNodes: [list],

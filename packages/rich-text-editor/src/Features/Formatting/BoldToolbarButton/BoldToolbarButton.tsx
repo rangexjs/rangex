@@ -29,7 +29,7 @@ export const BoldToolbarButton = () => {
 				onClick={onClick}
 				aria-pressed={$bold.pressed()}
 			>
-				<Icon name="Bold" class="size-4" />
+				<Icon name="Bold" title="Bold" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

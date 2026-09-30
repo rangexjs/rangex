@@ -3,18 +3,23 @@ import { configureEmbed } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Embed: AdapterFactoryFn<EmbedSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createEmbedAdapter(settings, options);
-
-		const cleanup = configureEmbed({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.embed = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureEmbed({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

@@ -1,5 +1,8 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
@@ -77,7 +80,6 @@ export type TableCellResizingAction = "equalizeColumns" | "minimizeRows";
 
 export interface TableState {
 	canInsert?: boolean;
-	isActive?: boolean;
 	sectionType?: TableSectionTypeState;
 	mergeSplit?: TableMergeSplitState;
 	insertDelete?: TableInsertDeleteState;
@@ -89,7 +91,6 @@ export interface TableState {
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 export type OnSectionTypeUpdateCallbackFn = (
 	value: TableSectionTypeState,
 ) => void;
@@ -158,13 +159,13 @@ export interface TableConfigPortProps {
 
 export interface TableConfigPort
 	extends TableConfigPortProps,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TablePublicPortProps {
 	readonly contextMenuEl: HTMLDivElement;
 
 	readonly canInsert: boolean;
-	readonly isActive: boolean;
 	readonly contextMenuOpen: boolean;
 	readonly sectionType: TableSectionTypeState;
 	readonly mergeSplit: TableMergeSplitState;
@@ -175,7 +176,6 @@ export interface TablePublicPortProps {
 	readonly clearContents: TableClearContentsState;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 	onSectionTypeUpdate(callback: OnSectionTypeUpdateCallbackFn): () => void;
 	onMergeSplitUpdate(callback: OnMergeSplitUpdateCallbackFn): () => void;
 	onInsertDeleteUpdate(callback: OnInsertDeleteUpdateCallbackFn): () => void;
@@ -199,11 +199,11 @@ export interface TablePublicPortProps {
 
 export interface TablePublicPort
 	extends TablePublicPortProps,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface TableInternals {
 	canInsert: boolean;
-	isActive: boolean;
 	sectionType: TableSectionTypeState;
 	mergeSplit: TableMergeSplitState;
 	insertDelete: TableInsertDeleteState;

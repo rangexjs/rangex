@@ -14,8 +14,12 @@ import type {
 } from "./ReadOnlyAdapter-types";
 
 export const createReadOnlyAdapter = (
-	..._params: CreateReadOnlyAdapterParams
+	...params: CreateReadOnlyAdapterParams
 ): CreateReadOnlyAdapterResult => {
+	const [_settings, { adapterBus }] = params;
+
+	adapterBus.registerAdapter("readOnly");
+
 	const internals: ReadOnlyInternals = {
 		// States
 		checked: false,

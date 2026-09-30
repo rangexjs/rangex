@@ -1,4 +1,4 @@
-import { createAccordionItem } from "../../_Utilities";
+import { createAccordionItem, getAccordionItemParts } from "../../_Utilities";
 import type { HandleAccordionItemPlacementParams } from "./HandleAccordionItemPlacement-types";
 
 /*
@@ -14,12 +14,13 @@ export const handleAccordionItemPlacement = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribeInsert = configPort.onInsert(() => {
-		const { blockComponentLine, summaryNestedEditable } = createAccordionItem(
-			{},
-		);
+		const accordionItemLine = createAccordionItem({ open: true });
+		const { summaryNestedEditable } = getAccordionItemParts({
+			accordionItem: accordionItemLine,
+		});
 
 		blockComponentPlacement.insertBySelection({
-			lines: [blockComponentLine],
+			lines: [accordionItemLine],
 			shouldReplaceContentLineIfEmpty: true,
 		});
 
@@ -36,12 +37,16 @@ export const handleAccordionItemPlacement = ({
 	});
 
 	const unsubscribeWrap = configPort.onWrap(() => {
-		const { blockComponentLine, bodyNestedEditable } = createAccordionItem({
+		const accordionItemLine = createAccordionItem({
+			open: true,
 			childNodes: [],
+		});
+		const { bodyNestedEditable } = getAccordionItemParts({
+			accordionItem: accordionItemLine,
 		});
 
 		blockComponentPlacement.wrapBySelection({
-			blockComponentLine,
+			blockComponentLine: accordionItemLine,
 			target: bodyNestedEditable,
 		});
 

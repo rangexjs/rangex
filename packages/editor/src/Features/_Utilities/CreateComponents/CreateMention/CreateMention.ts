@@ -4,24 +4,25 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "rich-text-area";
-import { componentsName, createMentionStorage } from "#engine-links";
+import { componentsName } from "#engine-links";
+import { createMentionStorage } from "#storage";
 import type {
 	CreateMentionParams,
 	CreateMentionResult,
 } from "./CreateMention-types";
 
 /*
- * Builds an inline mention component displaying "@name" as editable, formattable text and
+ * Builds an inline mention component displaying "@displayName" as editable, formattable text and
  * storing the referenced user id.
  */
 export const createMention = ({
 	userId,
-	name,
+	displayName,
 }: CreateMentionParams): CreateMentionResult => {
-	const data = `@${name}`;
+	const data = `@${displayName}`;
 
 	return createInlineComponent({
-		componentName: componentsName.mention,
+		name: componentsName.mention,
 		content: { type: "custom" },
 		customStorage: createMentionStorage({ userId }),
 		editState: "false",

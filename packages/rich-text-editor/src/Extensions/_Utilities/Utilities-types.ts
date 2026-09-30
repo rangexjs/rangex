@@ -19,6 +19,6 @@ export type RegisterFn = (editor: RangeXEditor) => void;
 export interface Extension {
 	createAdapter: () => AdapterFactoryValue;
 	components: ExtensionComponents;
-	uiOptions?: Partial<UIOptions>;
+	uiOptions?: UIOptions;
 	register?: RegisterFn;
 }

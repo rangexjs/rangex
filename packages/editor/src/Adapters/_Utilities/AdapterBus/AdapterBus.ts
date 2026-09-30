@@ -1,24 +1,39 @@
 import { createEmitter } from "../CreateEmitter";
+import type { AdapterName } from "../Utilities-types";
 import type {
 	MediaResolveCallbackParams,
-	MediaType,
 	OnMediaResolveCallbackFn,
 	OnSwapToEmptyMediaCallbackFn,
 } from "./AdapterBus-types";
 
+export const mediaTypes = [
+	"audio",
+	"embed",
+	"image",
+	"video",
+] satisfies AdapterName[];
+
 /**
  * Lets Adapters talk to each other without holding direct references to one another. Two
  * channel shapes coexist here, picked per the data's own nature: a transient event
- * (`onXxx`/`emitXxx`, fire-and-forget, never cached) for something that happens, and a durable
- * registry (`registerXxx`/`getXxx`, remembered for the editor's whole lifetime, read lazily
- * through a plain getter) for something that just is.
+ * (`onXxx`/`emitXxx`, fire-and-forget, never cached) for something that happens, and the
+ * adapter registry (`registerAdapter`/`hasAdapter`) for which Adapters the editor was built with.
+ * The registry is only complete once every Adapter has been created, so `hasAdapter` is only
+ * meaningful from the configure phase on, never during Adapter creation.
  */
 export class AdapterBus {
-	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
-	#supportedMediaTypes: Set<MediaType> = new Set();
+	#registeredAdapters: Set<AdapterName> = new Set();
 
+	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
 	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
-	#emptyMediaAvailable = false;
+
+	registerAdapter(name: AdapterName) {
+		this.#registeredAdapters.add(name);
+	}
+
+	hasAdapter(name: AdapterName): boolean {
+		return this.#registeredAdapters.has(name);
+	}
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {
 		return this.#mediaResolveEmitter.subscribe(callback);
@@ -28,27 +43,11 @@ export class AdapterBus {
 		this.#mediaResolveEmitter.emit(params);
 	}
 
-	registerSupportedMediaType(type: MediaType) {
-		this.#supportedMediaTypes.add(type);
-	}
-
-	getSupportedMediaTypes(): MediaType[] {
-		return [...this.#supportedMediaTypes];
-	}
-
 	onSwapToEmptyMedia(callback: OnSwapToEmptyMediaCallbackFn) {
 		return this.#swapToEmptyMediaEmitter.subscribe(callback);
 	}
 
 	emitSwapToEmptyMedia() {
 		this.#swapToEmptyMediaEmitter.emit();
-	}
-
-	registerEmptyMediaAvailable() {
-		this.#emptyMediaAvailable = true;
-	}
-
-	isEmptyMediaAvailable(): boolean {
-		return this.#emptyMediaAvailable;
 	}
 }

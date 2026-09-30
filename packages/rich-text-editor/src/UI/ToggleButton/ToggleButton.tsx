@@ -2,6 +2,7 @@ import { createMemo } from "solid-js";
 
 export interface ToggleButtonProps {
 	checked: boolean;
+	label: string;
 	onClick?: () => void;
 }
 
@@ -19,8 +20,10 @@ export const ToggleButton = (props: ToggleButtonProps) => {
 	return (
 		<button
 			type="button"
+			role="switch"
 			class="toggle-button"
-			aria-pressed={`${props.checked}`}
+			aria-checked={`${props.checked}`}
+			aria-label={props.label}
 			style={{
 				"anchor-scope": toggleButtonAnchor,
 				"anchor-name": toggleButtonAnchor,

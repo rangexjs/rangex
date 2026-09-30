@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal, untrack } from "solid-js";
 import { ColorFormat } from "../../Color";
 import { TransparentBackground } from "../ComplexSVGs";
 import { type OnThumbChangeFn, type RenderChildrenFn, Slider } from "../Slider";
@@ -144,11 +144,13 @@ const thumbSize = 18;
 const transparentBgAnchor = "--transparent-bg-anchor";
 
 export const SpectrumColor = (props: SpectrumColorProps) => {
-	const [scopedHsl, setScopedHsl] = createSignal(props.hsl);
+	const initialHsl = untrack(() => props.hsl);
+
+	const [scopedHsl, setScopedHsl] = createSignal(initialHsl);
 
 	const initialSpectrumThumbPosition = getPositionFromSaturationLightness({
-		saturation: props.hsl.s,
-		lightness: props.hsl.l,
+		saturation: initialHsl.s,
+		lightness: initialHsl.l,
 	});
 
 	const [spectrumThumbPosition, setSpectrumThumbPosition] =
@@ -157,14 +159,14 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 			yPosition: initialSpectrumThumbPosition.yPosition,
 		});
 
-	const initialHueThumbPosition = getHueThumbPosition({ hue: props.hsl.h });
+	const initialHueThumbPosition = getHueThumbPosition({ hue: initialHsl.h });
 
 	const [hueThumbPosition, setHueThumbPosition] = createSignal(
 		initialHueThumbPosition,
 	);
 
 	const initialAlphaThumbPosition = getAlphaThumbPosition({
-		alpha: props.hsl.a,
+		alpha: initialHsl.a,
 	});
 
 	const [alphaThumbPosition, setAlphaThumbPosition] = createSignal(
@@ -210,16 +212,14 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 				return;
 			}
 
-			setScopedHsl(props.hsl);
+			setScopedHsl(hsl);
 
 			const spectrumThumbPosition = getPositionFromSaturationLightness({
-				saturation: props.hsl.s,
-				lightness: props.hsl.l,
+				saturation: hsl.s,
+				lightness: hsl.l,
 			});
-			const hueThumbPosition = getHueThumbPosition({ hue: props.hsl.h });
-			const alphaThumbPosition = getAlphaThumbPosition({
-				alpha: props.hsl.a,
-			});
+			const hueThumbPosition = getHueThumbPosition({ hue: hsl.h });
+			const alphaThumbPosition = getAlphaThumbPosition({ alpha: hsl.a });
 
 			setSpectrumThumbPosition(spectrumThumbPosition);
 			setHueThumbPosition(hueThumbPosition);

@@ -1,4 +1,4 @@
-import { inlineComponentName, isEditorElement } from "rich-text-area";
+import { inlineComponentRole, isEditorElement } from "rich-text-area";
 import type {
 	GetClosestInlineComponentParams,
 	GetClosestInlineComponentResult,
@@ -13,14 +13,14 @@ export const getClosestInlineComponent = ({
 	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
 	while (parent) {
-		if (parent.$$editorRole === inlineComponentName) {
+		if (parent.$$editorRole === inlineComponentRole) {
 			if (!components) {
 				return parent;
 			}
 
-			const { $$componentName } = parent;
+			const { $$name } = parent;
 
-			if (components.some((name) => name === $$componentName)) {
+			if (components.some((name) => name === $$name)) {
 				return parent;
 			}
 		}

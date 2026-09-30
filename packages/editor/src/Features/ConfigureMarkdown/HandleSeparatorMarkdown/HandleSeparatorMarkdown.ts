@@ -3,7 +3,7 @@ import {
 	createFormattableTexts,
 	EditorRange,
 } from "rich-text-area";
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { componentsName } from "#engine-links";
 import { createSeparator } from "../../_Utilities";
 import {
 	getLineMarkdownPrefix,
@@ -63,24 +63,14 @@ export const handleSeparatorMarkdown = ({
 				return false;
 			}
 
-			const scopedEditable = getClosestScopedEditable({ fromNode: startText });
+			const canInsert = blockComponentPlacement.canInsert({
+				fromNode: startText,
+				scope: "current",
+				allowedComponents: [componentsName.separator],
+			});
 
-			if (!scopedEditable) {
-				throw new Error("ScopedEditable not supposed to be null.");
-			}
-
-			if (scopedEditable.$$display !== "block multi-line") {
+			if (!canInsert) {
 				return false;
-			}
-
-			if (scopedEditable.$$allowedComponents) {
-				const canInsert = blockComponentPlacement.canInsertBySelection({
-					allowedComponents: [componentsName.separator],
-				});
-
-				if (!canInsert) {
-					return false;
-				}
 			}
 
 			// Materialize the triggering keystroke so the full marker (e.g. "---") lands

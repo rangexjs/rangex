@@ -22,7 +22,7 @@ export const HistoryBackToolbarButton = () => {
 	return (
 		<span>
 			<ToolbarButton disabled={disabled()} onClick={() => undoRedo.stepBack()}>
-				<Icon name="ArrowBendUpLeft" class="size-4" />
+				<Icon name="ArrowBendUpLeft" title="Undo" class="size-4" />
 			</ToolbarButton>
 		</span>
 	);

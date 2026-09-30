@@ -1,5 +1,5 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, mediaTypes } from "../_Utilities";
 import type {
 	CreateEmptyMediaAdapterParams,
 	CreateEmptyMediaAdapterResult,
@@ -21,7 +21,7 @@ export const createEmptyMediaAdapter = (
 ): CreateEmptyMediaAdapterResult => {
 	const [{ uploadFile }, { adapterBus }] = params;
 
-	adapterBus.registerEmptyMediaAvailable();
+	adapterBus.registerAdapter("emptyMedia");
 
 	const internals: EmptyMediaInternals = {
 		// States
@@ -140,7 +140,7 @@ export const createEmptyMediaAdapter = (
 		},
 
 		get supportedMediaTypes() {
-			return adapterBus.getSupportedMediaTypes();
+			return mediaTypes.filter((type) => adapterBus.hasAdapter(type));
 		},
 
 		registerSlottedElement(callback) {

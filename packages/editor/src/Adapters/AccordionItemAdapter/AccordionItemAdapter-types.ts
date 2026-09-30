@@ -1,5 +1,8 @@
+import type { BlockComponent } from "rich-text-area";
 import type {
 	CreateAdapterParams,
+	CurrentComponentConfigPort,
+	CurrentComponentPublicPort,
 	RemoveConfigPort,
 	RemovePublicPort,
 	UnwrapConfigPort,
@@ -9,12 +12,10 @@ import type {
 export interface AccordionItemState {
 	canInsert?: boolean;
 	canWrap?: boolean;
-	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export type OnInsertCallbackFn = () => void;
 export type OnWrapCallbackFn = () => void;
@@ -31,16 +32,15 @@ export interface AccordionItemConfigPortProps {
 export interface AccordionItemConfigPort
 	extends AccordionItemConfigPortProps,
 		RemoveConfigPort,
-		UnwrapConfigPort {}
+		UnwrapConfigPort,
+		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface AccordionItemPublicPortProps {
 	readonly canInsert: boolean;
 	readonly canWrap: boolean;
-	readonly isActive: boolean;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 
 	insert(): void;
 	wrap(): void;
@@ -49,12 +49,12 @@ export interface AccordionItemPublicPortProps {
 export interface AccordionItemPublicPort
 	extends AccordionItemPublicPortProps,
 		RemovePublicPort,
-		UnwrapPublicPort {}
+		UnwrapPublicPort,
+		CurrentComponentPublicPort {}
 
 export interface AccordionItemInternals {
 	canInsert: boolean;
 	canWrap: boolean;
-	isActive: boolean;
 }
 
 export interface AccordionItemAdapter {

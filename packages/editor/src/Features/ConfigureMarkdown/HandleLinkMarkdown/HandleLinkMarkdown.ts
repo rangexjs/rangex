@@ -48,7 +48,11 @@ const matchLinkTrigger = (candidateText: string): MatchLinkTriggerResult => {
 	};
 };
 
-const canApplyLink = ({ editorAPI }: CanApplyLinkParams) => {
+const canApplyLink = ({ adapterBus, editorAPI }: CanApplyLinkParams) => {
+	if (!adapterBus.hasAdapter("link")) {
+		return false;
+	}
+
 	const selection = editorAPI.getEditorSelection();
 
 	const { fromText } = selection.getBoundaryPoints();
@@ -72,7 +76,10 @@ const canApplyLink = ({ editorAPI }: CanApplyLinkParams) => {
  * Detects a completed "[text](url)" or "![alt](url)" marker on the closing ")" keystroke,
  * letting the keystroke insert natively first so a single undo can restore the literal text.
  */
-export const handleLinkMarkdown = ({ editorAPI }: HandleLinkMarkdownParams) => {
+export const handleLinkMarkdown = ({
+	adapterBus,
+	editorAPI,
+}: HandleLinkMarkdownParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
@@ -125,7 +132,7 @@ export const handleLinkMarkdown = ({ editorAPI }: HandleLinkMarkdownParams) => {
 				return false;
 			}
 
-			if (!canApplyLink({ editorAPI })) {
+			if (!canApplyLink({ adapterBus, editorAPI })) {
 				return false;
 			}
 

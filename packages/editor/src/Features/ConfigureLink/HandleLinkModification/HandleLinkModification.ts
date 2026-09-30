@@ -1,5 +1,5 @@
 import {
-	contentLineName,
+	contentLineRole,
 	contentLineRoleSelector,
 	createContentLine,
 	createFormattableTexts,
@@ -32,7 +32,7 @@ export const handleLinkModification = ({
 			contentLineRoleSelector,
 		);
 
-		if (contentLine?.$$editorRole !== contentLineName) {
+		if (contentLine?.$$editorRole !== contentLineRole) {
 			throw new Error("Link is missing its ContentLine.");
 		}
 

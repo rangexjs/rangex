@@ -3,18 +3,23 @@ import { configureTable } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Table: AdapterFactoryFn<TableSettings> = (settings) => {
-	return (options, { editorAPI, editor }) => {
+	return (options, { editor }) => {
 		const adapter = createTableAdapter(settings, options);
-
-		const cleanup = configureTable({
-			configPort: adapter.configPort,
-			editorAPI,
-		});
 
 		editor.table = adapter.publicPort;
 
-		return () => {
-			cleanup();
+		return {
+			configure({ editorAPI }) {
+				const cleanup = configureTable({
+					adapterBus: options.adapterBus,
+					configPort: adapter.configPort,
+					editorAPI,
+				});
+
+				return () => {
+					cleanup();
+				};
+			},
 		};
 	};
 };

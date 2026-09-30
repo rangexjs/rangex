@@ -1,4 +1,10 @@
-import { createEffect, createSignal, createUniqueId, For } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	For,
+	untrack,
+} from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
 import { Icon } from "../Icon";
 import { createTextFieldState, InputTextField } from "../InputFields";
@@ -77,45 +83,47 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
 export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 	const [colorType, setColorType] = createSignal<ColorType>("Hex");
 
+	const initialHsl = untrack(() => props.hsl);
+
 	const [hexHandle, hexControls] = createTextFieldState<HTMLInputElement>({
-		defaultValue: getHexValue(props.hsl),
+		defaultValue: getHexValue(initialHsl),
 	});
 
 	const [rgbRedHandle, rgbRedControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getRgbValue(props.hsl).r,
+			defaultValue: getRgbValue(initialHsl).r,
 		},
 	);
 
 	const [rgbGreenHandle, rgbGreenControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(props.hsl).g,
+			defaultValue: getRgbValue(initialHsl).g,
 		});
 
 	const [rgbBlueHandle, rgbBlueControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(props.hsl).b,
+			defaultValue: getRgbValue(initialHsl).b,
 		});
 
 	const [hslHueHandle, hslHueControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getHslValue(props.hsl).h,
+			defaultValue: getHslValue(initialHsl).h,
 		},
 	);
 
 	const [hslSatHandle, hslSatControls] = createTextFieldState<HTMLInputElement>(
 		{
-			defaultValue: getHslValue(props.hsl).s,
+			defaultValue: getHslValue(initialHsl).s,
 		},
 	);
 
 	const [hslLightHandle, hslLightControls] =
 		createTextFieldState<HTMLInputElement>({
-			defaultValue: getHslValue(props.hsl).l,
+			defaultValue: getHslValue(initialHsl).l,
 		});
 
 	const [alphaHandle, alphaControls] = createTextFieldState<HTMLInputElement>({
-		defaultValue: getAlphaInPercentage(props.hsl.a),
+		defaultValue: getAlphaInPercentage(initialHsl.a),
 	});
 
 	const updateHexValue = () => {
@@ -344,6 +352,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 							class="w-full text-center outline-none"
 							onKeyDown={handleHexKeydown}
 							onBlur={handleHexBlur}
+							aria-label="Hex"
 							spellcheck={false}
 							{...hexControls}
 						/>
@@ -357,6 +366,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Red"
 								spellcheck={false}
 								{...rgbRedControls}
 							/>
@@ -369,6 +379,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Green"
 								spellcheck={false}
 								{...rgbGreenControls}
 							/>
@@ -381,6 +392,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleRgbBeforeInput}
 								onKeyDown={handleRgbKeydown}
 								onBlur={handleRgbBlur}
+								aria-label="Blue"
 								spellcheck={false}
 								{...rgbBlueControls}
 							/>
@@ -395,6 +407,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Hue"
 								spellcheck={false}
 								{...hslHueControls}
 							/>
@@ -407,6 +420,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Saturation"
 								spellcheck={false}
 								{...hslSatControls}
 							/>
@@ -419,6 +433,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 								onBeforeInput={handleHslBeforeInput}
 								onKeyDown={handleHslKeydown}
 								onBlur={handleHslBlur}
+								aria-label="Lightness"
 								spellcheck={false}
 								{...hslLightControls}
 							/>
@@ -434,6 +449,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 						onBeforeInput={handleAlphaBeforeInput}
 						onKeyDown={handleAlphaKeydown}
 						onBlur={handleAlphaBlur}
+						aria-label="Alpha"
 						spellcheck={false}
 						{...alphaControls}
 					/>
@@ -446,7 +462,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 				class="btn-neutral-solid rounded-sm px-1.5"
 				onClick={() => copyColorToClipboard()}
 			>
-				<Icon name="CopySimple" class="size-4" />
+				<Icon name="CopySimple" title="Copy color" class="size-4" />
 			</button>
 		</div>
 	);

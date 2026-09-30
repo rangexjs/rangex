@@ -12,63 +12,23 @@ import type {
 	MentionInternals,
 	MentionPublicPort,
 	MentionPublicPortProps,
-	OnFilteredItemsUpdateCallbackFn,
 	OnSelectCallbackFn,
-	SuggestionItem,
-	UpdateStateParams,
+	SelectParams,
 } from "./MentionAdapter-types";
 
 export const createMentionAdapter = (
 	...params: CreateMentionAdapterParams
 ): CreateMentionAdapterResult => {
-	const [_settings, { floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
-	const internals: MentionInternals = {
-		// States
-		items: [],
-		query: "",
-		filteredItems: [],
-	};
+	adapterBus.registerAdapter("mention");
 
-	// StateListeners
-	const filteredItemsUpdateEmitter =
-		createEmitter<OnFilteredItemsUpdateCallbackFn>();
+	const _internals: MentionInternals = {};
 
 	// CommandListeners
 	const selectEmitter = createEmitter<OnSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
-
-	const computeFilteredItems = () => {
-		const q = internals.query.toLowerCase();
-		internals.filteredItems = q
-			? internals.items.filter(
-					(item) =>
-						item.name.toLowerCase().includes(q) ||
-						item.username.toLowerCase().includes(q),
-				)
-			: internals.items;
-
-		filteredItemsUpdateEmitter.emit(internals.filteredItems);
-	};
-
-	const updateState = ({ items, query }: UpdateStateParams) => {
-		let dirty = false;
-
-		if (items !== undefined) {
-			internals.items = items;
-			dirty = true;
-		}
-
-		if (query !== undefined) {
-			internals.query = query;
-			dirty = true;
-		}
-
-		if (dirty) {
-			computeFilteredItems();
-		}
-	};
 
 	const unwrapPort = createUnwrapPort();
 
@@ -77,14 +37,6 @@ export const createMentionAdapter = (
 		{
 			get caretMenu() {
 				return caretMenuPort.configPort;
-			},
-
-			get filteredItems() {
-				return internals.filteredItems;
-			},
-
-			updateState(params) {
-				updateState(params);
 			},
 
 			onSelect(callback) {
@@ -100,16 +52,8 @@ export const createMentionAdapter = (
 				return caretMenuPort.publicPort;
 			},
 
-			get filteredItems() {
-				return internals.filteredItems;
-			},
-
-			onFilteredItemsUpdate(callback) {
-				return filteredItemsUpdateEmitter.subscribe(callback);
-			},
-
-			select(item: SuggestionItem) {
-				selectEmitter.emit(item);
+			select(params: SelectParams) {
+				selectEmitter.emit(params);
 			},
 		} satisfies MentionPublicPortProps,
 	);

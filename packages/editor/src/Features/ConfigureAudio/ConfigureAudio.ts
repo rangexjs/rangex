@@ -1,10 +1,10 @@
 import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
-	getBlockAlign,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
 	handleQuickActionsAppearance,
+	handleSelectionComponent,
 	handleSwapToEmptyMedia,
 } from "../_Utilities";
 import {
@@ -21,10 +21,20 @@ import { handleAudioInsertion } from "./HandleAudioInsertion";
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureAudio = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureAudioParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({ editorAPI });
+	const blockComponentPlacement = createBlockComponentPlacement({
+		editorAPI,
+		adapterBus,
+	});
+
+	const selectionComponentCleanup = handleSelectionComponent({
+		port: configPort,
+		editorAPI,
+		componentName: componentsName.audio,
+	});
 
 	const insertionCleanup = handleAudioInsertion({
 		configPort,
@@ -32,27 +42,12 @@ export const configureAudio = ({
 		blockComponentPlacement,
 	});
 
-	const { getCurrentBlock, cleanup: quickActionsCleanup } =
-		handleQuickActionsAppearance({
-			port: configPort,
-			quickActionsPort: configPort.quickActions,
-			editorAPI,
-			componentName: componentsName.audio,
-			beforeOpen({ blockComponent }) {
-				const { $$parentElement } = blockComponent;
-
-				if (!$$parentElement) {
-					throw new Error("ParentElement not supposed to be null.");
-				}
-
-				const align = getBlockAlign({ blockComponentLine: $$parentElement });
-				const figure = getAudioFigure({ blockComponent });
-				const caption = getAudioCaption({ figure });
-
-				configPort.updateBlockAlign({ align });
-				configPort.updateCaption(caption);
-			},
-		});
+	const quickActionsCleanup = handleQuickActionsAppearance({
+		port: configPort,
+		quickActionsPort: configPort.quickActions,
+		editorAPI,
+		componentName: componentsName.audio,
+	});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
 		blockResize: configPort.blockResize,
@@ -63,13 +58,11 @@ export const configureAudio = ({
 	const alignStateCleanup = handleBlockAlignState({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 	});
 
 	const captionStateCleanup = handleCaptionState({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 		getFigure: getAudioFigure,
 		getCaption: getAudioCaption,
 		setCaptionEnabled: setAudioCaptionEnabled,
@@ -79,10 +72,10 @@ export const configureAudio = ({
 	const swapCleanup = handleSwapToEmptyMedia({
 		port: configPort,
 		editorAPI,
-		getCurrentBlock,
 	});
 
 	return () => {
+		selectionComponentCleanup();
 		insertionCleanup();
 		quickActionsCleanup();
 		resizeAppearanceCleanup();

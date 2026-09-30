@@ -31,11 +31,9 @@ export interface ModifyParams {
 
 export interface LinkState {
 	canInsert?: boolean;
-	isActive?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
-export type OnIsActiveUpdateCallbackFn = (isActive: boolean) => void;
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
 export type OnModifyCallbackFn = (params: ModifyParams) => void;
@@ -70,12 +68,10 @@ export interface LinkConfigPort
 export interface LinkPublicPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly canInsert: boolean;
-	readonly isActive: boolean;
 	readonly linkMenuOpen: boolean;
 	readonly selectionMenu: SelectionMenuPublicPort;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onIsActiveUpdate(callback: OnIsActiveUpdateCallbackFn): () => void;
 	onLinkClick(callback: OnLinkClickCallbackFn): () => void;
 	onLinkSelectionIn(callback: OnLinkSelectionInCallbackFn): () => void;
 	onLinkMenuToggle(callback: OnLinkMenuToggleCallbackFn): () => void;
@@ -93,7 +89,6 @@ export interface LinkPublicPort
 
 export interface LinkInternals {
 	canInsert: boolean;
-	isActive: boolean;
 	displayTextProvider: DisplayTextProviderFn | null;
 }
 

@@ -1,4 +1,4 @@
-import { contentLineName, isEditorElement } from "rich-text-area";
+import { contentLineRole, isEditorElement } from "rich-text-area";
 import type {
 	GetClosestContentLineParams,
 	GetClosestContentLineResult,
@@ -13,7 +13,7 @@ export const getClosestContentLine = ({
 	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
 	while (parent) {
-		if (parent.$$editorRole === contentLineName) {
+		if (parent.$$editorRole === contentLineRole) {
 			if (!display) {
 				return parent;
 			}

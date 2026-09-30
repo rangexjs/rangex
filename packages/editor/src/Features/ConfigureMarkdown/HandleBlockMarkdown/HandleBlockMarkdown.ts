@@ -1,11 +1,10 @@
-import type { BlockContentLineLocalName } from "rich-text-area";
 import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-	listName,
+	listRole,
 	listRoleSelector,
-	nestedEditableName,
+	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "rich-text-area";
 import { componentsName, getClosestScopedEditable } from "#engine-links";
@@ -28,6 +27,7 @@ import type {
 	ConvertToListParams,
 	ConvertToTodoListParams,
 	HandleBlockMarkdownParams,
+	HeadingLocalName,
 	MatchBlockTriggerParams,
 	MatchBlockTriggerResult,
 	WrapListShapedParams,
@@ -39,8 +39,8 @@ const matchBlockTrigger = ({
 }: MatchBlockTriggerParams): MatchBlockTriggerResult => {
 	if (/^#{1,6}$/.test(prefix)) {
 		return {
-			type: "localName",
-			localName: `h${prefix.length}` as BlockContentLineLocalName,
+			type: "heading",
+			localName: `h${prefix.length}` as HeadingLocalName,
 		};
 	}
 
@@ -88,17 +88,17 @@ const canApplyBlockMarkdownConversion = ({
 	blockComponentPlacement,
 	conversion,
 }: CanApplyBlockMarkdownConversionParams) => {
-	const selection = editorAPI.getEditorSelection();
+	if (conversion.type === "heading") {
+		const selection = editorAPI.getEditorSelection();
 
-	const { fromText } = selection.getBoundaryPoints();
+		const { fromText } = selection.getBoundaryPoints();
 
-	const scopedEditable = getClosestScopedEditable({ fromNode: fromText });
+		const scopedEditable = getClosestScopedEditable({ fromNode: fromText });
 
-	if (!scopedEditable) {
-		throw new Error("ScopedEditable not supposed to be null.");
-	}
+		if (!scopedEditable) {
+			throw new Error("ScopedEditable not supposed to be null.");
+		}
 
-	if (conversion.type === "localName") {
 		if (scopedEditable.$$display === "inline") {
 			return false;
 		}
@@ -112,36 +112,30 @@ const canApplyBlockMarkdownConversion = ({
 		return $$allowedContentLineLocalNames.includes(conversion.localName);
 	}
 
-	if (scopedEditable.$$display !== "block multi-line") {
-		return false;
-	}
-
-	const { $$allowedComponents } = scopedEditable;
-
-	if (!$$allowedComponents) {
-		return true;
-	}
-
 	if (conversion.type === "list") {
 		return blockComponentPlacement.canWrapBySelection({
+			scope: "current",
 			allowedComponents: [componentsName.list],
 		});
 	}
 
 	if (conversion.type === "todoList") {
 		return blockComponentPlacement.canWrapBySelection({
+			scope: "current",
 			allowedComponents: [componentsName.todoList],
 		});
 	}
 
 	if (conversion.type === "blockQuote") {
 		return blockComponentPlacement.canWrapBySelection({
+			scope: "current",
 			allowedComponents: [componentsName.blockQuote],
 		});
 	}
 
 	if (conversion.type === "codeBlock") {
 		return blockComponentPlacement.canWrapBySelection({
+			scope: "current",
 			allowedComponents: [componentsName.codeBlock],
 		});
 	}
@@ -158,7 +152,7 @@ const wrapListShaped = ({
 
 	const list = blockComponentLine.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listName) {
+	if (list?.$$editorRole !== listRole) {
 		throw new Error("List's type is invalid.");
 	}
 
@@ -174,7 +168,7 @@ const wrapListShaped = ({
 		nestedEditableRoleSelector,
 	);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 
@@ -234,7 +228,7 @@ const convertToBlockQuote = ({
 		nestedEditableRoleSelector,
 	);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableName) {
+	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
 	}
 
@@ -256,7 +250,7 @@ const applyBlockMarkdownConversion = ({
 	blockComponentPlacement,
 	conversion,
 }: ApplyBlockMarkdownConversionParams) => {
-	if (conversion.type === "localName") {
+	if (conversion.type === "heading") {
 		editorAPI.updateSelectionStyles({ localName: conversion.localName });
 		return;
 	}

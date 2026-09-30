@@ -1,14 +1,18 @@
+import { omit } from "solid-js";
 import type { SVGProps } from "./_Utilities";
 
 export const Separator = (props: SVGProps) => {
+	const svgProps = omit(props, "title");
+
 	return (
 		<svg
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			{...props}
+			aria-hidden={`${!props.title}`}
+			{...svgProps}
 		>
-			<title>Separator</title>
+			{props.title && <title>{props.title}</title>}
 			<path
 				d="M24 12C24 12.2652 23.8946 12.5196 23.7071 12.7071C23.5196 12.8946 23.2652 13 23 13H1C0.734784 13 0.48043 12.8946 0.292893 12.7071C0.105357 12.5196 0 12.2652 0 12C0 11.7348 0.105357 11.4804 0.292893 11.2929C0.48043 11.1054 0.734784 11 1 11H23C23.2652 11 23.5196 11.1054 23.7071 11.2929C23.8946 11.4804 24 11.7348 24 12Z"
 				fill="currentColor"

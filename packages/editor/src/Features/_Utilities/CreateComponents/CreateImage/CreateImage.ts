@@ -8,9 +8,9 @@ import {
 	aspectRatioAttr,
 	blockAlignAttr,
 	componentsName,
-	createImageStorage,
 	objectFitAttr,
 } from "#engine-links";
+import { createImageStorage } from "#storage";
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
 /*
@@ -24,7 +24,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
-			componentName: componentsName.image,
+			name: componentsName.image,
 			content: { type: "custom" },
 			customStorage: createImageStorage(),
 			editState: "false",

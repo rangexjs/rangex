@@ -36,7 +36,7 @@ export const LineDrag = (props: LineDragProps) => {
 				commandfor={popoverId}
 				command="toggle-popover"
 				draggable="true"
-				title="Drag to move, click to open menu"
+				aria-label="Line options"
 				onDragStart={onDragStart}
 			>
 				<Icon name="DotsSixVertical" class="size-3" />

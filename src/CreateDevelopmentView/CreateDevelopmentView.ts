@@ -11,6 +11,7 @@ import {
 	type Extension,
 	FindReplace,
 	Formatting,
+	type GetMentionItemsParams,
 	Image,
 	LineHandler,
 	Link,
@@ -27,14 +28,16 @@ import {
 	UndoRedo,
 	Video,
 } from "@rangex/rich-text-editor";
-import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
+import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
 import type { StoredSnapshot } from "rich-text-area";
-import storedSnapshot from "../MockDatabase/Demo-features.json";
+import storedSnapshot from "../MockDatabase/Demo.json";
+import { mentionItems } from "../MockDatabase/MentionItems";
 import {
 	codeBlockLanguageDefinitions,
 	codeBlockThemeDefinitions,
 } from "./SyntaxHighlighter/CodeBlockSyntaxHighlighting";
 import SyntaxHighlighterWorker from "./SyntaxHighlighter/SyntaxHighlighterWorker?worker";
+import { templateVariableSettings } from "./TemplateVariable/TemplateVariableSettings";
 
 /**
  * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of
@@ -69,8 +72,22 @@ const uploadFile = ({
 	});
 };
 
+/**
+ * Demo-only stand-in for a user search — filters the mock users locally. A consumer building a real editor should
+ * replace this with a request to their own user directory, passing `signal` along so stale requests get cancelled.
+ */
+const getMentionItems = async ({ query }: GetMentionItemsParams) => {
+	const lowerQuery = query.toLowerCase();
+
+	return mentionItems.filter((item) => {
+		const displayName = item.displayName || item.userId;
+
+		return displayName.toLowerCase().includes(lowerQuery);
+	});
+};
+
 const syntaxHighlighter = new SyntaxHighlighterWorker();
-const getHighlightInfo = createSyntaxHighlighter(syntaxHighlighter);
+const getHighlightInfo = createEditorHighlighter(syntaxHighlighter);
 
 const languages = [
 	{ label: "Plain Text", value: null },
@@ -137,13 +154,13 @@ export const createDevelopmentView = () => {
 		Link({}),
 		List({}),
 		Markdown({ codeBlockTriggers }),
-		Mention({}),
+		Mention({ getItems: getMentionItems }),
 		ReadOnly({}),
 		Separator({}),
 		Shortcuts({}),
 		Symbols({}),
 		Table({}),
-		TemplateVariable({}),
+		TemplateVariable(templateVariableSettings),
 		TodoList({}),
 		UndoRedo({}),
 		Video({}),
