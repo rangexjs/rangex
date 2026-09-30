@@ -10,6 +10,7 @@ export default defineConfig({
 	base: "./",
 	build: {
 		outDir: "dist",
+		sourcemap: false,
 		lib: {
 			entry: "src/index.ts",
 			fileName: "index",

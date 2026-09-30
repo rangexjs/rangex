@@ -2,6 +2,7 @@
 	"name": "@rangexjs/rangex-dev",
 	"type": "module",
 	"license": "MIT",
+	"private": true,
 	"workspaces": [
 		"packages/rich-text-area",
 		"packages/editor",

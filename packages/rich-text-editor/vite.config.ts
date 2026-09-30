@@ -14,6 +14,7 @@ export default defineConfig({
 	plugins: [tailwindcss(), solid()],
 	build: {
 		outDir: "dist",
+		sourcemap: false,
 		lib: {
 			entry: "src/index.ts",
 			fileName: "index",
