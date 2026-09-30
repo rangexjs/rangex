@@ -28,7 +28,7 @@ import {
 	UndoRedo,
 	Video,
 } from "@rangex/rich-text-editor";
-import { createSyntaxHighlighter } from "@rangex/syntax-highlighter-shiki";
+import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
 import type { StoredSnapshot } from "rich-text-area";
 import storedSnapshot from "../MockDatabase/Demo.json";
 import { mentionItems } from "../MockDatabase/MentionItems";
@@ -87,7 +87,7 @@ const getMentionItems = async ({ query }: GetMentionItemsParams) => {
 };
 
 const syntaxHighlighter = new SyntaxHighlighterWorker();
-const getHighlightInfo = createSyntaxHighlighter(syntaxHighlighter);
+const getHighlightInfo = createEditorHighlighter(syntaxHighlighter);
 
 const languages = [
 	{ label: "Plain Text", value: null },

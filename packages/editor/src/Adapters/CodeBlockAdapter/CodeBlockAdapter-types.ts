@@ -41,6 +41,10 @@ export type GetHighlightInfoFn = (
 	params: GetHighlightInfoParams,
 ) => Promise<HighlightInfo | null>;
 
+export type HighlightCodeFn = (
+	params: GetHighlightInfoParams,
+) => HighlightInfo | null;
+
 export interface CodeBlockState {
 	canInsert?: boolean;
 	canWrap?: boolean;

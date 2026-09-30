@@ -1,7 +1,7 @@
 import type { GetHighlightInfoParams, HighlightInfo } from "@rangex/editor";
 import type { LanguageInput, ThemeInput } from "@shikijs/types";
 
-export interface CreateHighlighterWorkerHandlerParams {
+export interface InitEditorHighlighterWorkerParams {
 	langs: LanguageInput[];
 	themes: ThemeInput[];
 }

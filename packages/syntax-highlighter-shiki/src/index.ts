@@ -1,5 +1,6 @@
 export type { LanguageInput, ThemeInput } from "@shikijs/types";
 export type { BundledLanguage, BundledTheme } from "shiki";
 export * from "./CodeBlockDefinition";
-export * from "./CreateHighlighterWorkerHandler";
-export * from "./CreateSyntaxHighlighter";
+export * from "./CreateEditorHighlighter";
+export * from "./CreateHTMLViewHighlighter";
+export * from "./InitEditorHighlighterWorker";

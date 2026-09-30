@@ -4,6 +4,7 @@ import type {
 	StoredSnapshot,
 	TextView,
 } from "rich-text-area";
+import type { HighlightCodeFn } from "#adapters/CodeBlock";
 import type { NodeStorage } from "#storage";
 
 export type HTMLViewStorage = Record<string, NodeStorage>;
@@ -38,6 +39,7 @@ export type CreateHTMLTreeResult = string;
 export interface CreateHTMLViewParams {
 	storedSnapshot: StoredSnapshot;
 	styles: string;
+	highlightCode?: HighlightCodeFn;
 }
 
 export interface CreateHTMLViewResult extends HTMLView {}

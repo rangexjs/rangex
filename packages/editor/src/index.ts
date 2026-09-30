@@ -16,6 +16,7 @@ export type {
 	CodeBlockTheme,
 	GetHighlightInfoFn,
 	GetHighlightInfoParams,
+	HighlightCodeFn,
 	HighlightInfo,
 	ThemedCodeLine,
 	ThemedCodeLines,

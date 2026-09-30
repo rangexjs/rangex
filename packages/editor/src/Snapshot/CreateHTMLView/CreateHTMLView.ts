@@ -2,6 +2,7 @@ import { createSnapshotView } from "rich-text-area";
 import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
 import { buildViewStyleText } from "../../Styles";
+import { highlightCodeBlocks } from "../HighlightCodeBlocks";
 import type {
 	CreateElementParams,
 	CreateHTMLTreeParams,
@@ -118,13 +119,18 @@ const createHTMLTree = ({
 
 /*
  * Converts a stored snapshot into an HTML string plus the styles it needs, without touching the DOM so it can
- * run on the server.
+ * run on the server. Code blocks are syntax highlighted when `highlightCode` is given.
  */
 export const createHTMLView = ({
 	storedSnapshot,
 	styles,
+	highlightCode,
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
 	const { snapshotView } = createSnapshotView({ storedSnapshot });
+
+	if (highlightCode) {
+		highlightCodeBlocks({ nodeView: snapshotView.tree, highlightCode });
+	}
 
 	const storage: HTMLViewStorage = {};
 	const createId = generateId();
