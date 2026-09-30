@@ -1,5 +1,5 @@
-import type { LanguageInput, ThemeInput } from "@shikijs/types";
 import type { BundledLanguage, BundledTheme } from "shiki";
+import type { LanguageInput, ThemeInput } from "shiki/types";
 
 export interface CodeBlockLanguageDefinition {
 	label: string;

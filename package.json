@@ -19,15 +19,18 @@
 		"rich-text-area": "workspace:*",
 		"@rangex/editor": "workspace:*",
 		"@rangex/rich-text-editor": "workspace:*",
+		"@rangex/solid": "workspace:*",
 		"@rangex/syntax-highlighter-shiki": "workspace:*",
 		"@shikijs/langs": "^4.3.1",
 		"@shikijs/themes": "^4.3.1",
+		"@solidjs/web": "2.0.0-rc.13",
 		"@tailwindcss/vite": "^4.3.3",
+		"solid-js": "2.0.0-rc.13",
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
-		"@solidjs/vite-plugin": "3.0.0-next.38",
+		"@solidjs/vite-plugin": "3.0.0-next.47",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5"
 	}

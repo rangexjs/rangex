@@ -1,7 +1,4 @@
-import type {
-	LanguageRegistration,
-	ThemeRegistrationAny,
-} from "@shikijs/types";
+import type { LanguageRegistration, ThemeRegistrationAny } from "shiki/types";
 
 export interface CreateHTMLViewHighlighterParams {
 	langs: LanguageRegistration[][];

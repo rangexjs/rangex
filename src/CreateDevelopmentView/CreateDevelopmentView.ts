@@ -1,3 +1,4 @@
+import type { StoredSnapshot } from "@rangex/editor";
 import {
 	AccordionItem,
 	Audio,
@@ -29,7 +30,6 @@ import {
 	Video,
 } from "@rangex/rich-text-editor";
 import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
-import type { StoredSnapshot } from "rich-text-area";
 import storedSnapshot from "../MockDatabase/Demo.json";
 import { mentionItems } from "../MockDatabase/MentionItems";
 import {

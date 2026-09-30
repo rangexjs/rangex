@@ -1,5 +1,5 @@
-import { createHighlighterCore } from "@shikijs/core";
-import { createJavaScriptRegexEngine } from "@shikijs/engine-javascript";
+import { createHighlighterCore } from "shiki/core";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import { tokenizeCode } from "../_Utilities";
 import type {
 	InitEditorHighlighterWorkerParams,

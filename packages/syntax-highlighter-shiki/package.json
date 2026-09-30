@@ -34,16 +34,15 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
+		"@rangex/editor": "workspace:*",
 		"@types/bun": "^1.3.14",
 		"esbuild": "^0.28.1",
+		"shiki": "4.3.1",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5"
 	},
-	"dependencies": {
-		"@rangex/editor": "workspace:*",
-		"@shikijs/core": "^4.3.1",
-		"@shikijs/engine-javascript": "^4.3.1",
-		"@shikijs/types": "^4.3.1",
-		"shiki": "^4.0.2"
+	"peerDependencies": {
+		"@rangex/editor": "workspace:^",
+		"shiki": "^4.3.1"
 	}
 }

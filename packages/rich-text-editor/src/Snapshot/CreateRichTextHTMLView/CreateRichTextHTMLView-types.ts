@@ -1,5 +1,8 @@
-import type { createHTMLView, HighlightCodeFn } from "@rangex/editor";
-import type { StoredSnapshot } from "rich-text-area";
+import type {
+	createHTMLView,
+	HighlightCodeFn,
+	StoredSnapshot,
+} from "@rangex/editor";
 
 export interface CreateRichTextHTMLViewParams {
 	storedSnapshot: StoredSnapshot;
