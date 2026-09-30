@@ -28,11 +28,16 @@ This is a monorepo (Bun workspaces) for the RangeX rich text editor project:
 | Package | Path | Notes |
 |---|---|---|
 | `rich-text-area` | `packages/rich-text-area/` | Close-source engine — separate private repo, gitignored here, must be cloned separately |
-| `@rangex/rich-text-editor` | `packages/rich-text-editor/` | Tracked in this repo — wires the engine to the UI; TypeScript feature implementations plus the SolidJS Web Component toolbar/UI layer (`src/UI/`), all in one package. Private, not published. |
+| `@rangex/editor` | `packages/editor/` | Framework-agnostic layer over the engine: adapters, `createEditor`, snapshot/HTML views. The only package that depends on the engine directly; re-exports the engine types other packages need. |
+| `@rangex/solid` | `packages/solid/` | SolidJS bindings for `@rangex/editor`: per-extension reactive ports (`ReactivePorts/`) plus shared Solid utilities such as `FloatingPortal`. |
+| `@rangex/syntax-highlighter-shiki` | `packages/syntax-highlighter-shiki/` | Shiki-based code block highlighting for the editor (worker) and the HTML view (sync). |
+| `@rangex/rich-text-editor` | `packages/rich-text-editor/` | Zero-config editor built on `@rangex/editor` and `@rangex/solid`: extensions, toolbar and floating UI. |
+
+Dependencies are one-way. `rich-text-area` is used only by `@rangex/editor`. `@rangex/solid` extends `@rangex/editor` with Solid bindings — it does not replace it. `@rangex/rich-text-editor` uses both `@rangex/editor` and `@rangex/solid`, and `@rangex/syntax-highlighter-shiki` builds on `@rangex/editor`. Packages built on `@rangex/editor` take it (and Solid, where used) as a peer dependency. All packages are currently `private: true` (pre-release).
 
 The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/MockDatabase`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
 
-Each package has its own `AGENTS.md` / `CLAUDE.md` with package-specific guidance.
+Some packages have their own `AGENTS.md` / `CLAUDE.md` with package-specific guidance — read it before working in that package.
 
 ## Commands
 
@@ -42,6 +47,8 @@ All commands use Bun unless noted. Run from the repo root unless a package path 
 ```bash
 bun run dev
 ```
+
+**Browser checks:** before checking anything in the browser, check whether the dev server is listening on port 3000. If it is not, do not start it yourself — ask the user to start it.
 
 **Per-package build** (run inside the package directory):
 ```bash
