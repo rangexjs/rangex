@@ -1,2 +1,2 @@
-export type { EmbedPublicPort } from "#adapters/Embed";
+export type { EmbedPublicPort, EmbedSettings } from "#adapters/Embed";
 export { Embed } from "#rangex-editor";

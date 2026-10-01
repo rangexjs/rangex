@@ -3,5 +3,6 @@ export type {
 	FindReplacePattern,
 	FindReplacePublicPort,
 	FindReplaceSearchResult,
+	FindReplaceSettings,
 } from "#adapters/FindReplace";
 export { FindReplace } from "#rangex-editor";

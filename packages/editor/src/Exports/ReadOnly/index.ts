@@ -1,2 +1,2 @@
-export type { ReadOnlyPublicPort } from "#adapters/ReadOnly";
+export type { ReadOnlyPublicPort, ReadOnlySettings } from "#adapters/ReadOnly";
 export { ReadOnly } from "#rangex-editor";

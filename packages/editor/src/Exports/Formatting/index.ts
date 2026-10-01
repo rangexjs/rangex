@@ -25,6 +25,7 @@ export type {
 	FormattingPublicPort,
 	FormattingRemoveLineState,
 	FormattingRemoveTextState,
+	FormattingSettings,
 	FormattingStrikethroughState,
 	FormattingStructuredColor,
 	FormattingStructuredThemeColors,

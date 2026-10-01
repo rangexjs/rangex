@@ -1,5 +1,6 @@
 export type {
 	EmptyMediaPublicPort,
+	EmptyMediaSettings,
 	MediaResolveDetail,
 	ResolveOption,
 	UploadState,

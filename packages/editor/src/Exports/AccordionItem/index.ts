@@ -1,2 +1,5 @@
-export type { AccordionItemPublicPort } from "#adapters/AccordionItem";
+export type {
+	AccordionItemPublicPort,
+	AccordionItemSettings,
+} from "#adapters/AccordionItem";
 export { AccordionItem } from "#rangex-editor";

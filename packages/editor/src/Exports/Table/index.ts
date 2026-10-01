@@ -11,6 +11,7 @@ export type {
 	TablePublicPort,
 	TableSectionTypeAction,
 	TableSectionTypeState,
+	TableSettings,
 	TableVerticalAlignmentAction,
 	TableVerticalAlignmentState,
 } from "#adapters/Table";

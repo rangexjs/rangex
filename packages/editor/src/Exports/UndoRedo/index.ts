@@ -1,2 +1,2 @@
-export type { UndoRedoPublicPort } from "#adapters/UndoRedo";
+export type { UndoRedoPublicPort, UndoRedoSettings } from "#adapters/UndoRedo";
 export { UndoRedo } from "#rangex-editor";

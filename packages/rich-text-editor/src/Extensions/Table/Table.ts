@@ -1,8 +1,9 @@
 import { Table as TableFactory } from "@rangex/editor/table";
 import { toolbarButtonsName } from "#constants";
-import type { TableContextMenuUIOptions, TableUIOptions } from "#context";
+import type { TableContextMenuUIOptions } from "#context";
 import { TableContextMenu, TableToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";
+import type { TableExtensionSettings } from "./Table-types";
 
 const defaultContextMenu: Required<TableContextMenuUIOptions> = {
 	sectionType: ["header", "body", "footer"],
@@ -21,9 +22,7 @@ const defaultContextMenu: Required<TableContextMenuUIOptions> = {
 	clearContents: true,
 };
 
-export const Table = (
-	settings: Parameters<typeof TableFactory>[0] & TableUIOptions,
-): Extension => {
+export const Table = (settings: TableExtensionSettings): Extension => {
 	const { contextMenu, ...adapterSettings } = settings;
 
 	return {

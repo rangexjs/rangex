@@ -13,7 +13,7 @@ The framework-agnostic layer over the RangeX engine (`@rangex/core`), written in
 The package has one entry point per feature plus a root entry:
 
 - `src/Exports/index.ts` is `@rangex/editor`: what isn't specific to one feature (`createEditor`, the views, engine types, types shared by several features).
-- `src/Exports/<Feature>/index.ts` is `@rangex/editor/<feature>` (kebab-case, e.g. `CodeBlock` → `code-block`): the feature's adapter factory and its public types.
+- `src/Exports/<Feature>/index.ts` is `@rangex/editor/<feature>` (kebab-case, e.g. `CodeBlock` → `code-block`): the feature's adapter factory, its settings type (`<Feature>Settings`) and its other public types. `@rangex/rich-text-editor` mirrors this, with `<Feature>ExtensionSettings` for each extension.
 
 Types keep the names they have in the adapter (`InsertParams`, not `LinkInsertParams`); the subpath already says which feature they belong to.
 

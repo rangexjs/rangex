@@ -1,12 +1,11 @@
 import { Image as ImageFactory } from "@rangex/editor/image";
 import { ImageQuickActions } from "#features";
 import type { Extension } from "../_Utilities";
+import type { ImageExtensionSettings } from "./Image-types";
 
-export const Image = (
-	...adapterSettings: Parameters<typeof ImageFactory>
-): Extension => {
+export const Image = (settings: ImageExtensionSettings): Extension => {
 	return {
-		createAdapter: () => ImageFactory(...adapterSettings),
+		createAdapter: () => ImageFactory(settings),
 		components: {
 			toolbarButtons: {},
 			floatingComponents: [ImageQuickActions],

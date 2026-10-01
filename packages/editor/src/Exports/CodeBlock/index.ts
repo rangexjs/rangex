@@ -1,5 +1,6 @@
 export type {
 	CodeBlockPublicPort,
+	CodeBlockSettings,
 	CodeBlockTheme,
 	GetHighlightInfoFn,
 	GetHighlightInfoParams,
