@@ -37,7 +37,7 @@ Dependencies are one-way. `@rangex/core` is used only by `@rangex/editor`. `@ran
 
 `@rangex/editor` and `@rangex/rich-text-editor` have one entry point per feature (`@rangex/editor/link`, `@rangex/rich-text-editor/code-block`…), defined in each package's `src/Exports/`; the package root only exports what isn't specific to one feature. Import feature exports from their subpath. See `packages/editor/AGENTS.md` for how the entries are set up. All packages are currently `private: true` (pre-release).
 
-The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/MockDatabase`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
+The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/DemoData`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
 
 Some packages have their own `AGENTS.md` / `CLAUDE.md` with package-specific guidance — read it before working in that package.
 

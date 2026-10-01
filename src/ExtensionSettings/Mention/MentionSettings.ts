@@ -2,7 +2,7 @@ import type {
 	GetMentionItemsParams,
 	MentionExtensionSettings,
 } from "@rangex/rich-text-editor/mention";
-import { mentionItems } from "../../MockDatabase/MentionItems";
+import { mentionItems } from "../../DemoData/MentionItems";
 
 /**
  * Demo-only stand-in for a user search — filters the mock users locally. A consumer building a real editor should

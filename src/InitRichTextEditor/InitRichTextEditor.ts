@@ -28,6 +28,7 @@ import { TemplateVariable } from "@rangex/rich-text-editor/template-variable";
 import { TodoList } from "@rangex/rich-text-editor/todo-list";
 import { UndoRedo } from "@rangex/rich-text-editor/undo-redo";
 import { Video } from "@rangex/rich-text-editor/video";
+import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,
 	emptyMediaSettings,
@@ -35,7 +36,6 @@ import {
 	mentionSettings,
 	templateVariableSettings,
 } from "../ExtensionSettings";
-import storedSnapshot from "../MockDatabase/Demo.json" with { type: "json" };
 
 export const initRichTextEditor = () => {
 	const extensions: Extension[] = [
