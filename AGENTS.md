@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Project status
 
-RangeX is currently in **alpha**. APIs, types, and engine behavior are subject to breaking changes. Avoid over-engineering for stability or backwards compatibility — prefer clear, direct implementations that can be changed quickly as the project evolves.
+RangeX is currently in **beta** (`1.0.0-beta.N`). APIs, types, and engine behavior can still change in breaking ways between betas. Avoid over-engineering for stability or backwards compatibility — prefer clear, direct implementations that can be changed quickly as the project evolves.
 
 ## Project overview
 
@@ -12,7 +12,7 @@ RangeX is a rich text editor engine that manages all editor logic: text manipula
 
 **Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read `packages/editor/docs/core/_References.md` — it is the authoritative reference for everything the engine exposes. Do not guess engine behavior from usage patterns when these docs are available.
 
-**Engine types** are in `packages/core/dist/index.d.ts` (all types re-exported from a single entry point). This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
+**Engine types** are in `packages/core/src/PublicTypes/index.ts` (all public types re-exported from a single entry point). In development, packages resolve the engine's types there through the `@rangex/source` condition, so type changes apply without rebuilding the engine. This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
 
 This repo (`rangex`) serves three purposes:
 1. **Zero-config editor** — `@rangex/rich-text-editor` provides a ready-to-use editor built on the engine with no setup required
@@ -50,12 +50,15 @@ bun run dev
 
 **Browser checks:** before checking anything in the browser, check whether the dev server is listening on port 3000. If it is not, do not start it yourself — ask the user to start it.
 
-**Per-package build** (run inside the package directory):
+**Build:**
 ```bash
-bun run build           # core, rich-text-editor
+bun run build           # root: editor, solid, syntax-highlighter-shiki, rich-text-editor, in that order
+bun run build           # inside any package directory: that package only (the engine is built this way)
 ```
 
-**Tests** (core and rich-text-editor — no test files exist yet for the UI layer):
+Development doesn't need builds: the dev server, lint and type-check read every package's source through the `@rangex/source` condition. Build only to check the published output (`dist/`). Publishing (`bun publish`) builds automatically through `prepublishOnly`.
+
+**Tests** (only the engine has test files; run inside `packages/core`):
 ```bash
 bun run test                        # all tests
 bun run test -- <pattern>           # single file by name/path
@@ -64,8 +67,13 @@ bun run test:coverage               # with coverage
 
 **Lint / type-check:**
 ```bash
-bun run lint           # biome check + tsc (no emit)
-bun run fix            # auto-fix biome issues
+bun run lint           # biome check + tsc (no emit) for the root, then each package's `fix` (biome --write + tsc)
+bun run fix            # same, with biome --write for the root too
+```
+
+**Clean reinstall** (Bun's isolated linker doesn't remove links to dependencies that were dropped; do this after removing one):
+```bash
+bun run clean && bun install    # deletes every node_modules in the repo, then reinstalls
 ```
 
 **After any code change:** always run `bun run lint` from the repo root and fix all errors before finishing.
