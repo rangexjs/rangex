@@ -32,9 +32,7 @@
 		}
 	},
 	"files": [
-		"dist",
-		"LICENSE.md",
-		"README.md"
+		"dist"
 	],
 	"publishConfig": {
 		"access": "public",
@@ -44,7 +42,7 @@
 		"dev": "vite dev",
 		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
 		"prepublishOnly": "bun run build",
-		"fix": "biome check ./src ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
+		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",

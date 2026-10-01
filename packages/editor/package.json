@@ -64,9 +64,7 @@
 		}
 	},
 	"files": [
-		"dist",
-		"LICENSE.md",
-		"README.md"
+		"dist"
 	],
 	"publishConfig": {
 		"access": "public",
@@ -78,8 +76,8 @@
 		"prepublishOnly": "bun run build",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
-		"fix": "biome check ./src ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src ./tsconfig*.json ./vite.config.ts && tsc && vitest"
+		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts && tsc && vitest"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",

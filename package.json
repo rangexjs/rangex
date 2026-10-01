@@ -13,8 +13,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "bun run --filter @rangex/editor build && bun run --filter @rangex/solid build && bun run --filter @rangex/syntax-highlighter-shiki build && bun run --filter @rangex/rich-text-editor build",
-		"fix": "biome check index.ts src tsconfig.json vite.config.ts --write && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
-		"lint": "biome check index.ts src tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
+		"fix": "biome check index.ts src package.json tsconfig.json vite.config.ts --write && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
+		"lint": "biome check index.ts src package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && bun run --filter @rangex/editor fix && bun run --filter @rangex/solid fix && bun run --filter @rangex/syntax-highlighter-shiki fix && bun run --filter @rangex/rich-text-editor fix",
 		"clean": "find . -name node_modules -type d -prune -exec rm -rf '{}' +"
 	},
 	"dependencies": {
