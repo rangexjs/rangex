@@ -68,7 +68,7 @@ const watchCodeBlocks = ({
 			});
 
 			if (!blockComponent) {
-				throw new Error("BlockComponent can't be null.");
+				continue;
 			}
 
 			changedCodeBlocks.add(blockComponent);
