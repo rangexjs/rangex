@@ -40,14 +40,13 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"build": "vite build && tsc -p ./tsconfig.build.json",
 		"prepublishOnly": "bun run build",
 		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
 		"@rangex/editor": "workspace:*",
-		"esbuild": "^0.28.1",
 		"shiki": "4.3.1",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5"

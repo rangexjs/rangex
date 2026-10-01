@@ -72,7 +72,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"build": "vite build && tsc -p ./tsconfig.build.json",
 		"prepublishOnly": "bun run build",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
@@ -83,7 +83,6 @@
 		"@biomejs/biome": "2.5.4",
 		"@happy-dom/global-registrator": "^20.10.6",
 		"@vitest/coverage-v8": "^4.1.10",
-		"esbuild": "^0.28.1",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5",
 		"vitest": "^4.1.10"

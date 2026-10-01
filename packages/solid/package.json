@@ -39,7 +39,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"build": "vite build && tsc -p ./tsconfig.build.json",
 		"prepublishOnly": "bun run build",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
@@ -53,7 +53,6 @@
 		"@solidjs/vite-plugin": "3.0.0-next.47",
 		"@solidjs/web": "2.0.0-rc.13",
 		"@vitest/coverage-v8": "^4.1.10",
-		"esbuild": "^0.28.1",
 		"solid-js": "2.0.0-rc.13",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5",
