@@ -1,5 +1,8 @@
-import type { StoredSnapshot } from "@rangex/editor";
-import { createRichTextEditor, type Extension } from "@rangex/rich-text-editor";
+import {
+	createRichTextEditor,
+	type Extension,
+	type StoredSnapshot,
+} from "@rangex/rich-text-editor";
 import { AccordionItem } from "@rangex/rich-text-editor/accordion-item";
 import { Audio } from "@rangex/rich-text-editor/audio";
 import { BlockQuote } from "@rangex/rich-text-editor/block-quote";

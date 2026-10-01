@@ -1,4 +1,4 @@
-export type { SnapshotView } from "@rangex/editor";
+export type { SnapshotView, StoredSnapshot } from "@rangex/editor";
 export { createSnapshotView } from "@rangex/editor";
 export type {
 	Extension,

@@ -5,10 +5,7 @@
     "": {
       "name": "rangex",
       "dependencies": {
-        "@rangex/core": "workspace:*",
-        "@rangex/editor": "workspace:*",
         "@rangex/rich-text-editor": "workspace:*",
-        "@rangex/solid": "workspace:*",
         "@rangex/syntax-highlighter-shiki": "workspace:*",
         "@shikijs/langs": "^4.3.1",
         "@shikijs/themes": "^4.3.1",
