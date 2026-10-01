@@ -1,5 +1,5 @@
 {
-	"name": "@rangexjs/rangex-dev",
+	"name": "rangex",
 	"type": "module",
 	"license": "MIT",
 	"private": true,

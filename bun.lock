@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@rangexjs/rangex-dev",
+      "name": "rangex",
       "dependencies": {
         "@rangex/core": "workspace:*",
         "@rangex/editor": "workspace:*",
