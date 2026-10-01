@@ -1,4 +1,4 @@
-import type { MentionItems } from "@rangex/rich-text-editor";
+import type { MentionItems } from "@rangex/rich-text-editor/mention";
 
 /**
  * Mock mention items — stands in for a real user directory (API, database, etc.).

@@ -1,4 +1,4 @@
-import { AccordionItem as AccordionItemFactory } from "@rangex/editor";
+import { AccordionItem as AccordionItemFactory } from "@rangex/editor/accordion-item";
 import { toolbarButtonsName } from "#constants";
 import { CustomComponentToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";

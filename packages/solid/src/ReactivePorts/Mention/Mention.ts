@@ -1,4 +1,4 @@
-import type { MentionPublicPort } from "@rangex/editor";
+import type { MentionPublicPort } from "@rangex/editor/mention";
 import type { PreserveUndefined } from "../../_Utilities";
 import { CaretMenu } from "../_Utilities";
 import type { ReactiveMentionPort } from "./Mention-types";

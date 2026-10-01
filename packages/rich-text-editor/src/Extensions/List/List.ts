@@ -1,4 +1,4 @@
-import { List as ListFactory } from "@rangex/editor";
+import { List as ListFactory } from "@rangex/editor/list";
 import { toolbarButtonsName } from "#constants";
 import {
 	OrderedListToolbarButton,

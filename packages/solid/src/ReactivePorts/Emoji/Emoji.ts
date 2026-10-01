@@ -1,4 +1,4 @@
-import type { EmojiPublicPort } from "@rangex/editor";
+import type { EmojiPublicPort } from "@rangex/editor/emoji";
 import type { PreserveUndefined } from "../../_Utilities";
 import { CaretMenu } from "../_Utilities";
 import type { ReactiveEmojiPort } from "./Emoji-types";

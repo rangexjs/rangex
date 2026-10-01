@@ -18,8 +18,13 @@ npm install @rangex/editor
 
 Pass the adapters you want to enable. Each one adds its public port to `editor`.
 
+Each feature has its own entry point, named after it in kebab-case (`@rangex/editor/link`, `@rangex/editor/code-block`…), which exports its adapter and types. The package root exports what isn't specific to one feature, such as `createEditor` and the views.
+
 ```ts
-import { createEditor, Formatting, Link, UndoRedo } from "@rangex/editor";
+import { createEditor } from "@rangex/editor";
+import { Formatting } from "@rangex/editor/formatting";
+import { Link } from "@rangex/editor/link";
+import { UndoRedo } from "@rangex/editor/undo-redo";
 
 const { editor, host, floatingContainer, hostStyles } = createEditor({
 	adapters: [Formatting({}), Link({}), UndoRedo({})],

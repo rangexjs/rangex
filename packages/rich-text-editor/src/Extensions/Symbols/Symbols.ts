@@ -1,4 +1,4 @@
-import { Symbols as SymbolsFactory } from "@rangex/editor";
+import { Symbols as SymbolsFactory } from "@rangex/editor/symbols";
 import { toolbarButtonsName } from "#constants";
 import { SymbolsToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";

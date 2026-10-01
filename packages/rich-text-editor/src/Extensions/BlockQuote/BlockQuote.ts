@@ -1,4 +1,4 @@
-import { BlockQuote as BlockQuoteFactory } from "@rangex/editor";
+import { BlockQuote as BlockQuoteFactory } from "@rangex/editor/block-quote";
 import { toolbarButtonsName } from "#constants";
 import { BlockQuoteToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";

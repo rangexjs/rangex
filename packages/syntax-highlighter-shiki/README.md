@@ -55,7 +55,7 @@ initEditorHighlighterWorker({
 **2. Connect it on the main thread** and pass the result to the code block extension.
 
 ```ts
-import { CodeBlock } from "@rangex/rich-text-editor";
+import { CodeBlock } from "@rangex/rich-text-editor/code-block";
 import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
 import { languageDefinitions, themeDefinitions } from "./code-block-highlighting";
 import HighlighterWorker from "./highlighter-worker?worker";
@@ -70,7 +70,7 @@ const codeBlock = CodeBlock({
 });
 ```
 
-When building on `@rangex/editor` directly, pass the same `getHighlightInfo` to its `CodeBlock` adapter.
+When building on `@rangex/editor` directly, pass the same `getHighlightInfo` to its `CodeBlock` adapter (`@rangex/editor/code-block`).
 
 ### Bundler setup
 

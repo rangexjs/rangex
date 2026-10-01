@@ -1,4 +1,4 @@
-import type { FormattingLineSpacingValue } from "@rangex/editor";
+import type { FormattingLineSpacingValue } from "@rangex/editor/formatting";
 import { LineSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";

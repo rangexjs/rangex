@@ -1,4 +1,4 @@
-import { Table as TableFactory } from "@rangex/editor";
+import { Table as TableFactory } from "@rangex/editor/table";
 import { toolbarButtonsName } from "#constants";
 import type { TableContextMenuUIOptions, TableUIOptions } from "#context";
 import { TableContextMenu, TableToolbarButton } from "#features";

@@ -1,4 +1,4 @@
-import { Markdown as MarkdownFactory } from "@rangex/editor";
+import { Markdown as MarkdownFactory } from "@rangex/editor/markdown";
 import type { Extension } from "../_Utilities";
 
 export const Markdown = (

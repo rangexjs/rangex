@@ -1,7 +1,7 @@
 import type {
 	FormattingStructuredColor,
 	FormattingStructuredThemeColors,
-} from "@rangex/editor";
+} from "@rangex/editor/formatting";
 import { ColorFormat, type HslFormat } from "#color";
 import { assertNever } from "#utilities";
 import type { ColorMode } from "./ColorPanel";

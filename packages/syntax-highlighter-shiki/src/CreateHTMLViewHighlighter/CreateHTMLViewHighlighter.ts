@@ -1,4 +1,4 @@
-import type { HighlightCodeFn } from "@rangex/editor";
+import type { HighlightCodeFn } from "@rangex/editor/code-block";
 import { createHighlighterCoreSync } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import { tokenizeCode } from "../_Utilities";

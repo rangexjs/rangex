@@ -1,4 +1,4 @@
-import { EmptyMedia as EmptyMediaFactory } from "@rangex/editor";
+import { EmptyMedia as EmptyMediaFactory } from "@rangex/editor/empty-media";
 import { toolbarButtonsName } from "#constants";
 import { EmptyMediaToolbarButton, registerEmptyMedia } from "#features";
 import type { Extension } from "../_Utilities";

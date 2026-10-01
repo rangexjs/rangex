@@ -1,4 +1,4 @@
-import type { FormattingTextAlignValue } from "@rangex/editor";
+import type { FormattingTextAlignValue } from "@rangex/editor/formatting";
 import { ReadOnly, TextAlign } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
 import { useEditorContext } from "#context";

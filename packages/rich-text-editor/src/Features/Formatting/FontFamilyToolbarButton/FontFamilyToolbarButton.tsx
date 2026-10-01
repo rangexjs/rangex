@@ -1,4 +1,4 @@
-import type { FormattingFontFamilyValue } from "@rangex/editor";
+import type { FormattingFontFamilyValue } from "@rangex/editor/formatting";
 import { FontFamily, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";

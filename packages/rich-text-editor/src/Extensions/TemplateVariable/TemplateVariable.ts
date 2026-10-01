@@ -1,4 +1,4 @@
-import { TemplateVariable as TemplateVariableFactory } from "@rangex/editor";
+import { TemplateVariable as TemplateVariableFactory } from "@rangex/editor/template-variable";
 import { toolbarButtonsName } from "#constants";
 import {
 	TemplateVariableCaretMenu,

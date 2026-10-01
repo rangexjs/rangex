@@ -1,0 +1,1 @@
+export { EmptyMedia } from "#extensions";

@@ -14,16 +14,16 @@ npm install @rangex/rich-text-editor
 
 Each extension enables one feature, with its toolbar buttons and menus. Features you don't list are left out of your bundle.
 
+Each extension has its own entry point, named after it in kebab-case (`@rangex/rich-text-editor/link`, `@rangex/rich-text-editor/code-block`…). The package root exports `createRichTextEditor` and the views.
+
 ```ts
-import {
-	createRichTextEditor,
-	Formatting,
-	Image,
-	Link,
-	List,
-	Table,
-	UndoRedo,
-} from "@rangex/rich-text-editor";
+import { createRichTextEditor } from "@rangex/rich-text-editor";
+import { Formatting } from "@rangex/rich-text-editor/formatting";
+import { Image } from "@rangex/rich-text-editor/image";
+import { Link } from "@rangex/rich-text-editor/link";
+import { List } from "@rangex/rich-text-editor/list";
+import { Table } from "@rangex/rich-text-editor/table";
+import { UndoRedo } from "@rangex/rich-text-editor/undo-redo";
 
 const richTextEditor = createRichTextEditor({
 	extensions: [Formatting({}), Image({}), Link({}), List({}), Table({}), UndoRedo({})],

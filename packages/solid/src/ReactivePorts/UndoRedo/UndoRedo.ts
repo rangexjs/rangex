@@ -1,4 +1,4 @@
-import type { UndoRedoPublicPort } from "@rangex/editor";
+import type { UndoRedoPublicPort } from "@rangex/editor/undo-redo";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveUndoRedoPort } from "./UndoRedo-types";

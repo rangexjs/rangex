@@ -12,6 +12,15 @@ const external = externalPackageNames.map(
 	(name) => new RegExp(`^${name}(/.*)?$`),
 );
 
+// One build entry per `exports` subpath, named after it, so "./link" builds src/Exports/Link/index.ts into dist/link.js.
+const entry = Object.fromEntries(
+	Object.entries(packageJson.exports).map(([subpath, conditions]) => {
+		const name = subpath === "." ? "index" : subpath.slice(2);
+
+		return [name, conditions["@rangex/source"]];
+	}),
+);
+
 export default defineConfig({
 	base: "./",
 	plugins: [tailwindcss(), solid()],
@@ -25,10 +34,12 @@ export default defineConfig({
 		outDir: "dist",
 		sourcemap: false,
 		lib: {
-			entry: "src/index.ts",
-			fileName: "index",
+			entry,
 			formats: ["es"],
 		},
-		rolldownOptions: { external },
+		rolldownOptions: {
+			external,
+			output: { chunkFileNames: "_chunks/[name]-[hash].js" },
+		},
 	},
 });

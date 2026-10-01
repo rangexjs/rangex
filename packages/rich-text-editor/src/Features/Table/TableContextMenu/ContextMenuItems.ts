@@ -6,7 +6,7 @@ import type {
 	TablePublicPort,
 	TableSectionTypeAction,
 	TableVerticalAlignmentAction,
-} from "@rangex/editor";
+} from "@rangex/editor/table";
 import type { ReactiveTablePort } from "@rangex/solid";
 import type { TableContextMenuUIOptions } from "#context";
 

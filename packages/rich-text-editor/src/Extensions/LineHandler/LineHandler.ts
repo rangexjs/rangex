@@ -1,4 +1,4 @@
-import { LineHandler as LineHandlerFactory } from "@rangex/editor";
+import { LineHandler as LineHandlerFactory } from "@rangex/editor/line-handler";
 import { LineHandlerOverlay } from "#features";
 import type { Extension } from "../_Utilities";
 

@@ -1,4 +1,4 @@
-import type { ListPublicPort } from "@rangex/editor";
+import type { ListPublicPort } from "@rangex/editor/list";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveListPort } from "./List-types";

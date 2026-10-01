@@ -1,4 +1,4 @@
-import { Embed as EmbedFactory } from "@rangex/editor";
+import { Embed as EmbedFactory } from "@rangex/editor/embed";
 import { EmbedQuickActions } from "#features";
 import type { Extension } from "../_Utilities";
 

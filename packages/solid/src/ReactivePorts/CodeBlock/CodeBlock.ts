@@ -1,4 +1,4 @@
-import type { CodeBlockPublicPort } from "@rangex/editor";
+import type { CodeBlockPublicPort } from "@rangex/editor/code-block";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveCodeBlockPort } from "./CodeBlock-types";

@@ -1,4 +1,4 @@
-import type { BlockQuotePublicPort } from "@rangex/editor";
+import type { BlockQuotePublicPort } from "@rangex/editor/block-quote";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveBlockQuotePort } from "./BlockQuote-types";

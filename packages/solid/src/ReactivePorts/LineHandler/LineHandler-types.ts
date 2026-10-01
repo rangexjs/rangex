@@ -1,4 +1,4 @@
-import type { TurnIntoAvailability } from "@rangex/editor";
+import type { TurnIntoAvailability } from "@rangex/editor/line-handler";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveLineHandlerPort {

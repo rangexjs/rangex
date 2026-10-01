@@ -1,4 +1,4 @@
-import type { FindReplacePattern } from "@rangex/editor";
+import type { FindReplacePattern } from "@rangex/editor/find-replace";
 
 interface BuildFindReplacePatternParams {
 	findText: string;

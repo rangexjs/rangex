@@ -1,4 +1,4 @@
-import type { GetHighlightInfoFn } from "@rangex/editor";
+import type { GetHighlightInfoFn } from "@rangex/editor/code-block";
 import type {
 	WorkerRequest,
 	WorkerResponse,

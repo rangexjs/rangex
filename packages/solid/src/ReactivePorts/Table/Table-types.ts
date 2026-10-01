@@ -6,7 +6,7 @@ import type {
 	TableMergeSplitState,
 	TableSectionTypeState,
 	TableVerticalAlignmentState,
-} from "@rangex/editor";
+} from "@rangex/editor/table";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveTablePort {

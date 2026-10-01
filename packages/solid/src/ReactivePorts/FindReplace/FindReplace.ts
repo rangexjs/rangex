@@ -1,4 +1,4 @@
-import type { FindReplacePublicPort } from "@rangex/editor";
+import type { FindReplacePublicPort } from "@rangex/editor/find-replace";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveFindReplacePort } from "./FindReplace-types";

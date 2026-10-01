@@ -1,4 +1,4 @@
-import { Audio as AudioFactory } from "@rangex/editor";
+import { Audio as AudioFactory } from "@rangex/editor/audio";
 import { AudioQuickActions } from "#features";
 import type { Extension } from "../_Utilities";
 

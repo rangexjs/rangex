@@ -1,7 +1,7 @@
 import type {
 	TemplateVariableExtensionSettings,
 	TemplateVariableModalSettings,
-} from "@rangex/rich-text-editor";
+} from "@rangex/rich-text-editor/template-variable";
 
 type FieldName = "fullName" | "firstName" | "lastName" | "email" | "date";
 

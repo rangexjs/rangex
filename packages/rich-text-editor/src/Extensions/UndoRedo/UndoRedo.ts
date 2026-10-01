@@ -1,4 +1,4 @@
-import { UndoRedo as UndoRedoFactory } from "@rangex/editor";
+import { UndoRedo as UndoRedoFactory } from "@rangex/editor/undo-redo";
 import { toolbarButtonsName } from "#constants";
 import {
 	HistoryBackToolbarButton,

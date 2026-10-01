@@ -1,4 +1,4 @@
-import { Formatting as FormattingFactory } from "@rangex/editor";
+import { Formatting as FormattingFactory } from "@rangex/editor/formatting";
 import { toolbarButtonsName } from "#constants";
 import {
 	BackgroundColorToolbarButton,

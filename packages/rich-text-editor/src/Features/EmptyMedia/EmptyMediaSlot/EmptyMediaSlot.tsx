@@ -1,9 +1,8 @@
+import type { MediaType, RangeXEditor } from "@rangex/editor";
 import type {
 	MediaResolveDetail,
-	MediaType,
-	RangeXEditor,
 	UploadState,
-} from "@rangex/editor";
+} from "@rangex/editor/empty-media";
 import { createMemo, createSignal, flush, onCleanup } from "solid-js";
 import {
 	createTextFieldState,

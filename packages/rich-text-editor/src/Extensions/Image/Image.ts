@@ -1,4 +1,4 @@
-import { Image as ImageFactory } from "@rangex/editor";
+import { Image as ImageFactory } from "@rangex/editor/image";
 import { ImageQuickActions } from "#features";
 import type { Extension } from "../_Utilities";
 

@@ -1,4 +1,4 @@
-import type { AccordionItemPublicPort } from "@rangex/editor";
+import type { AccordionItemPublicPort } from "@rangex/editor/accordion-item";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveAccordionItemPort } from "./AccordionItem-types";

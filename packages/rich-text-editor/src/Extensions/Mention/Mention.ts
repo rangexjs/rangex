@@ -1,4 +1,4 @@
-import { Mention as MentionFactory } from "@rangex/editor";
+import { Mention as MentionFactory } from "@rangex/editor/mention";
 import type { MentionUIOptions } from "#context";
 import { MentionCaretMenu } from "#features";
 import type { Extension } from "../_Utilities";

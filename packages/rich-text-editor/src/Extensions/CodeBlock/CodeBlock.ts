@@ -1,4 +1,4 @@
-import { CodeBlock as CodeBlockFactory } from "@rangex/editor";
+import { CodeBlock as CodeBlockFactory } from "@rangex/editor/code-block";
 import { toolbarButtonsName } from "#constants";
 import type { CodeBlockUIOptions } from "#context";
 import { CodeBlockQuickActions, CodeBlockToolbarButton } from "#features";

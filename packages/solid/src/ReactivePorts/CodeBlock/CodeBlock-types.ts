@@ -1,4 +1,4 @@
-import type { CodeBlockTheme } from "@rangex/editor";
+import type { CodeBlockTheme } from "@rangex/editor/code-block";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveCodeBlockPort {

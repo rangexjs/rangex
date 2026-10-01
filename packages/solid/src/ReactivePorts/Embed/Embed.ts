@@ -1,4 +1,4 @@
-import type { EmbedPublicPort } from "@rangex/editor";
+import type { EmbedPublicPort } from "@rangex/editor/embed";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveEmbedPort } from "./Embed-types";
