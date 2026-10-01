@@ -5,15 +5,15 @@
 It covers both places code blocks are rendered:
 
 - **In the editor**: highlighting runs in a Web Worker, so typing in a code block never blocks the page.
-- **In the HTML view** (rendered snapshots): highlighting runs synchronously, so it also works on the server.
+- **In the HTML view** (rendered snapshots): highlighting runs synchronously while the view is built.
 
 ## Install
 
 ```bash
-npm install @rangex/syntax-highlighter-shiki shiki @shikijs/langs @shikijs/themes
+npm install @rangex/syntax-highlighter-shiki @shikijs/langs @shikijs/themes
 ```
 
-`shiki` and `@rangex/editor` are peer dependencies. Keep `shiki`, `@shikijs/langs` and `@shikijs/themes` on the same version.
+Keep `@shikijs/langs` and `@shikijs/themes` on the same version as `shiki`.
 
 ## Define your languages and themes
 
@@ -116,3 +116,7 @@ const htmlView = createRichTextHTMLView({ storedSnapshot, highlightCode });
 ## Unknown languages or themes
 
 If a code block asks for a language or theme that wasn't loaded, both highlighters log a warning and return `null`. The code block is then shown without highlighting.
+
+## License
+
+MIT. RangeX depends on `@rangex/core`, which is licensed separately. See [LICENSE.md](https://github.com/rangexjs/rangex/blob/main/LICENSE.md).

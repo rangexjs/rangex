@@ -1,15 +1,27 @@
 {
 	"name": "@rangex/editor",
-	"version": "0.0.0",
+	"version": "1.0.0-beta.0",
+	"description": "Framework-agnostic RangeX editor: adapters, createEditor and snapshot/HTML views on top of the RangeX engine.",
+	"keywords": [
+		"rangex",
+		"rich-text-editor",
+		"editor",
+		"wysiwyg",
+		"contenteditable",
+		"framework-agnostic"
+	],
 	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:rangexjs/rangex.git",
 		"directory": "packages/editor"
 	},
+	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/editor#readme",
+	"bugs": "https://github.com/rangexjs/rangex/issues",
 	"private": true,
 	"license": "MIT",
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		".": {
 			"@rangex/source": "./src/index.ts",
@@ -56,9 +68,14 @@
 		"LICENSE.md",
 		"README.md"
 	],
+	"publishConfig": {
+		"access": "public",
+		"tag": "beta"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"prepublishOnly": "bun run build",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
 		"fix": "biome check ./src ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",

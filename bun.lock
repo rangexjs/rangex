@@ -26,7 +26,7 @@
     },
     "packages/core": {
       "name": "@rangex/core",
-      "version": "0.0.0",
+      "version": "1.0.0-beta.0",
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@happy-dom/global-registrator": "^20.10.6",
@@ -40,7 +40,7 @@
     },
     "packages/editor": {
       "name": "@rangex/editor",
-      "version": "0.0.0",
+      "version": "1.0.0-beta.0",
       "dependencies": {
         "@rangex/core": "workspace:*",
       },
@@ -57,7 +57,7 @@
     },
     "packages/rich-text-editor": {
       "name": "@rangex/rich-text-editor",
-      "version": "0.0.0",
+      "version": "1.0.0-beta.0",
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@happy-dom/global-registrator": "^20.10.6",
@@ -84,7 +84,7 @@
     },
     "packages/solid": {
       "name": "@rangex/solid",
-      "version": "0.0.0",
+      "version": "1.0.0-beta.0",
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@happy-dom/global-registrator": "^20.10.6",
@@ -107,7 +107,7 @@
     },
     "packages/syntax-highlighter-shiki": {
       "name": "@rangex/syntax-highlighter-shiki",
-      "version": "0.0.0",
+      "version": "1.0.0-beta.0",
       "devDependencies": {
         "@biomejs/biome": "2.5.4",
         "@rangex/editor": "workspace:*",
