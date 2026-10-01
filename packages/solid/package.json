@@ -12,14 +12,9 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"development": {
-				"types": "./src/index.ts",
-				"import": "./src/index.ts"
-			},
-			"production": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.js"
-			}
+			"@rangex/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
 		}
 	},
 	"files": [
@@ -32,8 +27,8 @@
 		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
-		"fix": "biome check ./src --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src && tsc && vitest"
+		"fix": "biome check ./src ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src ./tsconfig*.json ./vite.config.ts && tsc && vitest"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",

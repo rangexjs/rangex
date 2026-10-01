@@ -6,7 +6,9 @@ import packageJson from "./package.json" with { type: "json" };
 // e.g. "@solidjs/web" becomes /^@solidjs\/web(\/.*)?$/, matching "@solidjs/web" and "@solidjs/web/jsx-runtime",
 // but not "@solidjs/web-foo".
 const externalPackageNames = Object.keys(packageJson.peerDependencies);
-const external = externalPackageNames.map((name) => new RegExp(`^${name}(/.*)?$`));
+const external = externalPackageNames.map(
+	(name) => new RegExp(`^${name}(/.*)?$`),
+);
 
 export default defineConfig({
 	base: "./",

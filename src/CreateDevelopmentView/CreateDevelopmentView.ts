@@ -30,7 +30,7 @@ import {
 	Video,
 } from "@rangex/rich-text-editor";
 import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
-import storedSnapshot from "../MockDatabase/Demo.json";
+import storedSnapshot from "../MockDatabase/Demo.json" with { type: "json" };
 import { mentionItems } from "../MockDatabase/MentionItems";
 import {
 	codeBlockLanguageDefinitions,

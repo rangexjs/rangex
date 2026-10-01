@@ -5,8 +5,7 @@
 		"emitDeclarationOnly": true,
 		"declarationMap": false,
 		"outDir": "dist",
-		"rootDir": "src",
-		"customConditions": ["production"]
+		"rootDir": "src"
 	},
 	"include": ["src/**/*"]
 }

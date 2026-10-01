@@ -12,65 +12,39 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"development": {
-				"types": "./src/index.ts",
-				"import": "./src/index.ts"
-			},
-			"production": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.js"
-			}
+			"@rangex/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
 		}
 	},
 	"imports": {
 		"#utilities": {
-			"types": {
-				"development": "./src/_Utilities/index.ts",
-				"production": "./dist/_Utilities/index.d.ts"
-			},
-			"default": "./src/_Utilities/index"
+			"@rangex/source": "./src/_Utilities/index.ts",
+			"types": "./dist/_Utilities/index.d.ts"
 		},
 		"#color": {
-			"types": {
-				"development": "./src/Color/index.ts",
-				"production": "./dist/Color/index.d.ts"
-			},
-			"default": "./src/Color/index"
+			"@rangex/source": "./src/Color/index.ts",
+			"types": "./dist/Color/index.d.ts"
 		},
 		"#constants": {
-			"types": {
-				"development": "./src/Constants/index.ts",
-				"production": "./dist/Constants/index.d.ts"
-			},
-			"default": "./src/Constants/index"
+			"@rangex/source": "./src/Constants/index.ts",
+			"types": "./dist/Constants/index.d.ts"
 		},
 		"#context": {
-			"types": {
-				"development": "./src/Context/index.ts",
-				"production": "./dist/Context/index.d.ts"
-			},
-			"default": "./src/Context/index"
+			"@rangex/source": "./src/Context/index.ts",
+			"types": "./dist/Context/index.d.ts"
 		},
 		"#extensions": {
-			"types": {
-				"development": "./src/Extensions/index.ts",
-				"production": "./dist/Extensions/index.d.ts"
-			},
-			"default": "./src/Extensions/index"
+			"@rangex/source": "./src/Extensions/index.ts",
+			"types": "./dist/Extensions/index.d.ts"
 		},
 		"#features": {
-			"types": {
-				"development": "./src/Features/index.ts",
-				"production": "./dist/Features/index.d.ts"
-			},
-			"default": "./src/Features/index"
+			"@rangex/source": "./src/Features/index.ts",
+			"types": "./dist/Features/index.d.ts"
 		},
 		"#ui": {
-			"types": {
-				"development": "./src/UI/index.ts",
-				"production": "./dist/UI/index.d.ts"
-			},
-			"default": "./src/UI/index"
+			"@rangex/source": "./src/UI/index.ts",
+			"types": "./dist/UI/index.d.ts"
 		}
 	},
 	"files": [
@@ -83,8 +57,8 @@
 		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
-		"fix": "biome check ./src --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src && tsc && vitest"
+		"fix": "biome check ./src ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src ./tsconfig*.json ./vite.config.ts && tsc && vitest"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",

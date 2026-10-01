@@ -14,7 +14,11 @@
 		"enabled": true,
 		"rules": {
 			"preset": "recommended",
-			"a11y": { "noSvgWithoutTitle": "off" },
+			"a11y": {
+				"noLabelWithoutControl": "off",
+				"noSvgWithoutTitle": "off",
+				"useKeyWithClickEvents": "off"
+			},
 			"complexity": {
 				"useSimplifiedLogicExpression": "warn",
 				"noImportantStyles": "off",
@@ -46,47 +50,20 @@
 	},
 	"overrides": [
 		{
-			"includes": ["**/*.d.ts"],
-			"linter": {
-				"rules": {
-					"style": {
-						"noDefaultExport": "off"
-					}
+			"includes": ["**/tsconfig*.json"],
+			"json": {
+				"parser": {
+					"allowComments": false,
+					"allowTrailingCommas": false
 				}
 			}
 		},
 		{
-			"includes": ["**/vite.config.ts"],
+			"includes": ["**/*.d.ts", "**/vite.config.ts"],
 			"linter": {
 				"rules": {
 					"style": {
 						"noDefaultExport": "off"
-					}
-				}
-			}
-		},
-		{
-			"includes": ["packages/rich-text-editor/**"],
-			"css": {
-				"parser": { "tailwindDirectives": true }
-			},
-			"linter": {
-				"rules": {
-					"a11y": {
-						"noLabelWithoutControl": "off",
-						"useKeyWithClickEvents": "off"
-					},
-					"complexity": {
-						"noImportantStyles": "off"
-					},
-					"nursery": {
-						"useSortedClasses": {
-							"level": "warn",
-							"options": { "attributes": ["classList"] }
-						}
-					},
-					"suspicious": {
-						"noArrayIndexKey": "off"
 					}
 				}
 			}

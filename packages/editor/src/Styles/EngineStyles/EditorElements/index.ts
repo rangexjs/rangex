@@ -1,1 +1,3 @@
-export { default as BlockComponentLine } from "./BlockComponentLine.css?inline";
+import BlockComponentLineInline from "./BlockComponentLine.css?inline";
+
+export const BlockComponentLine = BlockComponentLineInline;
