@@ -27,6 +27,7 @@ import { Link } from "@rangex/editor/link";
 import { UndoRedo } from "@rangex/editor/undo-redo";
 
 const { editor, host, floatingContainer, hostStyles } = createEditor({
+	licenseKey: "eyJ2IjoxLC...", // your RangeX license key; "" while developing locally
 	adapters: [Formatting({}), Link({}), UndoRedo({})],
 	styles: editorStyles, // CSS for the content inside the editor
 });
@@ -55,7 +56,7 @@ const unsubscribe = editor.undoRedo?.onCanStepBackUpdate((canStepBack) => {
 ```ts
 const storedSnapshot = editor.snapshot.createStored(); // plain JSON, ready to store
 
-createEditor({ storedSnapshot, adapters, styles });
+createEditor({ licenseKey, storedSnapshot, adapters, styles });
 ```
 
 Call `editor.destroy()` when you remove the editor.

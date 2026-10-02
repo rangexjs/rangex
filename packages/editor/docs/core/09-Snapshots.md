@@ -50,6 +50,7 @@ if (!result.isValid) {
 }
 
 const { editorAPI } = createEditorAPI({
+  licenseKey: "eyJ2IjoxLC...",
   rootEditableFrom: {
     type: "snapshot",
     storedSnapshot: result.storedSnapshot,

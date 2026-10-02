@@ -8,6 +8,7 @@ Call `createEditorAPI()` to build an editor. It returns an `editorAPI` object.
 import { createEditorAPI } from "@rangex/core";
 
 const { editorAPI } = createEditorAPI({
+	licenseKey: "eyJ2IjoxLC...",
 	rootEditableFrom: { type: "node", node: rootEditable },
 	shadowRootOptions: { mode: "open", serializable: true },
 	isTextAreaEditable: true,  // default — omit if not needed
@@ -18,6 +19,41 @@ document.body.append(editorAPI.host);
 ```
 
 `editorAPI.host` is an `HTMLElement` that owns the editor's shadow root.
+
+## `licenseKey`
+
+`string`, required. Your RangeX license key, from [rangex.dev](https://rangex.dev). Pass an empty string (`""`) when you don't have a key yet, e.g. during local development or evaluation — it counts as a missing key.
+
+```ts
+const { editorAPI } = createEditorAPI({
+	licenseKey: "eyJ2IjoxLC...",
+	rootEditableFrom: { type: "node", node: rootEditable },
+	shadowRootOptions: { mode: "open" },
+});
+```
+
+The key is verified offline, in the background after the editor is created: the editor never contacts a server and never waits for the check. Each key is valid for 6 months, through the whole expiry day (UTC). Regenerate it while your subscription is active and redeploy before it expires.
+
+The license never disables the editor. Depending on the key's state:
+
+| Key state | Console warning | "Unlicensed RangeX" watermark |
+|---|---|---|
+| Valid, more than 30 days left | — | — |
+| Valid, 30 days or fewer left | ✓ | — |
+| Expired | ✓ | ✓ |
+| Missing | ✓ | ✓ |
+| Malformed, or not signed by RangeX | ✓ | ✓ |
+| Can't be verified (the browser's Web Crypto API doesn't support Ed25519, or the page isn't a secure context) | ✓ | — |
+
+The watermark is a link to rangex.dev rendered inside the editor's shadow root, below the content, with the id `"license-watermark"`. The link carries the page's hostname and the key's state (`"expired"`, `"missing"` or `"invalid"`) as query parameters; nothing about the page or its users. 
+
+On a local development host the watermark is never shown. Local development hosts are:
+
+- `localhost`, `*.localhost` and `*.local`
+- loopback and private network addresses: `127.x.x.x`, `10.x.x.x`, `172.16.x.x`–`172.31.x.x`, `192.168.x.x`, `[::1]`, and IPv6 unique local (`fc00::/7`) and link-local (`fe80::/10`) addresses, so testing on a phone over your local network works too
+- pages without a hostname, such as `file:`
+
+A missing key is not reported there, but a provided key is still verified and its warnings are logged, so you can test your key locally.
 
 ## `rootEditableFrom`
 

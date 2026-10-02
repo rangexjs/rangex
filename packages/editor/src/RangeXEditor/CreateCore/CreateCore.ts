@@ -44,10 +44,14 @@ const createRootEditableFrom = ({
 	return { type: "node", node: rootEditable };
 };
 
-export const createCore = ({ storedSnapshot }: CreateCoreParams) => {
+export const createCore = ({
+	licenseKey,
+	storedSnapshot,
+}: CreateCoreParams) => {
 	const rootEditableFrom = createRootEditableFrom({ storedSnapshot });
 
 	const { editorAPI } = createEditorAPI({
+		licenseKey,
 		rootEditableFrom,
 		shadowRootOptions: {
 			mode: "open",

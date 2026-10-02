@@ -6,7 +6,7 @@ Authoritative reference for the RangeX rich text editor engine. Read the relevan
 |---|---|---|
 | 1 | [01-WhatIsRangeX.md](01-WhatIsRangeX.md) | What RangeX is and the core design idea (DOM-based, schema-driven, no virtual DOM) |
 | 2 | [02-KeyDefinitions.md](02-KeyDefinitions.md) | Core vocabulary used throughout the rest of the docs — `EditingRoot`, `Non-EditingRoot`, `Outermost X`, `EditorArea`, `EditorZone` |
-| 3 | [03-SetupInitialization.md](03-SetupInitialization.md) | Setting up an editor instance — `createEditorAPI`, its params, `rootEditableFrom`, `shadowRootOptions`, accessing `editorAPI`, `destroy()` |
+| 3 | [03-SetupInitialization.md](03-SetupInitialization.md) | Setting up an editor instance — `createEditorAPI`, its params, `rootEditableFrom`, `shadowRootOptions`, `licenseKey` (offline license check, watermark), accessing `editorAPI`, `destroy()` |
 | 4 | [04-EditorNodeTypes.md](04-EditorNodeTypes.md) | Every `EditorNode` kind — `RootEditable`, `NestedEditable`, `ContentLine`, `GlyphFormatter`, `InlineComponent`, `BlockComponent`, text nodes, and every `LayoutUnit` (`List`, `Table`, etc.) — parent/sibling/child types and public `$$` API |
 | 5 | [05-CreatingNodes.md](05-CreatingNodes.md) | The `create*` factory functions for building every node type |
 | 6 | [06-ReadingTraversing.md](06-ReadingTraversing.md) | Type guards and traversal props for reading and walking the tree |

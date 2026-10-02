@@ -9,6 +9,7 @@ export interface RichTextEditor {
 }
 
 export interface CreateRichTextEditorParams {
+	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
 	extensions: Extension[];
 	toolbarButtonsLayout?: ToolbarButtonsLayout;

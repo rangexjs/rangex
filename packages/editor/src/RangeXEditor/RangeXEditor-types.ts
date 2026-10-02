@@ -36,6 +36,7 @@ export type AdapterFactoryFn<Settings extends object> = (
 ) => RegisterAdapterFn;
 
 export interface CreateEditorParams {
+	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
 	adapters: AdapterFactoryValue[];
 	styles: string;

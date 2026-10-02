@@ -7,5 +7,6 @@ export interface CreateRootEditableFromParams {
 export type CreateRootEditableFromResult = CreateRootEditableFrom;
 
 export interface CreateCoreParams {
+	licenseKey: string;
 	storedSnapshot: StoredSnapshot | undefined;
 }

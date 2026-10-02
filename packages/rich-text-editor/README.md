@@ -26,6 +26,7 @@ import { Table } from "@rangex/rich-text-editor/table";
 import { UndoRedo } from "@rangex/rich-text-editor/undo-redo";
 
 const richTextEditor = createRichTextEditor({
+	licenseKey: "eyJ2IjoxLC...", // your RangeX license key; "" while developing locally
 	extensions: [Formatting({}), Image({}), Link({}), List({}), Table({}), UndoRedo({})],
 });
 
@@ -46,7 +47,7 @@ Syntax highlighting for code blocks comes from a separate package, [`@rangex/syn
 ```ts
 const storedSnapshot = richTextEditor.createStoredSnapshot(); // plain JSON, ready to store
 
-createRichTextEditor({ storedSnapshot, extensions });
+createRichTextEditor({ licenseKey, storedSnapshot, extensions });
 ```
 
 Call `richTextEditor.destroy()` when you remove the editor.
