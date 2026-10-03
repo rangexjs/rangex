@@ -51,7 +51,7 @@ const resolveMediaSrc = async ({
 		if (!isWellFormedUrl(detail.url)) {
 			configPort.updateElementState({
 				element,
-				uploadState: { status: "error", message: "Enter a valid URL." },
+				uploadStatus: { status: "error", message: "Enter a valid URL." },
 			});
 			return null;
 		}
@@ -61,7 +61,7 @@ const resolveMediaSrc = async ({
 
 	configPort.updateElementState({
 		element,
-		uploadState: { status: "uploading", progress: 0 },
+		uploadStatus: { status: "uploading", progress: 0 },
 	});
 
 	const src = await configPort.uploadFile({
@@ -73,7 +73,7 @@ const resolveMediaSrc = async ({
 
 			configPort.updateElementState({
 				element,
-				uploadState: { status: "uploading", progress },
+				uploadStatus: { status: "uploading", progress },
 			});
 		},
 	});
@@ -81,7 +81,7 @@ const resolveMediaSrc = async ({
 	if (!src) {
 		configPort.updateElementState({
 			element,
-			uploadState: {
+			uploadStatus: {
 				status: "error",
 				message: "Couldn't read that file. Try a different one.",
 			},
@@ -170,7 +170,7 @@ export const watchEmptyMedia = ({
 				if (!isWellFormedUrl(detail.url)) {
 					configPort.updateElementState({
 						element,
-						uploadState: { status: "error", message: "Enter a valid URL." },
+						uploadStatus: { status: "error", message: "Enter a valid URL." },
 					});
 					return;
 				}
@@ -198,7 +198,7 @@ export const watchEmptyMedia = ({
 
 			configPort.updateElementState({
 				element,
-				uploadState: { status: "checking" },
+				uploadStatus: { status: "checking" },
 			});
 
 			const loaded = await probeMediaSrc({ type: detail.type, src });
@@ -210,7 +210,7 @@ export const watchEmptyMedia = ({
 			if (!loaded) {
 				configPort.updateElementState({
 					element,
-					uploadState: {
+					uploadStatus: {
 						status: "error",
 						message: `Couldn't load that ${detail.type}. Check the link and try again.`,
 					},

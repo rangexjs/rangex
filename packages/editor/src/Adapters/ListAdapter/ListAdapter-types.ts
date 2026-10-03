@@ -71,12 +71,6 @@ export interface ListPublicPort
 		UnwrapPublicPort,
 		CurrentComponentPublicPort {}
 
-export interface ListInternals {
-	canInsert: boolean;
-	canWrap: boolean;
-	localName: ListLocalName | null;
-}
-
 export interface ListAdapter {
 	configPort: ListConfigPort;
 	publicPort: ListPublicPort;

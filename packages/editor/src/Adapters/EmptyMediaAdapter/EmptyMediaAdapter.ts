@@ -1,19 +1,23 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter, mediaTypes } from "../_Utilities";
+import {
+	createEmitter,
+	createStateEmitter,
+	mediaTypes,
+	type StateEmitter,
+} from "../_Utilities";
 import type {
 	CreateEmptyMediaAdapterParams,
 	CreateEmptyMediaAdapterResult,
-	ElementState,
 	EmptyMediaConfigPort,
 	EmptyMediaConfigPortProps,
 	EmptyMediaInternals,
 	EmptyMediaPublicPort,
 	EmptyMediaPublicPortProps,
-	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnResolveCallbackFn,
 	UpdateElementStateParams,
 	UpdateStateParams,
+	UploadStatus,
 } from "./EmptyMediaAdapter-types";
 
 export const createEmptyMediaAdapter = (
@@ -24,50 +28,47 @@ export const createEmptyMediaAdapter = (
 	adapterBus.registerAdapter("emptyMedia");
 
 	const internals: EmptyMediaInternals = {
-		// States
-		canInsert: false,
 		// Rest
 		registerSlottedElement: null,
 	};
 
-	const elements: Map<HTMLDivElement, ElementState> = new Map();
+	// Per-element upload status, keyed by slotted element.
+	const elements: Map<HTMLDivElement, StateEmitter<UploadStatus>> = new Map();
 	const disposes: Map<HTMLDivElement, () => void> = new Map();
 
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
 	const resolveEmitter = createEmitter<OnResolveCallbackFn>();
 
-	const getElementState = (element: HTMLDivElement): ElementState => {
-		const state = elements.get(element);
+	const getUploadStatusState = (
+		element: HTMLDivElement,
+	): StateEmitter<UploadStatus> => {
+		const uploadStatusState = elements.get(element);
 
-		if (!state) {
+		if (!uploadStatusState) {
 			throw new Error("No attached state for the given element.");
 		}
 
-		return state;
+		return uploadStatusState;
 	};
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 	};
 
 	const updateElementState = ({
 		element,
-		uploadState,
+		uploadStatus,
 	}: UpdateElementStateParams) => {
-		const state = getElementState(element);
+		if (uploadStatus !== undefined) {
+			const uploadStatusState = getUploadStatusState(element);
 
-		if (uploadState !== undefined) {
-			state.uploadState = uploadState;
-
-			state.uploadStateEmitter.emit(state.uploadState);
+			uploadStatusState.set(uploadStatus);
 		}
 	};
 
@@ -79,10 +80,11 @@ export const createEmptyMediaAdapter = (
 		createSlottedElement() {
 			const container = document.createElement("div");
 
-			elements.set(container, {
-				uploadState: { status: "idle" },
-				uploadStateEmitter: createEmitter(),
+			const uploadStatusState = createStateEmitter<UploadStatus>({
+				status: "idle",
 			});
+
+			elements.set(container, uploadStatusState);
 
 			const dispose = internals.registerSlottedElement?.(container);
 
@@ -108,12 +110,12 @@ export const createEmptyMediaAdapter = (
 			updateState(params);
 		},
 
-		updateElementState({ element, uploadState }) {
+		updateElementState({ element, uploadStatus }) {
 			if (!elements.has(element)) {
 				return;
 			}
 
-			updateElementState({ element, uploadState });
+			updateElementState({ element, uploadStatus });
 		},
 
 		onInsert(callback) {
@@ -136,7 +138,7 @@ export const createEmptyMediaAdapter = (
 
 	const publicPort: EmptyMediaPublicPort = extendObjectProperties({}, {
 		get canInsert() {
-			return internals.canInsert;
+			return canInsertState.get();
 		},
 
 		get supportedMediaTypes() {
@@ -155,18 +157,19 @@ export const createEmptyMediaAdapter = (
 		},
 
 		onCanInsertUpdate(callback) {
-			return canInsertUpdateEmitter.subscribe(callback);
+			return canInsertState.subscribe(callback);
 		},
 
-		getUploadState(element) {
-			const { uploadState } = getElementState(element);
+		getUploadStatus(element) {
+			const uploadStatusState = getUploadStatusState(element);
 
-			return uploadState;
+			return uploadStatusState.get();
 		},
 
-		onUploadStateUpdate(element, callback) {
-			const state = getElementState(element);
-			return state.uploadStateEmitter.subscribe(callback);
+		onUploadStatusUpdate(element, callback) {
+			const uploadStatusState = getUploadStatusState(element);
+
+			return uploadStatusState.subscribe(callback);
 		},
 
 		insert() {

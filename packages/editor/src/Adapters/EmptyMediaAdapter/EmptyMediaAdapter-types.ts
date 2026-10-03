@@ -1,6 +1,5 @@
 import type {
 	CreateAdapterParams,
-	Emitter,
 	MediaResolveCallbackParams,
 	MediaType,
 } from "../_Utilities";
@@ -41,22 +40,17 @@ export interface ResolveOption {
 	detail: MediaResolveDetail;
 }
 
-export type UploadState =
+export type UploadStatus =
 	| { status: "idle" }
 	| { status: "checking" }
 	| { status: "uploading"; progress: number }
 	| { status: "error"; message: string };
 
-export type UpdateUploadStateCallbackFn = (value: UploadState) => void;
-
-export interface ElementState {
-	uploadState: UploadState;
-	uploadStateEmitter: Emitter<UpdateUploadStateCallbackFn>;
-}
+export type OnUploadStatusUpdateCallbackFn = (value: UploadStatus) => void;
 
 export interface UpdateElementStateParams {
 	element: HTMLDivElement;
-	uploadState?: UploadState;
+	uploadStatus?: UploadStatus;
 }
 
 export type CreateSlottedElementFn = () => HTMLDivElement;
@@ -100,10 +94,10 @@ export interface EmptyMediaPublicPortProps {
 	registerSlottedElement(callback: RegisterSlottedElementCallbackFn): void;
 
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	getUploadState(element: HTMLDivElement): UploadState;
-	onUploadStateUpdate(
+	getUploadStatus(element: HTMLDivElement): UploadStatus;
+	onUploadStatusUpdate(
 		element: HTMLDivElement,
-		callback: UpdateUploadStateCallbackFn,
+		callback: OnUploadStatusUpdateCallbackFn,
 	): () => void;
 
 	insert(): void;
@@ -113,8 +107,6 @@ export interface EmptyMediaPublicPortProps {
 export interface EmptyMediaPublicPort extends EmptyMediaPublicPortProps {}
 
 export interface EmptyMediaInternals {
-	canInsert: boolean;
-
 	registerSlottedElement: RegisterSlottedElementCallbackFn | null;
 }
 

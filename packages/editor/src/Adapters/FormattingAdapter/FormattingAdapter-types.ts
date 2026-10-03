@@ -327,25 +327,6 @@ export interface FormattingPublicPortProps {
 export interface FormattingPublicPort extends FormattingPublicPortProps {}
 
 export interface FormattingInternals {
-	backgroundColor: FormattingBackgroundColorState;
-	bold: FormattingBoldState;
-	code: FormattingCodeState;
-	color: FormattingColorState;
-	fontFamily: FormattingFontFamilyState;
-	fontSize: FormattingFontSizeState;
-	indentation: FormattingIndentationState;
-	italic: FormattingItalicState;
-	letterSpacing: FormattingLetterSpacingState;
-	lineHeight: FormattingLineHeightState;
-	lineLocalName: FormattingLineLocalNameState;
-	lineSpacing: FormattingLineSpacingState;
-	subscript: FormattingSubscriptState;
-	superscript: FormattingSuperscriptState;
-	strikethrough: FormattingStrikethroughState;
-	textAlign: FormattingTextAlignState;
-	underline: FormattingUnderlineState;
-	removeLine: FormattingRemoveLineState;
-	removeText: FormattingRemoveTextState;
 	defaultFontFamily: FormattingFontFamilyValue;
 	defaultFontSize: FormattingFontSizeValue;
 	defaultIndentation: FormattingIndentationValue;

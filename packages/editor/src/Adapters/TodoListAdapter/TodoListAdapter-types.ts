@@ -48,11 +48,6 @@ export interface TodoListPublicPort
 		UnwrapPublicPort,
 		CurrentComponentPublicPort {}
 
-export interface TodoListInternals {
-	canInsert: boolean;
-	canWrap: boolean;
-}
-
 export interface TodoListAdapter {
 	configPort: TodoListConfigPort;
 	publicPort: TodoListPublicPort;

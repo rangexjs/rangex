@@ -3,18 +3,16 @@ import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
 	createEmitter,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
 	BlockQuoteConfigPort,
 	BlockQuoteConfigPortProps,
-	BlockQuoteInternals,
 	BlockQuotePublicPort,
 	BlockQuotePublicPortProps,
 	CreateBlockQuoteAdapterParams,
 	CreateBlockQuoteAdapterResult,
-	OnCanInsertUpdateCallbackFn,
-	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
@@ -27,15 +25,9 @@ export const createBlockQuoteAdapter = (
 
 	adapterBus.registerAdapter("blockQuote");
 
-	const internals: BlockQuoteInternals = {
-		// States
-		canInsert: false,
-		canWrap: false,
-	};
-
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const canWrapState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -46,15 +38,11 @@ export const createBlockQuoteAdapter = (
 
 	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (canWrap !== undefined) {
-			internals.canWrap = canWrap;
-
-			canWrapUpdateEmitter.emit(internals.canWrap);
+			canWrapState.set(canWrap);
 		}
 	};
 
@@ -81,19 +69,19 @@ export const createBlockQuoteAdapter = (
 		currentComponentPort.publicPort,
 		{
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get canWrap() {
-				return internals.canWrap;
+				return canWrapState.get();
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				return canWrapUpdateEmitter.subscribe(callback);
+				return canWrapState.subscribe(callback);
 			},
 
 			insert() {

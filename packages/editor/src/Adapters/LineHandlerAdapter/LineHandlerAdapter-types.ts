@@ -95,14 +95,6 @@ export interface LineHandlerPublicPort
 		DuplicatePublicPort,
 		InsertRootLinePublicPort {}
 
-export interface LineHandlerInternals {
-	// States
-	turnIntoAvailability: TurnIntoAvailability;
-	canRemove: boolean;
-	canDuplicate: boolean;
-	canUnwrap: boolean;
-}
-
 export interface LineHandlerAdapter {
 	configPort: LineHandlerConfigPort;
 	publicPort: LineHandlerPublicPort;

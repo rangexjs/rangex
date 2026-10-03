@@ -8,6 +8,7 @@ import {
 	InputTextField,
 	TextFieldWrapper,
 } from "#ui";
+import { isDeepEqual } from "#utilities";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const fontSizeValues: FormattingFontSizeValue[] = [
@@ -135,26 +136,29 @@ export const FontSizeToolbarButton = () => {
 		formatting.setFontSize(nextFontSize);
 	};
 
-	const sortedFontSizes = createMemo(() => {
-		const deduplicatedValues: FormattingFontSizeValue[] = [];
+	const sortedFontSizes = createMemo(
+		() => {
+			const deduplicatedValues: FormattingFontSizeValue[] = [];
 
-		const commonValues = [...fontSizeValues, ...$fontSize.values()];
+			const commonValues = [...fontSizeValues, ...$fontSize.values()];
 
-		for (const commonValue of commonValues) {
-			const matchedValue = deduplicatedValues.find(
-				(val) =>
-					val.type === commonValue.type && val.value === commonValue.value,
-			);
+			for (const commonValue of commonValues) {
+				const matchedValue = deduplicatedValues.find(
+					(val) =>
+						val.type === commonValue.type && val.value === commonValue.value,
+				);
 
-			if (matchedValue) {
-				continue;
+				if (matchedValue) {
+					continue;
+				}
+
+				deduplicatedValues.push(commonValue);
 			}
 
-			deduplicatedValues.push(commonValue);
-		}
-
-		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
-	});
+			return deduplicatedValues.toSorted((a, b) => a.value - b.value);
+		},
+		{ equals: isDeepEqual },
+	);
 
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $fontSize.values();

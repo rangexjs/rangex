@@ -28,10 +28,6 @@ export interface ReadOnlyPublicPortProps {
 
 export interface ReadOnlyPublicPort extends ReadOnlyPublicPortProps {}
 
-export interface ReadOnlyInternals {
-	checked: boolean;
-}
-
 export interface ReadOnlyAdapter {
 	configPort: ReadOnlyConfigPort;
 	publicPort: ReadOnlyPublicPort;

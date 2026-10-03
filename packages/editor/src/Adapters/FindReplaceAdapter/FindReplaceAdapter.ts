@@ -1,20 +1,18 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateFindReplaceAdapterParams,
 	CreateFindReplaceAdapterResult,
 	FindReplaceConfigPort,
 	FindReplaceConfigPortProps,
-	FindReplaceInternals,
 	FindReplacePublicPort,
 	FindReplacePublicPortProps,
+	FindReplaceSearchResult,
 	OnCloseCallbackFn,
-	OnCurrentIndexUpdateCallbackFn,
 	OnNavigateToIndexCallbackFn,
 	OnOpenCallbackFn,
 	OnReplaceAllCallbackFn,
 	OnReplaceCallbackFn,
-	OnResultsUpdateCallbackFn,
 	OnSearchCallbackFn,
 	OnStepBackCallbackFn,
 	OnStepForwardCallbackFn,
@@ -28,16 +26,9 @@ export const createFindReplaceAdapter = (
 
 	adapterBus.registerAdapter("findReplace");
 
-	const internals: FindReplaceInternals = {
-		// States
-		currentIndex: 0,
-		results: [],
-	};
-
-	// StateListeners
-	const currentIndexUpdateEmitter =
-		createEmitter<OnCurrentIndexUpdateCallbackFn>();
-	const resultsUpdateEmitter = createEmitter<OnResultsUpdateCallbackFn>();
+	// States
+	const currentIndexState = createStateEmitter<number>(0);
+	const resultsState = createStateEmitter<FindReplaceSearchResult[]>([]);
 
 	// CommandListeners
 	const openEmitter = createEmitter<OnOpenCallbackFn>();
@@ -51,15 +42,11 @@ export const createFindReplaceAdapter = (
 
 	const updateState = ({ currentIndex, results }: UpdateStateParams) => {
 		if (currentIndex !== undefined) {
-			internals.currentIndex = currentIndex;
-
-			currentIndexUpdateEmitter.emit(internals.currentIndex);
+			currentIndexState.set(currentIndex);
 		}
 
 		if (results !== undefined) {
-			internals.results = results;
-
-			resultsUpdateEmitter.emit(internals.results);
+			resultsState.set(results);
 		}
 	};
 
@@ -103,19 +90,19 @@ export const createFindReplaceAdapter = (
 
 	const publicPort: FindReplacePublicPort = extendObjectProperties({}, {
 		get currentIndex() {
-			return internals.currentIndex;
+			return currentIndexState.get();
 		},
 
 		get results() {
-			return internals.results;
+			return resultsState.get();
 		},
 
 		onCurrentIndexUpdate(callback) {
-			return currentIndexUpdateEmitter.subscribe(callback);
+			return currentIndexState.subscribe(callback);
 		},
 
 		onResultsUpdate(callback) {
-			return resultsUpdateEmitter.subscribe(callback);
+			return resultsState.subscribe(callback);
 		},
 
 		open(criteria) {

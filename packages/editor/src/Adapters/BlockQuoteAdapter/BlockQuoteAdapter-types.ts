@@ -48,11 +48,6 @@ export interface BlockQuotePublicPort
 		UnwrapPublicPort,
 		CurrentComponentPublicPort {}
 
-export interface BlockQuoteInternals {
-	canInsert: boolean;
-	canWrap: boolean;
-}
-
 export interface BlockQuoteAdapter {
 	configPort: BlockQuoteConfigPort;
 	publicPort: BlockQuotePublicPort;

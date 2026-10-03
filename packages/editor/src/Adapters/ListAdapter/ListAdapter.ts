@@ -1,8 +1,9 @@
-import type { BlockComponent } from "@rangex/core";
+import type { BlockComponent, ListLocalName } from "@rangex/core";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
 	createEmitter,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
@@ -10,14 +11,10 @@ import type {
 	CreateListAdapterResult,
 	ListConfigPort,
 	ListConfigPortProps,
-	ListInternals,
 	ListPublicPort,
 	ListPublicPortProps,
-	OnCanInsertUpdateCallbackFn,
-	OnCanWrapUpdateCallbackFn,
 	OnChangeLocalNameCallbackFn,
 	OnInsertCallbackFn,
-	OnLocalNameUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./ListAdapter-types";
@@ -29,17 +26,10 @@ export const createListAdapter = (
 
 	adapterBus.registerAdapter("list");
 
-	const internals: ListInternals = {
-		// States
-		canInsert: false,
-		canWrap: false,
-		localName: null,
-	};
-
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const localNameUpdateEmitter = createEmitter<OnLocalNameUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const canWrapState = createStateEmitter<boolean>(false);
+	const localNameState = createStateEmitter<ListLocalName | null>(null);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -55,21 +45,15 @@ export const createListAdapter = (
 		localName,
 	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (canWrap !== undefined) {
-			internals.canWrap = canWrap;
-
-			canWrapUpdateEmitter.emit(internals.canWrap);
+			canWrapState.set(canWrap);
 		}
 
 		if (localName !== undefined) {
-			internals.localName = localName;
-
-			localNameUpdateEmitter.emit(internals.localName);
+			localNameState.set(localName);
 		}
 	};
 
@@ -100,27 +84,27 @@ export const createListAdapter = (
 		currentComponentPort.publicPort,
 		{
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get canWrap() {
-				return internals.canWrap;
+				return canWrapState.get();
 			},
 
 			get localName() {
-				return internals.localName;
+				return localNameState.get();
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				return canWrapUpdateEmitter.subscribe(callback);
+				return canWrapState.subscribe(callback);
 			},
 
 			onLocalNameUpdate(callback) {
-				return localNameUpdateEmitter.subscribe(callback);
+				return localNameState.subscribe(callback);
 			},
 
 			insert(params) {

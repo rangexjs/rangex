@@ -1,13 +1,11 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateSeparatorAdapterParams,
 	CreateSeparatorAdapterResult,
-	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
 	SeparatorConfigPort,
 	SeparatorConfigPortProps,
-	SeparatorInternals,
 	SeparatorPublicPort,
 	SeparatorPublicPortProps,
 	UpdateStateParams,
@@ -20,22 +18,15 @@ export const createSeparatorAdapter = (
 
 	adapterBus.registerAdapter("separator");
 
-	const internals: SeparatorInternals = {
-		// States
-		canInsert: false,
-	};
-
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 	};
 
@@ -51,11 +42,11 @@ export const createSeparatorAdapter = (
 
 	const publicPort: SeparatorPublicPort = extendObjectProperties({}, {
 		get canInsert() {
-			return internals.canInsert;
+			return canInsertState.get();
 		},
 
 		onCanInsertUpdate(callback) {
-			return canInsertUpdateEmitter.subscribe(callback);
+			return canInsertState.subscribe(callback);
 		},
 
 		insert() {

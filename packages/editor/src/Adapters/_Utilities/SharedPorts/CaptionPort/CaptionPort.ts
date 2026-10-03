@@ -1,27 +1,19 @@
 import { createEmitter } from "../../CreateEmitter";
+import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	CaptionConfigPort,
-	CaptionInternals,
+	CaptionPosition,
 	CaptionPublicPort,
 	CreateCaptionPortResult,
-	OnCaptionEnabledUpdateCallbackFn,
-	OnCaptionPositionUpdateCallbackFn,
 	OnChangeCaptionEnabledCallbackFn,
 	OnChangeCaptionPositionCallbackFn,
 	UpdateStateParams,
 } from "./CaptionPort-types";
 
 export const createCaptionPort = (): CreateCaptionPortResult => {
-	const internals: CaptionInternals = {
-		captionEnabled: false,
-		captionPosition: "below",
-	};
-
-	// StateListeners
-	const captionEnabledUpdateEmitter =
-		createEmitter<OnCaptionEnabledUpdateCallbackFn>();
-	const captionPositionUpdateEmitter =
-		createEmitter<OnCaptionPositionUpdateCallbackFn>();
+	// States
+	const captionEnabledState = createStateEmitter<boolean>(false);
+	const captionPositionState = createStateEmitter<CaptionPosition>("below");
 
 	// CommandListeners
 	const changeCaptionEnabledEmitter =
@@ -34,25 +26,21 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 		captionPosition,
 	}: UpdateStateParams) => {
 		if (captionEnabled !== undefined) {
-			internals.captionEnabled = captionEnabled;
-
-			captionEnabledUpdateEmitter.emit(internals.captionEnabled);
+			captionEnabledState.set(captionEnabled);
 		}
 
 		if (captionPosition !== undefined) {
-			internals.captionPosition = captionPosition;
-
-			captionPositionUpdateEmitter.emit(internals.captionPosition);
+			captionPositionState.set(captionPosition);
 		}
 	};
 
 	const configPort: CaptionConfigPort = {
 		get captionEnabled() {
-			return internals.captionEnabled;
+			return captionEnabledState.get();
 		},
 
 		get captionPosition() {
-			return internals.captionPosition;
+			return captionPositionState.get();
 		},
 
 		updateCaption(params) {
@@ -70,19 +58,19 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 
 	const publicPort: CaptionPublicPort = {
 		get captionEnabled() {
-			return internals.captionEnabled;
+			return captionEnabledState.get();
 		},
 
 		get captionPosition() {
-			return internals.captionPosition;
+			return captionPositionState.get();
 		},
 
 		onCaptionEnabledUpdate(callback) {
-			return captionEnabledUpdateEmitter.subscribe(callback);
+			return captionEnabledState.subscribe(callback);
 		},
 
 		onCaptionPositionUpdate(callback) {
-			return captionPositionUpdateEmitter.subscribe(callback);
+			return captionPositionState.subscribe(callback);
 		},
 
 		changeCaptionEnabled(enabled) {

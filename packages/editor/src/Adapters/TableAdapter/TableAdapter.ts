@@ -3,14 +3,12 @@ import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
 	createEmitter,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
 	CreateTableAdapterParams,
 	CreateTableAdapterResult,
-	OnCanInsertUpdateCallbackFn,
-	OnCellResizingUpdateCallbackFn,
-	OnCellTypeUpdateCallbackFn,
 	OnChangeCellResizingCallbackFn,
 	OnChangeCellTypeCallbackFn,
 	OnChangeInsertDeleteCallbackFn,
@@ -18,18 +16,20 @@ import type {
 	OnChangeSectionTypeCallbackFn,
 	OnChangeVerticalAlignmentCallbackFn,
 	OnClearContentsCallbackFn,
-	OnClearContentsUpdateCallbackFn,
 	OnContextMenuToggleCallbackFn,
 	OnInsertCallbackFn,
-	OnInsertDeleteUpdateCallbackFn,
-	OnMergeSplitUpdateCallbackFn,
-	OnSectionTypeUpdateCallbackFn,
-	OnVerticalAlignmentUpdateCallbackFn,
+	TableCellResizingState,
+	TableCellTypeState,
+	TableClearContentsState,
 	TableConfigPort,
 	TableConfigPortProps,
+	TableInsertDeleteState,
 	TableInternals,
+	TableMergeSplitState,
 	TablePublicPort,
 	TablePublicPortProps,
+	TableSectionTypeState,
+	TableVerticalAlignmentState,
 	UpdateStateParams,
 } from "./TableAdapter-types";
 
@@ -44,63 +44,52 @@ export const createTableAdapter = (
 	floatingContainer.append(contextMenuEl);
 
 	const internals: TableInternals = {
-		// States
-		canInsert: false,
-		sectionType: {
-			header: { disabled: true },
-			body: { disabled: true },
-			footer: { disabled: true },
-		},
-		mergeSplit: {
-			mergeSelected: { disabled: true },
-			mergeUp: { disabled: true },
-			mergeDown: { disabled: true },
-			mergeLeft: { disabled: true },
-			mergeRight: { disabled: true },
-			splitHorizontally: { disabled: true },
-			splitVertically: { disabled: true },
-			splitFully: { disabled: true },
-		},
-		insertDelete: {
-			insertRowAbove: { disabled: true },
-			insertRowBelow: { disabled: true },
-			insertColumnLeft: { disabled: true },
-			insertColumnRight: { disabled: true },
-			deleteRow: { disabled: true },
-			deleteColumn: { disabled: true },
-		},
-		cellType: {
-			header: { disabled: true },
-			data: { disabled: true },
-		},
-		verticalAlignment: {
-			top: { disabled: true },
-			middle: { disabled: true },
-			bottom: { disabled: true },
-		},
-		cellResizing: {
-			equalizeColumns: { disabled: true },
-			minimizeRows: { disabled: true },
-		},
-		clearContents: { disabled: true },
 		// Rest
 		contextMenuOpen: false,
 	};
 
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const sectionTypeUpdateEmitter =
-		createEmitter<OnSectionTypeUpdateCallbackFn>();
-	const mergeSplitUpdateEmitter = createEmitter<OnMergeSplitUpdateCallbackFn>();
-	const insertDeleteUpdateEmitter =
-		createEmitter<OnInsertDeleteUpdateCallbackFn>();
-	const cellTypeUpdateEmitter = createEmitter<OnCellTypeUpdateCallbackFn>();
-	const verticalAlignmentUpdateEmitter =
-		createEmitter<OnVerticalAlignmentUpdateCallbackFn>();
-	const cellResizingUpdateEmitter =
-		createEmitter<OnCellResizingUpdateCallbackFn>();
-	const clearContentsUpdateEmitter =
-		createEmitter<OnClearContentsUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const sectionTypeState = createStateEmitter<TableSectionTypeState>({
+		header: { disabled: true },
+		body: { disabled: true },
+		footer: { disabled: true },
+	});
+	const mergeSplitState = createStateEmitter<TableMergeSplitState>({
+		mergeSelected: { disabled: true },
+		mergeUp: { disabled: true },
+		mergeDown: { disabled: true },
+		mergeLeft: { disabled: true },
+		mergeRight: { disabled: true },
+		splitHorizontally: { disabled: true },
+		splitVertically: { disabled: true },
+		splitFully: { disabled: true },
+	});
+	const insertDeleteState = createStateEmitter<TableInsertDeleteState>({
+		insertRowAbove: { disabled: true },
+		insertRowBelow: { disabled: true },
+		insertColumnLeft: { disabled: true },
+		insertColumnRight: { disabled: true },
+		deleteRow: { disabled: true },
+		deleteColumn: { disabled: true },
+	});
+	const cellTypeState = createStateEmitter<TableCellTypeState>({
+		header: { disabled: true },
+		data: { disabled: true },
+	});
+	const verticalAlignmentState =
+		createStateEmitter<TableVerticalAlignmentState>({
+			top: { disabled: true },
+			middle: { disabled: true },
+			bottom: { disabled: true },
+		});
+	const cellResizingState = createStateEmitter<TableCellResizingState>({
+		equalizeColumns: { disabled: true },
+		minimizeRows: { disabled: true },
+	});
+	const clearContentsState = createStateEmitter<TableClearContentsState>({
+		disabled: true,
+	});
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -133,51 +122,35 @@ export const createTableAdapter = (
 		clearContents,
 	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (sectionType !== undefined) {
-			internals.sectionType = sectionType;
-
-			sectionTypeUpdateEmitter.emit(internals.sectionType);
+			sectionTypeState.set(sectionType);
 		}
 
 		if (mergeSplit !== undefined) {
-			internals.mergeSplit = mergeSplit;
-
-			mergeSplitUpdateEmitter.emit(internals.mergeSplit);
+			mergeSplitState.set(mergeSplit);
 		}
 
 		if (insertDelete !== undefined) {
-			internals.insertDelete = insertDelete;
-
-			insertDeleteUpdateEmitter.emit(internals.insertDelete);
+			insertDeleteState.set(insertDelete);
 		}
 
 		if (cellType !== undefined) {
-			internals.cellType = cellType;
-
-			cellTypeUpdateEmitter.emit(internals.cellType);
+			cellTypeState.set(cellType);
 		}
 
 		if (verticalAlignment !== undefined) {
-			internals.verticalAlignment = verticalAlignment;
-
-			verticalAlignmentUpdateEmitter.emit(internals.verticalAlignment);
+			verticalAlignmentState.set(verticalAlignment);
 		}
 
 		if (cellResizing !== undefined) {
-			internals.cellResizing = cellResizing;
-
-			cellResizingUpdateEmitter.emit(internals.cellResizing);
+			cellResizingState.set(cellResizing);
 		}
 
 		if (clearContents !== undefined) {
-			internals.clearContents = clearContents;
-
-			clearContentsUpdateEmitter.emit(internals.clearContents);
+			clearContentsState.set(clearContents);
 		}
 
 		if (contextMenuOpen !== undefined) {
@@ -246,7 +219,7 @@ export const createTableAdapter = (
 			},
 
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get contextMenuOpen() {
@@ -254,35 +227,35 @@ export const createTableAdapter = (
 			},
 
 			get sectionType() {
-				return internals.sectionType;
+				return sectionTypeState.get();
 			},
 
 			get mergeSplit() {
-				return internals.mergeSplit;
+				return mergeSplitState.get();
 			},
 
 			get insertDelete() {
-				return internals.insertDelete;
+				return insertDeleteState.get();
 			},
 
 			get cellType() {
-				return internals.cellType;
+				return cellTypeState.get();
 			},
 
 			get verticalAlignment() {
-				return internals.verticalAlignment;
+				return verticalAlignmentState.get();
 			},
 
 			get cellResizing() {
-				return internals.cellResizing;
+				return cellResizingState.get();
 			},
 
 			get clearContents() {
-				return internals.clearContents;
+				return clearContentsState.get();
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onContextMenuToggle(callback) {
@@ -290,31 +263,31 @@ export const createTableAdapter = (
 			},
 
 			onSectionTypeUpdate(callback) {
-				return sectionTypeUpdateEmitter.subscribe(callback);
+				return sectionTypeState.subscribe(callback);
 			},
 
 			onMergeSplitUpdate(callback) {
-				return mergeSplitUpdateEmitter.subscribe(callback);
+				return mergeSplitState.subscribe(callback);
 			},
 
 			onInsertDeleteUpdate(callback) {
-				return insertDeleteUpdateEmitter.subscribe(callback);
+				return insertDeleteState.subscribe(callback);
 			},
 
 			onCellTypeUpdate(callback) {
-				return cellTypeUpdateEmitter.subscribe(callback);
+				return cellTypeState.subscribe(callback);
 			},
 
 			onVerticalAlignmentUpdate(callback) {
-				return verticalAlignmentUpdateEmitter.subscribe(callback);
+				return verticalAlignmentState.subscribe(callback);
 			},
 
 			onCellResizingUpdate(callback) {
-				return cellResizingUpdateEmitter.subscribe(callback);
+				return cellResizingState.subscribe(callback);
 			},
 
 			onClearContentsUpdate(callback) {
-				return clearContentsUpdateEmitter.subscribe(callback);
+				return clearContentsState.subscribe(callback);
 			},
 
 			insert(params) {

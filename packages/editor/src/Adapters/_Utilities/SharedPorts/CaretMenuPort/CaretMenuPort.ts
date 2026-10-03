@@ -1,11 +1,10 @@
-import { createEmitter } from "../../CreateEmitter";
+import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	CaretMenuConfigPort,
-	CaretMenuInternals,
 	CaretMenuPublicPort,
+	CaretMenuQuery,
 	CreateCaretMenuPortParams,
 	CreateCaretMenuPortResult,
-	OnQueryUpdateCallbackFn,
 	UpdateStateParams,
 } from "./CaretMenuPort-types";
 
@@ -15,19 +14,12 @@ export const createCaretMenuPort = ({
 	const element = document.createElement("div");
 	floatingContainer.append(element);
 
-	const internals: CaretMenuInternals = {
-		// States
-		query: null,
-	};
-
-	// StateListeners
-	const queryUpdateEmitter = createEmitter<OnQueryUpdateCallbackFn>();
+	// States
+	const queryState = createStateEmitter<CaretMenuQuery>(null);
 
 	const updateState = ({ query }: UpdateStateParams) => {
-		if (query !== undefined && query !== internals.query) {
-			internals.query = query;
-
-			queryUpdateEmitter.emit(internals.query);
+		if (query !== undefined) {
+			queryState.set(query);
 		}
 	};
 
@@ -47,11 +39,11 @@ export const createCaretMenuPort = ({
 		},
 
 		get query() {
-			return internals.query;
+			return queryState.get();
 		},
 
 		onQueryUpdate(callback) {
-			return queryUpdateEmitter.subscribe(callback);
+			return queryState.subscribe(callback);
 		},
 	};
 

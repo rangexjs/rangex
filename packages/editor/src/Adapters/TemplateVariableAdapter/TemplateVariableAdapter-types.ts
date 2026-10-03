@@ -78,8 +78,6 @@ export interface TemplateVariablePublicPort
 		UnwrapPublicPort {}
 
 export interface TemplateVariableInternals {
-	canInsert: boolean;
-	fields: TemplateVariableFields;
 	fieldsConfig: TemplateVariableFieldsConfig;
 	items: TemplateVariableItems;
 }
