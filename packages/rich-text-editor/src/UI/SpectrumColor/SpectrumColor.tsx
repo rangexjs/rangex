@@ -1,5 +1,5 @@
-import { createEffect, createMemo, createSignal, untrack } from "solid-js";
-import { ColorFormat } from "../../Color";
+import { createMemo, createSignal, untrack } from "solid-js";
+import { ColorFormat, type HslFormat } from "../../Color";
 import { TransparentBackground } from "../ComplexSVGs";
 import { type OnThumbChangeFn, type RenderChildrenFn, Slider } from "../Slider";
 import type {
@@ -41,6 +41,9 @@ const getHueThumbPosition = ({ hue }: GetHueThumbPositionProps) =>
 
 const getAlphaThumbPosition = ({ alpha }: GetAlphaThumbPositionProps) =>
 	Math.round(alpha * 100);
+
+const isSameHsl = (a: HslFormat, b: HslFormat) =>
+	a.h === b.h && a.s === b.s && a.l === b.l && a.a === b.a;
 
 const getHorizontalThumbPosition = ({
 	clientX,
@@ -144,33 +147,42 @@ const thumbSize = 18;
 const transparentBgAnchor = "--transparent-bg-anchor";
 
 export const SpectrumColor = (props: SpectrumColorProps) => {
-	const initialHsl = untrack(() => props.hsl);
+	// The last HSL this component emitted or received from outside; a plain guard, not reactive.
+	let scopedHsl = untrack(() => props.hsl);
 
-	const [scopedHsl, setScopedHsl] = createSignal(initialHsl);
+	/**
+	 * Calculating the thumb positions from HSL gets slightly different results,
+	 * therefore the thumbs only follow the HSL when it is updated from outside of
+	 * the component. An echo of our own update keeps the previous value, so
+	 * nothing downstream re-runs.
+	 */
+	const externalHsl = createMemo<HslFormat>((prev) => {
+		const hsl = props.hsl;
 
-	const initialSpectrumThumbPosition = getPositionFromSaturationLightness({
-		saturation: initialHsl.s,
-		lightness: initialHsl.l,
+		if (prev && isSameHsl(hsl, scopedHsl)) {
+			return prev;
+		}
+
+		scopedHsl = hsl;
+
+		return hsl;
 	});
 
+	// Writable derived: recomputed when the HSL changes from outside, set directly while dragging.
 	const [spectrumThumbPosition, setSpectrumThumbPosition] =
-		createSignal<ThumbPosition>({
-			xPosition: initialSpectrumThumbPosition.xPosition,
-			yPosition: initialSpectrumThumbPosition.yPosition,
-		});
+		createSignal<ThumbPosition>(() =>
+			getPositionFromSaturationLightness({
+				saturation: externalHsl().s,
+				lightness: externalHsl().l,
+			}),
+		);
 
-	const initialHueThumbPosition = getHueThumbPosition({ hue: initialHsl.h });
-
-	const [hueThumbPosition, setHueThumbPosition] = createSignal(
-		initialHueThumbPosition,
+	const [hueThumbPosition, setHueThumbPosition] = createSignal<number>(() =>
+		getHueThumbPosition({ hue: externalHsl().h }),
 	);
 
-	const initialAlphaThumbPosition = getAlphaThumbPosition({
-		alpha: initialHsl.a,
-	});
-
-	const [alphaThumbPosition, setAlphaThumbPosition] = createSignal(
-		initialAlphaThumbPosition,
+	const [alphaThumbPosition, setAlphaThumbPosition] = createSignal<number>(() =>
+		getAlphaThumbPosition({ alpha: externalHsl().a }),
 	);
 
 	let panel: HTMLDivElement | undefined;
@@ -195,40 +207,8 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 		ColorFormat.hsl({ ...props.hsl, a: 0.7 }).color(),
 	);
 
-	createEffect(
-		() => [props.hsl, scopedHsl()],
-		([hsl, scopedHsl]) => {
-			/**
-			 * Calculating the spectrumThumbPosition from HSL gets slightly
-			 * different result therefore we only update the thumbs by hsl
-			 * if it is updated from outside of the component.
-			 */
-			if (
-				hsl.h === scopedHsl.h &&
-				hsl.s === scopedHsl.s &&
-				hsl.l === scopedHsl.l &&
-				hsl.a === scopedHsl.a
-			) {
-				return;
-			}
-
-			setScopedHsl(hsl);
-
-			const spectrumThumbPosition = getPositionFromSaturationLightness({
-				saturation: hsl.s,
-				lightness: hsl.l,
-			});
-			const hueThumbPosition = getHueThumbPosition({ hue: hsl.h });
-			const alphaThumbPosition = getAlphaThumbPosition({ alpha: hsl.a });
-
-			setSpectrumThumbPosition(spectrumThumbPosition);
-			setHueThumbPosition(hueThumbPosition);
-			setAlphaThumbPosition(alphaThumbPosition);
-		},
-	);
-
 	const manageColorUpdate = ({ hsl }: ManageColorUpdateProps) => {
-		setScopedHsl(hsl);
+		scopedHsl = hsl;
 		props.onColorChange({ hsl });
 	};
 
