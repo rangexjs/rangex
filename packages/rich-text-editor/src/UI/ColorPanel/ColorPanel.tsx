@@ -8,6 +8,7 @@ import {
 	type Setter,
 } from "solid-js";
 import { ColorFormat, type HslFormat } from "#color";
+import { isDeepEqual } from "#utilities";
 import { SegmentedControl, type SegmentedControlControls } from "../_Utilities";
 import { ColorTypeControls } from "../ColorTypeControls";
 import { TransparentBackground } from "../ComplexSVGs";
@@ -218,8 +219,9 @@ export const ColorPanel = (props: ColorPanelProps) => {
 
 	const activeColorsRows = 3;
 
-	const activeColors = createMemo(() =>
-		props.activeColors.slice(0, props.paletteCols * activeColorsRows),
+	const activeColors = createMemo(
+		() => props.activeColors.slice(0, props.paletteCols * activeColorsRows),
+		{ equals: isDeepEqual },
 	);
 
 	const onColorChange = (hsl: HslFormat) => {

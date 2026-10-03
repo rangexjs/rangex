@@ -3,6 +3,7 @@ import { Indentation, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+import { isDeepEqual } from "#utilities";
 import {
 	ToolbarButton,
 	ToolbarDropdown,
@@ -47,26 +48,29 @@ export const IndentationToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const sortedList = createMemo(() => {
-		const deduplicatedValues: FormattingIndentationValue[] = [];
+	const sortedList = createMemo(
+		() => {
+			const deduplicatedValues: FormattingIndentationValue[] = [];
 
-		const commonValues = [...defaultValues, ...$indentation.values()];
+			const commonValues = [...defaultValues, ...$indentation.values()];
 
-		for (const commonValue of commonValues) {
-			const matchedValue = deduplicatedValues.find(
-				(val) =>
-					val.type === commonValue.type && val.value === commonValue.value,
-			);
+			for (const commonValue of commonValues) {
+				const matchedValue = deduplicatedValues.find(
+					(val) =>
+						val.type === commonValue.type && val.value === commonValue.value,
+				);
 
-			if (matchedValue) {
-				continue;
+				if (matchedValue) {
+					continue;
+				}
+
+				deduplicatedValues.push(commonValue);
 			}
 
-			deduplicatedValues.push(commonValue);
-		}
-
-		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
-	});
+			return deduplicatedValues.toSorted((a, b) => a.value - b.value);
+		},
+		{ equals: isDeepEqual },
+	);
 
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $indentation.values();

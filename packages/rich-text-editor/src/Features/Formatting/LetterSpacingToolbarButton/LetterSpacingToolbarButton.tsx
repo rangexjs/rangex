@@ -3,6 +3,7 @@ import { LetterSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+import { isDeepEqual } from "#utilities";
 import {
 	ToolbarButton,
 	ToolbarDropdown,
@@ -49,26 +50,29 @@ export const LetterSpacingToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const sortedLetterSpacings = createMemo(() => {
-		const deduplicatedValues: FormattingLetterSpacingValue[] = [];
+	const sortedLetterSpacings = createMemo(
+		() => {
+			const deduplicatedValues: FormattingLetterSpacingValue[] = [];
 
-		const commonValues = [...defaultValues, ...$letterSpacing.values()];
+			const commonValues = [...defaultValues, ...$letterSpacing.values()];
 
-		for (const commonValue of commonValues) {
-			const matchedValue = deduplicatedValues.find(
-				(val) =>
-					val.type === commonValue.type && val.value === commonValue.value,
-			);
+			for (const commonValue of commonValues) {
+				const matchedValue = deduplicatedValues.find(
+					(val) =>
+						val.type === commonValue.type && val.value === commonValue.value,
+				);
 
-			if (matchedValue) {
-				continue;
+				if (matchedValue) {
+					continue;
+				}
+
+				deduplicatedValues.push(commonValue);
 			}
 
-			deduplicatedValues.push(commonValue);
-		}
-
-		return deduplicatedValues.toSorted((a, b) => a.value - b.value);
-	});
+			return deduplicatedValues.toSorted((a, b) => a.value - b.value);
+		},
+		{ equals: isDeepEqual },
+	);
 
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $letterSpacing.values();
