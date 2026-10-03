@@ -5,6 +5,7 @@ import {
 	createEmitter,
 	createQuickActionsPort,
 	createRemovePort,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
@@ -13,15 +14,12 @@ import type {
 	CodeBlockInternals,
 	CodeBlockPublicPort,
 	CodeBlockPublicPortProps,
+	CodeBlockTheme,
 	CreateCodeBlockAdapterParams,
 	CreateCodeBlockAdapterResult,
-	OnCanInsertUpdateCallbackFn,
-	OnCanWrapUpdateCallbackFn,
 	OnChangeLanguageCallbackFn,
 	OnChangeThemeCallbackFn,
 	OnInsertCallbackFn,
-	OnLanguageUpdateCallbackFn,
-	OnThemeUpdateCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
 } from "./CodeBlockAdapter-types";
@@ -34,22 +32,17 @@ export const createCodeBlockAdapter = (
 	adapterBus.registerAdapter("codeBlock");
 
 	const internals: CodeBlockInternals = {
-		// States
-		canInsert: false,
-		canWrap: false,
-		language: null,
-		theme: null,
 		// Providers
 		plainTextProvider: null,
 		// Rest
 		getHighlightInfo: settings.getHighlightInfo ?? null,
 	};
 
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
-	const languageUpdateEmitter = createEmitter<OnLanguageUpdateCallbackFn>();
-	const themeUpdateEmitter = createEmitter<OnThemeUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const canWrapState = createStateEmitter<boolean>(false);
+	const languageState = createStateEmitter<string | null>(null);
+	const themeState = createStateEmitter<CodeBlockTheme | null>(null);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -69,27 +62,19 @@ export const createCodeBlockAdapter = (
 		theme,
 	}: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (canWrap !== undefined) {
-			internals.canWrap = canWrap;
-
-			canWrapUpdateEmitter.emit(internals.canWrap);
+			canWrapState.set(canWrap);
 		}
 
 		if (language !== undefined) {
-			internals.language = language;
-
-			languageUpdateEmitter.emit(internals.language);
+			languageState.set(language);
 		}
 
 		if (theme !== undefined) {
-			internals.theme = theme;
-
-			themeUpdateEmitter.emit(internals.theme);
+			themeState.set(theme);
 		}
 	};
 
@@ -146,35 +131,35 @@ export const createCodeBlockAdapter = (
 			},
 
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get canWrap() {
-				return internals.canWrap;
+				return canWrapState.get();
 			},
 
 			get language() {
-				return internals.language;
+				return languageState.get();
 			},
 
 			get theme() {
-				return internals.theme;
+				return themeState.get();
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				return canWrapUpdateEmitter.subscribe(callback);
+				return canWrapState.subscribe(callback);
 			},
 
 			onLanguageUpdate(callback) {
-				return languageUpdateEmitter.subscribe(callback);
+				return languageState.subscribe(callback);
 			},
 
 			onThemeUpdate(callback) {
-				return themeUpdateEmitter.subscribe(callback);
+				return themeState.subscribe(callback);
 			},
 
 			insert(params) {

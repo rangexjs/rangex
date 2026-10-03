@@ -5,11 +5,6 @@ export interface CaptionState {
 	captionPosition: CaptionPosition;
 }
 
-export interface CaptionInternals {
-	captionEnabled: boolean;
-	captionPosition: CaptionPosition;
-}
-
 export type OnCaptionEnabledUpdateCallbackFn = (
 	captionEnabled: boolean,
 ) => void;

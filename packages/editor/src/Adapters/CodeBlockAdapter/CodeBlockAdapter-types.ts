@@ -130,10 +130,6 @@ export interface CodeBlockPublicPort
 
 export interface CodeBlockInternals {
 	getHighlightInfo: GetHighlightInfoFn | null;
-	canInsert: boolean;
-	canWrap: boolean;
-	language: string | null;
-	theme: CodeBlockTheme | null;
 	plainTextProvider: PlainTextProviderFn | null;
 }
 

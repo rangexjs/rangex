@@ -88,7 +88,6 @@ export interface LinkPublicPort
 		CurrentComponentPublicPort {}
 
 export interface LinkInternals {
-	canInsert: boolean;
 	displayTextProvider: DisplayTextProviderFn | null;
 }
 

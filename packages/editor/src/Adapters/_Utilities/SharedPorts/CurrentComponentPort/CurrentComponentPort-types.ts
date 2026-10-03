@@ -3,9 +3,6 @@ import type { Component } from "@rangex/core";
 export interface CurrentComponentInternals<TComponent extends Component> {
 	hoverComponent: TComponent | null;
 	selectionComponent: TComponent | null;
-	// Last emitted values, compared against on update.
-	currentComponent: TComponent | null;
-	isSelectionActive: boolean;
 }
 
 export interface UpdateStateParams<TComponent extends Component> {

@@ -203,14 +203,6 @@ export interface TablePublicPort
 		CurrentComponentPublicPort {}
 
 export interface TableInternals {
-	canInsert: boolean;
-	sectionType: TableSectionTypeState;
-	mergeSplit: TableMergeSplitState;
-	insertDelete: TableInsertDeleteState;
-	cellType: TableCellTypeState;
-	verticalAlignment: TableVerticalAlignmentState;
-	cellResizing: TableCellResizingState;
-	clearContents: TableClearContentsState;
 	contextMenuOpen: boolean;
 }
 

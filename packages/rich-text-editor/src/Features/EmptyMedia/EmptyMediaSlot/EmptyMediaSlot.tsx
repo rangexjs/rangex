@@ -1,7 +1,7 @@
 import type { MediaType, RangeXEditor } from "@rangex/editor";
 import type {
 	MediaResolveDetail,
-	UploadState,
+	UploadStatus,
 } from "@rangex/editor/empty-media";
 import { createMemo, createSignal, flush, onCleanup } from "solid-js";
 import {
@@ -37,16 +37,16 @@ const TabLabel = (icon: IconName, label: string) => (
 );
 
 interface StatusIndicatorProps {
-	uploadState: UploadState;
+	uploadStatus: UploadStatus;
 }
 
 const StatusIndicator = (props: StatusIndicatorProps) => {
 	const progress = () =>
-		props.uploadState.status === "uploading" ? props.uploadState.progress : 0;
+		props.uploadStatus.status === "uploading" ? props.uploadStatus.progress : 0;
 
 	const display = () =>
-		props.uploadState.status === "checking" ||
-		props.uploadState.status === "uploading"
+		props.uploadStatus.status === "checking" ||
+		props.uploadStatus.status === "uploading"
 			? "flex"
 			: "none";
 
@@ -56,8 +56,8 @@ const StatusIndicator = (props: StatusIndicatorProps) => {
 			class="mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400"
 			style={{ display: display() }}
 		>
-			<span hidden={props.uploadState.status !== "checking"}>Checking…</span>
-			<span hidden={props.uploadState.status !== "uploading"}>
+			<span hidden={props.uploadStatus.status !== "checking"}>Checking…</span>
+			<span hidden={props.uploadStatus.status !== "uploading"}>
 				Uploading… {Math.round(progress() * 100)}%
 			</span>
 		</div>
@@ -154,7 +154,7 @@ export interface EmptyMediaSlotProps {
 /**
  * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
  * SegmentedControl between an Upload tab (file picker) and one URL tab per media type. Never
- * decides when it's "done": `uploadState` is read from `emptyMedia` and kept live via
+ * decides when it's "done": `uploadStatus` is read from `emptyMedia` and kept live via
  * subscription, and every capture just forwards through `emptyMedia.resolve` — the Editor
  * side owns uploading and resolution.
  */
@@ -171,11 +171,11 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		return <NoSupportedMediaTypes />;
 	}
 
-	const [uploadState, setUploadState] = createSignal(
-		emptyMedia.getUploadState(props.container),
+	const [uploadStatus, setUploadStatus] = createSignal(
+		emptyMedia.getUploadStatus(props.container),
 	);
 
-	onCleanup(emptyMedia.onUploadStateUpdate(props.container, setUploadState));
+	onCleanup(emptyMedia.onUploadStatusUpdate(props.container, setUploadStatus));
 
 	const onResolve = (detail: MediaResolveDetail) => {
 		emptyMedia.resolve({ element: props.container, detail });
@@ -204,12 +204,12 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const uploadFileName = createMemo(() => uploadFile()?.name ?? null);
 
 	const errorMessage = () => {
-		const state = uploadState();
+		const state = uploadStatus();
 		return state.status === "error" ? state.message : "";
 	};
 
 	const pickerDisplay = () =>
-		uploadState().status === "idle" || uploadState().status === "error"
+		uploadStatus().status === "idle" || uploadStatus().status === "error"
 			? "flex"
 			: "none";
 
@@ -382,7 +382,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 
 				<div
 					role="alert"
-					hidden={uploadState().status !== "error"}
+					hidden={uploadStatus().status !== "error"}
 					class="rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400"
 				>
 					{errorMessage()}
@@ -443,7 +443,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				</div>
 			</div>
 
-			<StatusIndicator uploadState={uploadState()} />
+			<StatusIndicator uploadStatus={uploadStatus()} />
 		</div>
 	);
 };

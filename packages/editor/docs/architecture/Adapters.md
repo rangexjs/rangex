@@ -1,6 +1,6 @@
 # Adapters
 
-Adapter architecture: internals, `configPort` (Features-only) vs `publicPort` (external), composition via
+Adapter architecture: state emitters and internals, `configPort` (Features-only) vs `publicPort` (external), composition via
 `extendObjectProperties`, shared ports, the `AdapterBus`, and how to wire a new Adapter in.
 
 Paths are relative to `src/Adapters/` unless noted otherwise.
@@ -15,16 +15,20 @@ Owns one feature's real state, exposed through two ports:
 - **`publicPort`** — the only surface anything outside this package sees. Read-only
   state, `onXxxUpdate` subscriptions, and command methods.
 
-Neither port exposes the other's members; nothing outside the Adapter sees `internals`
-directly.
+Neither port exposes the other's members; nothing outside the Adapter sees its state
+emitters or `internals` directly.
 
 ## Adapter construction
 
 Every Adapter is a plain factory returning `{ configPort, publicPort }`, built once at
-construction and returned as-is (not getters recomputed on access). `internals` is
-grouped by comment: `// States` for anything that flows through `updateState` and has
-an `onXxxUpdate` listener; anything else (providers, values fixed at construction) gets
-its own comment and is exempt from `*Update`.
+construction and returned as-is (not getters recomputed on access).
+
+Anything that flows through `updateState` and has an `onXxxUpdate` listener is a state
+emitter, one named `xxxState` per field under `// States`. Everything else (providers,
+settings, values fixed at construction, state with no listener) lives in `internals`,
+grouped by its own comment (`// Providers`, `// Settings`, `// Rest`), and is exempt from
+`*Update`. An Adapter with nothing left for `internals` has neither `internals` nor an
+`XxxInternals` type.
 
 ```ts
 export const createXxxAdapter = (
@@ -34,16 +38,20 @@ export const createXxxAdapter = (
 	// or, when unused: const [_settings, _options] = params;
 
 	const internals: XxxInternals = {
-		// States
-		canInsert: false,
 		// Providers
 		xxxProvider: null,
 	};
 
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
 
-	const updateState = (params: UpdateStateParams) => {
-		/* mutate internals, canInsertUpdateEmitter.emit(internals.canInsert) */
+	// CommandListeners
+	const insertEmitter = createEmitter<OnInsertCallbackFn>();
+
+	const updateState = ({ canInsert }: UpdateStateParams) => {
+		if (canInsert !== undefined) {
+			canInsertState.set(canInsert);
+		}
 	};
 
 	const configPort: XxxConfigPort = extendObjectProperties(
@@ -60,24 +68,35 @@ export const createXxxAdapter = (
 };
 ```
 
-Every listener set (`onXxxUpdate`, commands, everything under `// StateListeners`/
-`// CommandListeners`) is a `createEmitter<CallbackFn>()` (`_Utilities/CreateEmitter`), not a
-raw `Set`. `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and
-`xxxEmitter.emit(value)` replace manual `Set.add`/`Set.delete`/`for...of` everywhere.
+No raw listener `Set`s anywhere; two emitter kinds replace manual
+`Set.add`/`Set.delete`/`for...of`:
+
+- **State** — `createStateEmitter<StateType>(initialState)`
+  (`_Utilities/CreateStateEmitter`) holds the current state: `xxxState.get()` backs the
+  `readonly xxx` getter, `xxxState.set(value)` in `updateState` stores it and notifies only
+  when it differs (`isDeepEqual`, `#utilities`), and
+  `onXxxUpdate(callback) { return xxxState.subscribe(callback); }`. Subscribing doesn't
+  replay the current state. Always pass the state type explicitly.
+- **Command** (everything under `// CommandListeners`) — `createEmitter<CallbackFn>()`
+  (`_Utilities/CreateEmitter`), no stored value:
+  `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and `xxxEmitter.emit(value)`.
 
 ## Member shapes
 
-- **State** — Engine pushes via `configPort.updateState(params)`; Adapter stores it in
-  `internals` under `// States` and notifies listeners. `publicPort` always gets
-  `readonly xxx` + `onXxxUpdate`. `configPort` gets the same listener too, only if
-  something inside this package actually needs to react — same underlying `createEmitter()`
+- **State** — Engine pushes via `configPort.updateState(params)`; Adapter calls
+  `xxxState.set(value)`, which notifies listeners only if the value changed —
+  `onXxxUpdate` means "changed", not "a push arrived". Plain data (primitives, plain
+  objects, arrays, Sets) compares structurally; anything else (DOM Nodes such as
+  `CurrentComponentPort`'s components, class instances) by identity. `publicPort`
+  always gets `readonly xxx` + `onXxxUpdate`. `configPort` gets the same listener too,
+  only if something inside this package actually needs to react — same `xxxState`
   instance, exposed on whichever port(s) need it.
 - **Command** — a `publicPort` method (`insert()`, `changeLanguage()`) that notifies a
   `configPort` listener and returns nothing; the Engine acts async and, if state
   changed, pushes it back through the State path. The `configPort` listener name
   mirrors the command: bare when the verb already reads as one (`insert` → `onInsert`,
   `wrap` → `onWrap`), `onChangeXxx` when the command is `changeXxx`-shaped. A
-  toggle-shaped command forwards the current state, not a flipped value — the Adapter
+  toggle-shaped command forwards the current state (`xxxState.get()`), not a flipped value — the Adapter
   doesn't decide what "toggled" resolves to. An Adapter with many commands
   (`FormattingAdapter`) may funnel them through one listener (`onFormattingChange`)
   instead of one per field, when a per-field listener count would be unwieldy.
@@ -110,7 +129,7 @@ raw `Set`. `onXxx(callback) { return xxxEmitter.subscribe(callback); }` and
 7. `XxxConfigPortProps` + `XxxConfigPort`.
 8. Param types only `XxxPublicPort` needs (`InsertParams`, `WrapParams`).
 9. `XxxPublicPortProps` + `XxxPublicPort`.
-10. `XxxInternals`.
+10. `XxxInternals` (only if the Adapter has `internals`).
 11. `XxxAdapter`.
 12. `XxxSettings`.
 13. `CreateXxxAdapterParams`.
@@ -165,7 +184,8 @@ Naming inside a SharedPort follows the same State/Command/Provider rules as an A
   no matching `readonly` field (`notifyToggle()` / `onToggle`): the trigger takes a
   `notify` prefix, not `emit`; the listener stays bare, no `Update` suffix — nothing is
   being pushed, the listener re-reads the derived value itself. Goes under
-  `// CommandListeners`, not `// StateListeners`, even though nothing UI-triggered it.
+  `// CommandListeners` as a `createEmitter()`, not a state emitter under `// States`, even
+  though nothing UI-triggered it.
 
 Once nested, interior members drop the port-name prefix — the key already gives that
 context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`/

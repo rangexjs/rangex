@@ -1,36 +1,36 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, createStateEmitter } from "../_Utilities";
 import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
 	CreateFormattingAdapterParams,
 	CreateFormattingAdapterResult,
 	CreateToggleButtonParams,
+	FormattingBackgroundColorState,
+	FormattingBoldState,
+	FormattingCodeState,
+	FormattingColorState,
 	FormattingConfigPort,
 	FormattingConfigPortProps,
+	FormattingFontFamilyState,
+	FormattingFontSizeState,
+	FormattingIndentationState,
 	FormattingInternals,
+	FormattingItalicState,
+	FormattingLetterSpacingState,
+	FormattingLineHeightState,
+	FormattingLineLocalNameState,
+	FormattingLineSpacingState,
 	FormattingPublicPort,
 	FormattingPublicPortProps,
+	FormattingRemoveLineState,
+	FormattingRemoveTextState,
+	FormattingStrikethroughState,
+	FormattingSubscriptState,
+	FormattingSuperscriptState,
+	FormattingTextAlignState,
 	FormattingToggleButton,
-	OnBackgroundColorUpdateCallbackFn,
-	OnBoldUpdateCallbackFn,
-	OnCodeUpdateCallbackFn,
-	OnColorUpdateCallbackFn,
-	OnFontFamilyUpdateCallbackFn,
-	OnFontSizeUpdateCallbackFn,
+	FormattingUnderlineState,
 	OnFormattingChangeCallbackFn,
-	OnIndentationUpdateCallbackFn,
-	OnItalicUpdateCallbackFn,
-	OnLetterSpacingUpdateCallbackFn,
-	OnLineHeightUpdateCallbackFn,
-	OnLineLocalNameUpdateCallbackFn,
-	OnLineSpacingUpdateCallbackFn,
-	OnRemoveLineUpdateCallbackFn,
-	OnRemoveTextUpdateCallbackFn,
-	OnStrikethroughUpdateCallbackFn,
-	OnSubscriptUpdateCallbackFn,
-	OnSuperscriptUpdateCallbackFn,
-	OnTextAlignUpdateCallbackFn,
-	OnUnderlineUpdateCallbackFn,
 	UpdateStateParams,
 } from "./FormattingAdapter-types";
 import {
@@ -69,27 +69,6 @@ export const createFormattingAdapter = (
 	});
 
 	const internals: FormattingInternals = {
-		// States
-		backgroundColor: { disabled: true, values: new Set() },
-		bold: createToggleButton({ disabled: true, pressed: "false" }),
-		code: createToggleButton({ disabled: true, pressed: "false" }),
-		color: { disabled: true, values: new Set() },
-		fontFamily: { disabled: true, values: new Set() },
-		fontSize: { disabled: true, values: new Set() },
-		indentation: { disabled: true, values: new Set() },
-		italic: createToggleButton({ disabled: true, pressed: "false" }),
-		letterSpacing: { disabled: true, values: new Set() },
-		lineHeight: { disabled: true, values: new Set() },
-		lineLocalName: { disabled: true, values: new Set() },
-		lineSpacing: { disabled: true, values: new Set() },
-		subscript: createToggleButton({ disabled: true, pressed: "false" }),
-		superscript: createToggleButton({ disabled: true, pressed: "false" }),
-		strikethrough: createToggleButton({ disabled: true, pressed: "false" }),
-		textAlign: { disabled: true, values: new Set() },
-		underline: createToggleButton({ disabled: true, pressed: "false" }),
-		removeLine: { disabled: true },
-		removeText: { disabled: true },
-		// Rest
 		defaultFontFamily,
 		defaultFontSize,
 		defaultIndentation,
@@ -99,33 +78,75 @@ export const createFormattingAdapter = (
 		fontFamilyOptions,
 	};
 
-	// StateListeners
-	const backgroundColorUpdateEmitter =
-		createEmitter<OnBackgroundColorUpdateCallbackFn>();
-	const boldUpdateEmitter = createEmitter<OnBoldUpdateCallbackFn>();
-	const codeUpdateEmitter = createEmitter<OnCodeUpdateCallbackFn>();
-	const colorUpdateEmitter = createEmitter<OnColorUpdateCallbackFn>();
-	const fontFamilyUpdateEmitter = createEmitter<OnFontFamilyUpdateCallbackFn>();
-	const fontSizeUpdateEmitter = createEmitter<OnFontSizeUpdateCallbackFn>();
-	const indentationUpdateEmitter =
-		createEmitter<OnIndentationUpdateCallbackFn>();
-	const italicUpdateEmitter = createEmitter<OnItalicUpdateCallbackFn>();
-	const letterSpacingUpdateEmitter =
-		createEmitter<OnLetterSpacingUpdateCallbackFn>();
-	const lineHeightUpdateEmitter = createEmitter<OnLineHeightUpdateCallbackFn>();
-	const lineLocalNameUpdateEmitter =
-		createEmitter<OnLineLocalNameUpdateCallbackFn>();
-	const lineSpacingUpdateEmitter =
-		createEmitter<OnLineSpacingUpdateCallbackFn>();
-	const subscriptUpdateEmitter = createEmitter<OnSubscriptUpdateCallbackFn>();
-	const superscriptUpdateEmitter =
-		createEmitter<OnSuperscriptUpdateCallbackFn>();
-	const strikethroughUpdateEmitter =
-		createEmitter<OnStrikethroughUpdateCallbackFn>();
-	const textAlignUpdateEmitter = createEmitter<OnTextAlignUpdateCallbackFn>();
-	const underlineUpdateEmitter = createEmitter<OnUnderlineUpdateCallbackFn>();
-	const removeLineUpdateEmitter = createEmitter<OnRemoveLineUpdateCallbackFn>();
-	const removeTextUpdateEmitter = createEmitter<OnRemoveTextUpdateCallbackFn>();
+	// States
+	const backgroundColorState =
+		createStateEmitter<FormattingBackgroundColorState>({
+			disabled: true,
+			values: new Set(),
+		});
+	const boldState = createStateEmitter<FormattingBoldState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const codeState = createStateEmitter<FormattingCodeState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const colorState = createStateEmitter<FormattingColorState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const fontFamilyState = createStateEmitter<FormattingFontFamilyState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const fontSizeState = createStateEmitter<FormattingFontSizeState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const indentationState = createStateEmitter<FormattingIndentationState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const italicState = createStateEmitter<FormattingItalicState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const letterSpacingState = createStateEmitter<FormattingLetterSpacingState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const lineHeightState = createStateEmitter<FormattingLineHeightState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const lineLocalNameState = createStateEmitter<FormattingLineLocalNameState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const lineSpacingState = createStateEmitter<FormattingLineSpacingState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const subscriptState = createStateEmitter<FormattingSubscriptState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const superscriptState = createStateEmitter<FormattingSuperscriptState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const strikethroughState = createStateEmitter<FormattingStrikethroughState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const textAlignState = createStateEmitter<FormattingTextAlignState>({
+		disabled: true,
+		values: new Set(),
+	});
+	const underlineState = createStateEmitter<FormattingUnderlineState>(
+		createToggleButton({ disabled: true, pressed: "false" }),
+	);
+	const removeLineState = createStateEmitter<FormattingRemoveLineState>({
+		disabled: true,
+	});
+	const removeTextState = createStateEmitter<FormattingRemoveTextState>({
+		disabled: true,
+	});
 
 	// CommandListeners
 	const formattingChangeEmitter = createEmitter<OnFormattingChangeCallbackFn>();
@@ -150,118 +171,102 @@ export const createFormattingAdapter = (
 		underline,
 	}: UpdateStateParams) => {
 		if (backgroundColor !== undefined) {
-			internals.backgroundColor = backgroundColor;
-
-			backgroundColorUpdateEmitter.emit(internals.backgroundColor);
+			backgroundColorState.set(backgroundColor);
 		}
 
 		if (bold !== undefined) {
-			internals.bold = createToggleButton(bold);
-
-			boldUpdateEmitter.emit(internals.bold);
+			boldState.set(createToggleButton(bold));
 		}
 
 		if (code !== undefined) {
-			internals.code = createToggleButton(code);
-
-			codeUpdateEmitter.emit(internals.code);
+			codeState.set(createToggleButton(code));
 		}
 
 		if (color !== undefined) {
-			internals.color = color;
-
-			colorUpdateEmitter.emit(internals.color);
+			colorState.set(color);
 		}
 
 		if (fontFamily !== undefined) {
-			internals.fontFamily = fontFamily;
-
-			fontFamilyUpdateEmitter.emit(internals.fontFamily);
+			fontFamilyState.set(fontFamily);
 		}
 
 		if (fontSize !== undefined) {
-			internals.fontSize = fontSize;
-
-			fontSizeUpdateEmitter.emit(internals.fontSize);
+			fontSizeState.set(fontSize);
 		}
 
 		if (indentation !== undefined) {
-			internals.indentation = indentation;
-
-			indentationUpdateEmitter.emit(internals.indentation);
+			indentationState.set(indentation);
 		}
 
 		if (italic !== undefined) {
-			internals.italic = createToggleButton(italic);
-
-			italicUpdateEmitter.emit(internals.italic);
+			italicState.set(createToggleButton(italic));
 		}
 
 		if (letterSpacing !== undefined) {
-			internals.letterSpacing = letterSpacing;
-
-			letterSpacingUpdateEmitter.emit(internals.letterSpacing);
+			letterSpacingState.set(letterSpacing);
 		}
 
 		if (lineHeight !== undefined) {
-			internals.lineHeight = lineHeight;
-
-			lineHeightUpdateEmitter.emit(internals.lineHeight);
+			lineHeightState.set(lineHeight);
 		}
 
 		if (lineLocalName !== undefined) {
-			internals.lineLocalName = lineLocalName;
-
-			lineLocalNameUpdateEmitter.emit(internals.lineLocalName);
+			lineLocalNameState.set(lineLocalName);
 		}
 
 		if (lineSpacing !== undefined) {
-			internals.lineSpacing = lineSpacing;
-
-			lineSpacingUpdateEmitter.emit(internals.lineSpacing);
+			lineSpacingState.set(lineSpacing);
 		}
 
 		if (subscript !== undefined) {
-			internals.subscript = createToggleButton(subscript);
-
-			subscriptUpdateEmitter.emit(internals.subscript);
+			subscriptState.set(createToggleButton(subscript));
 		}
 
 		if (superscript !== undefined) {
-			internals.superscript = createToggleButton(superscript);
-
-			superscriptUpdateEmitter.emit(internals.superscript);
+			superscriptState.set(createToggleButton(superscript));
 		}
 
 		if (strikethrough !== undefined) {
-			internals.strikethrough = createToggleButton(strikethrough);
-
-			strikethroughUpdateEmitter.emit(internals.strikethrough);
+			strikethroughState.set(createToggleButton(strikethrough));
 		}
 
 		if (textAlign !== undefined) {
-			internals.textAlign = textAlign;
-
-			textAlignUpdateEmitter.emit(internals.textAlign);
+			textAlignState.set(textAlign);
 		}
 
 		if (underline !== undefined) {
-			internals.underline = createToggleButton(underline);
-
-			underlineUpdateEmitter.emit(internals.underline);
+			underlineState.set(createToggleButton(underline));
 		}
 
-		const removeLineDisabled = isRemoveLineDisabled(internals);
+		const removeLineDisabled = isRemoveLineDisabled({
+			indentation: indentationState.get(),
+			lineHeight: lineHeightState.get(),
+			lineSpacing: lineSpacingState.get(),
+			textAlign: textAlignState.get(),
+			defaultIndentation: internals.defaultIndentation,
+			defaultLineHeight: internals.defaultLineHeight,
+			defaultLineSpacing: internals.defaultLineSpacing,
+			defaultTextAlign: internals.defaultTextAlign,
+		});
 
-		internals.removeLine = { disabled: removeLineDisabled };
+		removeLineState.set({ disabled: removeLineDisabled });
 
-		removeLineUpdateEmitter.emit(internals.removeLine);
+		const removeTextDisabled = isRemoveTextDisabled({
+			backgroundColor: backgroundColorState.get(),
+			bold: boldState.get(),
+			code: codeState.get(),
+			color: colorState.get(),
+			fontFamily: fontFamilyState.get(),
+			fontSize: fontSizeState.get(),
+			italic: italicState.get(),
+			letterSpacing: letterSpacingState.get(),
+			strikethrough: strikethroughState.get(),
+			subscript: subscriptState.get(),
+			superscript: superscriptState.get(),
+			underline: underlineState.get(),
+		});
 
-		const removeTextDisabled = isRemoveTextDisabled(internals);
-
-		internals.removeText = { disabled: removeTextDisabled };
-
-		removeTextUpdateEmitter.emit(internals.removeText);
+		removeTextState.set({ disabled: removeTextDisabled });
 	};
 
 	const configPort: FormattingConfigPort = extendObjectProperties({}, {
@@ -280,79 +285,79 @@ export const createFormattingAdapter = (
 
 	const publicPort: FormattingPublicPort = extendObjectProperties({}, {
 		get backgroundColor() {
-			return internals.backgroundColor;
+			return backgroundColorState.get();
 		},
 
 		get bold() {
-			return internals.bold;
+			return boldState.get();
 		},
 
 		get code() {
-			return internals.code;
+			return codeState.get();
 		},
 
 		get color() {
-			return internals.color;
+			return colorState.get();
 		},
 
 		get fontFamily() {
-			return internals.fontFamily;
+			return fontFamilyState.get();
 		},
 
 		get fontSize() {
-			return internals.fontSize;
+			return fontSizeState.get();
 		},
 
 		get indentation() {
-			return internals.indentation;
+			return indentationState.get();
 		},
 
 		get italic() {
-			return internals.italic;
+			return italicState.get();
 		},
 
 		get letterSpacing() {
-			return internals.letterSpacing;
+			return letterSpacingState.get();
 		},
 
 		get lineHeight() {
-			return internals.lineHeight;
+			return lineHeightState.get();
 		},
 
 		get lineLocalName() {
-			return internals.lineLocalName;
+			return lineLocalNameState.get();
 		},
 
 		get lineSpacing() {
-			return internals.lineSpacing;
+			return lineSpacingState.get();
 		},
 
 		get subscript() {
-			return internals.subscript;
+			return subscriptState.get();
 		},
 
 		get superscript() {
-			return internals.superscript;
+			return superscriptState.get();
 		},
 
 		get strikethrough() {
-			return internals.strikethrough;
+			return strikethroughState.get();
 		},
 
 		get textAlign() {
-			return internals.textAlign;
+			return textAlignState.get();
 		},
 
 		get underline() {
-			return internals.underline;
+			return underlineState.get();
 		},
 
 		get removeLine() {
-			return internals.removeLine;
+			return removeLineState.get();
 		},
 
 		get removeText() {
-			return internals.removeText;
+			return removeTextState.get();
 		},
 
 		get defaultFontFamily() {
@@ -384,79 +389,79 @@ export const createFormattingAdapter = (
 		},
 
 		onBackgroundColorUpdate(callback) {
-			return backgroundColorUpdateEmitter.subscribe(callback);
+			return backgroundColorState.subscribe(callback);
 		},
 
 		onBoldUpdate(callback) {
-			return boldUpdateEmitter.subscribe(callback);
+			return boldState.subscribe(callback);
 		},
 
 		onCodeUpdate(callback) {
-			return codeUpdateEmitter.subscribe(callback);
+			return codeState.subscribe(callback);
 		},
 
 		onColorUpdate(callback) {
-			return colorUpdateEmitter.subscribe(callback);
+			return colorState.subscribe(callback);
 		},
 
 		onFontFamilyUpdate(callback) {
-			return fontFamilyUpdateEmitter.subscribe(callback);
+			return fontFamilyState.subscribe(callback);
 		},
 
 		onFontSizeUpdate(callback) {
-			return fontSizeUpdateEmitter.subscribe(callback);
+			return fontSizeState.subscribe(callback);
 		},
 
 		onIndentationUpdate(callback) {
-			return indentationUpdateEmitter.subscribe(callback);
+			return indentationState.subscribe(callback);
 		},
 
 		onItalicUpdate(callback) {
-			return italicUpdateEmitter.subscribe(callback);
+			return italicState.subscribe(callback);
 		},
 
 		onLetterSpacingUpdate(callback) {
-			return letterSpacingUpdateEmitter.subscribe(callback);
+			return letterSpacingState.subscribe(callback);
 		},
 
 		onLineHeightUpdate(callback) {
-			return lineHeightUpdateEmitter.subscribe(callback);
+			return lineHeightState.subscribe(callback);
 		},
 
 		onLineLocalNameUpdate(callback) {
-			return lineLocalNameUpdateEmitter.subscribe(callback);
+			return lineLocalNameState.subscribe(callback);
 		},
 
 		onLineSpacingUpdate(callback) {
-			return lineSpacingUpdateEmitter.subscribe(callback);
+			return lineSpacingState.subscribe(callback);
 		},
 
 		onSubscriptUpdate(callback) {
-			return subscriptUpdateEmitter.subscribe(callback);
+			return subscriptState.subscribe(callback);
 		},
 
 		onSuperscriptUpdate(callback) {
-			return superscriptUpdateEmitter.subscribe(callback);
+			return superscriptState.subscribe(callback);
 		},
 
 		onStrikethroughUpdate(callback) {
-			return strikethroughUpdateEmitter.subscribe(callback);
+			return strikethroughState.subscribe(callback);
 		},
 
 		onTextAlignUpdate(callback) {
-			return textAlignUpdateEmitter.subscribe(callback);
+			return textAlignState.subscribe(callback);
 		},
 
 		onUnderlineUpdate(callback) {
-			return underlineUpdateEmitter.subscribe(callback);
+			return underlineState.subscribe(callback);
 		},
 
 		onRemoveLineUpdate(callback) {
-			return removeLineUpdateEmitter.subscribe(callback);
+			return removeLineState.subscribe(callback);
 		},
 
 		onRemoveTextUpdate(callback) {
-			return removeTextUpdateEmitter.subscribe(callback);
+			return removeTextState.subscribe(callback);
 		},
 
 		setBackgroundColor(backgroundColor) {
@@ -464,11 +469,11 @@ export const createFormattingAdapter = (
 		},
 
 		toggleBold() {
-			formattingChangeEmitter.emit({ bold: internals.bold.pressed });
+			formattingChangeEmitter.emit({ bold: boldState.get().pressed });
 		},
 
 		toggleCode() {
-			formattingChangeEmitter.emit({ code: internals.code.pressed });
+			formattingChangeEmitter.emit({ code: codeState.get().pressed });
 		},
 
 		setColor(color) {
@@ -488,7 +493,7 @@ export const createFormattingAdapter = (
 		},
 
 		toggleItalic() {
-			formattingChangeEmitter.emit({ italic: internals.italic.pressed });
+			formattingChangeEmitter.emit({ italic: italicState.get().pressed });
 		},
 
 		setLetterSpacing(letterSpacing) {
@@ -508,18 +513,18 @@ export const createFormattingAdapter = (
 		},
 
 		toggleSubscript() {
-			formattingChangeEmitter.emit({ subscript: internals.subscript.pressed });
+			formattingChangeEmitter.emit({ subscript: subscriptState.get().pressed });
 		},
 
 		toggleSuperscript() {
 			formattingChangeEmitter.emit({
-				superscript: internals.superscript.pressed,
+				superscript: superscriptState.get().pressed,
 			});
 		},
 
 		toggleStrikethrough() {
 			formattingChangeEmitter.emit({
-				strikethrough: internals.strikethrough.pressed,
+				strikethrough: strikethroughState.get().pressed,
 			});
 		},
 
@@ -528,7 +533,7 @@ export const createFormattingAdapter = (
 		},
 
 		toggleUnderline() {
-			formattingChangeEmitter.emit({ underline: internals.underline.pressed });
+			formattingChangeEmitter.emit({ underline: underlineState.get().pressed });
 		},
 
 		removeLineFormat() {

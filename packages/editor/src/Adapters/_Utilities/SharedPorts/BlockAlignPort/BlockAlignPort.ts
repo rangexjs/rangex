@@ -1,30 +1,24 @@
 import { createEmitter } from "../../CreateEmitter";
+import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	BlockAlignConfigPort,
-	BlockAlignInternals,
 	BlockAlignPublicPort,
+	BlockAlignValue,
 	CreateBlockAlignPortResult,
-	OnAlignUpdateCallbackFn,
 	OnChangeAlignCallbackFn,
 	UpdateStateParams,
 } from "./BlockAlignPort-types";
 
 export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
-	const internals: BlockAlignInternals = {
-		align: "center",
-	};
-
-	// StateListeners
-	const alignUpdateEmitter = createEmitter<OnAlignUpdateCallbackFn>();
+	// States
+	const alignState = createStateEmitter<BlockAlignValue>("center");
 
 	// CommandListeners
 	const changeAlignEmitter = createEmitter<OnChangeAlignCallbackFn>();
 
 	const updateState = ({ align }: UpdateStateParams) => {
 		if (align !== undefined) {
-			internals.align = align;
-
-			alignUpdateEmitter.emit(internals.align);
+			alignState.set(align);
 		}
 	};
 
@@ -40,11 +34,11 @@ export const createBlockAlignPort = (): CreateBlockAlignPortResult => {
 
 	const publicPort: BlockAlignPublicPort = {
 		get align() {
-			return internals.align;
+			return alignState.get();
 		},
 
 		onAlignUpdate(callback) {
-			return alignUpdateEmitter.subscribe(callback);
+			return alignState.subscribe(callback);
 		},
 
 		changeAlign(align) {

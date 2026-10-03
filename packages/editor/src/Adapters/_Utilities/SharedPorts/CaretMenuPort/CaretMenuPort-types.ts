@@ -8,10 +8,6 @@ export type OnQueryUpdateCallbackFn = (value: CaretMenuQuery) => void;
 
 export interface UpdateStateParams extends Partial<CaretMenuState> {}
 
-export interface CaretMenuInternals {
-	query: CaretMenuQuery;
-}
-
 export interface CaretMenuConfigPort {
 	readonly element: HTMLDivElement;
 

@@ -2,19 +2,19 @@ import { extendObjectProperties } from "#utilities";
 import {
 	createCaretMenuPort,
 	createEmitter,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
 	CreateTemplateVariableAdapterParams,
 	CreateTemplateVariableAdapterResult,
 	InsertParams,
-	OnCanInsertUpdateCallbackFn,
 	OnChangeFieldsCallbackFn,
-	OnFieldsUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnSelectCallbackFn,
 	TemplateVariableConfigPort,
 	TemplateVariableConfigPortProps,
+	TemplateVariableFields,
 	TemplateVariableInternals,
 	TemplateVariableItem,
 	TemplateVariablePublicPort,
@@ -30,9 +30,6 @@ export const createTemplateVariableAdapter = (
 	adapterBus.registerAdapter("templateVariable");
 
 	const internals: TemplateVariableInternals = {
-		// States
-		canInsert: false,
-		fields: {},
 		// Settings
 		fieldsConfig: settings.fieldsConfig,
 		// Rest
@@ -41,9 +38,9 @@ export const createTemplateVariableAdapter = (
 		})),
 	};
 
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const fieldsUpdateEmitter = createEmitter<OnFieldsUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const fieldsState = createStateEmitter<TemplateVariableFields>({});
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -54,15 +51,11 @@ export const createTemplateVariableAdapter = (
 
 	const updateState = ({ canInsert, fields }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (fields !== undefined) {
-			internals.fields = fields;
-
-			fieldsUpdateEmitter.emit(internals.fields);
+			fieldsState.set(fields);
 		}
 	};
 
@@ -105,11 +98,11 @@ export const createTemplateVariableAdapter = (
 			},
 
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get fields() {
-				return internals.fields;
+				return fieldsState.get();
 			},
 
 			get fieldsConfig() {
@@ -121,11 +114,11 @@ export const createTemplateVariableAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onFieldsUpdate(callback) {
-				return fieldsUpdateEmitter.subscribe(callback);
+				return fieldsState.subscribe(callback);
 			},
 
 			insert(params: InsertParams) {

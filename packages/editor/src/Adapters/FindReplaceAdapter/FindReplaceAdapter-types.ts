@@ -81,11 +81,6 @@ export interface FindReplacePublicPortProps {
 
 export interface FindReplacePublicPort extends FindReplacePublicPortProps {}
 
-export interface FindReplaceInternals {
-	currentIndex: number;
-	results: FindReplaceSearchResult[];
-}
-
 export interface FindReplaceAdapter {
 	configPort: FindReplaceConfigPort;
 	publicPort: FindReplacePublicPort;

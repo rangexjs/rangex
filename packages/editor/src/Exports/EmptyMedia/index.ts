@@ -3,6 +3,6 @@ export type {
 	EmptyMediaSettings,
 	MediaResolveDetail,
 	ResolveOption,
-	UploadState,
+	UploadStatus,
 } from "#adapters/EmptyMedia";
 export { EmptyMedia } from "#rangex-editor";

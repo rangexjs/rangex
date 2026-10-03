@@ -1,9 +1,5 @@
 export type BlockAlignValue = "left" | "center" | "right";
 
-export interface BlockAlignInternals {
-	align: BlockAlignValue;
-}
-
 export interface UpdateStateParams {
 	align?: BlockAlignValue;
 }

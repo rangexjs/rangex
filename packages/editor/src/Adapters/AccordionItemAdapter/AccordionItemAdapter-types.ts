@@ -52,11 +52,6 @@ export interface AccordionItemPublicPort
 		UnwrapPublicPort,
 		CurrentComponentPublicPort {}
 
-export interface AccordionItemInternals {
-	canInsert: boolean;
-	canWrap: boolean;
-}
-
 export interface AccordionItemAdapter {
 	configPort: AccordionItemConfigPort;
 	publicPort: AccordionItemPublicPort;

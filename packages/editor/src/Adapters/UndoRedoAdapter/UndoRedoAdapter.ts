@@ -1,15 +1,12 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateUndoRedoAdapterParams,
 	CreateUndoRedoAdapterResult,
-	OnCanStepBackUpdateCallbackFn,
-	OnCanStepForwardUpdateCallbackFn,
 	OnStepBackCallbackFn,
 	OnStepForwardCallbackFn,
 	UndoRedoConfigPort,
 	UndoRedoConfigPortProps,
-	UndoRedoInternals,
 	UndoRedoPublicPort,
 	UndoRedoPublicPortProps,
 	UpdateStateParams,
@@ -22,17 +19,9 @@ export const createUndoRedoAdapter = (
 
 	adapterBus.registerAdapter("undoRedo");
 
-	const internals: UndoRedoInternals = {
-		// States
-		canStepBack: false,
-		canStepForward: false,
-	};
-
-	// StateListeners
-	const canStepBackUpdateEmitter =
-		createEmitter<OnCanStepBackUpdateCallbackFn>();
-	const canStepForwardUpdateEmitter =
-		createEmitter<OnCanStepForwardUpdateCallbackFn>();
+	// States
+	const canStepBackState = createStateEmitter<boolean>(false);
+	const canStepForwardState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const stepBackEmitter = createEmitter<OnStepBackCallbackFn>();
@@ -40,15 +29,11 @@ export const createUndoRedoAdapter = (
 
 	const updateState = ({ canStepBack, canStepForward }: UpdateStateParams) => {
 		if (canStepBack !== undefined) {
-			internals.canStepBack = canStepBack;
-
-			canStepBackUpdateEmitter.emit(internals.canStepBack);
+			canStepBackState.set(canStepBack);
 		}
 
 		if (canStepForward !== undefined) {
-			internals.canStepForward = canStepForward;
-
-			canStepForwardUpdateEmitter.emit(internals.canStepForward);
+			canStepForwardState.set(canStepForward);
 		}
 	};
 
@@ -68,19 +53,19 @@ export const createUndoRedoAdapter = (
 
 	const publicPort: UndoRedoPublicPort = extendObjectProperties({}, {
 		get canStepBack() {
-			return internals.canStepBack;
+			return canStepBackState.get();
 		},
 
 		get canStepForward() {
-			return internals.canStepForward;
+			return canStepForwardState.get();
 		},
 
 		onCanStepBackUpdate(callback) {
-			return canStepBackUpdateEmitter.subscribe(callback);
+			return canStepBackState.subscribe(callback);
 		},
 
 		onCanStepForwardUpdate(callback) {
-			return canStepForwardUpdateEmitter.subscribe(callback);
+			return canStepForwardState.subscribe(callback);
 		},
 
 		stepBack() {

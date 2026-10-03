@@ -4,6 +4,7 @@ import {
 	createCurrentComponentPort,
 	createEmitter,
 	createSelectionMenuPort,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import { defaultLinkMenuSettings } from "./LinkAdapter-default";
@@ -17,7 +18,6 @@ import type {
 	LinkPublicPort,
 	LinkPublicPortProps,
 	ModifyParams,
-	OnCanInsertUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
@@ -40,14 +40,12 @@ export const createLinkAdapter = (
 	floatingContainer.append(linkMenuEl);
 
 	const internals: LinkInternals = {
-		// States
-		canInsert: false,
 		// Providers
 		displayTextProvider: null,
 	};
 
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -62,9 +60,7 @@ export const createLinkAdapter = (
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 	};
 
@@ -123,7 +119,7 @@ export const createLinkAdapter = (
 			},
 
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get linkMenuOpen() {
@@ -135,7 +131,7 @@ export const createLinkAdapter = (
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onLinkClick(callback) {

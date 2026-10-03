@@ -39,11 +39,6 @@ export interface UndoRedoPublicPortProps {
 
 export interface UndoRedoPublicPort extends UndoRedoPublicPortProps {}
 
-export interface UndoRedoInternals {
-	canStepBack: boolean;
-	canStepForward: boolean;
-}
-
 export interface UndoRedoAdapter {
 	configPort: UndoRedoConfigPort;
 	publicPort: UndoRedoPublicPort;

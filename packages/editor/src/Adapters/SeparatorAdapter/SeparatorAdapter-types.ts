@@ -28,10 +28,6 @@ export interface SeparatorPublicPortProps {
 
 export interface SeparatorPublicPort extends SeparatorPublicPortProps {}
 
-export interface SeparatorInternals {
-	canInsert: boolean;
-}
-
 export interface SeparatorAdapter {
 	configPort: SeparatorConfigPort;
 	publicPort: SeparatorPublicPort;

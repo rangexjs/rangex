@@ -1,13 +1,11 @@
 import { extendObjectProperties } from "#utilities";
-import { createEmitter } from "../_Utilities";
+import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateReadOnlyAdapterParams,
 	CreateReadOnlyAdapterResult,
-	OnCheckedUpdateCallbackFn,
 	OnToggleCallbackFn,
 	ReadOnlyConfigPort,
 	ReadOnlyConfigPortProps,
-	ReadOnlyInternals,
 	ReadOnlyPublicPort,
 	ReadOnlyPublicPortProps,
 	UpdateStateParams,
@@ -20,22 +18,15 @@ export const createReadOnlyAdapter = (
 
 	adapterBus.registerAdapter("readOnly");
 
-	const internals: ReadOnlyInternals = {
-		// States
-		checked: false,
-	};
-
-	// StateListeners
-	const checkedUpdateEmitter = createEmitter<OnCheckedUpdateCallbackFn>();
+	// States
+	const checkedState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const toggleEmitter = createEmitter<OnToggleCallbackFn>();
 
 	const updateState = ({ checked }: UpdateStateParams) => {
 		if (checked !== undefined) {
-			internals.checked = checked;
-
-			checkedUpdateEmitter.emit(internals.checked);
+			checkedState.set(checked);
 		}
 	};
 
@@ -51,15 +42,15 @@ export const createReadOnlyAdapter = (
 
 	const publicPort: ReadOnlyPublicPort = extendObjectProperties({}, {
 		get checked() {
-			return internals.checked;
+			return checkedState.get();
 		},
 
 		onCheckedUpdate(callback) {
-			return checkedUpdateEmitter.subscribe(callback);
+			return checkedState.subscribe(callback);
 		},
 
 		toggle() {
-			toggleEmitter.emit(internals.checked);
+			toggleEmitter.emit(checkedState.get());
 		},
 	} satisfies ReadOnlyPublicPortProps);
 

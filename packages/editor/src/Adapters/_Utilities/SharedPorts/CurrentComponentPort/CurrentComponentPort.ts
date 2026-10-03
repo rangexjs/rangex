@@ -1,12 +1,10 @@
 import type { Component } from "@rangex/core";
-import { createEmitter } from "../../CreateEmitter";
+import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	CreateCurrentComponentPortResult,
 	CurrentComponentConfigPort,
 	CurrentComponentInternals,
 	CurrentComponentPublicPort,
-	OnConfigCurrentComponentUpdateCallbackFn,
-	OnIsSelectionActiveUpdateCallbackFn,
 	UpdateStateParams,
 } from "./CurrentComponentPort-types";
 
@@ -22,8 +20,6 @@ export const createCurrentComponentPort = <
 	const internals: CurrentComponentInternals<TComponent> = {
 		hoverComponent: null,
 		selectionComponent: null,
-		currentComponent: null,
-		isSelectionActive: false,
 	};
 
 	const resolveCurrentComponent = () => {
@@ -43,11 +39,9 @@ export const createCurrentComponentPort = <
 	const resolveIsSelectionActive = () =>
 		!!internals.selectionComponent?.$$rootEditable;
 
-	// StateListeners
-	const currentComponentUpdateEmitter =
-		createEmitter<OnConfigCurrentComponentUpdateCallbackFn<TComponent>>();
-	const isSelectionActiveUpdateEmitter =
-		createEmitter<OnIsSelectionActiveUpdateCallbackFn>();
+	// States
+	const currentComponentState = createStateEmitter<TComponent | null>(null);
+	const isSelectionActiveState = createStateEmitter<boolean>(false);
 
 	const updateState = ({
 		hoverComponent,
@@ -63,19 +57,11 @@ export const createCurrentComponentPort = <
 
 		const currentComponent = resolveCurrentComponent();
 
-		if (currentComponent !== internals.currentComponent) {
-			internals.currentComponent = currentComponent;
-
-			currentComponentUpdateEmitter.emit(currentComponent);
-		}
+		currentComponentState.set(currentComponent);
 
 		const isSelectionActive = resolveIsSelectionActive();
 
-		if (isSelectionActive !== internals.isSelectionActive) {
-			internals.isSelectionActive = isSelectionActive;
-
-			isSelectionActiveUpdateEmitter.emit(isSelectionActive);
-		}
+		isSelectionActiveState.set(isSelectionActive);
 	};
 
 	const configPort: CurrentComponentConfigPort<TComponent> = {
@@ -88,7 +74,7 @@ export const createCurrentComponentPort = <
 		},
 
 		onCurrentComponentUpdate(callback) {
-			return currentComponentUpdateEmitter.subscribe(callback);
+			return currentComponentState.subscribe(callback);
 		},
 	};
 
@@ -102,11 +88,11 @@ export const createCurrentComponentPort = <
 		},
 
 		onCurrentComponentUpdate(callback) {
-			return currentComponentUpdateEmitter.subscribe(callback);
+			return currentComponentState.subscribe(callback);
 		},
 
 		onIsSelectionActiveUpdate(callback) {
-			return isSelectionActiveUpdateEmitter.subscribe(callback);
+			return isSelectionActiveState.subscribe(callback);
 		},
 	};
 

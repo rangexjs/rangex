@@ -5,6 +5,7 @@ import {
 	createEmitter,
 	createInsertRootLinePort,
 	createRemovePort,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
@@ -12,15 +13,11 @@ import type {
 	CreateLineHandlerAdapterResult,
 	LineHandlerConfigPort,
 	LineHandlerConfigPortProps,
-	LineHandlerInternals,
 	LineHandlerPublicPort,
 	LineHandlerPublicPortProps,
-	OnCanDuplicateUpdateCallbackFn,
-	OnCanRemoveUpdateCallbackFn,
-	OnCanUnwrapUpdateCallbackFn,
 	OnDragStartCallbackFn,
-	OnTurnIntoAvailabilityUpdateCallbackFn,
 	OnTurnIntoCallbackFn,
+	TurnIntoAvailability,
 	UpdateStateParams,
 } from "./LineHandlerAdapter-types";
 
@@ -34,27 +31,17 @@ export const createLineHandlerAdapter = (
 	const element = document.createElement("div");
 	floatingContainer.append(element);
 
-	const internals: LineHandlerInternals = {
-		// States
-		turnIntoAvailability: {
-			[componentsName.accordionItem]: false,
-			[componentsName.blockQuote]: false,
-			[componentsName.codeBlock]: false,
-			[componentsName.list]: false,
-			[componentsName.todoList]: false,
-		},
-		canRemove: true,
-		canDuplicate: true,
-		canUnwrap: false,
-	};
-
-	// StateListeners
-	const turnIntoAvailabilityUpdateEmitter =
-		createEmitter<OnTurnIntoAvailabilityUpdateCallbackFn>();
-	const canRemoveUpdateEmitter = createEmitter<OnCanRemoveUpdateCallbackFn>();
-	const canDuplicateUpdateEmitter =
-		createEmitter<OnCanDuplicateUpdateCallbackFn>();
-	const canUnwrapUpdateEmitter = createEmitter<OnCanUnwrapUpdateCallbackFn>();
+	// States
+	const turnIntoAvailabilityState = createStateEmitter<TurnIntoAvailability>({
+		[componentsName.accordionItem]: false,
+		[componentsName.blockQuote]: false,
+		[componentsName.codeBlock]: false,
+		[componentsName.list]: false,
+		[componentsName.todoList]: false,
+	});
+	const canRemoveState = createStateEmitter<boolean>(true);
+	const canDuplicateState = createStateEmitter<boolean>(true);
+	const canUnwrapState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const dragStartEmitter = createEmitter<OnDragStartCallbackFn>();
@@ -72,27 +59,19 @@ export const createLineHandlerAdapter = (
 		canUnwrap,
 	}: UpdateStateParams) => {
 		if (turnIntoAvailability !== undefined) {
-			internals.turnIntoAvailability = turnIntoAvailability;
-
-			turnIntoAvailabilityUpdateEmitter.emit(internals.turnIntoAvailability);
+			turnIntoAvailabilityState.set(turnIntoAvailability);
 		}
 
 		if (canRemove !== undefined) {
-			internals.canRemove = canRemove;
-
-			canRemoveUpdateEmitter.emit(internals.canRemove);
+			canRemoveState.set(canRemove);
 		}
 
 		if (canDuplicate !== undefined) {
-			internals.canDuplicate = canDuplicate;
-
-			canDuplicateUpdateEmitter.emit(internals.canDuplicate);
+			canDuplicateState.set(canDuplicate);
 		}
 
 		if (canUnwrap !== undefined) {
-			internals.canUnwrap = canUnwrap;
-
-			canUnwrapUpdateEmitter.emit(internals.canUnwrap);
+			canUnwrapState.set(canUnwrap);
 		}
 	};
 
@@ -131,35 +110,35 @@ export const createLineHandlerAdapter = (
 			},
 
 			get turnIntoAvailability() {
-				return internals.turnIntoAvailability;
+				return turnIntoAvailabilityState.get();
 			},
 
 			get canRemove() {
-				return internals.canRemove;
+				return canRemoveState.get();
 			},
 
 			get canDuplicate() {
-				return internals.canDuplicate;
+				return canDuplicateState.get();
 			},
 
 			get canUnwrap() {
-				return internals.canUnwrap;
+				return canUnwrapState.get();
 			},
 
 			onTurnIntoAvailabilityUpdate(callback) {
-				return turnIntoAvailabilityUpdateEmitter.subscribe(callback);
+				return turnIntoAvailabilityState.subscribe(callback);
 			},
 
 			onCanRemoveUpdate(callback) {
-				return canRemoveUpdateEmitter.subscribe(callback);
+				return canRemoveState.subscribe(callback);
 			},
 
 			onCanDuplicateUpdate(callback) {
-				return canDuplicateUpdateEmitter.subscribe(callback);
+				return canDuplicateState.subscribe(callback);
 			},
 
 			onCanUnwrapUpdate(callback) {
-				return canUnwrapUpdateEmitter.subscribe(callback);
+				return canUnwrapState.subscribe(callback);
 			},
 
 			dragStart(dragEvent) {

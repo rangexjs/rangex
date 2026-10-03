@@ -1,7 +1,6 @@
 import type {
 	FormattingIndentationState,
 	FormattingIndentationValue,
-	FormattingInternals,
 	FormattingLineHeightState,
 	FormattingLineHeightValue,
 	FormattingLineSpacingState,
@@ -9,6 +8,10 @@ import type {
 	FormattingTextAlignState,
 	FormattingTextAlignValue,
 } from "../FormattingAdapter-types";
+import type {
+	IsRemoveLineDisabledParams,
+	IsRemoveTextDisabledParams,
+} from "./IsRemoveFormatDisabled-types";
 
 const checkHasIndentation = (
 	indentation: FormattingIndentationState,
@@ -84,7 +87,7 @@ const checkHasTextAlign = (
 	return value !== defaultValue;
 };
 
-export const isRemoveLineDisabled = (internals: FormattingInternals) => {
+export const isRemoveLineDisabled = (params: IsRemoveLineDisabledParams) => {
 	const {
 		indentation,
 		lineHeight,
@@ -94,7 +97,7 @@ export const isRemoveLineDisabled = (internals: FormattingInternals) => {
 		defaultLineHeight,
 		defaultLineSpacing,
 		defaultTextAlign,
-	} = internals;
+	} = params;
 
 	const hasIndentation = checkHasIndentation(indentation, defaultIndentation);
 	const hasLineHeight = checkHasLineHeight(lineHeight, defaultLineHeight);
@@ -104,7 +107,7 @@ export const isRemoveLineDisabled = (internals: FormattingInternals) => {
 	return !(hasIndentation || hasLineHeight || hasLineSpacing || hasTextAlign);
 };
 
-export const isRemoveTextDisabled = (internals: FormattingInternals) => {
+export const isRemoveTextDisabled = (params: IsRemoveTextDisabledParams) => {
 	const {
 		backgroundColor,
 		bold,
@@ -118,7 +121,7 @@ export const isRemoveTextDisabled = (internals: FormattingInternals) => {
 		subscript,
 		superscript,
 		underline,
-	} = internals;
+	} = params;
 
 	const hasBackgroundColor = backgroundColor.values.size > 0;
 	const hasBold = bold.pressed !== "false";

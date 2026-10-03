@@ -4,18 +4,16 @@ import {
 	createCurrentComponentPort,
 	createEmitter,
 	createRemovePort,
+	createStateEmitter,
 	createUnwrapPort,
 } from "../_Utilities";
 import type {
 	AccordionItemConfigPort,
 	AccordionItemConfigPortProps,
-	AccordionItemInternals,
 	AccordionItemPublicPort,
 	AccordionItemPublicPortProps,
 	CreateAccordionItemAdapterParams,
 	CreateAccordionItemAdapterResult,
-	OnCanInsertUpdateCallbackFn,
-	OnCanWrapUpdateCallbackFn,
 	OnInsertCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
@@ -28,15 +26,9 @@ export const createAccordionItemAdapter = (
 
 	adapterBus.registerAdapter("accordionItem");
 
-	const internals: AccordionItemInternals = {
-		// States
-		canInsert: false,
-		canWrap: false,
-	};
-
-	// StateListeners
-	const canInsertUpdateEmitter = createEmitter<OnCanInsertUpdateCallbackFn>();
-	const canWrapUpdateEmitter = createEmitter<OnCanWrapUpdateCallbackFn>();
+	// States
+	const canInsertState = createStateEmitter<boolean>(false);
+	const canWrapState = createStateEmitter<boolean>(false);
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
@@ -48,15 +40,11 @@ export const createAccordionItemAdapter = (
 
 	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
-			internals.canInsert = canInsert;
-
-			canInsertUpdateEmitter.emit(internals.canInsert);
+			canInsertState.set(canInsert);
 		}
 
 		if (canWrap !== undefined) {
-			internals.canWrap = canWrap;
-
-			canWrapUpdateEmitter.emit(internals.canWrap);
+			canWrapState.set(canWrap);
 		}
 	};
 
@@ -85,19 +73,19 @@ export const createAccordionItemAdapter = (
 		currentComponentPort.publicPort,
 		{
 			get canInsert() {
-				return internals.canInsert;
+				return canInsertState.get();
 			},
 
 			get canWrap() {
-				return internals.canWrap;
+				return canWrapState.get();
 			},
 
 			onCanInsertUpdate(callback) {
-				return canInsertUpdateEmitter.subscribe(callback);
+				return canInsertState.subscribe(callback);
 			},
 
 			onCanWrapUpdate(callback) {
-				return canWrapUpdateEmitter.subscribe(callback);
+				return canWrapState.subscribe(callback);
 			},
 
 			insert() {
