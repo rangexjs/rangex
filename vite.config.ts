@@ -13,5 +13,14 @@ export default defineConfig(() => ({
 			...defaultClientConditions,
 		],
 	},
-	plugins: [tailwindcss(), solid()],
+	plugins: [
+		tailwindcss(),
+		solid({
+			// WIDE_SCOPE_DEPS fires in dev only: the HMR proxy wraps every component in a memo, so a
+			// parent inserting many components (EditorContainer's floating components) reads each one.
+			// TODO: revisit once Solid 2.0 is released (currently an RC) — drop this if the warning no
+			// longer counts HMR plumbing.
+			performanceTracks: { attribution: { wideDeps: false } },
+		}),
+	],
 }));
