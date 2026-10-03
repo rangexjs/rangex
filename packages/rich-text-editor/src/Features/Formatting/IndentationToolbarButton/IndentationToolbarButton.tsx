@@ -1,4 +1,4 @@
-import type { FormattingIndentationValue } from "@rangex/editor";
+import type { FormattingIndentationValue } from "@rangex/editor/formatting";
 import { Indentation, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";

@@ -1,4 +1,4 @@
-import { Dynamic } from "@solidjs/web";
+import { dynamic } from "@solidjs/web";
 import { createMemo, For, Show } from "solid-js";
 import type { ToolbarButtonsLayout } from "#constants";
 import type { ExtensionToolbarButtons } from "#extensions";
@@ -42,9 +42,13 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 								<>
 									<span class="space-x-0.5">
 										<For each={group}>
-											{(name) => (
-												<Dynamic component={props.toolbarButtons[name]} />
-											)}
+											{(name) => {
+												const ToolbarButton = dynamic(
+													() => props.toolbarButtons[name],
+												);
+
+												return <ToolbarButton />;
+											}}
 										</For>
 									</span>
 									<Show when={index() < row.length - 1}>

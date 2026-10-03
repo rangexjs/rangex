@@ -1,4 +1,4 @@
-import type { EditorNode, InlineComponent } from "rich-text-area";
+import type { EditorNode, InlineComponent } from "@rangex/core";
 import type { InlineComponentName } from "../../Constants";
 
 export interface GetClosestInlineComponentParams {

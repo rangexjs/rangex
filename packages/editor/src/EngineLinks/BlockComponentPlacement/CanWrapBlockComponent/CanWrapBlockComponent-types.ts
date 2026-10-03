@@ -1,4 +1,4 @@
-import type { ContentFlowNode, EditorAPI } from "rich-text-area";
+import type { ContentFlowNode, EditorAPI } from "@rangex/core";
 import type { BlockComponentName } from "../../Constants";
 import type { PlacementScope } from "../BlockComponentPlacement-types";
 

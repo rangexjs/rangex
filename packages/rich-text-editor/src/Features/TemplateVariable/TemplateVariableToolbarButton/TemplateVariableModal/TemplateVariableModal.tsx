@@ -1,7 +1,7 @@
 import type {
 	TemplateVariableFields,
 	TemplateVariablePublicPort,
-} from "@rangex/editor";
+} from "@rangex/editor/template-variable";
 import { flush } from "solid-js";
 import type { TemplateVariableModalSettings } from "#context";
 import {

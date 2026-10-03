@@ -9,7 +9,7 @@ import {
 	createNestedEditable,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, CaretCircleLeft, componentsName } from "#engine-links";
 import { createAccordionItemStorage } from "#storage";
 import { createUploadSVG } from "../../CreateUploadSVG";

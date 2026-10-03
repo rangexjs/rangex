@@ -1,4 +1,4 @@
-import type { RootEditableSnapshot } from "rich-text-area";
+import type { RootEditableSnapshot } from "@rangex/core";
 
 export interface GetMediaSourcesParams {
 	rootEditableSnapshot: RootEditableSnapshot;

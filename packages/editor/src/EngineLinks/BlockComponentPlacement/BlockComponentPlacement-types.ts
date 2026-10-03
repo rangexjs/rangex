@@ -6,7 +6,7 @@ import type {
 	Line,
 	List,
 	NestedEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { AdapterBus } from "#adapters";
 import type { BlockComponentName } from "../Constants";
 

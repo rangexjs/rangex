@@ -1,4 +1,4 @@
-import type { HTMLLayout } from "rich-text-area";
+import type { HTMLLayout } from "@rangex/core";
 import type { CaptionPosition, CaptionState } from "#adapters";
 
 export interface GetAudioCaptionParams {

@@ -5,7 +5,7 @@ import {
 	listRoleSelector,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createTodoList } from "../../_Utilities";
 import type { HandleTodoListPlacementParams } from "./HandleTodoListPlacement-types";
 

@@ -1,109 +1,218 @@
 {
 	"name": "@rangex/editor",
-	"version": "0.0.0",
+	"version": "1.0.0-beta.0",
+	"description": "Framework-agnostic RangeX editor: adapters, createEditor and snapshot/HTML views on top of the RangeX engine.",
+	"keywords": [
+		"rangex",
+		"rich-text-editor",
+		"editor",
+		"wysiwyg",
+		"contenteditable",
+		"framework-agnostic"
+	],
 	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:rangexjs/rangex-dev.git",
+		"url": "git@github.com:rangexjs/rangex.git",
 		"directory": "packages/editor"
 	},
+	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/editor#readme",
+	"bugs": "https://github.com/rangexjs/rangex/issues",
 	"private": true,
 	"license": "MIT",
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		".": {
-			"development": {
-				"types": "./src/index.ts",
-				"import": "./src/index.ts"
-			},
-			"production": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.js"
-			}
+			"@rangex/source": "./src/Exports/index.ts",
+			"types": "./dist/Exports/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./accordion-item": {
+			"@rangex/source": "./src/Exports/AccordionItem/index.ts",
+			"types": "./dist/Exports/AccordionItem/index.d.ts",
+			"import": "./dist/accordion-item.js"
+		},
+		"./audio": {
+			"@rangex/source": "./src/Exports/Audio/index.ts",
+			"types": "./dist/Exports/Audio/index.d.ts",
+			"import": "./dist/audio.js"
+		},
+		"./block-quote": {
+			"@rangex/source": "./src/Exports/BlockQuote/index.ts",
+			"types": "./dist/Exports/BlockQuote/index.d.ts",
+			"import": "./dist/block-quote.js"
+		},
+		"./code-block": {
+			"@rangex/source": "./src/Exports/CodeBlock/index.ts",
+			"types": "./dist/Exports/CodeBlock/index.d.ts",
+			"import": "./dist/code-block.js"
+		},
+		"./command-menu": {
+			"@rangex/source": "./src/Exports/CommandMenu/index.ts",
+			"types": "./dist/Exports/CommandMenu/index.d.ts",
+			"import": "./dist/command-menu.js"
+		},
+		"./embed": {
+			"@rangex/source": "./src/Exports/Embed/index.ts",
+			"types": "./dist/Exports/Embed/index.d.ts",
+			"import": "./dist/embed.js"
+		},
+		"./emoji": {
+			"@rangex/source": "./src/Exports/Emoji/index.ts",
+			"types": "./dist/Exports/Emoji/index.d.ts",
+			"import": "./dist/emoji.js"
+		},
+		"./empty-media": {
+			"@rangex/source": "./src/Exports/EmptyMedia/index.ts",
+			"types": "./dist/Exports/EmptyMedia/index.d.ts",
+			"import": "./dist/empty-media.js"
+		},
+		"./find-replace": {
+			"@rangex/source": "./src/Exports/FindReplace/index.ts",
+			"types": "./dist/Exports/FindReplace/index.d.ts",
+			"import": "./dist/find-replace.js"
+		},
+		"./formatting": {
+			"@rangex/source": "./src/Exports/Formatting/index.ts",
+			"types": "./dist/Exports/Formatting/index.d.ts",
+			"import": "./dist/formatting.js"
+		},
+		"./image": {
+			"@rangex/source": "./src/Exports/Image/index.ts",
+			"types": "./dist/Exports/Image/index.d.ts",
+			"import": "./dist/image.js"
+		},
+		"./line-handler": {
+			"@rangex/source": "./src/Exports/LineHandler/index.ts",
+			"types": "./dist/Exports/LineHandler/index.d.ts",
+			"import": "./dist/line-handler.js"
+		},
+		"./link": {
+			"@rangex/source": "./src/Exports/Link/index.ts",
+			"types": "./dist/Exports/Link/index.d.ts",
+			"import": "./dist/link.js"
+		},
+		"./list": {
+			"@rangex/source": "./src/Exports/List/index.ts",
+			"types": "./dist/Exports/List/index.d.ts",
+			"import": "./dist/list.js"
+		},
+		"./markdown": {
+			"@rangex/source": "./src/Exports/Markdown/index.ts",
+			"types": "./dist/Exports/Markdown/index.d.ts",
+			"import": "./dist/markdown.js"
+		},
+		"./mention": {
+			"@rangex/source": "./src/Exports/Mention/index.ts",
+			"types": "./dist/Exports/Mention/index.d.ts",
+			"import": "./dist/mention.js"
+		},
+		"./read-only": {
+			"@rangex/source": "./src/Exports/ReadOnly/index.ts",
+			"types": "./dist/Exports/ReadOnly/index.d.ts",
+			"import": "./dist/read-only.js"
+		},
+		"./separator": {
+			"@rangex/source": "./src/Exports/Separator/index.ts",
+			"types": "./dist/Exports/Separator/index.d.ts",
+			"import": "./dist/separator.js"
+		},
+		"./shortcuts": {
+			"@rangex/source": "./src/Exports/Shortcuts/index.ts",
+			"types": "./dist/Exports/Shortcuts/index.d.ts",
+			"import": "./dist/shortcuts.js"
+		},
+		"./symbols": {
+			"@rangex/source": "./src/Exports/Symbols/index.ts",
+			"types": "./dist/Exports/Symbols/index.d.ts",
+			"import": "./dist/symbols.js"
+		},
+		"./table": {
+			"@rangex/source": "./src/Exports/Table/index.ts",
+			"types": "./dist/Exports/Table/index.d.ts",
+			"import": "./dist/table.js"
+		},
+		"./template-variable": {
+			"@rangex/source": "./src/Exports/TemplateVariable/index.ts",
+			"types": "./dist/Exports/TemplateVariable/index.d.ts",
+			"import": "./dist/template-variable.js"
+		},
+		"./todo-list": {
+			"@rangex/source": "./src/Exports/TodoList/index.ts",
+			"types": "./dist/Exports/TodoList/index.d.ts",
+			"import": "./dist/todo-list.js"
+		},
+		"./undo-redo": {
+			"@rangex/source": "./src/Exports/UndoRedo/index.ts",
+			"types": "./dist/Exports/UndoRedo/index.d.ts",
+			"import": "./dist/undo-redo.js"
+		},
+		"./video": {
+			"@rangex/source": "./src/Exports/Video/index.ts",
+			"types": "./dist/Exports/Video/index.d.ts",
+			"import": "./dist/video.js"
 		}
 	},
 	"imports": {
 		"#utilities": {
-			"types": {
-				"development": "./src/_Utilities/index.ts",
-				"production": "./dist/_Utilities/index.d.ts"
-			},
-			"default": "./src/_Utilities/index"
+			"@rangex/source": "./src/_Utilities/index.ts",
+			"types": "./dist/_Utilities/index.d.ts"
 		},
 		"#adapters": {
-			"types": {
-				"development": "./src/Adapters/index.ts",
-				"production": "./dist/Adapters/index.d.ts"
-			},
-			"default": "./src/Adapters/index"
+			"@rangex/source": "./src/Adapters/index.ts",
+			"types": "./dist/Adapters/index.d.ts"
 		},
 		"#adapters/*": {
-			"types": {
-				"development": "./src/Adapters/*Adapter/index.ts",
-				"production": "./dist/Adapters/*Adapter/index.d.ts"
-			},
-			"default": "./src/Adapters/*Adapter/index"
+			"@rangex/source": "./src/Adapters/*Adapter/index.ts",
+			"types": "./dist/Adapters/*Adapter/index.d.ts"
 		},
 		"#rangex-editor": {
-			"types": {
-				"development": "./src/RangeXEditor/index.ts",
-				"production": "./dist/RangeXEditor/index.d.ts"
-			},
-			"default": "./src/RangeXEditor/index"
+			"@rangex/source": "./src/RangeXEditor/index.ts",
+			"types": "./dist/RangeXEditor/index.d.ts"
 		},
 		"#engine-links": {
-			"types": {
-				"development": "./src/EngineLinks/index.ts",
-				"production": "./dist/EngineLinks/index.d.ts"
-			},
-			"default": "./src/EngineLinks/index"
+			"@rangex/source": "./src/EngineLinks/index.ts",
+			"types": "./dist/EngineLinks/index.d.ts"
 		},
 		"#storage": {
-			"types": {
-				"development": "./src/Storage/index.ts",
-				"production": "./dist/Storage/index.d.ts"
-			},
-			"default": "./src/Storage/index"
+			"@rangex/source": "./src/Storage/index.ts",
+			"types": "./dist/Storage/index.d.ts"
 		},
 		"#snapshot": {
-			"types": {
-				"development": "./src/Snapshot/index.ts",
-				"production": "./dist/Snapshot/index.d.ts"
-			},
-			"default": "./src/Snapshot/index"
+			"@rangex/source": "./src/Snapshot/index.ts",
+			"types": "./dist/Snapshot/index.d.ts"
 		},
 		"#features": {
-			"types": {
-				"development": "./src/Features/index.ts",
-				"production": "./dist/Features/index.d.ts"
-			},
-			"default": "./src/Features/index"
+			"@rangex/source": "./src/Features/index.ts",
+			"types": "./dist/Features/index.d.ts"
 		}
 	},
 	"files": [
-		"dist",
-		"LICENSE.md",
-		"README.md"
+		"dist"
 	],
+	"publishConfig": {
+		"access": "public",
+		"tag": "beta"
+	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
+		"build": "vite build && tsc -p ./tsconfig.build.json",
+		"prepublishOnly": "bun run build",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
-		"fix": "biome check ./src --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src && tsc && vitest"
+		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts && tsc && vitest"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
 		"@happy-dom/global-registrator": "^20.10.6",
-		"@types/bun": "^1.3.14",
 		"@vitest/coverage-v8": "^4.1.10",
-		"esbuild": "^0.28.1",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5",
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"rich-text-area": "workspace:*"
+		"@rangex/core": "workspace:*"
 	}
 }

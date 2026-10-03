@@ -1,1 +1,3 @@
-export { default as CaretCircleLeft } from "./CaretCircleLeft.svg?raw";
+import CaretCircleLeftRaw from "./CaretCircleLeft.svg?raw";
+
+export const CaretCircleLeft = CaretCircleLeftRaw;

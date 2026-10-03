@@ -1,4 +1,4 @@
-import type { FormattingLineHeightValue } from "@rangex/editor";
+import type { FormattingLineHeightValue } from "@rangex/editor/formatting";
 import { LineHeight, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";

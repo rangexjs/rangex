@@ -1,14 +1,16 @@
+import type { CodeBlockTheme } from "@rangex/editor/code-block";
 import type {
-	CodeBlockTheme,
 	TableCellResizingAction,
 	TableCellTypeAction,
 	TableInsertDeleteAction,
 	TableMergeSplitAction,
 	TableSectionTypeAction,
 	TableVerticalAlignmentAction,
+} from "@rangex/editor/table";
+import type {
 	TemplateVariableFields,
 	TemplateVariableFieldsConfig,
-} from "@rangex/editor";
+} from "@rangex/editor/template-variable";
 import { createContext } from "solid-js";
 
 // CodeBlock

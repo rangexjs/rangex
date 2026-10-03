@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createHTMLLayout,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createAudioStorage } from "#storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";

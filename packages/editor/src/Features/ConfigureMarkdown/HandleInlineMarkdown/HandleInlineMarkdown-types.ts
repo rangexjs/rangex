@@ -1,4 +1,4 @@
-import type { EditorAPI, GlyphFormatterInlineTag } from "rich-text-area";
+import type { EditorAPI, GlyphFormatterInlineTag } from "@rangex/core";
 
 export interface InlineMarkdownMatch {
 	tag: GlyphFormatterInlineTag;

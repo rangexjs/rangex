@@ -1,4 +1,4 @@
-import type { BlockComponent, HTMLLayout } from "rich-text-area";
+import type { BlockComponent, HTMLLayout } from "@rangex/core";
 
 export interface GetVideoFigureParams {
 	blockComponent: BlockComponent;

@@ -4,7 +4,7 @@ import type {
 	EditorAPI,
 	List,
 	NestedEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface WrapBlockComponentParams {
 	editorAPI: EditorAPI;

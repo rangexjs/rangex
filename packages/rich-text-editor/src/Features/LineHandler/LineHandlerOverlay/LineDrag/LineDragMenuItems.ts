@@ -1,7 +1,7 @@
 import type {
 	LineHandlerPublicPort,
 	TurnIntoAvailability,
-} from "@rangex/editor";
+} from "@rangex/editor/line-handler";
 import type { UIOptions } from "#context";
 import type { MenuItem } from "../_Utilities";
 

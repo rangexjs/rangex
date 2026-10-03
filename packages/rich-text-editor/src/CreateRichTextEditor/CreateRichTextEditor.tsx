@@ -3,25 +3,42 @@ import { render } from "@solidjs/web";
 import type { UIOptions } from "#context";
 import type { ExtensionComponents } from "#extensions";
 import { App } from "../App";
+import globalStyles from "../ComponentStyles/global.css?inline";
+import { getEditorStyles } from "../EngineStyles";
 import { defaultToolbarButtonsLayout } from "./_Utilities";
 import type {
 	CreateRichTextEditorParams,
 	CreateRichTextEditorResult,
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
-import "../ComponentStyles/global.css";
-import { getEditorStyles } from "../EngineStyles";
+
+let globalStyleSheet: CSSStyleSheet | null = null;
+
+// Adds the UI's global styles to the document once, shared by every editor instance.
+const adoptGlobalStyleSheet = () => {
+	if (globalStyleSheet) {
+		return;
+	}
+
+	globalStyleSheet = new CSSStyleSheet();
+	globalStyleSheet.replaceSync(globalStyles);
+	document.adoptedStyleSheets.push(globalStyleSheet);
+};
 
 export const createRichTextEditor = ({
+	licenseKey,
 	storedSnapshot,
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
+	adoptGlobalStyleSheet();
+
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
 	const styles = getEditorStyles();
 
 	const { editor, host, floatingContainer, hostStyles } = createEditor({
+		licenseKey,
 		storedSnapshot,
 		adapters,
 		styles,

@@ -1,4 +1,4 @@
-import type { BlockComponentLine, ContentLine, Line } from "rich-text-area";
+import type { BlockComponentLine, ContentLine, Line } from "@rangex/core";
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
 import type {
 	BlockComponentName,

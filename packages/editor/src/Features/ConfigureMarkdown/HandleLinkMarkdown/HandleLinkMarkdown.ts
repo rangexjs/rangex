@@ -2,7 +2,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName, getClosestScopedEditable } from "#engine-links";
 import { createLink } from "../../_Utilities";
 import { scanMarkdownChars } from "../_Utilities";

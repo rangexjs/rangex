@@ -1,4 +1,4 @@
-import type { StructuredStyleValue } from "rich-text-area";
+import type { StructuredStyleValue } from "@rangex/core";
 import type {
 	BackgroundColorStructuredStyleValue,
 	ColorStructuredStyleValue,

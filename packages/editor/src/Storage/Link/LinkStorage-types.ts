@@ -1,4 +1,4 @@
-import type { InlineComponent } from "rich-text-area";
+import type { InlineComponent } from "@rangex/core";
 import type { LinkId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 

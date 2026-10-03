@@ -1,8 +1,8 @@
 ## Important Notice
 
-This repository depends on **rich-text-area**, the RangeX editor engine, which is licensed separately under a commercial subscription license and is **not** covered by the MIT License below.
+This repository depends on **@rangex/core**, the RangeX editor engine, which is licensed separately under a commercial subscription license and is **not** covered by the MIT License below.
 
-Use of this repository requires a valid license for rich-text-area. See [rangex.dev](https://rangex.dev) for pricing and licensing details.
+Use of this repository requires a valid license for @rangex/core. See [rangex.dev](https://rangex.dev) for pricing and licensing details.
 
 ---
 

@@ -10,7 +10,7 @@ import {
   createBlockComponentLine, createBlockComponentTextHolder,
   createDetachedContext, createList, createTable, createFormattableTexts, createBeamText,
 
-} from "rich-text-area";
+} from "@rangex/core";
 ```
 
 ## Common parameters

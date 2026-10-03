@@ -3,7 +3,7 @@ import {
 	contentLineRoleSelector,
 	createContentLine,
 	createFormattableTexts,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	HandleLinkModificationParams,
 	OnModifyCallback,

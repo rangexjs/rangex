@@ -1,4 +1,4 @@
-import type { EditorAPI, StoredSnapshot } from "rich-text-area";
+import type { EditorAPI, StoredSnapshot } from "@rangex/core";
 import type { AdapterOptions, AdapterPublicPorts } from "#adapters";
 import type { AdapterFactoryValue } from "./AdapterFactories";
 import type { Snapshot } from "./Snapshot";
@@ -36,6 +36,7 @@ export type AdapterFactoryFn<Settings extends object> = (
 ) => RegisterAdapterFn;
 
 export interface CreateEditorParams {
+	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
 	adapters: AdapterFactoryValue[];
 	styles: string;

@@ -1,4 +1,4 @@
-import { htmlLayoutRole, snapshotManager } from "rich-text-area";
+import { htmlLayoutRole, snapshotManager } from "@rangex/core";
 import type {
 	GetMediaSourcesParams,
 	GetMediaSourcesResult,

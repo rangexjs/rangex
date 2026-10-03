@@ -1,11 +1,9 @@
-import { Mention as MentionFactory } from "@rangex/editor";
-import type { MentionUIOptions } from "#context";
+import { Mention as MentionFactory } from "@rangex/editor/mention";
 import { MentionCaretMenu } from "#features";
 import type { Extension } from "../_Utilities";
+import type { MentionExtensionSettings } from "./Mention-types";
 
-export const Mention = (
-	settings: Parameters<typeof MentionFactory>[0] & MentionUIOptions,
-): Extension => {
+export const Mention = (settings: MentionExtensionSettings): Extension => {
 	const { getItems, ...adapterSettings } = settings;
 
 	return {

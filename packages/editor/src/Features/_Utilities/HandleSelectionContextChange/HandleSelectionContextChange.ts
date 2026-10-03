@@ -1,4 +1,4 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
+import { editorSelectionChangeEventType } from "@rangex/core";
 import type { HandleSelectionContextChangeParams } from "./HandleSelectionContextChange-types";
 
 /*

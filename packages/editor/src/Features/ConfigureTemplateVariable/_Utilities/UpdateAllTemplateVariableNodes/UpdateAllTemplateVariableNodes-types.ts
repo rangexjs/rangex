@@ -1,4 +1,4 @@
-import type { RootEditable } from "rich-text-area";
+import type { RootEditable } from "@rangex/core";
 import type {
 	TemplateVariableFields,
 	TemplateVariableFieldsConfig,

@@ -1,4 +1,4 @@
-import { createContentLine } from "rich-text-area";
+import { createContentLine } from "@rangex/core";
 import { createMention } from "../../_Utilities";
 import { getMentionQuery } from "../_Utilities";
 import type {

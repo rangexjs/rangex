@@ -3,7 +3,7 @@ import type {
 	Line,
 	ListLineType,
 	ListLocalName,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface CreateListParams {
 	localName: ListLocalName;

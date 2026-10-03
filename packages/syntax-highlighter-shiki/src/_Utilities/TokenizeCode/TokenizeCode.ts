@@ -2,7 +2,7 @@ import type {
 	CodeBlockTheme,
 	ThemedCodeLine,
 	ThemedCodeLines,
-} from "@rangex/editor";
+} from "@rangex/editor/code-block";
 import type {
 	TokenizeCodeParams,
 	TokenizeCodeResult,

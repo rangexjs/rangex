@@ -11,7 +11,7 @@ import type {
 	FormattingPublicPort,
 	FormattingTextAlignValue,
 	FormattingTogglePressed,
-} from "@rangex/editor";
+} from "@rangex/editor/formatting";
 import type { Accessor } from "solid-js";
 
 export type FromFormattingToReactivePort<T, TReactivePort> =

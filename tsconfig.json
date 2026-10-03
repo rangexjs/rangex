@@ -4,10 +4,10 @@
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"noEmit": true,
-		"resolveJsonModule": true,
 		"jsx": "preserve",
 		"jsxImportSource": "@solidjs/web",
-		"customConditions": ["development"]
+		"customConditions": ["@rangex/source"],
+		"types": ["vite/client"]
 	},
 	"include": ["index.ts", "src/**/*"],
 	"exclude": ["node_modules"]

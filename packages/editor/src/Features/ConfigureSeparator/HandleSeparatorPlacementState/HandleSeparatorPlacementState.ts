@@ -1,4 +1,4 @@
-import { editorSelectionChangeEventType } from "rich-text-area";
+import { editorSelectionChangeEventType } from "@rangex/core";
 import { componentsName } from "#engine-links";
 import type { HandleSeparatorPlacementStateParams } from "./HandleSeparatorPlacementState-types";
 

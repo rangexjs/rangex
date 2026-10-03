@@ -1,4 +1,4 @@
-import type { ListLocalName } from "@rangex/editor";
+import type { ListLocalName } from "@rangex/editor/list";
 import type { Accessor } from "solid-js";
 
 export interface ReactiveListPort {

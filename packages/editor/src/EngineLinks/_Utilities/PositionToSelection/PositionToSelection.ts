@@ -1,4 +1,4 @@
-import { caretAnchorRoleSelector, EditorRange } from "rich-text-area";
+import { caretAnchorRoleSelector, EditorRange } from "@rangex/core";
 import type { PositionToSelectionParams } from "./PositionToSelection-types";
 
 /**

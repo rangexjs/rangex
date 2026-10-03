@@ -2,7 +2,7 @@ import {
 	type BlockComponent,
 	blockComponentRole,
 	isEditorNode,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createAnchoredOverlayController } from "#engine-links";
 import { getBlockAlign } from "../BlockAlign";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";

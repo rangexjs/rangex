@@ -4,7 +4,7 @@ import {
 	nestedEditableRoleSelector,
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
-} from "rich-text-area";
+} from "@rangex/core";
 import { isScopedEditableEmpty } from "#engine-links";
 import { getCommonTableCellFromSelection } from "../_Utilities";
 import type {

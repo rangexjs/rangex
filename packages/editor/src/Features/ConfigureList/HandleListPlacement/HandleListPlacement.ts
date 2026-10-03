@@ -5,7 +5,7 @@ import {
 	listRoleSelector,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createList } from "../../_Utilities";
 import type { HandleListPlacementParams } from "./HandleListPlacement-types";
 

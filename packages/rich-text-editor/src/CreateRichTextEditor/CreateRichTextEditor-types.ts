@@ -1,4 +1,4 @@
-import type { StoredSnapshot } from "rich-text-area";
+import type { StoredSnapshot } from "@rangex/editor";
 import type { ToolbarButtonsLayout } from "#constants";
 import type { Extension } from "#extensions";
 
@@ -9,6 +9,7 @@ export interface RichTextEditor {
 }
 
 export interface CreateRichTextEditorParams {
+	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
 	extensions: Extension[];
 	toolbarButtonsLayout?: ToolbarButtonsLayout;

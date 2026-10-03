@@ -6,7 +6,7 @@ import type {
 	SelectionFormatStyles,
 	TextFormatInlineTags,
 	TextFormatStyles,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	FormattingBackgroundColorState,
 	FormattingColorState,

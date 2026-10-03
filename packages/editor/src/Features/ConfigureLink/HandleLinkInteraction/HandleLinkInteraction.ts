@@ -2,7 +2,7 @@ import {
 	editorSelectionChangeEventType,
 	inlineComponentRole,
 	isEditorNode,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName } from "#engine-links";
 import type {
 	HandleLinkInteractionParams,

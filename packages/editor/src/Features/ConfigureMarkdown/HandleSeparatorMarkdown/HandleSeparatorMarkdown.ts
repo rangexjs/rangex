@@ -2,7 +2,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 	EditorRange,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName } from "#engine-links";
 import { createSeparator } from "../../_Utilities";
 import {

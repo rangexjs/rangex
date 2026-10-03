@@ -1,4 +1,4 @@
-import type { InlineComponent } from "rich-text-area";
+import type { InlineComponent } from "@rangex/core";
 
 export interface CreateLinkParams {
 	text: string;

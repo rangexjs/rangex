@@ -3,7 +3,7 @@ import type {
 	ContentFlowNode,
 	EditorAPI,
 	InlineComponent,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	BlockComponentName,
 	ComponentName,

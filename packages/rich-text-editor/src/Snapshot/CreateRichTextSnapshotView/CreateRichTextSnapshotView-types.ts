@@ -1,5 +1,4 @@
-import type { createSnapshotView } from "@rangex/editor";
-import type { StoredSnapshot } from "rich-text-area";
+import type { createSnapshotView, StoredSnapshot } from "@rangex/editor";
 
 export interface CreateRichTextSnapshotViewParams {
 	storedSnapshot: StoredSnapshot;

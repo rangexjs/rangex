@@ -1,4 +1,4 @@
-import type { Component } from "rich-text-area";
+import type { Component } from "@rangex/core";
 import { createEmitter } from "../../CreateEmitter";
 import type {
 	CreateCurrentComponentPortResult,

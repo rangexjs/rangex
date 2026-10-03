@@ -1,5 +1,8 @@
-import type { GetHighlightInfoParams, HighlightInfo } from "@rangex/editor";
-import type { LanguageInput, ThemeInput } from "@shikijs/types";
+import type {
+	GetHighlightInfoParams,
+	HighlightInfo,
+} from "@rangex/editor/code-block";
+import type { LanguageInput, ThemeInput } from "shiki/types";
 
 export interface InitEditorHighlighterWorkerParams {
 	langs: LanguageInput[];

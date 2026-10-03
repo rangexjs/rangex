@@ -1,4 +1,4 @@
-import type { EmptyMediaPublicPort } from "@rangex/editor";
+import type { EmptyMediaPublicPort } from "@rangex/editor/empty-media";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveEmptyMediaPort } from "./EmptyMedia-types";

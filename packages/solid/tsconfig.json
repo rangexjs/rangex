@@ -2,8 +2,9 @@
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"customConditions": ["development"]
+		"customConditions": ["@rangex/source"],
+		"types": ["vite/client"]
 	},
-	"include": ["src/**/*", "vite-env.d.ts"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules"]
 }

@@ -1,3 +1,3 @@
-import type { BlockComponentLine } from "rich-text-area";
+import type { BlockComponentLine } from "@rangex/core";
 
 export type CreateSeparatorResult = BlockComponentLine;

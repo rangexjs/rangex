@@ -3,7 +3,7 @@ import type {
 	NodeView,
 	StoredSnapshot,
 	TextView,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { HighlightCodeFn } from "#adapters/CodeBlock";
 import type { NodeStorage } from "#storage";
 

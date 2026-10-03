@@ -3,7 +3,7 @@ import {
 	createContentLine,
 	nestedEditableRole,
 	nestedEditableRoleSelector,
-} from "rich-text-area";
+} from "@rangex/core";
 import { createBlockQuote } from "../../_Utilities";
 import type { HandleBlockQuotePlacementParams } from "./HandleBlockQuotePlacement-types";
 

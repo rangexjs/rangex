@@ -1,4 +1,4 @@
-import { isEditorElement, tableRole, tableRoleSelector } from "rich-text-area";
+import { isEditorElement, tableRole, tableRoleSelector } from "@rangex/core";
 import type {
 	GetClosestTableParams,
 	GetClosestTableResult,

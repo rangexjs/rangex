@@ -1,49 +1,58 @@
 {
 	"name": "@rangex/syntax-highlighter-shiki",
-	"version": "0.0.0",
+	"version": "1.0.0-beta.0",
+	"description": "Shiki-based syntax highlighting for RangeX code blocks, in the editor (Web Worker) and the HTML view.",
+	"keywords": [
+		"rangex",
+		"rich-text-editor",
+		"editor",
+		"wysiwyg",
+		"contenteditable",
+		"shiki",
+		"syntax-highlighting",
+		"code-block"
+	],
 	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:rangexjs/rangex-dev.git",
+		"url": "git@github.com:rangexjs/rangex.git",
 		"directory": "packages/syntax-highlighter-shiki"
 	},
+	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
+	"bugs": "https://github.com/rangexjs/rangex/issues",
 	"private": true,
 	"license": "MIT",
 	"type": "module",
+	"sideEffects": false,
 	"exports": {
 		".": {
-			"development": {
-				"types": "./src/index.ts",
-				"import": "./src/index.ts"
-			},
-			"production": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.js"
-			}
+			"@rangex/source": "./src/index.ts",
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
 		}
 	},
 	"files": [
-		"dist",
-		"LICENSE.md",
-		"README.md"
+		"dist"
 	],
+	"publishConfig": {
+		"access": "public",
+		"tag": "beta"
+	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && esbuild dist/index.js --minify --outfile=dist/index.js --allow-overwrite && tsc -p ./tsconfig.build.json",
-		"fix": "biome check ./src --write && tsc -p ./tsconfig.json"
+		"build": "vite build && tsc -p ./tsconfig.build.json",
+		"prepublishOnly": "bun run build",
+		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
-		"@types/bun": "^1.3.14",
-		"esbuild": "^0.28.1",
+		"@rangex/editor": "workspace:*",
+		"shiki": "4.3.1",
 		"typescript": "^7.0.2",
 		"vite": "^8.1.5"
 	},
-	"dependencies": {
-		"@rangex/editor": "workspace:*",
-		"@shikijs/core": "^4.3.1",
-		"@shikijs/engine-javascript": "^4.3.1",
-		"@shikijs/types": "^4.3.1",
-		"shiki": "^4.0.2"
+	"peerDependencies": {
+		"@rangex/editor": "workspace:^",
+		"shiki": "^4.3.1"
 	}
 }

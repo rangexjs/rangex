@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createHTMLLayout,
-} from "rich-text-area";
+} from "@rangex/core";
 import { aspectRatioAttr, blockAlignAttr, componentsName } from "#engine-links";
 import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";

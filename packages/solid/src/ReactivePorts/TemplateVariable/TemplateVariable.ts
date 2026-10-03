@@ -1,4 +1,4 @@
-import type { TemplateVariablePublicPort } from "@rangex/editor";
+import type { TemplateVariablePublicPort } from "@rangex/editor/template-variable";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import { CaretMenu } from "../_Utilities";

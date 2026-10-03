@@ -1,5 +1,11 @@
-export { default as ContentLine } from "./ContentLine.css?inline";
-export { default as GlyphFormatterEditor } from "./GlyphFormatter.editor.css?inline";
-export { default as GlyphFormatterView } from "./GlyphFormatter.view.css?inline";
-export { default as RootEditable } from "./RootEditable.css?inline";
-export { default as RootEditableEditor } from "./RootEditable.editor.css?inline";
+import ContentLineInline from "./ContentLine.css?inline";
+import GlyphFormatterEditorInline from "./GlyphFormatter.editor.css?inline";
+import GlyphFormatterViewInline from "./GlyphFormatter.view.css?inline";
+import RootEditableInline from "./RootEditable.css?inline";
+import RootEditableEditorInline from "./RootEditable.editor.css?inline";
+
+export const ContentLine = ContentLineInline;
+export const GlyphFormatterEditor = GlyphFormatterEditorInline;
+export const GlyphFormatterView = GlyphFormatterViewInline;
+export const RootEditable = RootEditableInline;
+export const RootEditableEditor = RootEditableEditorInline;

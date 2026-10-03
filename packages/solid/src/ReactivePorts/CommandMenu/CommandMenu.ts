@@ -1,4 +1,4 @@
-import type { CommandMenuPublicPort } from "@rangex/editor";
+import type { CommandMenuPublicPort } from "@rangex/editor/command-menu";
 import type { PreserveUndefined } from "../../_Utilities";
 import { CaretMenu } from "../_Utilities";
 import type { ReactiveCommandMenuPort } from "./CommandMenu-types";

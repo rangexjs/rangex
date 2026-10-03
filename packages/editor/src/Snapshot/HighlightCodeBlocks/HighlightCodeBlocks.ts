@@ -4,7 +4,7 @@ import {
 	type ElementView,
 	type NodeView,
 	type TextView,
-} from "rich-text-area";
+} from "@rangex/core";
 import { isCodeBlockStorage } from "#storage";
 import type {
 	CreateTokenViewParams,

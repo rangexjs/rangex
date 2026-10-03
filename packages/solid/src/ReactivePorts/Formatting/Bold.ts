@@ -1,4 +1,4 @@
-import type { FormattingPublicPort } from "@rangex/editor";
+import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
 import type {
 	FromFormattingToReactivePort,

@@ -77,10 +77,10 @@ const colorValue = createStructuredStyleValue({
 
 The `resolve` function produces `declarationValue` — what gets set on the DOM. The `type` and `values` are stored in snapshots and survive undo/redo, so the structured data is always available when reading back from the timeline.
 
-`createStructuredStyleValue` is exported from `"rich-text-area"`:
+`createStructuredStyleValue` is exported from `"@rangex/core"`:
 
 ```ts
-import { createStructuredStyleValue } from "rich-text-area";
+import { createStructuredStyleValue } from "@rangex/core";
 
 const fontSize = createStructuredStyleValue({
   type: "px",

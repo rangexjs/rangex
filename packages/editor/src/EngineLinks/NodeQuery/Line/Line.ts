@@ -2,7 +2,7 @@ import {
 	blockComponentLineRole,
 	contentLineRole,
 	type EditorNode,
-} from "rich-text-area";
+} from "@rangex/core";
 import type {
 	GetClosestBlockLevelLineParams,
 	GetClosestBlockLevelLineResult,

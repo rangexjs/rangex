@@ -1,4 +1,4 @@
-import type { TodoListPublicPort } from "@rangex/editor";
+import type { TodoListPublicPort } from "@rangex/editor/todo-list";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveTodoListPort } from "./TodoList-types";

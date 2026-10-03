@@ -3,7 +3,7 @@ import type {
 	EditorAPI,
 	List,
 	RootEditable,
-} from "rich-text-area";
+} from "@rangex/core";
 import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
 import type { CodeBlockTheme } from "#storage";
 import type { CSSHighlightManager } from "./CSSHighlightManager";

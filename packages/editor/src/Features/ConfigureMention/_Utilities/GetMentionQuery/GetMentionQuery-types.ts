@@ -1,4 +1,4 @@
-import type { EditorText } from "rich-text-area";
+import type { EditorText } from "@rangex/core";
 
 export interface CanInsertMentionParams {
 	fromText: EditorText;

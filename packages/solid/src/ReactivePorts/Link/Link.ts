@@ -1,4 +1,4 @@
-import type { LinkPublicPort } from "@rangex/editor";
+import type { LinkPublicPort } from "@rangex/editor/link";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveLinkPort } from "./Link-types";

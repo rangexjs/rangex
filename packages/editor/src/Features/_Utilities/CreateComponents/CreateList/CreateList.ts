@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createList as createEngineList,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createListStorage } from "#storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";

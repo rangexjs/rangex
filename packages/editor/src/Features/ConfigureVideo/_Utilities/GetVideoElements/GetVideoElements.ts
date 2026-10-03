@@ -1,4 +1,4 @@
-import { htmlLayoutRole } from "rich-text-area";
+import { htmlLayoutRole } from "@rangex/core";
 import type {
 	GetVideoElementParams,
 	GetVideoElementResult,

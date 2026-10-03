@@ -1,8 +1,4 @@
-import type {
-	ContentLine,
-	ContentLineDisplay,
-	EditorNode,
-} from "rich-text-area";
+import type { ContentLine, ContentLineDisplay, EditorNode } from "@rangex/core";
 
 export interface GetClosestContentLineParams {
 	fromNode: EditorNode;

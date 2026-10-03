@@ -2,7 +2,7 @@ import type {
 	EditorNode,
 	ScopedEditable,
 	ScopedEditableDisplay,
-} from "rich-text-area";
+} from "@rangex/core";
 
 export interface GetClosestScopedEditableParams {
 	fromNode: EditorNode;

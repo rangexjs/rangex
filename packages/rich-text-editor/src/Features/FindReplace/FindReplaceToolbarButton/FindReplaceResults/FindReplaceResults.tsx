@@ -1,4 +1,4 @@
-import type { FindReplaceSearchResult } from "@rangex/editor";
+import type { FindReplaceSearchResult } from "@rangex/editor/find-replace";
 import {
 	type Accessor,
 	createEffect,

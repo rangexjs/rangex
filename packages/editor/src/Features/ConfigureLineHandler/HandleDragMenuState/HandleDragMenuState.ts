@@ -3,7 +3,7 @@ import {
 	blockComponentRole,
 	blockComponentRoleSelector,
 	contentLineRole,
-} from "rich-text-area";
+} from "@rangex/core";
 import { type BlockComponentName, componentsName } from "#engine-links";
 import { assertNever } from "#utilities";
 import type {

@@ -1,4 +1,4 @@
-import type { EditorAPI, EditorText } from "rich-text-area";
+import type { EditorAPI, EditorText } from "@rangex/core";
 
 export interface GetSelectionForwardTextParams {
 	editorAPI: EditorAPI;

@@ -4,7 +4,7 @@ import {
 	htmlLayoutRole,
 	isEditorNode,
 	listChildNodesChangeEventType,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName, todoCheckboxPart } from "#engine-links";
 import {
 	ensureNodeTodoCheckboxStorage,

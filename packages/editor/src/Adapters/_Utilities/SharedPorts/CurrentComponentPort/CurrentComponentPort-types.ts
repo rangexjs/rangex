@@ -1,4 +1,4 @@
-import type { Component } from "rich-text-area";
+import type { Component } from "@rangex/core";
 
 export interface CurrentComponentInternals<TComponent extends Component> {
 	hoverComponent: TComponent | null;

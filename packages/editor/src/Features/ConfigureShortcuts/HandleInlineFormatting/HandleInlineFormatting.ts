@@ -2,8 +2,8 @@ import type {
 	GlyphFormatterInlineTag,
 	RangeFormatGlyphFormatterInlineTags,
 	TextFormatInlineTags,
-} from "rich-text-area";
-import { selectionStylesChangeEventType } from "rich-text-area";
+} from "@rangex/core";
+import { selectionStylesChangeEventType } from "@rangex/core";
 import type {
 	HandleInlineFormattingParams,
 	InlineFormattingShortcut,

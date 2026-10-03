@@ -1,4 +1,4 @@
-import { createBeamText, createContentLine } from "rich-text-area";
+import { createBeamText, createContentLine } from "@rangex/core";
 import type { HandleInsertRootLineParams } from "./HandleInsertRootLine-types";
 
 /*

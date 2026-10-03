@@ -1,4 +1,4 @@
-import type { FormattingFontSizeValue } from "@rangex/editor";
+import type { FormattingFontSizeValue } from "@rangex/editor/formatting";
 import { FontSize, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";

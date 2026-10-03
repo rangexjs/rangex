@@ -41,7 +41,7 @@ Call this whenever you want to save the current content — e.g. on `editorSelec
 Always run the persisted snapshot through `migrateStoredSnapshot` first, then pass the result to `createEditorAPI` instead of a `RootEditable` node:
 
 ```ts
-import { createEditorAPI, migrateStoredSnapshot } from "rich-text-area";
+import { createEditorAPI, migrateStoredSnapshot } from "@rangex/core";
 
 const result = migrateStoredSnapshot({ storedSnapshot: JSON.parse(savedJson) });
 
@@ -50,6 +50,7 @@ if (!result.isValid) {
 }
 
 const { editorAPI } = createEditorAPI({
+  licenseKey: "eyJ2IjoxLC...",
   rootEditableFrom: {
     type: "snapshot",
     storedSnapshot: result.storedSnapshot,
@@ -70,10 +71,10 @@ The engine reconstructs the full `RootEditable` tree from the snapshot and mount
 
 ## Migrating a StoredSnapshot
 
-When the shape of `StoredSnapshot` changes in a new main version of the package, snapshots persisted by an older version can't be loaded as they are. `migrateStoredSnapshot` (imported from `"rich-text-area"`) upgrades such a snapshot to the current shape and validates it.
+When the shape of `StoredSnapshot` changes in a new main version of the package, snapshots persisted by an older version can't be loaded as they are. `migrateStoredSnapshot` (imported from `"@rangex/core"`) upgrades such a snapshot to the current shape and validates it.
 
 ```ts
-import { migrateStoredSnapshot } from "rich-text-area";
+import { migrateStoredSnapshot } from "@rangex/core";
 
 const result = migrateStoredSnapshot({ storedSnapshot });
 ```
@@ -174,10 +175,10 @@ const snapshot = getSnapshot(); // EditorSnapshot — a fresh, mutable deep clon
 
 `SnapshotView` is a read-only, plain-object rendering of a `StoredSnapshot`, meant for building the output (HTML/DOM) without mounting an editor instance. It is derived one-way from a `StoredSnapshot`: editor-only properties (e.g. `shouldSelectBeforeRemove`) are dropped, and everything needed to build the DOM (tag names, attributes, children) is added.
 
-It is created via `createSnapshotView` (imported from `"rich-text-area"`):
+It is created via `createSnapshotView` (imported from `"@rangex/core"`):
 
 ```ts
-import { createSnapshotView } from "rich-text-area";
+import { createSnapshotView } from "@rangex/core";
 
 const { snapshotView } = createSnapshotView({ storedSnapshot });
 
@@ -320,13 +321,13 @@ A `DetachedContext` whose `localName` is `"slot"` has no children: a `slot` elem
 
 ## SnapshotManager
 
-`snapshotManager` is a singleton exported from `"rich-text-area"`, independent of any particular editor instance. It exists so a `StoredSnapshot` can be inspected and edited programmatically without mounting a live editor instance at all — e.g. a server-side job migrating old content, or bulk-editing saved documents. It converts between two plain-object forms of a node that can be used in a server environment — no browser APIs needed:
+`snapshotManager` is a singleton exported from `"@rangex/core"`, independent of any particular editor instance. It exists so a `StoredSnapshot` can be inspected and edited programmatically without mounting a live editor instance at all — e.g. a server-side job migrating old content, or bulk-editing saved documents. It converts between two plain-object forms of a node that can be used in a server environment — no browser APIs needed:
 
 - **`EditorNodeSnapshot`** — this is what `StoredSnapshot`/`EditorSnapshot` are built from.
 - **`EditorNodeDraft`** — the same plain snapshot object, but with a DOM-like navigation/mutation API attached directly onto it, letting you walk and splice it with familiar DOM-style calls. It is **not** a separate class and has no live DOM behind it — it behaves like a detached, in-memory DOM tree, entirely outside the browser and outside any live editor instance.
 
 ```ts
-import { snapshotManager } from "rich-text-area";
+import { snapshotManager } from "@rangex/core";
 ```
 
 ### `createDraftFromSnapshot(editorNodeSnapshot)`
@@ -359,7 +360,7 @@ The finalize step: a plain `structuredClone` with no re-decoration, producing a 
 validate(params: { rootEditableSnapshot: RootEditableSnapshot }): ValidateSnapshotResult
 ```
 
-Runs full structural validation on a `RootEditableSnapshot` tree — see [SnapshotValidation](#snapshotvalidation) for the complete rules and output shape. This is the single entry point that validates an entire tree top-down; the individual `validate*Snapshot` functions documented there (also exported standalone from `"rich-text-area"`) can be called on any node kind independently, without going through `snapshotManager`.
+Runs full structural validation on a `RootEditableSnapshot` tree — see [SnapshotValidation](#snapshotvalidation) for the complete rules and output shape. This is the single entry point that validates an entire tree top-down; the individual `validate*Snapshot` functions documented there (also exported standalone from `"@rangex/core"`) can be called on any node kind independently, without going through `snapshotManager`.
 
 **Typical flow:**
 
@@ -383,7 +384,7 @@ if (result.isValid) {
 
 ## SnapshotValidation
 
-Spec for `EditorNodeSnapshot` structural validation — every `validate*Snapshot` function (one per node kind, all exported from `"rich-text-area"`) follows these rules.
+Spec for `EditorNodeSnapshot` structural validation — every `validate*Snapshot` function (one per node kind, all exported from `"@rangex/core"`) follows these rules.
 
 ### Purpose
 
@@ -453,8 +454,8 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
 - Every `ContentLine` that is a direct child of `RootEditable` must have a `localName` that is a `BlockContentLineLocalName` (`"p"`, `"h1"`–`"h6"`) — applies under both `display` values.
 - `allowedComponents` — whitelist of allowed component `name` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `RootEditable`'s scope must have its `name` included in the list.
 - `allowedContentLineLocalNames` — whitelist of allowed block `ContentLine` `localName`s (`"p"`, `"h1"`–`"h6"`). `null` means no restriction. Otherwise, every outermost `ContentLine` within this `RootEditable`'s scope must have its `localName` included in the list — except `"p"`, which is always allowed regardless of the list's contents, even an empty `[]` (it's the fallback localName the live engine retags to, so it can never be excluded). This is in addition to, not instead of, the `BlockContentLineLocalName` type check above — the type check confirms the value is a valid block localName at all, this checks it's one this particular `RootEditable` permits.
-- `allowedContentLineStyleAttrNames` — whitelist of `structuredStyle` keys a `ContentLine` may set. `null` means no restriction. Otherwise, for every outermost `ContentLine` within this `RootEditable`'s scope, every key present in its `structuredStyle` must be included in the list — a key outside the list is a violation even if its value would otherwise be valid.
-- `allowedGlyphFormatterStyleAttrNames` — same as `allowedContentLineStyleAttrNames`, but for the `structuredStyle` keys of every outermost `GlyphFormatter` within this `RootEditable`'s scope.
+- `allowedContentLineStyleAttrNames` — no requirement to enforce. A block `ContentLine` always carries every `structuredStyle` key (see [ContentLine](#contentline)); keys outside the list are held at the `localName` default by the live engine, so their presence is not a violation.
+- `allowedGlyphFormatterStyleAttrNames` — whitelist of `structuredStyle` keys a `GlyphFormatter` may set. `null` means no restriction. Otherwise, for every outermost `GlyphFormatter` within this `RootEditable`'s scope, every key present in its `structuredStyle` must be included in the list.
 - `allowedGlyphFormatterInlineTags` — whitelist of inline format tags (e.g. `"strong"`, `"em"`) a `GlyphFormatter` may carry. `null` means no restriction. Otherwise, for every outermost `GlyphFormatter` within this `RootEditable`'s scope, every tag present in its `inlineTagsArray` must be included in the list.
 
 #### NestedEditable
@@ -469,7 +470,7 @@ Two fields — `uniqueId` and `customStorage` — appear on every `EditorNodeSna
   - `"inline"` — `childNodes` must contain exactly one `ContentLine`, and its `localName` must be `"span"`.
 - `allowedComponents` — whitelist of allowed component `name` values (`InlineComponent` / `BlockComponent`). `null` means no restriction, nothing to check. Otherwise, every outermost `Component` within this `NestedEditable`'s scope must have its `name` included in the list.
 - `allowedContentLineLocalNames` — whitelist of allowed block `ContentLine` `localName`s (`"p"`, `"h1"`–`"h6"`). `null` means no restriction. Otherwise, every outermost `ContentLine` within this `NestedEditable`'s scope must have its `localName` included in the list — except `"p"`, which is always allowed regardless of the list's contents, even an empty `[]`. This only has anything to check when `display` is `"block multi-line"` or `"block single-line"` — when `display` is `"inline"`, the only reachable `ContentLine` is always `localName: "span"`, which is never subject to this whitelist (block-only localNames vs. the fixed inline `"span"`), so the check is a no-op.
-- `allowedContentLineStyleAttrNames` — whitelist of `structuredStyle` keys a `ContentLine` may set. `null` means no restriction. Otherwise, for every outermost `ContentLine` within this `NestedEditable`'s scope, every key present in its `structuredStyle` must be included in the list — a key outside the list is a violation even if its value would otherwise be valid. Applies regardless of `display` — both `"span"` and block `ContentLine`s carry `structuredStyle`.
+- `allowedContentLineStyleAttrNames` — no requirement to enforce, same as for `RootEditable`. `"span"` ContentLines are not affected either — their `structuredStyle` has no effect.
 - `allowedGlyphFormatterStyleAttrNames` — whitelist of `structuredStyle` keys a `GlyphFormatter` may set. `null` means no restriction. Otherwise, for every outermost `GlyphFormatter` within this `NestedEditable`'s scope, every key present in its `structuredStyle` must be included in the list.
 - `allowedGlyphFormatterInlineTags` — whitelist of inline format tags (e.g. `"strong"`, `"em"`) a `GlyphFormatter` may carry. `null` means no restriction. Otherwise, for every outermost `GlyphFormatter` within this `NestedEditable`'s scope, every tag present in its `inlineTagsArray` must be included in the list.
 

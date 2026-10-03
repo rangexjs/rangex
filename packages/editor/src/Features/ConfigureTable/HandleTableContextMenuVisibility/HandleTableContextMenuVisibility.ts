@@ -4,7 +4,7 @@ import {
 	tableRoleSelector,
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
-} from "rich-text-area";
+} from "@rangex/core";
 import { getCommonTableCellFromSelection } from "../_Utilities";
 import type {
 	HandleTableContextMenuVisibilityParams,

@@ -1,4 +1,4 @@
-import { createContentLine, createFormattableTexts } from "rich-text-area";
+import { createContentLine, createFormattableTexts } from "@rangex/core";
 import { getEmojiQuery } from "../_Utilities";
 import type {
 	HandleEmojiSelectParams,

@@ -1,4 +1,4 @@
-import type { LineHandlerPublicPort } from "@rangex/editor";
+import type { LineHandlerPublicPort } from "@rangex/editor/line-handler";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveLineHandlerPort } from "./LineHandler-types";

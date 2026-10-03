@@ -1,4 +1,4 @@
-import { Dynamic } from "@solidjs/web";
+import { dynamic } from "@solidjs/web";
 import { omit } from "solid-js";
 import {
 	AlignCenter,
@@ -161,6 +161,7 @@ interface IconProps extends SVGProps {
 
 export const Icon = (props: IconProps) => {
 	const svgProps = omit(props, "name");
+	const IconSvg = dynamic(() => icons[props.name]);
 
-	return <Dynamic component={icons[props.name]} {...svgProps} />;
+	return <IconSvg {...svgProps} />;
 };

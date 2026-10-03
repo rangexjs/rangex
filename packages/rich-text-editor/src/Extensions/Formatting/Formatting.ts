@@ -1,4 +1,4 @@
-import { Formatting as FormattingFactory } from "@rangex/editor";
+import { Formatting as FormattingFactory } from "@rangex/editor/formatting";
 import { toolbarButtonsName } from "#constants";
 import {
 	BackgroundColorToolbarButton,
@@ -21,12 +21,13 @@ import {
 	UnderlineToolbarButton,
 } from "#features";
 import type { Extension } from "../_Utilities";
+import type { FormattingExtensionSettings } from "./Formatting-types";
 
 export const Formatting = (
-	...adapterSettings: Parameters<typeof FormattingFactory>
+	settings: FormattingExtensionSettings,
 ): Extension => {
 	return {
-		createAdapter: () => FormattingFactory(...adapterSettings),
+		createAdapter: () => FormattingFactory(settings),
 		components: {
 			toolbarButtons: {
 				[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,

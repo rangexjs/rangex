@@ -1,4 +1,4 @@
-import type { FormattingLetterSpacingValue } from "@rangex/editor";
+import type { FormattingLetterSpacingValue } from "@rangex/editor/formatting";
 import { LetterSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";

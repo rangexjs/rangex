@@ -1,4 +1,4 @@
-import type { Line } from "rich-text-area";
+import type { Line } from "@rangex/core";
 import {
 	createAnchoredOverlayController,
 	observeEditorNodeAttachment,

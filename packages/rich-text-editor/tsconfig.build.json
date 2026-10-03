@@ -1,12 +1,12 @@
 {
 	"extends": "./tsconfig.base.json",
-	"references": [{ "path": "../rich-text-area/tsconfig.lib.json" }],
 	"compilerOptions": {
 		"declaration": true,
 		"emitDeclarationOnly": true,
+		"declarationMap": false,
 		"outDir": "dist",
 		"rootDir": "src",
-		"customConditions": ["production"]
+		"types": ["vite/client"]
 	},
-	"include": ["src/**/*", "vite-env.d.ts"]
+	"include": ["src/**/*"]
 }

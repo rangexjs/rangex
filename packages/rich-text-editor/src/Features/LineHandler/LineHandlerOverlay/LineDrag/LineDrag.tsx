@@ -1,4 +1,4 @@
-import type { LineHandlerPublicPort } from "@rangex/editor";
+import type { LineHandlerPublicPort } from "@rangex/editor/line-handler";
 import type { ReactiveLineHandlerPort } from "@rangex/solid";
 import { createMemo, createUniqueId } from "solid-js";
 import { useUIOptionsContext } from "#context";

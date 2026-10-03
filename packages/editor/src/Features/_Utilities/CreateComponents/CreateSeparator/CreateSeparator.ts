@@ -3,7 +3,7 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createHTMLLayout,
-} from "rich-text-area";
+} from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createSeparatorStorage } from "#storage";
 import type { CreateSeparatorResult } from "./CreateSeparator-types";

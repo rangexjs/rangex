@@ -1,4 +1,4 @@
-import type { FormattingLineLocalNameValue } from "@rangex/editor";
+import type { FormattingLineLocalNameValue } from "@rangex/editor/formatting";
 import { LineLocalName, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";

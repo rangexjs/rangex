@@ -5,7 +5,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 	type DOMAttrs,
-} from "rich-text-area";
+} from "@rangex/core";
 import { componentsName } from "#engine-links";
 import { createLinkStorage } from "#storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";

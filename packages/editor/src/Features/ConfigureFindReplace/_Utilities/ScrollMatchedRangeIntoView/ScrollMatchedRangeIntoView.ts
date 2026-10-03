@@ -1,4 +1,4 @@
-import { EditorRange } from "rich-text-area";
+import { EditorRange } from "@rangex/core";
 import type { ScrollMatchedRangeIntoViewParams } from "./ScrollMatchedRangeIntoView-types";
 
 /*

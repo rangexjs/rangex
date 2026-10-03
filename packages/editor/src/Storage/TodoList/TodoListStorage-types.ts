@@ -1,4 +1,4 @@
-import type { BlockComponent, HTMLLayout } from "rich-text-area";
+import type { BlockComponent, HTMLLayout } from "@rangex/core";
 import type { TodoCheckboxId, TodoListId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 

@@ -1,4 +1,4 @@
-import type { EditorNode } from "rich-text-area";
+import type { EditorNode } from "@rangex/core";
 import type { BlockComponentName } from "../../Constants";
 import type { PlacementScope } from "../BlockComponentPlacement-types";
 

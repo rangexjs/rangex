@@ -1,13 +1,12 @@
-import { TodoList as TodoListFactory } from "@rangex/editor";
+import { TodoList as TodoListFactory } from "@rangex/editor/todo-list";
 import { toolbarButtonsName } from "#constants";
 import { CheckboxListToolbarButton } from "#features";
 import type { Extension } from "../_Utilities";
+import type { TodoListExtensionSettings } from "./TodoList-types";
 
-export const TodoList = (
-	...adapterSettings: Parameters<typeof TodoListFactory>
-): Extension => {
+export const TodoList = (settings: TodoListExtensionSettings): Extension => {
 	return {
-		createAdapter: () => TodoListFactory(...adapterSettings),
+		createAdapter: () => TodoListFactory(settings),
 		components: {
 			toolbarButtons: {
 				[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,

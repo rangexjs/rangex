@@ -1,4 +1,4 @@
-import type { AudioPublicPort } from "@rangex/editor";
+import type { AudioPublicPort } from "@rangex/editor/audio";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveAudioPort } from "./Audio-types";

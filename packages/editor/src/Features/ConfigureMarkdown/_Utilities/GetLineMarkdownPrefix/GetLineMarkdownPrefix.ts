@@ -1,4 +1,4 @@
-import { EditorRange, type PlainTextScanStep } from "rich-text-area";
+import { EditorRange, type PlainTextScanStep } from "@rangex/core";
 import { getClosestContentLine } from "#engine-links";
 import type {
 	GetLineMarkdownPrefixParams,

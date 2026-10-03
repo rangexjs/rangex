@@ -1,4 +1,4 @@
-import { inlineComponentRole, isEditorElement } from "rich-text-area";
+import { inlineComponentRole, isEditorElement } from "@rangex/core";
 import type {
 	GetClosestInlineComponentParams,
 	GetClosestInlineComponentResult,

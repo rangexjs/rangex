@@ -1,4 +1,4 @@
-import type { VideoPublicPort } from "@rangex/editor";
+import type { VideoPublicPort } from "@rangex/editor/video";
 import { createSignal, onCleanup } from "solid-js";
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveVideoPort } from "./Video-types";
