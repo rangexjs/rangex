@@ -1334,9 +1334,7 @@
 																"defaultRowHeight": 40,
 																"tableCellsEditable": "true",
 																"tableCellSnapshotProps": {
-																	"domAttrs": {
-																		"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																	},
+																	"domAttrs": {},
 																	"childNodes": [
 																		{
 																			"type": "nested-editable",
@@ -1374,9 +1372,7 @@
 																	]
 																},
 																"styleAttrs": {},
-																"domAttrs": {
-																	"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																},
+																"domAttrs": {},
 																"childNodes": [
 																	{
 																		"type": "table-col-group",
@@ -1426,9 +1422,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -1524,9 +1518,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -1641,9 +1633,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -1739,9 +1729,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -1846,9 +1834,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -1944,9 +1930,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2051,9 +2035,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2149,9 +2131,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2256,9 +2236,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2354,9 +2332,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2461,9 +2437,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2559,9 +2533,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2666,9 +2638,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2764,9 +2734,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2871,9 +2839,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
@@ -2969,9 +2935,7 @@
 																						"colSpan": 1,
 																						"rowSpan": 1,
 																						"styleAttrs": {},
-																						"domAttrs": {
-																							"style": "border-width: 1px; border-style: solid; border-color: grey;"
-																						},
+																						"domAttrs": {},
 																						"childNodes": [
 																							{
 																								"type": "nested-editable",
