@@ -1138,7 +1138,7 @@
 												"customStorage": null,
 												"localName": "span",
 												"styleAttrs": {},
-												"domAttrs": { "contenteditable": "false" },
+												"domAttrs": {},
 												"childNodes": [],
 												"shadowTreeSnapshot": [
 													{
@@ -1375,8 +1375,7 @@
 																},
 																"styleAttrs": {},
 																"domAttrs": {
-																	"style": "border-width: 1px; border-style: solid; border-color: grey;",
-																	"contenteditable": "false"
+																	"style": "border-width: 1px; border-style: solid; border-color: grey;"
 																},
 																"childNodes": [
 																	{
@@ -3370,7 +3369,7 @@
 						"editState": "false",
 						"customStorage": { "id": "mention", "version": 1, "userId": "1" },
 						"styleAttrs": {},
-						"domAttrs": { "contenteditable": "false" },
+						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "nested-editable",
@@ -3556,7 +3555,7 @@
 							"fieldName": "fullName"
 						},
 						"styleAttrs": {},
-						"domAttrs": { "contenteditable": "false" },
+						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "nested-editable",
@@ -3723,7 +3722,7 @@
 																	"customStorage": null,
 																	"localName": "span",
 																	"styleAttrs": {},
-																	"domAttrs": { "contenteditable": "false" },
+																	"domAttrs": {},
 																	"childNodes": [],
 																	"shadowTreeSnapshot": [
 																		{
@@ -3778,7 +3777,7 @@
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
-																		"domAttrs": { "contenteditable": "false" },
+																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
 																			{
@@ -3893,7 +3892,7 @@
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
-																		"domAttrs": { "contenteditable": "false" },
+																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
 																			{
@@ -4008,7 +4007,7 @@
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
-																		"domAttrs": { "contenteditable": "false" },
+																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
 																			{
@@ -4123,7 +4122,7 @@
 																		"customStorage": null,
 																		"localName": "span",
 																		"styleAttrs": {},
-																		"domAttrs": { "contenteditable": "false" },
+																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
 																			{
@@ -4314,7 +4313,7 @@
 						"shouldSelectOnNavigation": true,
 						"editState": "false",
 						"styleAttrs": {},
-						"domAttrs": { "contenteditable": "false" },
+						"domAttrs": {},
 						"childNodes": [
 							{
 								"type": "detached-context",
@@ -4322,7 +4321,7 @@
 								"customStorage": null,
 								"localName": "slot",
 								"styleAttrs": {},
-								"domAttrs": { "contenteditable": "false" },
+								"domAttrs": {},
 								"childNodes": [],
 								"shadowTreeSnapshot": []
 							}
