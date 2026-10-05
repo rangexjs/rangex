@@ -19,7 +19,6 @@ export const createBlockQuote = ({
 	childNodes,
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {
 	const nestedEditable = createNestedEditable({
-		content: { type: "default" },
 		display: "block multi-line",
 		childNodes,
 	});

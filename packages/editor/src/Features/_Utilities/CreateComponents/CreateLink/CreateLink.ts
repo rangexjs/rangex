@@ -25,7 +25,7 @@ export const createLink = ({
 
 	return createInlineComponent({
 		name: componentsName.link,
-		content: { type: "bound-text" },
+		content: { type: "bound-text", unwrap: "if-empty" },
 		customStorage: createLinkStorage(),
 		childNodes: [
 			createHTMLLayout({
@@ -33,7 +33,6 @@ export const createLink = ({
 				domAttrs,
 				childNodes: [
 					createNestedEditable({
-						content: { type: "bound-text", unwrap: "if-empty" },
 						allowedComponents: [],
 						display: "inline",
 						childNodes: [

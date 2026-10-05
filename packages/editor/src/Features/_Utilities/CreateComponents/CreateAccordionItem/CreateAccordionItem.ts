@@ -57,7 +57,6 @@ export const createAccordionItem = ({
 	childNodes,
 }: CreateAccordionItemParams): CreateAccordionItemResult => {
 	const summaryNestedEditable = createNestedEditable({
-		content: { type: "default" },
 		display: "block single-line",
 		childNodes: [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
@@ -65,7 +64,6 @@ export const createAccordionItem = ({
 	});
 
 	const bodyNestedEditable = createNestedEditable({
-		content: { type: "default" },
 		display: "block multi-line",
 		childNodes: childNodes ?? [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),

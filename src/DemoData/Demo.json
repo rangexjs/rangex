@@ -602,7 +602,6 @@
 											"editorRole": "nested-editable",
 											"uniqueId": "1787515033982-3140892111",
 											"customStorage": null,
-											"content": { "type": "list-item" },
 											"display": "block single-line",
 											"allowedComponents": null,
 											"allowedContentLineLocalNames": null,
@@ -647,7 +646,6 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787515033983-3523992147",
 												"customStorage": null,
-												"content": { "type": "list-item" },
 												"display": "block single-line",
 												"allowedComponents": null,
 												"allowedContentLineLocalNames": null,
@@ -743,7 +741,6 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787515037971-4280037377",
 												"customStorage": null,
-												"content": { "type": "list-item" },
 												"display": "block single-line",
 												"allowedComponents": null,
 												"allowedContentLineLocalNames": null,
@@ -862,7 +859,6 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787520105731-1713490911",
 												"customStorage": null,
-												"content": { "type": "list-item" },
 												"display": "block single-line",
 												"allowedComponents": null,
 												"allowedContentLineLocalNames": null,
@@ -1046,7 +1042,6 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787519516632-1010715937",
 												"customStorage": null,
-												"content": { "type": "default" },
 												"display": "block single-line",
 												"allowedComponents": null,
 												"allowedContentLineLocalNames": null,
@@ -1205,7 +1200,6 @@
 										"editorRole": "nested-editable",
 										"uniqueId": "1787519516632-3312999611",
 										"customStorage": null,
-										"content": { "type": "default" },
 										"display": "block multi-line",
 										"allowedComponents": null,
 										"allowedContentLineLocalNames": null,
@@ -1340,7 +1334,6 @@
 																			"editorRole": "nested-editable",
 																			"uniqueId": "1787515085842-4139648116",
 																			"customStorage": null,
-																			"content": { "type": "table-cell" },
 																			"display": "block multi-line",
 																			"allowedComponents": null,
 																			"allowedContentLineLocalNames": null,
@@ -1428,9 +1421,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2400927478",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -1524,9 +1514,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2853409304",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -1639,9 +1626,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3084736006",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -1735,9 +1719,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1434020243",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -1840,9 +1821,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1488985333",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -1936,9 +1914,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2643812325",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2041,9 +2016,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2780608402",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2137,9 +2109,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3303704283",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2242,9 +2211,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-741561450",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2338,9 +2304,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-4005262346",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2443,9 +2406,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3178303241",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2539,9 +2499,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1786809796",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2644,9 +2601,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2890893517",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2740,9 +2694,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1027410341",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2845,9 +2796,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2230719851",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -2941,9 +2889,6 @@
 																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-799958797",
 																								"customStorage": null,
-																								"content": {
-																									"type": "table-cell"
-																								},
 																								"display": "block multi-line",
 																								"allowedComponents": null,
 																								"allowedContentLineLocalNames": null,
@@ -3150,7 +3095,10 @@
 														"editorRole": "inline-component",
 														"uniqueId": "1787562945233-4145780975",
 														"name": "link",
-														"content": { "type": "bound-text" },
+														"content": {
+															"type": "bound-text",
+															"unwrap": "if-empty"
+														},
 														"shouldSelectBeforeRemove": false,
 														"shouldSelectOnNavigation": false,
 														"editState": "inherit",
@@ -3173,10 +3121,6 @@
 																		"editorRole": "nested-editable",
 																		"uniqueId": "1787562945233-933911278",
 																		"customStorage": null,
-																		"content": {
-																			"type": "bound-text",
-																			"unwrap": "if-empty"
-																		},
 																		"display": "inline",
 																		"allowedComponents": [],
 																		"allowedContentLineLocalNames": null,
@@ -3339,7 +3283,6 @@
 								"editorRole": "nested-editable",
 								"uniqueId": "1787515366924-2272460639",
 								"customStorage": null,
-								"content": { "type": "default" },
 								"display": "inline",
 								"allowedComponents": null,
 								"allowedContentLineLocalNames": null,
@@ -3381,7 +3324,7 @@
 						"editorRole": "inline-component",
 						"uniqueId": "1787515383319-1927714057",
 						"name": "link",
-						"content": { "type": "bound-text" },
+						"content": { "type": "bound-text", "unwrap": "if-empty" },
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
@@ -3404,10 +3347,6 @@
 										"editorRole": "nested-editable",
 										"uniqueId": "1787515383319-954944065",
 										"customStorage": null,
-										"content": {
-											"type": "bound-text",
-											"unwrap": "if-empty"
-										},
 										"display": "inline",
 										"allowedComponents": [],
 										"allowedContentLineLocalNames": null,
@@ -3525,7 +3464,6 @@
 								"editorRole": "nested-editable",
 								"uniqueId": "1787521753662-2919567164",
 								"customStorage": null,
-								"content": { "type": "default" },
 								"display": "inline",
 								"allowedComponents": null,
 								"allowedContentLineLocalNames": null,
@@ -3700,7 +3638,6 @@
 																	"editorRole": "nested-editable",
 																	"uniqueId": "1787515439812-2784944850",
 																	"customStorage": null,
-																	"content": { "type": "list-item" },
 																	"display": "block single-line",
 																	"allowedComponents": [],
 																	"allowedContentLineLocalNames": [],
@@ -3755,7 +3692,6 @@
 																		"editorRole": "nested-editable",
 																		"uniqueId": "1787517461050-2509168",
 																		"customStorage": null,
-																		"content": { "type": "list-item" },
 																		"display": "block single-line",
 																		"allowedComponents": [],
 																		"allowedContentLineLocalNames": [],
@@ -3870,7 +3806,6 @@
 																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515505069-1522786765",
 																		"customStorage": null,
-																		"content": { "type": "list-item" },
 																		"display": "block single-line",
 																		"allowedComponents": [],
 																		"allowedContentLineLocalNames": [],
@@ -3985,7 +3920,6 @@
 																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515505201-3753830647",
 																		"customStorage": null,
-																		"content": { "type": "list-item" },
 																		"display": "block single-line",
 																		"allowedComponents": [],
 																		"allowedContentLineLocalNames": [],
@@ -4100,7 +4034,6 @@
 																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515629073-3726844405",
 																		"customStorage": null,
-																		"content": { "type": "list-item" },
 																		"display": "block single-line",
 																		"allowedComponents": [],
 																		"allowedContentLineLocalNames": [],
@@ -4437,7 +4370,7 @@
 						"editorRole": "inline-component",
 						"uniqueId": "1787515853959-715448634",
 						"name": "link",
-						"content": { "type": "bound-text" },
+						"content": { "type": "bound-text", "unwrap": "if-empty" },
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
@@ -4460,10 +4393,6 @@
 										"editorRole": "nested-editable",
 										"uniqueId": "1787515853959-3856005388",
 										"customStorage": null,
-										"content": {
-											"type": "bound-text",
-											"unwrap": "if-empty"
-										},
 										"display": "inline",
 										"allowedComponents": [],
 										"allowedContentLineLocalNames": null,

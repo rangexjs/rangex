@@ -85,7 +85,6 @@ export const setEmbedCaptionEnabled = ({
 	});
 
 	const nestedEditable = createNestedEditable({
-		content: { type: "default" },
 		display: "block single-line",
 		editState: "true",
 		childNodes: [
