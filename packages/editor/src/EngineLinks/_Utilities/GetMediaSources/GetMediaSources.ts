@@ -13,7 +13,7 @@ export const getMediaSources = ({
 		snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
 
 	const mediaElements = rootEditableDraft.queryAll((node) => {
-		if (node.type !== htmlLayoutRole) {
+		if (node.editorRole !== htmlLayoutRole) {
 			return false;
 		}
 
@@ -29,8 +29,8 @@ export const getMediaSources = ({
 	const sources: string[] = [];
 
 	for (const mediaElement of mediaElements) {
-		if (mediaElement.type !== htmlLayoutRole) {
-			throw new Error("MediaElement's type is invalid.");
+		if (mediaElement.editorRole !== htmlLayoutRole) {
+			throw new Error("MediaElement's editorRole is invalid.");
 		}
 
 		const { src } = mediaElement.domAttrs;

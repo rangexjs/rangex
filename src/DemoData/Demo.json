@@ -1,7 +1,7 @@
 {
 	"version": 0,
 	"snapshot": {
-		"type": "root-editable",
+		"editorRole": "root-editable",
 		"uniqueId": "1775062780041-490502701",
 		"customStorage": {
 			"id": "root",
@@ -216,7 +216,7 @@
 		"domAttrs": { "spellcheck": "false" },
 		"childNodes": [
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787517829363-2812040663",
 				"customStorage": null,
 				"localName": "h2",
@@ -251,7 +251,7 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787519382673-3020313911",
 						"customStorage": null,
 						"data": "See it in action ⚡"
@@ -259,7 +259,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787517844514-2748249004",
 				"customStorage": null,
 				"localName": "p",
@@ -294,14 +294,14 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787517844514-2179036683",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787514831522-1096418996",
 				"customStorage": null,
 				"localName": "p",
@@ -336,7 +336,7 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519375196-2117722842",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -344,7 +344,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519369055-314841339",
 								"customStorage": null,
 								"data": "RangeX"
@@ -353,13 +353,13 @@
 						"inlineTagsArray": ["b"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787562146132-3815339990",
 						"customStorage": null,
 						"data": " already comes with "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787562151911-692997551",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -367,7 +367,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787562151910-1509376032",
 								"customStorage": null,
 								"data": "markdown"
@@ -376,13 +376,13 @@
 						"inlineTagsArray": ["b"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787562146131-1444736219",
 						"customStorage": null,
 						"data": ", "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519392293-3501085652",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -390,7 +390,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519375195-1490091456",
 								"customStorage": null,
 								"data": "shortcuts"
@@ -399,13 +399,13 @@
 						"inlineTagsArray": ["b"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787562138777-2240454304",
 						"customStorage": null,
 						"data": ", "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519402384-244182342",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -413,7 +413,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519395658-3439266759",
 								"customStorage": null,
 								"data": "slash commands"
@@ -422,13 +422,13 @@
 						"inlineTagsArray": ["b"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787519417605-1028717143",
 						"customStorage": null,
 						"data": ", and a lot more. Try it out: select a word and hit Ctrl+B, Ctrl+I, or Ctrl+U, start a line with "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519417606-3516373960",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -436,7 +436,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519402384-2843884571",
 								"customStorage": null,
 								"data": "# "
@@ -445,13 +445,13 @@
 						"inlineTagsArray": ["code"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787519424115-1448722909",
 						"customStorage": null,
 						"data": " or wrap a word in "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519424116-886442015",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -459,7 +459,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519417606-1584573087",
 								"customStorage": null,
 								"data": "**stars**"
@@ -468,13 +468,13 @@
 						"inlineTagsArray": ["code"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787519428846-879119266",
 						"customStorage": null,
 						"data": ", or just type "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519428847-2650257794",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -482,7 +482,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787519424116-3541870018",
 								"customStorage": null,
 								"data": "/"
@@ -491,7 +491,7 @@
 						"inlineTagsArray": ["code"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787519437889-3091319773",
 						"customStorage": null,
 						"data": " for a menu."
@@ -499,7 +499,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515055408-1058852851",
 				"customStorage": null,
 				"localName": "p",
@@ -534,35 +534,35 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787515055408-157266713",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "block-component-line",
+				"editorRole": "block-component-line",
 				"uniqueId": "1787515033983-1384500753",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515033982-3217933168",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515033982-1613109165",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-component",
+						"editorRole": "block-component",
 						"uniqueId": "1787515033982-1101716358",
 						"customStorage": { "id": "todo-list", "version": 1 },
 						"name": "todo-list",
@@ -574,7 +574,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "list",
+								"editorRole": "list",
 								"uniqueId": "1787515033982-403507098",
 								"customStorage": null,
 								"localName": "ul",
@@ -583,7 +583,7 @@
 									"domAttrs": {},
 									"childNodes": [
 										{
-											"type": "html-layout",
+											"editorRole": "html-layout",
 											"uniqueId": "1787515033981-1931090968",
 											"customStorage": {
 												"id": "todo-checkbox",
@@ -599,7 +599,7 @@
 											"childNodes": []
 										},
 										{
-											"type": "nested-editable",
+											"editorRole": "nested-editable",
 											"uniqueId": "1787515033982-3140892111",
 											"customStorage": null,
 											"content": { "type": "list-item" },
@@ -621,14 +621,14 @@
 								"domAttrs": {},
 								"childNodes": [
 									{
-										"type": "list-item",
+										"editorRole": "list-item",
 										"uniqueId": "1787515033983-481773763",
 										"customStorage": null,
 										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "html-layout",
+												"editorRole": "html-layout",
 												"uniqueId": "1787515033983-1307789434",
 												"customStorage": {
 													"id": "todo-checkbox",
@@ -644,7 +644,7 @@
 												"childNodes": []
 											},
 											{
-												"type": "nested-editable",
+												"editorRole": "nested-editable",
 												"uniqueId": "1787515033983-3523992147",
 												"customStorage": null,
 												"content": { "type": "list-item" },
@@ -659,7 +659,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "content-line",
+														"editorRole": "content-line",
 														"uniqueId": "1787515033984-3185867442",
 														"customStorage": null,
 														"localName": "p",
@@ -705,7 +705,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
+																"editorRole": "basic-text",
 																"uniqueId": "1787515035469-1682508520",
 																"customStorage": null,
 																"data": "Check things off"
@@ -717,14 +717,14 @@
 										]
 									},
 									{
-										"type": "list-item",
+										"editorRole": "list-item",
 										"uniqueId": "1787515037971-1885123725",
 										"customStorage": null,
 										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "html-layout",
+												"editorRole": "html-layout",
 												"uniqueId": "1787515037971-1496920444",
 												"customStorage": {
 													"id": "todo-checkbox",
@@ -740,7 +740,7 @@
 												"childNodes": []
 											},
 											{
-												"type": "nested-editable",
+												"editorRole": "nested-editable",
 												"uniqueId": "1787515037971-4280037377",
 												"customStorage": null,
 												"content": { "type": "list-item" },
@@ -755,7 +755,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "content-line",
+														"editorRole": "content-line",
 														"uniqueId": "1787515037971-1421780276",
 														"customStorage": null,
 														"localName": "p",
@@ -801,13 +801,13 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
+																"editorRole": "basic-text",
 																"uniqueId": "1787520308277-1555526128",
 																"customStorage": null,
 																"data": "Type "
 															},
 															{
-																"type": "glyph-formatter",
+																"editorRole": "glyph-formatter",
 																"uniqueId": "1787520334215-3861811800",
 																"customStorage": null,
 																"styleAttrs": {},
@@ -815,7 +815,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "basic-text",
+																		"editorRole": "basic-text",
 																		"uniqueId": "1787520334214-3565633343",
 																		"customStorage": null,
 																		"data": "[] "
@@ -824,7 +824,7 @@
 																"inlineTagsArray": ["code"]
 															},
 															{
-																"type": "basic-text",
+																"editorRole": "basic-text",
 																"uniqueId": "1787520327782-2576735061",
 																"customStorage": null,
 																"data": " on a new line to make one of your own"
@@ -836,14 +836,14 @@
 										]
 									},
 									{
-										"type": "list-item",
+										"editorRole": "list-item",
 										"uniqueId": "1787520105731-1440552464",
 										"customStorage": null,
 										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "html-layout",
+												"editorRole": "html-layout",
 												"uniqueId": "1787520105731-1432976926",
 												"customStorage": {
 													"id": "todo-checkbox",
@@ -859,7 +859,7 @@
 												"childNodes": []
 											},
 											{
-												"type": "nested-editable",
+												"editorRole": "nested-editable",
 												"uniqueId": "1787520105731-1713490911",
 												"customStorage": null,
 												"content": { "type": "list-item" },
@@ -874,7 +874,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "content-line",
+														"editorRole": "content-line",
 														"uniqueId": "1787520105730-3910186950",
 														"customStorage": null,
 														"localName": "p",
@@ -920,7 +920,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
+																"editorRole": "basic-text",
 																"uniqueId": "1787520362503-2568350755",
 																"customStorage": null,
 																"data": "Click the handle on the left, turn this into something else"
@@ -936,14 +936,14 @@
 						]
 					},
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515033982-4254446055",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515033982-1868946560",
 								"customStorage": null
 							}
@@ -952,7 +952,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787520102486-3320612349",
 				"customStorage": null,
 				"localName": "p",
@@ -987,35 +987,35 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787520102485-2716564471",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "block-component-line",
+				"editorRole": "block-component-line",
 				"uniqueId": "1787519516634-492255617",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787519516633-1086837007",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787519516633-557550732",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-component",
+						"editorRole": "block-component",
 						"uniqueId": "1787519516633-2879763022",
 						"customStorage": { "id": "accordion-item", "version": 1 },
 						"name": "accordion-item",
@@ -1027,7 +1027,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "html-layout",
+								"editorRole": "html-layout",
 								"uniqueId": "1787519516633-3902472065",
 								"customStorage": null,
 								"localName": "details",
@@ -1035,7 +1035,7 @@
 								"domAttrs": {},
 								"childNodes": [
 									{
-										"type": "html-layout",
+										"editorRole": "html-layout",
 										"uniqueId": "1787519516633-3363969130",
 										"customStorage": null,
 										"localName": "summary",
@@ -1043,7 +1043,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "nested-editable",
+												"editorRole": "nested-editable",
 												"uniqueId": "1787519516632-1010715937",
 												"customStorage": null,
 												"content": { "type": "default" },
@@ -1058,7 +1058,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "content-line",
+														"editorRole": "content-line",
 														"uniqueId": "1787519516632-2381927196",
 														"customStorage": null,
 														"localName": "p",
@@ -1104,7 +1104,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "glyph-formatter",
+																"editorRole": "glyph-formatter",
 																"uniqueId": "1787519703738-2516142849",
 																"customStorage": null,
 																"styleAttrs": {},
@@ -1120,7 +1120,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "basic-text",
+																		"editorRole": "basic-text",
 																		"uniqueId": "1787519855462-3880966879",
 																		"customStorage": null,
 																		"data": "Roadmap: what's coming next"
@@ -1133,7 +1133,7 @@
 												]
 											},
 											{
-												"type": "detached-context",
+												"editorRole": "detached-context",
 												"uniqueId": "1787519516633-725825025",
 												"customStorage": null,
 												"localName": "span",
@@ -1202,7 +1202,7 @@
 										]
 									},
 									{
-										"type": "nested-editable",
+										"editorRole": "nested-editable",
 										"uniqueId": "1787519516632-3312999611",
 										"customStorage": null,
 										"content": { "type": "default" },
@@ -1217,7 +1217,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "content-line",
+												"editorRole": "content-line",
 												"uniqueId": "1787519744558-228609054",
 												"customStorage": null,
 												"localName": "p",
@@ -1260,13 +1260,13 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787520626793-847643204",
 														"customStorage": null,
 														"data": "RangeX is in "
 													},
 													{
-														"type": "glyph-formatter",
+														"editorRole": "glyph-formatter",
 														"uniqueId": "1787519841319-2960165776",
 														"customStorage": null,
 														"styleAttrs": {},
@@ -1274,7 +1274,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "basic-text",
+																"editorRole": "basic-text",
 																"uniqueId": "1787519838583-403461970",
 																"customStorage": null,
 																"data": "beta"
@@ -1283,7 +1283,7 @@
 														"inlineTagsArray": ["b"]
 													},
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787519841319-1444008868",
 														"customStorage": null,
 														"data": " and moving fast, here's what's already in motion:"
@@ -1291,28 +1291,28 @@
 												]
 											},
 											{
-												"type": "block-component-line",
+												"editorRole": "block-component-line",
 												"uniqueId": "1787561150973-1752038776",
 												"customStorage": null,
 												"styleAttrs": {},
 												"domAttrs": { "data-block-align": "center" },
 												"childNodes": [
 													{
-														"type": "block-component-text-holder",
+														"editorRole": "block-component-text-holder",
 														"uniqueId": "1787561150973-132249787",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "block-component-text",
+																"editorRole": "block-component-text",
 																"uniqueId": "1787561150973-3911607301",
 																"customStorage": null
 															}
 														]
 													},
 													{
-														"type": "block-component",
+														"editorRole": "block-component",
 														"uniqueId": "1787561150973-1591013998",
 														"customStorage": { "id": "table", "version": 1 },
 														"name": "table",
@@ -1324,7 +1324,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "table",
+																"editorRole": "table",
 																"uniqueId": "1787561150973-1497774928",
 																"customStorage": null,
 																"colGroups": [280, 720],
@@ -1337,7 +1337,7 @@
 																	"domAttrs": {},
 																	"childNodes": [
 																		{
-																			"type": "nested-editable",
+																			"editorRole": "nested-editable",
 																			"uniqueId": "1787515085842-4139648116",
 																			"customStorage": null,
 																			"content": { "type": "table-cell" },
@@ -1352,7 +1352,7 @@
 																			"domAttrs": {},
 																			"childNodes": [
 																				{
-																					"type": "content-line",
+																					"editorRole": "content-line",
 																					"uniqueId": "1787515085842-1644298558",
 																					"customStorage": null,
 																					"localName": "p",
@@ -1361,7 +1361,7 @@
 																					"domAttrs": {},
 																					"childNodes": [
 																						{
-																							"type": "beam-text",
+																							"editorRole": "beam-text",
 																							"uniqueId": "1787515085842-2005760525",
 																							"customStorage": null
 																						}
@@ -1375,14 +1375,14 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "table-col-group",
+																		"editorRole": "table-col-group",
 																		"uniqueId": "1787561150973-1597430616",
 																		"customStorage": null,
 																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "table-col",
+																				"editorRole": "table-col",
 																				"uniqueId": "1787561150973-2654252871",
 																				"customStorage": null,
 																				"styleAttrs": { "width": "28%" },
@@ -1390,7 +1390,7 @@
 																				"childNodes": []
 																			},
 																			{
-																				"type": "table-col",
+																				"editorRole": "table-col",
 																				"uniqueId": "1787561150973-926507204",
 																				"customStorage": null,
 																				"styleAttrs": { "width": "72%" },
@@ -1400,7 +1400,7 @@
 																		]
 																	},
 																	{
-																		"type": "table-section",
+																		"editorRole": "table-section",
 																		"uniqueId": "1787561150973-287810236",
 																		"customStorage": null,
 																		"localName": "thead",
@@ -1408,14 +1408,14 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-1333572580",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-2241918290",
 																						"customStorage": null,
 																						"localName": "th",
@@ -1425,7 +1425,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2400927478",
 																								"customStorage": null,
 																								"content": {
@@ -1442,7 +1442,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-2125465646",
 																										"customStorage": null,
 																										"localName": "p",
@@ -1499,7 +1499,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-3971897126",
 																												"customStorage": null,
 																												"data": "Plan"
@@ -1511,7 +1511,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-1433234964",
 																						"customStorage": null,
 																						"localName": "th",
@@ -1521,7 +1521,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2853409304",
 																								"customStorage": null,
 																								"content": {
@@ -1538,7 +1538,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-2565411349",
 																										"customStorage": null,
 																										"localName": "p",
@@ -1595,7 +1595,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-3690091711",
 																												"customStorage": null,
 																												"data": "Details"
@@ -1611,7 +1611,7 @@
 																		]
 																	},
 																	{
-																		"type": "table-section",
+																		"editorRole": "table-section",
 																		"uniqueId": "1787561150973-3291025376",
 																		"customStorage": null,
 																		"localName": "tbody",
@@ -1619,14 +1619,14 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2945639999",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-3074326824",
 																						"customStorage": null,
 																						"localName": "th",
@@ -1636,7 +1636,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3084736006",
 																								"customStorage": null,
 																								"content": {
@@ -1653,7 +1653,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-3885067741",
 																										"customStorage": null,
 																										"localName": "p",
@@ -1710,7 +1710,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-1447774568",
 																												"customStorage": null,
 																												"data": "Real-time collaboration"
@@ -1722,7 +1722,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-1943094447",
 																						"customStorage": null,
 																						"localName": "td",
@@ -1732,7 +1732,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1434020243",
 																								"customStorage": null,
 																								"content": {
@@ -1749,7 +1749,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-3566056207",
 																										"customStorage": null,
 																										"localName": "p",
@@ -1806,7 +1806,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787562701081-889522207",
 																												"customStorage": null,
 																												"data": "Live cursors and presence, multiple people editing at once"
@@ -1820,14 +1820,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2133711216",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-3885574539",
 																						"customStorage": null,
 																						"localName": "th",
@@ -1837,7 +1837,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1488985333",
 																								"customStorage": null,
 																								"content": {
@@ -1854,7 +1854,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-499221488",
 																										"customStorage": null,
 																										"localName": "p",
@@ -1911,7 +1911,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-4167064411",
 																												"customStorage": null,
 																												"data": "Comments"
@@ -1923,7 +1923,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-3846059131",
 																						"customStorage": null,
 																						"localName": "td",
@@ -1933,7 +1933,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2643812325",
 																								"customStorage": null,
 																								"content": {
@@ -1950,7 +1950,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1841091678",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2007,7 +2007,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787562786690-1509060766",
 																												"customStorage": null,
 																												"data": "Comments on any piece of content, ability to reply in threads, resolve when done"
@@ -2021,14 +2021,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-3420548339",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-1568999335",
 																						"customStorage": null,
 																						"localName": "th",
@@ -2038,7 +2038,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2780608402",
 																								"customStorage": null,
 																								"content": {
@@ -2055,7 +2055,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1492760656",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2112,7 +2112,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-4138406867",
 																												"customStorage": null,
 																												"data": "Vim integration"
@@ -2124,7 +2124,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-976339293",
 																						"customStorage": null,
 																						"localName": "td",
@@ -2134,7 +2134,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3303704283",
 																								"customStorage": null,
 																								"content": {
@@ -2151,7 +2151,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1876955831",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2208,7 +2208,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787562820860-3038279685",
 																												"customStorage": null,
 																												"data": "Modal editing with Vim keybindings"
@@ -2222,14 +2222,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2136824767",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-2529832951",
 																						"customStorage": null,
 																						"localName": "th",
@@ -2239,7 +2239,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-741561450",
 																								"customStorage": null,
 																								"content": {
@@ -2256,7 +2256,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-428799849",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2313,7 +2313,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-3507944475",
 																												"customStorage": null,
 																												"data": "Table improvements"
@@ -2325,7 +2325,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-1223059824",
 																						"customStorage": null,
 																						"localName": "td",
@@ -2335,7 +2335,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-4005262346",
 																								"customStorage": null,
 																								"content": {
@@ -2352,7 +2352,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1746255634",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2409,7 +2409,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787562696393-534568870",
 																												"customStorage": null,
 																												"data": "Ability to drag and reorder rows and columns"
@@ -2423,14 +2423,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2083529138",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-2543226329",
 																						"customStorage": null,
 																						"localName": "th",
@@ -2440,7 +2440,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-3178303241",
 																								"customStorage": null,
 																								"content": {
@@ -2457,7 +2457,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-3325805921",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2514,7 +2514,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-365514025",
 																												"customStorage": null,
 																												"data": "More templates"
@@ -2526,7 +2526,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-3533999829",
 																						"customStorage": null,
 																						"localName": "td",
@@ -2536,7 +2536,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1786809796",
 																								"customStorage": null,
 																								"content": {
@@ -2553,7 +2553,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-144019758",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2610,7 +2610,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-3939294953",
 																												"customStorage": null,
 																												"data": "Ready-made layouts like paginated pages and PDF-style documents"
@@ -2624,14 +2624,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2153708197",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-2400616928",
 																						"customStorage": null,
 																						"localName": "th",
@@ -2641,7 +2641,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2890893517",
 																								"customStorage": null,
 																								"content": {
@@ -2658,7 +2658,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1250744016",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2715,7 +2715,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-837870355",
 																												"customStorage": null,
 																												"data": "Components"
@@ -2727,7 +2727,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-3646575352",
 																						"customStorage": null,
 																						"localName": "td",
@@ -2737,7 +2737,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-1027410341",
 																								"customStorage": null,
 																								"content": {
@@ -2754,7 +2754,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1033367895",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2811,7 +2811,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-2581261790",
 																												"customStorage": null,
 																												"data": "Table of contents, outline sidebar, columns, and more on the way"
@@ -2825,14 +2825,14 @@
 																				]
 																			},
 																			{
-																				"type": "table-row",
+																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-920967331",
 																				"customStorage": null,
 																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-235572184",
 																						"customStorage": null,
 																						"localName": "th",
@@ -2842,7 +2842,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-2230719851",
 																								"customStorage": null,
 																								"content": {
@@ -2859,7 +2859,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-2439396013",
 																										"customStorage": null,
 																										"localName": "p",
@@ -2916,7 +2916,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787561150973-528653113",
 																												"customStorage": null,
 																												"data": "AI integration"
@@ -2928,7 +2928,7 @@
 																						]
 																					},
 																					{
-																						"type": "table-cell",
+																						"editorRole": "table-cell",
 																						"uniqueId": "1787561150973-2389460752",
 																						"customStorage": null,
 																						"localName": "td",
@@ -2938,7 +2938,7 @@
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
-																								"type": "nested-editable",
+																								"editorRole": "nested-editable",
 																								"uniqueId": "1787561150973-799958797",
 																								"customStorage": null,
 																								"content": {
@@ -2955,7 +2955,7 @@
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
-																										"type": "content-line",
+																										"editorRole": "content-line",
 																										"uniqueId": "1787561150973-1880671627",
 																										"customStorage": null,
 																										"localName": "p",
@@ -3012,7 +3012,7 @@
 																										"domAttrs": {},
 																										"childNodes": [
 																											{
-																												"type": "basic-text",
+																												"editorRole": "basic-text",
 																												"uniqueId": "1787562745330-233057091",
 																												"customStorage": null,
 																												"data": "For things like generating content, checking grammar, rephrasing content or whatever you need"
@@ -3032,14 +3032,14 @@
 														]
 													},
 													{
-														"type": "block-component-text-holder",
+														"editorRole": "block-component-text-holder",
 														"uniqueId": "1787561150973-1952837477",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "block-component-text",
+																"editorRole": "block-component-text",
 																"uniqueId": "1787561150973-3632115502",
 																"customStorage": null
 															}
@@ -3048,7 +3048,7 @@
 												]
 											},
 											{
-												"type": "content-line",
+												"editorRole": "content-line",
 												"uniqueId": "1787519787435-1907298600",
 												"customStorage": null,
 												"localName": "p",
@@ -3091,14 +3091,14 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "beam-text",
+														"editorRole": "beam-text",
 														"uniqueId": "1787519787435-659612002",
 														"customStorage": null
 													}
 												]
 											},
 											{
-												"type": "content-line",
+												"editorRole": "content-line",
 												"uniqueId": "1787519781833-3860052657",
 												"customStorage": null,
 												"localName": "p",
@@ -3141,16 +3141,16 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787562945236-2221322694",
 														"customStorage": null,
 														"data": "Missing something you need? Join to our "
 													},
 													{
-														"type": "inline-component",
+														"editorRole": "inline-component",
 														"uniqueId": "1787562945233-4145780975",
 														"name": "link",
-														"content": { "type": "linked-characters" },
+														"content": { "type": "bound-text" },
 														"shouldSelectBeforeRemove": false,
 														"shouldSelectOnNavigation": false,
 														"editState": "inherit",
@@ -3159,7 +3159,7 @@
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "html-layout",
+																"editorRole": "html-layout",
 																"uniqueId": "1787562945233-169335950",
 																"customStorage": null,
 																"localName": "a",
@@ -3170,11 +3170,11 @@
 																},
 																"childNodes": [
 																	{
-																		"type": "nested-editable",
+																		"editorRole": "nested-editable",
 																		"uniqueId": "1787562945233-933911278",
 																		"customStorage": null,
 																		"content": {
-																			"type": "linked-characters",
+																			"type": "bound-text",
 																			"unwrap": "if-empty"
 																		},
 																		"display": "inline",
@@ -3188,7 +3188,7 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "content-line",
+																				"editorRole": "content-line",
 																				"uniqueId": "1787562945233-1705035598",
 																				"customStorage": null,
 																				"localName": "span",
@@ -3197,7 +3197,7 @@
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "basic-text",
+																						"editorRole": "basic-text",
 																						"uniqueId": "1787562945233-633280341",
 																						"customStorage": null,
 																						"data": "discord"
@@ -3211,7 +3211,7 @@
 														]
 													},
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787562956031-3706430964",
 														"customStorage": null,
 														"data": " server and tell us!"
@@ -3225,14 +3225,14 @@
 						]
 					},
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787519516634-1255660028",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787519516634-4025074354",
 								"customStorage": null
 							}
@@ -3241,7 +3241,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515354284-3399390806",
 				"customStorage": null,
 				"localName": "p",
@@ -3276,14 +3276,14 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787515354284-1171110422",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515359478-1943410311",
 				"customStorage": null,
 				"localName": "p",
@@ -3318,13 +3318,13 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787515366923-3569065834",
 						"customStorage": null,
 						"data": "Mention someone with @, like "
 					},
 					{
-						"type": "inline-component",
+						"editorRole": "inline-component",
 						"uniqueId": "1787515366925-2709463368",
 						"name": "mention",
 						"content": { "type": "custom" },
@@ -3336,7 +3336,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "nested-editable",
+								"editorRole": "nested-editable",
 								"uniqueId": "1787515366924-2272460639",
 								"customStorage": null,
 								"content": { "type": "default" },
@@ -3351,7 +3351,7 @@
 								"domAttrs": {},
 								"childNodes": [
 									{
-										"type": "content-line",
+										"editorRole": "content-line",
 										"uniqueId": "1787515366924-2855368613",
 										"customStorage": null,
 										"localName": "span",
@@ -3360,7 +3360,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "basic-text",
+												"editorRole": "basic-text",
 												"uniqueId": "1787515366924-2036651386",
 												"customStorage": null,
 												"data": "@JohnDoe"
@@ -3372,16 +3372,16 @@
 						]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787515383318-3242657247",
 						"customStorage": null,
 						"data": ". Drop in a "
 					},
 					{
-						"type": "inline-component",
+						"editorRole": "inline-component",
 						"uniqueId": "1787515383319-1927714057",
 						"name": "link",
-						"content": { "type": "linked-characters" },
+						"content": { "type": "bound-text" },
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
@@ -3390,7 +3390,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "html-layout",
+								"editorRole": "html-layout",
 								"uniqueId": "1787515383319-2392044268",
 								"customStorage": null,
 								"localName": "a",
@@ -3401,11 +3401,11 @@
 								},
 								"childNodes": [
 									{
-										"type": "nested-editable",
+										"editorRole": "nested-editable",
 										"uniqueId": "1787515383319-954944065",
 										"customStorage": null,
 										"content": {
-											"type": "linked-characters",
+											"type": "bound-text",
 											"unwrap": "if-empty"
 										},
 										"display": "inline",
@@ -3419,7 +3419,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "content-line",
+												"editorRole": "content-line",
 												"uniqueId": "1787561280979-3233858106",
 												"customStorage": null,
 												"localName": "span",
@@ -3428,7 +3428,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787561280979-1062795663",
 														"customStorage": null,
 														"data": "link"
@@ -3442,13 +3442,13 @@
 						]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787517237417-2085833180",
 						"customStorage": null,
 						"data": ", type "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787517237417-2335850282",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -3456,7 +3456,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787515398208-3722641578",
 								"customStorage": null,
 								"data": ":rocket:"
@@ -3465,25 +3465,25 @@
 						"inlineTagsArray": ["code"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787517237417-1680421748",
 						"customStorage": null,
 						"data": " for "
 					},
 					{
-						"type": "one-visual-unit-text",
+						"editorRole": "one-visual-unit-text",
 						"uniqueId": "1787515398209-1930548317",
 						"customStorage": null,
 						"data": "🚀"
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787521739859-3807764846",
 						"customStorage": null,
 						"data": ", or type "
 					},
 					{
-						"type": "glyph-formatter",
+						"editorRole": "glyph-formatter",
 						"uniqueId": "1787521739860-405262040",
 						"customStorage": null,
 						"styleAttrs": {},
@@ -3491,7 +3491,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "basic-text",
+								"editorRole": "basic-text",
 								"uniqueId": "1787521739857-4067506495",
 								"customStorage": null,
 								"data": "{{"
@@ -3500,13 +3500,13 @@
 						"inlineTagsArray": ["code"]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787521753663-1690565045",
 						"customStorage": null,
 						"data": " for a template variable like "
 					},
 					{
-						"type": "inline-component",
+						"editorRole": "inline-component",
 						"uniqueId": "1787521753662-3235077511",
 						"name": "template-variable",
 						"content": { "type": "custom" },
@@ -3522,7 +3522,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "nested-editable",
+								"editorRole": "nested-editable",
 								"uniqueId": "1787521753662-2919567164",
 								"customStorage": null,
 								"content": { "type": "default" },
@@ -3537,7 +3537,7 @@
 								"domAttrs": {},
 								"childNodes": [
 									{
-										"type": "content-line",
+										"editorRole": "content-line",
 										"uniqueId": "1787521753662-3638762613",
 										"customStorage": null,
 										"localName": "span",
@@ -3546,7 +3546,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "basic-text",
+												"editorRole": "basic-text",
 												"uniqueId": "1787521753662-3344713928",
 												"customStorage": null,
 												"data": "{{Full name}}"
@@ -3558,7 +3558,7 @@
 						]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787521764992-2955065174",
 						"customStorage": null,
 						"data": ", handy as placeholders in emails and documents."
@@ -3566,7 +3566,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515437897-3086069073",
 				"customStorage": null,
 				"localName": "p",
@@ -3601,35 +3601,35 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787515437897-1950384159",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "block-component-line",
+				"editorRole": "block-component-line",
 				"uniqueId": "1787515439813-3499544768",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515439812-3723901065",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515439812-1888625428",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-component",
+						"editorRole": "block-component",
 						"uniqueId": "1787515439813-1252966341",
 						"customStorage": {
 							"id": "code-block",
@@ -3648,7 +3648,7 @@
 						},
 						"childNodes": [
 							{
-								"type": "html-layout",
+								"editorRole": "html-layout",
 								"uniqueId": "1787515439812-1785845768",
 								"customStorage": null,
 								"localName": "pre",
@@ -3656,7 +3656,7 @@
 								"domAttrs": {},
 								"childNodes": [
 									{
-										"type": "html-layout",
+										"editorRole": "html-layout",
 										"uniqueId": "1787515439812-708219522",
 										"customStorage": null,
 										"localName": "code",
@@ -3664,7 +3664,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "list",
+												"editorRole": "list",
 												"uniqueId": "1787515439812-2482482143",
 												"customStorage": null,
 												"localName": "ol",
@@ -3673,7 +3673,7 @@
 													"domAttrs": {},
 													"childNodes": [
 														{
-															"type": "html-layout",
+															"editorRole": "html-layout",
 															"uniqueId": "1787515439812-364493721",
 															"customStorage": null,
 															"localName": "div",
@@ -3681,7 +3681,7 @@
 															"domAttrs": {},
 															"childNodes": [
 																{
-																	"type": "detached-context",
+																	"editorRole": "detached-context",
 																	"uniqueId": "1787515439812-3395229955",
 																	"customStorage": null,
 																	"localName": "span",
@@ -3697,7 +3697,7 @@
 																	]
 																},
 																{
-																	"type": "nested-editable",
+																	"editorRole": "nested-editable",
 																	"uniqueId": "1787515439812-2784944850",
 																	"customStorage": null,
 																	"content": { "type": "list-item" },
@@ -3721,14 +3721,14 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "list-item",
+														"editorRole": "list-item",
 														"uniqueId": "1787517461050-2436054813",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "html-layout",
+																"editorRole": "html-layout",
 																"uniqueId": "1787517461050-40220843",
 																"customStorage": null,
 																"localName": "div",
@@ -3736,7 +3736,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "detached-context",
+																		"editorRole": "detached-context",
 																		"uniqueId": "1787517461050-654908826",
 																		"customStorage": null,
 																		"localName": "span",
@@ -3752,7 +3752,7 @@
 																		]
 																	},
 																	{
-																		"type": "nested-editable",
+																		"editorRole": "nested-editable",
 																		"uniqueId": "1787517461050-2509168",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
@@ -3767,7 +3767,7 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "content-line",
+																				"editorRole": "content-line",
 																				"uniqueId": "1787517461048-4253042888",
 																				"customStorage": null,
 																				"localName": "p",
@@ -3822,7 +3822,7 @@
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "basic-text",
+																						"editorRole": "basic-text",
 																						"uniqueId": "1787517461048-2048944238",
 																						"customStorage": null,
 																						"data": "const richTextEditor = new RichTextEditor({"
@@ -3836,14 +3836,14 @@
 														]
 													},
 													{
-														"type": "list-item",
+														"editorRole": "list-item",
 														"uniqueId": "1787515505069-2637480869",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "html-layout",
+																"editorRole": "html-layout",
 																"uniqueId": "1787515505069-4043309510",
 																"customStorage": null,
 																"localName": "div",
@@ -3851,7 +3851,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "detached-context",
+																		"editorRole": "detached-context",
 																		"uniqueId": "1787515505069-3268078566",
 																		"customStorage": null,
 																		"localName": "span",
@@ -3867,7 +3867,7 @@
 																		]
 																	},
 																	{
-																		"type": "nested-editable",
+																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515505069-1522786765",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
@@ -3882,7 +3882,7 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "content-line",
+																				"editorRole": "content-line",
 																				"uniqueId": "1787515505068-3856379804",
 																				"customStorage": null,
 																				"localName": "p",
@@ -3937,7 +3937,7 @@
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "basic-text",
+																						"editorRole": "basic-text",
 																						"uniqueId": "1787515569941-458088269",
 																						"customStorage": null,
 																						"data": "  extensions: [UndoRedo({}), Formatting({}), Link({}), Table({}), EmptyMedia({ uploadFile })]"
@@ -3951,14 +3951,14 @@
 														]
 													},
 													{
-														"type": "list-item",
+														"editorRole": "list-item",
 														"uniqueId": "1787515505201-3389168619",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "html-layout",
+																"editorRole": "html-layout",
 																"uniqueId": "1787515505201-3075625303",
 																"customStorage": null,
 																"localName": "div",
@@ -3966,7 +3966,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "detached-context",
+																		"editorRole": "detached-context",
 																		"uniqueId": "1787515505201-467824284",
 																		"customStorage": null,
 																		"localName": "span",
@@ -3982,7 +3982,7 @@
 																		]
 																	},
 																	{
-																		"type": "nested-editable",
+																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515505201-3753830647",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
@@ -3997,7 +3997,7 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "content-line",
+																				"editorRole": "content-line",
 																				"uniqueId": "1787515505200-3561512762",
 																				"customStorage": null,
 																				"localName": "p",
@@ -4052,7 +4052,7 @@
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "basic-text",
+																						"editorRole": "basic-text",
 																						"uniqueId": "1787515505200-3712085071",
 																						"customStorage": null,
 																						"data": "});"
@@ -4066,14 +4066,14 @@
 														]
 													},
 													{
-														"type": "list-item",
+														"editorRole": "list-item",
 														"uniqueId": "1787515629073-3267357441",
 														"customStorage": null,
 														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
-																"type": "html-layout",
+																"editorRole": "html-layout",
 																"uniqueId": "1787515629073-684464796",
 																"customStorage": null,
 																"localName": "div",
@@ -4081,7 +4081,7 @@
 																"domAttrs": {},
 																"childNodes": [
 																	{
-																		"type": "detached-context",
+																		"editorRole": "detached-context",
 																		"uniqueId": "1787515629073-3076271715",
 																		"customStorage": null,
 																		"localName": "span",
@@ -4097,7 +4097,7 @@
 																		]
 																	},
 																	{
-																		"type": "nested-editable",
+																		"editorRole": "nested-editable",
 																		"uniqueId": "1787515629073-3726844405",
 																		"customStorage": null,
 																		"content": { "type": "list-item" },
@@ -4112,7 +4112,7 @@
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
-																				"type": "content-line",
+																				"editorRole": "content-line",
 																				"uniqueId": "1787515629072-1576915935",
 																				"customStorage": null,
 																				"localName": "p",
@@ -4167,7 +4167,7 @@
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
-																						"type": "basic-text",
+																						"editorRole": "basic-text",
 																						"uniqueId": "1787515630108-488080910",
 																						"customStorage": null,
 																						"data": "container.append(richTextEditor);"
@@ -4189,14 +4189,14 @@
 						]
 					},
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515439813-3949244559",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515439813-1694070500",
 								"customStorage": null
 							}
@@ -4205,7 +4205,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515354121-1161758503",
 				"customStorage": null,
 				"localName": "p",
@@ -4240,35 +4240,35 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787515354121-3464725459",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "block-component-line",
+				"editorRole": "block-component-line",
 				"uniqueId": "1787515686749-4177932803",
 				"customStorage": null,
 				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515686749-1781114465",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515686749-365711177",
 								"customStorage": null
 							}
 						]
 					},
 					{
-						"type": "block-component",
+						"editorRole": "block-component",
 						"uniqueId": "1787515686749-2914192422",
 						"customStorage": { "id": "empty-media", "version": 1 },
 						"name": "empty-media",
@@ -4280,7 +4280,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "detached-context",
+								"editorRole": "detached-context",
 								"uniqueId": "1787515686749-2931082073",
 								"customStorage": null,
 								"localName": "slot",
@@ -4292,14 +4292,14 @@
 						]
 					},
 					{
-						"type": "block-component-text-holder",
+						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515686749-1163600064",
 						"customStorage": null,
 						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "block-component-text",
+								"editorRole": "block-component-text",
 								"uniqueId": "1787515686749-1405227282",
 								"customStorage": null
 							}
@@ -4308,7 +4308,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515693457-2429169353",
 				"customStorage": null,
 				"localName": "p",
@@ -4343,14 +4343,14 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "beam-text",
+						"editorRole": "beam-text",
 						"uniqueId": "1787515693457-3748635223",
 						"customStorage": null
 					}
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515693569-66750626",
 				"customStorage": null,
 				"localName": "p",
@@ -4385,7 +4385,7 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787520073651-2981695233",
 						"customStorage": null,
 						"data": "That's the tour, the rest is yours to poke at. More features and smoother UX are on the way."
@@ -4393,7 +4393,7 @@
 				]
 			},
 			{
-				"type": "content-line",
+				"editorRole": "content-line",
 				"uniqueId": "1787515789399-885056014",
 				"customStorage": null,
 				"localName": "p",
@@ -4428,16 +4428,16 @@
 				"domAttrs": {},
 				"childNodes": [
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787515853957-886567806",
 						"customStorage": null,
 						"data": "Check out the "
 					},
 					{
-						"type": "inline-component",
+						"editorRole": "inline-component",
 						"uniqueId": "1787515853959-715448634",
 						"name": "link",
-						"content": { "type": "linked-characters" },
+						"content": { "type": "bound-text" },
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
@@ -4446,7 +4446,7 @@
 						"domAttrs": {},
 						"childNodes": [
 							{
-								"type": "html-layout",
+								"editorRole": "html-layout",
 								"uniqueId": "1787515853959-1822594554",
 								"customStorage": null,
 								"localName": "a",
@@ -4457,11 +4457,11 @@
 								},
 								"childNodes": [
 									{
-										"type": "nested-editable",
+										"editorRole": "nested-editable",
 										"uniqueId": "1787515853959-3856005388",
 										"customStorage": null,
 										"content": {
-											"type": "linked-characters",
+											"type": "bound-text",
 											"unwrap": "if-empty"
 										},
 										"display": "inline",
@@ -4475,7 +4475,7 @@
 										"domAttrs": {},
 										"childNodes": [
 											{
-												"type": "content-line",
+												"editorRole": "content-line",
 												"uniqueId": "1787561295303-1663706134",
 												"customStorage": null,
 												"localName": "span",
@@ -4484,7 +4484,7 @@
 												"domAttrs": {},
 												"childNodes": [
 													{
-														"type": "basic-text",
+														"editorRole": "basic-text",
 														"uniqueId": "1787561295303-555609166",
 														"customStorage": null,
 														"data": "docs"
@@ -4498,7 +4498,7 @@
 						]
 					},
 					{
-						"type": "basic-text",
+						"editorRole": "basic-text",
 						"uniqueId": "1787515875507-1796346385",
 						"customStorage": null,
 						"data": " and play with it."
