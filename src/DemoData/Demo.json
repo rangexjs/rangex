@@ -4517,10 +4517,12 @@
 		"del",
 		"s",
 		"mark",
+		"small",
 		"sub",
 		"sup",
 		"code",
 		"kbd",
+		"samp",
 		"var"
 	]
 }

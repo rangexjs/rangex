@@ -228,7 +228,7 @@ The inline formatting wrapper. Wraps one or more `FormattableText` nodes and car
 ```
 
 **Available inline tags** (`GlyphFormatterInlineTag`):
-`"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"`
+`"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"samp"`, `"small"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"`
 
 **Structured style properties** (`GlyphFormatterStyleAttrName`):
 `backgroundColor`, `color`, `fontFamily`, `fontSize`, `fontStyle`, `fontWeight`, `letterSpacing`, `textDecoration`.
@@ -243,7 +243,7 @@ An array of `GlyphFormatterInlineTag` that serves two purposes:
 1. **HTML serialization order** — when outputting HTML, the flat `inline-tags` attribute is converted to nested elements in this order (e.g. `["strong", "em"]` → `<strong><em>text</em></strong>`).
 2. **CSS rule precedence** — default styles for each inline tag are generated as CSS rules in this order. A tag appearing **later** in the array wins when two active tags conflict on the same CSS property (standard cascade — last rule wins).
 
-Default styles per tag: `strong`/`b` → `fontWeight: bolder`, `em`/`i`/`var` → `fontStyle: italic`, `ins`/`u` → `textDecoration: underline`, `del`/`s` → `textDecoration: line-through`, `mark` → `backgroundColor: yellow`, `sub` → `verticalAlign: sub`, `sup` → `verticalAlign: super`, `code`/`kbd` → `fontFamily: monospace`.
+Default styles per tag: `strong`/`b` → `fontWeight: bolder`, `em`/`i`/`var` → `fontStyle: italic`, `ins`/`u` → `textDecoration: underline`, `del`/`s` → `textDecoration: line-through`, `mark` → `backgroundColor: yellow`, `small` → `fontSize: smaller`, `sub` → `verticalAlign: sub`, `sup` → `verticalAlign: super`, `code`/`kbd`/`samp` → `fontFamily: monospace`.
 
 Set via `rootEditableFrom: { type: "node", glyphFormatterInlineTagsOrder: [...] }` at init, or updated at runtime via `editorAPI.updateGlyphFormatterInlineTagsOrder(...)`. Stored in `StoredSnapshot` so it persists alongside content.
 
