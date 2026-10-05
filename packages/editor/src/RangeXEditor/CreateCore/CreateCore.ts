@@ -1,4 +1,5 @@
 import {
+	configureSanitizer,
 	createBeamText,
 	createContentLine,
 	createEditorAPI,
@@ -43,6 +44,9 @@ const createRootEditableFrom = ({
 
 	return { type: "node", node: rootEditable };
 };
+
+// TODO: Set policy rules
+configureSanitizer({ "*": { "*": () => true } });
 
 export const createCore = ({
 	licenseKey,
