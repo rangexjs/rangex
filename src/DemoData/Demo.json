@@ -20,199 +20,7 @@
 		"allowedContentLineStyleAttrNames": null,
 		"allowedGlyphFormatterStyleAttrNames": null,
 		"allowedGlyphFormatterInlineTags": null,
-		"contentLineLocalNamesStyle": {
-			"p": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.5 } },
-					"declarationValue": "1.5"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h1": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.2 } },
-					"declarationValue": "1.2"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h2": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.3 } },
-					"declarationValue": "1.3"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h3": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.35 } },
-					"declarationValue": "1.35"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h4": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.4 } },
-					"declarationValue": "1.4"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h5": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.45 } },
-					"declarationValue": "1.45"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			},
-			"h6": {
-				"lineHeight": {
-					"type": "line-height",
-					"values": { "lineHeight": { "type": "number", "value": 1.5 } },
-					"declarationValue": "1.5"
-				},
-				"paddingBlock": {
-					"type": "padding-block",
-					"values": { "paddingBlock": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"paddingInline": {
-					"type": "padding-inline",
-					"values": { "paddingInline": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				},
-				"textAlign": {
-					"type": "text-align",
-					"values": { "textAlign": "start" },
-					"declarationValue": "start"
-				},
-				"textIndent": {
-					"type": "text-indent",
-					"values": { "textIndent": { "type": "px", "value": 0 } },
-					"declarationValue": "0px"
-				}
-			}
-		},
 		"editState": "true",
-		"styleAttrs": {},
 		"domAttrs": { "spellcheck": "false" },
 		"childNodes": [
 			{
@@ -220,7 +28,6 @@
 				"uniqueId": "1787517829363-2812040663",
 				"customStorage": null,
 				"localName": "h2",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -263,7 +70,6 @@
 				"uniqueId": "1787517844514-2748249004",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -305,7 +111,6 @@
 				"uniqueId": "1787514831522-1096418996",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -339,7 +144,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519375196-2117722842",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -362,7 +166,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787562151911-692997551",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -385,7 +188,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519392293-3501085652",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -408,7 +210,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519402384-244182342",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -431,7 +232,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519417606-3516373960",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -454,7 +254,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519424116-886442015",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -477,7 +276,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787519428847-2650257794",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -503,7 +301,6 @@
 				"uniqueId": "1787515055408-1058852851",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -544,14 +341,12 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515033983-1384500753",
 				"customStorage": null,
-				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515033982-3217933168",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -570,7 +365,6 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -591,7 +385,6 @@
 												"checked": false
 											},
 											"localName": "input",
-											"styleAttrs": {},
 											"domAttrs": {
 												"type": "checkbox",
 												"data-part-name": "todo-checkbox"
@@ -609,21 +402,34 @@
 											"allowedGlyphFormatterStyleAttrNames": null,
 											"allowedGlyphFormatterInlineTags": null,
 											"editState": "inherit",
-											"styleAttrs": {},
 											"domAttrs": {},
-											"childNodes": []
+											"childNodes": [
+												{
+													"editorRole": "content-line",
+													"uniqueId": "1787515033982-3140892112",
+													"customStorage": null,
+													"localName": "p",
+													"structuredStyle": {},
+													"domAttrs": {},
+													"childNodes": [
+														{
+															"editorRole": "beam-text",
+															"uniqueId": "1787515033982-3140892113",
+															"customStorage": null
+														}
+													]
+												}
+											]
 										}
 									]
 								},
 								"editState": "inherit",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [
 									{
 										"editorRole": "list-item",
 										"uniqueId": "1787515033983-481773763",
 										"customStorage": null,
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -635,7 +441,6 @@
 													"checked": true
 												},
 												"localName": "input",
-												"styleAttrs": {},
 												"domAttrs": {
 													"type": "checkbox",
 													"data-part-name": "todo-checkbox"
@@ -653,7 +458,6 @@
 												"allowedGlyphFormatterStyleAttrNames": null,
 												"allowedGlyphFormatterInlineTags": null,
 												"editState": "inherit",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
@@ -661,7 +465,6 @@
 														"uniqueId": "1787515033984-3185867442",
 														"customStorage": null,
 														"localName": "p",
-														"styleAttrs": {},
 														"structuredStyle": {
 															"lineHeight": {
 																"type": "line-height",
@@ -718,7 +521,6 @@
 										"editorRole": "list-item",
 										"uniqueId": "1787515037971-1885123725",
 										"customStorage": null,
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -730,7 +532,6 @@
 													"checked": false
 												},
 												"localName": "input",
-												"styleAttrs": {},
 												"domAttrs": {
 													"type": "checkbox",
 													"data-part-name": "todo-checkbox"
@@ -748,7 +549,6 @@
 												"allowedGlyphFormatterStyleAttrNames": null,
 												"allowedGlyphFormatterInlineTags": null,
 												"editState": "inherit",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
@@ -756,7 +556,6 @@
 														"uniqueId": "1787515037971-1421780276",
 														"customStorage": null,
 														"localName": "p",
-														"styleAttrs": {},
 														"structuredStyle": {
 															"lineHeight": {
 																"type": "line-height",
@@ -807,7 +606,6 @@
 																"editorRole": "glyph-formatter",
 																"uniqueId": "1787520334215-3861811800",
 																"customStorage": null,
-																"styleAttrs": {},
 																"structuredStyle": {},
 																"domAttrs": {},
 																"childNodes": [
@@ -836,7 +634,6 @@
 										"editorRole": "list-item",
 										"uniqueId": "1787520105731-1440552464",
 										"customStorage": null,
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -848,7 +645,6 @@
 													"checked": false
 												},
 												"localName": "input",
-												"styleAttrs": {},
 												"domAttrs": {
 													"type": "checkbox",
 													"data-part-name": "todo-checkbox"
@@ -866,7 +662,6 @@
 												"allowedGlyphFormatterStyleAttrNames": null,
 												"allowedGlyphFormatterInlineTags": null,
 												"editState": "inherit",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
@@ -874,7 +669,6 @@
 														"uniqueId": "1787520105730-3910186950",
 														"customStorage": null,
 														"localName": "p",
-														"styleAttrs": {},
 														"structuredStyle": {
 															"lineHeight": {
 																"type": "line-height",
@@ -935,7 +729,6 @@
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515033982-4254446055",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -952,7 +745,6 @@
 				"uniqueId": "1787520102486-3320612349",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -993,14 +785,12 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787519516634-492255617",
 				"customStorage": null,
-				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787519516633-1086837007",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -1019,7 +809,6 @@
 						"shouldSelectBeforeRemove": true,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -1027,7 +816,6 @@
 								"uniqueId": "1787519516633-3902472065",
 								"customStorage": null,
 								"localName": "details",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [
 									{
@@ -1035,7 +823,6 @@
 										"uniqueId": "1787519516633-3363969130",
 										"customStorage": null,
 										"localName": "summary",
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -1049,7 +836,6 @@
 												"allowedGlyphFormatterStyleAttrNames": null,
 												"allowedGlyphFormatterInlineTags": null,
 												"editState": "inherit",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
@@ -1057,7 +843,6 @@
 														"uniqueId": "1787519516632-2381927196",
 														"customStorage": null,
 														"localName": "p",
-														"styleAttrs": {},
 														"structuredStyle": {
 															"lineHeight": {
 																"type": "line-height",
@@ -1102,7 +887,6 @@
 																"editorRole": "glyph-formatter",
 																"uniqueId": "1787519703738-2516142849",
 																"customStorage": null,
-																"styleAttrs": {},
 																"structuredStyle": {
 																	"fontSize": {
 																		"type": "font-size",
@@ -1132,7 +916,6 @@
 												"uniqueId": "1787519516633-725825025",
 												"customStorage": null,
 												"localName": "span",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [],
 												"shadowTreeSnapshot": [
@@ -1207,7 +990,6 @@
 										"allowedGlyphFormatterStyleAttrNames": null,
 										"allowedGlyphFormatterInlineTags": null,
 										"editState": "inherit",
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -1215,7 +997,6 @@
 												"uniqueId": "1787519744558-228609054",
 												"customStorage": null,
 												"localName": "p",
-												"styleAttrs": {},
 												"structuredStyle": {
 													"lineHeight": {
 														"type": "line-height",
@@ -1263,7 +1044,6 @@
 														"editorRole": "glyph-formatter",
 														"uniqueId": "1787519841319-2960165776",
 														"customStorage": null,
-														"styleAttrs": {},
 														"structuredStyle": {},
 														"domAttrs": {},
 														"childNodes": [
@@ -1288,14 +1068,12 @@
 												"editorRole": "block-component-line",
 												"uniqueId": "1787561150973-1752038776",
 												"customStorage": null,
-												"styleAttrs": {},
 												"domAttrs": { "data-block-align": "center" },
 												"childNodes": [
 													{
 														"editorRole": "block-component-text-holder",
 														"uniqueId": "1787561150973-132249787",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -1314,7 +1092,6 @@
 														"shouldSelectBeforeRemove": true,
 														"shouldSelectOnNavigation": true,
 														"editState": "inherit",
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -1341,7 +1118,6 @@
 																			"allowedGlyphFormatterStyleAttrNames": null,
 																			"allowedGlyphFormatterInlineTags": null,
 																			"editState": "true",
-																			"styleAttrs": {},
 																			"domAttrs": {},
 																			"childNodes": [
 																				{
@@ -1349,7 +1125,6 @@
 																					"uniqueId": "1787515085842-1644298558",
 																					"customStorage": null,
 																					"localName": "p",
-																					"styleAttrs": {},
 																					"structuredStyle": {},
 																					"domAttrs": {},
 																					"childNodes": [
@@ -1364,21 +1139,18 @@
 																		}
 																	]
 																},
-																"styleAttrs": {},
 																"domAttrs": {},
 																"childNodes": [
 																	{
 																		"editorRole": "table-col-group",
 																		"uniqueId": "1787561150973-1597430616",
 																		"customStorage": null,
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
 																				"editorRole": "table-col",
 																				"uniqueId": "1787561150973-2654252871",
 																				"customStorage": null,
-																				"styleAttrs": { "width": "28%" },
 																				"domAttrs": {},
 																				"childNodes": []
 																			},
@@ -1386,7 +1158,6 @@
 																				"editorRole": "table-col",
 																				"uniqueId": "1787561150973-926507204",
 																				"customStorage": null,
-																				"styleAttrs": { "width": "72%" },
 																				"domAttrs": {},
 																				"childNodes": []
 																			}
@@ -1397,14 +1168,12 @@
 																		"uniqueId": "1787561150973-287810236",
 																		"customStorage": null,
 																		"localName": "thead",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-1333572580",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -1414,7 +1183,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1428,7 +1196,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1436,7 +1203,6 @@
 																										"uniqueId": "1787561150973-2125465646",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1507,7 +1273,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1521,7 +1286,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1529,7 +1293,6 @@
 																										"uniqueId": "1787561150973-2565411349",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1602,14 +1365,12 @@
 																		"uniqueId": "1787561150973-3291025376",
 																		"customStorage": null,
 																		"localName": "tbody",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2945639999",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -1619,7 +1380,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1633,7 +1393,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1641,7 +1400,6 @@
 																										"uniqueId": "1787561150973-3885067741",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1712,7 +1470,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1726,7 +1483,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1734,7 +1490,6 @@
 																										"uniqueId": "1787561150973-3566056207",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1804,7 +1559,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2133711216",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -1814,7 +1568,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1828,7 +1581,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1836,7 +1588,6 @@
 																										"uniqueId": "1787561150973-499221488",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1907,7 +1658,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -1921,7 +1671,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -1929,7 +1678,6 @@
 																										"uniqueId": "1787561150973-1841091678",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -1999,7 +1747,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-3420548339",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -2009,7 +1756,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2023,7 +1769,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2031,7 +1776,6 @@
 																										"uniqueId": "1787561150973-1492760656",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2102,7 +1846,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2116,7 +1859,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2124,7 +1866,6 @@
 																										"uniqueId": "1787561150973-1876955831",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2194,7 +1935,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2136824767",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -2204,7 +1944,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2218,7 +1957,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2226,7 +1964,6 @@
 																										"uniqueId": "1787561150973-428799849",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2297,7 +2034,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2311,7 +2047,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2319,7 +2054,6 @@
 																										"uniqueId": "1787561150973-1746255634",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2389,7 +2123,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2083529138",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -2399,7 +2132,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2413,7 +2145,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2421,7 +2152,6 @@
 																										"uniqueId": "1787561150973-3325805921",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2492,7 +2222,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2506,7 +2235,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2514,7 +2242,6 @@
 																										"uniqueId": "1787561150973-144019758",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2584,7 +2311,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-2153708197",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -2594,7 +2320,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2608,7 +2333,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2616,7 +2340,6 @@
 																										"uniqueId": "1787561150973-1250744016",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2687,7 +2410,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2701,7 +2423,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2709,7 +2430,6 @@
 																										"uniqueId": "1787561150973-1033367895",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2779,7 +2499,6 @@
 																				"editorRole": "table-row",
 																				"uniqueId": "1787561150973-920967331",
 																				"customStorage": null,
-																				"styleAttrs": { "height": "40px" },
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -2789,7 +2508,6 @@
 																						"localName": "th",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2803,7 +2521,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2811,7 +2528,6 @@
 																										"uniqueId": "1787561150973-2439396013",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2882,7 +2598,6 @@
 																						"localName": "td",
 																						"colSpan": 1,
 																						"rowSpan": 1,
-																						"styleAttrs": {},
 																						"domAttrs": {},
 																						"childNodes": [
 																							{
@@ -2896,7 +2611,6 @@
 																								"allowedGlyphFormatterStyleAttrNames": null,
 																								"allowedGlyphFormatterInlineTags": null,
 																								"editState": "true",
-																								"styleAttrs": {},
 																								"domAttrs": {},
 																								"childNodes": [
 																									{
@@ -2904,7 +2618,6 @@
 																										"uniqueId": "1787561150973-1880671627",
 																										"customStorage": null,
 																										"localName": "p",
-																										"styleAttrs": {},
 																										"structuredStyle": {
 																											"lineHeight": {
 																												"type": "line-height",
@@ -2980,7 +2693,6 @@
 														"editorRole": "block-component-text-holder",
 														"uniqueId": "1787561150973-1952837477",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -2997,7 +2709,6 @@
 												"uniqueId": "1787519787435-1907298600",
 												"customStorage": null,
 												"localName": "p",
-												"styleAttrs": {},
 												"structuredStyle": {
 													"lineHeight": {
 														"type": "line-height",
@@ -3047,7 +2758,6 @@
 												"uniqueId": "1787519781833-3860052657",
 												"customStorage": null,
 												"localName": "p",
-												"styleAttrs": {},
 												"structuredStyle": {
 													"lineHeight": {
 														"type": "line-height",
@@ -3103,7 +2813,6 @@
 														"shouldSelectOnNavigation": false,
 														"editState": "inherit",
 														"customStorage": { "id": "link", "version": 1 },
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -3111,7 +2820,6 @@
 																"uniqueId": "1787562945233-169335950",
 																"customStorage": null,
 																"localName": "a",
-																"styleAttrs": {},
 																"domAttrs": {
 																	"href": "https://discord.com/invite/e9hP9SSspM",
 																	"target": "_blank"
@@ -3128,7 +2836,6 @@
 																		"allowedGlyphFormatterStyleAttrNames": null,
 																		"allowedGlyphFormatterInlineTags": null,
 																		"editState": "inherit",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
@@ -3136,7 +2843,6 @@
 																				"uniqueId": "1787562945233-1705035598",
 																				"customStorage": null,
 																				"localName": "span",
-																				"styleAttrs": {},
 																				"structuredStyle": {},
 																				"domAttrs": {},
 																				"childNodes": [
@@ -3172,7 +2878,6 @@
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787519516634-1255660028",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -3189,7 +2894,6 @@
 				"uniqueId": "1787515354284-3399390806",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -3231,7 +2935,6 @@
 				"uniqueId": "1787515359478-1943410311",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -3276,7 +2979,6 @@
 						"shouldSelectOnNavigation": false,
 						"editState": "false",
 						"customStorage": { "id": "mention", "version": 1, "userId": "1" },
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -3290,7 +2992,6 @@
 								"allowedGlyphFormatterStyleAttrNames": null,
 								"allowedGlyphFormatterInlineTags": null,
 								"editState": "inherit",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [
 									{
@@ -3298,7 +2999,6 @@
 										"uniqueId": "1787515366924-2855368613",
 										"customStorage": null,
 										"localName": "span",
-										"styleAttrs": {},
 										"structuredStyle": {},
 										"domAttrs": {},
 										"childNodes": [
@@ -3329,7 +3029,6 @@
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
 						"customStorage": { "id": "link", "version": 1 },
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -3337,7 +3036,6 @@
 								"uniqueId": "1787515383319-2392044268",
 								"customStorage": null,
 								"localName": "a",
-								"styleAttrs": {},
 								"domAttrs": {
 									"href": "https://example.com/",
 									"target": "_blank"
@@ -3354,7 +3052,6 @@
 										"allowedGlyphFormatterStyleAttrNames": null,
 										"allowedGlyphFormatterInlineTags": null,
 										"editState": "inherit",
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -3362,7 +3059,6 @@
 												"uniqueId": "1787561280979-3233858106",
 												"customStorage": null,
 												"localName": "span",
-												"styleAttrs": {},
 												"structuredStyle": {},
 												"domAttrs": {},
 												"childNodes": [
@@ -3390,7 +3086,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787517237417-2335850282",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -3425,7 +3120,6 @@
 						"editorRole": "glyph-formatter",
 						"uniqueId": "1787521739860-405262040",
 						"customStorage": null,
-						"styleAttrs": {},
 						"structuredStyle": {},
 						"domAttrs": {},
 						"childNodes": [
@@ -3457,7 +3151,6 @@
 							"version": 1,
 							"fieldName": "fullName"
 						},
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -3471,7 +3164,6 @@
 								"allowedGlyphFormatterStyleAttrNames": null,
 								"allowedGlyphFormatterInlineTags": null,
 								"editState": "inherit",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [
 									{
@@ -3479,7 +3171,6 @@
 										"uniqueId": "1787521753662-3638762613",
 										"customStorage": null,
 										"localName": "span",
-										"styleAttrs": {},
 										"structuredStyle": {},
 										"domAttrs": {},
 										"childNodes": [
@@ -3508,7 +3199,6 @@
 				"uniqueId": "1787515437897-3086069073",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -3549,14 +3239,12 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515439813-3499544768",
 				"customStorage": null,
-				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515439812-3723901065",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -3580,7 +3268,6 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
-						"styleAttrs": {},
 						"domAttrs": {
 							"style": "--bg-light: #FFFFFF; --bg-dark: #1E1E1E; --fg-light: #000000; --fg-dark: #D4D4D4;"
 						},
@@ -3590,7 +3277,6 @@
 								"uniqueId": "1787515439812-1785845768",
 								"customStorage": null,
 								"localName": "pre",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [
 									{
@@ -3598,7 +3284,6 @@
 										"uniqueId": "1787515439812-708219522",
 										"customStorage": null,
 										"localName": "code",
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -3615,7 +3300,6 @@
 															"uniqueId": "1787515439812-364493721",
 															"customStorage": null,
 															"localName": "div",
-															"styleAttrs": {},
 															"domAttrs": {},
 															"childNodes": [
 																{
@@ -3623,7 +3307,6 @@
 																	"uniqueId": "1787515439812-3395229955",
 																	"customStorage": null,
 																	"localName": "span",
-																	"styleAttrs": {},
 																	"domAttrs": {},
 																	"childNodes": [],
 																	"shadowTreeSnapshot": [
@@ -3645,23 +3328,36 @@
 																	"allowedGlyphFormatterStyleAttrNames": [],
 																	"allowedGlyphFormatterInlineTags": [],
 																	"editState": "inherit",
-																	"styleAttrs": {},
 																	"domAttrs": {},
-																	"childNodes": []
+																	"childNodes": [
+																		{
+																			"editorRole": "content-line",
+																			"uniqueId": "1787515439812-2784944851",
+																			"customStorage": null,
+																			"localName": "p",
+																			"structuredStyle": {},
+																			"domAttrs": {},
+																			"childNodes": [
+																				{
+																					"editorRole": "beam-text",
+																					"uniqueId": "1787515439812-2784944852",
+																					"customStorage": null
+																				}
+																			]
+																		}
+																	]
 																}
 															]
 														}
 													]
 												},
 												"editState": "inherit",
-												"styleAttrs": {},
 												"domAttrs": {},
 												"childNodes": [
 													{
 														"editorRole": "list-item",
 														"uniqueId": "1787517461050-2436054813",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -3669,7 +3365,6 @@
 																"uniqueId": "1787517461050-40220843",
 																"customStorage": null,
 																"localName": "div",
-																"styleAttrs": {},
 																"domAttrs": {},
 																"childNodes": [
 																	{
@@ -3677,7 +3372,6 @@
 																		"uniqueId": "1787517461050-654908826",
 																		"customStorage": null,
 																		"localName": "span",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
@@ -3699,7 +3393,6 @@
 																		"allowedGlyphFormatterStyleAttrNames": [],
 																		"allowedGlyphFormatterInlineTags": [],
 																		"editState": "inherit",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
@@ -3707,54 +3400,7 @@
 																				"uniqueId": "1787517461048-4253042888",
 																				"customStorage": null,
 																				"localName": "p",
-																				"styleAttrs": {},
-																				"structuredStyle": {
-																					"lineHeight": {
-																						"type": "line-height",
-																						"values": {
-																							"lineHeight": {
-																								"type": "number",
-																								"value": 1.5
-																							}
-																						},
-																						"declarationValue": "1.5"
-																					},
-																					"paddingBlock": {
-																						"type": "padding-block",
-																						"values": {
-																							"paddingBlock": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"paddingInline": {
-																						"type": "padding-inline",
-																						"values": {
-																							"paddingInline": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"textAlign": {
-																						"type": "text-align",
-																						"values": { "textAlign": "start" },
-																						"declarationValue": "start"
-																					},
-																					"textIndent": {
-																						"type": "text-indent",
-																						"values": {
-																							"textIndent": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					}
-																				},
+																				"structuredStyle": {},
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -3775,7 +3421,6 @@
 														"editorRole": "list-item",
 														"uniqueId": "1787515505069-2637480869",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -3783,7 +3428,6 @@
 																"uniqueId": "1787515505069-4043309510",
 																"customStorage": null,
 																"localName": "div",
-																"styleAttrs": {},
 																"domAttrs": {},
 																"childNodes": [
 																	{
@@ -3791,7 +3435,6 @@
 																		"uniqueId": "1787515505069-3268078566",
 																		"customStorage": null,
 																		"localName": "span",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
@@ -3813,7 +3456,6 @@
 																		"allowedGlyphFormatterStyleAttrNames": [],
 																		"allowedGlyphFormatterInlineTags": [],
 																		"editState": "inherit",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
@@ -3821,54 +3463,7 @@
 																				"uniqueId": "1787515505068-3856379804",
 																				"customStorage": null,
 																				"localName": "p",
-																				"styleAttrs": {},
-																				"structuredStyle": {
-																					"lineHeight": {
-																						"type": "line-height",
-																						"values": {
-																							"lineHeight": {
-																								"type": "number",
-																								"value": 1.5
-																							}
-																						},
-																						"declarationValue": "1.5"
-																					},
-																					"paddingBlock": {
-																						"type": "padding-block",
-																						"values": {
-																							"paddingBlock": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"paddingInline": {
-																						"type": "padding-inline",
-																						"values": {
-																							"paddingInline": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"textAlign": {
-																						"type": "text-align",
-																						"values": { "textAlign": "start" },
-																						"declarationValue": "start"
-																					},
-																					"textIndent": {
-																						"type": "text-indent",
-																						"values": {
-																							"textIndent": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					}
-																				},
+																				"structuredStyle": {},
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -3889,7 +3484,6 @@
 														"editorRole": "list-item",
 														"uniqueId": "1787515505201-3389168619",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -3897,7 +3491,6 @@
 																"uniqueId": "1787515505201-3075625303",
 																"customStorage": null,
 																"localName": "div",
-																"styleAttrs": {},
 																"domAttrs": {},
 																"childNodes": [
 																	{
@@ -3905,7 +3498,6 @@
 																		"uniqueId": "1787515505201-467824284",
 																		"customStorage": null,
 																		"localName": "span",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
@@ -3927,7 +3519,6 @@
 																		"allowedGlyphFormatterStyleAttrNames": [],
 																		"allowedGlyphFormatterInlineTags": [],
 																		"editState": "inherit",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
@@ -3935,54 +3526,7 @@
 																				"uniqueId": "1787515505200-3561512762",
 																				"customStorage": null,
 																				"localName": "p",
-																				"styleAttrs": {},
-																				"structuredStyle": {
-																					"lineHeight": {
-																						"type": "line-height",
-																						"values": {
-																							"lineHeight": {
-																								"type": "number",
-																								"value": 1.5
-																							}
-																						},
-																						"declarationValue": "1.5"
-																					},
-																					"paddingBlock": {
-																						"type": "padding-block",
-																						"values": {
-																							"paddingBlock": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"paddingInline": {
-																						"type": "padding-inline",
-																						"values": {
-																							"paddingInline": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"textAlign": {
-																						"type": "text-align",
-																						"values": { "textAlign": "start" },
-																						"declarationValue": "start"
-																					},
-																					"textIndent": {
-																						"type": "text-indent",
-																						"values": {
-																							"textIndent": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					}
-																				},
+																				"structuredStyle": {},
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -4003,7 +3547,6 @@
 														"editorRole": "list-item",
 														"uniqueId": "1787515629073-3267357441",
 														"customStorage": null,
-														"styleAttrs": {},
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -4011,7 +3554,6 @@
 																"uniqueId": "1787515629073-684464796",
 																"customStorage": null,
 																"localName": "div",
-																"styleAttrs": {},
 																"domAttrs": {},
 																"childNodes": [
 																	{
@@ -4019,7 +3561,6 @@
 																		"uniqueId": "1787515629073-3076271715",
 																		"customStorage": null,
 																		"localName": "span",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [],
 																		"shadowTreeSnapshot": [
@@ -4041,7 +3582,6 @@
 																		"allowedGlyphFormatterStyleAttrNames": [],
 																		"allowedGlyphFormatterInlineTags": [],
 																		"editState": "inherit",
-																		"styleAttrs": {},
 																		"domAttrs": {},
 																		"childNodes": [
 																			{
@@ -4049,54 +3589,7 @@
 																				"uniqueId": "1787515629072-1576915935",
 																				"customStorage": null,
 																				"localName": "p",
-																				"styleAttrs": {},
-																				"structuredStyle": {
-																					"lineHeight": {
-																						"type": "line-height",
-																						"values": {
-																							"lineHeight": {
-																								"type": "number",
-																								"value": 1.5
-																							}
-																						},
-																						"declarationValue": "1.5"
-																					},
-																					"paddingBlock": {
-																						"type": "padding-block",
-																						"values": {
-																							"paddingBlock": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"paddingInline": {
-																						"type": "padding-inline",
-																						"values": {
-																							"paddingInline": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					},
-																					"textAlign": {
-																						"type": "text-align",
-																						"values": { "textAlign": "start" },
-																						"declarationValue": "start"
-																					},
-																					"textIndent": {
-																						"type": "text-indent",
-																						"values": {
-																							"textIndent": {
-																								"type": "px",
-																								"value": 0
-																							}
-																						},
-																						"declarationValue": "0px"
-																					}
-																				},
+																				"structuredStyle": {},
 																				"domAttrs": {},
 																				"childNodes": [
 																					{
@@ -4125,7 +3618,6 @@
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515439813-3949244559",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -4142,7 +3634,6 @@
 				"uniqueId": "1787515354121-1161758503",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -4183,14 +3674,12 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515686749-4177932803",
 				"customStorage": null,
-				"styleAttrs": {},
 				"domAttrs": { "data-block-align": "center" },
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515686749-1781114465",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -4209,7 +3698,6 @@
 						"shouldSelectBeforeRemove": true,
 						"shouldSelectOnNavigation": true,
 						"editState": "false",
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -4217,7 +3705,6 @@
 								"uniqueId": "1787515686749-2931082073",
 								"customStorage": null,
 								"localName": "slot",
-								"styleAttrs": {},
 								"domAttrs": {},
 								"childNodes": [],
 								"shadowTreeSnapshot": []
@@ -4228,7 +3715,6 @@
 						"editorRole": "block-component-text-holder",
 						"uniqueId": "1787515686749-1163600064",
 						"customStorage": null,
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -4245,7 +3731,6 @@
 				"uniqueId": "1787515693457-2429169353",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -4287,7 +3772,6 @@
 				"uniqueId": "1787515693569-66750626",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -4330,7 +3814,6 @@
 				"uniqueId": "1787515789399-885056014",
 				"customStorage": null,
 				"localName": "p",
-				"styleAttrs": {},
 				"structuredStyle": {
 					"lineHeight": {
 						"type": "line-height",
@@ -4375,7 +3858,6 @@
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
 						"customStorage": { "id": "link", "version": 1 },
-						"styleAttrs": {},
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -4383,7 +3865,6 @@
 								"uniqueId": "1787515853959-1822594554",
 								"customStorage": null,
 								"localName": "a",
-								"styleAttrs": {},
 								"domAttrs": {
 									"href": "https://rangex.dev/",
 									"target": "_blank"
@@ -4400,7 +3881,6 @@
 										"allowedGlyphFormatterStyleAttrNames": null,
 										"allowedGlyphFormatterInlineTags": null,
 										"editState": "inherit",
-										"styleAttrs": {},
 										"domAttrs": {},
 										"childNodes": [
 											{
@@ -4408,7 +3888,6 @@
 												"uniqueId": "1787561295303-1663706134",
 												"customStorage": null,
 												"localName": "span",
-												"styleAttrs": {},
 												"structuredStyle": {},
 												"domAttrs": {},
 												"childNodes": [
