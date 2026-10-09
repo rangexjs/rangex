@@ -373,56 +373,6 @@
 								"customStorage": null,
 								"localName": "ul",
 								"lineType": "single-line",
-								"listItemSnapshotProps": {
-									"domAttrs": {},
-									"childNodes": [
-										{
-											"editorRole": "html-layout",
-											"uniqueId": "1787515033981-1931090968",
-											"customStorage": {
-												"id": "todo-checkbox",
-												"version": 1,
-												"checked": false
-											},
-											"localName": "input",
-											"domAttrs": {
-												"type": "checkbox",
-												"data-part-name": "todo-checkbox"
-											},
-											"childNodes": []
-										},
-										{
-											"editorRole": "nested-editable",
-											"uniqueId": "1787515033982-3140892111",
-											"customStorage": null,
-											"display": "block single-line",
-											"allowedComponents": null,
-											"allowedContentLineLocalNames": null,
-											"allowedContentLineStyleAttrNames": null,
-											"allowedGlyphFormatterStyleAttrNames": null,
-											"allowedGlyphFormatterInlineTags": null,
-											"editState": "inherit",
-											"domAttrs": {},
-											"childNodes": [
-												{
-													"editorRole": "content-line",
-													"uniqueId": "1787515033982-3140892112",
-													"customStorage": null,
-													"localName": "p",
-													"structuredStyle": {},
-													"domAttrs": {},
-													"childNodes": [
-														{
-															"editorRole": "beam-text",
-															"uniqueId": "1787515033982-3140892113",
-															"customStorage": null
-														}
-													]
-												}
-											]
-										}
-									]
-								},
 								"editState": "inherit",
 								"domAttrs": {},
 								"childNodes": [
@@ -1104,40 +1054,16 @@
 																"minRowHeight": 40,
 																"defaultRowHeight": 40,
 																"tableCellsEditable": "true",
-																"tableCellSnapshotProps": {
+																"tableCellProps": {
+																	"domAttrs": {}
+																},
+																"cellNestedEditableProps": {
 																	"domAttrs": {},
-																	"childNodes": [
-																		{
-																			"editorRole": "nested-editable",
-																			"uniqueId": "1787515085842-4139648116",
-																			"customStorage": null,
-																			"display": "block multi-line",
-																			"allowedComponents": null,
-																			"allowedContentLineLocalNames": null,
-																			"allowedContentLineStyleAttrNames": null,
-																			"allowedGlyphFormatterStyleAttrNames": null,
-																			"allowedGlyphFormatterInlineTags": null,
-																			"editState": "true",
-																			"domAttrs": {},
-																			"childNodes": [
-																				{
-																					"editorRole": "content-line",
-																					"uniqueId": "1787515085842-1644298558",
-																					"customStorage": null,
-																					"localName": "p",
-																					"structuredStyle": {},
-																					"domAttrs": {},
-																					"childNodes": [
-																						{
-																							"editorRole": "beam-text",
-																							"uniqueId": "1787515085842-2005760525",
-																							"customStorage": null
-																						}
-																					]
-																				}
-																			]
-																		}
-																	]
+																	"allowedComponents": null,
+																	"allowedContentLineLocalNames": null,
+																	"allowedContentLineStyleAttrNames": null,
+																	"allowedGlyphFormatterStyleAttrNames": null,
+																	"allowedGlyphFormatterInlineTags": null
 																},
 																"domAttrs": {},
 																"childNodes": [
@@ -3292,65 +3218,6 @@
 												"customStorage": null,
 												"localName": "ol",
 												"lineType": "single-line",
-												"listItemSnapshotProps": {
-													"domAttrs": {},
-													"childNodes": [
-														{
-															"editorRole": "html-layout",
-															"uniqueId": "1787515439812-364493721",
-															"customStorage": null,
-															"localName": "div",
-															"domAttrs": {},
-															"childNodes": [
-																{
-																	"editorRole": "detached-context",
-																	"uniqueId": "1787515439812-3395229955",
-																	"customStorage": null,
-																	"localName": "span",
-																	"domAttrs": {},
-																	"childNodes": [],
-																	"shadowTreeSnapshot": [
-																		{
-																			"type": "text",
-																			"shadowNodeId": "1787515439812-232051730",
-																			"data": "0"
-																		}
-																	]
-																},
-																{
-																	"editorRole": "nested-editable",
-																	"uniqueId": "1787515439812-2784944850",
-																	"customStorage": null,
-																	"display": "block single-line",
-																	"allowedComponents": [],
-																	"allowedContentLineLocalNames": [],
-																	"allowedContentLineStyleAttrNames": [],
-																	"allowedGlyphFormatterStyleAttrNames": [],
-																	"allowedGlyphFormatterInlineTags": [],
-																	"editState": "inherit",
-																	"domAttrs": {},
-																	"childNodes": [
-																		{
-																			"editorRole": "content-line",
-																			"uniqueId": "1787515439812-2784944851",
-																			"customStorage": null,
-																			"localName": "p",
-																			"structuredStyle": {},
-																			"domAttrs": {},
-																			"childNodes": [
-																				{
-																					"editorRole": "beam-text",
-																					"uniqueId": "1787515439812-2784944852",
-																					"customStorage": null
-																				}
-																			]
-																		}
-																	]
-																}
-															]
-														}
-													]
-												},
 												"editState": "inherit",
 												"domAttrs": {},
 												"childNodes": [

@@ -37,10 +37,7 @@ export const handleAccordionItemPlacement = ({
 	});
 
 	const unsubscribeWrap = configPort.onWrap(() => {
-		const accordionItemLine = createAccordionItem({
-			open: true,
-			childNodes: [],
-		});
+		const accordionItemLine = createAccordionItem({ open: true });
 		const { bodyNestedEditable } = getAccordionItemParts({
 			accordionItem: accordionItemLine,
 		});

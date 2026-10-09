@@ -1,9 +1,13 @@
 import {
+	createBeamText,
 	createBlockComponent,
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
+	createContentLine,
 	createHTMLLayout,
 	createList,
+	createListItem,
+	createNestedEditable,
 } from "@rangex/core";
 import {
 	blockAlignAttr,
@@ -18,27 +22,36 @@ import type {
 } from "./CreateTodoList-types";
 
 /*
- * Builds a todo list block component: an unordered list whose items each get a checkbox
- * before the editable line content.
+ * Builds a todo list block component: an unordered list with one item per given child line
+ * (or a single empty one), each getting a checkbox before the editable line content.
  */
 export const createTodoList = ({
-	childNodes,
+	childNodes = [
+		createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
+	],
 }: CreateTodoListParams): CreateTodoListResult => {
 	const list = createList({
 		localName: "ul",
 		lineType: "single-line",
-		itemsChildNodes: childNodes?.map((line) => [line]),
-		createPreLayout: ({ nestedEditable }) => [
-			createHTMLLayout({
-				localName: "input",
-				customStorage: createTodoCheckboxStorage({ checked: false }),
-				domAttrs: {
-					type: "checkbox",
-					[dataPartName]: todoCheckboxPart.name,
-				},
+		childNodes: childNodes.map((line) =>
+			createListItem({
+				childNodes: [
+					createHTMLLayout({
+						localName: "input",
+						customStorage: createTodoCheckboxStorage({ checked: false }),
+						domAttrs: {
+							type: "checkbox",
+							[dataPartName]: todoCheckboxPart.name,
+						},
+					}),
+					createNestedEditable({
+						display: "block single-line",
+						editState: "inherit",
+						childNodes: [line],
+					}),
+				],
 			}),
-			nestedEditable({}),
-		],
+		),
 	});
 
 	return createBlockComponentLine({

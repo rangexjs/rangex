@@ -126,10 +126,8 @@ const wrapContentLine = ({
 	contentLine,
 	turnIntoParams,
 }: WrapContentLineParams) => {
-	const { blockComponentLine, wrapTarget } = createBlockComponent({
-		...turnIntoParams,
-		childNodes: [],
-	});
+	const { blockComponentLine, wrapTarget } =
+		createBlockComponent(turnIntoParams);
 
 	blockComponentPlacement.wrap({
 		blockComponentLine,

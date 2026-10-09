@@ -1,26 +1,49 @@
 import {
+	createBeamText,
 	createBlockComponent,
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
+	createContentLine,
 	createList as createEngineList,
+	createListItem,
+	createNestedEditable,
 } from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#engine-links";
 import { createListStorage } from "#storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
 /*
- * Builds a list block component (ordered/unordered) whose items are populated from the
- * given child lines, or left empty when none are provided.
+ * Builds a list block component (ordered/unordered) with one item per given child line,
+ * or a single empty item when none are provided.
  */
 export const createList = ({
 	localName,
 	lineType,
-	childNodes,
+	childNodes = [
+		createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
+	],
 }: CreateListParams): CreateListResult => {
+	const display = (
+		{
+			"multi-line": "block multi-line",
+			"single-line": "block single-line",
+		} as const
+	)[lineType];
+
 	const list = createEngineList({
 		localName,
 		lineType,
-		itemsChildNodes: childNodes?.map((line) => [line]),
+		childNodes: childNodes.map((line) =>
+			createListItem({
+				childNodes: [
+					createNestedEditable({
+						display,
+						editState: "inherit",
+						childNodes: [line],
+					}),
+				],
+			}),
+		),
 	});
 
 	return createBlockComponentLine({
