@@ -27,7 +27,7 @@ export interface GetListTargetParams {
 export type GetListTargetResult = List;
 
 export type CreateBlockComponentParams = TurnIntoPlacementOption & {
-	childNodes: Line[];
+	childNodes?: Line[];
 };
 
 export interface CreateBlockComponentResult {

@@ -28,7 +28,6 @@ export const createMention = ({
 		editState: "false",
 		childNodes: [
 			createNestedEditable({
-				content: { type: "default" },
 				display: "inline",
 				childNodes: [
 					createContentLine({

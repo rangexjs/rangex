@@ -27,7 +27,6 @@ export const createTemplateVariable = ({
 		customStorage: createTemplateVariableStorage({ fieldName }),
 		childNodes: [
 			createNestedEditable({
-				content: { type: "default" },
 				display: "inline",
 				childNodes: [
 					createContentLine({

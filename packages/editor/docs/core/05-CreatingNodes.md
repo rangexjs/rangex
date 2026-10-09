@@ -124,7 +124,7 @@ Creates a `GlyphFormatter`. Each `GlyphFormatter` holds text with a single consi
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `inlineTags` | `Set<GlyphFormatterInlineTag>` | No | Active inline tags. Valid values: `"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"` |
+| `inlineTags` | `Set<GlyphFormatterInlineTag>` | No | Active inline tags. Valid values: `"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"samp"`, `"small"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"` |
 | `structuredStyle` | `Partial<GlyphFormatterStructuredStyle>` | No | Initial CSS. Valid properties: `backgroundColor`, `color`, `fontFamily`, `fontSize`, `fontStyle`, `fontWeight`, `letterSpacing`, `textDecoration` |
 | `domAttrs` | `DOMAttrs` | No | |
 | `childNodes` | `(BasicText \| OneVisualUnitText)[]` | No | Use `createFormattableTexts` to produce these from a string |

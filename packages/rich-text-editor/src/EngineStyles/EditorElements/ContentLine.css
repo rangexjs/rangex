@@ -1,36 +1,44 @@
-[data-rx-editor-role="content-line"] {
+/* Zero specificity, so a ContentLine's own StyleAttrs always win over these defaults */
+:where([data-rx-editor-role="content-line"]) {
 	&:where(p) {
 		font-size: 16px;
+		line-height: 1.5;
 		margin: 3px 0px;
 	}
 
 	&:where(h1) {
 		font-size: 36px;
+		line-height: 1.2;
 		margin: 8px 0px;
 	}
 
 	&:where(h2) {
 		font-size: 32px;
+		line-height: 1.3;
 		margin: 7px 0px;
 	}
 
 	&:where(h3) {
 		font-size: 28px;
+		line-height: 1.35;
 		margin: 6px 0px;
 	}
 
 	&:where(h4) {
 		font-size: 24px;
+		line-height: 1.4;
 		margin: 5px 0px;
 	}
 
 	&:where(h5) {
 		font-size: 20px;
+		line-height: 1.45;
 		margin: 4px 0px;
 	}
 
 	&:where(h6) {
 		font-size: 16px;
+		line-height: 1.5;
 		margin: 3px 0px;
 	}
 }

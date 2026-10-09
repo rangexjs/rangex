@@ -4,13 +4,12 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName, getCSSText } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
 import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
 /*
- * Builds a table block component with the given row/column counts, applying a default
- * border style to both the table and its cells.
+ * Builds a table block component with the given row/column counts.
  */
 export const createTable = ({
 	rows,
@@ -19,20 +18,6 @@ export const createTable = ({
 	const table = createEngineTable({
 		rows,
 		cols,
-		domAttrs: {
-			style: getCSSText({
-				borderWidth: "1px",
-				borderStyle: "solid",
-				borderColor: "grey",
-			}),
-		},
-		cellDOMAttrs: {
-			style: getCSSText({
-				borderWidth: "1px",
-				borderStyle: "solid",
-				borderColor: "grey",
-			}),
-		},
 	});
 
 	return createBlockComponentLine({

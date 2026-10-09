@@ -43,7 +43,7 @@ Both `localName` and ContentLine `styles` only target **block-level `ContentLine
 - `false` — remove the tag
 - key omitted — leave the tag unchanged
 
-14 available tags: `"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"`.
+16 available tags: `"b"`, `"code"`, `"del"`, `"em"`, `"i"`, `"ins"`, `"kbd"`, `"mark"`, `"s"`, `"samp"`, `"small"`, `"strong"`, `"sub"`, `"sup"`, `"u"`, `"var"`.
 
 **With a collapsed selection (no text selected)**, `updateSelectionStyles` does not modify any nodes. Instead it updates the **pending format state** on the editor — the format that will be applied to the next typed character.
 

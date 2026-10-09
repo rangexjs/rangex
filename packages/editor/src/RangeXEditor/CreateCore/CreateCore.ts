@@ -1,4 +1,5 @@
 import {
+	configureSanitizer,
 	createBeamText,
 	createContentLine,
 	createEditorAPI,
@@ -6,7 +7,6 @@ import {
 	migrateStoredSnapshot,
 } from "@rangex/core";
 import { createRootStorage } from "#storage";
-import { getDefaultContentLineLocalNamesStyles } from "./_Utilities";
 import type {
 	CreateCoreParams,
 	CreateRootEditableFromParams,
@@ -32,7 +32,6 @@ const createRootEditableFrom = ({
 	const rootEditable = createRootEditable({
 		customStorage: createRootStorage(),
 		display: "block multi-line",
-		contentLineLocalNamesStyle: getDefaultContentLineLocalNamesStyles(),
 		childNodes: [
 			createContentLine({
 				localName: "p",
@@ -43,6 +42,9 @@ const createRootEditableFrom = ({
 
 	return { type: "node", node: rootEditable };
 };
+
+// TODO: Set policy rules
+configureSanitizer({ "*": { "*": () => true } });
 
 export const createCore = ({
 	licenseKey,

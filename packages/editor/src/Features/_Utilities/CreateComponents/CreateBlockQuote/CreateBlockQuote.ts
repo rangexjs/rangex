@@ -1,7 +1,9 @@
 import {
+	createBeamText,
 	createBlockComponent,
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
+	createContentLine,
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
@@ -13,13 +15,15 @@ import type {
 } from "./CreateBlockQuote-types";
 
 /*
- * Builds a block quote component wrapping a `blockquote` element with an editable text area.
+ * Builds a block quote component wrapping a `blockquote` element with an editable text area,
+ * holding the given child lines or a single empty one.
  */
 export const createBlockQuote = ({
-	childNodes,
+	childNodes = [
+		createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
+	],
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {
 	const nestedEditable = createNestedEditable({
-		content: { type: "default" },
 		display: "block multi-line",
 		childNodes,
 	});
