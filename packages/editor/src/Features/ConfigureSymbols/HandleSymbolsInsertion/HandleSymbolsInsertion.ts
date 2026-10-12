@@ -3,7 +3,7 @@ import type { HandleSymbolsInsertionParams } from "./HandleSymbolsInsertion-type
 
 /*
  * Listens for symbol insert requests and inserts the requested symbol text at the current
- * selection's leading edge (following DOM direction), then refocuses the editor.
+ * selection's end (the later boundary point in the DOM), then refocuses the editor.
  */
 export const handleSymbolsInsertion = ({
 	configPort,
@@ -13,19 +13,11 @@ export const handleSymbolsInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	const unsubscribe = configPort.onInsert((data) => {
-		const { fromText, fromOffset, toText, toOffset } =
-			selection.getBoundaryPoints();
-		const { domDirection } = selection;
-
-		const { text, offset } = {
-			forward: { text: toText, offset: toOffset },
-			backward: { text: fromText, offset: fromOffset },
-			none: { text: toText, offset: toOffset },
-		}[domDirection];
+		const { toText, toOffset } = selection.getBoundaryPoints();
 
 		editorAPI.insertNode({
-			fromNode: text,
-			fromOffset: offset,
+			fromNode: toText,
+			fromOffset: toOffset,
 			lines: [
 				createContentLine({
 					localName: "p",

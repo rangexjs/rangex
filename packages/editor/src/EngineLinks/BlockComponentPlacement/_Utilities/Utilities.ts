@@ -10,10 +10,7 @@ export const getSelectionForwardText = ({
 	editorAPI,
 }: GetSelectionForwardTextParams): GetSelectionForwardTextResult => {
 	const selection = editorAPI.getEditorSelection();
-	const { fromText, toText } = selection.getBoundaryPoints();
-	const { domDirection } = selection;
+	const { toText } = selection.getBoundaryPoints();
 
-	const endNode = domDirection === "forward" ? toText : fromText;
-
-	return endNode;
+	return toText;
 };
