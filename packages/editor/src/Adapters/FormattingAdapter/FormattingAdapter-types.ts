@@ -20,56 +20,56 @@ export interface FormattingToggleButton extends FormattingToggleState {
 
 export interface CreateToggleButtonParams extends FormattingToggleState {}
 
-export interface FormattingSolidColor {
+export type FormattingSolidColor = {
 	type: "solid";
 	value: string;
-}
+};
 
-export interface FormattingLinearGradientColor {
+export type FormattingLinearGradientColor = {
 	type: "linear-gradient";
 	deg: number;
 	colors: { value: string; offset: number }[];
-}
+};
 
 export type FormattingStructuredColor =
 	| FormattingSolidColor
 	| FormattingLinearGradientColor;
 
-export interface FormattingStructuredThemeColors {
+export type FormattingStructuredThemeColors = {
 	light: FormattingStructuredColor;
 	dark: FormattingStructuredColor;
-}
+};
 
 export type FormattingBackgroundColorValue = FormattingStructuredThemeColors;
 export type FormattingColorValue = FormattingStructuredThemeColors;
 export type FormattingFontFamilyValue = string;
 
-export interface FormattingFontSizeValue {
+export type FormattingFontSizeValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingIndentationValue {
+export type FormattingIndentationValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingLetterSpacingValue {
+export type FormattingLetterSpacingValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingLineHeightValue {
+export type FormattingLineHeightValue = {
 	type: "number";
 	value: number;
-}
+};
 
 export type FormattingLineLocalNameValue = "p" | `h${1 | 2 | 3 | 4 | 5 | 6}`;
 
-export interface FormattingLineSpacingValue {
+export type FormattingLineSpacingValue = {
 	type: "px";
 	value: number;
-}
+};
 
 export type FormattingTextAlignValue = "start" | "center" | "justify" | "end";
 
