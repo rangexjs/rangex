@@ -7,6 +7,7 @@ import {
 } from "@rangex/core";
 import { componentsName, todoCheckboxPart } from "#engine-links";
 import {
+	createTodoCheckboxStorage,
 	ensureNodeTodoCheckboxStorage,
 	todoCheckboxStorageFallbacks,
 } from "#storage";
@@ -47,6 +48,12 @@ export const handleTodoListCheckboxState = ({
 
 					if (!(todoCheckbox instanceof HTMLInputElement)) {
 						throw new Error("TodoCheckbox's type is invalid.");
+					}
+
+					if (todoCheckbox.$$customStorage === null) {
+						todoCheckbox.$$customStorage = createTodoCheckboxStorage(
+							todoCheckboxStorageFallbacks,
+						);
 					}
 
 					const storage = ensureNodeTodoCheckboxStorage({
