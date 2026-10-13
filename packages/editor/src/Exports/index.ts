@@ -1,4 +1,4 @@
-export type { EditorAPI, StoredSnapshot } from "@rangex/core";
+export type { EditorAPI, SnapshotLimits, StoredSnapshot } from "@rangex/core";
 export type {
 	BlockAlignValue,
 	CaptionPosition,

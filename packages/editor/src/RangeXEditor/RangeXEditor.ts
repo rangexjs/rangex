@@ -13,10 +13,11 @@ import { Snapshot } from "./Snapshot";
 export const createEditor = ({
 	licenseKey,
 	storedSnapshot,
+	limits,
 	adapters,
 	styles,
 }: CreateEditorParams): CreateEditorResult => {
-	const { editorAPI } = createCore({ licenseKey, storedSnapshot });
+	const { editorAPI } = createCore({ licenseKey, storedSnapshot, limits });
 
 	const editorStyleText = buildEditorStyleText(styles);
 

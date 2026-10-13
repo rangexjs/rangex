@@ -1,6 +1,7 @@
 import type {
 	ElementView,
 	NodeView,
+	SnapshotLimits,
 	StoredSnapshot,
 	TextView,
 } from "@rangex/core";
@@ -38,6 +39,7 @@ export type CreateHTMLTreeResult = string;
 
 export interface CreateHTMLViewParams {
 	storedSnapshot: StoredSnapshot;
+	limits: SnapshotLimits;
 	styles: string;
 	highlightCode?: HighlightCodeFn;
 }

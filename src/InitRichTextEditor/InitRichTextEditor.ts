@@ -1,6 +1,7 @@
 import {
 	createRichTextEditor,
 	type Extension,
+	type SnapshotLimits,
 	type StoredSnapshot,
 } from "@rangex/rich-text-editor";
 import { AccordionItem } from "@rangex/rich-text-editor/accordion-item";
@@ -37,9 +38,14 @@ import {
 	templateVariableSettings,
 } from "../ExtensionSettings";
 
-// Free-tier key for this demo. It ships in the bundle like any license key, so it isn't secret.
 const licenseKey =
 	"eyJ2IjoxLCJraWQiOiJ0ZXN0LTEiLCJjaWQiOiI5NjFiN2FmMS05NTdhLTRiNmMtYjQ2OS0wMjM1MDdkZmQxZDQiLCJ0aWVyIjoiZnJlZSIsImlzc3VlZCI6IjIwMjYtMTAtMDIiLCJleHBpcmVzIjoiMjAyNy0wNC0wMiJ9.j3XyNzZIObuMhOJEBD1C13i1bHtP9-PQ8rUQ1atZQniT8dtEC55GsFB9ENSaX_U92G4l_SlZJOiHB4kzsRWHAw";
+
+const limits: SnapshotLimits = {
+	maxDepth: 100,
+	maxNodeCount: 50_000,
+	maxTextLength: 100_000,
+};
 
 export const initRichTextEditor = () => {
 	const extensions: Extension[] = [
@@ -70,11 +76,36 @@ export const initRichTextEditor = () => {
 		Video({}),
 	];
 
+	const snapshot = (() => {
+		try {
+			const snap = localStorage.getItem("snapshot");
+
+			if (snap) {
+				return JSON.parse(snap);
+			}
+			throw new Error("");
+		} catch {
+			return storedSnapshot;
+		}
+	})();
+
 	const richTextEditor = createRichTextEditor({
 		licenseKey,
-		storedSnapshot: storedSnapshot as StoredSnapshot,
+		storedSnapshot: snapshot as StoredSnapshot,
+		limits,
 		extensions,
 	});
+
+	// @ts-expect-error
+	window.addSnapshot = () => {
+		const snap = richTextEditor.createStoredSnapshot();
+		localStorage.setItem("snapshot", JSON.stringify(snap));
+	};
+
+	// @ts-expect-error
+	window.removeSnapshot = () => {
+		localStorage.removeItem("snapshot");
+	};
 
 	return richTextEditor;
 };

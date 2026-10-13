@@ -28,6 +28,7 @@ import { UndoRedo } from "@rangex/editor/undo-redo";
 
 const { editor, host, floatingContainer, hostStyles } = createEditor({
 	licenseKey: "eyJ2IjoxLC...", // your RangeX license key; "" while developing locally
+	limits: { maxDepth: 100, maxNodeCount: 50_000, maxTextLength: 100_000 }, // how large a stored snapshot may be
 	adapters: [Formatting({}), Link({}), UndoRedo({})],
 	styles: editorStyles, // CSS for the content inside the editor
 });
@@ -56,7 +57,7 @@ const unsubscribe = editor.undoRedo?.onCanStepBackUpdate((canStepBack) => {
 ```ts
 const storedSnapshot = editor.snapshot.createStored(); // plain JSON, ready to store
 
-createEditor({ licenseKey, storedSnapshot, adapters, styles });
+createEditor({ licenseKey, storedSnapshot, limits, adapters, styles });
 ```
 
 Call `editor.destroy()` when you remove the editor.
@@ -68,7 +69,7 @@ Call `editor.destroy()` when you remove the editor.
 ```ts
 import { createHTMLView } from "@rangex/editor";
 
-const { html, styles } = createHTMLView({ storedSnapshot, styles: editorStyles });
+const { html, styles } = createHTMLView({ storedSnapshot, limits, styles: editorStyles });
 ```
 
 To highlight code blocks, pass `highlightCode`, e.g. from [`@rangex/syntax-highlighter-shiki`](https://www.npmjs.com/package/@rangex/syntax-highlighter-shiki).

@@ -16,13 +16,14 @@ import type {
 
 const migrateIfStoredSnapshot = ({
 	storedSnapshot,
+	limits,
 }: MigrateIfStoredSnapshotParams): MigrateIfStoredSnapshotResult => {
 	if (!storedSnapshot) {
 		return null;
 	}
 
 	// TODO: We have to add a validator that check if every storage is up to date
-	const migrationResult = migrateStoredSnapshot({ storedSnapshot });
+	const migrationResult = migrateStoredSnapshot({ storedSnapshot, limits });
 
 	if (!migrationResult.isValid) {
 		console.warn("Snapshot migration failed.", migrationResult.reason);
@@ -60,12 +61,17 @@ configureSanitizer({ "*": { "*": () => true } });
 export const createCore = ({
 	licenseKey,
 	storedSnapshot,
+	limits,
 }: CreateCoreParams) => {
-	const migratedStoredSnapshot = migrateIfStoredSnapshot({ storedSnapshot });
+	const migratedStoredSnapshot = migrateIfStoredSnapshot({
+		storedSnapshot,
+		limits,
+	});
 
 	const { editorAPI } = createEditorAPI({
 		licenseKey,
 		storedSnapshot: migratedStoredSnapshot,
+		limits,
 		createFallbackRootEditable,
 		shadowRootOptions: {
 			mode: "open",
