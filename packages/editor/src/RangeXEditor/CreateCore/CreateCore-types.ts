@@ -1,10 +1,10 @@
-import type { CreateRootEditableFrom, StoredSnapshot } from "@rangex/core";
+import type { StoredSnapshot } from "@rangex/core";
 
-export interface CreateRootEditableFromParams {
+export interface MigrateIfStoredSnapshotParams {
 	storedSnapshot: StoredSnapshot | undefined;
 }
 
-export type CreateRootEditableFromResult = CreateRootEditableFrom;
+export type MigrateIfStoredSnapshotResult = StoredSnapshot | null;
 
 export interface CreateCoreParams {
 	licenseKey: string;
