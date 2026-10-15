@@ -15,7 +15,7 @@ import {
 	dataPartName,
 	todoCheckboxPart,
 } from "#engine-links";
-import { createTodoCheckboxStorage, createTodoListStorage } from "#storage";
+import { createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
 	CreateTodoListResult,
@@ -38,7 +38,6 @@ export const createTodoList = ({
 				childNodes: [
 					createHTMLLayout({
 						localName: "input",
-						customStorage: createTodoCheckboxStorage({ checked: false }),
 						domAttrs: {
 							type: "checkbox",
 							[dataPartName]: todoCheckboxPart.name,

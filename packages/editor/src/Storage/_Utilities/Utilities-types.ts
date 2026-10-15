@@ -12,7 +12,7 @@ import type { RootStorage } from "../Root";
 import type { SeparatorStorage } from "../Separator";
 import type { TableStorage } from "../Table";
 import type { TemplateVariableStorage } from "../TemplateVariable";
-import type { TodoCheckboxStorage, TodoListStorage } from "../TodoList";
+import type { TodoListStorage } from "../TodoList";
 import type { VideoStorage } from "../Video";
 
 export interface IsStorageParams {
@@ -36,6 +36,5 @@ export type NodeStorage =
 	| SeparatorStorage
 	| TableStorage
 	| TemplateVariableStorage
-	| TodoCheckboxStorage
 	| TodoListStorage
 	| VideoStorage;

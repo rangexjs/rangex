@@ -21,6 +21,7 @@ export const Indentation = <T extends FormattingPublicPort | undefined>(
 
 	const port: ReactiveIndentationPort = {
 		disabled: () => state().disabled,
+		hasUnset: () => state().hasUnset,
 		values: () => state().values,
 	};
 

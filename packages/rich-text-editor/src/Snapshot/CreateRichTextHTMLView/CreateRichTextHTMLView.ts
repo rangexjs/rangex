@@ -7,11 +7,17 @@ import type {
 
 export const createRichTextHTMLView = ({
 	storedSnapshot,
+	limits,
 	highlightCode,
 }: CreateRichTextHTMLViewParams): CreateRichTextHTMLViewResult => {
 	const styles = getViewStyles();
 
-	const result = createHTMLView({ styles, storedSnapshot, highlightCode });
+	const result = createHTMLView({
+		styles,
+		storedSnapshot,
+		limits,
+		highlightCode,
+	});
 
 	return result;
 };

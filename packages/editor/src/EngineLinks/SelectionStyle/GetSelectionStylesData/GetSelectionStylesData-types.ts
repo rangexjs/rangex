@@ -74,6 +74,7 @@ export interface GetLineHeightStylesParams {
 
 export type GetLineHeightStylesResult =
 	| LineHeightStructuredStyleValue
+	| null
 	| undefined;
 
 export interface GetPaddingBlockStylesParams {
@@ -82,6 +83,7 @@ export interface GetPaddingBlockStylesParams {
 
 export type GetPaddingBlockStylesResult =
 	| PaddingBlockStructuredStyleValue
+	| null
 	| undefined;
 
 export interface GetTextAlignStylesParams {
@@ -90,6 +92,7 @@ export interface GetTextAlignStylesParams {
 
 export type GetTextAlignStylesResult =
 	| TextAlignStructuredStyleValue
+	| null
 	| undefined;
 
 export interface GetTextIndentStylesParams {
@@ -98,6 +101,7 @@ export interface GetTextIndentStylesParams {
 
 export type GetTextIndentStylesResult =
 	| TextIndentStructuredStyleValue
+	| null
 	| undefined;
 
 export interface GetStylesParams {

@@ -2,11 +2,6 @@ import type { CreateAdapterParams } from "../_Utilities";
 
 export type FormattingWhenMixed = "apply" | "remove";
 
-export interface FontFamilyOption {
-	value: string;
-	group: "sans-serif" | "serif" | "monospace";
-}
-
 export type FormattingTogglePressed = "true" | "false" | "mixed";
 
 export interface FormattingToggleState {
@@ -20,56 +15,56 @@ export interface FormattingToggleButton extends FormattingToggleState {
 
 export interface CreateToggleButtonParams extends FormattingToggleState {}
 
-export interface FormattingSolidColor {
+export type FormattingSolidColor = {
 	type: "solid";
 	value: string;
-}
+};
 
-export interface FormattingLinearGradientColor {
+export type FormattingLinearGradientColor = {
 	type: "linear-gradient";
 	deg: number;
 	colors: { value: string; offset: number }[];
-}
+};
 
 export type FormattingStructuredColor =
 	| FormattingSolidColor
 	| FormattingLinearGradientColor;
 
-export interface FormattingStructuredThemeColors {
+export type FormattingStructuredThemeColors = {
 	light: FormattingStructuredColor;
 	dark: FormattingStructuredColor;
-}
+};
 
 export type FormattingBackgroundColorValue = FormattingStructuredThemeColors;
 export type FormattingColorValue = FormattingStructuredThemeColors;
 export type FormattingFontFamilyValue = string;
 
-export interface FormattingFontSizeValue {
+export type FormattingFontSizeValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingIndentationValue {
+export type FormattingIndentationValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingLetterSpacingValue {
+export type FormattingLetterSpacingValue = {
 	type: "px";
 	value: number;
-}
+};
 
-export interface FormattingLineHeightValue {
+export type FormattingLineHeightValue = {
 	type: "number";
 	value: number;
-}
+};
 
 export type FormattingLineLocalNameValue = "p" | `h${1 | 2 | 3 | 4 | 5 | 6}`;
 
-export interface FormattingLineSpacingValue {
+export type FormattingLineSpacingValue = {
 	type: "px";
 	value: number;
-}
+};
 
 export type FormattingTextAlignValue = "start" | "center" | "justify" | "end";
 
@@ -89,16 +84,19 @@ export interface FormattingColorState {
 
 export interface FormattingFontFamilyState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingFontFamilyValue>;
 }
 
 export interface FormattingFontSizeState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingFontSizeValue>;
 }
 
 export interface FormattingIndentationState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingIndentationValue>;
 }
 
@@ -111,6 +109,7 @@ export interface FormattingLetterSpacingState {
 
 export interface FormattingLineHeightState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingLineHeightValue>;
 }
 
@@ -121,6 +120,7 @@ export interface FormattingLineLocalNameState {
 
 export interface FormattingLineSpacingState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingLineSpacingValue>;
 }
 
@@ -132,6 +132,7 @@ export interface FormattingStrikethroughState extends FormattingToggleButton {}
 
 export interface FormattingTextAlignState {
 	disabled: boolean;
+	hasUnset: boolean;
 	values: Set<FormattingTextAlignValue>;
 }
 
@@ -174,16 +175,16 @@ export interface FormattingActionState {
 	color?: FormattingColorValue | null;
 	fontFamily?: FormattingFontFamilyValue | null;
 	fontSize?: FormattingFontSizeValue | null;
-	indentation?: FormattingIndentationValue;
+	indentation?: FormattingIndentationValue | null;
 	italic?: FormattingTogglePressed;
 	letterSpacing?: FormattingLetterSpacingValue | null;
-	lineHeight?: FormattingLineHeightValue;
+	lineHeight?: FormattingLineHeightValue | null;
 	lineLocalName?: FormattingLineLocalNameValue;
-	lineSpacing?: FormattingLineSpacingValue;
+	lineSpacing?: FormattingLineSpacingValue | null;
 	subscript?: FormattingTogglePressed;
 	superscript?: FormattingTogglePressed;
 	strikethrough?: FormattingTogglePressed;
-	textAlign?: FormattingTextAlignValue;
+	textAlign?: FormattingTextAlignValue | null;
 	underline?: FormattingTogglePressed;
 }
 
@@ -270,14 +271,6 @@ export interface FormattingPublicPortProps {
 	readonly underline: FormattingUnderlineState;
 	readonly removeLine: FormattingRemoveLineState;
 	readonly removeText: FormattingRemoveTextState;
-	// Configured once at construction, not pushed by the Editor.
-	readonly defaultFontFamily: FormattingFontFamilyValue;
-	readonly defaultFontSize: FormattingFontSizeValue;
-	readonly defaultIndentation: FormattingIndentationValue;
-	readonly defaultLineHeight: FormattingLineHeightValue;
-	readonly defaultLineSpacing: FormattingLineSpacingValue;
-	readonly defaultTextAlign: FormattingTextAlignValue;
-	readonly fontFamilyOptions: FontFamilyOption[];
 
 	onBackgroundColorUpdate(
 		callback: OnBackgroundColorUpdateCallbackFn,
@@ -309,32 +302,22 @@ export interface FormattingPublicPortProps {
 	setColor(color: FormattingColorValue | null): void;
 	setFontFamily(fontFamily: FormattingFontFamilyValue | null): void;
 	setFontSize(fontSize: FormattingFontSizeValue | null): void;
-	setIndentation(indentation: FormattingIndentationValue): void;
+	setIndentation(indentation: FormattingIndentationValue | null): void;
 	toggleItalic(): void;
 	setLetterSpacing(letterSpacing: FormattingLetterSpacingValue | null): void;
-	setLineHeight(lineHeight: FormattingLineHeightValue): void;
+	setLineHeight(lineHeight: FormattingLineHeightValue | null): void;
 	setLineLocalName(lineLocalName: FormattingLineLocalNameValue): void;
-	setLineSpacing(lineSpacing: FormattingLineSpacingValue): void;
+	setLineSpacing(lineSpacing: FormattingLineSpacingValue | null): void;
 	toggleSubscript(): void;
 	toggleSuperscript(): void;
 	toggleStrikethrough(): void;
-	setTextAlign(textAlign: FormattingTextAlignValue): void;
+	setTextAlign(textAlign: FormattingTextAlignValue | null): void;
 	toggleUnderline(): void;
 	removeLineFormat(): void;
 	removeTextFormat(): void;
 }
 
 export interface FormattingPublicPort extends FormattingPublicPortProps {}
-
-export interface FormattingInternals {
-	defaultFontFamily: FormattingFontFamilyValue;
-	defaultFontSize: FormattingFontSizeValue;
-	defaultIndentation: FormattingIndentationValue;
-	defaultLineHeight: FormattingLineHeightValue;
-	defaultLineSpacing: FormattingLineSpacingValue;
-	defaultTextAlign: FormattingTextAlignValue;
-	fontFamilyOptions: FontFamilyOption[];
-}
 
 export interface FormattingAdapter {
 	configPort: FormattingConfigPort;
@@ -343,13 +326,6 @@ export interface FormattingAdapter {
 
 export interface FormattingSettings {
 	whenMixed?: FormattingWhenMixed;
-	defaultFontFamily?: FormattingFontFamilyValue;
-	defaultFontSize?: FormattingFontSizeValue;
-	defaultIndentation?: FormattingIndentationValue;
-	defaultLineHeight?: FormattingLineHeightValue;
-	defaultLineSpacing?: FormattingLineSpacingValue;
-	defaultTextAlign?: FormattingTextAlignValue;
-	fontFamilyOptions?: FontFamilyOption[];
 }
 
 export interface CreateFormattingAdapterParams

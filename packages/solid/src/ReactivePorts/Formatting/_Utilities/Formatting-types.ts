@@ -35,28 +35,40 @@ export interface ReactiveColorPort
 	extends ReactiveFormattingValuePort<FormattingColorValue> {}
 
 export interface ReactiveFontFamilyPort
-	extends ReactiveFormattingValuePort<FormattingFontFamilyValue> {}
+	extends ReactiveFormattingValuePort<FormattingFontFamilyValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveFontSizePort
-	extends ReactiveFormattingValuePort<FormattingFontSizeValue> {}
+	extends ReactiveFormattingValuePort<FormattingFontSizeValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveIndentationPort
-	extends ReactiveFormattingValuePort<FormattingIndentationValue> {}
+	extends ReactiveFormattingValuePort<FormattingIndentationValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveLetterSpacingPort
 	extends ReactiveFormattingValuePort<FormattingLetterSpacingValue> {}
 
 export interface ReactiveLineHeightPort
-	extends ReactiveFormattingValuePort<FormattingLineHeightValue> {}
+	extends ReactiveFormattingValuePort<FormattingLineHeightValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveLineLocalNamePort
 	extends ReactiveFormattingValuePort<FormattingLineLocalNameValue> {}
 
 export interface ReactiveLineSpacingPort
-	extends ReactiveFormattingValuePort<FormattingLineSpacingValue> {}
+	extends ReactiveFormattingValuePort<FormattingLineSpacingValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveTextAlignPort
-	extends ReactiveFormattingValuePort<FormattingTextAlignValue> {}
+	extends ReactiveFormattingValuePort<FormattingTextAlignValue> {
+	hasUnset: Accessor<boolean>;
+}
 
 export interface ReactiveRemoveFormatPort {
 	disabled: Accessor<boolean>;

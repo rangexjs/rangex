@@ -7,8 +7,9 @@ import type {
 
 export const createRichTextSnapshotView = ({
 	storedSnapshot,
+	limits,
 }: CreateRichTextSnapshotViewParams): CreateRichTextSnapshotViewResult => {
-	const { snapshotView } = createSnapshotView({ storedSnapshot });
+	const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
 
 	const styles = getViewStyles();
 	const viewStyleText = buildViewStyleText(styles);

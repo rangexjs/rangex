@@ -108,7 +108,7 @@ const highlightCode = createHTMLViewHighlighter({
 	themes: [githubLight, githubDark],
 });
 
-const htmlView = createRichTextHTMLView({ storedSnapshot, highlightCode });
+const htmlView = createRichTextHTMLView({ storedSnapshot, limits, highlightCode });
 ```
 
 `createHTMLView` from `@rangex/editor` takes the same `highlightCode` option.

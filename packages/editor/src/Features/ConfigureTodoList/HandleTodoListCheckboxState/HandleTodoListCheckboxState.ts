@@ -6,16 +6,12 @@ import {
 	listChildNodesChangeEventType,
 } from "@rangex/core";
 import { componentsName, todoCheckboxPart } from "#engine-links";
-import {
-	ensureNodeTodoCheckboxStorage,
-	todoCheckboxStorageFallbacks,
-} from "#storage";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 /*
- * Keeps each todo item's checkbox in sync with its stored checked state: restoring it whenever
- * list items change, and persisting it back to storage whenever the checkbox itself is toggled.
- * Returns a cleanup function.
+ * Keeps each todo item's checkbox in sync with its `checked` attribute, the stored checked state:
+ * restoring it whenever list items are added (unchecking copies, e.g. after pressing Enter), and
+ * writing it back whenever the checkbox itself is toggled. Returns a cleanup function.
  */
 export const handleTodoListCheckboxState = ({
 	editorAPI,
@@ -23,7 +19,7 @@ export const handleTodoListCheckboxState = ({
 	const unsubscribeListChange = editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
-			for (const list of lists) {
+			for (const [list, addedListItems] of lists) {
 				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
 				if (blockComponent?.$$editorRole !== blockComponentRole) {
@@ -34,7 +30,7 @@ export const handleTodoListCheckboxState = ({
 					continue;
 				}
 
-				for (const listItem of list.$$children) {
+				for (const [listItem, wasCopied] of addedListItems) {
 					const todoCheckbox = listItem.$$querySelector(todoCheckboxPart.attr);
 
 					if (!todoCheckbox) {
@@ -49,12 +45,18 @@ export const handleTodoListCheckboxState = ({
 						throw new Error("TodoCheckbox's type is invalid.");
 					}
 
-					const storage = ensureNodeTodoCheckboxStorage({
-						htmlLayout: todoCheckbox,
-						fallbacks: todoCheckboxStorageFallbacks,
-					});
+					if (wasCopied) {
+						todoCheckbox.defaultChecked = false;
+						todoCheckbox.checked = false;
 
-					todoCheckbox.checked = storage.checked;
+						for (const animation of todoCheckbox.getAnimations()) {
+							animation.finish();
+						}
+
+						continue;
+					}
+
+					todoCheckbox.checked = todoCheckbox.defaultChecked;
 				}
 			}
 		},
@@ -79,12 +81,7 @@ export const handleTodoListCheckboxState = ({
 					throw new Error("CurrentTarget's type is invalid.");
 				}
 
-				const storage = ensureNodeTodoCheckboxStorage({
-					htmlLayout: currentTarget,
-					fallbacks: todoCheckboxStorageFallbacks,
-				});
-
-				storage.checked = currentTarget.checked;
+				currentTarget.defaultChecked = currentTarget.checked;
 			},
 		},
 	});

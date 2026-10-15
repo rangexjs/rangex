@@ -6,18 +6,14 @@ import type {
 	FormattingFontFamilyState,
 	FormattingFontSizeState,
 	FormattingIndentationState,
-	FormattingIndentationValue,
 	FormattingItalicState,
 	FormattingLetterSpacingState,
 	FormattingLineHeightState,
-	FormattingLineHeightValue,
 	FormattingLineSpacingState,
-	FormattingLineSpacingValue,
 	FormattingStrikethroughState,
 	FormattingSubscriptState,
 	FormattingSuperscriptState,
 	FormattingTextAlignState,
-	FormattingTextAlignValue,
 	FormattingUnderlineState,
 } from "../FormattingAdapter-types";
 
@@ -26,10 +22,6 @@ export interface IsRemoveLineDisabledParams {
 	lineHeight: FormattingLineHeightState;
 	lineSpacing: FormattingLineSpacingState;
 	textAlign: FormattingTextAlignState;
-	defaultIndentation: FormattingIndentationValue;
-	defaultLineHeight: FormattingLineHeightValue;
-	defaultLineSpacing: FormattingLineSpacingValue;
-	defaultTextAlign: FormattingTextAlignValue;
 }
 
 export interface IsRemoveTextDisabledParams {

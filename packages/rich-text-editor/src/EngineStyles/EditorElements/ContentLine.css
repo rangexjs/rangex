@@ -1,5 +1,9 @@
 /* Zero specificity, so a ContentLine's own StyleAttrs always win over these defaults */
 :where([data-rx-editor-role="content-line"]) {
+	&:where(:not(span)) {
+		text-align: start;
+	}
+
 	&:where(p) {
 		font-size: 16px;
 		line-height: 1.5;

@@ -1,4 +1,5 @@
 import {
+	type CreateFallbackRootEditable,
 	configureSanitizer,
 	createBeamText,
 	createContentLine,
@@ -9,24 +10,35 @@ import {
 import { createRootStorage } from "#storage";
 import type {
 	CreateCoreParams,
-	CreateRootEditableFromParams,
-	CreateRootEditableFromResult,
+	MigrateIfStoredSnapshotParams,
+	MigrateIfStoredSnapshotResult,
 } from "./CreateCore-types";
 
-const createRootEditableFrom = ({
+const migrateIfStoredSnapshot = ({
 	storedSnapshot,
-}: CreateRootEditableFromParams): CreateRootEditableFromResult => {
-	if (storedSnapshot) {
-		// TODO: We have to add a validator that check if every storage is up to date
-		const migrationResult = migrateStoredSnapshot({ storedSnapshot });
+	limits,
+}: MigrateIfStoredSnapshotParams): MigrateIfStoredSnapshotResult => {
+	if (!storedSnapshot) {
+		return null;
+	}
 
-		if (migrationResult.isValid) {
-			const migratedStoredSnapshot = migrationResult.storedSnapshot;
+	// TODO: We have to add a validator that check if every storage is up to date
+	const migrationResult = migrateStoredSnapshot({ storedSnapshot, limits });
 
-			return { type: "snapshot", storedSnapshot: migratedStoredSnapshot };
-		}
-
+	if (!migrationResult.isValid) {
 		console.warn("Snapshot migration failed.", migrationResult.reason);
+
+		return null;
+	}
+
+	return migrationResult.storedSnapshot;
+};
+
+const createFallbackRootEditable: CreateFallbackRootEditable = ({
+	storedSnapshotFailed,
+}) => {
+	if (storedSnapshotFailed) {
+		console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
 	}
 
 	const rootEditable = createRootEditable({
@@ -40,7 +52,7 @@ const createRootEditableFrom = ({
 		],
 	});
 
-	return { type: "node", node: rootEditable };
+	return { rootEditable };
 };
 
 // TODO: Set policy rules
@@ -49,12 +61,18 @@ configureSanitizer({ "*": { "*": () => true } });
 export const createCore = ({
 	licenseKey,
 	storedSnapshot,
+	limits,
 }: CreateCoreParams) => {
-	const rootEditableFrom = createRootEditableFrom({ storedSnapshot });
+	const migratedStoredSnapshot = migrateIfStoredSnapshot({
+		storedSnapshot,
+		limits,
+	});
 
 	const { editorAPI } = createEditorAPI({
 		licenseKey,
-		rootEditableFrom,
+		storedSnapshot: migratedStoredSnapshot,
+		limits,
+		createFallbackRootEditable,
 		shadowRootOptions: {
 			mode: "open",
 			serializable: true,

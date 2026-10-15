@@ -6,7 +6,12 @@
 	table,
 	td,
 	th {
-		border: 1px solid grey;
+		border-width: 1px;
+		border-style: solid;
+		border-color: light-dark(
+			var(--color-neutral-400),
+			var(--color-neutral-700)
+		);
 	}
 
 	td,

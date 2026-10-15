@@ -123,10 +123,11 @@ const createHTMLTree = ({
  */
 export const createHTMLView = ({
 	storedSnapshot,
+	limits,
 	styles,
 	highlightCode,
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
-	const { snapshotView } = createSnapshotView({ storedSnapshot });
+	const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
 
 	if (highlightCode) {
 		highlightCodeBlocks({ nodeView: snapshotView.tree, highlightCode });

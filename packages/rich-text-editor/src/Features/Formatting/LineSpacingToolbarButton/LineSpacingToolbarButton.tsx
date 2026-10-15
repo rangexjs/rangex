@@ -11,7 +11,6 @@ import {
 } from "../../_Utilities";
 
 const defaultValues: Set<FormattingLineSpacingValue> = new Set([
-	{ type: "px", value: 0 },
 	{ type: "px", value: 4 },
 	{ type: "px", value: 8 },
 	{ type: "px", value: 16 },
@@ -73,18 +72,31 @@ export const LineSpacingToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map<ToolbarDropdownList[number]>((lineSpacingItem) => {
-			return {
-				checked: contains(lineSpacingItem),
-				text: `${lineSpacingItem.value}`,
-				button: {
-					onClick: () => {
-						formatting.setLineSpacing(lineSpacingItem);
+		const defaultItem: ToolbarDropdownList[number] = {
+			checked: $lineSpacing.hasUnset(),
+			text: "Default",
+			button: {
+				onClick: () => formatting.setLineSpacing(null),
+				class: "justify-center",
+			},
+		};
+
+		const lineSpacingItems = sortedList().map<ToolbarDropdownList[number]>(
+			(lineSpacingItem) => {
+				return {
+					checked: contains(lineSpacingItem),
+					text: `${lineSpacingItem.value}`,
+					button: {
+						onClick: () => {
+							formatting.setLineSpacing(lineSpacingItem);
+						},
+						class: "justify-center",
 					},
-					class: "justify-center",
-				},
-			};
-		});
+				};
+			},
+		);
+
+		return [defaultItem, ...lineSpacingItems];
 	});
 
 	const disabled = createMemo(

@@ -1,6 +1,5 @@
 import { extendObjectProperties } from "#utilities";
 import { createEmitter, createStateEmitter } from "../_Utilities";
-import { defaultFontFamilyOptions } from "./FormattingAdapter-default";
 import type {
 	CreateFormattingAdapterParams,
 	CreateFormattingAdapterResult,
@@ -14,7 +13,6 @@ import type {
 	FormattingFontFamilyState,
 	FormattingFontSizeState,
 	FormattingIndentationState,
-	FormattingInternals,
 	FormattingItalicState,
 	FormattingLetterSpacingState,
 	FormattingLineHeightState,
@@ -41,19 +39,7 @@ import {
 export const createFormattingAdapter = (
 	...params: CreateFormattingAdapterParams
 ): CreateFormattingAdapterResult => {
-	const [
-		{
-			whenMixed = "apply",
-			defaultFontFamily = "Inter",
-			defaultFontSize = { type: "px", value: 16 } as const,
-			defaultIndentation = { type: "px", value: 0 } as const,
-			defaultLineHeight = { type: "number", value: 1.5 } as const,
-			defaultLineSpacing = { type: "px", value: 0 } as const,
-			defaultTextAlign = "start",
-			fontFamilyOptions = defaultFontFamilyOptions,
-		},
-		{ adapterBus },
-	] = params;
+	const [{ whenMixed = "apply" }, { adapterBus }] = params;
 
 	adapterBus.registerAdapter("formatting");
 
@@ -67,16 +53,6 @@ export const createFormattingAdapter = (
 			return this.pressed === "true" || this.pressed === "mixed";
 		},
 	});
-
-	const internals: FormattingInternals = {
-		defaultFontFamily,
-		defaultFontSize,
-		defaultIndentation,
-		defaultLineHeight,
-		defaultLineSpacing,
-		defaultTextAlign,
-		fontFamilyOptions,
-	};
 
 	// States
 	const backgroundColorState =
@@ -96,14 +72,17 @@ export const createFormattingAdapter = (
 	});
 	const fontFamilyState = createStateEmitter<FormattingFontFamilyState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const fontSizeState = createStateEmitter<FormattingFontSizeState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const indentationState = createStateEmitter<FormattingIndentationState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const italicState = createStateEmitter<FormattingItalicState>(
@@ -115,6 +94,7 @@ export const createFormattingAdapter = (
 	});
 	const lineHeightState = createStateEmitter<FormattingLineHeightState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const lineLocalNameState = createStateEmitter<FormattingLineLocalNameState>({
@@ -123,6 +103,7 @@ export const createFormattingAdapter = (
 	});
 	const lineSpacingState = createStateEmitter<FormattingLineSpacingState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const subscriptState = createStateEmitter<FormattingSubscriptState>(
@@ -136,6 +117,7 @@ export const createFormattingAdapter = (
 	);
 	const textAlignState = createStateEmitter<FormattingTextAlignState>({
 		disabled: true,
+		hasUnset: true,
 		values: new Set(),
 	});
 	const underlineState = createStateEmitter<FormattingUnderlineState>(
@@ -243,10 +225,6 @@ export const createFormattingAdapter = (
 			lineHeight: lineHeightState.get(),
 			lineSpacing: lineSpacingState.get(),
 			textAlign: textAlignState.get(),
-			defaultIndentation: internals.defaultIndentation,
-			defaultLineHeight: internals.defaultLineHeight,
-			defaultLineSpacing: internals.defaultLineSpacing,
-			defaultTextAlign: internals.defaultTextAlign,
 		});
 
 		removeLineState.set({ disabled: removeLineDisabled });
@@ -358,34 +336,6 @@ export const createFormattingAdapter = (
 
 		get removeText() {
 			return removeTextState.get();
-		},
-
-		get defaultFontFamily() {
-			return internals.defaultFontFamily;
-		},
-
-		get defaultFontSize() {
-			return internals.defaultFontSize;
-		},
-
-		get defaultIndentation() {
-			return internals.defaultIndentation;
-		},
-
-		get defaultLineHeight() {
-			return internals.defaultLineHeight;
-		},
-
-		get defaultLineSpacing() {
-			return internals.defaultLineSpacing;
-		},
-
-		get defaultTextAlign() {
-			return internals.defaultTextAlign;
-		},
-
-		get fontFamilyOptions() {
-			return internals.fontFamilyOptions;
 		},
 
 		onBackgroundColorUpdate(callback) {
@@ -538,10 +488,10 @@ export const createFormattingAdapter = (
 
 		removeLineFormat() {
 			formattingChangeEmitter.emit({
-				indentation: internals.defaultIndentation,
-				lineHeight: internals.defaultLineHeight,
-				lineSpacing: internals.defaultLineSpacing,
-				textAlign: internals.defaultTextAlign,
+				indentation: null,
+				lineHeight: null,
+				lineSpacing: null,
+				textAlign: null,
 			});
 		},
 

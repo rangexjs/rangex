@@ -92,11 +92,11 @@ const getLineHeightToolbarButtonState = ({
 	const { style, permission } = lineHeight;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -109,7 +109,9 @@ const getLineHeightToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getLineSpacingToolbarButtonState = ({
@@ -120,11 +122,11 @@ const getLineSpacingToolbarButtonState = ({
 	const { style, permission } = paddingBlock;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -137,7 +139,9 @@ const getLineSpacingToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getIndentationToolbarButtonState = ({
@@ -148,11 +152,11 @@ const getIndentationToolbarButtonState = ({
 	const { style, permission } = textIndent;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -165,7 +169,9 @@ const getIndentationToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getTextAlignToolbarButtonState = ({
@@ -176,11 +182,11 @@ const getTextAlignToolbarButtonState = ({
 	const { style, permission } = textAlign;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -193,7 +199,9 @@ const getTextAlignToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getBackgroundColorToolbarButtonState = ({
@@ -284,14 +292,14 @@ const getFontFamilyToolbarButtonState = ({
 		const { fontFamily } = textFormatStylesState;
 
 		if (!isValidFontFamilyStructuredStyle(fontFamily)) {
-			return { disabled: true, values: new Set() };
+			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
 		const values = new Set<FormattingFontFamilyValue>([
 			fontFamily.values.fontFamily,
 		]);
 
-		return { disabled: false, values };
+		return { disabled: false, hasUnset: false, values };
 	}
 
 	const { fontFamily } = glyphFormatterStructuredStyle;
@@ -299,11 +307,11 @@ const getFontFamilyToolbarButtonState = ({
 	const { style, permission } = fontFamily;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -316,7 +324,9 @@ const getFontFamilyToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getFontSizeToolbarButtonState = ({
@@ -327,12 +337,12 @@ const getFontSizeToolbarButtonState = ({
 		const { fontSize } = textFormatStylesState;
 
 		if (!isValidFontSizeStructuredStyle(fontSize)) {
-			return { disabled: true, values: new Set() };
+			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
 		const values = new Set<FormattingFontSizeValue>([fontSize.values.fontSize]);
 
-		return { disabled: false, values };
+		return { disabled: false, hasUnset: false, values };
 	}
 
 	const { fontSize } = glyphFormatterStructuredStyle;
@@ -340,11 +350,11 @@ const getFontSizeToolbarButtonState = ({
 	const { style, permission } = fontSize;
 
 	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
+		return { disabled: true, hasUnset: true, values: new Set() };
 	}
 
 	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
+		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
 	const validStructuredStyles = style.values.filter(
@@ -357,7 +367,9 @@ const getFontSizeToolbarButtonState = ({
 		),
 	);
 
-	return { disabled: false, values };
+	const hasUnset = style.state === "mixed";
+
+	return { disabled: false, hasUnset, values };
 };
 
 const getLetterSpacingToolbarButtonState = ({
