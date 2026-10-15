@@ -8,7 +8,7 @@ The framework-agnostic layer over the RangeX engine (`@rangex/core`), written in
 
 **Before any task, read [`docs/_References.md`](docs/_References.md)** and follow it to the docs relevant to the task.
 
-**Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read the engine's handbook — it is the authoritative reference for everything the engine exposes. The handbook isn't part of this repo while the engine is closed-source; where it's available, a local, gitignored `CLAUDE.local.md` in this package gives its path. Do not guess engine behavior from usage patterns when the handbook is available.
+**Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read the engine's handbook — it is the authoritative reference for everything the engine exposes. The handbook isn't part of this repo while the engine is closed-source; where it's available, a local, gitignored `AGENTS.local.md` in this package gives its path. Do not guess engine behavior from usage patterns when the handbook is available.
 
 ## Public exports (`src/Exports/`)
 
