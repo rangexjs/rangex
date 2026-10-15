@@ -1,9 +1,7 @@
-import type { FontFamilyOption } from "./FormattingAdapter-types";
+import type { FormattingExtensionSettings } from "@rangex/rich-text-editor/formatting";
 
-export const defaultFontFamilyOptions: FontFamilyOption[] = [
-	// Loaded via FontStyles.css
+const fontFamilyOptions: FormattingExtensionSettings["fontFamilyOptions"] = [
 	{ value: "Inter", group: "sans-serif" },
-	// Generic CSS families and web-safe fonts — no loading required
 	{ value: "system-ui", group: "sans-serif" },
 	{ value: "Arial", group: "sans-serif" },
 	{ value: "Helvetica", group: "sans-serif" },
@@ -15,3 +13,7 @@ export const defaultFontFamilyOptions: FontFamilyOption[] = [
 	{ value: "Courier New", group: "monospace" },
 	{ value: "monospace", group: "monospace" },
 ];
+
+export const formattingSettings: FormattingExtensionSettings = {
+	fontFamilyOptions,
+};

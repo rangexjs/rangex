@@ -67,8 +67,13 @@ export const TextAlignToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
+	const isTextAlignChecked = (textAlignValue: FormattingTextAlignValue) =>
+		$textAlign.values().has(textAlignValue) ||
+		(textAlignValue === "start" && $textAlign.hasUnset());
+
+	// "start" is ContentLine.css's default, so it's stored as unset.
 	const onTextAlignClick = (textAlignValue: FormattingTextAlignValue) => {
-		formatting.setTextAlign(textAlignValue);
+		formatting.setTextAlign(textAlignValue === "start" ? null : textAlignValue);
 	};
 
 	const disabled = createMemo(
@@ -97,8 +102,8 @@ export const TextAlignToolbarButton = () => {
 					<For each={textAlignValues}>
 						{(name) => (
 							<ToolbarButton
-								checked={$textAlign.values().has(name)}
-								aria-pressed={`${$textAlign.values().has(name)}`}
+								checked={isTextAlignChecked(name)}
+								aria-pressed={`${isTextAlignChecked(name)}`}
 								commandfor={popoverId}
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}

@@ -197,6 +197,10 @@ const getLineHeightStyles = ({
 		return undefined;
 	}
 
+	if (lineHeight === null) {
+		return null;
+	}
+
 	return createStructuredStyleValue({
 		type: "line-height",
 		values: { lineHeight },
@@ -217,6 +221,10 @@ const getPaddingBlockStyles = ({
 
 	if (lineSpacing === undefined) {
 		return undefined;
+	}
+
+	if (lineSpacing === null) {
+		return null;
 	}
 
 	return createStructuredStyleValue({
@@ -241,6 +249,10 @@ const getTextAlignStyles = ({
 		return undefined;
 	}
 
+	if (textAlign === null) {
+		return null;
+	}
+
 	return createStructuredStyleValue({
 		type: "text-align",
 		values: { textAlign },
@@ -257,6 +269,10 @@ const getTextIndentStyles = ({
 
 	if (indentation === undefined) {
 		return undefined;
+	}
+
+	if (indentation === null) {
+		return null;
 	}
 
 	return createStructuredStyleValue({

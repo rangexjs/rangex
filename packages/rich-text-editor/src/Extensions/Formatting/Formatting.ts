@@ -1,5 +1,6 @@
 import { Formatting as FormattingFactory } from "@rangex/editor/formatting";
 import { toolbarButtonsName } from "#constants";
+import type { FontFamilyOption } from "#context";
 import {
 	BackgroundColorToolbarButton,
 	BoldToolbarButton,
@@ -23,11 +24,28 @@ import {
 import type { Extension } from "../_Utilities";
 import type { FormattingExtensionSettings } from "./Formatting-types";
 
+// Generic CSS families and web-safe fonts — no loading required
+const defaultFontFamilyOptions: FontFamilyOption[] = [
+	{ value: "system-ui", group: "sans-serif" },
+	{ value: "Arial", group: "sans-serif" },
+	{ value: "Helvetica", group: "sans-serif" },
+	{ value: "Verdana", group: "sans-serif" },
+	{ value: "Tahoma", group: "sans-serif" },
+	{ value: "Trebuchet MS", group: "sans-serif" },
+	{ value: "Georgia", group: "serif" },
+	{ value: "Times New Roman", group: "serif" },
+	{ value: "Courier New", group: "monospace" },
+	{ value: "monospace", group: "monospace" },
+];
+
 export const Formatting = (
 	settings: FormattingExtensionSettings,
 ): Extension => {
+	const { fontFamilyOptions = defaultFontFamilyOptions, ...adapterSettings } =
+		settings;
+
 	return {
-		createAdapter: () => FormattingFactory(settings),
+		createAdapter: () => FormattingFactory(adapterSettings),
 		components: {
 			toolbarButtons: {
 				[toolbarButtonsName.backgroundColor]: BackgroundColorToolbarButton,
@@ -50,6 +68,9 @@ export const Formatting = (
 				[toolbarButtonsName.underline]: UnderlineToolbarButton,
 			},
 			floatingComponents: [],
+		},
+		uiOptions: {
+			formatting: { fontFamilyOptions },
 		},
 	};
 };

@@ -11,7 +11,6 @@ import {
 } from "../../_Utilities";
 
 const defaultValues: Set<FormattingIndentationValue> = new Set([
-	{ type: "px", value: 0 },
 	{ type: "px", value: 4 },
 	{ type: "px", value: 8 },
 	{ type: "px", value: 12 },
@@ -82,18 +81,31 @@ export const IndentationToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map<ToolbarDropdownList[number]>((indentationItem) => {
-			return {
-				checked: contains(indentationItem),
-				text: `${indentationItem.value}`,
-				button: {
-					onClick: () => {
-						formatting.setIndentation(indentationItem);
+		const defaultItem: ToolbarDropdownList[number] = {
+			checked: $indentation.hasUnset(),
+			text: "Default",
+			button: {
+				onClick: () => formatting.setIndentation(null),
+				class: "justify-center",
+			},
+		};
+
+		const indentationItems = sortedList().map<ToolbarDropdownList[number]>(
+			(indentationItem) => {
+				return {
+					checked: contains(indentationItem),
+					text: `${indentationItem.value}`,
+					button: {
+						onClick: () => {
+							formatting.setIndentation(indentationItem);
+						},
+						class: "justify-center",
 					},
-					class: "justify-center",
-				},
-			};
-		});
+				};
+			},
+		);
+
+		return [defaultItem, ...indentationItems];
 	});
 
 	const disabled = createMemo(

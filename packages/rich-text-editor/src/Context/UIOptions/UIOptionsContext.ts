@@ -31,6 +31,16 @@ export interface CodeBlockUIOptions {
 	defaultTheme?: CodeBlockTheme;
 }
 
+// Formatting
+export interface FontFamilyOption {
+	value: string;
+	group: "sans-serif" | "serif" | "monospace";
+}
+
+export interface FormattingUIOptions {
+	fontFamilyOptions?: FontFamilyOption[];
+}
+
 // Mention
 export interface MentionItem {
 	userId: string;
@@ -104,6 +114,7 @@ export interface TableUIOptions {
 
 export interface UIOptions {
 	codeBlock?: CodeBlockUIOptions;
+	formatting?: FormattingUIOptions;
 	mention?: MentionUIOptions;
 	table?: TableUIOptions;
 	templateVariable?: TemplateVariableUIOptions;

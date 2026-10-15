@@ -77,18 +77,31 @@ export const LineHeightToolbarButton = () => {
 			);
 		};
 
-		return sortedList().map((lineHeightItem) => {
-			return {
-				checked: contains(lineHeightItem),
-				text: `${lineHeightItem.value}`,
-				button: {
-					onClick: () => {
-						formatting.setLineHeight(lineHeightItem);
+		const defaultItem: ToolbarDropdownList[number] = {
+			checked: $lineHeight.hasUnset(),
+			text: "Default",
+			button: {
+				onClick: () => formatting.setLineHeight(null),
+				class: "justify-center",
+			},
+		};
+
+		const lineHeightItems = sortedList().map<ToolbarDropdownList[number]>(
+			(lineHeightItem) => {
+				return {
+					checked: contains(lineHeightItem),
+					text: `${lineHeightItem.value}`,
+					button: {
+						onClick: () => {
+							formatting.setLineHeight(lineHeightItem);
+						},
+						class: "justify-center",
 					},
-					class: "justify-center",
-				},
-			};
-		});
+				};
+			},
+		);
+
+		return [defaultItem, ...lineHeightItems];
 	});
 
 	const disabled = createMemo(

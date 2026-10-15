@@ -18,6 +18,7 @@ export const TextAlign = <T extends FormattingPublicPort | undefined>(
 
 	const port: ReactiveTextAlignPort = {
 		disabled: () => state().disabled,
+		hasUnset: () => state().hasUnset,
 		values: () => state().values,
 	};
 

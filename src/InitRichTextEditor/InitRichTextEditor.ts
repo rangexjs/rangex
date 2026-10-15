@@ -33,6 +33,7 @@ import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,
 	emptyMediaSettings,
+	formattingSettings,
 	markdownSettings,
 	mentionSettings,
 	templateVariableSettings,
@@ -56,7 +57,7 @@ export const initRichTextEditor = () => {
 		Emoji({}),
 		EmptyMedia(emptyMediaSettings),
 		FindReplace({}),
-		Formatting({}),
+		Formatting(formattingSettings),
 		CodeBlock(codeBlockSettings),
 		CommandMenu({}),
 		Image({}),

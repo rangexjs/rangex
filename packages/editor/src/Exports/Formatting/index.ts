@@ -1,5 +1,4 @@
 export type {
-	FontFamilyOption,
 	FormattingActionState,
 	FormattingBackgroundColorState,
 	FormattingBackgroundColorValue,
