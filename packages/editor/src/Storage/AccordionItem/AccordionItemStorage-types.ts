@@ -2,24 +2,21 @@ import type { BlockComponent } from "@rangex/core";
 import type { AccordionItemId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 
-export interface AccordionItemStorage {
+export type AccordionItemStorage = {
 	id: AccordionItemId;
 	version: typeof storageVersion;
-}
+};
 
-export interface CreateAccordionItemStorageResult
-	extends AccordionItemStorage {}
+export type CreateAccordionItemStorageResult = AccordionItemStorage;
 
 export interface EnsureAccordionItemStorageParams {
 	storage: unknown;
 }
 
-export interface EnsureAccordionItemStorageResult
-	extends AccordionItemStorage {}
+export type EnsureAccordionItemStorageResult = AccordionItemStorage;
 
 export interface EnsureNodeAccordionItemStorageParams {
 	blockComponent: BlockComponent;
 }
 
-export interface EnsureNodeAccordionItemStorageResult
-	extends AccordionItemStorage {}
+export type EnsureNodeAccordionItemStorageResult = AccordionItemStorage;

@@ -29,7 +29,9 @@ Every `customStorage` object has two required base fields:
 - `id` — identifies which component the node belongs to (e.g. `"mention"`, `"code-block"`). Constants for each are defined in `src/Storage/_Constants/`. Used to distinguish nodes when walking a snapshot tree.
 - `version` — a positive integer that increments with each breaking change. Always represents the current version the editor expects.
 
-The version is global: every storage shares a single `storageVersion` constant, defined in `src/Storage/_Utilities/`. A breaking change to any one storage bumps it for all of them, so related storages (e.g. `RootStorage.templateVariable` and `TemplateVariableStorage`) always move together. It is referenced by each storage interface (`version: typeof storageVersion`), by `create*Storage`, and by the shared `isStorage` check. Bumping the version is a one-line change and everything cascades.
+The version is global: every storage shares a single `storageVersion` constant, defined in `src/Storage/_Utilities/`. A breaking change to any one storage bumps it for all of them, so related storages (e.g. `RootStorage.templateVariable` and `TemplateVariableStorage`) always move together. It is referenced by each storage type (`version: typeof storageVersion`), by `create*Storage`, and by the shared `isStorage` check. Bumping the version is a one-line change and everything cascades.
+
+The storage shapes (and every type nested in them, e.g. `CodeBlockTheme`) are `type` aliases, not `interface`s: the engine types `customStorage` as `JSONValue`, and only a type alias is assignable to its `{ [key: string]: JSONValue }` object. For the same reason a field can't be optional (`?:` adds `undefined`, which isn't JSON) — use `null` for "no value".
 
 Each `*Storage` module exports functions for creating, validating, and reading storage. The exact set varies by component, but the common building blocks are:
 

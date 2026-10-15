@@ -2,21 +2,21 @@ import type { BlockComponent } from "@rangex/core";
 import type { EmptyMediaId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 
-export interface EmptyMediaStorage {
+export type EmptyMediaStorage = {
 	id: EmptyMediaId;
 	version: typeof storageVersion;
-}
+};
 
-export interface CreateEmptyMediaStorageResult extends EmptyMediaStorage {}
+export type CreateEmptyMediaStorageResult = EmptyMediaStorage;
 
 export interface EnsureEmptyMediaStorageParams {
 	storage: unknown;
 }
 
-export interface EnsureEmptyMediaStorageResult extends EmptyMediaStorage {}
+export type EnsureEmptyMediaStorageResult = EmptyMediaStorage;
 
 export interface EnsureNodeEmptyMediaStorageParams {
 	blockComponent: BlockComponent;
 }
 
-export interface EnsureNodeEmptyMediaStorageResult extends EmptyMediaStorage {}
+export type EnsureNodeEmptyMediaStorageResult = EmptyMediaStorage;

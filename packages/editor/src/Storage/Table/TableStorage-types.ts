@@ -2,21 +2,21 @@ import type { BlockComponent } from "@rangex/core";
 import type { TableId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 
-export interface TableStorage {
+export type TableStorage = {
 	id: TableId;
 	version: typeof storageVersion;
-}
+};
 
-export interface CreateTableStorageResult extends TableStorage {}
+export type CreateTableStorageResult = TableStorage;
 
 export interface EnsureTableStorageParams {
 	storage: unknown;
 }
 
-export interface EnsureTableStorageResult extends TableStorage {}
+export type EnsureTableStorageResult = TableStorage;
 
 export interface EnsureNodeTableStorageParams {
 	blockComponent: BlockComponent;
 }
 
-export interface EnsureNodeTableStorageResult extends TableStorage {}
+export type EnsureNodeTableStorageResult = TableStorage;
