@@ -10,8 +10,6 @@ RangeX is currently in **beta** (`1.0.0-beta.N`). APIs, types, and engine behavi
 
 RangeX is a rich text editor engine that manages all editor logic: text manipulation, formatting, and embedded components (mentions, links, code blocks, tables, etc.). It is designed to be fully customizable — developers can build any editor-like product on top of it (blog/CMS, chat, forums, real-time collaboration, etc.).
 
-**Before working on any engine-related task** (editorAPI calls, node types, events, selection, schema rules), read `packages/editor/docs/core/_References.md` — it is the authoritative reference for everything the engine exposes. Do not guess engine behavior from usage patterns when these docs are available.
-
 **Engine types** are in `packages/core/src/PublicTypes/index.ts` (all public types re-exported from a single entry point). In development, packages resolve the engine's types there through the `@rangex/source` condition, so type changes apply without rebuilding the engine. This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
 
 This repo (`rangex`) serves three purposes:
