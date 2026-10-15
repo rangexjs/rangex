@@ -33,6 +33,7 @@ export const createTodoList = ({
 	const list = createList({
 		localName: "ul",
 		lineType: "single-line",
+		editState: "inherit",
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
@@ -42,10 +43,16 @@ export const createTodoList = ({
 							type: "checkbox",
 							[dataPartName]: todoCheckboxPart.name,
 						},
+						childNodes: [],
 					}),
 					createNestedEditable({
 						display: "block single-line",
 						editState: "inherit",
+						allowedComponents: null,
+						allowedContentLineLocalNames: null,
+						allowedContentLineStyleAttrNames: null,
+						allowedGlyphFormatterStyleAttrNames: null,
+						allowedGlyphFormatterInlineTags: null,
 						childNodes: [line],
 					}),
 				],
@@ -62,6 +69,9 @@ export const createTodoList = ({
 			name: componentsName.todoList,
 			content: { type: "list" },
 			customStorage: createTodoListStorage(),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [list],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

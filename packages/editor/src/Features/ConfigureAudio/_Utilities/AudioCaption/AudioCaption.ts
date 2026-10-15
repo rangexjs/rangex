@@ -87,6 +87,11 @@ export const setAudioCaptionEnabled = ({
 	const nestedEditable = createNestedEditable({
 		display: "block single-line",
 		editState: "true",
+		allowedComponents: null,
+		allowedContentLineLocalNames: null,
+		allowedContentLineStyleAttrNames: null,
+		allowedGlyphFormatterStyleAttrNames: null,
+		allowedGlyphFormatterInlineTags: null,
 		childNodes: [
 			createContentLine({
 				localName: "p",

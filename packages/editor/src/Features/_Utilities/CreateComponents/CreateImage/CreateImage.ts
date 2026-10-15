@@ -42,6 +42,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 								[objectFitAttr.name]: objectFitAttr.value.cover,
 								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
 							},
+							childNodes: [],
 						}),
 					],
 				}),

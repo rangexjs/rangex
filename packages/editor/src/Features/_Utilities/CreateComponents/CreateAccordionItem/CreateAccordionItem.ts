@@ -58,6 +58,12 @@ export const createAccordionItem = ({
 }: CreateAccordionItemParams): CreateAccordionItemResult => {
 	const summaryNestedEditable = createNestedEditable({
 		display: "block single-line",
+		editState: "inherit",
+		allowedComponents: null,
+		allowedContentLineLocalNames: null,
+		allowedContentLineStyleAttrNames: null,
+		allowedGlyphFormatterStyleAttrNames: null,
+		allowedGlyphFormatterInlineTags: null,
 		childNodes: [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],
@@ -65,6 +71,12 @@ export const createAccordionItem = ({
 
 	const bodyNestedEditable = createNestedEditable({
 		display: "block multi-line",
+		editState: "inherit",
+		allowedComponents: null,
+		allowedContentLineLocalNames: null,
+		allowedContentLineStyleAttrNames: null,
+		allowedGlyphFormatterStyleAttrNames: null,
+		allowedGlyphFormatterInlineTags: null,
 		childNodes: childNodes ?? [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],
@@ -83,6 +95,8 @@ export const createAccordionItem = ({
 			content: { type: "custom" },
 			customStorage: createAccordionItemStorage(),
 			shouldSelectBeforeRemove: true,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [
 				createHTMLLayout({
 					localName: "details",

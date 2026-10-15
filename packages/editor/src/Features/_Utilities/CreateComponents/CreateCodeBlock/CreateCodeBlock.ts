@@ -32,6 +32,7 @@ export const createCodeBlock = ({
 	const list = createList({
 		localName: "ol",
 		lineType: "single-line",
+		editState: "inherit",
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
@@ -68,6 +69,9 @@ export const createCodeBlock = ({
 			name: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({ language, theme }),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [
 				createHTMLLayout({
 					localName: "pre",

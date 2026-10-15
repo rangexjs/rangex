@@ -24,7 +24,12 @@ export const createSeparator = (): CreateSeparatorResult => {
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
-			childNodes: [createHTMLLayout({ localName: "hr" })],
+			childNodes: [
+				createHTMLLayout({
+					localName: "hr",
+					childNodes: [],
+				}),
+			],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});

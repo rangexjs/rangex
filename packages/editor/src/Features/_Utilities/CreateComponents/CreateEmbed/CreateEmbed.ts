@@ -49,6 +49,7 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 								loading: "lazy",
 								[aspectRatioAttr.name]: aspectRatioAttr.value["16-9"],
 							},
+							childNodes: [],
 						}),
 					],
 				}),

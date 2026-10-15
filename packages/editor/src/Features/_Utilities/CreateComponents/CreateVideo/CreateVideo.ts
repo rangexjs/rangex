@@ -42,6 +42,7 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 								[objectFitAttr.name]: objectFitAttr.value.cover,
 								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
 							},
+							childNodes: [],
 						}),
 					],
 				}),

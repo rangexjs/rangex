@@ -18,6 +18,17 @@ export const createTable = ({
 	const table = createEngineTable({
 		rows,
 		cols,
+		minColWidth: 40,
+		minRowHeight: 40,
+		defaultRowHeight: 40,
+		tableCellsEditable: "true",
+		cellNestedEditableProps: {
+			allowedComponents: null,
+			allowedContentLineLocalNames: null,
+			allowedContentLineStyleAttrNames: null,
+			allowedGlyphFormatterStyleAttrNames: null,
+			allowedGlyphFormatterInlineTags: null,
+		},
 	});
 
 	return createBlockComponentLine({
@@ -31,6 +42,7 @@ export const createTable = ({
 			customStorage: createTableStorage(),
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
+			editState: "inherit",
 			childNodes: [table],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

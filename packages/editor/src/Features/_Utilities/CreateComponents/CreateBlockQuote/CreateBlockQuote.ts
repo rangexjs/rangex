@@ -25,6 +25,12 @@ export const createBlockQuote = ({
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {
 	const nestedEditable = createNestedEditable({
 		display: "block multi-line",
+		editState: "inherit",
+		allowedComponents: null,
+		allowedContentLineLocalNames: null,
+		allowedContentLineStyleAttrNames: null,
+		allowedGlyphFormatterStyleAttrNames: null,
+		allowedGlyphFormatterInlineTags: null,
 		childNodes,
 	});
 
@@ -37,6 +43,9 @@ export const createBlockQuote = ({
 			name: componentsName.blockQuote,
 			content: { type: "styled-block" },
 			customStorage: createBlockQuoteStorage(),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [
 				createHTMLLayout({
 					localName: "blockquote",

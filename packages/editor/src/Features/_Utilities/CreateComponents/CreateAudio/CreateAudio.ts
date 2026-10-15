@@ -34,6 +34,7 @@ export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 								src,
 								controls: "",
 							},
+							childNodes: [],
 						}),
 					],
 				}),

@@ -26,9 +26,17 @@ export const createMention = ({
 		content: { type: "custom" },
 		customStorage: createMentionStorage({ userId }),
 		editState: "false",
+		shouldSelectBeforeRemove: false,
+		shouldSelectOnNavigation: false,
 		childNodes: [
 			createNestedEditable({
 				display: "inline",
+				editState: "inherit",
+				allowedComponents: null,
+				allowedContentLineLocalNames: null,
+				allowedContentLineStyleAttrNames: null,
+				allowedGlyphFormatterStyleAttrNames: null,
+				allowedGlyphFormatterInlineTags: null,
 				childNodes: [
 					createContentLine({
 						localName: "span",

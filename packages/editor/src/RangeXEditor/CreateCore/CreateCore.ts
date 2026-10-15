@@ -44,6 +44,12 @@ const createFallbackRootEditable: CreateFallbackRootEditable = ({
 	const rootEditable = createRootEditable({
 		customStorage: createRootStorage(),
 		display: "block multi-line",
+		editState: "true",
+		allowedComponents: null,
+		allowedContentLineLocalNames: null,
+		allowedContentLineStyleAttrNames: null,
+		allowedGlyphFormatterStyleAttrNames: null,
+		allowedGlyphFormatterInlineTags: null,
 		childNodes: [
 			createContentLine({
 				localName: "p",

@@ -33,12 +33,18 @@ export const createList = ({
 	const list = createEngineList({
 		localName,
 		lineType,
+		editState: "inherit",
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
 					createNestedEditable({
 						display,
 						editState: "inherit",
+						allowedComponents: null,
+						allowedContentLineLocalNames: null,
+						allowedContentLineStyleAttrNames: null,
+						allowedGlyphFormatterStyleAttrNames: null,
+						allowedGlyphFormatterInlineTags: null,
 						childNodes: [line],
 					}),
 				],
@@ -55,6 +61,9 @@ export const createList = ({
 			name: componentsName.list,
 			content: { type: "list" },
 			customStorage: createListStorage(),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [list],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

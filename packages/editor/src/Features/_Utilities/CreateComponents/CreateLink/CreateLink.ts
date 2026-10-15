@@ -27,6 +27,9 @@ export const createLink = ({
 		name: componentsName.link,
 		content: { type: "bound-text", unwrap: "if-empty" },
 		customStorage: createLinkStorage(),
+		shouldSelectBeforeRemove: false,
+		shouldSelectOnNavigation: false,
+		editState: "inherit",
 		childNodes: [
 			createHTMLLayout({
 				localName: "a",
@@ -35,6 +38,11 @@ export const createLink = ({
 					createNestedEditable({
 						allowedComponents: [],
 						display: "inline",
+						editState: "inherit",
+						allowedContentLineLocalNames: null,
+						allowedContentLineStyleAttrNames: null,
+						allowedGlyphFormatterStyleAttrNames: null,
+						allowedGlyphFormatterInlineTags: null,
 						childNodes: [
 							createContentLine({
 								localName: "span",

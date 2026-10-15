@@ -25,9 +25,16 @@ export const createTemplateVariable = ({
 		editState: "false",
 		shouldSelectOnNavigation: true,
 		customStorage: createTemplateVariableStorage({ fieldName }),
+		shouldSelectBeforeRemove: false,
 		childNodes: [
 			createNestedEditable({
 				display: "inline",
+				editState: "inherit",
+				allowedComponents: null,
+				allowedContentLineLocalNames: null,
+				allowedContentLineStyleAttrNames: null,
+				allowedGlyphFormatterStyleAttrNames: null,
+				allowedGlyphFormatterInlineTags: null,
 				childNodes: [
 					createContentLine({
 						localName: "span",
