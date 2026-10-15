@@ -1,8 +1,7 @@
-import type { BlockComponent, HTMLLayout } from "@rangex/core";
-import type { TodoCheckboxId, TodoListId } from "../_Constants";
+import type { BlockComponent } from "@rangex/core";
+import type { TodoListId } from "../_Constants";
 import type { storageVersion } from "../_Utilities";
 
-// TodoList
 export interface TodoListStorage {
 	id: TodoListId;
 	version: typeof storageVersion;
@@ -21,35 +20,3 @@ export interface EnsureNodeTodoListStorageParams {
 }
 
 export interface EnsureNodeTodoListStorageResult extends TodoListStorage {}
-
-// TodoCheckbox
-export interface TodoCheckboxStorage {
-	id: TodoCheckboxId;
-	version: typeof storageVersion;
-	checked: boolean;
-}
-
-export interface CreateTodoCheckboxStorageParams {
-	checked: boolean;
-}
-
-export interface CreateTodoCheckboxStorageResult extends TodoCheckboxStorage {}
-
-export interface TodoCheckboxStorageFallbacks {
-	checked: boolean;
-}
-
-export interface EnsureTodoCheckboxStorageParams {
-	storage: unknown;
-	fallbacks: TodoCheckboxStorageFallbacks;
-}
-
-export interface EnsureTodoCheckboxStorageResult extends TodoCheckboxStorage {}
-
-export interface EnsureNodeTodoCheckboxStorageParams {
-	htmlLayout: HTMLLayout;
-	fallbacks: TodoCheckboxStorageFallbacks;
-}
-
-export interface EnsureNodeTodoCheckboxStorageResult
-	extends TodoCheckboxStorage {}

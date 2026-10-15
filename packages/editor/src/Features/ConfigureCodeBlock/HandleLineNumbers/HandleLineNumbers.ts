@@ -16,7 +16,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 	const unsubscribe = editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {
-			for (const list of lists) {
+			for (const list of lists.keys()) {
 				const blockComponent = list.$$closest(blockComponentRoleSelector);
 
 				if (blockComponent?.$$editorRole !== blockComponentRole) {

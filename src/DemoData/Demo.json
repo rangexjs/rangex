@@ -385,13 +385,10 @@
 											{
 												"editorRole": "html-layout",
 												"uniqueId": "1787515033983-1307789434",
-												"customStorage": {
-													"id": "todo-checkbox",
-													"version": 1,
-													"checked": true
-												},
+												"customStorage": null,
 												"localName": "input",
 												"domAttrs": {
+													"checked": "",
 													"type": "checkbox",
 													"data-part-name": "todo-checkbox"
 												},
@@ -476,11 +473,7 @@
 											{
 												"editorRole": "html-layout",
 												"uniqueId": "1787515037971-1496920444",
-												"customStorage": {
-													"id": "todo-checkbox",
-													"version": 1,
-													"checked": false
-												},
+												"customStorage": null,
 												"localName": "input",
 												"domAttrs": {
 													"type": "checkbox",
@@ -589,11 +582,7 @@
 											{
 												"editorRole": "html-layout",
 												"uniqueId": "1787520105731-1432976926",
-												"customStorage": {
-													"id": "todo-checkbox",
-													"version": 1,
-													"checked": false
-												},
+												"customStorage": null,
 												"localName": "input",
 												"domAttrs": {
 													"type": "checkbox",

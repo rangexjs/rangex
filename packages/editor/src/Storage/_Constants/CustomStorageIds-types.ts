@@ -13,7 +13,6 @@ import type {
 	separatorId,
 	tableId,
 	templateVariableId,
-	todoCheckboxId,
 	todoListId,
 	videoId,
 } from "./CustomStorageIds";
@@ -32,6 +31,5 @@ export type RootId = typeof rootId;
 export type SeparatorId = typeof separatorId;
 export type TableId = typeof tableId;
 export type TemplateVariableId = typeof templateVariableId;
-export type TodoCheckboxId = typeof todoCheckboxId;
 export type TodoListId = typeof todoListId;
 export type VideoId = typeof videoId;
