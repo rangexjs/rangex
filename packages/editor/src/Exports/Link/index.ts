@@ -6,3 +6,4 @@ export type {
 	ModifyParams,
 } from "#adapters/Link";
 export { Link } from "#rangex-editor";
+export { linkValidator } from "#snapshot";

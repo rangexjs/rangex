@@ -15,6 +15,18 @@ export type {
 	RangeXEditor,
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
-export type { SnapshotView } from "#snapshot";
-export { createHTMLView, createSnapshotView } from "#snapshot";
+export type {
+	ComponentValidator,
+	SnapshotView,
+	ValidateComponentFn,
+	ValidateComponentParams,
+	ValidateComponentResult,
+	ValidateSnapshotParams,
+	ValidateSnapshotResult,
+} from "#snapshot";
+export {
+	createHTMLView,
+	createSnapshotView,
+	validateSnapshot,
+} from "#snapshot";
 export { buildViewStyleText } from "../Styles";
