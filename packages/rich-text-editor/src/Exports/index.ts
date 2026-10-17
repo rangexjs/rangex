@@ -1,9 +1,14 @@
 export type {
+	AttributeRuleFn,
+	AttributeRuleParams,
+	AttributeRules,
+	ElementPolicy,
+	SanitizerPolicy,
 	SnapshotLimits,
 	SnapshotView,
 	StoredSnapshot,
 } from "@rangex/editor";
-export { createSnapshotView } from "@rangex/editor";
+export { configureSanitizer, createSnapshotView } from "@rangex/editor";
 export type {
 	Extension,
 	ExtensionComponents,

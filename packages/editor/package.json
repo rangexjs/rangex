@@ -183,6 +183,10 @@
 			"@rangex/source": "./src/Snapshot/index.ts",
 			"types": "./dist/Snapshot/index.d.ts"
 		},
+		"#sanitizer": {
+			"@rangex/source": "./src/Sanitizer/index.ts",
+			"types": "./dist/Sanitizer/index.d.ts"
+		},
 		"#features": {
 			"@rangex/source": "./src/Features/index.ts",
 			"types": "./dist/Features/index.d.ts"

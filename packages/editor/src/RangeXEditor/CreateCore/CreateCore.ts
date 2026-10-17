@@ -1,12 +1,12 @@
 import {
 	type CreateFallbackRootEditable,
-	configureSanitizer,
 	createBeamText,
 	createContentLine,
 	createEditorAPI,
 	createRootEditable,
 	migrateStoredSnapshot,
 } from "@rangex/core";
+import { ensureSanitizerConfigured } from "#sanitizer";
 import { createRootStorage } from "#storage";
 import type {
 	CreateCoreParams,
@@ -61,14 +61,13 @@ const createFallbackRootEditable: CreateFallbackRootEditable = ({
 	return { rootEditable };
 };
 
-// TODO: Set policy rules
-configureSanitizer({ "*": { "*": () => true } });
-
 export const createCore = ({
 	licenseKey,
 	storedSnapshot,
 	limits,
 }: CreateCoreParams) => {
+	ensureSanitizerConfigured();
+
 	const migratedStoredSnapshot = migrateIfStoredSnapshot({
 		storedSnapshot,
 		limits,

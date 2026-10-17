@@ -3,6 +3,7 @@ import {
 	snapshotManager,
 	validateStoredSnapshot,
 } from "@rangex/core";
+import { ensureSanitizerConfigured } from "#sanitizer";
 import { validateComponents } from "./ValidateComponents";
 import type {
 	ValidateSnapshotParams,
@@ -10,7 +11,8 @@ import type {
 } from "./ValidateSnapshot-types";
 
 /*
- * Validates a StoredSnapshot by the engine's rules, then every component in it by the validator registered for its
+ * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
+ * alone if it hasn't been called), then every component in it by the validator registered for its
  * name. A component without a validator is invalid. Returns null when the snapshot is valid. The nodes of a failure
  * belong to a validated copy, not to the given snapshot.
  */
@@ -19,6 +21,8 @@ export const validateSnapshot = ({
 	limits,
 	componentValidators,
 }: ValidateSnapshotParams): ValidateSnapshotResult => {
+	ensureSanitizerConfigured();
+
 	const engineValidationFailed = validateStoredSnapshot({
 		storedSnapshot,
 		limits,
