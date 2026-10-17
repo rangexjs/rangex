@@ -18,6 +18,14 @@ export type {
 	MediaType,
 } from "#adapters";
 export type {
+	AttrRule,
+	AttrRuleFailed,
+	AttrRules,
+	ValidateAttrFn,
+	ValidateAttrParams,
+	ValidateAttrResult,
+} from "#attr-rules";
+export type {
 	AdapterFactoryValue,
 	CreateEditorParams,
 	CreateEditorResult,

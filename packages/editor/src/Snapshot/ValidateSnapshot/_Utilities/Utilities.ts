@@ -1,6 +1,7 @@
 import type { EditorNodeDraft } from "@rangex/core";
 import { assertNever, formatJSONMismatch } from "#utilities";
 import type {
+	DescribeDOMAttrsMismatchParams,
 	DescribeJSONMismatchParams,
 	FormatNodePathParams,
 } from "./Utilities-types";
@@ -93,4 +94,51 @@ export const describeJSONMismatch = ({
 	}
 
 	return assertNever(kind);
+};
+
+/*
+ * Describes a validateDOMAttrs mismatch of a component's node for a failure's reason, e.g.
+ * `link > html-layout(a)[0]: invalid value domAttrs.target: "_self" (must be "_blank").`
+ */
+export const describeDOMAttrsMismatch = ({
+	componentDraft,
+	nodeDraft,
+	domAttrs,
+	mismatch,
+}: DescribeDOMAttrsMismatchParams) => {
+	const { kind, attrName } = mismatch;
+
+	const nodePath = formatNodePath({ componentDraft, nodeDraft });
+
+	const value = { domAttrs };
+	const path = ["domAttrs", attrName];
+
+	if (kind === "unknown-attr") {
+		const formattedMismatch = formatJSONMismatch({
+			value,
+			mismatch: { path, kind: "unknown-key" },
+		});
+
+		return `${nodePath}: unknown key ${formattedMismatch}.`;
+	}
+
+	if (kind === "missing-attr") {
+		const formattedMismatch = formatJSONMismatch({
+			value,
+			mismatch: { path, kind: "missing-key" },
+		});
+
+		return `${nodePath}: missing key ${formattedMismatch}.`;
+	}
+
+	if (kind === "invalid-attr") {
+		const formattedMismatch = formatJSONMismatch({
+			value,
+			mismatch: { path, kind: "invalid-value" },
+		});
+
+		return `${nodePath}: invalid value ${formattedMismatch} (${mismatch.attrRuleFailed.reason}).`;
+	}
+
+	return assertNever(mismatch);
 };

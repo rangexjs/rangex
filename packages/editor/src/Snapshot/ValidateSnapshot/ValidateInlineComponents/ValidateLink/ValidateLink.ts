@@ -3,15 +3,21 @@ import {
 	inlineComponentRole,
 	nestedEditableRole,
 } from "@rangex/core";
+import { validateDOMAttrs } from "#attr-rules";
 import { createLinkStorage } from "#storage";
-import { isSafeURL, matchJSON, optional } from "#utilities";
+import { matchJSON } from "#utilities";
 // Not from "#engine-links": its other modules need a DOM, and the validation must run on a server
 import { componentsName } from "../../../../EngineLinks/Constants/ComponentsName";
-import { describeJSONMismatch, formatNodePath } from "../../_Utilities";
-import type { ComponentValidator } from "../../ValidateSnapshot-types";
+import {
+	describeDOMAttrsMismatch,
+	describeJSONMismatch,
+	formatNodePath,
+} from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
 	AnchorState,
+	CreateLinkValidatorParams,
+	CreateLinkValidatorResult,
 	NestedEditableState,
 	ValidateAnchorParams,
 	ValidateAnchorResult,
@@ -20,37 +26,6 @@ import type {
 	ValidateNestedEditableParams,
 	ValidateNestedEditableResult,
 } from "./ValidateLink-types";
-
-// Resolves the relative hrefs, so a protocol-relative one ("//host") shows up as another host
-const baseURL = "https://base.invalid/";
-
-const baseHost = "base.invalid";
-
-const maxHrefLength = 2048;
-
-/*
- * An href is valid if it's a safe URL (see isSafeURL), at most 2048 characters long, and a relative one stays on the
- * page's host.
- */
-const isValidHref = (href: string) => {
-	if (href.length > maxHrefLength) {
-		return false;
-	}
-
-	if (!isSafeURL(href)) {
-		return false;
-	}
-
-	const isAbsolute = URL.canParse(href);
-
-	if (isAbsolute) {
-		return true;
-	}
-
-	const resolvedURL = new URL(href, baseURL);
-
-	return resolvedURL.host === baseHost;
-};
 
 const validateNestedEditable = ({
 	linkDraft,
@@ -115,11 +90,12 @@ const validateNestedEditable = ({
 };
 
 /*
- * Validates the Link's anchor and, through its only child, its NestedEditable.
+ * Validates the Link's anchor (its domAttrs by the anchor's AttrRules) and, through its only child, its NestedEditable.
  */
 const validateAnchor = ({
 	linkDraft,
 	htmlLayoutDraft,
+	anchorAttrRules,
 }: ValidateAnchorParams): ValidateAnchorResult => {
 	const { editorRole, localName, domAttrs, customStorage, childNodes } =
 		htmlLayoutDraft;
@@ -127,7 +103,6 @@ const validateAnchor = ({
 	const anchorState: AnchorState = {
 		editorRole,
 		localName,
-		domAttrs,
 		customStorage,
 	};
 
@@ -136,10 +111,6 @@ const validateAnchor = ({
 		pattern: {
 			editorRole: htmlLayoutRole,
 			localName: "a",
-			domAttrs: {
-				href: (href) => isValidHref(href),
-				target: { [optional]: (target) => target === "_blank" },
-			},
 			customStorage: null,
 		},
 	});
@@ -153,6 +124,24 @@ const validateAnchor = ({
 				nodeDraft: htmlLayoutDraft,
 				value: anchorState,
 				mismatch,
+			}),
+		};
+	}
+
+	const domAttrsMismatch = validateDOMAttrs({
+		domAttrs,
+		attrRules: anchorAttrRules,
+	});
+
+	if (domAttrsMismatch) {
+		return {
+			sourceSnapshot: linkDraft,
+			failedSnapshot: htmlLayoutDraft,
+			reason: describeDOMAttrsMismatch({
+				componentDraft: linkDraft,
+				nodeDraft: htmlLayoutDraft,
+				domAttrs,
+				mismatch: domAttrsMismatch,
 			}),
 		};
 	}
@@ -186,8 +175,9 @@ const validateAnchor = ({
  * Validates a Link and everything down to its NestedEditable, node by node: each node's own state, then its children.
  * The NestedEditable's content is left to the engine's validation, which checks it by the NestedEditable's settings.
  */
-export const validateLink = ({
+const validateLink = ({
 	componentDraft,
+	attrRules,
 }: ValidateLinkParams): ValidateLinkResult => {
 	if (componentDraft.editorRole !== inlineComponentRole) {
 		return {
@@ -232,7 +222,11 @@ export const validateLink = ({
 		};
 	}
 
-	const anchorFailed = validateAnchor({ linkDraft, htmlLayoutDraft });
+	const anchorFailed = validateAnchor({
+		linkDraft,
+		htmlLayoutDraft,
+		anchorAttrRules: attrRules.anchor,
+	});
 
 	if (anchorFailed) {
 		return anchorFailed;
@@ -241,7 +235,13 @@ export const validateLink = ({
 	return null;
 };
 
-export const linkValidator: ComponentValidator = {
+/*
+ * Creates the Link's ComponentValidator, which validates the Links' attributes by the given AttrRules (see
+ * createLinkAttrRules).
+ */
+export const createLinkValidator = ({
+	attrRules,
+}: CreateLinkValidatorParams): CreateLinkValidatorResult => ({
 	name: componentsName.link,
-	validate: validateLink,
-};
+	validate: ({ componentDraft }) => validateLink({ componentDraft, attrRules }),
+});
