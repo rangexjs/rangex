@@ -1,7 +1,9 @@
 import type { InlineComponent } from "@rangex/core";
+import { createLinkAttrValidators, type LinkAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createEmitter,
 	createSelectionMenuPort,
 	createStateEmitter,
@@ -30,11 +32,14 @@ export const createLinkAdapter = (
 	...params: CreateLinkAdapterParams
 ): CreateLinkAdapterResult => {
 	const [
-		{ linkMenu = defaultLinkMenuSettings },
+		{ linkMenu = defaultLinkMenuSettings, attrValidators = {} },
 		{ adapterBus, floatingContainer },
 	] = params;
 
+	const linkAttrValidators = createLinkAttrValidators(attrValidators);
+
 	adapterBus.registerAdapter("link");
+	adapterBus.registerAttrValidators("link", linkAttrValidators);
 
 	const linkMenuEl = document.createElement("div");
 	floatingContainer.append(linkMenuEl);
@@ -56,6 +61,7 @@ export const createLinkAdapter = (
 
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
+	const domAttrsPort = createDOMAttrsPort<LinkAttrsShape>();
 	const selectionMenuPort = createSelectionMenuPort({ floatingContainer });
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
@@ -67,6 +73,7 @@ export const createLinkAdapter = (
 	const configPort: LinkConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
 		currentComponentPort.configPort,
+		domAttrsPort.configPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;
@@ -74,6 +81,10 @@ export const createLinkAdapter = (
 
 			get linkMenuSettings() {
 				return linkMenu;
+			},
+
+			get attrValidators() {
+				return linkAttrValidators;
 			},
 
 			get selectionMenu() {
@@ -113,6 +124,7 @@ export const createLinkAdapter = (
 	const publicPort: LinkPublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
 		currentComponentPort.publicPort,
+		domAttrsPort.publicPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;

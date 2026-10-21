@@ -1,7 +1,7 @@
 import type { EditorNodeDraft } from "@rangex/core";
 import { assertNever, formatJSONMismatch } from "#utilities";
 import type {
-	DescribeDOMAttrsMismatchParams,
+	DescribeElementAttrsMismatchParams,
 	DescribeJSONMismatchParams,
 	FormatNodePathParams,
 } from "./Utilities-types";
@@ -97,15 +97,15 @@ export const describeJSONMismatch = ({
 };
 
 /*
- * Describes a validateDOMAttrs mismatch of a component's node for a failure's reason, e.g.
+ * Describes a validateElementAttrs mismatch of a component's node for a failure's reason, e.g.
  * `link > html-layout(a)[0]: invalid value domAttrs.target: "_self" (must be "_blank").`
  */
-export const describeDOMAttrsMismatch = ({
+export const describeElementAttrsMismatch = ({
 	componentDraft,
 	nodeDraft,
 	domAttrs,
 	mismatch,
-}: DescribeDOMAttrsMismatchParams) => {
+}: DescribeElementAttrsMismatchParams) => {
 	const { kind, attrName } = mismatch;
 
 	const nodePath = formatNodePath({ componentDraft, nodeDraft });
@@ -137,7 +137,7 @@ export const describeDOMAttrsMismatch = ({
 			mismatch: { path, kind: "invalid-value" },
 		});
 
-		return `${nodePath}: invalid value ${formattedMismatch} (${mismatch.attrRuleFailed.reason}).`;
+		return `${nodePath}: invalid value ${formattedMismatch} (${mismatch.validationFailed.reason}).`;
 	}
 
 	return assertNever(mismatch);

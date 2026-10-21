@@ -4,25 +4,20 @@ import {
 	createHTMLLayout,
 	createInlineComponent,
 	createNestedEditable,
-	type DOMAttrs,
 } from "@rangex/core";
+import { toDOMAttrs } from "#dom-attrs";
 import { componentsName } from "#engine-links";
 import { createLinkStorage } from "#storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
 
 /*
- * Builds an inline link component wrapping an `a` element around editable, formattable text.
+ * Builds an inline link component wrapping an `a` element around editable, formattable text. Neither the text nor the
+ * attrs are validated here.
  */
 export const createLink = ({
 	text,
-	href,
-	target,
+	attrs,
 }: CreateLinkParams): CreateLinkResult => {
-	const domAttrs: DOMAttrs = {
-		...(href && { href }),
-		...(target && { target }),
-	};
-
 	return createInlineComponent({
 		name: componentsName.link,
 		content: { type: "bound-text", unwrap: "if-empty" },
@@ -33,7 +28,7 @@ export const createLink = ({
 		childNodes: [
 			createHTMLLayout({
 				localName: "a",
-				domAttrs,
+				domAttrs: toDOMAttrs(attrs.anchor),
 				childNodes: [
 					createNestedEditable({
 						allowedComponents: [],

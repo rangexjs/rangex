@@ -2,7 +2,7 @@ import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
-import { allowedPrefixes, LinkEdit } from "../_Utilities";
+import { LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
 	const editor = useEditorContext();
@@ -17,7 +17,21 @@ export const LinkSelectionMenu = () => {
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
-		error: { required: { value: true, message: "Field can't be empty." } },
+		error: {
+			required: { value: true, message: "Field can't be empty." },
+			custom: {
+				isValid: (value) => {
+					const mismatch = link.validateDOMAttrs({
+						anchor: {
+							href: value,
+						},
+					});
+
+					return !mismatch;
+				},
+				message: "URL isn't allowed.",
+			},
+		},
 	});
 
 	const [isNewTab, setIsNewTab] = createSignal(false);
@@ -67,26 +81,17 @@ export const LinkSelectionMenu = () => {
 			return;
 		}
 
-		const rawUrl = urlHandle.value();
-		const normalizedUrl = allowedPrefixes.some((prefix) =>
-			rawUrl.startsWith(prefix),
-		)
-			? rawUrl
-			: `https://${rawUrl}`;
+		const url = urlHandle.value();
 
-		const text = displayTextHandle.value() || normalizedUrl;
+		const text = displayTextHandle.value() || url;
 
 		link.insert({
 			text,
-			afterInsertion(linkEl) {
-				const anchor = linkEl.querySelector<HTMLAnchorElement>("a");
-
-				if (!anchor) {
-					throw new Error("Anchor wasn't found.");
-				}
-
-				anchor.href = normalizedUrl;
-				anchor.target = isNewTab() ? "_blank" : "_self";
+			attrs: {
+				anchor: {
+					href: url,
+					target: isNewTab() ? "_blank" : null,
+				},
 			},
 		});
 

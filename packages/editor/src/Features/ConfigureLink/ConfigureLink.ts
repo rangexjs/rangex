@@ -1,6 +1,9 @@
+import { linkAttrsShape, normalizeLinkAttrs } from "#dom-attrs";
 import { componentsName, createPopoverOverlayController } from "#engine-links";
 import {
+	getLinkParts,
 	handleComponentUnwrap,
+	handleDOMAttrs,
 	handleSelectionComponent,
 	handleSelectionMenuInteraction,
 } from "../_Utilities";
@@ -80,6 +83,16 @@ export const configureLink = ({
 		editorAPI,
 	});
 
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: linkAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		normalizeDOMAttrs: normalizeLinkAttrs,
+		resolveElements: (link) => getLinkParts({ link }),
+	});
+
 	const unwrapCleanup = handleComponentUnwrap({
 		port: configPort,
 		editorAPI,
@@ -100,6 +113,7 @@ export const configureLink = ({
 		linkInteractionCleanup();
 		insertionCleanup();
 		modificationCleanup();
+		domAttrsCleanup();
 		unwrapCleanup();
 		menuCloseCleanup();
 		linkMenuPopoverController.cleanup();

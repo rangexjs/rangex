@@ -3,6 +3,11 @@ import {
 	createFormattableTexts,
 	EditorRange,
 } from "@rangex/core";
+import {
+	linkAttrsShape,
+	normalizeLinkAttrs,
+	validateComponentAttrs,
+} from "#dom-attrs";
 import { componentsName, getClosestScopedEditable } from "#engine-links";
 import { createLink } from "../../_Utilities";
 import { scanMarkdownChars } from "../_Utilities";
@@ -136,6 +141,21 @@ export const handleLinkMarkdown = ({
 				return false;
 			}
 
+			const attrs = normalizeLinkAttrs({
+				anchor: { href: match.url },
+			});
+
+			// An href the Link's attribute validators reject stays plain text
+			const attrsMismatch = validateComponentAttrs({
+				componentAttrs: attrs,
+				componentAttrsShape: linkAttrsShape,
+				componentAttrValidators: adapterBus.getAttrValidators("link"),
+			});
+
+			if (attrsMismatch) {
+				return false;
+			}
+
 			// Materialize the triggering keystroke so the full marker (e.g.
 			// "[text](url)") lands in the DOM before conversion — a single undo
 			// afterwards restores it.
@@ -186,13 +206,7 @@ export const handleLinkMarkdown = ({
 				lines: [
 					createContentLine({
 						localName: "p",
-						childNodes: [
-							createLink({
-								text: match.text,
-								href: match.url,
-								target: "_self",
-							}),
-						],
+						childNodes: [createLink({ text: match.text, attrs })],
 					}),
 				],
 				breakBeforeInsert: false,

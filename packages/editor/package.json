@@ -183,9 +183,9 @@
 			"@rangex/source": "./src/Snapshot/index.ts",
 			"types": "./dist/Snapshot/index.d.ts"
 		},
-		"#attr-rules": {
-			"@rangex/source": "./src/AttrRules/index.ts",
-			"types": "./dist/AttrRules/index.d.ts"
+		"#dom-attrs": {
+			"@rangex/source": "./src/DOMAttrs/index.ts",
+			"types": "./dist/DOMAttrs/index.d.ts"
 		},
 		"#sanitizer": {
 			"@rangex/source": "./src/Sanitizer/index.ts",

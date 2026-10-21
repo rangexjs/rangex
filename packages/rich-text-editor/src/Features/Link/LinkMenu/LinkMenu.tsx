@@ -1,8 +1,8 @@
-import { FloatingPortal } from "@rangex/solid";
-import { createSignal, flush, onCleanup } from "solid-js";
+import { FloatingPortal, Link } from "@rangex/solid";
+import { createEffect, createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
-import { allowedPrefixes, LinkEdit, LinkPreview } from "../_Utilities";
+import { LinkEdit, LinkPreview } from "../_Utilities";
 
 type MenuView = "preview" | "edit";
 
@@ -14,6 +14,8 @@ export const LinkMenu = () => {
 		throw new Error("Link can't be undefined.");
 	}
 
+	const $link = Link(link);
+
 	const [view, setView] = createSignal<MenuView>("preview");
 
 	const [displayTextHandle, displayTextControls] =
@@ -21,45 +23,40 @@ export const LinkMenu = () => {
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
-		error: { required: { value: true, message: "Field can't be empty." } },
+		error: {
+			required: { value: true, message: "Field can't be empty." },
+			custom: {
+				isValid: (value) => {
+					const mismatch = link.validateDOMAttrs({
+						anchor: {
+							href: value,
+						},
+					});
+
+					return !mismatch;
+				},
+				message: "URL isn't allowed.",
+			},
+		},
 	});
 
 	const [isNewTab, setIsNewTab] = createSignal(false);
 
+	const [isOpen, setIsOpen] = createSignal(false);
+
 	const { linkMenuEl } = link;
 
-	const getAnchor = () => {
-		const { currentComponent } = link;
+	const getDOMAttrs = () => {
+		const { domAttrs } = link;
 
-		if (!currentComponent) {
-			throw new Error("CurrentComponent not supposed to be null.");
+		if (!domAttrs) {
+			throw new Error("DOMAttrs not supposed to be null.");
 		}
 
-		const anchor = currentComponent.querySelector("a");
-
-		if (!anchor) {
-			throw new Error("Anchor wasn't found.");
-		}
-
-		return anchor;
+		return domAttrs;
 	};
 
-	const syncFields = () => {
-		const anchor = getAnchor();
-
-		const { value, disabled } = link.getDisplayText();
-
-		displayTextHandle.reset();
-		displayTextHandle.setValue(value);
-		setDisplayTextDisabled(disabled);
-
-		urlHandle.reset();
-		urlHandle.setValue(anchor.href);
-
-		setIsNewTab(anchor.target === "_blank");
-
-		flush();
-
+	const focusDisplayTextInput = () => {
 		const input = linkMenuEl.querySelector<HTMLInputElement>(
 			`#${displayTextHandle.id}`,
 		);
@@ -71,14 +68,36 @@ export const LinkMenu = () => {
 		input.focus();
 	};
 
+	createEffect(
+		() => ({ domAttrs: $link.domAttrs(), view: view(), isOpen: isOpen() }),
+		({ domAttrs, view, isOpen }) => {
+			if (!isOpen || view !== "preview" || !domAttrs) {
+				return;
+			}
+
+			const { anchor } = domAttrs;
+
+			const { value, disabled } = link.getDisplayText();
+
+			displayTextHandle.reset();
+			displayTextHandle.setValue(value);
+			setDisplayTextDisabled(disabled);
+
+			urlHandle.reset();
+			urlHandle.setValue(anchor.href);
+
+			setIsNewTab(anchor.target === "_blank");
+		},
+	);
+
 	const linkMenuToggleCleanup = link.onLinkMenuToggle(() => {
+		setIsOpen(link.linkMenuOpen);
+
 		if (!link.linkMenuOpen) {
 			return;
 		}
 
 		setView("preview");
-		flush();
-		syncFields();
 	});
 
 	onCleanup(() => {
@@ -87,12 +106,12 @@ export const LinkMenu = () => {
 
 	const onEdit = () => {
 		setView("edit");
+		flush();
+		focusDisplayTextInput();
 	};
 
 	const onCopy = () => {
-		const anchor = getAnchor();
-
-		const { href } = anchor;
+		const { href } = getDOMAttrs().anchor;
 
 		navigator.clipboard.writeText(href);
 	};
@@ -114,32 +133,31 @@ export const LinkMenu = () => {
 			return;
 		}
 
-		const rawUrl = urlHandle.value();
-		const normalizedUrl = allowedPrefixes.some((prefix) =>
-			rawUrl.startsWith(prefix),
-		)
-			? rawUrl
-			: `https://${rawUrl}`;
+		// The attributes first, so the text stays unchanged if they're rejected
+		const changeFailed = link.changeDOMAttrs({
+			anchor: {
+				href: urlHandle.value(),
+				target: isNewTab() ? "_blank" : null,
+			},
+		});
 
-		const text = displayTextHandle.value() || normalizedUrl;
-
-		link.modify({ text });
-
-		const anchor = getAnchor();
-
-		if (!anchor) {
-			throw new Error("Anchor wasn't found.");
+		if (changeFailed) {
+			console.warn("Link's attributes were rejected.", changeFailed);
+			return;
 		}
 
-		anchor.href = normalizedUrl;
-		anchor.target = isNewTab() ? "_blank" : "_self";
+		// The href as it was written (normalized)
+		const { href } = getDOMAttrs().anchor;
+
+		const text = displayTextHandle.value() || href;
+
+		link.modify({ text });
 
 		setView("preview");
 	};
 
 	const onCancel = () => {
 		setView("preview");
-		syncFields();
 	};
 
 	return (
@@ -149,7 +167,7 @@ export const LinkMenu = () => {
 		>
 			<span class="absolute -top-1.5 left-1/2 inline-block size-3 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
 			<LinkPreview
-				url={urlHandle.value()}
+				url={$link.domAttrs()?.anchor.href ?? ""}
 				onEdit={onEdit}
 				onCopy={onCopy}
 				onUnwrap={onUnwrap}

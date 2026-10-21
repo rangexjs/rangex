@@ -4,6 +4,11 @@ import {
 	createContentLine,
 	type InlineComponent,
 } from "@rangex/core";
+import {
+	linkAttrsShape,
+	normalizeLinkAttrs,
+	validateComponentAttrs,
+} from "#dom-attrs";
 import { assertNever } from "#utilities";
 import { createLink } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";
@@ -55,10 +60,10 @@ const insertAtCaret = ({
 	configPort,
 	editorAPI,
 	text,
+	attrs,
 	linkMenuPopoverController,
-	afterInsertion,
 }: InsertAtCaretParams) => {
-	const link = createLink({ text });
+	const link = createLink({ text, attrs });
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -78,8 +83,6 @@ const insertAtCaret = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	afterInsertion?.(link);
-
 	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link, linkMenuPopoverController });
 	}
@@ -94,8 +97,8 @@ const insertAtCaret = ({
 const wrapWithLink = ({
 	configPort,
 	editorAPI,
+	attrs,
 	linkMenuPopoverController,
-	afterInsertion,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
 
@@ -126,7 +129,7 @@ const wrapWithLink = ({
 			toOffset: endOffset,
 		});
 
-		const link = createLink({ text: plainText });
+		const link = createLink({ text: plainText, attrs });
 
 		currentLink = link;
 
@@ -158,8 +161,6 @@ const wrapWithLink = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	afterInsertion?.(currentLink);
-
 	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link: currentLink, linkMenuPopoverController });
 	}
@@ -176,7 +177,7 @@ export const handleLinkInsertion = ({
 	editorAPI,
 	linkMenuPopoverController,
 }: HandleLinkInsertionParams) => {
-	const unsubscribe = configPort.onInsert(({ text, afterInsertion }) => {
+	const unsubscribe = configPort.onInsert(({ text, attrs }) => {
 		if (configPort.currentComponent) {
 			console.warn("handleLinkInsertion: link is not supposed to be active.");
 			return;
@@ -189,13 +190,29 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
+		const normalizedAttrs = normalizeLinkAttrs(attrs);
+
+		const attrsMismatch = validateComponentAttrs({
+			componentAttrs: normalizedAttrs,
+			componentAttrsShape: linkAttrsShape,
+			componentAttrValidators: configPort.attrValidators,
+		});
+
+		if (attrsMismatch) {
+			return;
+		}
+
 		if (mode === "insert") {
+			if (text === "") {
+				return;
+			}
+
 			insertAtCaret({
 				configPort,
 				editorAPI,
 				text,
+				attrs: normalizedAttrs,
 				linkMenuPopoverController,
-				afterInsertion,
 			});
 			return;
 		}
@@ -204,8 +221,8 @@ export const handleLinkInsertion = ({
 			wrapWithLink({
 				configPort,
 				editorAPI,
+				attrs: normalizedAttrs,
 				linkMenuPopoverController,
-				afterInsertion,
 			});
 			return;
 		}

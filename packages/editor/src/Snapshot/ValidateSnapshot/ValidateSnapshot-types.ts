@@ -3,6 +3,7 @@ import type {
 	EditorNodeSnapshotValidation,
 	FailedStoredSnapshotValidation,
 	SnapshotLimits,
+	StoredSnapshot,
 } from "@rangex/core";
 
 export interface ValidateComponentParams {
@@ -26,4 +27,15 @@ export interface ValidateSnapshotParams {
 	componentValidators: ComponentValidator[];
 }
 
-export type ValidateSnapshotResult = FailedStoredSnapshotValidation | null;
+export interface ValidateSnapshotSucceeded {
+	isValid: true;
+	storedSnapshot: StoredSnapshot;
+}
+
+export interface ValidateSnapshotFailed extends FailedStoredSnapshotValidation {
+	isValid: false;
+}
+
+export type ValidateSnapshotResult =
+	| ValidateSnapshotSucceeded
+	| ValidateSnapshotFailed;

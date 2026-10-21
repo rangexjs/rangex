@@ -1,6 +1,8 @@
 import { createEmitter } from "../CreateEmitter";
 import type { AdapterName } from "../Utilities-types";
 import type {
+	AttrValidatorsAdapterName,
+	AttrValidatorsByAdapter,
 	MediaResolveCallbackParams,
 	OnMediaResolveCallbackFn,
 	OnSwapToEmptyMediaCallbackFn,
@@ -14,15 +16,17 @@ export const mediaTypes = [
 ] satisfies AdapterName[];
 
 /**
- * Lets Adapters talk to each other without holding direct references to one another. Two
- * channel shapes coexist here, picked per the data's own nature: a transient event
- * (`onXxx`/`emitXxx`, fire-and-forget, never cached) for something that happens, and the
- * adapter registry (`registerAdapter`/`hasAdapter`) for which Adapters the editor was built with.
- * The registry is only complete once every Adapter has been created, so `hasAdapter` is only
- * meaningful from the configure phase on, never during Adapter creation.
+ * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with, or an
+ * Adapter's attribute validators), without holding direct references to one another. What the Adapters register is
+ * only complete once every Adapter has been created, so read it from the configure phase on.
  */
 export class AdapterBus {
 	#registeredAdapters: Set<AdapterName> = new Set();
+
+	#registeredAttrValidators = new Map<
+		AttrValidatorsAdapterName,
+		AttrValidatorsByAdapter[AttrValidatorsAdapterName]
+	>();
 
 	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
 	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
@@ -33,6 +37,27 @@ export class AdapterBus {
 
 	hasAdapter(name: AdapterName): boolean {
 		return this.#registeredAdapters.has(name);
+	}
+
+	registerAttrValidators<Name extends AttrValidatorsAdapterName>(
+		name: Name,
+		attrValidators: AttrValidatorsByAdapter[Name],
+	) {
+		this.#registeredAttrValidators.set(name, attrValidators);
+	}
+
+	getAttrValidators<Name extends AttrValidatorsAdapterName>(
+		name: Name,
+	): AttrValidatorsByAdapter[Name] {
+		const attrValidators = this.#registeredAttrValidators.get(name);
+
+		if (!attrValidators) {
+			throw new Error(
+				`${name} Adapter's attribute validators weren't registered.`,
+			);
+		}
+
+		return attrValidators as AttrValidatorsByAdapter[Name];
 	}
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {

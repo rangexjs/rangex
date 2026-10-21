@@ -5,7 +5,10 @@ import type {
 	NestedEditableDraft,
 	NestedEditableSnapshot,
 } from "@rangex/core";
-import type { AnchorAttrRules, LinkAttrRules } from "#attr-rules";
+import type {
+	CreateLinkAttrValidatorsParams,
+	LinkAttrValidators,
+} from "#dom-attrs";
 import type {
 	ComponentValidator,
 	ValidateComponentParams,
@@ -25,7 +28,7 @@ export type NestedEditableState = Omit<
 export interface ValidateAnchorParams {
 	linkDraft: InlineComponentDraft;
 	htmlLayoutDraft: HTMLLayoutDraft;
-	anchorAttrRules: AnchorAttrRules;
+	anchorAttrValidators: LinkAttrValidators["anchor"];
 }
 
 export type ValidateAnchorResult = ValidateComponentResult;
@@ -38,13 +41,13 @@ export interface ValidateNestedEditableParams {
 export type ValidateNestedEditableResult = ValidateComponentResult;
 
 export interface ValidateLinkParams extends ValidateComponentParams {
-	attrRules: LinkAttrRules;
+	attrValidators: LinkAttrValidators;
 }
 
 export type ValidateLinkResult = ValidateComponentResult;
 
 export interface CreateLinkValidatorParams {
-	attrRules: LinkAttrRules;
+	attrValidators?: CreateLinkAttrValidatorsParams;
 }
 
 export type CreateLinkValidatorResult = ComponentValidator;

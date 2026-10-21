@@ -1,8 +1,16 @@
 import type { InlineComponent } from "@rangex/core";
 import type {
+	CreateLinkAttrValidatorsParams,
+	LinkAttrs,
+	LinkAttrsShape,
+	LinkAttrValidators,
+} from "#dom-attrs";
+import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	SelectionMenuConfigPort,
 	SelectionMenuPublicPort,
 	UnwrapConfigPort,
@@ -22,7 +30,7 @@ export interface LinkDisplayText {
 
 export interface InsertParams {
 	text: string;
-	afterInsertion?: (link: HTMLElement) => void;
+	attrs: LinkAttrs;
 }
 
 export interface ModifyParams {
@@ -47,6 +55,7 @@ export interface UpdateStateParams extends LinkState {}
 export interface LinkConfigPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly linkMenuSettings: LinkMenuSettings;
+	readonly attrValidators: LinkAttrValidators;
 	readonly selectionMenu: SelectionMenuConfigPort;
 
 	updateState(params: UpdateStateParams): void;
@@ -63,7 +72,8 @@ export interface LinkConfigPortProps {
 export interface LinkConfigPort
 	extends LinkConfigPortProps,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort<InlineComponent> {}
+		CurrentComponentConfigPort<InlineComponent>,
+		DOMAttrsConfigPort<LinkAttrsShape> {}
 
 export interface LinkPublicPortProps {
 	readonly linkMenuEl: HTMLDivElement;
@@ -85,7 +95,8 @@ export interface LinkPublicPortProps {
 export interface LinkPublicPort
 	extends LinkPublicPortProps,
 		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+		CurrentComponentPublicPort,
+		DOMAttrsPublicPort<LinkAttrsShape> {}
 
 export interface LinkInternals {
 	displayTextProvider: DisplayTextProviderFn | null;
@@ -98,6 +109,7 @@ export interface LinkAdapter {
 
 export interface LinkSettings {
 	linkMenu?: LinkMenuSettings;
+	attrValidators?: CreateLinkAttrValidatorsParams;
 }
 
 export interface CreateLinkAdapterParams

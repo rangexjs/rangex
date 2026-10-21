@@ -12,9 +12,10 @@ import type {
 
 /*
  * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
- * alone if it hasn't been called), then every component in it by the validator registered for its
- * name. A component without a validator is invalid. Returns null when the snapshot is valid. The nodes of a failure
- * belong to a validated copy, not to the given snapshot.
+ * alone if it hasn't been called), then every component in it by the validator registered for its name. A component
+ * without a validator is invalid. A valid snapshot is returned as a copy with the components' resolved attributes (see
+ * resolveElementAttrs), the one to save or restore. The nodes of a failure belong to that copy, not to the given
+ * snapshot.
  */
 export const validateSnapshot = ({
 	storedSnapshot,
@@ -29,7 +30,7 @@ export const validateSnapshot = ({
 	});
 
 	if (engineValidationFailed) {
-		return engineValidationFailed;
+		return { isValid: false, ...engineValidationFailed };
 	}
 
 	// The engine's validation guarantees the StoredSnapshot's shape
@@ -45,8 +46,14 @@ export const validateSnapshot = ({
 	});
 
 	if (componentsFailed) {
-		return componentsFailed;
+		return { isValid: false, ...componentsFailed };
 	}
 
-	return null;
+	const resolvedSnapshot =
+		snapshotManager.createSnapshotFromDraft(rootEditableDraft);
+
+	return {
+		isValid: true,
+		storedSnapshot: { ...validStoredSnapshot, snapshot: resolvedSnapshot },
+	};
 };

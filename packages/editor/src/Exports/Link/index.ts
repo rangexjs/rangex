@@ -6,11 +6,14 @@ export type {
 	ModifyParams,
 } from "#adapters/Link";
 export type {
-	AnchorAttrRules,
-	CreateLinkAttrRulesParams,
-	LinkAttrRules,
-} from "#attr-rules";
-export { createLinkAttrRules } from "#attr-rules";
+	AnchorAttrs,
+	CreateLinkAttrValidatorsParams,
+	LinkAttrs,
+	LinkAttrsMismatch,
+	LinkAttrsPatch,
+	LinkAttrsShape,
+	LinkAttrValidators,
+} from "#dom-attrs";
 export { Link } from "#rangex-editor";
 export type { CreateLinkValidatorParams } from "#snapshot";
 export { createLinkValidator } from "#snapshot";

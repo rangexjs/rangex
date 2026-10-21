@@ -3,13 +3,17 @@ import {
 	inlineComponentRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { validateDOMAttrs } from "#attr-rules";
+import {
+	createLinkAttrValidators,
+	linkAttrsShape,
+	resolveElementAttrs,
+} from "#dom-attrs";
 import { createLinkStorage } from "#storage";
 import { matchJSON } from "#utilities";
 // Not from "#engine-links": its other modules need a DOM, and the validation must run on a server
 import { componentsName } from "../../../../EngineLinks/Constants/ComponentsName";
 import {
-	describeDOMAttrsMismatch,
+	describeElementAttrsMismatch,
 	describeJSONMismatch,
 	formatNodePath,
 } from "../../_Utilities";
@@ -90,12 +94,13 @@ const validateNestedEditable = ({
 };
 
 /*
- * Validates the Link's anchor (its domAttrs by the anchor's AttrRules) and, through its only child, its NestedEditable.
+ * Validates the Link's anchor and, through its only child, its NestedEditable. The anchor's domAttrs are resolved by
+ * linkAttrsShape and the anchor's validators (see resolveElementAttrs), and replaced by the resolved ones.
  */
 const validateAnchor = ({
 	linkDraft,
 	htmlLayoutDraft,
-	anchorAttrRules,
+	anchorAttrValidators,
 }: ValidateAnchorParams): ValidateAnchorResult => {
 	const { editorRole, localName, domAttrs, customStorage, childNodes } =
 		htmlLayoutDraft;
@@ -128,23 +133,26 @@ const validateAnchor = ({
 		};
 	}
 
-	const domAttrsMismatch = validateDOMAttrs({
-		domAttrs,
-		attrRules: anchorAttrRules,
+	const resolvedDOMAttrs = resolveElementAttrs({
+		elementAttrs: domAttrs,
+		elementAttrsShape: linkAttrsShape.anchor,
+		elementAttrValidators: anchorAttrValidators,
 	});
 
-	if (domAttrsMismatch) {
+	if (resolvedDOMAttrs.kind === "invalid") {
 		return {
 			sourceSnapshot: linkDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: describeDOMAttrsMismatch({
+			reason: describeElementAttrsMismatch({
 				componentDraft: linkDraft,
 				nodeDraft: htmlLayoutDraft,
 				domAttrs,
-				mismatch: domAttrsMismatch,
+				mismatch: resolvedDOMAttrs.mismatch,
 			}),
 		};
 	}
+
+	htmlLayoutDraft.domAttrs = resolvedDOMAttrs.elementAttrs;
 
 	const nestedEditableDraft = childNodes.at(0);
 
@@ -177,7 +185,7 @@ const validateAnchor = ({
  */
 const validateLink = ({
 	componentDraft,
-	attrRules,
+	attrValidators,
 }: ValidateLinkParams): ValidateLinkResult => {
 	if (componentDraft.editorRole !== inlineComponentRole) {
 		return {
@@ -225,7 +233,7 @@ const validateLink = ({
 	const anchorFailed = validateAnchor({
 		linkDraft,
 		htmlLayoutDraft,
-		anchorAttrRules: attrRules.anchor,
+		anchorAttrValidators: attrValidators.anchor,
 	});
 
 	if (anchorFailed) {
@@ -236,12 +244,17 @@ const validateLink = ({
 };
 
 /*
- * Creates the Link's ComponentValidator, which validates the Links' attributes by the given AttrRules (see
- * createLinkAttrRules).
+ * Creates the Link's ComponentValidator, which validates the Links' attributes by the default validators, replaced by
+ * the given ones (see createLinkAttrValidators).
  */
 export const createLinkValidator = ({
-	attrRules,
-}: CreateLinkValidatorParams): CreateLinkValidatorResult => ({
-	name: componentsName.link,
-	validate: ({ componentDraft }) => validateLink({ componentDraft, attrRules }),
-});
+	attrValidators = {},
+}: CreateLinkValidatorParams): CreateLinkValidatorResult => {
+	const linkAttrValidators = createLinkAttrValidators(attrValidators);
+
+	return {
+		name: componentsName.link,
+		validate: ({ componentDraft }) =>
+			validateLink({ componentDraft, attrValidators: linkAttrValidators }),
+	};
+};
