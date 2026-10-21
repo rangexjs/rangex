@@ -4,6 +4,11 @@ export const blockAlignAttr = {
 	value: { left: "left", center: "center", right: "right" },
 } as const;
 
+// Designed for BlockComponent, the value is a width in px without its unit (e.g. "640")
+export const blockWidthAttr = {
+	name: "data-block-width",
+} as const;
+
 // Universal
 export const objectFitAttr = {
 	name: "data-object-fit",

@@ -3,7 +3,7 @@ import {
 	blockComponentRole,
 	isEditorNode,
 } from "@rangex/core";
-import { createAnchoredOverlayController } from "#engine-links";
+import { blockWidthAttr, createAnchoredOverlayController } from "#engine-links";
 import { getBlockAlign } from "../BlockAlign";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";
 
@@ -21,7 +21,7 @@ const calcFlexBasis = ({
 	deltaPx,
 	handleSide,
 	dragStartWidth,
-}: CalcFlexBasisParams): string => {
+}: CalcFlexBasisParams): number => {
 	const { $$parentElement } = blockComponent;
 
 	if (!$$parentElement) {
@@ -38,7 +38,7 @@ const calcFlexBasis = ({
 		const numFlexBasis = dragStartWidth + deltaPx;
 		const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
 
-		return `${normalizedFlexBasis}px`;
+		return Math.round(normalizedFlexBasis);
 	}
 
 	const isOppositeCorner =
@@ -50,7 +50,7 @@ const calcFlexBasis = ({
 		const numFlexBasis = rect.width + deltaPx;
 		const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
 
-		return `${normalizedFlexBasis}px`;
+		return Math.round(normalizedFlexBasis);
 	}
 
 	throw new Error("Missing condition");
@@ -58,7 +58,8 @@ const calcFlexBasis = ({
 
 /*
  * Shows and hides a block's resize handles on pointer hover, and drives the actual resize
- * by adjusting the block's flex basis as resize move/end events fire.
+ * by setting the block's width attribute (its flex basis, see BlockComponentLine.css) as resize move/end events fire.
+ * On resize end, a width wider than the block can grow is removed, so it falls back to the full width.
  */
 export const handleBlockResizeAppearance = ({
 	blockResize,
@@ -158,7 +159,7 @@ export const handleBlockResizeAppearance = ({
 				dragStartWidth,
 			});
 
-			currentBlock.style.flexBasis = flexBasis;
+			currentBlock.$$setAttribute(blockWidthAttr.name, `${flexBasis}`);
 		},
 	);
 
@@ -167,6 +168,12 @@ export const handleBlockResizeAppearance = ({
 
 		if (!currentBlock?.isConnected) {
 			return;
+		}
+
+		const blockWidth = currentBlock.getAttribute(blockWidthAttr.name);
+
+		if (blockWidth !== null && Number(blockWidth) > currentBlock.offsetWidth) {
+			currentBlock.$$removeAttribute(blockWidthAttr.name);
 		}
 
 		const snapshotTimeline = editorAPI.getSnapshotTimeline();
