@@ -66,7 +66,7 @@ export const formatNodePath = ({
 
 /*
  * Describes a matchJSON mismatch of a component's node for a failure's reason, e.g.
- * `link > html-layout(a)[0]: invalid value domAttrs.href: "javascript:alert(1)".` The value is the one passed to
+ * `link > html-layout(a)[0]: invalid value localName: "span".` The value is the one passed to
  * matchJSON.
  */
 export const describeJSONMismatch = ({
@@ -97,8 +97,8 @@ export const describeJSONMismatch = ({
 };
 
 /*
- * Describes a validateElementAttrs mismatch of a component's node for a failure's reason, e.g.
- * `link > html-layout(a)[0]: invalid value domAttrs.target: "_self" (must be "_blank").`
+ * Describes an ElementAttrsMismatch of a component's node for a failure's reason, e.g.
+ * `link > html-layout(a)[0]: invalid value domAttrs.href: "javascript:alert(1)" (must be allowed by the SanitizerPolicy).`
  */
 export const describeElementAttrsMismatch = ({
 	componentDraft,

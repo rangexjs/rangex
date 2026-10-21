@@ -1,0 +1,82 @@
+# Snapshot Validation
+
+`validateSnapshot`: validating a `StoredSnapshot` by the engine's rules and the editor's, and resolving the components'
+attributes. What the engine's own validation checks (and what it leaves to the editor) is in the engine's handbook
+(`09-Snapshots.md`, "SnapshotValidation" and "Your own checks").
+
+Paths are relative to `src/Snapshot/ValidateSnapshot/` unless noted otherwise.
+
+## What it does
+
+```ts
+const result = validateSnapshot({ storedSnapshot, limits, componentValidators: [createLinkValidator({ attrValidators })] });
+
+if (result.isValid) {
+	save(result.storedSnapshot); // the resolved copy, not the given snapshot
+} else {
+	console.warn(result.reason, result.failedSnapshot);
+}
+```
+
+1. **Sanitizer** — `ensureSanitizerConfigured()` (see [Sanitizer](Sanitizer.md)).
+2. **Engine** — `validateStoredSnapshot` checks the structure, the snapshot limits and the Sanitizer rules. If it fails,
+   that failure is returned as it is.
+3. **Draft** — the snapshot is turned into a Draft (`snapshotManager.createDraftFromSnapshot`, a deep copy: the given
+   snapshot is never changed).
+4. **Components** — `validateComponents` runs the validator registered for each component's `name`, nested components
+   included, and fails on the first one that doesn't pass. A component without a validator is invalid.
+5. **Result** — the Draft, with every component's resolved attributes, turned back into a snapshot.
+
+The result has the same shape as the engine's `migrateStoredSnapshot`:
+
+- `{ isValid: true, storedSnapshot }` (`ValidateSnapshotSucceeded`) — the copy to save or restore.
+- `{ isValid: false, sourceSnapshot, failedSnapshot, reason }` (`ValidateSnapshotFailed`) — the nodes belong to the
+  Draft, not to the given snapshot.
+
+## Component validators
+
+A `ComponentValidator` is `{ name, validate }`. `validate({ componentDraft })` returns a failure or `null`, and writes
+the attributes it resolved into the Draft. Each component exports a factory, e.g. `createLinkValidator` from
+`@rangex/editor/link`, which takes the same `attrValidators` as the component's settings (see
+[DOMAttrs](DOMAttrs.md#consumer-contract-share-attrvalidators)).
+
+A validator walks down from the component, node by node, as the engine's validation does: each node's own state
+first, then its children.
+
+- **State** — every prop of the node that must have one value is matched with `matchJSON` against the value the
+  component creates (`validateInlineComponentState` for an InlineComponent; `matchJSON` directly for the other nodes).
+  A mismatch is a failure: the editor's structure isn't repaired.
+- **Structure** — the children must be exactly the ones the component renders (e.g. a Link's only child is an `a`
+  `HTMLLayout`, whose only child is a `NestedEditable`).
+- **Attributes** — every element with a shape is resolved with `resolveElementAttrs`, by the component's shape and
+  validators (see [DOMAttrs](DOMAttrs.md#the-two-paths)). An invalid result is a failure; a valid one replaces the
+  node's `domAttrs` in the Draft. A node without a shape matches its `domAttrs` as part of its state (e.g. `{}`).
+- **Content** — a `NestedEditable`'s content is left to the engine's validation, which already checked it by the
+  `NestedEditable`'s settings (the validator checks those settings themselves).
+
+So a snapshot that breaks one of the editor's attribute rules comes back repaired (e.g. `href: "//evil.com"` →
+`href: "#"`, an unknown attribute dropped), while one that breaks the structure, or that the Sanitizer refuses, is
+invalid.
+
+A failure's `reason` names the node by its path from the component, e.g.
+`link > html-layout(a)[0]: invalid value localName: "span".`
+(`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
+
+## Running without a DOM
+
+The validation runs wherever snapshots are saved, e.g. on a server. Everything it imports must be DOM-free at import
+time: `#dom-attrs` (see [DOMAttrs](DOMAttrs.md#rules)), `#storage`, `#sanitizer`, `#utilities` and `@rangex/core`.
+`ValidateLink` imports `componentsName` from its own file (`src/EngineLinks/Constants/ComponentsName`) instead of
+`#engine-links`, whose other modules need a DOM.
+
+Known limitation: the public entries (`@rangex/editor`, `@rangex/editor/link`) also export modules that need a DOM, so
+importing `validateSnapshot` from them on a server doesn't work yet.
+
+## Consumer contract
+
+- On the server, run `migrateStoredSnapshot` first (it upgrades old versions and runs the engine's validation), then
+  `validateSnapshot` on its result. `migrateStoredSnapshot` alone only checks the engine's rules: a snapshot can pass it
+  and still break every rule of the editor.
+- Save `result.storedSnapshot`, not the snapshot you passed in: it's the one with the resolved attributes.
+- Pass a validator for every component the editor is built with; any other component makes the snapshot invalid.
+- Pass each component's validator the same `attrValidators` as the component's settings.

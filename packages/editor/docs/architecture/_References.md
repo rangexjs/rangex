@@ -9,6 +9,9 @@ touches it.
 | [Adapters.md](Adapters.md) | Adapter architecture — internals, configPort, publicPort, shared ports, AdapterBus, wiring a new Adapter |
 | [EngineLinks.md](EngineLinks.md) | The layer bridging adapters to the raw engine (`@rangex/core`) |
 | [Features.md](Features.md) | Feature wiring inside adapters — `configure*`/`handle*` conventions |
+| [DOMAttrs.md](DOMAttrs.md) | Component attributes — shapes, validators, the live vs. snapshot path, `DOMAttrsPort`/`handleDOMAttrs`, adding a component |
+| [Sanitizer.md](Sanitizer.md) | XSS protection — `basePolicy`, `configureSanitizer`, where it's applied |
 | [Snapshot.md](Snapshot.md) | `StoredSnapshot` -> `SnapshotView` -> HTML output pipeline |
+| [SnapshotValidation.md](SnapshotValidation.md) | `validateSnapshot` — engine + component validation, resolved attributes, running without a DOM |
 | [SnapshotMigrations.md](SnapshotMigrations.md) | Breaking changes to stored snapshots, `customStorage` versioning, `*Storage` modules |
 | [Styles.md](Styles.md) | Engine and host style text, `EditorStyles`/`ViewStyles` |

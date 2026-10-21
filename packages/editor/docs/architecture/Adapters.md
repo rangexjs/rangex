@@ -187,6 +187,10 @@ Naming inside a SharedPort follows the same State/Command/Provider rules as an A
   `// CommandListeners` as a `createEmitter()`, not a state emitter under `// States`, even
   though nothing UI-triggered it.
 
+`DOMAttrsPort` is the flat-merged port for a component's attributes (`domAttrs`, `onDOMAttrsUpdate`,
+`validateDOMAttrs`, `changeDOMAttrs`). It only holds the state and the two provider slots; the logic is in
+`handleDOMAttrs` — see [DOMAttrs](DOMAttrs.md#domattrsport-and-handledomattrs).
+
 Once nested, interior members drop the port-name prefix — the key already gives that
 context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`/
 `close()`, not `openSelectionMenu()`/`closeSelectionMenu()`. Rename any field that would
@@ -197,7 +201,7 @@ field became `element`, since the composed key is already `selectionMenu`).
 
 `_Utilities/AdapterBus/` is the one shared object every Adapter receives through
 `AdapterOptions`; Adapters use it to talk to each other without holding direct references.
-Two channel shapes:
+Three channel shapes:
 
 - **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
   `onSwapToEmptyMedia`).
@@ -206,6 +210,11 @@ Two channel shapes:
   Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`, and every
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
+- **Shared value** — `registerAttrValidators(name, attrValidators)` /
+  `getAttrValidators(name)`, keyed by `AttrValidatorsByAdapter`. An Adapter registers the
+  attribute validators it built from its settings, so another Adapter's feature validates the
+  component's attributes by the same rules (Markdown creating a Link). `getAttrValidators`
+  throws if they weren't registered — see [DOMAttrs](DOMAttrs.md).
 
 `createEditor` builds the editor in two phases, so Adapter order never affects a lookup:
 
