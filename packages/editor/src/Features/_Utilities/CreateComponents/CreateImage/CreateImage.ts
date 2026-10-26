@@ -13,6 +13,10 @@ import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
  * Builds an image block component wrapping a `figure`/`img` element with a default fit attribute.
  */
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
+	const lineAttrs: ImageAttrs["line"] = {
+		[blockAlignAttr.name]: blockAlignAttr.value.center,
+	};
+
 	const imgAttrs: ImageAttrs["img"] = {
 		src,
 		alt: "",
@@ -20,9 +24,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 	};
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(lineAttrs),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.image,

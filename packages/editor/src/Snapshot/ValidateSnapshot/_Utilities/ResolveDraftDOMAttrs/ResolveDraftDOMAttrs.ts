@@ -8,10 +8,10 @@ import type {
 /*
  * Resolves an element's domAttrs by its shape and validators (see resolveElementAttrs), and replaces them with the
  * resolved ones. An element without attributes is resolved by an empty shape, so every attribute it has is dropped.
- * Fails if they can't be resolved.
+ * Fails if they can't be resolved, naming the element by its path from the root (e.g. its component).
  */
 export const resolveDraftDOMAttrs = ({
-	componentDraft,
+	rootDraft,
 	elementDraft,
 	elementAttrsShape,
 	elementAttrValidators,
@@ -26,10 +26,10 @@ export const resolveDraftDOMAttrs = ({
 
 	if (resolvedDOMAttrs.kind === "invalid") {
 		return {
-			sourceSnapshot: componentDraft,
+			sourceSnapshot: rootDraft,
 			failedSnapshot: elementDraft,
 			reason: describeElementAttrsMismatch({
-				componentDraft,
+				rootDraft,
 				nodeDraft: elementDraft,
 				domAttrs,
 				mismatch: resolvedDOMAttrs.mismatch,

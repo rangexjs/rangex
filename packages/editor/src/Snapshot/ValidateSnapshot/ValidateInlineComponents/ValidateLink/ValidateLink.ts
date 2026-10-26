@@ -46,7 +46,7 @@ const validateAnchor = ({
 	}
 
 	const domAttrsFailed = resolveDraftDOMAttrs({
-		componentDraft,
+		rootDraft: componentDraft,
 		elementDraft: htmlLayoutDraft,
 		elementAttrsShape: linkAttrsShape.anchor,
 		elementAttrValidators: anchorAttrValidators,
@@ -67,7 +67,7 @@ const validateAnchor = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
 		};
 	}
 
@@ -107,7 +107,7 @@ const validateLink = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
 		};
 	}
 
@@ -140,7 +140,7 @@ const validateLink = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
 		};
 	}
 

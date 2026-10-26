@@ -43,7 +43,7 @@ export const validateInlineComponentState = ({
 			sourceSnapshot: inlineComponentDraft,
 			failedSnapshot: inlineComponentDraft,
 			reason: describeJSONMismatch({
-				componentDraft: inlineComponentDraft,
+				rootDraft: inlineComponentDraft,
 				nodeDraft: inlineComponentDraft,
 				value: state,
 				mismatch,

@@ -1,9 +1,15 @@
 import {
+	blockComponentLineRole,
 	blockComponentRole,
 	htmlLayoutRole,
 	xhtmlNamespaceURI,
 } from "@rangex/core";
-import { aspectRatioAttr, blockWidthAttr, objectFitAttr } from "#constants";
+import {
+	aspectRatioAttr,
+	blockAlignAttr,
+	blockWidthAttr,
+	objectFitAttr,
+} from "#constants";
 import { isDataImageURL } from "#utilities";
 import {
 	type ComponentAttrsShape,
@@ -12,6 +18,7 @@ import {
 	type ElementDescriptor,
 	type ValidateAttrFn,
 	validateAspectRatio,
+	validateBlockAlign,
 	validateBlockWidth,
 	validateObjectFit,
 } from "../_Utilities";
@@ -19,6 +26,10 @@ import type {
 	CreateImageAttrValidatorsParams,
 	CreateImageAttrValidatorsResult,
 } from "./ImageDOMAttrs-types";
+
+const lineAttrsShape = {
+	[blockAlignAttr.name]: "required",
+} as const satisfies ElementAttrsShape;
 
 const blockAttrsShape = {
 	[blockWidthAttr.name]: "optional",
@@ -30,6 +41,12 @@ const imgAttrsShape = {
 	[objectFitAttr.name]: "optional",
 	[aspectRatioAttr.name]: "optional",
 } as const satisfies ElementAttrsShape;
+
+const lineElement: ElementDescriptor = {
+	localName: "div",
+	namespaceURI: xhtmlNamespaceURI,
+	editorRole: blockComponentLineRole,
+};
 
 const blockElement: ElementDescriptor = {
 	localName: "div",
@@ -44,6 +61,7 @@ const imgElement: ElementDescriptor = {
 };
 
 export const imageAttrsShape = {
+	line: lineAttrsShape,
 	block: blockAttrsShape,
 	img: imgAttrsShape,
 } as const satisfies ComponentAttrsShape;
@@ -98,8 +116,15 @@ export const createImageAttrValidators = (
 ): CreateImageAttrValidatorsResult => {
 	const imageAttrValidators = createComponentAttrValidators({
 		componentAttrsShape: imageAttrsShape,
-		elementDescriptors: { block: blockElement, img: imgElement },
+		elementDescriptors: {
+			line: lineElement,
+			block: blockElement,
+			img: imgElement,
+		},
 		defaultValidators: {
+			line: {
+				[blockAlignAttr.name]: validateBlockAlign,
+			},
 			block: {
 				[blockWidthAttr.name]: validateBlockWidth,
 			},

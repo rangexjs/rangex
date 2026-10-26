@@ -41,6 +41,7 @@ export interface CreateDOMAttrsObserverParams<
 	domAttrsPort: DOMAttrsConfigPort<TShape>;
 	componentAttrsShape: TShape;
 	readDOMAttrs: ReadDOMAttrsFn<TComponent, TShape>;
+	resolveElements: ResolveElementsFn<TComponent, TShape>;
 }
 
 export interface CreateDOMAttrsObserverResult<TComponent extends Component> {

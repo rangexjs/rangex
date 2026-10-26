@@ -1,16 +1,22 @@
-import { htmlLayoutRole } from "@rangex/core";
+import { blockComponentLineRole, htmlLayoutRole } from "@rangex/core";
 import type {
 	GetImagePartsParams,
 	GetImagePartsResult,
 } from "./GetImageParts-types";
 
 /*
- * Returns the image's parts: its block, the BlockComponent itself, and its img, the `img` HTMLLayout inside the `figure`
- * HTMLLayout that must be its first child.
+ * Returns the image's parts: its line, the BlockComponentLine it's in, its block, the BlockComponent itself, and its img,
+ * the `img` HTMLLayout inside the `figure` HTMLLayout that must be its first child.
  */
 export const getImageParts = ({
 	image,
 }: GetImagePartsParams): GetImagePartsResult => {
+	const line = image.$$parentElement;
+
+	if (line?.$$editorRole !== blockComponentLineRole) {
+		throw new Error("Image must be in a BlockComponentLine.");
+	}
+
 	const [figure] = image.$$children;
 
 	if (
@@ -23,7 +29,7 @@ export const getImageParts = ({
 
 	for (const child of figure.$$children) {
 		if (child.$$editorRole === htmlLayoutRole && child.$$localName === "img") {
-			return { block: image, img: child };
+			return { line, block: image, img: child };
 		}
 	}
 

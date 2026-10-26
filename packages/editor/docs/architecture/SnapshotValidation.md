@@ -63,6 +63,10 @@ The shared steps are helpers, so a component's validator only describes its own 
 
 - `validateInlineComponentState` / `validateBlockComponentState` (in `ValidateInlineComponents/_Utilities/` and
   `ValidateBlockComponents/_Utilities/`) — the component's own state.
+- `validateBlockComponentLine` (in `ValidateBlockComponents/_Utilities/`) — a BlockComponent's line and its two text
+  holders. The line's `domAttrs` are resolved by the component's own `line` shape (an empty one if it has none); the
+  text holders must have no `customStorage`, and their attributes are dropped. A failure names the
+  node from the line, e.g. `block-component-line > block-component-text-holder[2]`.
 - `validateHTMLLayoutState`, `validateNestedEditableState` and `resolveDraftDOMAttrs` (in `_Utilities/`) — the nodes
   below it.
 
@@ -71,7 +75,7 @@ InlineComponent with one `NestedEditable`, and a BlockComponent with a fixed lay
 one `img` and at most one `figcaption`, above or below it).
 
 A failure's `reason` names the node by its path from the component, e.g.
-`link > html-layout(a)[0]: invalid value localName: "span".`
+`inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`
 (`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
 
 ## Running without a DOM

@@ -29,7 +29,7 @@ export const validateComponents = ({
 			return {
 				sourceSnapshot: componentDraft,
 				failedSnapshot: componentDraft,
-				reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: has no validator.`,
+				reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: has no validator.`,
 			};
 		}
 

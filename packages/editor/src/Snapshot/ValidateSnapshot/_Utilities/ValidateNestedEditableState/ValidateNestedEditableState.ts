@@ -49,7 +49,7 @@ export const validateNestedEditableState = ({
 			sourceSnapshot: componentDraft,
 			failedSnapshot: nestedEditableDraft,
 			reason: describeJSONMismatch({
-				componentDraft,
+				rootDraft: componentDraft,
 				nodeDraft: nestedEditableDraft,
 				value: state,
 				mismatch,

@@ -5,7 +5,9 @@ resolved. The rules here are the editor's own; XSS is the [Sanitizer](Sanitizer.
 
 Paths are relative to `src/DOMAttrs/` (alias `#dom-attrs`) unless noted otherwise. Link is the reference
 implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an element that is the component itself
-(`block`, the `BlockComponent`).
+(`block`, the `BlockComponent`) and one outside it (`line`, its `BlockComponentLine`). A BlockComponent's line is part of
+its own shape, as each component decides what its line has: Image's has a block align, a component that can't be
+aligned (e.g. a code block) has no `line` element.
 
 ## Rules
 
@@ -164,7 +166,8 @@ The Adapter side and the Features side are split as everywhere else (see [Adapte
   provider is registered.
 - **`handleDOMAttrs`** (`src/Features/_Utilities/HandleDOMAttrs/`) holds the logic. It keeps `domAttrs` in sync with the
   current component, through a `MutationObserver` on its subtree (`childList`, plus the shape's attributes as
-  `attributeFilter`), so undo/redo updates it too. It registers both providers:
+  `attributeFilter`), and on each of its elements outside it (e.g. the `line`, attributes only), so undo/redo updates
+  it too. It registers both providers:
   - `validateDOMAttrs(attrs)` — normalizes, then validates (live path).
   - `changeDOMAttrs(patch)` — merges the patch into the current `domAttrs`, normalizes, validates, writes the valid
     attributes, reads them back right away (the observer only updates later), and registers a snapshot boundary.

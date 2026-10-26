@@ -41,7 +41,7 @@ export const validateBlockComponentState = ({
 			sourceSnapshot: blockComponentDraft,
 			failedSnapshot: blockComponentDraft,
 			reason: describeJSONMismatch({
-				componentDraft: blockComponentDraft,
+				rootDraft: blockComponentDraft,
 				nodeDraft: blockComponentDraft,
 				value: state,
 				mismatch,

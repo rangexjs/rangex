@@ -13,7 +13,10 @@ import {
 	validateHTMLLayoutState,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import { validateBlockComponentState } from "../_Utilities";
+import {
+	validateBlockComponentLine,
+	validateBlockComponentState,
+} from "../_Utilities";
 import type {
 	CreateImageValidatorParams,
 	CreateImageValidatorResult,
@@ -59,7 +62,7 @@ const validateImg = ({
 	}
 
 	const domAttrsFailed = resolveDraftDOMAttrs({
-		componentDraft,
+		rootDraft: componentDraft,
 		elementDraft: htmlLayoutDraft,
 		elementAttrsShape: imageAttrsShape.img,
 		elementAttrValidators: imgAttrValidators,
@@ -73,7 +76,7 @@ const validateImg = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: htmlLayoutDraft })}: must have no children.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must have no children.`,
 		};
 	}
 
@@ -103,7 +106,7 @@ const validateFigcaption = ({
 	}
 
 	const domAttrsFailed = resolveDraftDOMAttrs({
-		componentDraft,
+		rootDraft: componentDraft,
 		elementDraft: htmlLayoutDraft,
 		elementAttrsShape: {},
 		elementAttrValidators: {},
@@ -124,7 +127,7 @@ const validateFigcaption = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
 		};
 	}
 
@@ -175,7 +178,7 @@ const validateFigure = ({
 	}
 
 	const domAttrsFailed = resolveDraftDOMAttrs({
-		componentDraft,
+		rootDraft: componentDraft,
 		elementDraft: htmlLayoutDraft,
 		elementAttrsShape: {},
 		elementAttrValidators: {},
@@ -201,7 +204,7 @@ const validateFigure = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one img, and at most one figcaption.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one img, and at most one figcaption.`,
 		};
 	}
 
@@ -230,9 +233,9 @@ const validateFigure = ({
 };
 
 /*
- * Validates an Image and everything down to its figcaption's NestedEditable, node by node: each node's own state, then
- * its children. The block's and the img's domAttrs are resolved by imageAttrsShape and the given validators, the
- * figure's and the figcaption's by an empty shape. The NestedEditable's content is left to the engine's validation.
+ * Validates an Image, its BlockComponentLine, and everything down to its figcaption's NestedEditable, node by node:
+ * each node's own state, then its children. The line's, the block's and the img's domAttrs are resolved by
+ * imageAttrsShape and the given validators, the figure's and the figcaption's by an empty shape. The NestedEditable's content is left to the engine's validation.
  */
 const validateImage = ({
 	componentDraft,
@@ -242,7 +245,7 @@ const validateImage = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
 		};
 	}
 
@@ -263,8 +266,18 @@ const validateImage = ({
 		return stateFailed;
 	}
 
+	const lineFailed = validateBlockComponentLine({
+		blockComponentDraft: componentDraft,
+		lineAttrsShape: imageAttrsShape.line,
+		lineAttrValidators: attrValidators.line,
+	});
+
+	if (lineFailed) {
+		return lineFailed;
+	}
+
 	const domAttrsFailed = resolveDraftDOMAttrs({
-		componentDraft,
+		rootDraft: componentDraft,
 		elementDraft: componentDraft,
 		elementAttrsShape: imageAttrsShape.block,
 		elementAttrValidators: attrValidators.block,
@@ -285,7 +298,7 @@ const validateImage = ({
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
 		};
 	}
 

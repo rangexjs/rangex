@@ -1,9 +1,10 @@
-import type { EditorNodeDraft } from "@rangex/core";
+import { type EditorNodeDraft, isComponentDraft } from "@rangex/core";
 import { assertNever, formatJSONMismatch } from "#utilities";
 import type {
 	DescribeElementAttrsMismatchParams,
 	DescribeJSONMismatchParams,
 	FormatNodePathParams,
+	FormatNodeSegmentParams,
 } from "./Utilities-types";
 
 const maxValueLength = 64;
@@ -19,19 +20,27 @@ export const formatValue = (value: string) => {
 };
 
 /*
- * Formats one node of a node path: its editorRole, its localName when it has one, and its index among its parent's
- * childNodes, e.g. `html-layout(a)[0]`.
+ * Formats one node of a node path: its editorRole, its name when it's a component or its localName when it has one,
+ * and its index among its parent's childNodes, e.g. `html-layout(a)[0]` or `block-component<image>[1]`. The path's root
+ * has no index.
  */
-const formatNodeSegment = (nodeDraft: EditorNodeDraft) => {
+const formatNodeSegment = ({
+	rootDraft,
+	nodeDraft,
+}: FormatNodeSegmentParams) => {
 	const { editorRole, parentElement } = nodeDraft;
 
 	let segment: string = editorRole;
+
+	if (isComponentDraft(nodeDraft)) {
+		segment += `<${nodeDraft.name}>`;
+	}
 
 	if ("localName" in nodeDraft) {
 		segment += `(${nodeDraft.localName})`;
 	}
 
-	if (!parentElement) {
+	if (nodeDraft === rootDraft || !parentElement) {
 		return segment;
 	}
 
@@ -42,42 +51,42 @@ const formatNodeSegment = (nodeDraft: EditorNodeDraft) => {
 };
 
 /*
- * Formats the path from a component down to one of its nodes for a failure's reason, e.g.
- * `link > html-layout(a)[0] > nested-editable[0]`. The component is named by its name, every other node by formatNodeSegment.
+ * Formats the path from a root (e.g. a component) down to one of its nodes for a failure's reason, e.g.
+ * `inline-component<link> > html-layout(a)[0] > nested-editable[0]`. Every node is formatted by formatNodeSegment.
  */
 export const formatNodePath = ({
-	componentDraft,
+	rootDraft,
 	nodeDraft,
 }: FormatNodePathParams) => {
 	const segments: string[] = [];
 
 	let currentDraft: EditorNodeDraft | null = nodeDraft;
 
-	while (currentDraft && currentDraft !== componentDraft) {
-		segments.unshift(formatNodeSegment(currentDraft));
+	while (currentDraft && currentDraft !== rootDraft) {
+		segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: currentDraft }));
 
 		currentDraft = currentDraft.parentElement;
 	}
 
-	segments.unshift(componentDraft.name);
+	segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: rootDraft }));
 
 	return segments.join(" > ");
 };
 
 /*
- * Describes a matchJSON mismatch of a component's node for a failure's reason, e.g.
- * `link > html-layout(a)[0]: invalid value localName: "span".` The value is the one passed to
+ * Describes a matchJSON mismatch of a node for a failure's reason, e.g.
+ * `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".` The value is the one passed to
  * matchJSON.
  */
 export const describeJSONMismatch = ({
-	componentDraft,
+	rootDraft,
 	nodeDraft,
 	value,
 	mismatch,
 }: DescribeJSONMismatchParams) => {
 	const { kind } = mismatch;
 
-	const nodePath = formatNodePath({ componentDraft, nodeDraft });
+	const nodePath = formatNodePath({ rootDraft, nodeDraft });
 
 	const formattedMismatch = formatJSONMismatch({ value, mismatch });
 
@@ -97,18 +106,19 @@ export const describeJSONMismatch = ({
 };
 
 /*
- * Describes an ElementAttrsMismatch of a component's node for a failure's reason, e.g.
- * `link > html-layout(a)[0]: invalid value domAttrs.href: "javascript:alert(1)" (must be allowed by the SanitizerPolicy).`
+ * Describes an ElementAttrsMismatch of a node for a failure's reason, e.g.
+ * `inline-component<link> > html-layout(a)[0]: invalid value domAttrs.href: "javascript:alert(1)" (must be allowed by the
+ * SanitizerPolicy).`
  */
 export const describeElementAttrsMismatch = ({
-	componentDraft,
+	rootDraft,
 	nodeDraft,
 	domAttrs,
 	mismatch,
 }: DescribeElementAttrsMismatchParams) => {
 	const { kind, attrName } = mismatch;
 
-	const nodePath = formatNodePath({ componentDraft, nodeDraft });
+	const nodePath = formatNodePath({ rootDraft, nodeDraft });
 
 	const value = { domAttrs };
 	const path = ["domAttrs", attrName];

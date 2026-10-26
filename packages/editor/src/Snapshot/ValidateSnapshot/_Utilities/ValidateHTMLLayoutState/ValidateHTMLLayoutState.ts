@@ -26,7 +26,7 @@ export const validateHTMLLayoutState = ({
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
 			reason: describeJSONMismatch({
-				componentDraft,
+				rootDraft: componentDraft,
 				nodeDraft: htmlLayoutDraft,
 				value: state,
 				mismatch,

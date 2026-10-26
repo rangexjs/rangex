@@ -28,7 +28,8 @@ const getAttrNames = (componentAttrsShape: ComponentAttrsShape) => {
 
 /*
  * Observes one component at a time and updates the port's domAttrs from it: when it starts being observed, and
- * whenever its structure or one of the shape's attributes changes (e.g. by undo/redo).
+ * whenever its structure or one of the shape's attributes changes (e.g. by undo/redo). An element outside the
+ * component (e.g. its BlockComponentLine) is observed too, for its attributes only.
  */
 const createDOMAttrsObserver = <
 	TComponent extends Component,
@@ -37,6 +38,7 @@ const createDOMAttrsObserver = <
 	domAttrsPort,
 	componentAttrsShape,
 	readDOMAttrs,
+	resolveElements,
 }: CreateDOMAttrsObserverParams<
 	TComponent,
 	TShape
@@ -85,6 +87,16 @@ const createDOMAttrsObserver = <
 				attributes: true,
 				attributeFilter,
 			});
+
+			const componentElements = resolveElements(component);
+
+			for (const element of Object.values(componentElements)) {
+				if (component.contains(element)) {
+					continue;
+				}
+
+				observer.observe(element, { attributes: true, attributeFilter });
+			}
 		},
 
 		disconnect() {
@@ -128,6 +140,7 @@ export const handleDOMAttrs = <
 		domAttrsPort,
 		componentAttrsShape,
 		readDOMAttrs,
+		resolveElements,
 	});
 
 	domAttrsObserver.observe(currentComponentPort.currentComponent);
