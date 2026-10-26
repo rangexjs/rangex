@@ -1,3 +1,4 @@
+export * from "./ValidateBlockComponents";
 export * from "./ValidateComponents";
 export * from "./ValidateInlineComponents";
 export * from "./ValidateSnapshot";

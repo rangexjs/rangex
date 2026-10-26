@@ -4,65 +4,77 @@ import {
 	nestedEditableRole,
 } from "@rangex/core";
 import { componentsName } from "#constants";
-import {
-	createLinkAttrValidators,
-	linkAttrsShape,
-	resolveElementAttrs,
-} from "#dom-attrs";
+import { createLinkAttrValidators, linkAttrsShape } from "#dom-attrs";
 import { createLinkStorage } from "#storage";
-import { matchJSON } from "#utilities";
 import {
-	describeElementAttrsMismatch,
-	describeJSONMismatch,
 	formatNodePath,
+	resolveDraftDOMAttrs,
+	validateHTMLLayoutState,
+	validateNestedEditableState,
 } from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
-	AnchorState,
 	CreateLinkValidatorParams,
 	CreateLinkValidatorResult,
-	NestedEditableState,
 	ValidateAnchorParams,
 	ValidateAnchorResult,
 	ValidateLinkParams,
 	ValidateLinkResult,
-	ValidateNestedEditableParams,
-	ValidateNestedEditableResult,
 } from "./ValidateLink-types";
 
-const validateNestedEditable = ({
-	linkDraft,
-	nestedEditableDraft,
-}: ValidateNestedEditableParams): ValidateNestedEditableResult => {
-	const {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		domAttrs,
-		customStorage,
-	} = nestedEditableDraft;
+/*
+ * Validates the Link's anchor and, through its only child, its NestedEditable. The anchor's domAttrs are resolved by
+ * linkAttrsShape and the anchor's validators (see resolveElementAttrs), and replaced by the resolved ones.
+ */
+const validateAnchor = ({
+	componentDraft,
+	htmlLayoutDraft,
+	anchorAttrValidators,
+}: ValidateAnchorParams): ValidateAnchorResult => {
+	const stateFailed = validateHTMLLayoutState({
+		componentDraft,
+		htmlLayoutDraft,
+		expectedState: {
+			editorRole: htmlLayoutRole,
+			localName: "a",
+			customStorage: null,
+		},
+	});
 
-	const nestedEditableState: NestedEditableState = {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		domAttrs,
-		customStorage,
-	};
+	if (stateFailed) {
+		return stateFailed;
+	}
 
-	const mismatch = matchJSON({
-		value: nestedEditableState,
-		pattern: {
+	const domAttrsFailed = resolveDraftDOMAttrs({
+		componentDraft,
+		elementDraft: htmlLayoutDraft,
+		elementAttrsShape: linkAttrsShape.anchor,
+		elementAttrValidators: anchorAttrValidators,
+	});
+
+	if (domAttrsFailed) {
+		return domAttrsFailed;
+	}
+
+	const { childNodes } = htmlLayoutDraft;
+
+	const nestedEditableDraft = childNodes.at(0);
+
+	if (
+		childNodes.length !== 1 ||
+		nestedEditableDraft?.editorRole !== nestedEditableRole
+	) {
+		return {
+			sourceSnapshot: componentDraft,
+			failedSnapshot: htmlLayoutDraft,
+			reason: `${formatNodePath({ componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+		};
+	}
+
+	return validateNestedEditableState({
+		componentDraft,
+		nestedEditableDraft,
+		expectedState: {
 			editorRole: nestedEditableRole,
 			display: "inline",
 			editState: "inherit",
@@ -75,107 +87,6 @@ const validateNestedEditable = ({
 			customStorage: null,
 		},
 	});
-
-	if (mismatch) {
-		return {
-			sourceSnapshot: linkDraft,
-			failedSnapshot: nestedEditableDraft,
-			reason: describeJSONMismatch({
-				componentDraft: linkDraft,
-				nodeDraft: nestedEditableDraft,
-				value: nestedEditableState,
-				mismatch,
-			}),
-		};
-	}
-
-	return null;
-};
-
-/*
- * Validates the Link's anchor and, through its only child, its NestedEditable. The anchor's domAttrs are resolved by
- * linkAttrsShape and the anchor's validators (see resolveElementAttrs), and replaced by the resolved ones.
- */
-const validateAnchor = ({
-	linkDraft,
-	htmlLayoutDraft,
-	anchorAttrValidators,
-}: ValidateAnchorParams): ValidateAnchorResult => {
-	const { editorRole, localName, domAttrs, customStorage, childNodes } =
-		htmlLayoutDraft;
-
-	const anchorState: AnchorState = {
-		editorRole,
-		localName,
-		customStorage,
-	};
-
-	const mismatch = matchJSON({
-		value: anchorState,
-		pattern: {
-			editorRole: htmlLayoutRole,
-			localName: "a",
-			customStorage: null,
-		},
-	});
-
-	if (mismatch) {
-		return {
-			sourceSnapshot: linkDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: describeJSONMismatch({
-				componentDraft: linkDraft,
-				nodeDraft: htmlLayoutDraft,
-				value: anchorState,
-				mismatch,
-			}),
-		};
-	}
-
-	const resolvedDOMAttrs = resolveElementAttrs({
-		elementAttrs: domAttrs,
-		elementAttrsShape: linkAttrsShape.anchor,
-		elementAttrValidators: anchorAttrValidators,
-	});
-
-	if (resolvedDOMAttrs.kind === "invalid") {
-		return {
-			sourceSnapshot: linkDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: describeElementAttrsMismatch({
-				componentDraft: linkDraft,
-				nodeDraft: htmlLayoutDraft,
-				domAttrs,
-				mismatch: resolvedDOMAttrs.mismatch,
-			}),
-		};
-	}
-
-	htmlLayoutDraft.domAttrs = resolvedDOMAttrs.elementAttrs;
-
-	const nestedEditableDraft = childNodes.at(0);
-
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
-		return {
-			sourceSnapshot: linkDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ componentDraft: linkDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
-		};
-	}
-
-	const nestedEditableFailed = validateNestedEditable({
-		linkDraft,
-		nestedEditableDraft,
-	});
-
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
-
-	return null;
 };
 
 /*
@@ -194,10 +105,8 @@ const validateLink = ({
 		};
 	}
 
-	const linkDraft = componentDraft;
-
 	const stateFailed = validateInlineComponentState({
-		inlineComponentDraft: linkDraft,
+		inlineComponentDraft: componentDraft,
 		expectedState: {
 			editorRole: inlineComponentRole,
 			name: componentsName.link,
@@ -214,7 +123,7 @@ const validateLink = ({
 		return stateFailed;
 	}
 
-	const { childNodes } = linkDraft;
+	const { childNodes } = componentDraft;
 
 	const htmlLayoutDraft = childNodes.at(0);
 
@@ -223,14 +132,14 @@ const validateLink = ({
 		htmlLayoutDraft?.editorRole !== htmlLayoutRole
 	) {
 		return {
-			sourceSnapshot: linkDraft,
-			failedSnapshot: linkDraft,
-			reason: `${formatNodePath({ componentDraft: linkDraft, nodeDraft: linkDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+			sourceSnapshot: componentDraft,
+			failedSnapshot: componentDraft,
+			reason: `${formatNodePath({ componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
 		};
 	}
 
 	const anchorFailed = validateAnchor({
-		linkDraft,
+		componentDraft,
 		htmlLayoutDraft,
 		anchorAttrValidators: attrValidators.anchor,
 	});

@@ -50,13 +50,25 @@ first, then its children.
   `HTMLLayout`, whose only child is a `NestedEditable`).
 - **Attributes** — every element with a shape is resolved with `resolveElementAttrs`, by the component's shape and
   validators (see [DOMAttrs](DOMAttrs.md#the-two-paths)). An invalid result is a failure; a valid one replaces the
-  node's `domAttrs` in the Draft. A node without a shape matches its `domAttrs` as part of its state (e.g. `{}`).
+  node's `domAttrs` in the Draft. A layout unit without a shape (e.g. an Image's `figure`) is resolved by an empty
+  shape, so every attribute it has is dropped. A `NestedEditable` matches its `domAttrs` as part of its state (`{}`).
 - **Content** — a `NestedEditable`'s content is left to the engine's validation, which already checked it by the
   `NestedEditable`'s settings (the validator checks those settings themselves).
 
 So a snapshot that breaks one of the editor's attribute rules comes back repaired (e.g. `href: "//evil.com"` →
 `href: "#"`, an unknown attribute dropped), while one that breaks the structure, that the Sanitizer refuses, or whose
 rule has nothing to fall back to (e.g. an empty `img` `src`), is invalid.
+
+The shared steps are helpers, so a component's validator only describes its own structure:
+
+- `validateInlineComponentState` / `validateBlockComponentState` (in `ValidateInlineComponents/_Utilities/` and
+  `ValidateBlockComponents/_Utilities/`) — the component's own state.
+- `validateHTMLLayoutState`, `validateNestedEditableState` and `resolveDraftDOMAttrs` (in `_Utilities/`) — the nodes
+  below it.
+
+`ValidateLink` and `ValidateImage` (`createImageValidator` from `@rangex/editor/image`) are the two references: an
+InlineComponent with one `NestedEditable`, and a BlockComponent with a fixed layout (an Image's `figure` holds exactly
+one `img` and at most one `figcaption`, above or below it).
 
 A failure's `reason` names the node by its path from the component, e.g.
 `link > html-layout(a)[0]: invalid value localName: "span".`
