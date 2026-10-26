@@ -4,18 +4,13 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	objectFitAttr,
-} from "#engine-links";
+import { blockAlignAttr, componentsName, objectFitAttr } from "#engine-links";
 import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*
  * Builds a video block component wrapping a `figure`/`video` element with playback controls
- * and default fit and aspect-ratio attributes.
+ * and a default fit attribute.
  */
 export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 	return createBlockComponentLine({
@@ -40,7 +35,6 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 								src,
 								controls: "",
 								[objectFitAttr.name]: objectFitAttr.value.cover,
-								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
 							},
 							childNodes: [],
 						}),

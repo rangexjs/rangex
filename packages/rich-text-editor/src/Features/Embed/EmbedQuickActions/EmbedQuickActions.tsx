@@ -26,11 +26,11 @@ import {
 	setAspectRatio,
 } from "../../_Utilities";
 
-const aspectRatioOptions: OptionDropdownOption<AspectRatioValue>[] = [
-	{ label: "Auto", value: "auto" },
-	{ label: "1:1", value: "1-1" },
-	{ label: "4:3", value: "4-3" },
-	{ label: "16:9", value: "16-9" },
+const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
+	{ label: "Auto", value: null },
+	{ label: "1:1", value: "1 / 1" },
+	{ label: "4:3", value: "4 / 3" },
+	{ label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -56,7 +56,7 @@ export const EmbedQuickActions = () => {
 	};
 
 	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue>("auto");
+		createSignal<AspectRatioValue | null>(null);
 
 	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -67,7 +67,7 @@ export const EmbedQuickActions = () => {
 	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
 	const syncFromEmbed = (embedEl: HTMLIFrameElement) => {
-		const aspectRatioValue = getAspectRatio(embedEl) ?? "auto";
+		const aspectRatioValue = getAspectRatio(embedEl);
 
 		setAspectRatioSignal(aspectRatioValue);
 
@@ -99,7 +99,7 @@ export const EmbedQuickActions = () => {
 		},
 	);
 
-	const onAspectRatioSelect = (value: AspectRatioValue) => {
+	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
 		const embedEl = embedElement();
 
 		if (!embedEl) {
@@ -214,6 +214,7 @@ export const EmbedQuickActions = () => {
 							label="Aspect ratio"
 							value={aspectRatio()}
 							options={aspectRatioOptions}
+							notFoundLabel="Custom"
 							onSelect={onAspectRatioSelect}
 						/>
 

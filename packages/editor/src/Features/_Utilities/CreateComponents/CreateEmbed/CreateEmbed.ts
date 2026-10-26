@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { aspectRatioAttr, blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#engine-links";
 import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
@@ -20,7 +20,7 @@ const embedAllow =
 
 /*
  * Builds an embed block component wrapping a sandboxed `iframe` for third-party content,
- * with a fixed sandbox/allow policy and a default 16:9 aspect ratio.
+ * with a fixed sandbox/allow policy. Without an aspect ratio, its ratio is left to the styles.
  */
 export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 	return createBlockComponentLine({
@@ -47,7 +47,6 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 								sandbox: embedSandbox,
 								allow: embedAllow,
 								loading: "lazy",
-								[aspectRatioAttr.name]: aspectRatioAttr.value["16-9"],
 							},
 							childNodes: [],
 						}),

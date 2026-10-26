@@ -5,25 +5,18 @@ import {
 	createHTMLLayout,
 } from "@rangex/core";
 import { type ImageAttrs, toDOMAttrs } from "#dom-attrs";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	objectFitAttr,
-} from "#engine-links";
+import { blockAlignAttr, componentsName, objectFitAttr } from "#engine-links";
 import { createImageStorage } from "#storage";
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
 /*
- * Builds an image block component wrapping a `figure`/`img` element with default fit and
- * aspect-ratio attributes.
+ * Builds an image block component wrapping a `figure`/`img` element with a default fit attribute.
  */
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 	const imgAttrs: ImageAttrs["img"] = {
 		src,
 		alt: "",
 		[objectFitAttr.name]: objectFitAttr.value.cover,
-		[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
 	};
 
 	return createBlockComponentLine({

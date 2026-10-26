@@ -34,13 +34,9 @@ const minBlockWidth = 300;
 
 const maxBlockWidth = 10000;
 
-const blockWidthPattern = /^[1-9]\d*$/;
-
 const allowedObjectFits = new Set<string>(Object.values(objectFitAttr.value));
 
-const allowedAspectRatios = new Set<string>(
-	Object.values(aspectRatioAttr.value),
-);
+const maxAspectRatioLength = 32;
 
 const blockAttrsShape = {
 	[blockWidthAttr.name]: "optional",
@@ -74,7 +70,9 @@ export const imageAttrsShape = {
  * A block width is valid if it's a whole number of px, without its unit, between 300 and 10000.
  */
 const validateBlockWidth: ValidateAttrFn<string | null> = ({ value }) => {
-	if (!blockWidthPattern.test(value)) {
+	const isWholeNumber = /^[1-9]\d*$/.test(value);
+
+	if (!isWholeNumber) {
 		return {
 			kind: "fallback",
 			reason: "must be a whole number of px, without its unit",
@@ -142,11 +140,36 @@ const validateObjectFit: ValidateAttrFn<string | null> = ({ value }) => {
 	return null;
 };
 
+/*
+ * An aspect ratio is valid if it's at most 32 characters long, and two positive numbers separated by " / " (e.g.
+ * "16 / 9").
+ */
 const validateAspectRatio: ValidateAttrFn<string | null> = ({ value }) => {
-	if (!allowedAspectRatios.has(value)) {
+	if (value.length > maxAspectRatioLength) {
 		return {
 			kind: "fallback",
-			reason: `must be ${[...allowedAspectRatios].join(", ")}`,
+			reason: `must be at most ${maxAspectRatioLength} characters long`,
+			value: null,
+		};
+	}
+
+	// Two numbers separated by " / ", as CSS writes a ratio (e.g. "16 / 9")
+	const match = /^(\d+(?:\.\d+)?) \/ (\d+(?:\.\d+)?)$/.exec(value);
+
+	if (!match) {
+		return {
+			kind: "fallback",
+			reason: 'must be two numbers separated by " / " (e.g. "16 / 9")',
+			value: null,
+		};
+	}
+
+	const [, width, height] = match;
+
+	if (!(Number(width) > 0 && Number(height) > 0)) {
+		return {
+			kind: "fallback",
+			reason: "must be two positive numbers",
 			value: null,
 		};
 	}

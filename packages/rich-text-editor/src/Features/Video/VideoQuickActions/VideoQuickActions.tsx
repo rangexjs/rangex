@@ -36,11 +36,11 @@ const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
 	{ label: "Fill", value: "fill" },
 ];
 
-const aspectRatioOptions: OptionDropdownOption<AspectRatioValue>[] = [
-	{ label: "Auto", value: "auto" },
-	{ label: "1:1", value: "1-1" },
-	{ label: "4:3", value: "4-3" },
-	{ label: "16:9", value: "16-9" },
+const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
+	{ label: "Auto", value: null },
+	{ label: "1:1", value: "1 / 1" },
+	{ label: "4:3", value: "4 / 3" },
+	{ label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -67,7 +67,7 @@ export const VideoQuickActions = () => {
 
 	const [objectFit, setObjectFitSignal] = createSignal<ObjectFitValue>("cover");
 	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue>("auto");
+		createSignal<AspectRatioValue | null>(null);
 	const [controls, setControlsSignal] = createSignal(false);
 	const [autoplay, setAutoplaySignal] = createSignal(false);
 	const [loop, setLoopSignal] = createSignal(false);
@@ -93,7 +93,7 @@ export const VideoQuickActions = () => {
 
 	const syncFromVideo = (videoEl: HTMLVideoElement) => {
 		const objectFitValue = getObjectFit(videoEl) ?? "cover";
-		const aspectRatioValue = getAspectRatio(videoEl) ?? "auto";
+		const aspectRatioValue = getAspectRatio(videoEl);
 
 		setObjectFitSignal(objectFitValue);
 		setAspectRatioSignal(aspectRatioValue);
@@ -156,7 +156,7 @@ export const VideoQuickActions = () => {
 		editor.snapshot.commit();
 	};
 
-	const onAspectRatioSelect = (value: AspectRatioValue) => {
+	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
 		const videoEl = videoElement();
 
 		if (!videoEl) {
@@ -359,6 +359,7 @@ export const VideoQuickActions = () => {
 							label="Aspect ratio"
 							value={aspectRatio()}
 							options={aspectRatioOptions}
+							notFoundLabel="Custom"
 							onSelect={onAspectRatioSelect}
 						/>
 

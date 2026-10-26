@@ -1,4 +1,4 @@
-import { AttributeStyles, Colors, EngineGlobalStyles } from "../Base";
+import { Colors, EngineGlobalStyles } from "../Base";
 import {
 	AccordionItem,
 	BlockQuote,
@@ -24,7 +24,7 @@ import {
  * Builds the style text for rendered snapshot output: shared component/base styles plus the view-only styles.
  */
 export const getViewStyles = () => {
-	const baseCommon = AttributeStyles + Colors + EngineGlobalStyles;
+	const baseCommon = Colors + EngineGlobalStyles;
 
 	const componentsCommon =
 		AccordionItem +

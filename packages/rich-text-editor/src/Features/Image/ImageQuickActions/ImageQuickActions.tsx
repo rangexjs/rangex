@@ -35,11 +35,11 @@ const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
 	{ label: "Fill", value: "fill" },
 ];
 
-const aspectRatioOptions: OptionDropdownOption<AspectRatioValue>[] = [
-	{ label: "Auto", value: "auto" },
-	{ label: "1:1", value: "1-1" },
-	{ label: "4:3", value: "4-3" },
-	{ label: "16:9", value: "16-9" },
+const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
+	{ label: "Auto", value: null },
+	{ label: "1:1", value: "1 / 1" },
+	{ label: "4:3", value: "4 / 3" },
+	{ label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -66,10 +66,11 @@ export const ImageQuickActions = () => {
 		return isObjectFitValue(value) ? value : "cover";
 	};
 
-	const aspectRatio = (): AspectRatioValue => {
+	// An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
+	const aspectRatio = (): AspectRatioValue | null => {
 		const value = imgAttrs()?.[aspectRatioAttrName] ?? null;
 
-		return isAspectRatioValue(value) ? value : "auto";
+		return isAspectRatioValue(value) ? value : null;
 	};
 
 	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
@@ -104,7 +105,7 @@ export const ImageQuickActions = () => {
 		changeImgAttrs({ [objectFitAttrName]: value });
 	};
 
-	const onAspectRatioSelect = (value: AspectRatioValue) => {
+	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
 		changeImgAttrs({ [aspectRatioAttrName]: value });
 	};
 
@@ -217,6 +218,7 @@ export const ImageQuickActions = () => {
 							label="Aspect ratio"
 							value={aspectRatio()}
 							options={aspectRatioOptions}
+							notFoundLabel="Custom"
 							onSelect={onAspectRatioSelect}
 						/>
 
