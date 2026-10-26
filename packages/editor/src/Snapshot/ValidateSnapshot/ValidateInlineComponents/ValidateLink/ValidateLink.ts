@@ -71,7 +71,7 @@ const validateAnchor = ({
 		};
 	}
 
-	return validateNestedEditableState({
+	const nestedEditableFailed = validateNestedEditableState({
 		componentDraft,
 		nestedEditableDraft,
 		expectedState: {
@@ -87,6 +87,12 @@ const validateAnchor = ({
 			customStorage: null,
 		},
 	});
+
+	if (nestedEditableFailed) {
+		return nestedEditableFailed;
+	}
+
+	return null;
 };
 
 /*

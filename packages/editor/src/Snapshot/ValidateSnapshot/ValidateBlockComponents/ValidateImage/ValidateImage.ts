@@ -128,7 +128,7 @@ const validateFigcaption = ({
 		};
 	}
 
-	return validateNestedEditableState({
+	const nestedEditableFailed = validateNestedEditableState({
 		componentDraft,
 		nestedEditableDraft,
 		expectedState: {
@@ -144,6 +144,12 @@ const validateFigcaption = ({
 			customStorage: null,
 		},
 	});
+
+	if (nestedEditableFailed) {
+		return nestedEditableFailed;
+	}
+
+	return null;
 };
 
 /*
@@ -209,14 +215,18 @@ const validateFigure = ({
 		return imgFailed;
 	}
 
-	if (!figcaptionDraft) {
-		return null;
+	if (figcaptionDraft) {
+		const figcaptionFailed = validateFigcaption({
+			componentDraft,
+			htmlLayoutDraft: figcaptionDraft,
+		});
+
+		if (figcaptionFailed) {
+			return figcaptionFailed;
+		}
 	}
 
-	return validateFigcaption({
-		componentDraft,
-		htmlLayoutDraft: figcaptionDraft,
-	});
+	return null;
 };
 
 /*
@@ -279,11 +289,17 @@ const validateImage = ({
 		};
 	}
 
-	return validateFigure({
+	const figureFailed = validateFigure({
 		componentDraft,
 		htmlLayoutDraft,
 		imgAttrValidators: attrValidators.img,
 	});
+
+	if (figureFailed) {
+		return figureFailed;
+	}
+
+	return null;
 };
 
 /*
