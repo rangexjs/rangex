@@ -31,13 +31,13 @@ export const linkAttrsShape = {
 } as const satisfies ComponentAttrsShape;
 
 /*
- * An href is valid if it isn't empty, it's at most 2048 characters long, a safe URL (see isSafeURL), and a relative one
+ * An href is valid if it isn't empty, it's at most 8192 characters long, a safe URL (see isSafeURL), and a relative one
  * stays on the page's host. An invalid one falls back to "#".
  */
 const validateHref: ValidateAttrFn<string> = ({ value }) => {
 	const baseURL = "https://base.invalid/";
 	const baseHost = "base.invalid";
-	const maxHrefLength = 2048;
+	const maxHrefLength = 8192;
 	const hrefFallback = "#";
 
 	if (value.trim() === "") {
