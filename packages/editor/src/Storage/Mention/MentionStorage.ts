@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { mentionId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateMentionStorageParams,
 	CreateMentionStorageResult,
@@ -10,10 +11,39 @@ import type {
 	MentionStorage,
 } from "./MentionStorage-types";
 
+/*
+ * A user id is valid if it isn't empty and it's at most 256 characters long.
+ */
+const isUserId = (value: unknown) => {
+	const maxUserIdLength = 256;
+
+	return (
+		typeof value === "string" && value !== "" && value.length <= maxUserIdLength
+	);
+};
+
+/*
+ * The Mention's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const mentionStoragePattern = {
+	id: mentionId,
+	version: storageVersion,
+	userId: isUserId,
+} satisfies JSONPattern<MentionStorage>;
+
+/*
+ * Matches a value against mentionStoragePattern, returning the first mismatch or null.
+ */
+export const matchMentionStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: mentionStoragePattern });
+};
+
 export const isMentionStorage = (
 	storage: unknown,
 ): storage is MentionStorage => {
-	return isStorage(storage, { id: mentionId });
+	const mismatch = matchMentionStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateMentionStorage = (
