@@ -4,6 +4,7 @@ export * from "./MergeComponentAttrs";
 export * from "./ReadComponentAttrs";
 export * from "./ReadElementAttrs";
 export * from "./ResolveElementAttrs";
+export * from "./SharedAttrValidators";
 export * from "./ToDOMAttrs";
 export * from "./ValidateComponentAttrs";
 export * from "./ValidateElementAttrs";

@@ -178,7 +178,8 @@ feature can validate the component's attributes too (Markdown reads them with `g
 ## Adding a component
 
 1. **Shape** — `XAttrsShape` in `DOMAttrs/X/XDOMAttrs.ts`, plus the exported types under the component's names.
-2. **Validators** — one default validator per attribute, `ElementDescriptor`s, and `createXAttrValidators`. Add a
+2. **Validators** — one default validator per attribute (reuse the shared ones in
+   `_Utilities/SharedAttrValidators/`, e.g. `validateBlockWidth`), `ElementDescriptor`s, and `createXAttrValidators`. Add a
    normalizer only if the UI accepts values the validators shouldn't have to (e.g. a URL without a scheme).
 3. **Adapter** — compose `createDOMAttrsPort<XAttrsShape>()`, take `attrValidators` in `XSettings`, create the
    validators and register them on the `AdapterBus` (`AttrValidatorsByAdapter`).

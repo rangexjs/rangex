@@ -16,6 +16,9 @@ import {
 	type ElementAttrsShape,
 	type ElementDescriptor,
 	type ValidateAttrFn,
+	validateAspectRatio,
+	validateBlockWidth,
+	validateObjectFit,
 } from "../_Utilities";
 import type {
 	CreateImageAttrValidatorsParams,
@@ -51,37 +54,6 @@ export const imageAttrsShape = {
 } as const satisfies ComponentAttrsShape;
 
 /*
- * A block width is valid if it's a whole number of px, without its unit, between 300 and 10000.
- */
-const validateBlockWidth: ValidateAttrFn<string | null> = ({ value }) => {
-	// The block resize's minimum width
-	const minBlockWidth = 300;
-	const maxBlockWidth = 10000;
-
-	const isWholeNumber = /^[1-9]\d*$/.test(value);
-
-	if (!isWholeNumber) {
-		return {
-			kind: "fallback",
-			reason: "must be a whole number of px, without its unit",
-			value: null,
-		};
-	}
-
-	const blockWidth = Number(value);
-
-	if (blockWidth < minBlockWidth || blockWidth > maxBlockWidth) {
-		return {
-			kind: "fallback",
-			reason: `must be between ${minBlockWidth} and ${maxBlockWidth}`,
-			value: null,
-		};
-	}
-
-	return null;
-};
-
-/*
  * A src is valid if it isn't empty, and it's at most 2048 characters long (5 MiB for a "data:image/*" one). Whether it's
  * a safe URL is the Sanitizer's job. An invalid one is rejected: an image has no src to fall back to.
  */
@@ -115,59 +87,6 @@ const validateAlt: ValidateAttrFn<string | null> = ({ value }) => {
 		return {
 			kind: "fallback",
 			reason: `must be at most ${maxAltLength} characters long`,
-			value: null,
-		};
-	}
-
-	return null;
-};
-
-const validateObjectFit: ValidateAttrFn<string | null> = ({ value }) => {
-	const allowedObjectFits = new Set<string>(Object.values(objectFitAttr.value));
-
-	if (!allowedObjectFits.has(value)) {
-		return {
-			kind: "fallback",
-			reason: `must be ${[...allowedObjectFits].join(", ")}`,
-			value: null,
-		};
-	}
-
-	return null;
-};
-
-/*
- * An aspect ratio is valid if it's at most 32 characters long, and two positive numbers separated by " / " (e.g.
- * "16 / 9").
- */
-const validateAspectRatio: ValidateAttrFn<string | null> = ({ value }) => {
-	const maxAspectRatioLength = 32;
-
-	if (value.length > maxAspectRatioLength) {
-		return {
-			kind: "fallback",
-			reason: `must be at most ${maxAspectRatioLength} characters long`,
-			value: null,
-		};
-	}
-
-	// Two numbers separated by " / ", as CSS writes a ratio (e.g. "16 / 9")
-	const match = /^(\d+(?:\.\d+)?) \/ (\d+(?:\.\d+)?)$/.exec(value);
-
-	if (!match) {
-		return {
-			kind: "fallback",
-			reason: 'must be two numbers separated by " / " (e.g. "16 / 9")',
-			value: null,
-		};
-	}
-
-	const [, width, height] = match;
-
-	if (!(Number(width) > 0 && Number(height) > 0)) {
-		return {
-			kind: "fallback",
-			reason: "must be two positive numbers",
 			value: null,
 		};
 	}
