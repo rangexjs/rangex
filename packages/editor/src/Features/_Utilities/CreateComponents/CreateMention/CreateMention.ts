@@ -32,7 +32,7 @@ export const createMention = ({
 			createNestedEditable({
 				display: "inline",
 				editState: "inherit",
-				allowedComponents: null,
+				allowedComponents: [],
 				allowedContentLineLocalNames: null,
 				allowedContentLineStyleAttrNames: null,
 				allowedGlyphFormatterStyleAttrNames: null,

@@ -2901,7 +2901,7 @@
 								"uniqueId": "1787515366924-2272460639",
 								"customStorage": null,
 								"display": "inline",
-								"allowedComponents": null,
+								"allowedComponents": [],
 								"allowedContentLineLocalNames": null,
 								"allowedContentLineStyleAttrNames": null,
 								"allowedGlyphFormatterStyleAttrNames": null,
