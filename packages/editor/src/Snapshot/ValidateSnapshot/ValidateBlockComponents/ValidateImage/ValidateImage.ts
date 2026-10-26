@@ -6,7 +6,7 @@ import {
 } from "@rangex/core";
 import { componentsName } from "#constants";
 import { createImageAttrValidators, imageAttrsShape } from "#dom-attrs";
-import { createImageStorage } from "#storage";
+import { imageStoragePattern } from "#storage";
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
@@ -258,7 +258,7 @@ const validateImage = ({
 			editState: "false",
 			shouldSelectBeforeRemove: true,
 			shouldSelectOnNavigation: true,
-			customStorage: createImageStorage(),
+			customStorage: imageStoragePattern,
 		},
 	});
 

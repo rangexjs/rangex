@@ -23,9 +23,15 @@ if (result.isValid) {
    that failure is returned as it is.
 3. **Draft** — the snapshot is turned into a Draft (`snapshotManager.createDraftFromSnapshot`, a deep copy: the given
    snapshot is never changed).
-4. **Components** — `validateComponents` runs the validator registered for each component's `name`, nested components
-   included, and fails on the first one that doesn't pass. A component without a validator is invalid.
-5. **Result** — the Draft, with every component's resolved attributes, turned back into a snapshot.
+4. **Storages** — `resolveNodeStorages` sets the `customStorage` of every node except the components and the
+   RootEditable to `null`: the editor never stores anything on them, and nothing reads it, so it's dropped instead of
+   making the snapshot invalid.
+5. **Components** — `validateComponents` runs the validator registered for each component's `name`, nested components
+   included, and fails on the first one that doesn't pass. A component without a validator is invalid. Each validator
+   matches its component's `customStorage` against the Storage module's strict pattern (see
+   [SnapshotMigrations](SnapshotMigrations.md#the-storage-module)).
+6. **Result** — the Draft, with every resolved storage and every component's resolved attributes, turned back into a
+   snapshot.
 
 The result has the same shape as the engine's `migrateStoredSnapshot`:
 

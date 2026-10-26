@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { accordionItemId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { storageVersion, validateStorage } from "../_Utilities";
 import type {
 	AccordionItemStorage,
 	CreateAccordionItemStorageResult,
@@ -9,10 +10,27 @@ import type {
 	EnsureNodeAccordionItemStorageResult,
 } from "./AccordionItemStorage-types";
 
+/*
+ * The AccordionItem's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const accordionItemStoragePattern = {
+	id: accordionItemId,
+	version: storageVersion,
+} satisfies JSONPattern<AccordionItemStorage>;
+
+/*
+ * Matches a value against accordionItemStoragePattern, returning the first mismatch or null.
+ */
+export const matchAccordionItemStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: accordionItemStoragePattern });
+};
+
 export const isAccordionItemStorage = (
 	storage: unknown,
 ): storage is AccordionItemStorage => {
-	return isStorage(storage, { id: accordionItemId });
+	const mismatch = matchAccordionItemStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateAccordionItemStorage = (

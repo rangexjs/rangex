@@ -5,7 +5,7 @@ import {
 } from "@rangex/core";
 import { componentsName } from "#constants";
 import { createLinkAttrValidators, linkAttrsShape } from "#dom-attrs";
-import { createLinkStorage } from "#storage";
+import { linkStoragePattern } from "#storage";
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
@@ -121,7 +121,7 @@ const validateLink = ({
 			shouldSelectBeforeRemove: false,
 			shouldSelectOnNavigation: false,
 			domAttrs: {},
-			customStorage: createLinkStorage(),
+			customStorage: linkStoragePattern,
 		},
 	});
 

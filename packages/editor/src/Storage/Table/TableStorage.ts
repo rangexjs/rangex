@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { tableId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateTableStorageResult,
 	EnsureNodeTableStorageParams,
@@ -9,8 +10,25 @@ import type {
 	TableStorage,
 } from "./TableStorage-types";
 
+/*
+ * The Table's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const tableStoragePattern = {
+	id: tableId,
+	version: storageVersion,
+} satisfies JSONPattern<TableStorage>;
+
+/*
+ * Matches a value against tableStoragePattern, returning the first mismatch or null.
+ */
+export const matchTableStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: tableStoragePattern });
+};
+
 export const isTableStorage = (storage: unknown): storage is TableStorage => {
-	return isStorage(storage, { id: tableId });
+	const mismatch = matchTableStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateTableStorage = (

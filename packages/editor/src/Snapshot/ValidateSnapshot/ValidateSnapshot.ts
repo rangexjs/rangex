@@ -4,6 +4,7 @@ import {
 	validateStoredSnapshot,
 } from "@rangex/core";
 import { ensureSanitizerConfigured } from "#sanitizer";
+import { resolveNodeStorages } from "./ResolveNodeStorages";
 import { validateComponents } from "./ValidateComponents";
 import type {
 	ValidateSnapshotParams,
@@ -13,8 +14,9 @@ import type {
 /*
  * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
  * alone if it hasn't been called), then every component in it by the validator registered for its name. A component
- * without a validator is invalid. A valid snapshot is returned as a copy with the components' resolved attributes (see
- * resolveElementAttrs), the one to save or restore. The nodes of a failure belong to that copy, not to the given
+ * without a validator is invalid. The storage of every other node is dropped (see resolveNodeStorages). A valid snapshot
+ * is returned as a copy with the resolved storages and the components' resolved attributes (see resolveElementAttrs),
+ * the one to save or restore. The nodes of a failure belong to that copy, not to the given
  * snapshot.
  */
 export const validateSnapshot = ({
@@ -39,6 +41,8 @@ export const validateSnapshot = ({
 	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(
 		validStoredSnapshot.snapshot,
 	);
+
+	resolveNodeStorages({ rootEditableDraft });
 
 	const componentsFailed = validateComponents({
 		rootEditableDraft,

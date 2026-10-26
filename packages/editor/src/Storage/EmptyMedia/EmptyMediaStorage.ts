@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { emptyMediaId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { storageVersion, validateStorage } from "../_Utilities";
 import type {
 	CreateEmptyMediaStorageResult,
 	EmptyMediaStorage,
@@ -9,10 +10,27 @@ import type {
 	EnsureNodeEmptyMediaStorageResult,
 } from "./EmptyMediaStorage-types";
 
+/*
+ * The EmptyMedia's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const emptyMediaStoragePattern = {
+	id: emptyMediaId,
+	version: storageVersion,
+} satisfies JSONPattern<EmptyMediaStorage>;
+
+/*
+ * Matches a value against emptyMediaStoragePattern, returning the first mismatch or null.
+ */
+export const matchEmptyMediaStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: emptyMediaStoragePattern });
+};
+
 export const isEmptyMediaStorage = (
 	storage: unknown,
 ): storage is EmptyMediaStorage => {
-	return isStorage(storage, { id: emptyMediaId });
+	const mismatch = matchEmptyMediaStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateEmptyMediaStorage = (

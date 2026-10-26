@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { audioId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { storageVersion, validateStorage } from "../_Utilities";
 import type {
 	AudioStorage,
 	CreateAudioStorageResult,
@@ -9,8 +10,25 @@ import type {
 	EnsureNodeAudioStorageResult,
 } from "./AudioStorage-types";
 
+/*
+ * The Audio's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const audioStoragePattern = {
+	id: audioId,
+	version: storageVersion,
+} satisfies JSONPattern<AudioStorage>;
+
+/*
+ * Matches a value against audioStoragePattern, returning the first mismatch or null.
+ */
+export const matchAudioStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: audioStoragePattern });
+};
+
 export const isAudioStorage = (storage: unknown): storage is AudioStorage => {
-	return isStorage(storage, { id: audioId });
+	const mismatch = matchAudioStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateAudioStorage = (
