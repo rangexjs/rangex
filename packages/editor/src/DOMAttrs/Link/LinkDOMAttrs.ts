@@ -13,39 +13,6 @@ import type {
 	LinkAttrs,
 } from "./LinkDOMAttrs-types";
 
-const baseURL = "https://base.invalid/";
-
-const baseHost = "base.invalid";
-
-const maxHrefLength = 2048;
-
-const hrefFallback = "#";
-
-const maxTitleLength = 200;
-
-const allowedTargets = new Set(["_blank", "_self"]);
-
-// An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
-const keptHrefPrefixes = [
-	"https://",
-	"http://",
-	"mailto:",
-	"tel:",
-	"/",
-	"./",
-	"../",
-	"?",
-	"#",
-];
-
-const allowedRelTokens = new Set([
-	"noopener",
-	"noreferrer",
-	"nofollow",
-	"ugc",
-	"sponsored",
-]);
-
 const anchorAttrsShape = {
 	href: "required",
 	target: "optional",
@@ -68,6 +35,11 @@ export const linkAttrsShape = {
  * stays on the page's host. An invalid one falls back to "#".
  */
 const validateHref: ValidateAttrFn<string> = ({ value }) => {
+	const baseURL = "https://base.invalid/";
+	const baseHost = "base.invalid";
+	const maxHrefLength = 2048;
+	const hrefFallback = "#";
+
 	if (value.trim() === "") {
 		return {
 			kind: "fallback",
@@ -112,6 +84,8 @@ const validateHref: ValidateAttrFn<string> = ({ value }) => {
 };
 
 const validateTarget: ValidateAttrFn<string | null> = ({ value }) => {
+	const allowedTargets = new Set(["_blank", "_self"]);
+
 	if (!allowedTargets.has(value)) {
 		return {
 			kind: "fallback",
@@ -127,6 +101,14 @@ const validateTarget: ValidateAttrFn<string | null> = ({ value }) => {
  * A rel is valid if it has at least one token, and each of them is allowed and only listed once.
  */
 const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
+	const allowedRelTokens = new Set([
+		"noopener",
+		"noreferrer",
+		"nofollow",
+		"ugc",
+		"sponsored",
+	]);
+
 	const tokens = value.split(/\s+/);
 	const nonEmptyTokens = tokens.filter((token) => token !== "");
 
@@ -158,6 +140,8 @@ const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
 };
 
 const validateTitle: ValidateAttrFn<string | null> = ({ value }) => {
+	const maxTitleLength = 200;
+
 	if (value.length > maxTitleLength) {
 		return {
 			kind: "fallback",
@@ -173,6 +157,19 @@ const validateTitle: ValidateAttrFn<string | null> = ({ value }) => {
  * Trims the href, and prefixes it with "https://" if it has neither a scheme nor a relative prefix (e.g. "example.com").
  */
 const normalizeHref = (href: string) => {
+	// An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
+	const keptHrefPrefixes = [
+		"https://",
+		"http://",
+		"mailto:",
+		"tel:",
+		"/",
+		"./",
+		"../",
+		"?",
+		"#",
+	];
+
 	const trimmedHref = href.trim();
 
 	if (trimmedHref === "") {

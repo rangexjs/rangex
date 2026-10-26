@@ -22,22 +22,6 @@ import type {
 	CreateImageAttrValidatorsResult,
 } from "./ImageDOMAttrs-types";
 
-const maxSrcLength = 2048;
-
-// A "data:image/*" src holds the whole image
-const maxDataImageSrcLength = 5 * 1024 * 1024;
-
-const maxAltLength = 1000;
-
-// The block resize's minimum width
-const minBlockWidth = 300;
-
-const maxBlockWidth = 10000;
-
-const allowedObjectFits = new Set<string>(Object.values(objectFitAttr.value));
-
-const maxAspectRatioLength = 32;
-
 const blockAttrsShape = {
 	[blockWidthAttr.name]: "optional",
 } as const satisfies ElementAttrsShape;
@@ -70,6 +54,10 @@ export const imageAttrsShape = {
  * A block width is valid if it's a whole number of px, without its unit, between 300 and 10000.
  */
 const validateBlockWidth: ValidateAttrFn<string | null> = ({ value }) => {
+	// The block resize's minimum width
+	const minBlockWidth = 300;
+	const maxBlockWidth = 10000;
+
 	const isWholeNumber = /^[1-9]\d*$/.test(value);
 
 	if (!isWholeNumber) {
@@ -98,6 +86,10 @@ const validateBlockWidth: ValidateAttrFn<string | null> = ({ value }) => {
  * a safe URL is the Sanitizer's job. An invalid one is rejected: an image has no src to fall back to.
  */
 const validateSrc: ValidateAttrFn<string> = ({ value }) => {
+	const maxSrcLength = 2048;
+	// A "data:image/*" src holds the whole image
+	const maxDataImageSrcLength = 5 * 1024 * 1024;
+
 	if (value.trim() === "") {
 		return { kind: "reject", reason: "must not be empty" };
 	}
@@ -117,6 +109,8 @@ const validateSrc: ValidateAttrFn<string> = ({ value }) => {
 };
 
 const validateAlt: ValidateAttrFn<string | null> = ({ value }) => {
+	const maxAltLength = 1000;
+
 	if (value.length > maxAltLength) {
 		return {
 			kind: "fallback",
@@ -129,6 +123,8 @@ const validateAlt: ValidateAttrFn<string | null> = ({ value }) => {
 };
 
 const validateObjectFit: ValidateAttrFn<string | null> = ({ value }) => {
+	const allowedObjectFits = new Set<string>(Object.values(objectFitAttr.value));
+
 	if (!allowedObjectFits.has(value)) {
 		return {
 			kind: "fallback",
@@ -145,6 +141,8 @@ const validateObjectFit: ValidateAttrFn<string | null> = ({ value }) => {
  * "16 / 9").
  */
 const validateAspectRatio: ValidateAttrFn<string | null> = ({ value }) => {
+	const maxAspectRatioLength = 32;
+
 	if (value.length > maxAspectRatioLength) {
 		return {
 			kind: "fallback",
