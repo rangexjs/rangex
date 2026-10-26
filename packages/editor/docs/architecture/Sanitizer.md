@@ -17,7 +17,8 @@ own, in [DOMAttrs](DOMAttrs.md). The two never overlap in meaning:
 - A value the Sanitizer refuses could run code. It's always rejected: the editor refuses the input, and a stored
   snapshot that contains it is invalid. It's never repaired.
 - A value that breaks a DOMAttrs rule is safe but not what the editor allows. The editor refuses the input, and a stored
-  snapshot that contains it is repaired (see [SnapshotValidation](SnapshotValidation.md)).
+  snapshot that contains it is repaired, unless the rule has nothing to fall back to (see
+  [SnapshotValidation](SnapshotValidation.md)).
 
 ## `basePolicy`
 

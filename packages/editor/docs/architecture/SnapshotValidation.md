@@ -55,8 +55,8 @@ first, then its children.
   `NestedEditable`'s settings (the validator checks those settings themselves).
 
 So a snapshot that breaks one of the editor's attribute rules comes back repaired (e.g. `href: "//evil.com"` →
-`href: "#"`, an unknown attribute dropped), while one that breaks the structure, or that the Sanitizer refuses, is
-invalid.
+`href: "#"`, an unknown attribute dropped), while one that breaks the structure, that the Sanitizer refuses, or whose
+rule has nothing to fall back to (e.g. an empty `img` `src`), is invalid.
 
 A failure's `reason` names the node by its path from the component, e.g.
 `link > html-layout(a)[0]: invalid value localName: "span".`

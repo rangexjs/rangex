@@ -2,7 +2,9 @@ export type ObjectFitValue = "cover" | "contain" | "fill";
 
 export const objectFitAttrName = "data-object-fit";
 
-const isObjectFitValue = (value: string | null): value is ObjectFitValue =>
+export const isObjectFitValue = (
+	value: string | null,
+): value is ObjectFitValue =>
 	value === "cover" || value === "contain" || value === "fill";
 
 export const getObjectFit = (

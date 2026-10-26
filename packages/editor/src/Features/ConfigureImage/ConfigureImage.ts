@@ -1,8 +1,11 @@
+import { imageAttrsShape } from "#dom-attrs";
 import { componentsName, createBlockComponentPlacement } from "#engine-links";
 import {
+	getImageParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
 	handleSwapToEmptyMedia,
@@ -17,7 +20,7 @@ import type { ConfigureImageParams } from "./ConfigureImage-types";
 import { handleImageInsertion } from "./HandleImageInsertion";
 
 /*
- * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureImage = ({
@@ -69,6 +72,15 @@ export const configureImage = ({
 		setCaptionPosition: setImageCaptionPosition,
 	});
 
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: imageAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (image) => getImageParts({ image }),
+	});
+
 	const swapCleanup = handleSwapToEmptyMedia({
 		port: configPort,
 		editorAPI,
@@ -81,6 +93,7 @@ export const configureImage = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

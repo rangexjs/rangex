@@ -4,7 +4,8 @@ The attributes a component's elements may have: their shape, their validators, a
 resolved. The rules here are the editor's own; XSS is the [Sanitizer](Sanitizer.md)'s job.
 
 Paths are relative to `src/DOMAttrs/` (alias `#dom-attrs`) unless noted otherwise. Link is the reference
-implementation: `Link/LinkDOMAttrs.ts`.
+implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an element that is the component itself
+(`block`, the `BlockComponent`).
 
 ## Rules
 
@@ -67,8 +68,9 @@ const validateTarget: ValidateAttrFn<string | null> = ({ value }) => {
 };
 ```
 
-Our own rules fall back (e.g. an `href` breaking a Link rule falls back to `"#"`); only the Sanitizer rejects. A
-validator only receives set values, except for a missing required attribute in the snapshot path, which is validated
+Our own rules fall back when there's something to fall back to (e.g. an `href` breaking a Link rule falls back to
+`"#"`), and reject otherwise (e.g. an Image's `src`: there's no image to show instead). The Sanitizer always rejects.
+A validator only receives set values, except for a missing required attribute in the snapshot path, which is validated
 as `""` (see [The two paths](#the-two-paths)).
 
 `createComponentAttrValidators` (`_Utilities/CreateComponentAttrValidators/`) builds a component's validators. For every
@@ -132,7 +134,7 @@ element should have:
 
 It returns `{ kind: "valid", elementAttrs }` (the engine's `DOMAttrs`, ready to put on a draft) or
 `{ kind: "invalid", mismatch }`. Used by the snapshot validators (see [SnapshotValidation](SnapshotValidation.md)), so a
-stored snapshot that breaks a rule is repaired instead of rejected, unless the Sanitizer refuses it.
+stored snapshot that breaks a rule is repaired instead of rejected, unless a validator (or the Sanitizer) rejects it.
 
 ## Normalizing
 

@@ -2,7 +2,9 @@ export type AspectRatioValue = "auto" | "1-1" | "4-3" | "16-9";
 
 export const aspectRatioAttrName = "data-aspect-ratio";
 
-const isAspectRatioValue = (value: string | null): value is AspectRatioValue =>
+export const isAspectRatioValue = (
+	value: string | null,
+): value is AspectRatioValue =>
 	value === "auto" || value === "1-1" || value === "4-3" || value === "16-9";
 
 export const getAspectRatio = (

@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { ImageAttrsPatch } from "@rangex/editor/image";
 import { FloatingPortal, Image, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
@@ -20,14 +21,12 @@ import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
 	BlockAlign,
-	getAspectRatio,
-	getObjectFit,
+	isAspectRatioValue,
+	isObjectFitValue,
 	type ObjectFitValue,
 	OptionDropdown,
 	type OptionDropdownOption,
 	objectFitAttrName,
-	setAspectRatio,
-	setObjectFit,
 } from "../../_Utilities";
 
 const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
@@ -59,15 +58,19 @@ export const ImageQuickActions = () => {
 	const $image = Image(image);
 	const $readOnly = ReadOnly(readOnly);
 
-	const img = () => {
-		const currentBlock = $image.currentComponent();
+	const imgAttrs = () => $image.domAttrs()?.img ?? null;
 
-		return currentBlock?.querySelector<HTMLImageElement>("img") ?? null;
+	const objectFit = (): ObjectFitValue => {
+		const value = imgAttrs()?.[objectFitAttrName] ?? null;
+
+		return isObjectFitValue(value) ? value : "cover";
 	};
 
-	const [objectFit, setObjectFitSignal] = createSignal<ObjectFitValue>("cover");
-	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue>("auto");
+	const aspectRatio = (): AspectRatioValue => {
+		const value = imgAttrs()?.[aspectRatioAttrName] ?? null;
+
+		return isAspectRatioValue(value) ? value : "auto";
+	};
 
 	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -77,71 +80,40 @@ export const ImageQuickActions = () => {
 
 	const isAltTextDirty = () => altHandle.value() !== committedAltText();
 
-	const syncFromImg = (imgEl: HTMLImageElement) => {
-		const objectFitValue = getObjectFit(imgEl) ?? "cover";
-		const aspectRatioValue = getAspectRatio(imgEl) ?? "auto";
-
-		setObjectFitSignal(objectFitValue);
-		setAspectRatioSignal(aspectRatioValue);
-
-		altHandle.setValue(imgEl.alt);
-		setCommittedAltText(imgEl.alt);
-	};
-
 	createEffect(
-		() => img(),
-		(imgEl) => {
-			if (!imgEl) {
-				return;
-			}
-
-			syncFromImg(imgEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromImg(imgEl);
-			});
-
-			observer.observe(imgEl, {
-				attributes: true,
-				attributeFilter: [objectFitAttrName, aspectRatioAttrName, "alt"],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => imgAttrs()?.alt ?? "",
+		(alt) => {
+			altHandle.setValue(alt);
+			setCommittedAltText(alt);
 		},
 	);
 
-	const onObjectFitSelect = (value: ObjectFitValue) => {
-		const imgEl = img();
-
-		if (!imgEl) {
+	const changeImgAttrs = (imgAttrsPatch: ImageAttrsPatch["img"]) => {
+		if (!image.domAttrs) {
 			return;
 		}
 
-		setObjectFit(imgEl, value);
-		editor.snapshot.commit();
+		const changeFailed = image.changeDOMAttrs({ img: imgAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Image's attributes were rejected.", changeFailed);
+		}
+	};
+
+	const onObjectFitSelect = (value: ObjectFitValue) => {
+		changeImgAttrs({ [objectFitAttrName]: value });
 	};
 
 	const onAspectRatioSelect = (value: AspectRatioValue) => {
-		const imgEl = img();
-
-		if (!imgEl) {
-			return;
-		}
-
-		setAspectRatio(imgEl, value);
-		editor.snapshot.commit();
+		changeImgAttrs({ [aspectRatioAttrName]: value });
 	};
 
 	const onAltTextCommit = () => {
-		const imgEl = img();
-
-		if (!imgEl) {
+		if (!isAltTextDirty()) {
 			return;
 		}
 
-		imgEl.alt = altHandle.value();
+		changeImgAttrs({ alt: altHandle.value() });
 	};
 
 	const onAltTextKeyDown = (event: KeyboardEvent) => {

@@ -4,6 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+import { type ImageAttrs, toDOMAttrs } from "#dom-attrs";
 import {
 	aspectRatioAttr,
 	blockAlignAttr,
@@ -18,6 +19,13 @@ import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
  * aspect-ratio attributes.
  */
 export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
+	const imgAttrs: ImageAttrs["img"] = {
+		src,
+		alt: "",
+		[objectFitAttr.name]: objectFitAttr.value.cover,
+		[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
+	};
+
 	return createBlockComponentLine({
 		domAttrs: {
 			[blockAlignAttr.name]: blockAlignAttr.value.center,
@@ -36,12 +44,7 @@ export const createImage = ({ src }: CreateImageParams): CreateImageResult => {
 					childNodes: [
 						createHTMLLayout({
 							localName: "img",
-							domAttrs: {
-								src,
-								alt: "",
-								[objectFitAttr.name]: objectFitAttr.value.cover,
-								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
-							},
+							domAttrs: toDOMAttrs(imgAttrs),
 							childNodes: [],
 						}),
 					],
