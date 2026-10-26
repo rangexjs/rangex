@@ -4,9 +4,8 @@ import {
 	detachedContextRole,
 	isEditorNode,
 } from "@rangex/core";
+import { componentsName, createComponentSelector } from "#constants";
 import {
-	componentsName,
-	createComponentSelector,
 	getClosestBlockComponent,
 	isWellFormedUrl,
 	probeMediaSrc,

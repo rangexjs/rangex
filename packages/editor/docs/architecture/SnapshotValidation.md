@@ -65,9 +65,8 @@ A failure's `reason` names the node by its path from the component, e.g.
 ## Running without a DOM
 
 The validation runs wherever snapshots are saved, e.g. on a server. Everything it imports must be DOM-free at import
-time: `#dom-attrs` (see [DOMAttrs](DOMAttrs.md#rules)), `#storage`, `#sanitizer`, `#utilities` and `@rangex/core`.
-`ValidateLink` imports `componentsName` from its own file (`src/EngineLinks/Constants/ComponentsName`) instead of
-`#engine-links`, whose other modules need a DOM.
+time: `#dom-attrs` (see [DOMAttrs](DOMAttrs.md#rules)), `#constants` (see [Constants](Constants.md#rules)),
+`#storage`, `#sanitizer`, `#utilities` and `@rangex/core`. Never `#engine-links`, whose modules need a DOM.
 
 Known limitation: the public entries (`@rangex/editor`, `@rangex/editor/link`) also export modules that need a DOM, so
 importing `validateSnapshot` from them on a server doesn't work yet.

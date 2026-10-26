@@ -1,4 +1,4 @@
-import { blockAlignAttr } from "#engine-links";
+import { blockAlignAttr } from "#constants";
 import type {
 	GetBlockAlignParams,
 	GetBlockAlignResult,

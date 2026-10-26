@@ -1,5 +1,5 @@
 import type { ContentFlowNode, EditorAPI } from "@rangex/core";
-import type { BlockComponentName } from "../../Constants";
+import type { BlockComponentName } from "#constants";
 import type { PlacementScope } from "../BlockComponentPlacement-types";
 
 export interface CanWrapBlockComponentParams {

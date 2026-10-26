@@ -5,8 +5,8 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
+import { componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
-import { componentsName } from "#engine-links";
 import { createLinkStorage } from "#storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
 

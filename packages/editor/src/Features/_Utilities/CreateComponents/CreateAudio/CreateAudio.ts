@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createAudioStorage } from "#storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 

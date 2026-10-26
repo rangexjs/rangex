@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createDetachedContext,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createEmptyMediaStorage } from "#storage";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
 

@@ -5,7 +5,7 @@ import {
 	detachedContextRoleSelector,
 	listChildNodesChangeEventType,
 } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import type { HandleLineNumbersParams } from "./HandleLineNumbers-types";
 
 /*

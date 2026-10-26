@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName, objectFitAttr } from "#engine-links";
+import { blockAlignAttr, componentsName, objectFitAttr } from "#constants";
 import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 

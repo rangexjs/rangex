@@ -14,7 +14,7 @@ import {
 	componentsName,
 	dataPartName,
 	todoCheckboxPart,
-} from "#engine-links";
+} from "#constants";
 import { createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,

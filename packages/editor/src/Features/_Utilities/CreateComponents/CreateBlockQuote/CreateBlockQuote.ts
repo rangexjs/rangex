@@ -7,7 +7,7 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createBlockQuoteStorage } from "#storage";
 import type {
 	CreateBlockQuoteParams,

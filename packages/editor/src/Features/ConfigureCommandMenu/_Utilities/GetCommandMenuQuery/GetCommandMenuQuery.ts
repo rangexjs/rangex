@@ -1,4 +1,5 @@
-import { componentsName, getClosestBlockComponent } from "#engine-links";
+import { componentsName } from "#constants";
+import { getClosestBlockComponent } from "#engine-links";
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertCommandMenuParams } from "./GetCommandMenuQuery-types";
 

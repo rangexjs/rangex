@@ -3,13 +3,8 @@ import {
 	htmlLayoutRole,
 	xhtmlNamespaceURI,
 } from "@rangex/core";
+import { aspectRatioAttr, blockWidthAttr, objectFitAttr } from "#constants";
 import { isDataImageURL } from "#utilities";
-// Not from "#engine-links": its other modules need a DOM, and the validation must run on a server
-import {
-	aspectRatioAttr,
-	blockWidthAttr,
-	objectFitAttr,
-} from "../../EngineLinks/Constants/AttrNames";
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

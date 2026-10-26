@@ -5,7 +5,7 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "@rangex/core";
-import { componentsName, todoCheckboxPart } from "#engine-links";
+import { componentsName, todoCheckboxPart } from "#constants";
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 /*

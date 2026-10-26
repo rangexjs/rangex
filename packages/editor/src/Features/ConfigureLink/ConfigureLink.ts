@@ -1,5 +1,6 @@
+import { componentsName } from "#constants";
 import { linkAttrsShape, normalizeLinkAttrs } from "#dom-attrs";
-import { componentsName, createPopoverOverlayController } from "#engine-links";
+import { createPopoverOverlayController } from "#engine-links";
 import {
 	getLinkParts,
 	handleComponentUnwrap,

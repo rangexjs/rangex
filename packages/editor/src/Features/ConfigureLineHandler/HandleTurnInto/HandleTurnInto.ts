@@ -11,7 +11,7 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { type BlockComponentName, componentsName } from "#engine-links";
+import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
 import {
 	createAccordionItem,

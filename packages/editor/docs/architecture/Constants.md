@@ -1,0 +1,18 @@
+# Constants
+
+The editor's own names and values, shared across the package: component names, attribute names, part names, and the
+selectors built from them. `src/Constants/` (alias `#constants`).
+
+| Folder | What it holds |
+|---|---|
+| `ComponentsName/` | `componentsName` (inline and block), `isInlineComponentName` / `isBlockComponentName`, the part names (`createPart`, `todoCheckboxPart`) and their types |
+| `AttrNames/` | The attributes the editor sets and styles: `blockAlignAttr`, `blockWidthAttr`, `objectFitAttr`, `aspectRatioAttr` |
+| `CreateComponentSelector/` | `createComponentSelector(name)`: the attribute selector of a component's name |
+
+## Rules
+
+- **DOM-free at import time.** The snapshot validation imports `#constants` on a server (through `#dom-attrs` and its
+  component validators), so nothing here may touch the DOM when it's imported. Only import `@rangex/core`,
+  `#utilities` and other modules of `#constants`.
+- **Only what several parts of the package share.** A value that only one module uses stays in that module (e.g. the
+  storage ids in `Storage/_Constants/`, which are the format tags of stored data, not component names).

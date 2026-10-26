@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import type { HandleEmptyMediaPlacementStateParams } from "./HandleEmptyMediaPlacementState-types";
 
 /*

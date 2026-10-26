@@ -8,7 +8,7 @@ import type {
 	NestedEditable,
 } from "@rangex/core";
 import type { AdapterBus } from "#adapters";
-import type { BlockComponentName } from "../Constants";
+import type { BlockComponentName } from "#constants";
 
 /*
  * Which ScopedEditable a `can*` check is evaluated against: `"current"` is the one directly holding the

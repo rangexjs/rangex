@@ -7,6 +7,7 @@ touches it.
 |---|---|
 | [RangeXEditor.md](RangeXEditor.md) | `createEditor`, the `RangeXEditor` instance, adapter registration |
 | [Adapters.md](Adapters.md) | Adapter architecture — internals, configPort, publicPort, shared ports, AdapterBus, wiring a new Adapter |
+| [Constants.md](Constants.md) | `#constants` — component, attribute and part names shared across the package, DOM-free |
 | [EngineLinks.md](EngineLinks.md) | The layer bridging adapters to the raw engine (`@rangex/core`) |
 | [Features.md](Features.md) | Feature wiring inside adapters — `configure*`/`handle*` conventions |
 | [DOMAttrs.md](DOMAttrs.md) | Component attributes — shapes, validators, the live vs. snapshot path, `DOMAttrsPort`/`handleDOMAttrs`, adding a component |

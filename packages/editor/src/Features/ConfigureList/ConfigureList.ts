@@ -1,4 +1,5 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { componentsName } from "#constants";
+import { createBlockComponentPlacement } from "#engine-links";
 import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureListParams } from "./ConfigureList-types";
 import { handleListPlacement } from "./HandleListPlacement";

@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 

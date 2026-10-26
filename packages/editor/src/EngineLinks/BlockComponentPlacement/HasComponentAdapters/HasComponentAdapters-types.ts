@@ -1,5 +1,5 @@
 import type { AdapterBus } from "#adapters";
-import type { BlockComponentName } from "../../Constants";
+import type { BlockComponentName } from "#constants";
 
 export interface HasComponentAdaptersParams {
 	adapterBus: AdapterBus;

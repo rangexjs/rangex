@@ -10,7 +10,8 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { blockAlignAttr, CaretCircleLeft, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
+import { CaretCircleLeft } from "#engine-links";
 import { createAccordionItemStorage } from "#storage";
 import { createUploadSVG } from "../../CreateUploadSVG";
 import type {

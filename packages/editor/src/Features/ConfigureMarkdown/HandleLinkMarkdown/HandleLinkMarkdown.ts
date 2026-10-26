@@ -3,12 +3,13 @@ import {
 	createFormattableTexts,
 	EditorRange,
 } from "@rangex/core";
+import { componentsName } from "#constants";
 import {
 	linkAttrsShape,
 	normalizeLinkAttrs,
 	validateComponentAttrs,
 } from "#dom-attrs";
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { getClosestScopedEditable } from "#engine-links";
 import { createLink } from "../../_Utilities";
 import { scanMarkdownChars } from "../_Utilities";
 import type {

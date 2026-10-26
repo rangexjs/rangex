@@ -4,8 +4,8 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+import { blockAlignAttr, componentsName, objectFitAttr } from "#constants";
 import { type ImageAttrs, toDOMAttrs } from "#dom-attrs";
-import { blockAlignAttr, componentsName, objectFitAttr } from "#engine-links";
 import { createImageStorage } from "#storage";
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 

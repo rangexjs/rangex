@@ -1,4 +1,4 @@
-import { componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import { extendObjectProperties } from "#utilities";
 import {
 	createDuplicatePort,

@@ -10,7 +10,8 @@ implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an
 ## Rules
 
 - **DOM-free at import time.** Nothing in `DOMAttrs/` may touch the DOM when it's imported: the snapshot validation
-  imports it on a server. Importing from `@rangex/core` is fine; importing `#engine-links` isn't.
+  imports it on a server. Importing from `@rangex/core` and `#constants` is fine;
+  importing `#engine-links` isn't.
 - **The shape is ours.** Which attributes exist, and which of them are required, is decided by the editor. Consumers
   can only replace validators, never add or remove attributes.
 - **The Sanitizer comes first and always rejects.** Every validator is wrapped so the Sanitizer must allow the value

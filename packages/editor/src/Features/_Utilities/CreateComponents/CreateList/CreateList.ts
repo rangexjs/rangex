@@ -8,7 +8,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createListStorage } from "#storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 

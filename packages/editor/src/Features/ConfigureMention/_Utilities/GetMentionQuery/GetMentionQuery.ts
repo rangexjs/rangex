@@ -1,4 +1,5 @@
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { componentsName } from "#constants";
+import { getClosestScopedEditable } from "#engine-links";
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertMentionParams } from "./GetMentionQuery-types";
 

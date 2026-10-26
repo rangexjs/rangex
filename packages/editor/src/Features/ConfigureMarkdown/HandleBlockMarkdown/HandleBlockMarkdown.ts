@@ -7,7 +7,8 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { componentsName } from "#constants";
+import { getClosestScopedEditable } from "#engine-links";
 import { assertNever } from "#utilities";
 import {
 	createBlockQuote,

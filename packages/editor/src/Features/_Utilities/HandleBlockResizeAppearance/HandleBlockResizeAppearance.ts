@@ -3,7 +3,8 @@ import {
 	blockComponentRole,
 	isEditorNode,
 } from "@rangex/core";
-import { blockWidthAttr, createAnchoredOverlayController } from "#engine-links";
+import { blockWidthAttr } from "#constants";
+import { createAnchoredOverlayController } from "#engine-links";
 import { getBlockAlign } from "../BlockAlign";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";
 

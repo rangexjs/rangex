@@ -159,6 +159,10 @@
 			"@rangex/source": "./src/_Utilities/index.ts",
 			"types": "./dist/_Utilities/index.d.ts"
 		},
+		"#constants": {
+			"@rangex/source": "./src/Constants/index.ts",
+			"types": "./dist/Constants/index.d.ts"
+		},
 		"#adapters": {
 			"@rangex/source": "./src/Adapters/index.ts",
 			"types": "./dist/Adapters/index.d.ts"

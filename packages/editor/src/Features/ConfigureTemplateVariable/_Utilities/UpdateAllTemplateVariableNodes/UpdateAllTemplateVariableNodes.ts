@@ -6,7 +6,7 @@ import {
 	inlineComponentRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { componentsName, createComponentSelector } from "#engine-links";
+import { componentsName, createComponentSelector } from "#constants";
 import { validateTemplateVariableStorage } from "#storage";
 import { getTemplateVariableDisplayText } from "../GetTemplateVariableDisplayText";
 import type { UpdateAllTemplateVariableNodesParams } from "./UpdateAllTemplateVariableNodes-types";

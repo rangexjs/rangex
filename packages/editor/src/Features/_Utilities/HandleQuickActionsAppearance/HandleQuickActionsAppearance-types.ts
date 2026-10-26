@@ -3,7 +3,7 @@ import type {
 	CurrentComponentConfigPort,
 	QuickActionsConfigPort,
 } from "#adapters";
-import type { BlockComponentName } from "#engine-links";
+import type { BlockComponentName } from "#constants";
 
 export interface HandleQuickActionsAppearanceParams {
 	port: CurrentComponentConfigPort<BlockComponent>;

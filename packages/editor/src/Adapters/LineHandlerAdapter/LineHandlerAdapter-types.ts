@@ -1,4 +1,4 @@
-import type { BlockComponentName } from "#engine-links";
+import type { BlockComponentName } from "#constants";
 import type {
 	CreateAdapterParams,
 	DuplicateConfigPort,

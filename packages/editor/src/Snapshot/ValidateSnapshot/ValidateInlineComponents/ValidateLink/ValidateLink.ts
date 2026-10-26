@@ -3,6 +3,7 @@ import {
 	inlineComponentRole,
 	nestedEditableRole,
 } from "@rangex/core";
+import { componentsName } from "#constants";
 import {
 	createLinkAttrValidators,
 	linkAttrsShape,
@@ -10,8 +11,6 @@ import {
 } from "#dom-attrs";
 import { createLinkStorage } from "#storage";
 import { matchJSON } from "#utilities";
-// Not from "#engine-links": its other modules need a DOM, and the validation must run on a server
-import { componentsName } from "../../../../EngineLinks/Constants/ComponentsName";
 import {
 	describeElementAttrsMismatch,
 	describeJSONMismatch,

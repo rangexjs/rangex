@@ -1,5 +1,6 @@
 import { EditorRange } from "@rangex/core";
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { componentsName } from "#constants";
+import { getClosestScopedEditable } from "#engine-links";
 import type {
 	GetLinkPlacementModeParams,
 	GetLinkPlacementModeResult,

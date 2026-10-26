@@ -10,7 +10,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockAlignAttr, componentsName } from "#constants";
 import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,

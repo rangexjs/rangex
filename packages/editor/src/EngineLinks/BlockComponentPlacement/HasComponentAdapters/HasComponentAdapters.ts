@@ -1,5 +1,5 @@
 import type { AdapterName } from "#adapters";
-import { type BlockComponentName, blockComponentsName } from "../../Constants";
+import { type BlockComponentName, blockComponentsName } from "#constants";
 import type {
 	HasComponentAdaptersParams,
 	HasComponentAdaptersResult,

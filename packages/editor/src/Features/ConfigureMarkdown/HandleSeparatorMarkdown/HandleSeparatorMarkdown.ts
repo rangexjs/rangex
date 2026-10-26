@@ -3,7 +3,7 @@ import {
 	createFormattableTexts,
 	EditorRange,
 } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import { createSeparator } from "../../_Utilities";
 import {
 	getLineMarkdownPrefix,

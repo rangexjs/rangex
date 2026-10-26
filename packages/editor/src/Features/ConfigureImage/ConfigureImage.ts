@@ -1,5 +1,6 @@
+import { componentsName } from "#constants";
 import { imageAttrsShape } from "#dom-attrs";
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { createBlockComponentPlacement } from "#engine-links";
 import {
 	getImageParts,
 	handleBlockAlignState,

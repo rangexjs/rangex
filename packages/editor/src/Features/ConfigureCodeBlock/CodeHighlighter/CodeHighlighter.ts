@@ -9,11 +9,8 @@ import {
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "@rangex/core";
-import {
-	componentsName,
-	createComponentSelector,
-	getClosestBlockComponent,
-} from "#engine-links";
+import { componentsName, createComponentSelector } from "#constants";
+import { getClosestBlockComponent } from "#engine-links";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
