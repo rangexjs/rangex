@@ -38,7 +38,7 @@ export const setBlockAlign = ({
 	blockComponentLine,
 	align,
 }: SetBlockAlignParams) => {
-	blockComponentLine.setAttribute(
+	blockComponentLine.$$setAttribute(
 		blockAlignAttr.name,
 		blockAlignAttr.value[align],
 	);
