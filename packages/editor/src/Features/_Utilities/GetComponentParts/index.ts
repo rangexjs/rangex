@@ -1,2 +1,2 @@
-export * from "./GetImageParts";
 export * from "./GetLinkParts";
+export * from "./GetMediaParts";

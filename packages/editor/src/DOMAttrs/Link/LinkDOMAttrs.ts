@@ -6,6 +6,7 @@ import {
 	type ElementAttrsShape,
 	type ElementDescriptor,
 	type ValidateAttrFn,
+	validateTitle,
 } from "../_Utilities";
 import type {
 	CreateLinkAttrValidatorsParams,
@@ -134,20 +135,6 @@ const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
 				value: null,
 			};
 		}
-	}
-
-	return null;
-};
-
-const validateTitle: ValidateAttrFn<string | null> = ({ value }) => {
-	const maxTitleLength = 200;
-
-	if (value.length > maxTitleLength) {
-		return {
-			kind: "fallback",
-			reason: `must be at most ${maxTitleLength} characters long`,
-			value: null,
-		};
 	}
 
 	return null;

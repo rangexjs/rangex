@@ -7,7 +7,8 @@ Paths are relative to `src/DOMAttrs/` (alias `#dom-attrs`) unless noted otherwis
 implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an element that is the component itself
 (`block`, the `BlockComponent`) and one outside it (`line`, its `BlockComponentLine`). A BlockComponent's line is part of
 its own shape, as each component decides what its line has: Image's has a block align, a component that can't be
-aligned (e.g. a code block) has no `line` element.
+aligned (e.g. a code block) has no `line` element. Video, Audio and Embed follow Image (`Video/`, `Audio/`, `Embed/`);
+Embed's `sandbox`, `allow` and `loading` are fixed values that fall back to the ones every Embed is created with.
 
 ## Rules
 

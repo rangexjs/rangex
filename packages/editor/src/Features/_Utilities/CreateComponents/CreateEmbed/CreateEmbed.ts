@@ -5,28 +5,35 @@ import {
 	createHTMLLayout,
 } from "@rangex/core";
 import { blockAlignAttr, componentsName } from "#constants";
+import {
+	type EmbedAttrs,
+	embedAllow,
+	embedLoading,
+	embedSandbox,
+	toDOMAttrs,
+} from "#dom-attrs";
 import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
-// Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are
-// fixed rather than user-configurable so every embed gets a sane default policy.
-// `allow-same-origin` alongside `allow-scripts` is safe here specifically because the
-// iframe's origin is always the third-party provider's, never ours; the sandbox-escape
-// concern that combination is usually flagged for only applies to same-origin content.
-const embedSandbox =
-	"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation";
-const embedAllow =
-	"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write";
-
 /*
  * Builds an embed block component wrapping a sandboxed `iframe` for third-party content,
- * with a fixed sandbox/allow policy. Without an aspect ratio, its ratio is left to the styles.
+ * with a fixed sandbox/allow policy (see embedSandbox). Without an aspect ratio, its ratio is left to the styles.
  */
 export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
+	const lineAttrs: EmbedAttrs["line"] = {
+		[blockAlignAttr.name]: blockAlignAttr.value.center,
+	};
+
+	const iframeAttrs: EmbedAttrs["iframe"] = {
+		src,
+		title: "Embedded content",
+		sandbox: embedSandbox,
+		allow: embedAllow,
+		loading: embedLoading,
+	};
+
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(lineAttrs),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.embed,
@@ -41,13 +48,7 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 					childNodes: [
 						createHTMLLayout({
 							localName: "iframe",
-							domAttrs: {
-								src,
-								title: "Embedded content",
-								sandbox: embedSandbox,
-								allow: embedAllow,
-								loading: "lazy",
-							},
+							domAttrs: toDOMAttrs(iframeAttrs),
 							childNodes: [],
 						}),
 					],

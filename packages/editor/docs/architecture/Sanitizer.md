@@ -28,8 +28,8 @@ cause XSS:
 - **Every namespace** — `href`, `xlink:href` (SVG, MathML) and the HTML URL attributes (`src`, `action`, `formaction`,
   `data`, `poster`) must be safe URLs (`isSafeURL`). `img.src` and `video.poster` also allow `data:image/*`.
 - **`script`** (HTML and SVG) — every attribute is blocked.
-- **`iframe`** — `src` and `srcdoc` are blocked: any site can be framed, so even a safe URL can show e.g. a fake login
-  page. Embed will decide how it frames content.
+- **`iframe`** — `srcdoc` is blocked. `src` must be a safe URL like any other, for now: any site can be framed with it,
+  so even a safe URL can show e.g. a fake login page. Embed will decide which sites it frames.
 - **`meta`** — `http-equiv` is blocked (a refresh redirects the page).
 - **SVG `attributeName`** — an animation can't target `href`, `xlink:href` or an event handler (`on*`): the rules judge
   each attribute alone and never see the value the animation sets.
@@ -47,7 +47,7 @@ configureSanitizer(...sanitizerPolicies); // → engine: configureSanitizer(...s
 ```
 
 The engine checks the policies in order and the first one that has a rule for an attribute decides, so the consumer's
-policies override the `basePolicy`'s rules (e.g. to allow `iframe.src` for one trusted host). Calling it again replaces
+policies override the `basePolicy`'s rules (e.g. to allow `video.poster` only from one trusted host). Calling it again replaces
 every previous policy.
 
 `ensureSanitizerConfigured()` applies the `basePolicy` alone if `configureSanitizer` hasn't been called yet, so the

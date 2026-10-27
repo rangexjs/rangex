@@ -1,9 +1,12 @@
 import { componentsName } from "#constants";
+import { embedAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 import {
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
 	handleSwapToEmptyMedia,
@@ -18,7 +21,7 @@ import type { ConfigureEmbedParams } from "./ConfigureEmbed-types";
 import { handleEmbedInsertion } from "./HandleEmbedInsertion";
 
 /*
- * Wires up the embed feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * Wires up the embed feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureEmbed = ({
@@ -70,6 +73,22 @@ export const configureEmbed = ({
 		setCaptionPosition: setEmbedCaptionPosition,
 	});
 
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: embedAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (embed) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: embed,
+				mediaLocalName: "iframe",
+			});
+
+			return { line, block, iframe: media };
+		},
+	});
+
 	const swapCleanup = handleSwapToEmptyMedia({
 		port: configPort,
 		editorAPI,
@@ -82,6 +101,7 @@ export const configureEmbed = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

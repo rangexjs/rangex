@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { AudioAttrsPatch } from "@rangex/editor/audio";
 import { Audio, FloatingPortal, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
@@ -34,16 +35,20 @@ export const AudioQuickActions = () => {
 	const $audio = Audio(audio);
 	const $readOnly = ReadOnly(readOnly);
 
-	const audioElement = () => {
-		const currentBlock = $audio.currentComponent();
+	const audioAttrs = () => $audio.domAttrs()?.audio ?? null;
 
-		return currentBlock?.querySelector<HTMLAudioElement>("audio") ?? null;
+	const hasAudioAttr = (
+		attrName: "controls" | "autoplay" | "loop" | "muted",
+	) => {
+		const value = audioAttrs()?.[attrName] ?? null;
+
+		return value !== null;
 	};
 
-	const [controls, setControlsSignal] = createSignal(false);
-	const [autoplay, setAutoplaySignal] = createSignal(false);
-	const [loop, setLoopSignal] = createSignal(false);
-	const [muted, setMutedSignal] = createSignal(false);
+	const controls = () => hasAudioAttr("controls");
+	const autoplay = () => hasAudioAttr("autoplay");
+	const loop = () => hasAudioAttr("loop");
+	const muted = () => hasAudioAttr("muted");
 
 	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -53,83 +58,41 @@ export const AudioQuickActions = () => {
 
 	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
-	const syncFromAudio = (audioEl: HTMLAudioElement) => {
-		setControlsSignal(audioEl.hasAttribute("controls"));
-		setAutoplaySignal(audioEl.hasAttribute("autoplay"));
-		setLoopSignal(audioEl.hasAttribute("loop"));
-		setMutedSignal(audioEl.hasAttribute("muted"));
-
-		titleHandle.setValue(audioEl.title);
-		setCommittedTitle(audioEl.title);
-	};
-
 	createEffect(
-		() => audioElement(),
-		(audioEl) => {
-			if (!audioEl) {
-				return;
-			}
-
-			syncFromAudio(audioEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromAudio(audioEl);
-			});
-
-			observer.observe(audioEl, {
-				attributes: true,
-				attributeFilter: ["controls", "autoplay", "loop", "muted", "title"],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => audioAttrs()?.title ?? "",
+		(title) => {
+			titleHandle.setValue(title);
+			setCommittedTitle(title);
 		},
 	);
 
-	const onControlsToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+	const changeAudioAttrs = (audioAttrsPatch: AudioAttrsPatch["audio"]) => {
+		if (!audio.domAttrs) {
 			return;
 		}
 
-		if (controls()) {
-			audioEl.removeAttribute("controls");
-		} else {
-			audioEl.setAttribute("controls", "");
+		const changeFailed = audio.changeDOMAttrs({ audio: audioAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Audio's attributes were rejected.", changeFailed);
 		}
+	};
+
+	const onControlsToggle = () => {
+		changeAudioAttrs({ controls: controls() ? null : "" });
 	};
 
 	const onAutoplayToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+		if (autoplay()) {
+			changeAudioAttrs({ autoplay: null });
 			return;
 		}
 
-		const nextAutoplay = !autoplay();
-
-		if (nextAutoplay) {
-			audioEl.setAttribute("autoplay", "");
-			audioEl.setAttribute("muted", "");
-		} else {
-			audioEl.removeAttribute("autoplay");
-		}
+		changeAudioAttrs({ autoplay: "", muted: "" });
 	};
 
 	const onLoopToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
-			return;
-		}
-
-		if (loop()) {
-			audioEl.removeAttribute("loop");
-		} else {
-			audioEl.setAttribute("loop", "");
-		}
+		changeAudioAttrs({ loop: loop() ? null : "" });
 	};
 
 	const onMutedToggle = () => {
@@ -137,27 +100,15 @@ export const AudioQuickActions = () => {
 			return;
 		}
 
-		const audioEl = audioElement();
-
-		if (!audioEl) {
-			return;
-		}
-
-		if (muted()) {
-			audioEl.removeAttribute("muted");
-		} else {
-			audioEl.setAttribute("muted", "");
-		}
+		changeAudioAttrs({ muted: muted() ? null : "" });
 	};
 
 	const onTitleCommit = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+		if (!isTitleDirty()) {
 			return;
 		}
 
-		audioEl.title = titleHandle.value();
+		changeAudioAttrs({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {

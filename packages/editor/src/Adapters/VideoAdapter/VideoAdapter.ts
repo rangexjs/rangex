@@ -1,10 +1,12 @@
 import type { BlockComponent } from "@rangex/core";
+import { createVideoAttrValidators, type VideoAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
 	createBlockResize,
 	createCaptionPort,
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createQuickActionsPort,
 	createSwapToEmptyMediaPort,
 } from "../_Utilities";
@@ -20,15 +22,19 @@ import type {
 export const createVideoAdapter = (
 	...params: CreateVideoAdapterParams
 ): CreateVideoAdapterResult => {
-	const [_settings, { adapterBus, floatingContainer }] = params;
+	const [{ attrValidators = {} }, { adapterBus, floatingContainer }] = params;
+
+	const videoAttrValidators = createVideoAttrValidators(attrValidators);
 
 	adapterBus.registerAdapter("video");
+	adapterBus.registerAttrValidators("video", videoAttrValidators);
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
+	const domAttrsPort = createDOMAttrsPort<VideoAttrsShape>();
 	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
@@ -36,10 +42,15 @@ export const createVideoAdapter = (
 		captionPort.configPort,
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
+		domAttrsPort.configPort,
 		swapToEmptyMediaPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
+			},
+
+			get attrValidators() {
+				return videoAttrValidators;
 			},
 
 			get quickActions() {
@@ -57,6 +68,7 @@ export const createVideoAdapter = (
 		captionPort.publicPort,
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
+		domAttrsPort.publicPort,
 		swapToEmptyMediaPort.publicPort,
 		{
 			get quickActions() {

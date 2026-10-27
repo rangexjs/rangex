@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { VideoAttrsPatch } from "@rangex/editor/video";
 import { FloatingPortal, ReadOnly, Video } from "@rangex/solid";
 import {
 	createEffect,
@@ -20,14 +21,12 @@ import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
 	BlockAlign,
-	getAspectRatio,
-	getObjectFit,
+	isAspectRatioValue,
+	isObjectFitValue,
 	type ObjectFitValue,
 	OptionDropdown,
 	type OptionDropdownOption,
 	objectFitAttrName,
-	setAspectRatio,
-	setObjectFit,
 } from "../../_Utilities";
 
 const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
@@ -59,19 +58,33 @@ export const VideoQuickActions = () => {
 	const $video = Video(video);
 	const $readOnly = ReadOnly(readOnly);
 
-	const videoElement = () => {
-		const currentBlock = $video.currentComponent();
+	const videoAttrs = () => $video.domAttrs()?.video ?? null;
 
-		return currentBlock?.querySelector<HTMLVideoElement>("video") ?? null;
+	const objectFit = (): ObjectFitValue => {
+		const value = videoAttrs()?.[objectFitAttrName] ?? null;
+
+		return isObjectFitValue(value) ? value : "cover";
 	};
 
-	const [objectFit, setObjectFitSignal] = createSignal<ObjectFitValue>("cover");
-	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue | null>(null);
-	const [controls, setControlsSignal] = createSignal(false);
-	const [autoplay, setAutoplaySignal] = createSignal(false);
-	const [loop, setLoopSignal] = createSignal(false);
-	const [muted, setMutedSignal] = createSignal(false);
+	// An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
+	const aspectRatio = (): AspectRatioValue | null => {
+		const value = videoAttrs()?.[aspectRatioAttrName] ?? null;
+
+		return isAspectRatioValue(value) ? value : null;
+	};
+
+	const hasVideoAttr = (
+		attrName: "controls" | "autoplay" | "loop" | "muted",
+	) => {
+		const value = videoAttrs()?.[attrName] ?? null;
+
+		return value !== null;
+	};
+
+	const controls = () => hasVideoAttr("controls");
+	const autoplay = () => hasVideoAttr("autoplay");
+	const loop = () => hasVideoAttr("loop");
+	const muted = () => hasVideoAttr("muted");
 
 	const [posterHandle, posterControls] = createTextFieldState<HTMLInputElement>(
 		{
@@ -91,125 +104,57 @@ export const VideoQuickActions = () => {
 
 	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
-	const syncFromVideo = (videoEl: HTMLVideoElement) => {
-		const objectFitValue = getObjectFit(videoEl) ?? "cover";
-		const aspectRatioValue = getAspectRatio(videoEl);
-
-		setObjectFitSignal(objectFitValue);
-		setAspectRatioSignal(aspectRatioValue);
-
-		setControlsSignal(videoEl.hasAttribute("controls"));
-		setAutoplaySignal(videoEl.hasAttribute("autoplay"));
-		setLoopSignal(videoEl.hasAttribute("loop"));
-		setMutedSignal(videoEl.hasAttribute("muted"));
-
-		const poster = videoEl.getAttribute("poster") ?? "";
-
-		posterHandle.setValue(poster);
-		setCommittedPoster(poster);
-
-		titleHandle.setValue(videoEl.title);
-		setCommittedTitle(videoEl.title);
-	};
-
 	createEffect(
-		() => videoElement(),
-		(videoEl) => {
-			if (!videoEl) {
-				return;
-			}
-
-			syncFromVideo(videoEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromVideo(videoEl);
-			});
-
-			observer.observe(videoEl, {
-				attributes: true,
-				attributeFilter: [
-					objectFitAttrName,
-					aspectRatioAttrName,
-					"controls",
-					"autoplay",
-					"loop",
-					"muted",
-					"poster",
-					"title",
-				],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => videoAttrs()?.poster ?? "",
+		(poster) => {
+			posterHandle.setValue(poster);
+			setCommittedPoster(poster);
 		},
 	);
 
-	const onObjectFitSelect = (value: ObjectFitValue) => {
-		const videoEl = videoElement();
+	createEffect(
+		() => videoAttrs()?.title ?? "",
+		(title) => {
+			titleHandle.setValue(title);
+			setCommittedTitle(title);
+		},
+	);
 
-		if (!videoEl) {
+	const changeVideoAttrs = (videoAttrsPatch: VideoAttrsPatch["video"]) => {
+		if (!video.domAttrs) {
 			return;
 		}
 
-		setObjectFit(videoEl, value);
-		editor.snapshot.commit();
+		const changeFailed = video.changeDOMAttrs({ video: videoAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Video's attributes were rejected.", changeFailed);
+		}
+	};
+
+	const onObjectFitSelect = (value: ObjectFitValue) => {
+		changeVideoAttrs({ [objectFitAttrName]: value });
 	};
 
 	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
-			return;
-		}
-
-		setAspectRatio(videoEl, value);
-		editor.snapshot.commit();
+		changeVideoAttrs({ [aspectRatioAttrName]: value });
 	};
 
 	const onControlsToggle = () => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
-			return;
-		}
-
-		if (controls()) {
-			videoEl.removeAttribute("controls");
-		} else {
-			videoEl.setAttribute("controls", "");
-		}
+		changeVideoAttrs({ controls: controls() ? null : "" });
 	};
 
 	const onAutoplayToggle = () => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
+		if (autoplay()) {
+			changeVideoAttrs({ autoplay: null });
 			return;
 		}
 
-		const nextAutoplay = !autoplay();
-
-		if (nextAutoplay) {
-			videoEl.setAttribute("autoplay", "");
-			videoEl.setAttribute("muted", "");
-		} else {
-			videoEl.removeAttribute("autoplay");
-		}
+		changeVideoAttrs({ autoplay: "", muted: "" });
 	};
 
 	const onLoopToggle = () => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
-			return;
-		}
-
-		if (loop()) {
-			videoEl.removeAttribute("loop");
-		} else {
-			videoEl.setAttribute("loop", "");
-		}
+		changeVideoAttrs({ loop: loop() ? null : "" });
 	};
 
 	const onMutedToggle = () => {
@@ -217,27 +162,18 @@ export const VideoQuickActions = () => {
 			return;
 		}
 
-		const videoEl = videoElement();
-
-		if (!videoEl) {
-			return;
-		}
-
-		if (muted()) {
-			videoEl.removeAttribute("muted");
-		} else {
-			videoEl.setAttribute("muted", "");
-		}
+		changeVideoAttrs({ muted: muted() ? null : "" });
 	};
 
 	const onPosterCommit = () => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
+		if (!isPosterDirty()) {
 			return;
 		}
 
-		videoEl.poster = posterHandle.value();
+		const poster = posterHandle.value();
+
+		// An empty poster removes it
+		changeVideoAttrs({ poster: poster === "" ? null : poster });
 	};
 
 	const onPosterKeyDown = (event: KeyboardEvent) => {
@@ -249,13 +185,11 @@ export const VideoQuickActions = () => {
 	};
 
 	const onTitleCommit = () => {
-		const videoEl = videoElement();
-
-		if (!videoEl) {
+		if (!isTitleDirty()) {
 			return;
 		}
 
-		videoEl.title = titleHandle.value();
+		changeVideoAttrs({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {

@@ -1,9 +1,12 @@
 import { componentsName } from "#constants";
+import { audioAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 import {
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
 	handleSwapToEmptyMedia,
@@ -18,7 +21,7 @@ import type { ConfigureAudioParams } from "./ConfigureAudio-types";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
 
 /*
- * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption and
+ * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * empty-media swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureAudio = ({
@@ -70,6 +73,22 @@ export const configureAudio = ({
 		setCaptionPosition: setAudioCaptionPosition,
 	});
 
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: audioAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (audio) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: audio,
+				mediaLocalName: "audio",
+			});
+
+			return { line, block, audio: media };
+		},
+	});
+
 	const swapCleanup = handleSwapToEmptyMedia({
 		port: configPort,
 		editorAPI,
@@ -82,6 +101,7 @@ export const configureAudio = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

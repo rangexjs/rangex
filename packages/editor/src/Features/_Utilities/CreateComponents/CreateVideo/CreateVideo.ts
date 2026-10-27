@@ -5,6 +5,7 @@ import {
 	createHTMLLayout,
 } from "@rangex/core";
 import { blockAlignAttr, componentsName, objectFitAttr } from "#constants";
+import { toDOMAttrs, type VideoAttrs } from "#dom-attrs";
 import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
@@ -13,10 +14,18 @@ import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
  * and a default fit attribute.
  */
 export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
+	const lineAttrs: VideoAttrs["line"] = {
+		[blockAlignAttr.name]: blockAlignAttr.value.center,
+	};
+
+	const videoAttrs: VideoAttrs["video"] = {
+		src,
+		controls: "",
+		[objectFitAttr.name]: objectFitAttr.value.cover,
+	};
+
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(lineAttrs),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.video,
@@ -31,11 +40,7 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 					childNodes: [
 						createHTMLLayout({
 							localName: "video",
-							domAttrs: {
-								src,
-								controls: "",
-								[objectFitAttr.name]: objectFitAttr.value.cover,
-							},
+							domAttrs: toDOMAttrs(videoAttrs),
 							childNodes: [],
 						}),
 					],

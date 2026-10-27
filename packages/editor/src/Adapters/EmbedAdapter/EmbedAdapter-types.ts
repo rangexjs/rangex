@@ -1,5 +1,10 @@
 import type { BlockComponent } from "@rangex/core";
 import type {
+	CreateEmbedAttrValidatorsParams,
+	EmbedAttrsShape,
+	EmbedAttrValidators,
+} from "#dom-attrs";
+import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
 	BlockResize,
@@ -8,6 +13,8 @@ import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
@@ -17,6 +24,7 @@ import type {
 
 export interface EmbedConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly attrValidators: EmbedAttrValidators;
 	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
@@ -27,6 +35,7 @@ export interface EmbedConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
+		DOMAttrsConfigPort<EmbedAttrsShape>,
 		SwapToEmptyMediaConfigPort {}
 
 export interface EmbedPublicPortProps {
@@ -38,6 +47,7 @@ export interface EmbedPublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
+		DOMAttrsPublicPort<EmbedAttrsShape>,
 		SwapToEmptyMediaPublicPort {}
 
 export interface EmbedAdapter {
@@ -45,7 +55,9 @@ export interface EmbedAdapter {
 	publicPort: EmbedPublicPort;
 }
 
-export interface EmbedSettings {}
+export interface EmbedSettings {
+	attrValidators?: CreateEmbedAttrValidatorsParams;
+}
 
 export interface CreateEmbedAdapterParams
 	extends CreateAdapterParams<EmbedSettings> {}

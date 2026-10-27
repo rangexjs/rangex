@@ -48,8 +48,6 @@ export const basePolicy: SanitizerPolicy = {
 			"*": isBlocked,
 		},
 		iframe: {
-			// Any site can be framed, so a safe URL can still show e.g. a fake login page
-			src: isBlocked,
 			srcdoc: isBlocked,
 		},
 		meta: {

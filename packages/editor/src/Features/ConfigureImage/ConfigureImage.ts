@@ -2,7 +2,7 @@ import { componentsName } from "#constants";
 import { imageAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 import {
-	getImageParts,
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
@@ -79,7 +79,14 @@ export const configureImage = ({
 		editorAPI,
 		componentAttrsShape: imageAttrsShape,
 		componentAttrValidators: configPort.attrValidators,
-		resolveElements: (image) => getImageParts({ image }),
+		resolveElements: (image) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: image,
+				mediaLocalName: "img",
+			});
+
+			return { line, block, img: media };
+		},
 	});
 
 	const swapCleanup = handleSwapToEmptyMedia({
