@@ -1,8 +1,12 @@
 import type {
+	AudioAttrs,
 	AudioAttrValidators,
+	EmbedAttrs,
 	EmbedAttrValidators,
+	ImageAttrs,
 	ImageAttrValidators,
 	LinkAttrValidators,
+	VideoAttrs,
 	VideoAttrValidators,
 } from "#dom-attrs";
 import type { mediaTypes } from "./AdapterBus";
@@ -22,10 +26,14 @@ export interface AttrValidatorsByAdapter {
 
 export type AttrValidatorsAdapterName = keyof AttrValidatorsByAdapter;
 
-export interface MediaResolveCallbackParams {
-	type: MediaType;
-	src: string;
-}
+/*
+ * The resolved media, with every attribute of its component
+ */
+export type MediaResolveCallbackParams =
+	| { type: "image"; attrs: ImageAttrs }
+	| { type: "video"; attrs: VideoAttrs }
+	| { type: "audio"; attrs: AudioAttrs }
+	| { type: "embed"; attrs: EmbedAttrs };
 
 export type OnMediaResolveCallbackFn = (
 	params: MediaResolveCallbackParams,

@@ -30,7 +30,11 @@ export const configureEmptyMedia = ({
 		blockComponentPlacement,
 	});
 
-	const watchCleanup = watchEmptyMedia({ configPort, editorAPI });
+	const watchCleanup = watchEmptyMedia({
+		adapterBus,
+		configPort,
+		editorAPI,
+	});
 
 	return () => {
 		placementStateCleanup();

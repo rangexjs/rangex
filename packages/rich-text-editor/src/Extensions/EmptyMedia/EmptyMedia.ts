@@ -15,6 +15,8 @@ export const EmptyMedia = (
 			},
 			floatingComponents: [],
 		},
-		register: registerEmptyMedia,
+		register: (editor) => {
+			registerEmptyMedia({ editor, settings });
+		},
 	};
 };

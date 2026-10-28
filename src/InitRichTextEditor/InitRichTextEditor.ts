@@ -32,6 +32,7 @@ import { Video } from "@rangex/rich-text-editor/video";
 import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,
+	embedSettings,
 	emptyMediaSettings,
 	formattingSettings,
 	markdownSettings,
@@ -53,7 +54,7 @@ export const initRichTextEditor = () => {
 		AccordionItem({}),
 		Audio({}),
 		BlockQuote({}),
-		Embed({}),
+		Embed(embedSettings),
 		Emoji({}),
 		EmptyMedia(emptyMediaSettings),
 		FindReplace({}),

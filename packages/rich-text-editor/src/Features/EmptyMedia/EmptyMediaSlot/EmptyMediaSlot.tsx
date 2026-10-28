@@ -1,4 +1,5 @@
 import type { MediaType, RangeXEditor } from "@rangex/editor";
+import type { EmbedAttrs } from "@rangex/editor/embed";
 import type {
 	MediaResolveDetail,
 	UploadStatus,
@@ -146,10 +147,81 @@ const getMediaTabControls = (
 	return controls;
 };
 
+export interface EmptyMediaSlotSettings {
+	// Turns a pasted embed URL into the one to frame (e.g. a share link into its embed URL)
+	transformEmbedURL?: (url: string) => string;
+	// The iframe's other attributes every Embed is inserted with (e.g. its sandbox)
+	embedIframeAttrs?: Omit<EmbedAttrs["iframe"], "src">;
+}
+
 export interface EmptyMediaSlotProps {
 	editor: RangeXEditor;
 	container: HTMLDivElement;
+	settings: EmptyMediaSlotSettings;
 }
+
+interface CreateMediaResolveDetailParams {
+	type: MediaType;
+	src: string | File;
+	settings: EmptyMediaSlotSettings;
+}
+
+/*
+ * Builds every attribute of the media to insert: centered, with the media element's src and its defaults (e.g. an
+ * image's object fit, a video's controls). An embed's URL is transformed first (see transformEmbedURL), and its iframe
+ * gets the configured attributes.
+ */
+const createMediaResolveDetail = ({
+	type,
+	src,
+	settings,
+}: CreateMediaResolveDetailParams): MediaResolveDetail => {
+	const line = { "data-block-align": "center" };
+
+	if (type === "image") {
+		return {
+			type,
+			attrs: {
+				line,
+				block: {},
+				img: { src, alt: "", "data-object-fit": "cover" },
+			},
+		};
+	}
+
+	if (type === "video") {
+		return {
+			type,
+			attrs: {
+				line,
+				block: {},
+				video: { src, controls: "", "data-object-fit": "cover" },
+			},
+		};
+	}
+
+	if (type === "audio") {
+		return {
+			type,
+			attrs: { line, block: {}, audio: { src, controls: "" } },
+		};
+	}
+
+	if (typeof src !== "string") {
+		throw new Error("An embed's src must be a URL.");
+	}
+
+	const { transformEmbedURL = (url) => url, embedIframeAttrs = {} } = settings;
+
+	return {
+		type,
+		attrs: {
+			line,
+			block: {},
+			iframe: { ...embedIframeAttrs, src: transformEmbedURL(src) },
+		},
+	};
+};
 
 /**
  * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
@@ -177,7 +249,13 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 
 	onCleanup(emptyMedia.onUploadStatusUpdate(props.container, setUploadStatus));
 
-	const onResolve = (detail: MediaResolveDetail) => {
+	const onResolve = (type: MediaType, src: string | File) => {
+		const detail = createMediaResolveDetail({
+			type,
+			src,
+			settings: props.settings,
+		});
+
 		emptyMedia.resolve({ element: props.container, detail });
 	};
 
@@ -259,7 +337,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				return;
 			}
 
-			onResolve({ type, insertionType: "file", file });
+			onResolve(type, file);
 			return;
 		}
 
@@ -271,7 +349,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		onResolve({ type: tab, insertionType: "url", url: urlHandle.value() });
+		onResolve(tab, urlHandle.value());
 	};
 
 	const onUrlKeyDown = (event: KeyboardEvent) => {
@@ -343,7 +421,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			return;
 		}
 
-		onResolve({ type, insertionType: "file", file });
+		onResolve(type, file);
 	};
 
 	const stopEditorPropagation = (event: Event) => {

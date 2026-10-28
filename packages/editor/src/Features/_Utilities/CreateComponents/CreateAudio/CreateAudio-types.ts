@@ -1,7 +1,8 @@
 import type { BlockComponentLine } from "@rangex/core";
+import type { AudioAttrs } from "#dom-attrs";
 
 export interface CreateAudioParams {
-	src: string;
+	attrs: AudioAttrs;
 }
 
 export type CreateAudioResult = BlockComponentLine;

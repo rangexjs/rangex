@@ -1,4 +1,10 @@
 import type {
+	AudioAttrs,
+	EmbedAttrs,
+	ImageAttrs,
+	VideoAttrs,
+} from "#dom-attrs";
+import type {
 	CreateAdapterParams,
 	MediaResolveCallbackParams,
 	MediaType,
@@ -19,21 +25,27 @@ export interface EmptyMediaState {
 
 export interface UpdateStateParams extends EmptyMediaState {}
 
-export interface MediaFile {
-	insertionType: "file";
-	file: File;
-}
+/*
+ * A component's attributes, with its media element's src that can also be a File: it's uploaded (see uploadFile), and
+ * replaced by the uploaded file's URL
+ */
+export type WithFileSrc<
+	TAttrs extends Record<string, object>,
+	TMediaElementName extends keyof TAttrs,
+> = Omit<TAttrs, TMediaElementName> & {
+	[ElementName in TMediaElementName]: Omit<TAttrs[ElementName], "src"> & {
+		src: string | File;
+	};
+};
 
-export interface MediaURL {
-	insertionType: "url";
-	url: string;
-}
-
-export type MediaSource = MediaFile | MediaURL;
-
+/*
+ * The media to insert, with every attribute of its component
+ */
 export type MediaResolveDetail =
-	| ({ type: "image" | "video" | "audio" } & MediaSource)
-	| ({ type: "embed" } & MediaURL);
+	| { type: "image"; attrs: WithFileSrc<ImageAttrs, "img"> }
+	| { type: "video"; attrs: WithFileSrc<VideoAttrs, "video"> }
+	| { type: "audio"; attrs: WithFileSrc<AudioAttrs, "audio"> }
+	| { type: "embed"; attrs: EmbedAttrs };
 
 export interface ResolveOption {
 	element: HTMLDivElement;

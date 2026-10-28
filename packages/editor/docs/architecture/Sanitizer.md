@@ -28,8 +28,9 @@ cause XSS:
 - **Every namespace** — `href`, `xlink:href` (SVG, MathML) and the HTML URL attributes (`src`, `action`, `formaction`,
   `data`, `poster`) must be safe URLs (`isSafeURL`). `img.src` and `video.poster` also allow `data:image/*`.
 - **`script`** (HTML and SVG) — every attribute is blocked.
-- **`iframe`** — `srcdoc` is blocked. `src` must be a safe URL like any other, for now: any site can be framed with it,
-  so even a safe URL can show e.g. a fake login page. Embed will decide which sites it frames.
+- **`iframe`** — `srcdoc` is blocked. `src` must be a safe URL like any other: which sites can be framed is the
+  consumer's rule, not the Sanitizer's (an Embed frames nothing until its `src` validator is given, see
+  [DOMAttrs](DOMAttrs.md)).
 - **`meta`** — `http-equiv` is blocked (a refresh redirects the page).
 - **SVG `attributeName`** — an animation can't target `href`, `xlink:href` or an event handler (`on*`): the rules judge
   each attribute alone and never see the value the animation sets.

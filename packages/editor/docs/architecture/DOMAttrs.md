@@ -9,6 +9,19 @@ implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an
 its own shape, as each component decides what its line has: Image's has a block align, a component that can't be
 aligned (e.g. a code block) has no `line` element. Video, Audio and Embed follow Image (`Video/`, `Audio/`, `Embed/`);
 Embed's `sandbox`, `allow` and `loading` are fixed values that fall back to the ones every Embed is created with.
+Embed's `src` validator rejects every `src` by default: which sites an Embed frames is the consumer's decision, so an
+Embed frames nothing until the consumer gives `attrValidators: { iframe: { src } }`. Framing any page, e.g. one of the
+app's own, would let it reach the editor's page despite the sandbox, so the validator should only accept the `https:`
+embed URLs of trusted sites. Turning a pasted share link into its embed URL is the consumer's too, before they call
+EmptyMedia's `resolve` (the rich-text-editor's `transformEmbedURL` setting); the validator can still fall back from a
+share link to its embed URL, which repairs a stored snapshot. The dev view's `src/ExtensionSettings/Embed/` is an example
+(YouTube, Vimeo, Spotify, Loom, Dailymotion, CodePen).
+
+Media is inserted with every attribute of its component, as Link is: `emptyMedia.resolve({ element, detail })` takes
+`{ type, attrs }` (`MediaResolveDetail`), with the media element's `src` as a URL or a `File` to upload. EmptyMedia
+uploads it, validates the attributes by the component's validators (`adapterBus.getAttrValidators(type)`), checks that
+the media loads (not for an Embed), and only then replaces the placeholder: the component's `create*` takes the
+complete attributes, with no defaults of its own.
 
 ## Rules
 

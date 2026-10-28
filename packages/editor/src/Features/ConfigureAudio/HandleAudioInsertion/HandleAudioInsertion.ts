@@ -13,12 +13,12 @@ export const handleAudioInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve(({ type, src }) => {
-		if (type !== "audio") {
+	const unsubscribe = configPort.onMediaResolve((params) => {
+		if (params.type !== "audio") {
 			return;
 		}
 
-		const audio = createAudio({ src });
+		const audio = createAudio({ attrs: params.attrs });
 
 		blockComponentPlacement.insertBySelection({
 			lines: [audio],

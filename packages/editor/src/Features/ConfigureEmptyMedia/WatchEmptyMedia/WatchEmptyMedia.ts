@@ -4,19 +4,30 @@ import {
 	detachedContextRole,
 	isEditorNode,
 } from "@rangex/core";
+import type { MediaResolveCallbackParams } from "#adapters";
+import type { MediaResolveDetail } from "#adapters/EmptyMedia";
 import { componentsName, createComponentSelector } from "#constants";
+import {
+	audioAttrsShape,
+	embedAttrsShape,
+	imageAttrsShape,
+	validateComponentAttrs,
+	videoAttrsShape,
+} from "#dom-attrs";
 import {
 	getClosestBlockComponent,
 	isWellFormedUrl,
 	probeMediaSrc,
-	transformEmbedUrl,
 } from "#engine-links";
+import { assertNever } from "#utilities";
 import type {
 	FinalizeResolveParams,
 	ResolveMediaSrcParams,
 	ResolveMediaSrcResult,
+	ValidateMediaAttrsParams,
 	WatchEmptyMediaParams,
 	WatchEmptyMediaResult,
+	WithResolvedSrcParams,
 } from "./WatchEmptyMedia-types";
 
 const emptyMediaSelector = createComponentSelector(componentsName.emptyMedia);
@@ -34,20 +45,136 @@ const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 	return detachedContext;
 };
 
+/*
+ * Returns the media element's src of a submission: a URL, or a File to upload.
+ */
+const getMediaSrc = (detail: MediaResolveDetail): string | File => {
+	if (detail.type === "image") {
+		return detail.attrs.img.src;
+	}
+
+	if (detail.type === "video") {
+		return detail.attrs.video.src;
+	}
+
+	if (detail.type === "audio") {
+		return detail.attrs.audio.src;
+	}
+
+	if (detail.type === "embed") {
+		return detail.attrs.iframe.src;
+	}
+
+	return assertNever(detail);
+};
+
+/*
+ * Returns a submission's attributes with its media element's src replaced by the resolved one.
+ */
+const withResolvedSrc = ({
+	detail,
+	src,
+}: WithResolvedSrcParams): MediaResolveCallbackParams => {
+	if (detail.type === "image") {
+		const { attrs } = detail;
+
+		return { type: "image", attrs: { ...attrs, img: { ...attrs.img, src } } };
+	}
+
+	if (detail.type === "video") {
+		const { attrs } = detail;
+
+		return {
+			type: "video",
+			attrs: { ...attrs, video: { ...attrs.video, src } },
+		};
+	}
+
+	if (detail.type === "audio") {
+		const { attrs } = detail;
+
+		return {
+			type: "audio",
+			attrs: { ...attrs, audio: { ...attrs.audio, src } },
+		};
+	}
+
+	if (detail.type === "embed") {
+		const { attrs } = detail;
+
+		return {
+			type: "embed",
+			attrs: { ...attrs, iframe: { ...attrs.iframe, src } },
+		};
+	}
+
+	return assertNever(detail);
+};
+
+/*
+ * Validates the media's attributes by its component's validators, the same way every attribute written into the
+ * editor is (see validateComponentAttrs). Returns whether they're valid.
+ */
+const validateMediaAttrs = ({
+	adapterBus,
+	params,
+}: ValidateMediaAttrsParams) => {
+	if (params.type === "image") {
+		const mismatch = validateComponentAttrs({
+			componentAttrs: params.attrs,
+			componentAttrsShape: imageAttrsShape,
+			componentAttrValidators: adapterBus.getAttrValidators("image"),
+		});
+
+		return !mismatch;
+	}
+
+	if (params.type === "video") {
+		const mismatch = validateComponentAttrs({
+			componentAttrs: params.attrs,
+			componentAttrsShape: videoAttrsShape,
+			componentAttrValidators: adapterBus.getAttrValidators("video"),
+		});
+
+		return !mismatch;
+	}
+
+	if (params.type === "audio") {
+		const mismatch = validateComponentAttrs({
+			componentAttrs: params.attrs,
+			componentAttrsShape: audioAttrsShape,
+			componentAttrValidators: adapterBus.getAttrValidators("audio"),
+		});
+
+		return !mismatch;
+	}
+
+	if (params.type === "embed") {
+		const mismatch = validateComponentAttrs({
+			componentAttrs: params.attrs,
+			componentAttrsShape: embedAttrsShape,
+			componentAttrValidators: adapterBus.getAttrValidators("embed"),
+		});
+
+		return !mismatch;
+	}
+
+	return assertNever(params);
+};
+
 /**
- * Resolves a picker submission down to a single `src`, or `null` if the URL was invalid
- * (an error is pushed into the slot before returning `null`). File uploads report progress
- * back into the slot as they go, guarded by `isStillCurrent` since the block can disappear
- * mid-upload.
+ * Resolves a submission's media src down to a URL, or `null` if it was invalid (an error is pushed into the slot
+ * before returning `null`). File uploads report progress back into the slot as they go, guarded by `isStillCurrent`
+ * since the block can disappear mid-upload.
  */
 const resolveMediaSrc = async ({
-	detail,
+	mediaSrc,
 	element,
 	configPort,
 	isStillCurrent,
 }: ResolveMediaSrcParams): ResolveMediaSrcResult => {
-	if (detail.insertionType === "url") {
-		if (!isWellFormedUrl(detail.url)) {
+	if (typeof mediaSrc === "string") {
+		if (!isWellFormedUrl(mediaSrc)) {
 			configPort.updateElementState({
 				element,
 				uploadStatus: { status: "error", message: "Enter a valid URL." },
@@ -55,7 +182,7 @@ const resolveMediaSrc = async ({
 			return null;
 		}
 
-		return detail.url;
+		return mediaSrc;
 	}
 
 	configPort.updateElementState({
@@ -64,7 +191,7 @@ const resolveMediaSrc = async ({
 	});
 
 	const src = await configPort.uploadFile({
-		file: detail.file,
+		file: mediaSrc,
 		onProgress: (progress) => {
 			if (!isStillCurrent()) {
 				return;
@@ -98,6 +225,7 @@ const resolveMediaSrc = async ({
  * there. Returns a cleanup function.
  */
 export const watchEmptyMedia = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 }: WatchEmptyMediaParams): WatchEmptyMediaResult => {
@@ -111,16 +239,13 @@ export const watchEmptyMedia = ({
 	const containersByBlock: Map<BlockComponent, HTMLDivElement> = new Map();
 
 	/**
-	 * Removes the placeholder block via `removeNodesInRange` — replacing the old
-	 * `$$replaceWith` swap entirely — then forwards `{type, src}` onto `adapterBus`, without
-	 * `blockComponent`: it no longer exists in the tree by the time this fires. A future
-	 * Image/Video/Audio/Embed extension will subscribe via `adapterBus.onMediaResolve` and
-	 * call `editorAPI.insertNode` at the now-collapsed selection.
+	 * Removes the placeholder block via `removeNodesInRange`, then forwards `{ type, attrs }` onto `adapterBus`, without
+	 * `blockComponent`: it no longer exists in the tree by the time this fires. The media component's Adapter inserts
+	 * its block at the now-collapsed selection (see its handleXInsertion).
 	 */
 	const finalizeResolve = ({
 		blockComponent,
-		type,
-		src,
+		params,
 	}: FinalizeResolveParams) => {
 		const blockComponentLine = blockComponent.$$parentElement;
 
@@ -137,7 +262,7 @@ export const watchEmptyMedia = ({
 
 		editorAPI.getSnapshotTimeline().registerSnapshotBoundary();
 
-		configPort.emitMediaResolve({ type, src });
+		configPort.emitMediaResolve(params);
 	};
 
 	const unsubscribeResolve = configPort.onResolve(
@@ -165,23 +290,8 @@ export const watchEmptyMedia = ({
 			const isStillCurrent = () =>
 				containersByBlock.get(blockComponent) === element;
 
-			if (detail.type === "embed") {
-				if (!isWellFormedUrl(detail.url)) {
-					configPort.updateElementState({
-						element,
-						uploadStatus: { status: "error", message: "Enter a valid URL." },
-					});
-					return;
-				}
-
-				const src = transformEmbedUrl({ url: detail.url });
-
-				finalizeResolve({ blockComponent, type: "embed", src });
-				return;
-			}
-
 			const src = await resolveMediaSrc({
-				detail,
+				mediaSrc: getMediaSrc(detail),
 				element,
 				configPort,
 				isStillCurrent,
@@ -195,12 +305,35 @@ export const watchEmptyMedia = ({
 				return;
 			}
 
+			const params = withResolvedSrc({ detail, src });
+
+			const isValid = validateMediaAttrs({ adapterBus, params });
+
+			if (!isValid) {
+				const message =
+					params.type === "embed"
+						? "This site can't be embedded."
+						: `This ${params.type} can't be inserted.`;
+
+				configPort.updateElementState({
+					element,
+					uploadStatus: { status: "error", message },
+				});
+				return;
+			}
+
+			// An embed can't be probed: it's a page, not a media file
+			if (params.type === "embed") {
+				finalizeResolve({ blockComponent, params });
+				return;
+			}
+
 			configPort.updateElementState({
 				element,
 				uploadStatus: { status: "checking" },
 			});
 
-			const loaded = await probeMediaSrc({ type: detail.type, src });
+			const loaded = await probeMediaSrc({ type: params.type, src });
 
 			if (!isStillCurrent()) {
 				return;
@@ -211,13 +344,13 @@ export const watchEmptyMedia = ({
 					element,
 					uploadStatus: {
 						status: "error",
-						message: `Couldn't load that ${detail.type}. Check the link and try again.`,
+						message: `Couldn't load that ${params.type}. Check the link and try again.`,
 					},
 				});
 				return;
 			}
 
-			finalizeResolve({ blockComponent, type: detail.type, src });
+			finalizeResolve({ blockComponent, params });
 		},
 	);
 
