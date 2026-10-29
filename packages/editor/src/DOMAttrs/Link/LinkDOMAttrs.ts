@@ -1,5 +1,5 @@
 import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
-import { isSafeURL } from "#utilities";
+import { isSafeURL, safeProtocols } from "#utilities";
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,
@@ -145,17 +145,7 @@ const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
  */
 const normalizeHref = (href: string) => {
 	// An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
-	const keptHrefPrefixes = [
-		"https://",
-		"http://",
-		"mailto:",
-		"tel:",
-		"/",
-		"./",
-		"../",
-		"?",
-		"#",
-	];
+	const keptHrefPrefixes = [...safeProtocols, "/", "./", "../", "?", "#"];
 
 	const trimmedHref = href.trim();
 
