@@ -23,10 +23,30 @@ export interface LinkMenuSettings {
 	openAt: LinkMenuOpenTrigger[];
 }
 
-export interface LinkDisplayText {
-	value: string;
-	disabled: boolean;
+interface InsertDisplayText {
+	type: "insert";
 }
+
+interface SingleWrapDisplayText {
+	type: "single-wrap";
+	value: string;
+}
+
+interface MultipleWrapDisplayText {
+	type: "multiple-wrap";
+}
+
+interface EditDisplayText {
+	type: "edit";
+	value: string;
+}
+
+export type LinkDisplayText =
+	| InsertDisplayText
+	| SingleWrapDisplayText
+	| MultipleWrapDisplayText
+	| EditDisplayText
+	| null;
 
 export interface InsertParams {
 	text: string;

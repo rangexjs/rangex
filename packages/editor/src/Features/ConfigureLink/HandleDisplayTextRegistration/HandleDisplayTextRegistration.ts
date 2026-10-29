@@ -39,12 +39,12 @@ const getDisplayTextFromLink = ({
 		toOffset: contentLine.$$childNodes.length,
 	});
 
-	return { value, disabled: false };
+	return { type: "edit", value };
 };
 
 /*
- * Pre-fills the display text field from the current selection, or disables it when the
- * selection spans more than one wrappable segment, since no single value can represent it.
+ * Resolves the display text from the current selection: empty for an insert, the selected
+ * text when it wraps into a single link, none when it wraps into several.
  */
 const getDisplayTextFromSelection = ({
 	editorAPI,
@@ -52,19 +52,18 @@ const getDisplayTextFromSelection = ({
 	const mode = getLinkPlacementMode({ editorAPI });
 
 	if (!mode) {
-		console.warn("Selection can't take a link.");
-		return { value: "", disabled: false };
+		return null;
 	}
 
 	if (mode.type === "insert") {
-		return { value: "", disabled: false };
+		return { type: "insert" };
 	}
 
 	if (mode.type === "wrap") {
 		const { segments } = mode;
 
 		if (segments.length > 1) {
-			return { value: "", disabled: true };
+			return { type: "multiple-wrap" };
 		}
 
 		const [segment] = segments;
@@ -83,7 +82,7 @@ const getDisplayTextFromSelection = ({
 			toOffset: endOffset,
 		});
 
-		return { value, disabled: false };
+		return { type: "single-wrap", value };
 	}
 
 	return assertNever(mode);

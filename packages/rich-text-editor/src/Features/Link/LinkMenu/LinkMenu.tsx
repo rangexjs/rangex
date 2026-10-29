@@ -2,7 +2,7 @@ import { FloatingPortal, Link } from "@rangex/solid";
 import { createEffect, createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
-import { LinkEdit, LinkPreview } from "../_Utilities";
+import { getDisplayTextField, LinkEdit, LinkPreview } from "../_Utilities";
 
 type MenuView = "preview" | "edit";
 
@@ -21,6 +21,7 @@ export const LinkMenu = () => {
 	const [displayTextHandle, displayTextControls] =
 		createTextFieldState<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
+	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: {
@@ -77,11 +78,14 @@ export const LinkMenu = () => {
 
 			const { anchor } = domAttrs;
 
-			const { value, disabled } = link.getDisplayText();
+			const { value, disabled, placeholder } = getDisplayTextField(
+				link.getDisplayText(),
+			);
 
 			displayTextHandle.reset();
 			displayTextHandle.setValue(value);
 			setDisplayTextDisabled(disabled);
+			setDisplayTextPlaceholder(placeholder);
 
 			urlHandle.reset();
 			urlHandle.setValue(anchor.href);
@@ -178,6 +182,7 @@ export const LinkMenu = () => {
 				displayTextHandle={displayTextHandle}
 				displayTextControls={displayTextControls}
 				displayTextDisabled={displayTextDisabled()}
+				displayTextPlaceholder={displayTextPlaceholder()}
 				urlHandle={urlHandle}
 				urlControls={urlControls}
 				onNewTabChange={onNewTabChange}

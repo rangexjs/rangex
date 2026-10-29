@@ -2,7 +2,7 @@ import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
-import { LinkEdit } from "../_Utilities";
+import { getDisplayTextField, LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
 	const editor = useEditorContext();
@@ -15,6 +15,7 @@ export const LinkSelectionMenu = () => {
 	const [displayTextHandle, displayTextControls] =
 		createTextFieldState<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
+	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: {
@@ -40,9 +41,12 @@ export const LinkSelectionMenu = () => {
 
 	const refreshFields = () => {
 		displayTextHandle.reset();
-		const displayText = link.getDisplayText();
-		displayTextHandle.setValue(displayText.value);
-		setDisplayTextDisabled(displayText.disabled);
+		const { value, disabled, placeholder } = getDisplayTextField(
+			link.getDisplayText(),
+		);
+		displayTextHandle.setValue(value);
+		setDisplayTextDisabled(disabled);
+		setDisplayTextPlaceholder(placeholder);
 
 		urlHandle.reset();
 		setIsNewTab(false);
@@ -117,6 +121,7 @@ export const LinkSelectionMenu = () => {
 				displayTextHandle={displayTextHandle}
 				displayTextControls={displayTextControls}
 				displayTextDisabled={displayTextDisabled()}
+				displayTextPlaceholder={displayTextPlaceholder()}
 				urlHandle={urlHandle}
 				urlControls={urlControls}
 				onNewTabChange={onNewTabChange}
