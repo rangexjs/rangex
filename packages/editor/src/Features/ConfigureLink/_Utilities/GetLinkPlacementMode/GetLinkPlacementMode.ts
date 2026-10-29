@@ -1,4 +1,7 @@
-import { EditorRange } from "@rangex/core";
+import {
+	EditorRange,
+	type GetInlineWrappableSegmentsResult,
+} from "@rangex/core";
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
 import type {
@@ -9,8 +12,8 @@ import type {
 /*
  * Resolves whether the current selection can take a link and in what shape: a collapsed
  * caret can only "insert" a brand-new link, a real range can only "wrap" its own text into
- * one. Returns null when neither applies, e.g. inside a link already, or where links aren't
- * an allowed component.
+ * one, along with the segments that can take it. Returns null when neither applies, e.g.
+ * inside a link already, or where links aren't an allowed component.
  */
 export const getLinkPlacementMode = ({
 	editorAPI,
@@ -40,7 +43,7 @@ export const getLinkPlacementMode = ({
 			!$$allowedComponents ||
 			$$allowedComponents.includes(componentsName.link)
 		) {
-			return "insert";
+			return { type: "insert" };
 		}
 
 		return null;
@@ -52,6 +55,9 @@ export const getLinkPlacementMode = ({
 		toNode: toText,
 		toOffset,
 	});
+
+	// Only segments free of InlineComponents, in lines that allow links, can be wrapped.
+	const wrappableSegments: GetInlineWrappableSegmentsResult = [];
 
 	for (const segment of segments) {
 		if (segment.getInlineComponentListInSegment().length > 0) {
@@ -70,8 +76,12 @@ export const getLinkPlacementMode = ({
 			!$$allowedComponents ||
 			$$allowedComponents.includes(componentsName.link)
 		) {
-			return "wrap";
+			wrappableSegments.push(segment);
 		}
+	}
+
+	if (wrappableSegments.length > 0) {
+		return { type: "wrap", segments: wrappableSegments };
 	}
 
 	return null;

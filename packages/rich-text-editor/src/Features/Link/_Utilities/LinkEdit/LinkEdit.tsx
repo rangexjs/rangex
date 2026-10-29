@@ -30,6 +30,9 @@ export const LinkEdit = (props: LinkEditProps) => {
 		modify: "Update",
 	};
 
+	const displayTextPlaceholder = () =>
+		props.displayTextDisabled ? "Selected text" : "Example";
+
 	const onKeyDown = (event: KeyboardEvent) => {
 		if (event.key === "Enter") {
 			props.onApply();
@@ -48,7 +51,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							placeholder="Example"
+							placeholder={displayTextPlaceholder()}
 							spellcheck={false}
 							{...props.displayTextControls}
 							disabled={props.displayTextDisabled}

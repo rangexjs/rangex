@@ -91,34 +91,20 @@ const insertAtCaret = ({
 };
 
 /*
- * Wraps each valid segment in the selection with a link, skipping any that already contain an
- * InlineComponent.
+ * Wraps each of the given wrappable segments with a link.
  */
 const wrapWithLink = ({
 	configPort,
 	editorAPI,
+	segments,
 	attrs,
 	linkMenuPopoverController,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset, toText, toOffset } =
-		selection.getBoundaryPoints();
-
-	const segments = editorAPI.getInlineWrappableSegments({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
-
 	let currentLink: InlineComponent | null = null;
 
 	for (const segment of segments) {
-		if (segment.getInlineComponentListInSegment().length) {
-			continue;
-		}
-
 		const { startText, startOffset, endText, endOffset } =
 			segment.getBoundaryPoints();
 
@@ -202,7 +188,7 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
-		if (mode === "insert") {
+		if (mode.type === "insert") {
 			if (text === "") {
 				return;
 			}
@@ -217,10 +203,11 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
-		if (mode === "wrap") {
+		if (mode.type === "wrap") {
 			wrapWithLink({
 				configPort,
 				editorAPI,
+				segments: mode.segments,
 				attrs: normalizedAttrs,
 				linkMenuPopoverController,
 			});

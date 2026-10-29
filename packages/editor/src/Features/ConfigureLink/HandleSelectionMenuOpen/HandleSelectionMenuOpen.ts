@@ -53,12 +53,12 @@ export const handleSelectionMenuOpen = ({
 			return;
 		}
 
-		if (mode === "insert") {
+		if (mode.type === "insert") {
 			openAtCaret({ editorAPI, selectionMenuPopoverController });
 			return;
 		}
 
-		if (mode === "wrap") {
+		if (mode.type === "wrap") {
 			openForWrap({ editorAPI, selectionMenuPopoverController });
 			return;
 		}

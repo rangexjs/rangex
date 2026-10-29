@@ -3,6 +3,7 @@ import {
 	contentLineRoleSelector,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+import { assertNever } from "#utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	GetDisplayTextFromLinkParams,
@@ -50,37 +51,42 @@ const getDisplayTextFromSelection = ({
 }: GetDisplayTextFromSelectionParams): GetDisplayTextInfoResult => {
 	const mode = getLinkPlacementMode({ editorAPI });
 
-	if (mode === "insert") {
+	if (!mode) {
+		console.warn("Selection can't take a link.");
 		return { value: "", disabled: false };
 	}
 
-	if (mode === "wrap") {
-		const selection = editorAPI.getEditorSelection();
-
-		const { fromText, fromOffset, toText, toOffset } =
-			selection.getBoundaryPoints();
-
-		const segments = editorAPI.getInlineWrappableSegments({
-			fromNode: fromText,
-			fromOffset,
-			toNode: toText,
-			toOffset,
-		});
-
-		if (segments.length === 1) {
-			const value = editorAPI.getPlainText({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-			});
-
-			return { value, disabled: false };
-		}
+	if (mode.type === "insert") {
+		return { value: "", disabled: false };
 	}
 
-	console.warn("Selection doesn't map to a single display text value.");
-	return { value: "", disabled: false };
+	if (mode.type === "wrap") {
+		const { segments } = mode;
+
+		if (segments.length > 1) {
+			return { value: "", disabled: true };
+		}
+
+		const [segment] = segments;
+
+		if (!segment) {
+			throw new Error("Wrap mode is missing its segment.");
+		}
+
+		const { startText, startOffset, endText, endOffset } =
+			segment.getBoundaryPoints();
+
+		const value = editorAPI.getPlainText({
+			fromNode: startText,
+			fromOffset: startOffset,
+			toNode: endText,
+			toOffset: endOffset,
+		});
+
+		return { value, disabled: false };
+	}
+
+	return assertNever(mode);
 };
 
 /*

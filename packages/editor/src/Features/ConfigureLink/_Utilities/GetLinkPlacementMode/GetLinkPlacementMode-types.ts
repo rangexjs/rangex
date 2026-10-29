@@ -1,9 +1,21 @@
-import type { EditorAPI } from "@rangex/core";
+import type { EditorAPI, GetInlineWrappableSegmentsResult } from "@rangex/core";
 
 export interface GetLinkPlacementModeParams {
 	editorAPI: EditorAPI;
 }
 
-export type LinkPlacementMode = "insert" | "wrap" | null;
+export interface InsertLinkPlacementMode {
+	type: "insert";
+}
+
+export interface WrapLinkPlacementMode {
+	type: "wrap";
+	segments: GetInlineWrappableSegmentsResult;
+}
+
+export type LinkPlacementMode =
+	| InsertLinkPlacementMode
+	| WrapLinkPlacementMode
+	| null;
 
 export type GetLinkPlacementModeResult = LinkPlacementMode;
