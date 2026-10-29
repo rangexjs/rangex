@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createDetachedContext,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#constants";
+import { componentsName } from "#constants";
 import { createEmptyMediaStorage } from "#storage";
 import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
 
@@ -14,9 +14,6 @@ import type { CreateEmptyMediaResult } from "./CreateEmptyMedia-types";
  */
 export const createEmptyMedia = (): CreateEmptyMediaResult => {
 	const blockComponentLine = createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.emptyMedia,

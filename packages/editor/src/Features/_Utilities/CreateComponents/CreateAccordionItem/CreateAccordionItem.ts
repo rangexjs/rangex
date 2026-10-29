@@ -51,7 +51,6 @@ export const createAccordionItem = ({
 	});
 
 	const blockComponentLine = createBlockComponentLine({
-		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.accordionItem,

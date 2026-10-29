@@ -1,15 +1,9 @@
-import {
-	blockComponentLineRole,
-	htmlLayoutRole,
-	xhtmlNamespaceURI,
-} from "@rangex/core";
-import { blockAlignAttr } from "#constants";
+import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,
 	type ElementAttrsShape,
 	type ElementDescriptor,
-	validateBlockAlign,
 	validateBooleanAttr,
 } from "../_Utilities";
 import type {
@@ -17,19 +11,9 @@ import type {
 	CreateAccordionItemAttrValidatorsResult,
 } from "./AccordionItemDOMAttrs-types";
 
-const lineAttrsShape = {
-	[blockAlignAttr.name]: "required",
-} as const satisfies ElementAttrsShape;
-
 const detailsAttrsShape = {
 	open: "optional",
 } as const satisfies ElementAttrsShape;
-
-const lineElement: ElementDescriptor = {
-	localName: "div",
-	namespaceURI: xhtmlNamespaceURI,
-	editorRole: blockComponentLineRole,
-};
 
 const detailsElement: ElementDescriptor = {
 	localName: "details",
@@ -38,7 +22,6 @@ const detailsElement: ElementDescriptor = {
 };
 
 export const accordionItemAttrsShape = {
-	line: lineAttrsShape,
 	details: detailsAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
@@ -51,14 +34,8 @@ export const createAccordionItemAttrValidators = (
 ): CreateAccordionItemAttrValidatorsResult => {
 	const accordionItemAttrValidators = createComponentAttrValidators({
 		componentAttrsShape: accordionItemAttrsShape,
-		elementDescriptors: {
-			line: lineElement,
-			details: detailsElement,
-		},
+		elementDescriptors: { details: detailsElement },
 		defaultValidators: {
-			line: {
-				[blockAlignAttr.name]: validateBlockAlign,
-			},
 			details: {
 				open: validateBooleanAttr,
 			},

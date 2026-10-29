@@ -341,7 +341,7 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515033983-1384500753",
 				"customStorage": null,
-				"domAttrs": { "data-block-align": "center" },
+				"domAttrs": {},
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
@@ -724,7 +724,7 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787519516634-492255617",
 				"customStorage": null,
-				"domAttrs": { "data-block-align": "center" },
+				"domAttrs": {},
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
@@ -941,7 +941,7 @@
 												"editorRole": "block-component-line",
 												"uniqueId": "1787561150973-1752038776",
 												"customStorage": null,
-												"domAttrs": { "data-block-align": "center" },
+												"domAttrs": {},
 												"childNodes": [
 													{
 														"editorRole": "block-component-text-holder",
@@ -3088,7 +3088,7 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515439813-3499544768",
 				"customStorage": null,
-				"domAttrs": { "data-block-align": "center" },
+				"domAttrs": {},
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",
@@ -3464,7 +3464,7 @@
 				"editorRole": "block-component-line",
 				"uniqueId": "1787515686749-4177932803",
 				"customStorage": null,
-				"domAttrs": { "data-block-align": "center" },
+				"domAttrs": {},
 				"childNodes": [
 					{
 						"editorRole": "block-component-text-holder",

@@ -10,7 +10,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#constants";
+import { componentsName } from "#constants";
 import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,
@@ -61,9 +61,6 @@ export const createCodeBlock = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.codeBlock,

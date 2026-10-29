@@ -189,8 +189,8 @@ const validateDetails = ({
 /*
  * Validates an AccordionItem, its BlockComponentLine, and everything down to its NestedEditables, node by node: each
  * node's own state, then its children. It's built as a BlockComponent holding a details, which holds a summary (with
- * the single-line NestedEditable) and the multi-line NestedEditable of the body. The line's and the
- * details' domAttrs are resolved by the given validators, every other node's by an empty shape. The NestedEditables'
+ * the single-line NestedEditable) and the multi-line NestedEditable of the body. The details' domAttrs are resolved by
+ * the given validators, every other node's (the line's too) by an empty shape. The NestedEditables'
  * content is left to the engine's validation.
  */
 const validateAccordionItem = ({
@@ -224,8 +224,8 @@ const validateAccordionItem = ({
 
 	const lineFailed = validateBlockComponentLine({
 		blockComponentDraft: componentDraft,
-		lineAttrsShape: accordionItemAttrsShape.line,
-		lineAttrValidators: attrValidators.line,
+		lineAttrsShape: {},
+		lineAttrValidators: {},
 	});
 
 	if (lineFailed) {

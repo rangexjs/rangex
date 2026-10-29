@@ -7,7 +7,7 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#constants";
+import { componentsName } from "#constants";
 import { createBlockQuoteStorage } from "#storage";
 import type {
 	CreateBlockQuoteParams,
@@ -35,9 +35,6 @@ export const createBlockQuote = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.blockQuote,

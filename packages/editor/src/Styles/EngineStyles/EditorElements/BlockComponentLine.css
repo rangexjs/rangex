@@ -13,7 +13,9 @@
 		}
 	}
 
-	&[data-block-align="center"] {
+	/* Without data-block-align (a block that can't be aligned), it's laid out as centered */
+	&[data-block-align="center"],
+	&:not([data-block-align]) {
 		& > :nth-child(1) {
 			flex-grow: 1;
 		}

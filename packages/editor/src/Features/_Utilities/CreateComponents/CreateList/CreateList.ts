@@ -8,7 +8,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#constants";
+import { componentsName } from "#constants";
 import { createListStorage } from "#storage";
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
@@ -53,9 +53,6 @@ export const createList = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.list,

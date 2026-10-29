@@ -9,12 +9,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import {
-	blockAlignAttr,
-	componentsName,
-	dataPartName,
-	todoCheckboxPart,
-} from "#constants";
+import { componentsName, dataPartName, todoCheckboxPart } from "#constants";
 import { createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
@@ -61,9 +56,6 @@ export const createTodoList = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.todoList,
