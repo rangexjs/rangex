@@ -4,6 +4,8 @@ export type {
 	LinkPublicPort,
 	LinkSettings,
 	ModifyParams,
+	PlacementValidationParams,
+	PlacementValidationResult,
 } from "#adapters/Link";
 export type {
 	AnchorAttrs,

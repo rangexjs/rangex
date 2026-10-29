@@ -16,7 +16,7 @@ export type OnDOMAttrsUpdateCallbackFn<TShape extends ComponentAttrsShape> = (
 ) => void;
 
 export type ValidateDOMAttrsProviderFn<TShape extends ComponentAttrsShape> = (
-	domAttrs: ComponentAttrs<TShape>,
+	patch: ComponentAttrsPatch<TShape>,
 ) => ValidateDOMAttrsResult<TShape>;
 
 export type ChangeDOMAttrsProviderFn<TShape extends ComponentAttrsShape> = (
@@ -43,7 +43,7 @@ export interface DOMAttrsPublicPort<TShape extends ComponentAttrsShape> {
 	onDOMAttrsUpdate(callback: OnDOMAttrsUpdateCallbackFn<TShape>): () => void;
 
 	validateDOMAttrs(
-		domAttrs: ComponentAttrs<TShape>,
+		patch: ComponentAttrsPatch<TShape>,
 	): ValidateDOMAttrsResult<TShape>;
 	changeDOMAttrs(
 		patch: ComponentAttrsPatch<TShape>,

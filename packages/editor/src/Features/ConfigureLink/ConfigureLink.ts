@@ -15,10 +15,11 @@ import { handleLinkInteraction } from "./HandleLinkInteraction";
 import { handleLinkMenuClose } from "./HandleLinkMenuClose";
 import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkPlacementState } from "./HandleLinkPlacementState";
+import { handlePlacementValidatorRegistration } from "./HandlePlacementValidatorRegistration";
 import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
 
 /*
- * Wires up the link feature: selection menu appearance, display text, placement state, menu
+ * Wires up the link feature: selection menu appearance, display text, placement validation, placement state, menu
  * open/close, interaction tracking, insertion, modification, and unwrap handling. Returns a
  * cleanup function that tears down all of it.
  */
@@ -55,6 +56,7 @@ export const configureLink = ({
 	});
 
 	handleDisplayTextRegistration({ configPort, editorAPI });
+	handlePlacementValidatorRegistration({ configPort });
 
 	const placementStateCleanup = handleLinkPlacementState({
 		configPort,

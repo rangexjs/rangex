@@ -11,7 +11,7 @@ import {
 import type {
 	CreateLinkAttrValidatorsParams,
 	CreateLinkAttrValidatorsResult,
-	LinkAttrs,
+	LinkAttrsPatch,
 } from "./LinkDOMAttrs-types";
 
 const anchorAttrsShape = {
@@ -142,8 +142,13 @@ const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
 
 /*
  * Trims the href, and prefixes it with "https://" if it has neither a scheme nor a relative prefix (e.g. "example.com").
+ * An href left out (undefined) stays left out.
  */
-const normalizeHref = (href: string) => {
+const normalizeHref = (href: string | undefined) => {
+	if (href === undefined) {
+		return href;
+	}
+
 	// An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
 	const keptHrefPrefixes = [...safeProtocols, "/", "./", "../", "?", "#"];
 
@@ -164,13 +169,17 @@ const normalizeHref = (href: string) => {
 
 /*
  * Normalizes the Link's attributes before they're validated and written, e.g. "example.com" becomes
- * "https://example.com". The validators receive the normalized values.
+ * "https://example.com". Takes a patch too: an attribute left out stays left out. The validators receive the
+ * normalized values.
  */
-export const normalizeLinkAttrs = (linkAttrs: LinkAttrs): LinkAttrs => {
+export const normalizeLinkAttrs = <TLinkAttrs extends LinkAttrsPatch>(
+	linkAttrs: TLinkAttrs,
+): TLinkAttrs => {
 	const { anchor } = linkAttrs;
 
-	const normalizedLinkAttrs: LinkAttrs = {
-		anchor: { ...anchor, href: normalizeHref(anchor.href) },
+	const normalizedLinkAttrs: TLinkAttrs = {
+		...linkAttrs,
+		anchor: { ...anchor, href: normalizeHref(anchor?.href) },
 	};
 
 	return normalizedLinkAttrs;

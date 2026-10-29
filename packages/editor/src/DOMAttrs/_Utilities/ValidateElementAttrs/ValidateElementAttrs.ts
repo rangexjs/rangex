@@ -1,4 +1,5 @@
 import { assertNever } from "#utilities";
+import { validateElementAttrsPatch } from "../ValidateElementAttrsPatch";
 import type {
 	ValidateElementAttrsParams,
 	ValidateElementAttrsResult,
@@ -11,37 +12,23 @@ const getOwn = <Value>(
 ): Value | undefined => (Object.hasOwn(record, key) ? record[key] : undefined);
 
 /*
- * Validates an element's attributes by its shape and validators: every attribute must be in the shape, every set one
- * must pass its validator, and every required one must be set. An attribute that is null or undefined isn't set.
- * Returns the first mismatch, or null when the attributes are valid.
+ * Validates an element's attributes by its shape and validators: the given ones as validateElementAttrsPatch does, then
+ * every required one must be set. An attribute that is null or undefined isn't set. Returns the first mismatch, or null
+ * when the attributes are valid.
  */
 export const validateElementAttrs = ({
 	elementAttrs,
 	elementAttrsShape,
 	elementAttrValidators,
 }: ValidateElementAttrsParams): ValidateElementAttrsResult => {
-	for (const [attrName, value] of Object.entries(elementAttrs)) {
-		const requirement = getOwn(elementAttrsShape, attrName);
+	const patchMismatch = validateElementAttrsPatch({
+		elementAttrsPatch: elementAttrs,
+		elementAttrsShape,
+		elementAttrValidators,
+	});
 
-		if (!requirement) {
-			return { kind: "unknown-attr", attrName };
-		}
-
-		if (value === undefined || value === null) {
-			continue;
-		}
-
-		const validateAttr = getOwn(elementAttrValidators, attrName);
-
-		if (!validateAttr) {
-			throw new Error(`Attribute "${attrName}" has no validator.`);
-		}
-
-		const validationFailed = validateAttr({ value });
-
-		if (validationFailed) {
-			return { kind: "invalid-attr", attrName, validationFailed };
-		}
+	if (patchMismatch) {
+		return patchMismatch;
 	}
 
 	for (const [attrName, requirement] of Object.entries(elementAttrsShape)) {

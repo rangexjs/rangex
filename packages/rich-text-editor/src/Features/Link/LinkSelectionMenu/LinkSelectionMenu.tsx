@@ -1,3 +1,4 @@
+import type { LinkAttrs } from "@rangex/editor/link";
 import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
@@ -87,17 +88,18 @@ export const LinkSelectionMenu = () => {
 
 		const url = urlHandle.value();
 
-		const text = displayTextHandle.value() || url;
-
-		link.insert({
-			text,
-			attrs: {
-				anchor: {
-					href: url,
-					target: isNewTab() ? "_blank" : null,
-				},
+		const attrs: LinkAttrs = {
+			anchor: {
+				href: url,
+				target: isNewTab() ? "_blank" : null,
 			},
-		});
+		};
+
+		if (link.validatePlacement({ attrs })) {
+			return;
+		}
+
+		link.insert({ text: displayTextHandle.value(), attrs });
 
 		link.selectionMenu.close();
 	};

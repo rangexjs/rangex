@@ -50,12 +50,12 @@ export const createDOMAttrsPort = <
 			return domAttrsState.subscribe(callback);
 		},
 
-		validateDOMAttrs(domAttrs) {
+		validateDOMAttrs(patch) {
 			if (!internals.validateDOMAttrsProvider) {
 				throw new Error("ValidateDOMAttrs provider wasn't registered.");
 			}
 
-			return internals.validateDOMAttrsProvider(domAttrs);
+			return internals.validateDOMAttrsProvider(patch);
 		},
 
 		changeDOMAttrs(patch) {

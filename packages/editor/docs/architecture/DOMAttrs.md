@@ -135,9 +135,13 @@ The same validators run on two paths, which treat a fallback differently.
 - `invalid-attr` — a set attribute whose validator failed, with its `validationFailed`. A fallback counts as a failure
   too: the editor only writes what is valid as it is.
 
-Used by everything that writes into a live editor: `changeDOMAttrs` / `validateDOMAttrs` (see
+Used by everything that writes into a live editor: `changeDOMAttrs` (see
 [DOMAttrsPort](#domattrsport-and-handledomattrs)), the insert handler, and Markdown. The UI shows the user why an input
 is refused instead of silently changing it.
+
+`validateComponentAttrsPatch` / `validateElementAttrsPatch` check only the given attributes: `unknown-attr` and
+`invalid-attr` as above, but a required attribute that isn't given isn't `missing-attr`. Used by `validateDOMAttrs`, so
+the UI can validate a single field (e.g. the `href`) without passing every required attribute.
 
 **Snapshot path — resolving.** `resolveElementAttrs` (`_Utilities/ResolveElementAttrs/`) returns the attributes the
 element should have:
@@ -157,8 +161,9 @@ stored snapshot that breaks a rule is repaired instead of rejected, unless a val
 
 A component can normalize its attributes before they're validated and written, e.g. `normalizeLinkAttrs` trims the
 `href` and turns `example.com` into `https://example.com`. It only runs on the write paths (`changeDOMAttrs`,
-`validateDOMAttrs`, insert, Markdown), so the validators receive the normalized values. The snapshot path never
-normalizes: a stored value is validated as it is.
+`validateDOMAttrs`, insert, Markdown), so the validators receive the normalized values. A normalizer takes a patch too
+(an attribute left out stays left out), as `validateDOMAttrs` gets one. The snapshot path never normalizes: a stored
+value is validated as it is.
 
 ## Reading and writing
 
@@ -182,7 +187,7 @@ The Adapter side and the Features side are split as everywhere else (see [Adapte
   current component, through a `MutationObserver` on its subtree (`childList`, plus the shape's attributes as
   `attributeFilter`), and on each of its elements outside it (e.g. the `line`, attributes only), so undo/redo updates
   it too. It registers both providers:
-  - `validateDOMAttrs(attrs)` — normalizes, then validates (live path).
+  - `validateDOMAttrs(patch)` — normalizes, then validates only the given attributes (`validateComponentAttrsPatch`).
   - `changeDOMAttrs(patch)` — merges the patch into the current `domAttrs`, normalizes, validates, writes the valid
     attributes, reads them back right away (the observer only updates later), and registers a snapshot boundary.
     Returns the mismatch, or `null`.

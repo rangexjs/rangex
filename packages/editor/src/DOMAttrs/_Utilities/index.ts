@@ -7,6 +7,8 @@ export * from "./ResolveElementAttrs";
 export * from "./SharedAttrValidators";
 export * from "./ToDOMAttrs";
 export * from "./ValidateComponentAttrs";
+export * from "./ValidateComponentAttrsPatch";
 export * from "./ValidateElementAttrs";
+export * from "./ValidateElementAttrsPatch";
 export * from "./WriteComponentAttrs";
 export * from "./WriteElementAttrs";

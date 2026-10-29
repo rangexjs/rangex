@@ -5,6 +5,7 @@ import {
 	mergeComponentAttrs,
 	readComponentAttrs,
 	validateComponentAttrs,
+	validateComponentAttrsPatch,
 	writeComponentAttrs,
 } from "#dom-attrs";
 import type {
@@ -108,8 +109,9 @@ const createDOMAttrsObserver = <
 /*
  * Keeps the port's domAttrs in sync with the current component: they're read when the current component changes, and
  * again whenever its structure or one of the shape's attributes changes (e.g. by undo/redo). Registers the port's
- * validateDOMAttrs and changeDOMAttrs: both normalize the attributes first, and changeDOMAttrs writes the valid ones, then
- * registers a snapshot boundary. Returns a cleanup function.
+ * validateDOMAttrs and changeDOMAttrs: both normalize the attributes first. validateDOMAttrs checks only the given
+ * attributes; changeDOMAttrs checks all of them once merged, writes the valid ones, then registers a snapshot boundary.
+ * Returns a cleanup function.
  */
 export const handleDOMAttrs = <
 	TComponent extends Component,
@@ -150,10 +152,14 @@ export const handleDOMAttrs = <
 			domAttrsObserver.observe(currentComponent);
 		});
 
-	domAttrsPort.registerValidateDOMAttrs((domAttrs) => {
-		const normalizedDOMAttrs = normalizeDOMAttrs(domAttrs);
+	domAttrsPort.registerValidateDOMAttrs((patch) => {
+		const normalizedPatch = normalizeDOMAttrs(patch);
 
-		return validateNormalizedDOMAttrs(normalizedDOMAttrs);
+		return validateComponentAttrsPatch({
+			componentAttrsPatch: normalizedPatch,
+			componentAttrsShape,
+			componentAttrValidators,
+		});
 	});
 
 	domAttrsPort.registerChangeDOMAttrs((patch) => {

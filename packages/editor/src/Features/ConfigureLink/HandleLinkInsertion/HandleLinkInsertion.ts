@@ -4,14 +4,10 @@ import {
 	createContentLine,
 	type InlineComponent,
 } from "@rangex/core";
-import {
-	linkAttrsShape,
-	normalizeLinkAttrs,
-	validateComponentAttrs,
-} from "#dom-attrs";
+import { normalizeLinkAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
 import { createLink } from "../../_Utilities";
-import { getLinkPlacementMode } from "../_Utilities";
+import { getLinkPlacementMode, validateLinkPlacement } from "../_Utilities";
 import type {
 	AnchorToLinkParams,
 	HandleLinkInsertionParams,
@@ -176,27 +172,23 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
-		const normalizedAttrs = normalizeLinkAttrs(attrs);
+		const placementMismatch = validateLinkPlacement({ configPort, attrs });
 
-		const attrsMismatch = validateComponentAttrs({
-			componentAttrs: normalizedAttrs,
-			componentAttrsShape: linkAttrsShape,
-			componentAttrValidators: configPort.attrValidators,
-		});
-
-		if (attrsMismatch) {
+		if (placementMismatch) {
+			console.warn(
+				"handleLinkInsertion: attrs are invalid.",
+				placementMismatch,
+			);
 			return;
 		}
 
-		if (mode.type === "insert") {
-			if (text === "") {
-				return;
-			}
+		const normalizedAttrs = normalizeLinkAttrs(attrs);
 
+		if (mode.type === "insert") {
 			insertAtCaret({
 				configPort,
 				editorAPI,
-				text,
+				text: text || normalizedAttrs.anchor.href,
 				attrs: normalizedAttrs,
 				linkMenuPopoverController,
 			});

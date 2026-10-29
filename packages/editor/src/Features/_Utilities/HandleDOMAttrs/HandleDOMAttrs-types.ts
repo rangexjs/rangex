@@ -2,14 +2,17 @@ import type { Component, EditorAPI } from "@rangex/core";
 import type { CurrentComponentConfigPort, DOMAttrsConfigPort } from "#adapters";
 import type {
 	ComponentAttrs,
+	ComponentAttrsPatch,
 	ComponentAttrsShape,
 	ComponentAttrValidators,
 	ComponentElements,
 } from "#dom-attrs";
 
-export type NormalizeDOMAttrsFn<TShape extends ComponentAttrsShape> = (
-	domAttrs: ComponentAttrs<TShape>,
-) => ComponentAttrs<TShape>;
+export type NormalizeDOMAttrsFn<TShape extends ComponentAttrsShape> = <
+	TDOMAttrs extends ComponentAttrsPatch<TShape>,
+>(
+	domAttrs: TDOMAttrs,
+) => TDOMAttrs;
 
 export type ResolveElementsFn<
 	TComponent extends Component,
