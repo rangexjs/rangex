@@ -4,15 +4,12 @@ import {
 	createBlockComponentLine,
 	createBlockComponentTextHolder,
 	createContentLine,
-	createDetachedContext,
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
 import { componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
-import { CaretCircleLeft } from "#engine-links";
 import { createAccordionItemStorage } from "#storage";
-import { createUploadSVG } from "../../CreateUploadSVG";
 import type {
 	CreateAccordionItemParams,
 	CreateAccordionItemResult,
@@ -20,7 +17,7 @@ import type {
 
 /*
  * Builds an accordion item block component: a collapsible `details`/`summary` element with
- * a chevron icon, a single-line editable summary, and a multi-line editable body, with the given
+ * a single-line editable summary, and a multi-line editable body, with the given
  * attributes of its line and `details`. They aren't validated here.
  */
 export const createAccordionItem = ({
@@ -53,9 +50,6 @@ export const createAccordionItem = ({
 		],
 	});
 
-	const svg = createUploadSVG({ svgMarkup: CaretCircleLeft });
-	svg.setAttribute("part", "chevron");
-
 	const blockComponentLine = createBlockComponentLine({
 		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
@@ -73,10 +67,7 @@ export const createAccordionItem = ({
 					childNodes: [
 						createHTMLLayout({
 							localName: "summary",
-							childNodes: [
-								summaryNestedEditable,
-								createDetachedContext({ localName: "span", shadowTree: [svg] }),
-							],
+							childNodes: [summaryNestedEditable],
 						}),
 						bodyNestedEditable,
 					],

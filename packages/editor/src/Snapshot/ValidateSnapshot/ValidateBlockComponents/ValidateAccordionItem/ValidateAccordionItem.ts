@@ -1,6 +1,5 @@
 import {
 	blockComponentRole,
-	detachedContextRole,
 	htmlLayoutRole,
 	nestedEditableRole,
 } from "@rangex/core";
@@ -10,9 +9,7 @@ import {
 	createAccordionItemAttrValidators,
 } from "#dom-attrs";
 import { accordionItemStoragePattern } from "#storage";
-import { matchJSON } from "#utilities";
 import {
-	describeJSONMismatch,
 	formatNodePath,
 	resolveDraftDOMAttrs,
 	validateHTMLLayoutState,
@@ -25,11 +22,8 @@ import {
 import type {
 	CreateAccordionItemValidatorParams,
 	CreateAccordionItemValidatorResult,
-	DetachedContextState,
 	ValidateAccordionItemParams,
 	ValidateAccordionItemResult,
-	ValidateChevronParams,
-	ValidateChevronResult,
 	ValidateDetailsParams,
 	ValidateDetailsResult,
 	ValidateSummaryParams,
@@ -37,56 +31,8 @@ import type {
 } from "./ValidateAccordionItem-types";
 
 /*
- * Validates the chevron, the `span` DetachedContext next to the summary's NestedEditable. It has no attributes. Its
- * shadow tree (the icon) is left to the Sanitizer.
- */
-const validateChevron = ({
-	componentDraft,
-	detachedContextDraft,
-}: ValidateChevronParams): ValidateChevronResult => {
-	const { editorRole, localName, customStorage } = detachedContextDraft;
-
-	const state: DetachedContextState = { editorRole, localName, customStorage };
-
-	const mismatch = matchJSON({
-		value: state,
-		pattern: {
-			editorRole: detachedContextRole,
-			localName: "span",
-			customStorage: null,
-		},
-	});
-
-	if (mismatch) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: detachedContextDraft,
-			reason: describeJSONMismatch({
-				rootDraft: componentDraft,
-				nodeDraft: detachedContextDraft,
-				value: state,
-				mismatch,
-			}),
-		};
-	}
-
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: detachedContextDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
-
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
-
-	return null;
-};
-
-/*
- * Validates the summary and its children: the single-line NestedEditable, then the chevron. The NestedEditable's content
- * is left to the engine's validation.
+ * Validates the summary and its only child, the single-line NestedEditable. The NestedEditable's content is left to the
+ * engine's validation.
  */
 const validateSummary = ({
 	componentDraft,
@@ -119,17 +65,16 @@ const validateSummary = ({
 
 	const { childNodes } = htmlLayoutDraft;
 
-	const [nestedEditableDraft, detachedContextDraft] = childNodes;
+	const nestedEditableDraft = childNodes.at(0);
 
 	if (
-		childNodes.length !== 2 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole ||
-		detachedContextDraft?.editorRole !== detachedContextRole
+		childNodes.length !== 1 ||
+		nestedEditableDraft?.editorRole !== nestedEditableRole
 	) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain a ${nestedEditableRole}, then a ${detachedContextRole}.`,
+			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
 		};
 	}
 
@@ -152,15 +97,6 @@ const validateSummary = ({
 
 	if (nestedEditableFailed) {
 		return nestedEditableFailed;
-	}
-
-	const chevronFailed = validateChevron({
-		componentDraft,
-		detachedContextDraft,
-	});
-
-	if (chevronFailed) {
-		return chevronFailed;
 	}
 
 	return null;
@@ -252,8 +188,8 @@ const validateDetails = ({
 
 /*
  * Validates an AccordionItem, its BlockComponentLine, and everything down to its NestedEditables, node by node: each
- * node's own state, then its children. It's built as a BlockComponent holding a details, which holds a summary (the
- * single-line NestedEditable and the chevron) and the multi-line NestedEditable of the body. The line's and the
+ * node's own state, then its children. It's built as a BlockComponent holding a details, which holds a summary (with
+ * the single-line NestedEditable) and the multi-line NestedEditable of the body. The line's and the
  * details' domAttrs are resolved by the given validators, every other node's by an empty shape. The NestedEditables'
  * content is left to the engine's validation.
  */

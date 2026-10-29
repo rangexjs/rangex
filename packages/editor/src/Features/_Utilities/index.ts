@@ -1,6 +1,5 @@
 export * from "./BlockAlign";
 export * from "./CreateComponents";
-export * from "./CreateUploadSVG";
 export * from "./GetComponentParts";
 export * from "./HandleBlockAlignState";
 export * from "./HandleBlockLineDuplication";

@@ -5,4 +5,3 @@ export * from "./NodeQuery";
 export * from "./ObserveEditorNodeAttachment";
 export * from "./OverlayAppearanceHandler";
 export * from "./SelectionStyle";
-export * from "./SVGs";

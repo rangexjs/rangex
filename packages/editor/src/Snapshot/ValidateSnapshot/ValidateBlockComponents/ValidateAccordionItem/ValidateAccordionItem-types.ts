@@ -1,9 +1,4 @@
-import type {
-	ComponentDraft,
-	DetachedContextDraft,
-	DetachedContextSnapshot,
-	HTMLLayoutDraft,
-} from "@rangex/core";
+import type { ComponentDraft, HTMLLayoutDraft } from "@rangex/core";
 import type {
 	AccordionItemAttrValidators,
 	CreateAccordionItemAttrValidatorsParams,
@@ -13,19 +8,6 @@ import type {
 	ValidateComponentParams,
 	ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
-
-// Without domAttrs: they're resolved by an empty shape (see resolveDraftDOMAttrs). The shadow tree is left to the Sanitizer
-export type DetachedContextState = Omit<
-	DetachedContextSnapshot,
-	"uniqueId" | "childNodes" | "domAttrs" | "shadowTreeSnapshot"
->;
-
-export interface ValidateChevronParams {
-	componentDraft: ComponentDraft;
-	detachedContextDraft: DetachedContextDraft;
-}
-
-export type ValidateChevronResult = ValidateComponentResult;
 
 export interface ValidateSummaryParams {
 	componentDraft: ComponentDraft;
