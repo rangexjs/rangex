@@ -1,8 +1,16 @@
 import type { BlockComponent } from "@rangex/core";
 import type {
+	AccordionItemAttrs,
+	AccordionItemAttrsShape,
+	AccordionItemAttrValidators,
+	CreateAccordionItemAttrValidatorsParams,
+} from "#dom-attrs";
+import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	RemoveConfigPort,
 	RemovePublicPort,
 	UnwrapConfigPort,
@@ -17,12 +25,22 @@ export interface AccordionItemState {
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 
-export type OnInsertCallbackFn = () => void;
-export type OnWrapCallbackFn = () => void;
+export interface AccordionItemPlacementOption {
+	attrs: AccordionItemAttrs;
+}
+
+export interface InsertParams extends AccordionItemPlacementOption {}
+
+export interface WrapParams extends AccordionItemPlacementOption {}
+
+export type OnInsertCallbackFn = (params: InsertParams) => void;
+export type OnWrapCallbackFn = (params: WrapParams) => void;
 
 export interface UpdateStateParams extends AccordionItemState {}
 
 export interface AccordionItemConfigPortProps {
+	readonly attrValidators: AccordionItemAttrValidators;
+
 	updateState(params: UpdateStateParams): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
@@ -33,7 +51,8 @@ export interface AccordionItemConfigPort
 	extends AccordionItemConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+		CurrentComponentConfigPort<BlockComponent>,
+		DOMAttrsConfigPort<AccordionItemAttrsShape> {}
 
 export interface AccordionItemPublicPortProps {
 	readonly canInsert: boolean;
@@ -42,22 +61,25 @@ export interface AccordionItemPublicPortProps {
 	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
 
-	insert(): void;
-	wrap(): void;
+	insert(params: InsertParams): void;
+	wrap(params: WrapParams): void;
 }
 
 export interface AccordionItemPublicPort
 	extends AccordionItemPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+		CurrentComponentPublicPort,
+		DOMAttrsPublicPort<AccordionItemAttrsShape> {}
 
 export interface AccordionItemAdapter {
 	configPort: AccordionItemConfigPort;
 	publicPort: AccordionItemPublicPort;
 }
 
-export interface AccordionItemSettings {}
+export interface AccordionItemSettings {
+	attrValidators?: CreateAccordionItemAttrValidatorsParams;
+}
 
 export interface CreateAccordionItemAdapterParams
 	extends CreateAdapterParams<AccordionItemSettings> {}

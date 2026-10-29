@@ -15,6 +15,7 @@ export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
+	const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
 	const [isSelectionActive, setIsSelectionActive] = createSignal(
 		publicPort.isSelectionActive,
 	);
@@ -22,12 +23,14 @@ export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+	onCleanup(publicPort.onDOMAttrsUpdate(setDOMAttrs));
 	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveAccordionItemPort = {
 		canInsert,
 		canWrap,
 		currentComponent,
+		domAttrs,
 		isSelectionActive,
 	};
 

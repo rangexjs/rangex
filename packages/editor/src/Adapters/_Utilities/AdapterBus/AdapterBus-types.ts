@@ -1,4 +1,5 @@
 import type {
+	AccordionItemAttrValidators,
 	AudioAttrs,
 	AudioAttrValidators,
 	EmbedAttrs,
@@ -17,6 +18,7 @@ export type MediaType = (typeof mediaTypes)[number];
  * The attribute validators of each Adapter whose component has attributes, by Adapter name
  */
 export interface AttrValidatorsByAdapter {
+	accordionItem: AccordionItemAttrValidators;
 	audio: AudioAttrValidators;
 	embed: EmbedAttrValidators;
 	image: ImageAttrValidators;

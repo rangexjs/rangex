@@ -1,3 +1,4 @@
+export * from "./AccordionItemAttrs";
 export * from "./BlockAlign";
 export * from "./CaretMenu";
 export * from "./CSSAttributes";

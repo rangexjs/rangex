@@ -1,3 +1,4 @@
+import { accordionItemAttrs } from "../../../_Utilities";
 import type {
 	BuildCommandMenuActionsParams,
 	BuildCommandMenuActionsResult,
@@ -112,7 +113,7 @@ export const buildCommandMenuActions = ({
 	if (accordionItem) {
 		actions.set("accordion-item", {
 			icon: "CaretCircleRight",
-			onSelect: () => accordionItem.insert(),
+			onSelect: () => accordionItem.insert({ attrs: accordionItemAttrs }),
 		});
 	}
 

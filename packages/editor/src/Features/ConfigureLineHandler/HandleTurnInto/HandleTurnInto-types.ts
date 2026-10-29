@@ -6,6 +6,7 @@ import type {
 	List,
 	NestedEditable,
 } from "@rangex/core";
+import type { AdapterBus } from "#adapters";
 import type {
 	LineHandlerConfigPort,
 	TurnIntoPlacementOption,
@@ -61,7 +62,15 @@ export interface TurnLineIntoParams {
 	turnIntoParams: TurnIntoPlacementOption;
 }
 
+export interface ValidateTurnIntoAttrsParams {
+	adapterBus: AdapterBus;
+	turnIntoParams: TurnIntoPlacementOption;
+}
+
+export type ValidateTurnIntoAttrsResult = boolean;
+
 export interface HandleTurnIntoParams {
+	adapterBus: AdapterBus;
 	configPort: LineHandlerConfigPort;
 	editorAPI: EditorAPI;
 	blockComponentPlacement: BlockComponentPlacement;

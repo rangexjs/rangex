@@ -3,6 +3,7 @@ import type {
 	TurnIntoAvailability,
 } from "@rangex/editor/line-handler";
 import type { UIOptions } from "#context";
+import { accordionItemAttrs } from "../../../_Utilities";
 import type { MenuItem } from "../_Utilities";
 
 interface CreateTurnIntoItemsParams {
@@ -29,7 +30,11 @@ const createTurnIntoItems = ({
 			type: "button",
 			label: "Accordion Item",
 			icon: "CaretCircleRight",
-			onClick: () => lineHandler.turnInto({ name: "accordion-item" }),
+			onClick: () =>
+				lineHandler.turnInto({
+					name: "accordion-item",
+					attrs: accordionItemAttrs,
+				}),
 		});
 	}
 

@@ -7,54 +7,24 @@ import {
 	createDetachedContext,
 	createHTMLLayout,
 	createNestedEditable,
-	nestedEditableRole,
-	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#constants";
+import { componentsName } from "#constants";
+import { toDOMAttrs } from "#dom-attrs";
 import { CaretCircleLeft } from "#engine-links";
 import { createAccordionItemStorage } from "#storage";
 import { createUploadSVG } from "../../CreateUploadSVG";
 import type {
 	CreateAccordionItemParams,
 	CreateAccordionItemResult,
-	GetAccordionItemPartsParams,
-	GetAccordionItemPartsResult,
 } from "./CreateAccordionItem-types";
 
 /*
- * Returns the accordion item's editable parts: the single-line summary editable (the
- * NestedEditable directly inside `summary`) and the multi-line body editable (the
- * NestedEditable directly inside `details`).
- */
-export const getAccordionItemParts = ({
-	accordionItem,
-}: GetAccordionItemPartsParams): GetAccordionItemPartsResult => {
-	const summaryNestedEditable = accordionItem.$$querySelector(
-		`summary > ${nestedEditableRoleSelector}`,
-	);
-
-	if (summaryNestedEditable?.$$editorRole !== nestedEditableRole) {
-		throw new Error("SummaryNestedEditable's type is invalid.");
-	}
-
-	const bodyNestedEditable = accordionItem.$$querySelector(
-		`details > ${nestedEditableRoleSelector}`,
-	);
-
-	if (bodyNestedEditable?.$$editorRole !== nestedEditableRole) {
-		throw new Error("BodyNestedEditable's type is invalid.");
-	}
-
-	return { summaryNestedEditable, bodyNestedEditable };
-};
-
-/*
  * Builds an accordion item block component: a collapsible `details`/`summary` element with
- * a chevron icon, a single-line editable summary, and a multi-line editable body. `open` sets
- * the `details` element's initial expanded state.
+ * a chevron icon, a single-line editable summary, and a multi-line editable body, with the given
+ * attributes of its line and `details`. They aren't validated here.
  */
 export const createAccordionItem = ({
-	open = false,
+	attrs,
 	childNodes,
 }: CreateAccordionItemParams): CreateAccordionItemResult => {
 	const summaryNestedEditable = createNestedEditable({
@@ -87,9 +57,7 @@ export const createAccordionItem = ({
 	svg.setAttribute("part", "chevron");
 
 	const blockComponentLine = createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.accordionItem,
@@ -101,7 +69,7 @@ export const createAccordionItem = ({
 			childNodes: [
 				createHTMLLayout({
 					localName: "details",
-					domAttrs: { open: open ? "" : undefined },
+					domAttrs: toDOMAttrs(attrs.details),
 					childNodes: [
 						createHTMLLayout({
 							localName: "summary",

@@ -1,21 +1,8 @@
-import type {
-	BlockComponent,
-	BlockComponentLine,
-	Line,
-	NestedEditable,
-} from "@rangex/core";
-
-export interface GetAccordionItemPartsParams {
-	accordionItem: BlockComponentLine | BlockComponent;
-}
-
-export interface GetAccordionItemPartsResult {
-	summaryNestedEditable: NestedEditable;
-	bodyNestedEditable: NestedEditable;
-}
+import type { BlockComponentLine, Line } from "@rangex/core";
+import type { AccordionItemAttrs } from "#dom-attrs";
 
 export interface CreateAccordionItemParams {
-	open?: boolean;
+	attrs: AccordionItemAttrs;
 	childNodes?: Line[];
 }
 

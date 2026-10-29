@@ -12,6 +12,7 @@ import {
 	nestedEditableRoleSelector,
 } from "@rangex/core";
 import { type BlockComponentName, componentsName } from "#constants";
+import { accordionItemAttrsShape, validateComponentAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
 import {
 	createAccordionItem,
@@ -33,6 +34,8 @@ import type {
 	ShouldSkipFirstLineParams,
 	ShouldSkipFirstLineResult,
 	TurnLineIntoParams,
+	ValidateTurnIntoAttrsParams,
+	ValidateTurnIntoAttrsResult,
 	WrapContentLineParams,
 } from "./HandleTurnInto-types";
 
@@ -69,11 +72,19 @@ const createBlockComponent = (
 
 	if (params.name === componentsName.accordionItem) {
 		const blockComponentLine = createAccordionItem({
-			open: true,
+			attrs: params.attrs,
 			childNodes,
 		});
+		const accordionItem = blockComponentLine.$$querySelector(
+			blockComponentRoleSelector,
+		);
+
+		if (accordionItem?.$$editorRole !== blockComponentRole) {
+			throw new Error("AccordionItem's type is invalid.");
+		}
+
 		const { bodyNestedEditable } = getAccordionItemParts({
-			accordionItem: blockComponentLine,
+			blockComponent: accordionItem,
 		});
 
 		return { blockComponentLine, wrapTarget: bodyNestedEditable };
@@ -225,6 +236,26 @@ const replaceBlockComponentLine = ({
 	});
 };
 
+/*
+ * Whether the attributes the component is turned into with are valid. Only an AccordionItem has attributes.
+ */
+const validateTurnIntoAttrs = ({
+	adapterBus,
+	turnIntoParams,
+}: ValidateTurnIntoAttrsParams): ValidateTurnIntoAttrsResult => {
+	if (turnIntoParams.name !== componentsName.accordionItem) {
+		return true;
+	}
+
+	const attrsMismatch = validateComponentAttrs({
+		componentAttrs: turnIntoParams.attrs,
+		componentAttrsShape: accordionItemAttrsShape,
+		componentAttrValidators: adapterBus.getAttrValidators("accordionItem"),
+	});
+
+	return !attrsMismatch;
+};
+
 const turnLineInto = ({
 	editorAPI,
 	blockComponentPlacement,
@@ -257,6 +288,7 @@ const turnLineInto = ({
  * wrapped into it, while a BlockComponentLine has its component replaced by it.
  */
 export const handleTurnInto = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 	blockComponentPlacement,
@@ -268,6 +300,12 @@ export const handleTurnInto = ({
 		const currentLine = getCurrentLine();
 
 		if (!currentLine) {
+			return;
+		}
+
+		const isValid = validateTurnIntoAttrs({ adapterBus, turnIntoParams });
+
+		if (!isValid) {
 			return;
 		}
 

@@ -1,7 +1,12 @@
 import type { BlockComponent } from "@rangex/core";
+import {
+	type AccordionItemAttrsShape,
+	createAccordionItemAttrValidators,
+} from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createEmitter,
 	createRemovePort,
 	createStateEmitter,
@@ -14,17 +19,26 @@ import type {
 	AccordionItemPublicPortProps,
 	CreateAccordionItemAdapterParams,
 	CreateAccordionItemAdapterResult,
+	InsertParams,
 	OnInsertCallbackFn,
 	OnWrapCallbackFn,
 	UpdateStateParams,
+	WrapParams,
 } from "./AccordionItemAdapter-types";
 
 export const createAccordionItemAdapter = (
 	...params: CreateAccordionItemAdapterParams
 ): CreateAccordionItemAdapterResult => {
-	const [_settings, { adapterBus }] = params;
+	const [{ attrValidators = {} }, { adapterBus }] = params;
+
+	const accordionItemAttrValidators =
+		createAccordionItemAttrValidators(attrValidators);
 
 	adapterBus.registerAdapter("accordionItem");
+	adapterBus.registerAttrValidators(
+		"accordionItem",
+		accordionItemAttrValidators,
+	);
 
 	// States
 	const canInsertState = createStateEmitter<boolean>(false);
@@ -37,6 +51,7 @@ export const createAccordionItemAdapter = (
 	const removePort = createRemovePort();
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
+	const domAttrsPort = createDOMAttrsPort<AccordionItemAttrsShape>();
 
 	const updateState = ({ canInsert, canWrap }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
@@ -52,7 +67,12 @@ export const createAccordionItemAdapter = (
 		removePort.configPort,
 		unwrapPort.configPort,
 		currentComponentPort.configPort,
+		domAttrsPort.configPort,
 		{
+			get attrValidators() {
+				return accordionItemAttrValidators;
+			},
+
 			updateState(params) {
 				updateState(params);
 			},
@@ -71,6 +91,7 @@ export const createAccordionItemAdapter = (
 		removePort.publicPort,
 		unwrapPort.publicPort,
 		currentComponentPort.publicPort,
+		domAttrsPort.publicPort,
 		{
 			get canInsert() {
 				return canInsertState.get();
@@ -88,12 +109,12 @@ export const createAccordionItemAdapter = (
 				return canWrapState.subscribe(callback);
 			},
 
-			insert() {
-				insertEmitter.emit();
+			insert(params: InsertParams) {
+				insertEmitter.emit(params);
 			},
 
-			wrap() {
-				wrapEmitter.emit();
+			wrap(params: WrapParams) {
+				wrapEmitter.emit(params);
 			},
 		} satisfies AccordionItemPublicPortProps,
 	);
