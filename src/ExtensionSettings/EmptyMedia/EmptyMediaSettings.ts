@@ -1,4 +1,7 @@
-import type { EmptyMediaExtensionSettings } from "@rangex/rich-text-editor/empty-media";
+import type {
+	EmptyMediaExtensionSettings,
+	UploadMediaFileFn,
+} from "@rangex/rich-text-editor/empty-media";
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 
 /**
@@ -6,19 +9,13 @@ import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
  * sending it anywhere. A consumer building a real editor should replace this with a function
  * that uploads to their own storage and resolves the resulting URL.
  */
-const uploadFile = ({
-	file,
-	onProgress,
-}: {
-	file: File;
-	onProgress?: (progress: number) => void;
-}): Promise<string | null> => {
+const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
 	return new Promise((resolve) => {
 		const reader = new FileReader();
 
 		reader.onprogress = (event) => {
 			if (event.lengthComputable) {
-				onProgress?.(event.loaded / event.total);
+				onProgress(event.loaded / event.total);
 			}
 		};
 
@@ -29,6 +26,14 @@ const uploadFile = ({
 		reader.onerror = () => {
 			resolve(null);
 		};
+
+		reader.onabort = () => {
+			resolve(null);
+		};
+
+		signal.addEventListener("abort", () => {
+			reader.abort();
+		});
 
 		reader.readAsDataURL(file);
 	});

@@ -1,9 +1,6 @@
 import type { MediaType, RangeXEditor } from "@rangex/editor";
 import type { EmbedAttrs } from "@rangex/editor/embed";
-import type {
-	MediaResolveDetail,
-	UploadStatus,
-} from "@rangex/editor/empty-media";
+import type { MediaResolveDetail } from "@rangex/editor/empty-media";
 import { createMemo, createSignal, flush, onCleanup } from "solid-js";
 import {
 	createTextFieldState,
@@ -15,8 +12,16 @@ import {
 	type SegmentedControlControls,
 	TextFieldWrapper,
 } from "#ui";
+import { assertNever } from "#utilities";
+import { isWellFormedUrl, probeMediaSrc } from "../_Utilities";
 
 type MediaTab = "upload" | MediaType;
+
+type SlotStatus =
+	| { status: "idle" }
+	| { status: "uploading"; progress: number }
+	| { status: "checking" }
+	| { status: "error"; message: string };
 
 const NoSupportedMediaTypes = () => (
 	<div class="flex flex-col items-center gap-1 rounded-lg border border-neutral-300 border-dashed p-4 text-center text-neutral-500 text-sm dark:border-neutral-700 dark:text-neutral-400">
@@ -38,16 +43,15 @@ const TabLabel = (icon: IconName, label: string) => (
 );
 
 interface StatusIndicatorProps {
-	uploadStatus: UploadStatus;
+	status: SlotStatus;
 }
 
 const StatusIndicator = (props: StatusIndicatorProps) => {
 	const progress = () =>
-		props.uploadStatus.status === "uploading" ? props.uploadStatus.progress : 0;
+		props.status.status === "uploading" ? props.status.progress : 0;
 
 	const display = () =>
-		props.uploadStatus.status === "checking" ||
-		props.uploadStatus.status === "uploading"
+		props.status.status === "checking" || props.status.status === "uploading"
 			? "flex"
 			: "none";
 
@@ -57,8 +61,8 @@ const StatusIndicator = (props: StatusIndicatorProps) => {
 			class="mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400"
 			style={{ display: display() }}
 		>
-			<span hidden={props.uploadStatus.status !== "checking"}>Checking…</span>
-			<span hidden={props.uploadStatus.status !== "uploading"}>
+			<span hidden={props.status.status !== "checking"}>Checking…</span>
+			<span hidden={props.status.status !== "uploading"}>
 				Uploading… {Math.round(progress() * 100)}%
 			</span>
 		</div>
@@ -147,7 +151,21 @@ const getMediaTabControls = (
 	return controls;
 };
 
+export interface UploadMediaFileParams {
+	file: File;
+	onProgress: (progress: number) => void;
+	// Aborted once the placeholder is removed
+	signal: AbortSignal;
+}
+
+// Resolves to the uploaded file's URL, or null if it couldn't be uploaded
+export type UploadMediaFileFn = (
+	params: UploadMediaFileParams,
+) => Promise<string | null>;
+
 export interface EmptyMediaSlotSettings {
+	// Uploads a picked or dropped file (e.g. to the app's storage)
+	uploadFile: UploadMediaFileFn;
 	// Turns a pasted embed URL into the one to frame (e.g. a share link into its embed URL)
 	transformEmbedURL?: (url: string) => string;
 	// The iframe's other attributes every Embed is inserted with (e.g. its sandbox)
@@ -162,7 +180,7 @@ export interface EmptyMediaSlotProps {
 
 interface CreateMediaResolveDetailParams {
 	type: MediaType;
-	src: string | File;
+	src: string;
 	settings: EmptyMediaSlotSettings;
 }
 
@@ -207,10 +225,6 @@ const createMediaResolveDetail = ({
 		};
 	}
 
-	if (typeof src !== "string") {
-		throw new Error("An embed's src must be a URL.");
-	}
-
 	const { transformEmbedURL = (url) => url, embedIframeAttrs = {} } = settings;
 
 	return {
@@ -223,12 +237,63 @@ const createMediaResolveDetail = ({
 	};
 };
 
+/*
+ * Returns the media element's src.
+ */
+const getMediaSrc = (detail: MediaResolveDetail) => {
+	if (detail.type === "image") {
+		return detail.attrs.img.src;
+	}
+
+	if (detail.type === "video") {
+		return detail.attrs.video.src;
+	}
+
+	if (detail.type === "audio") {
+		return detail.attrs.audio.src;
+	}
+
+	if (detail.type === "embed") {
+		return detail.attrs.iframe.src;
+	}
+
+	return assertNever(detail);
+};
+
+interface ValidateMediaAttrsParams {
+	editor: RangeXEditor;
+	detail: MediaResolveDetail;
+}
+
+/*
+ * Validates the media's attributes by its component's validators. Returns whether they're valid.
+ */
+const validateMediaAttrs = ({ editor, detail }: ValidateMediaAttrsParams) => {
+	if (detail.type === "image") {
+		return !editor.image?.validateDOMAttrs(detail.attrs);
+	}
+
+	if (detail.type === "video") {
+		return !editor.video?.validateDOMAttrs(detail.attrs);
+	}
+
+	if (detail.type === "audio") {
+		return !editor.audio?.validateDOMAttrs(detail.attrs);
+	}
+
+	if (detail.type === "embed") {
+		return !editor.embed?.validateDOMAttrs(detail.attrs);
+	}
+
+	return assertNever(detail);
+};
+
 /**
- * Dumb Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
- * SegmentedControl between an Upload tab (file picker) and one URL tab per media type. Never
- * decides when it's "done": `uploadStatus` is read from `emptyMedia` and kept live via
- * subscription, and every capture just forwards through `emptyMedia.resolve` — the Editor
- * side owns uploading and resolution.
+ * Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
+ * SegmentedControl between an Upload tab (file picker) and one URL tab per media type. A file
+ * is uploaded first (see uploadFile), then every capture is validated, checked that it loads
+ * (not for an embed), and resolved through `emptyMedia.resolve`, which replaces the placeholder.
+ * The upload is aborted once the placeholder is removed (the slot is disposed with it).
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const { emptyMedia } = props.editor;
@@ -243,18 +308,99 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		return <NoSupportedMediaTypes />;
 	}
 
-	const [uploadStatus, setUploadStatus] = createSignal(
-		emptyMedia.getUploadStatus(props.container),
-	);
+	const [status, setStatus] = createSignal<SlotStatus>({ status: "idle" });
 
-	onCleanup(emptyMedia.onUploadStatusUpdate(props.container, setUploadStatus));
+	const abortController = new AbortController();
 
-	const onResolve = (type: MediaType, src: string | File) => {
+	onCleanup(() => {
+		abortController.abort();
+	});
+
+	/*
+	 * Uploads the file, reporting its progress. Returns the uploaded file's URL, or null if it couldn't be uploaded or
+	 * the slot was disposed meanwhile.
+	 */
+	const uploadMediaFile = async (file: File) => {
+		const { signal } = abortController;
+
+		setStatus({ status: "uploading", progress: 0 });
+
+		const src = await props.settings
+			.uploadFile({
+				file,
+				signal,
+				onProgress: (progress) => {
+					setStatus({ status: "uploading", progress });
+				},
+			})
+			.catch(() => null);
+
+		if (signal.aborted) {
+			return null;
+		}
+
+		if (!src) {
+			setStatus({
+				status: "error",
+				message: "Couldn't upload that file. Try a different one.",
+			});
+			return null;
+		}
+
+		return src;
+	};
+
+	const onResolve = async (type: MediaType, src: string | File) => {
+		const url = typeof src === "string" ? src : await uploadMediaFile(src);
+
+		if (url === null) {
+			return;
+		}
+
 		const detail = createMediaResolveDetail({
 			type,
-			src,
+			src: url,
 			settings: props.settings,
 		});
+
+		const mediaSrc = getMediaSrc(detail);
+
+		if (!isWellFormedUrl(mediaSrc)) {
+			setStatus({ status: "error", message: "Enter a valid URL." });
+			return;
+		}
+
+		if (!validateMediaAttrs({ editor: props.editor, detail })) {
+			const message =
+				detail.type === "embed"
+					? "This site can't be embedded."
+					: `This ${detail.type} can't be inserted.`;
+
+			setStatus({ status: "error", message });
+			return;
+		}
+
+		// An embed can't be probed: it's a page, not a media file
+		if (detail.type !== "embed") {
+			setStatus({ status: "checking" });
+
+			const loaded = await probeMediaSrc({
+				type: detail.type,
+				src: mediaSrc,
+			});
+
+			if (abortController.signal.aborted) {
+				return;
+			}
+
+			if (!loaded) {
+				setStatus({
+					status: "error",
+					message: `Couldn't load that ${detail.type}. Check the link and try again.`,
+				});
+				return;
+			}
+		}
 
 		emptyMedia.resolve({ element: props.container, detail });
 	};
@@ -282,14 +428,12 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const uploadFileName = createMemo(() => uploadFile()?.name ?? null);
 
 	const errorMessage = () => {
-		const state = uploadStatus();
+		const state = status();
 		return state.status === "error" ? state.message : "";
 	};
 
 	const pickerDisplay = () =>
-		uploadStatus().status === "idle" || uploadStatus().status === "error"
-			? "flex"
-			: "none";
+		status().status === "idle" || status().status === "error" ? "flex" : "none";
 
 	let fileInput: HTMLInputElement | undefined;
 
@@ -460,7 +604,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 
 				<div
 					role="alert"
-					hidden={uploadStatus().status !== "error"}
+					hidden={status().status !== "error"}
 					class="rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400"
 				>
 					{errorMessage()}
@@ -521,7 +665,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				</div>
 			</div>
 
-			<StatusIndicator uploadStatus={uploadStatus()} />
+			<StatusIndicator status={status()} />
 		</div>
 	);
 };

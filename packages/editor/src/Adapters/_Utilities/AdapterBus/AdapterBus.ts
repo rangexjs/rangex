@@ -3,7 +3,7 @@ import type { AdapterName } from "../Utilities-types";
 import type {
 	AttrValidatorsAdapterName,
 	AttrValidatorsByAdapter,
-	MediaResolveCallbackParams,
+	MediaResolveDetail,
 	OnMediaResolveCallbackFn,
 	OnSwapToEmptyMediaCallbackFn,
 } from "./AdapterBus-types";
@@ -64,7 +64,7 @@ export class AdapterBus {
 		return this.#mediaResolveEmitter.subscribe(callback);
 	}
 
-	emitMediaResolve(params: MediaResolveCallbackParams) {
+	emitMediaResolve(params: MediaResolveDetail) {
 		this.#mediaResolveEmitter.emit(params);
 	}
 

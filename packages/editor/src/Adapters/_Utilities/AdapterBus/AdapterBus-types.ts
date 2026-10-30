@@ -31,14 +31,12 @@ export type AttrValidatorsAdapterName = keyof AttrValidatorsByAdapter;
 /*
  * The resolved media, with every attribute of its component
  */
-export type MediaResolveCallbackParams =
+export type MediaResolveDetail =
 	| { type: "image"; attrs: ImageAttrs }
 	| { type: "video"; attrs: VideoAttrs }
 	| { type: "audio"; attrs: AudioAttrs }
 	| { type: "embed"; attrs: EmbedAttrs };
 
-export type OnMediaResolveCallbackFn = (
-	params: MediaResolveCallbackParams,
-) => void;
+export type OnMediaResolveCallbackFn = (params: MediaResolveDetail) => void;
 
 export type OnSwapToEmptyMediaCallbackFn = () => void;

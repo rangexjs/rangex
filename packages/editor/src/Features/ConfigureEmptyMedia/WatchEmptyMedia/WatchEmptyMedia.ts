@@ -4,8 +4,6 @@ import {
 	detachedContextRole,
 	isEditorNode,
 } from "@rangex/core";
-import type { MediaResolveCallbackParams } from "#adapters";
-import type { MediaResolveDetail } from "#adapters/EmptyMedia";
 import { componentsName, createComponentSelector } from "#constants";
 import {
 	audioAttrsShape,
@@ -14,20 +12,13 @@ import {
 	validateComponentAttrs,
 	videoAttrsShape,
 } from "#dom-attrs";
-import {
-	getClosestBlockComponent,
-	isWellFormedUrl,
-	probeMediaSrc,
-} from "#engine-links";
+import { getClosestBlockComponent } from "#engine-links";
 import { assertNever } from "#utilities";
 import type {
 	FinalizeResolveParams,
-	ResolveMediaSrcParams,
-	ResolveMediaSrcResult,
 	ValidateMediaAttrsParams,
 	WatchEmptyMediaParams,
 	WatchEmptyMediaResult,
-	WithResolvedSrcParams,
 } from "./WatchEmptyMedia-types";
 
 const emptyMediaSelector = createComponentSelector(componentsName.emptyMedia);
@@ -46,82 +37,16 @@ const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 };
 
 /*
- * Returns the media element's src of a submission: a URL, or a File to upload.
- */
-const getMediaSrc = (detail: MediaResolveDetail): string | File => {
-	if (detail.type === "image") {
-		return detail.attrs.img.src;
-	}
-
-	if (detail.type === "video") {
-		return detail.attrs.video.src;
-	}
-
-	if (detail.type === "audio") {
-		return detail.attrs.audio.src;
-	}
-
-	if (detail.type === "embed") {
-		return detail.attrs.iframe.src;
-	}
-
-	return assertNever(detail);
-};
-
-/*
- * Returns a submission's attributes with its media element's src replaced by the resolved one.
- */
-const withResolvedSrc = ({
-	detail,
-	src,
-}: WithResolvedSrcParams): MediaResolveCallbackParams => {
-	if (detail.type === "image") {
-		const { attrs } = detail;
-
-		return { type: "image", attrs: { ...attrs, img: { ...attrs.img, src } } };
-	}
-
-	if (detail.type === "video") {
-		const { attrs } = detail;
-
-		return {
-			type: "video",
-			attrs: { ...attrs, video: { ...attrs.video, src } },
-		};
-	}
-
-	if (detail.type === "audio") {
-		const { attrs } = detail;
-
-		return {
-			type: "audio",
-			attrs: { ...attrs, audio: { ...attrs.audio, src } },
-		};
-	}
-
-	if (detail.type === "embed") {
-		const { attrs } = detail;
-
-		return {
-			type: "embed",
-			attrs: { ...attrs, iframe: { ...attrs.iframe, src } },
-		};
-	}
-
-	return assertNever(detail);
-};
-
-/*
  * Validates the media's attributes by its component's validators, the same way every attribute written into the
  * editor is (see validateComponentAttrs). Returns whether they're valid.
  */
 const validateMediaAttrs = ({
 	adapterBus,
-	params,
+	detail,
 }: ValidateMediaAttrsParams) => {
-	if (params.type === "image") {
+	if (detail.type === "image") {
 		const mismatch = validateComponentAttrs({
-			componentAttrs: params.attrs,
+			componentAttrs: detail.attrs,
 			componentAttrsShape: imageAttrsShape,
 			componentAttrValidators: adapterBus.getAttrValidators("image"),
 		});
@@ -129,9 +54,9 @@ const validateMediaAttrs = ({
 		return !mismatch;
 	}
 
-	if (params.type === "video") {
+	if (detail.type === "video") {
 		const mismatch = validateComponentAttrs({
-			componentAttrs: params.attrs,
+			componentAttrs: detail.attrs,
 			componentAttrsShape: videoAttrsShape,
 			componentAttrValidators: adapterBus.getAttrValidators("video"),
 		});
@@ -139,9 +64,9 @@ const validateMediaAttrs = ({
 		return !mismatch;
 	}
 
-	if (params.type === "audio") {
+	if (detail.type === "audio") {
 		const mismatch = validateComponentAttrs({
-			componentAttrs: params.attrs,
+			componentAttrs: detail.attrs,
 			componentAttrsShape: audioAttrsShape,
 			componentAttrValidators: adapterBus.getAttrValidators("audio"),
 		});
@@ -149,9 +74,9 @@ const validateMediaAttrs = ({
 		return !mismatch;
 	}
 
-	if (params.type === "embed") {
+	if (detail.type === "embed") {
 		const mismatch = validateComponentAttrs({
-			componentAttrs: params.attrs,
+			componentAttrs: detail.attrs,
 			componentAttrsShape: embedAttrsShape,
 			componentAttrValidators: adapterBus.getAttrValidators("embed"),
 		});
@@ -159,70 +84,13 @@ const validateMediaAttrs = ({
 		return !mismatch;
 	}
 
-	return assertNever(params);
-};
-
-/**
- * Resolves a submission's media src down to a URL, or `null` if it was invalid (an error is pushed into the slot
- * before returning `null`). File uploads report progress back into the slot as they go, guarded by `isStillCurrent`
- * since the block can disappear mid-upload.
- */
-const resolveMediaSrc = async ({
-	mediaSrc,
-	element,
-	configPort,
-	isStillCurrent,
-}: ResolveMediaSrcParams): ResolveMediaSrcResult => {
-	if (typeof mediaSrc === "string") {
-		if (!isWellFormedUrl(mediaSrc)) {
-			configPort.updateElementState({
-				element,
-				uploadStatus: { status: "error", message: "Enter a valid URL." },
-			});
-			return null;
-		}
-
-		return mediaSrc;
-	}
-
-	configPort.updateElementState({
-		element,
-		uploadStatus: { status: "uploading", progress: 0 },
-	});
-
-	const src = await configPort.uploadFile({
-		file: mediaSrc,
-		onProgress: (progress) => {
-			if (!isStillCurrent()) {
-				return;
-			}
-
-			configPort.updateElementState({
-				element,
-				uploadStatus: { status: "uploading", progress },
-			});
-		},
-	});
-
-	if (!src) {
-		configPort.updateElementState({
-			element,
-			uploadStatus: {
-				status: "error",
-				message: "Couldn't read that file. Try a different one.",
-			},
-		});
-		return null;
-	}
-
-	return src;
+	return assertNever(detail);
 };
 
 /*
- * Tracks empty media block components in the root editable, mounting a picker UI for each one
- * and resolving submissions (URL, upload, or embed) down to a final media source, replacing the
- * placeholder block once resolved. Reacts to whatever is actually in the tree, however it got
- * there. Returns a cleanup function.
+ * Tracks empty media block components in the root editable, mounting a slotted element for each one, and resolves
+ * submissions (see EmptyMedia's resolve): replaces the placeholder block with the media if its attributes are valid.
+ * Reacts to whatever is actually in the tree, however it got there. Returns a cleanup function.
  */
 export const watchEmptyMedia = ({
 	adapterBus,
@@ -245,7 +113,7 @@ export const watchEmptyMedia = ({
 	 */
 	const finalizeResolve = ({
 		blockComponent,
-		params,
+		detail,
 	}: FinalizeResolveParams) => {
 		const blockComponentLine = blockComponent.$$parentElement;
 
@@ -262,97 +130,37 @@ export const watchEmptyMedia = ({
 
 		editorAPI.getSnapshotTimeline().registerSnapshotBoundary();
 
-		configPort.emitMediaResolve(params);
+		configPort.emitMediaResolve(detail);
 	};
 
-	const unsubscribeResolve = configPort.onResolve(
-		async ({ element, detail }) => {
-			const assignedSlot = element.assignedSlot;
+	const unsubscribeResolve = configPort.onResolve(({ element, detail }) => {
+		const assignedSlot = element.assignedSlot;
 
-			if (!(assignedSlot && isEditorNode(assignedSlot))) {
-				return;
-			}
+		if (!(assignedSlot && isEditorNode(assignedSlot))) {
+			return;
+		}
 
-			if (assignedSlot.$$editorRole !== detachedContextRole) {
-				return;
-			}
+		if (assignedSlot.$$editorRole !== detachedContextRole) {
+			return;
+		}
 
-			const blockComponent = getClosestBlockComponent({
-				fromNode: assignedSlot,
-				components: [componentsName.emptyMedia],
-			});
+		const blockComponent = getClosestBlockComponent({
+			fromNode: assignedSlot,
+			components: [componentsName.emptyMedia],
+		});
 
-			if (!blockComponent) {
-				return;
-			}
+		if (!blockComponent) {
+			return;
+		}
 
-			// The block might not be available anymore by the time `src` is resolved.
-			const isStillCurrent = () =>
-				containersByBlock.get(blockComponent) === element;
+		const isValid = validateMediaAttrs({ adapterBus, detail });
 
-			const src = await resolveMediaSrc({
-				mediaSrc: getMediaSrc(detail),
-				element,
-				configPort,
-				isStillCurrent,
-			});
+		if (!isValid) {
+			return;
+		}
 
-			if (src === null) {
-				return;
-			}
-
-			if (!isStillCurrent()) {
-				return;
-			}
-
-			const params = withResolvedSrc({ detail, src });
-
-			const isValid = validateMediaAttrs({ adapterBus, params });
-
-			if (!isValid) {
-				const message =
-					params.type === "embed"
-						? "This site can't be embedded."
-						: `This ${params.type} can't be inserted.`;
-
-				configPort.updateElementState({
-					element,
-					uploadStatus: { status: "error", message },
-				});
-				return;
-			}
-
-			// An embed can't be probed: it's a page, not a media file
-			if (params.type === "embed") {
-				finalizeResolve({ blockComponent, params });
-				return;
-			}
-
-			configPort.updateElementState({
-				element,
-				uploadStatus: { status: "checking" },
-			});
-
-			const loaded = await probeMediaSrc({ type: params.type, src });
-
-			if (!isStillCurrent()) {
-				return;
-			}
-
-			if (!loaded) {
-				configPort.updateElementState({
-					element,
-					uploadStatus: {
-						status: "error",
-						message: `Couldn't load that ${params.type}. Check the link and try again.`,
-					},
-				});
-				return;
-			}
-
-			finalizeResolve({ blockComponent, params });
-		},
-	);
+		finalizeResolve({ blockComponent, detail });
+	});
 
 	const queryMediaBlocks = (): Set<BlockComponent> => {
 		const queriedMediaBlocks =

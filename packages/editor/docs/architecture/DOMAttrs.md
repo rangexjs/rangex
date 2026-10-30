@@ -18,10 +18,11 @@ share link to its embed URL, which repairs a stored snapshot. The dev view's `sr
 (YouTube, Vimeo, Spotify, Loom, Dailymotion, CodePen).
 
 Media is inserted with every attribute of its component, as Link is: `emptyMedia.resolve({ element, detail })` takes
-`{ type, attrs }` (`MediaResolveDetail`), with the media element's `src` as a URL or a `File` to upload. EmptyMedia
-uploads it, validates the attributes by the component's validators (`adapterBus.getAttrValidators(type)`), checks that
-the media loads (not for an Embed), and only then replaces the placeholder: the component's `create*` takes the
-complete attributes, with no defaults of its own.
+`{ type, attrs }` (`MediaResolveDetail`), with the media element's `src` as a URL: uploading a file and checking that
+the media loads are the consumer's, before they call `resolve`. EmptyMedia validates the attributes by the component's
+validators (`adapterBus.getAttrValidators(type)`), and only then replaces the placeholder: invalid attributes are
+ignored, so the consumer should check them first (`validateDOMAttrs` of the media's port) to report why. The
+component's `create*` takes the complete attributes, with no defaults of its own.
 
 ## Rules
 
