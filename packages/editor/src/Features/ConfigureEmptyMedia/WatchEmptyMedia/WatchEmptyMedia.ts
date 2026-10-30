@@ -5,18 +5,18 @@ import {
 	isEditorNode,
 } from "@rangex/core";
 import { componentsName, createComponentSelector } from "#constants";
-import {
-	audioAttrsShape,
-	embedAttrsShape,
-	imageAttrsShape,
-	validateComponentAttrs,
-	videoAttrsShape,
-} from "#dom-attrs";
 import { getClosestBlockComponent } from "#engine-links";
 import { assertNever } from "#utilities";
+import {
+	validateAudioPlacement,
+	validateEmbedPlacement,
+	validateImagePlacement,
+	validateVideoPlacement,
+} from "../../_Utilities";
 import type {
 	FinalizeResolveParams,
-	ValidateMediaAttrsParams,
+	ValidateMediaPlacementParams,
+	ValidateMediaPlacementResult,
 	WatchEmptyMediaParams,
 	WatchEmptyMediaResult,
 } from "./WatchEmptyMedia-types";
@@ -37,51 +37,63 @@ const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 };
 
 /*
- * Validates the media's attributes by its component's validators, the same way every attribute written into the
- * editor is (see validateComponentAttrs). Returns whether they're valid.
+ * Validates whether the media can be placed, by its component's validators. Returns the mismatch, or null when it's
+ * valid.
  */
-const validateMediaAttrs = ({
+const validateMediaPlacement = ({
 	adapterBus,
 	detail,
-}: ValidateMediaAttrsParams) => {
+}: ValidateMediaPlacementParams): ValidateMediaPlacementResult => {
 	if (detail.type === "image") {
-		const mismatch = validateComponentAttrs({
-			componentAttrs: detail.attrs,
-			componentAttrsShape: imageAttrsShape,
-			componentAttrValidators: adapterBus.getAttrValidators("image"),
+		const imageFailed = validateImagePlacement({
+			attrValidators: adapterBus.getAttrValidators("image"),
+			attrs: detail.attrs,
 		});
 
-		return !mismatch;
+		if (imageFailed) {
+			return imageFailed;
+		}
+
+		return null;
 	}
 
 	if (detail.type === "video") {
-		const mismatch = validateComponentAttrs({
-			componentAttrs: detail.attrs,
-			componentAttrsShape: videoAttrsShape,
-			componentAttrValidators: adapterBus.getAttrValidators("video"),
+		const videoFailed = validateVideoPlacement({
+			attrValidators: adapterBus.getAttrValidators("video"),
+			attrs: detail.attrs,
 		});
 
-		return !mismatch;
+		if (videoFailed) {
+			return videoFailed;
+		}
+
+		return null;
 	}
 
 	if (detail.type === "audio") {
-		const mismatch = validateComponentAttrs({
-			componentAttrs: detail.attrs,
-			componentAttrsShape: audioAttrsShape,
-			componentAttrValidators: adapterBus.getAttrValidators("audio"),
+		const audioFailed = validateAudioPlacement({
+			attrValidators: adapterBus.getAttrValidators("audio"),
+			attrs: detail.attrs,
 		});
 
-		return !mismatch;
+		if (audioFailed) {
+			return audioFailed;
+		}
+
+		return null;
 	}
 
 	if (detail.type === "embed") {
-		const mismatch = validateComponentAttrs({
-			componentAttrs: detail.attrs,
-			componentAttrsShape: embedAttrsShape,
-			componentAttrValidators: adapterBus.getAttrValidators("embed"),
+		const embedFailed = validateEmbedPlacement({
+			attrValidators: adapterBus.getAttrValidators("embed"),
+			attrs: detail.attrs,
 		});
 
-		return !mismatch;
+		if (embedFailed) {
+			return embedFailed;
+		}
+
+		return null;
 	}
 
 	return assertNever(detail);
@@ -153,9 +165,10 @@ export const watchEmptyMedia = ({
 			return;
 		}
 
-		const isValid = validateMediaAttrs({ adapterBus, detail });
+		const placementMismatch = validateMediaPlacement({ adapterBus, detail });
 
-		if (!isValid) {
+		if (placementMismatch) {
+			console.warn(placementMismatch);
 			return;
 		}
 
