@@ -30,8 +30,7 @@ const probeMediaElement = (
 
 /**
  * Attempts to load `src` as the given media type, resolving `true` on success or `false` if
- * it fails to load or `timeoutMs` elapses first. No `"embed"` case: that content can't be
- * verified this way, so callers must gate on type themselves.
+ * it fails to load or `timeoutMs` elapses first..
  */
 export const probeMediaSrc = ({
 	type,

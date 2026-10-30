@@ -1,299 +1,15 @@
-import type { MediaType, RangeXEditor } from "@rangex/editor";
-import type { EmbedAttrs } from "@rangex/editor/embed";
-import type { MediaResolveDetail } from "@rangex/editor/empty-media";
-import { createMemo, createSignal, flush, onCleanup } from "solid-js";
-import {
-	createTextFieldState,
-	FormField,
-	Icon,
-	type IconName,
-	InputTextField,
-	SegmentedControl,
-	type SegmentedControlControls,
-	TextFieldWrapper,
-} from "#ui";
-import { assertNever } from "#utilities";
-import { isWellFormedUrl, probeMediaSrc } from "../_Utilities";
-
-type MediaTab = "upload" | MediaType;
-
-type SlotStatus =
-	| { status: "idle" }
-	| { status: "uploading"; progress: number }
-	| { status: "checking" }
-	| { status: "error"; message: string };
-
-const NoSupportedMediaTypes = () => (
-	<div class="flex flex-col items-center gap-1 rounded-lg border border-neutral-300 border-dashed p-4 text-center text-neutral-500 text-sm dark:border-neutral-700 dark:text-neutral-400">
-		<Icon name="WarningCircle" class="size-6" />
-		<span>No media types are available</span>
-		<span class="text-xs">
-			This editor has no Image, Video, Audio, or Embed extension registered —
-			add at least one to the `extensions` array passed to createRichTextEditor
-			to enable media insertion.
-		</span>
-	</div>
-);
-
-const TabLabel = (icon: IconName, label: string) => (
-	<span class="inline-flex items-center gap-1">
-		<Icon name={icon} class="size-4" />
-		<span class="sr-only md:not-sr-only">{label}</span>
-	</span>
-);
-
-interface StatusIndicatorProps {
-	status: SlotStatus;
-}
-
-const StatusIndicator = (props: StatusIndicatorProps) => {
-	const progress = () =>
-		props.status.status === "uploading" ? props.status.progress : 0;
-
-	const display = () =>
-		props.status.status === "checking" || props.status.status === "uploading"
-			? "flex"
-			: "none";
-
-	return (
-		<div
-			role="status"
-			class="mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400"
-			style={{ display: display() }}
-		>
-			<span hidden={props.status.status !== "checking"}>Checking…</span>
-			<span hidden={props.status.status !== "uploading"}>
-				Uploading… {Math.round(progress() * 100)}%
-			</span>
-		</div>
-	);
-};
-
-const urlPlaceholderByType: Record<MediaType, string> = {
-	image: "https://example.com/image.png",
-	video: "https://example.com/video.mp4",
-	audio: "https://example.com/audio.mp3",
-	embed: "https://example.com/embed",
-};
-
-const detectDroppedFileType = (
-	file: File,
-	supportedMediaTypes: MediaType[],
-): Exclude<MediaType, "embed"> | null => {
-	if (file.type.startsWith("image/") && supportedMediaTypes.includes("image")) {
-		return "image";
-	}
-	if (file.type.startsWith("video/") && supportedMediaTypes.includes("video")) {
-		return "video";
-	}
-	if (file.type.startsWith("audio/") && supportedMediaTypes.includes("audio")) {
-		return "audio";
-	}
-	return null;
-};
-
-const isFileDrag = (event: DragEvent) =>
-	!!event.dataTransfer?.types.includes("Files");
-
-const getMediaTabControls = (
-	supportedMediaTypes: MediaType[],
-): SegmentedControlControls<MediaTab> => {
-	const controls: SegmentedControlControls<MediaTab> = [];
-
-	if (
-		supportedMediaTypes.includes("image") ||
-		supportedMediaTypes.includes("video") ||
-		supportedMediaTypes.includes("audio")
-	) {
-		controls.push({
-			id: "upload",
-			node: TabLabel("FileArrowUp", "Upload"),
-			"aria-label": "Upload",
-		});
-	}
-
-	if (supportedMediaTypes.includes("image")) {
-		controls.push({
-			id: "image",
-			node: TabLabel("FileImage", "Image"),
-			"aria-label": "Image",
-		});
-	}
-
-	if (supportedMediaTypes.includes("video")) {
-		controls.push({
-			id: "video",
-			node: TabLabel("FileVideo", "Video"),
-			"aria-label": "Video",
-		});
-	}
-
-	if (supportedMediaTypes.includes("audio")) {
-		controls.push({
-			id: "audio",
-			node: TabLabel("FileAudio", "Audio"),
-			"aria-label": "Audio",
-		});
-	}
-
-	if (supportedMediaTypes.includes("embed")) {
-		controls.push({
-			id: "embed",
-			node: TabLabel("FileCloud", "Embed"),
-			"aria-label": "Embed",
-		});
-	}
-
-	if (!controls.length) {
-		throw new Error("No tabs available for the supported media types.");
-	}
-
-	return controls;
-};
-
-export interface UploadMediaFileParams {
-	file: File;
-	onProgress: (progress: number) => void;
-	// Aborted once the placeholder is removed
-	signal: AbortSignal;
-}
-
-// Resolves to the uploaded file's URL, or null if it couldn't be uploaded
-export type UploadMediaFileFn = (
-	params: UploadMediaFileParams,
-) => Promise<string | null>;
-
-export interface EmptyMediaSlotSettings {
-	// Uploads a picked or dropped file (e.g. to the app's storage)
-	uploadFile: UploadMediaFileFn;
-	// Turns a pasted embed URL into the one to frame (e.g. a share link into its embed URL)
-	transformEmbedURL?: (url: string) => string;
-	// The iframe's other attributes every Embed is inserted with (e.g. its sandbox)
-	embedIframeAttrs?: Omit<EmbedAttrs["iframe"], "src">;
-}
-
-export interface EmptyMediaSlotProps {
-	editor: RangeXEditor;
-	container: HTMLDivElement;
-	settings: EmptyMediaSlotSettings;
-}
-
-interface CreateMediaResolveDetailParams {
-	type: MediaType;
-	src: string;
-	settings: EmptyMediaSlotSettings;
-}
-
-/*
- * Builds every attribute of the media to insert: centered, with the media element's src and its defaults (e.g. an
- * image's object fit, a video's controls). An embed's URL is transformed first (see transformEmbedURL), and its iframe
- * gets the configured attributes.
- */
-const createMediaResolveDetail = ({
-	type,
-	src,
-	settings,
-}: CreateMediaResolveDetailParams): MediaResolveDetail => {
-	const line = { "data-block-align": "center" };
-
-	if (type === "image") {
-		return {
-			type,
-			attrs: {
-				line,
-				block: {},
-				img: { src, alt: "", "data-object-fit": "cover" },
-			},
-		};
-	}
-
-	if (type === "video") {
-		return {
-			type,
-			attrs: {
-				line,
-				block: {},
-				video: { src, controls: "", "data-object-fit": "cover" },
-			},
-		};
-	}
-
-	if (type === "audio") {
-		return {
-			type,
-			attrs: { line, block: {}, audio: { src, controls: "" } },
-		};
-	}
-
-	const { transformEmbedURL = (url) => url, embedIframeAttrs = {} } = settings;
-
-	return {
-		type,
-		attrs: {
-			line,
-			block: {},
-			iframe: { ...embedIframeAttrs, src: transformEmbedURL(src) },
-		},
-	};
-};
-
-/*
- * Returns the media element's src.
- */
-const getMediaSrc = (detail: MediaResolveDetail) => {
-	if (detail.type === "image") {
-		return detail.attrs.img.src;
-	}
-
-	if (detail.type === "video") {
-		return detail.attrs.video.src;
-	}
-
-	if (detail.type === "audio") {
-		return detail.attrs.audio.src;
-	}
-
-	if (detail.type === "embed") {
-		return detail.attrs.iframe.src;
-	}
-
-	return assertNever(detail);
-};
-
-interface ValidateMediaAttrsParams {
-	editor: RangeXEditor;
-	detail: MediaResolveDetail;
-}
-
-/*
- * Validates the media's attributes by its component's validators. Returns whether they're valid.
- */
-const validateMediaAttrs = ({ editor, detail }: ValidateMediaAttrsParams) => {
-	if (detail.type === "image") {
-		return !editor.image?.validateDOMAttrs(detail.attrs);
-	}
-
-	if (detail.type === "video") {
-		return !editor.video?.validateDOMAttrs(detail.attrs);
-	}
-
-	if (detail.type === "audio") {
-		return !editor.audio?.validateDOMAttrs(detail.attrs);
-	}
-
-	if (detail.type === "embed") {
-		return !editor.embed?.validateDOMAttrs(detail.attrs);
-	}
-
-	return assertNever(detail);
-};
+import { detectMediaFileType } from "../_Utilities";
+import { createFileDropzone } from "./CreateFileDropzone";
+import { createMediaResolver } from "./CreateMediaResolver";
+import type { EmptyMediaSlotProps } from "./EmptyMediaSlot-types";
+import { MediaSourcePicker } from "./MediaSourcePicker";
+import { NoSupportedMediaTypes } from "./NoSupportedMediaTypes";
+import { StatusIndicator } from "./StatusIndicator";
 
 /**
  * Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
- * SegmentedControl between an Upload tab (file picker) and one URL tab per media type. A file
- * is uploaded first (see uploadFile), then every capture is validated, checked that it loads
- * (not for an embed), and resolved through `emptyMedia.resolve`, which replaces the placeholder.
- * The upload is aborted once the placeholder is removed (the slot is disposed with it).
+ * MediaSourcePicker. Every capture goes through a media resolver, which replaces the placeholder
+ * (see createMediaResolver).
  */
 export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 	const { emptyMedia } = props.editor;
@@ -308,264 +24,33 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 		return <NoSupportedMediaTypes />;
 	}
 
-	const [status, setStatus] = createSignal<SlotStatus>({ status: "idle" });
-
-	const abortController = new AbortController();
-
-	onCleanup(() => {
-		abortController.abort();
+	const mediaResolver = createMediaResolver({
+		editor: props.editor,
+		emptyMedia,
+		container: props.container,
+		settings: props.settings,
 	});
 
-	/*
-	 * Uploads the file, reporting its progress. Returns the uploaded file's URL, or null if it couldn't be uploaded or
-	 * the slot was disposed meanwhile.
-	 */
-	const uploadMediaFile = async (file: File) => {
-		const { signal } = abortController;
-
-		setStatus({ status: "uploading", progress: 0 });
-
-		const src = await props.settings
-			.uploadFile({
-				file,
-				signal,
-				onProgress: (progress) => {
-					setStatus({ status: "uploading", progress });
-				},
-			})
-			.catch(() => null);
-
-		if (signal.aborted) {
-			return null;
-		}
-
-		if (!src) {
-			setStatus({
-				status: "error",
-				message: "Couldn't upload that file. Try a different one.",
-			});
-			return null;
-		}
-
-		return src;
-	};
-
-	const onResolve = async (type: MediaType, src: string | File) => {
-		const url = typeof src === "string" ? src : await uploadMediaFile(src);
-
-		if (url === null) {
-			return;
-		}
-
-		const detail = createMediaResolveDetail({
-			type,
-			src: url,
-			settings: props.settings,
-		});
-
-		const mediaSrc = getMediaSrc(detail);
-
-		if (!isWellFormedUrl(mediaSrc)) {
-			setStatus({ status: "error", message: "Enter a valid URL." });
-			return;
-		}
-
-		if (!validateMediaAttrs({ editor: props.editor, detail })) {
-			const message =
-				detail.type === "embed"
-					? "This site can't be embedded."
-					: `This ${detail.type} can't be inserted.`;
-
-			setStatus({ status: "error", message });
-			return;
-		}
-
-		// An embed can't be probed: it's a page, not a media file
-		if (detail.type !== "embed") {
-			setStatus({ status: "checking" });
-
-			const loaded = await probeMediaSrc({
-				type: detail.type,
-				src: mediaSrc,
-			});
-
-			if (abortController.signal.aborted) {
-				return;
-			}
-
-			if (!loaded) {
-				setStatus({
-					status: "error",
-					message: `Couldn't load that ${detail.type}. Check the link and try again.`,
-				});
-				return;
-			}
-		}
-
-		emptyMedia.resolve({ element: props.container, detail });
-	};
-
-	const mediaTabControls = getMediaTabControls(supportedMediaTypes);
-
-	const uploadFileAccept = supportedMediaTypes
-		.filter((type) => type !== "embed")
-		.map((type) => `${type}/*`)
-		.join(",");
-
-	const [activeTab, setActiveTab] = createSignal<MediaTab>(
-		mediaTabControls[0].id,
-	);
-	const [dragActive, setDragActive] = createSignal(false);
-	// dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
-	// needed to tell "left a child" apart from "left the dropzone entirely".
-	let dragDepth = 0;
-
-	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
-		error: { required: { value: true, message: "Field can't be empty." } },
-	});
-
-	const [uploadFile, setUploadFile] = createSignal<File | null>(null);
-	const uploadFileName = createMemo(() => uploadFile()?.name ?? null);
-
-	const errorMessage = () => {
-		const state = status();
-		return state.status === "error" ? state.message : "";
-	};
-
-	const pickerDisplay = () =>
-		status().status === "idle" || status().status === "error" ? "flex" : "none";
-
-	let fileInput: HTMLInputElement | undefined;
-
-	const onTabChange = (tab: MediaTab) => {
-		setActiveTab(tab);
-		urlHandle.reset();
-	};
-
-	const onUploadFileChange = (event: Event) => {
-		const { currentTarget } = event;
-
-		if (!(currentTarget instanceof HTMLInputElement)) {
-			throw new Error("CurrentTarget must be an HTMLInputElement.");
-		}
-
-		const [file] = currentTarget.files ?? [];
-		currentTarget.value = "";
-
-		if (!file) {
-			return;
-		}
-
-		const type = detectDroppedFileType(file, supportedMediaTypes);
-
-		if (!type) {
-			return;
-		}
-
-		setUploadFile(file);
-	};
-
-	const onApply = () => {
-		const tab = activeTab();
-
-		if (tab === "upload") {
-			const file = uploadFile();
-
-			if (!file) {
-				return;
-			}
-
-			const type = detectDroppedFileType(file, supportedMediaTypes);
+	const fileDropzone = createFileDropzone({
+		onFile: (file) => {
+			const type = detectMediaFileType({ file, supportedMediaTypes });
 
 			if (!type) {
 				return;
 			}
 
-			onResolve(type, file);
-			return;
-		}
+			mediaResolver.resolve(type, file);
+		},
+	});
 
-		urlHandle.validate();
-
-		flush();
-
-		if (urlHandle.state().hasError) {
-			return;
-		}
-
-		onResolve(tab, urlHandle.value());
+	const errorMessage = () => {
+		const state = mediaResolver.status();
+		return state.status === "error" ? state.message : null;
 	};
 
-	const onUrlKeyDown = (event: KeyboardEvent) => {
-		if (event.key !== "Enter") {
-			return;
-		}
-
-		onApply();
-	};
-
-	const onDragEnter = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth += 1;
-		setDragActive(true);
-	};
-
-	const onDragOver = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-
-		if (event.dataTransfer) {
-			event.dataTransfer.dropEffect = "copy";
-		}
-	};
-
-	const onDragLeave = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth -= 1;
-
-		if (dragDepth <= 0) {
-			dragDepth = 0;
-			setDragActive(false);
-		}
-	};
-
-	const onDrop = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
-
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth = 0;
-		setDragActive(false);
-
-		const [file] = event.dataTransfer?.files ?? [];
-
-		if (!file) {
-			return;
-		}
-
-		const type = detectDroppedFileType(file, supportedMediaTypes);
-
-		if (!type) {
-			return;
-		}
-
-		onResolve(type, file);
+	const pickerVisible = () => {
+		const { status } = mediaResolver.status();
+		return status === "idle" || status === "error";
 	};
 
 	const stopEditorPropagation = (event: Event) => {
@@ -578,14 +63,16 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			class={[
 				"flex flex-col rounded-lg border border-dashed p-4",
 				{
-					"border-blue-400 bg-blue-50 dark:bg-blue-950": dragActive(),
-					"border-neutral-300 dark:border-neutral-700": !dragActive(),
+					"border-blue-400 bg-blue-50 dark:bg-blue-950":
+						fileDropzone.dragActive(),
+					"border-neutral-300 dark:border-neutral-700":
+						!fileDropzone.dragActive(),
 				},
 			]}
-			onDragEnter={onDragEnter}
-			onDragOver={onDragOver}
-			onDragLeave={onDragLeave}
-			onDrop={onDrop}
+			onDragEnter={fileDropzone.onDragEnter}
+			onDragOver={fileDropzone.onDragOver}
+			onDragLeave={fileDropzone.onDragLeave}
+			onDrop={fileDropzone.onDrop}
 			onKeyDown={stopEditorPropagation}
 			onBeforeInput={stopEditorPropagation}
 			onPointerDown={stopEditorPropagation}
@@ -593,79 +80,16 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 			onCopy={stopEditorPropagation}
 			onCut={stopEditorPropagation}
 		>
-			<div
-				style={{ display: pickerDisplay() }}
-				class="mx-auto w-full max-w-125 flex-col gap-3"
-			>
-				<div class="flex flex-col items-center gap-1 text-neutral-500 text-sm dark:text-neutral-400">
-					<Icon name="FileArrowUp" class="size-6" />
-					<span>Drag and drop, or choose a source below</span>
-				</div>
+			<MediaSourcePicker
+				supportedMediaTypes={supportedMediaTypes}
+				visible={pickerVisible()}
+				errorMessage={errorMessage()}
+				onSubmit={(type, src) => {
+					mediaResolver.resolve(type, src);
+				}}
+			/>
 
-				<div
-					role="alert"
-					hidden={status().status !== "error"}
-					class="rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400"
-				>
-					{errorMessage()}
-				</div>
-
-				<SegmentedControl
-					id={activeTab()}
-					controls={mediaTabControls}
-					onChange={onTabChange}
-					label="Media source"
-					appearance="primary-outline"
-					class="rounded-sm border-solid"
-					commonButtonClass="inline-flex items-center justify-center py-1.5 font-medium text-xs"
-				/>
-
-				<div class={{ hidden: activeTab() !== "upload" }}>
-					<button
-						type="button"
-						class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left font-medium text-sm"
-						onClick={() => fileInput?.click()}
-					>
-						{uploadFileName() ?? "Choose file…"}
-					</button>
-					<input
-						ref={fileInput}
-						type="file"
-						accept={uploadFileAccept}
-						class="hidden"
-						onChange={onUploadFileChange}
-					/>
-				</div>
-
-				<FormField
-					for={urlHandle.id}
-					class={activeTab() === "upload" ? "hidden" : ""}
-					state={urlHandle.state()}
-				>
-					<TextFieldWrapper appearance="primary-outline" size="medium">
-						<InputTextField
-							type="text"
-							aria-label="URL"
-							placeholder={urlPlaceholderByType[activeTab() as MediaType]}
-							spellcheck={false}
-							{...urlControls}
-							onKeyDown={onUrlKeyDown}
-						/>
-					</TextFieldWrapper>
-				</FormField>
-
-				<div class="text-right">
-					<button
-						type="button"
-						class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
-						onClick={onApply}
-					>
-						Apply
-					</button>
-				</div>
-			</div>
-
-			<StatusIndicator status={status()} />
+			<StatusIndicator status={mediaResolver.status()} />
 		</div>
 	);
 };
