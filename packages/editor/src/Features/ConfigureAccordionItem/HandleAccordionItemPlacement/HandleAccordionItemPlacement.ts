@@ -1,6 +1,9 @@
 import { blockComponentRole, blockComponentRoleSelector } from "@rangex/core";
-import { accordionItemAttrsShape, validateComponentAttrs } from "#dom-attrs";
-import { createAccordionItem, getAccordionItemParts } from "../../_Utilities";
+import {
+	createAccordionItem,
+	getAccordionItemParts,
+	validateAccordionItemPlacement,
+} from "../../_Utilities";
 import type {
 	CreateValidAccordionItemParams,
 	CreateValidAccordionItemResult,
@@ -14,13 +17,13 @@ const createValidAccordionItem = ({
 	configPort,
 	attrs,
 }: CreateValidAccordionItemParams): CreateValidAccordionItemResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: accordionItemAttrsShape,
-		componentAttrValidators: configPort.attrValidators,
+	const placementMismatch = validateAccordionItemPlacement({
+		attrValidators: configPort.attrValidators,
+		attrs,
 	});
 
-	if (attrsMismatch) {
+	if (placementMismatch) {
+		console.warn(placementMismatch);
 		return null;
 	}
 

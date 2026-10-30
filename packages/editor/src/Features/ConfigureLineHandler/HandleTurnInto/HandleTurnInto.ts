@@ -12,7 +12,6 @@ import {
 	nestedEditableRoleSelector,
 } from "@rangex/core";
 import { type BlockComponentName, componentsName } from "#constants";
-import { accordionItemAttrsShape, validateComponentAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
 import {
 	createAccordionItem,
@@ -21,6 +20,7 @@ import {
 	createList,
 	createTodoList,
 	getAccordionItemParts,
+	validateAccordionItemPlacement,
 } from "../../_Utilities";
 import type {
 	CreateBlockComponentParams,
@@ -247,13 +247,17 @@ const validateTurnIntoAttrs = ({
 		return true;
 	}
 
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: turnIntoParams.attrs,
-		componentAttrsShape: accordionItemAttrsShape,
-		componentAttrValidators: adapterBus.getAttrValidators("accordionItem"),
+	const placementMismatch = validateAccordionItemPlacement({
+		attrValidators: adapterBus.getAttrValidators("accordionItem"),
+		attrs: turnIntoParams.attrs,
 	});
 
-	return !attrsMismatch;
+	if (placementMismatch) {
+		console.warn(placementMismatch);
+		return false;
+	}
+
+	return true;
 };
 
 const turnLineInto = ({
