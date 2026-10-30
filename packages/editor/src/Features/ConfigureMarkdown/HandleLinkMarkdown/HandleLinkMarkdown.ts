@@ -4,13 +4,9 @@ import {
 	EditorRange,
 } from "@rangex/core";
 import { componentsName } from "#constants";
-import {
-	linkAttrsShape,
-	normalizeLinkAttrs,
-	validateComponentAttrs,
-} from "#dom-attrs";
+import { normalizeLinkAttrs } from "#dom-attrs";
 import { getClosestScopedEditable } from "#engine-links";
-import { createLink } from "../../_Utilities";
+import { createLink, validateLinkPlacement } from "../../_Utilities";
 import { scanMarkdownChars } from "../_Utilities";
 import type {
 	CanApplyLinkParams,
@@ -147,13 +143,12 @@ export const handleLinkMarkdown = ({
 			});
 
 			// An href the Link's attribute validators reject stays plain text
-			const attrsMismatch = validateComponentAttrs({
-				componentAttrs: attrs,
-				componentAttrsShape: linkAttrsShape,
-				componentAttrValidators: adapterBus.getAttrValidators("link"),
+			const placementMismatch = validateLinkPlacement({
+				attrValidators: adapterBus.getAttrValidators("link"),
+				attrs,
 			});
 
-			if (attrsMismatch) {
+			if (placementMismatch) {
 				return false;
 			}
 

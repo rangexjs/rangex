@@ -2,7 +2,6 @@ import type { InlineComponent } from "@rangex/core";
 import type {
 	CreateLinkAttrValidatorsParams,
 	LinkAttrs,
-	LinkAttrsMismatch,
 	LinkAttrsShape,
 	LinkAttrValidators,
 } from "#dom-attrs";
@@ -54,12 +53,6 @@ export interface InsertParams {
 	attrs: LinkAttrs;
 }
 
-export interface PlacementValidationParams {
-	attrs: LinkAttrs;
-}
-
-export type PlacementValidationResult = LinkAttrsMismatch | null;
-
 export interface ModifyParams {
 	text: string;
 }
@@ -76,9 +69,6 @@ export type OnLinkClickCallbackFn = () => void;
 export type OnLinkSelectionInCallbackFn = () => void;
 export type OnLinkMenuToggleCallbackFn = () => void;
 export type DisplayTextProviderFn = () => LinkDisplayText;
-export type PlacementValidatorFn = (
-	params: PlacementValidationParams,
-) => PlacementValidationResult;
 
 export interface UpdateStateParams extends LinkState {}
 
@@ -97,7 +87,6 @@ export interface LinkConfigPortProps {
 	onModify(callback: OnModifyCallbackFn): () => void;
 
 	registerDisplayText(provider: DisplayTextProviderFn): void;
-	registerPlacementValidator(validator: PlacementValidatorFn): void;
 }
 
 export interface LinkConfigPort
@@ -121,9 +110,6 @@ export interface LinkPublicPortProps {
 	modify(params: ModifyParams): void;
 
 	getDisplayText(): LinkDisplayText;
-	validatePlacement(
-		params: PlacementValidationParams,
-	): PlacementValidationResult;
 }
 
 export interface LinkPublicPort
@@ -134,7 +120,6 @@ export interface LinkPublicPort
 
 export interface LinkInternals {
 	displayTextProvider: DisplayTextProviderFn | null;
-	placementValidator: PlacementValidatorFn | null;
 }
 
 export interface LinkAdapter {

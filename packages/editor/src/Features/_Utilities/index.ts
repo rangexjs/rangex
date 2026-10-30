@@ -16,3 +16,4 @@ export * from "./HandleSelectionContextChange";
 export * from "./HandleSelectionMenuInteraction";
 export * from "./HandleSwapToEmptyMedia";
 export * from "./Utilities-types";
+export * from "./ValidateComponentsPlacement";

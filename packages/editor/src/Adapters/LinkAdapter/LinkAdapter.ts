@@ -47,7 +47,6 @@ export const createLinkAdapter = (
 	const internals: LinkInternals = {
 		// Providers
 		displayTextProvider: null,
-		placementValidator: null,
 	};
 
 	// States
@@ -119,10 +118,6 @@ export const createLinkAdapter = (
 			registerDisplayText(provider) {
 				internals.displayTextProvider = provider;
 			},
-
-			registerPlacementValidator(validator) {
-				internals.placementValidator = validator;
-			},
 		} satisfies LinkConfigPortProps,
 	);
 
@@ -177,14 +172,6 @@ export const createLinkAdapter = (
 				}
 
 				return internals.displayTextProvider();
-			},
-
-			validatePlacement(params) {
-				if (!internals.placementValidator) {
-					throw new Error("PlacementValidator wasn't registered.");
-				}
-
-				return internals.placementValidator(params);
 			},
 		} satisfies LinkPublicPortProps,
 	);

@@ -6,8 +6,8 @@ import {
 } from "@rangex/core";
 import { normalizeLinkAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
-import { createLink } from "../../_Utilities";
-import { getLinkPlacementMode, validateLinkPlacement } from "../_Utilities";
+import { createLink, validateLinkPlacement } from "../../_Utilities";
+import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	AnchorToLinkParams,
 	HandleLinkInsertionParams,
@@ -172,7 +172,10 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
-		const placementMismatch = validateLinkPlacement({ configPort, attrs });
+		const placementMismatch = validateLinkPlacement({
+			attrValidators: configPort.attrValidators,
+			attrs,
+		});
 
 		if (placementMismatch) {
 			console.warn(

@@ -13,7 +13,7 @@ import type {
  * checked by the link's attribute validators. Returns the mismatch, or null when they're valid.
  */
 export const validateLinkPlacement = ({
-	configPort,
+	attrValidators,
 	attrs,
 }: ValidateLinkPlacementParams): ValidateLinkPlacementResult => {
 	const normalizedAttrs = normalizeLinkAttrs(attrs);
@@ -21,7 +21,7 @@ export const validateLinkPlacement = ({
 	const attrsMismatch = validateComponentAttrs({
 		componentAttrs: normalizedAttrs,
 		componentAttrsShape: linkAttrsShape,
-		componentAttrValidators: configPort.attrValidators,
+		componentAttrValidators: attrValidators,
 	});
 
 	if (attrsMismatch) {
