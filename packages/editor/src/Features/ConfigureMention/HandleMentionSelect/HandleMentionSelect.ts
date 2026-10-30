@@ -1,5 +1,5 @@
 import { createContentLine } from "@rangex/core";
-import { createMention } from "../../_Utilities";
+import { createMention, validateMentionPlacement } from "../../_Utilities";
 import { getMentionQuery } from "../_Utilities";
 import type {
 	HandleMentionSelectParams,
@@ -37,8 +37,9 @@ const removeMentionQueryText = ({
 
 /*
  * Subscribes to mention selection and inserts the mention component at the cursor. On select,
- * strips the @query text first, then re-reads the cursor position and inserts the component
- * there. Returns a cleanup function.
+ * validates the params, so an invalid mention leaves the @query text as it is, strips the @query
+ * text, then re-reads the cursor position and inserts the component there. Returns a cleanup
+ * function.
  */
 export const handleMentionSelect = ({
 	configPort,
@@ -47,6 +48,13 @@ export const handleMentionSelect = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = configPort.onSelect(({ userId, displayName }) => {
+		const placementMismatch = validateMentionPlacement({ userId, displayName });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return;
+		}
+
 		const { queryFound } = removeMentionQueryText({ editorAPI });
 
 		if (!queryFound) {

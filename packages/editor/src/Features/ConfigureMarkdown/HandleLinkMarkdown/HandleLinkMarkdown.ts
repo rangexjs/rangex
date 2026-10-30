@@ -149,6 +149,7 @@ export const handleLinkMarkdown = ({
 			});
 
 			if (placementMismatch) {
+				console.warn(placementMismatch);
 				return false;
 			}
 

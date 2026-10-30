@@ -14,7 +14,7 @@ import type {
 /*
  * A user id is valid if it isn't empty and it's at most 256 characters long.
  */
-const isUserId = (value: unknown) => {
+export const isUserId = (value: unknown) => {
 	const maxUserIdLength = 256;
 
 	return (

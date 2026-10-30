@@ -178,10 +178,7 @@ export const handleLinkInsertion = ({
 		});
 
 		if (placementMismatch) {
-			console.warn(
-				"handleLinkInsertion: attrs are invalid.",
-				placementMismatch,
-			);
+			console.warn(placementMismatch);
 			return;
 		}
 
