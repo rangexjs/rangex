@@ -1,6 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
 import type { CodeBlockId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type CodeBlockTheme = {
 	light: string;
@@ -9,18 +8,17 @@ export type CodeBlockTheme = {
 
 export type CodeBlockStorage = {
 	id: CodeBlockId;
-	version: typeof storageVersion;
 	language: string | null;
 	theme: CodeBlockTheme | null;
 };
 
 export interface CreateCodeBlockStorageParams
-	extends Omit<CodeBlockStorage, "id" | "version"> {}
+	extends Omit<CodeBlockStorage, "id"> {}
 
 export type CreateCodeBlockStorageResult = CodeBlockStorage;
 
 export interface CodeBlockStorageFallbacks
-	extends Omit<CodeBlockStorage, "id" | "version"> {}
+	extends Omit<CodeBlockStorage, "id"> {}
 
 export interface EnsureCodeBlockStorageParams {
 	storage: unknown;

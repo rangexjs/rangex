@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { embedId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateEmbedStorageResult,
 	EmbedStorage,
@@ -15,7 +15,6 @@ import type {
  */
 export const embedStoragePattern = {
 	id: embedId,
-	version: storageVersion,
 } satisfies JSONPattern<EmbedStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateEmbedStorage = (
 
 export const createEmbedStorage = (): CreateEmbedStorageResult => ({
 	id: embedId,
-	version: storageVersion,
 });
 
 export const ensureEmbedStorage = ({

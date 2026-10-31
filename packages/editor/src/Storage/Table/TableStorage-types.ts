@@ -1,10 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
 import type { TableId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type TableStorage = {
 	id: TableId;
-	version: typeof storageVersion;
 };
 
 export type CreateTableStorageResult = TableStorage;

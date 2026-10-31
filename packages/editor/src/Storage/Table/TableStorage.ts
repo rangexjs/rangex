@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { tableId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateTableStorageResult,
 	EnsureNodeTableStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const tableStoragePattern = {
 	id: tableId,
-	version: storageVersion,
 } satisfies JSONPattern<TableStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateTableStorage = (
 
 export const createTableStorage = (): CreateTableStorageResult => ({
 	id: tableId,
-	version: storageVersion,
 });
 
 export const ensureTableStorage = ({

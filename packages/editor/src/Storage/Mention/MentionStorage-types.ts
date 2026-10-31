@@ -1,10 +1,8 @@
 import type { InlineComponent } from "@rangex/core";
 import type { MentionId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type MentionStorage = {
 	id: MentionId;
-	version: typeof storageVersion;
 	userId: string;
 };
 

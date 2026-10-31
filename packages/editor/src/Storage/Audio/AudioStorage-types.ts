@@ -1,10 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
 import type { AudioId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type AudioStorage = {
 	id: AudioId;
-	version: typeof storageVersion;
 };
 
 export type CreateAudioStorageResult = AudioStorage;

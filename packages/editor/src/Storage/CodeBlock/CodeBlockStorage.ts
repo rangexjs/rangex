@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { codeBlockId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CodeBlockStorage,
 	CodeBlockStorageFallbacks,
@@ -44,7 +44,6 @@ const isTheme = (value: unknown) => {
  */
 export const codeBlockStoragePattern = {
 	id: codeBlockId,
-	version: storageVersion,
 	language: isLanguage,
 	theme: isTheme,
 } satisfies JSONPattern<CodeBlockStorage>;
@@ -80,7 +79,6 @@ export const createCodeBlockStorage = ({
 	theme,
 }: CreateCodeBlockStorageParams): CreateCodeBlockStorageResult => ({
 	id: codeBlockId,
-	version: storageVersion,
 	language,
 	theme,
 });

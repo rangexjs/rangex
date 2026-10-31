@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { listId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateListStorageResult,
 	EnsureListStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const listStoragePattern = {
 	id: listId,
-	version: storageVersion,
 } satisfies JSONPattern<ListStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateListStorage = (
 
 export const createListStorage = (): CreateListStorageResult => ({
 	id: listId,
-	version: storageVersion,
 });
 
 export const ensureListStorage = ({

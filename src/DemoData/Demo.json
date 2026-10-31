@@ -359,7 +359,7 @@
 					{
 						"editorRole": "block-component",
 						"uniqueId": "1787515033982-1101716358",
-						"customStorage": { "id": "todo-list", "version": 1 },
+						"customStorage": { "id": "todo-list" },
 						"name": "todo-list",
 						"content": { "type": "list" },
 						"shouldSelectBeforeRemove": false,
@@ -742,7 +742,7 @@
 					{
 						"editorRole": "block-component",
 						"uniqueId": "1787519516633-2879763022",
-						"customStorage": { "id": "accordion-item", "version": 1 },
+						"customStorage": { "id": "accordion-item" },
 						"name": "accordion-item",
 						"content": { "type": "custom" },
 						"shouldSelectBeforeRemove": true,
@@ -959,7 +959,7 @@
 													{
 														"editorRole": "block-component",
 														"uniqueId": "1787561150973-1591013998",
-														"customStorage": { "id": "table", "version": 1 },
+														"customStorage": { "id": "table" },
 														"name": "table",
 														"content": { "type": "custom" },
 														"shouldSelectBeforeRemove": true,
@@ -2661,7 +2661,7 @@
 														"shouldSelectBeforeRemove": false,
 														"shouldSelectOnNavigation": false,
 														"editState": "inherit",
-														"customStorage": { "id": "link", "version": 1 },
+														"customStorage": { "id": "link" },
 														"domAttrs": {},
 														"childNodes": [
 															{
@@ -2827,7 +2827,7 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "false",
-						"customStorage": { "id": "mention", "version": 1, "userId": "1" },
+						"customStorage": { "id": "mention", "userId": "1" },
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -2877,7 +2877,7 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
-						"customStorage": { "id": "link", "version": 1 },
+						"customStorage": { "id": "link" },
 						"domAttrs": {},
 						"childNodes": [
 							{
@@ -2997,7 +2997,6 @@
 						"editState": "false",
 						"customStorage": {
 							"id": "template-variable",
-							"version": 1,
 							"fieldName": "fullName"
 						},
 						"domAttrs": {},
@@ -3108,7 +3107,6 @@
 						"uniqueId": "1787515439813-1252966341",
 						"customStorage": {
 							"id": "code-block",
-							"version": 1,
 							"language": "typescript",
 							"theme": { "light": "light-plus", "dark": "dark-plus" }
 						},
@@ -3482,7 +3480,7 @@
 					{
 						"editorRole": "block-component",
 						"uniqueId": "1787515686749-2914192422",
-						"customStorage": { "id": "empty-media", "version": 1 },
+						"customStorage": { "id": "empty-media" },
 						"name": "empty-media",
 						"content": { "type": "custom" },
 						"shouldSelectBeforeRemove": true,
@@ -3647,7 +3645,7 @@
 						"shouldSelectBeforeRemove": false,
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
-						"customStorage": { "id": "link", "version": 1 },
+						"customStorage": { "id": "link" },
 						"domAttrs": {},
 						"childNodes": [
 							{

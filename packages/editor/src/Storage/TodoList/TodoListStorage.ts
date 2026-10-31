@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { todoListId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateTodoListStorageResult,
 	EnsureNodeTodoListStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const todoListStoragePattern = {
 	id: todoListId,
-	version: storageVersion,
 } satisfies JSONPattern<TodoListStorage>;
 
 /*
@@ -41,7 +40,6 @@ export const validateTodoListStorage = (
 
 export const createTodoListStorage = (): CreateTodoListStorageResult => ({
 	id: todoListId,
-	version: storageVersion,
 });
 
 export const ensureTodoListStorage = ({

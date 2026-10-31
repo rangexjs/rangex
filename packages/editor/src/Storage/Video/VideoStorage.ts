@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { videoId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateVideoStorageResult,
 	EnsureNodeVideoStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const videoStoragePattern = {
 	id: videoId,
-	version: storageVersion,
 } satisfies JSONPattern<VideoStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateVideoStorage = (
 
 export const createVideoStorage = (): CreateVideoStorageResult => ({
 	id: videoId,
-	version: storageVersion,
 });
 
 export const ensureVideoStorage = ({

@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { rootId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateRootStorageResult,
 	EnsureNodeRootStorageParams,
@@ -9,6 +9,14 @@ import type {
 	EnsureRootStorageResult,
 	RootStorage,
 } from "./RootStorage-types";
+
+/*
+ * The version of the snapshot's editor structure, kept on the RootStorage. Bumped on any change to a snapshot the editor
+ * makes (e.g. a component's structure or storage, a ScopedEditable's allowedComponents).
+ *
+ * Note: The engine's own changes are tracked by the StoredSnapshot's version.
+ */
+export const snapshotVersion = 1 as const;
 
 /*
  * The template variable fields are valid if they're an object of at most 200 fields, each named by a non-empty name of
@@ -43,7 +51,7 @@ const isTemplateVariableFields = (value: unknown) => {
  */
 export const rootStoragePattern = {
 	id: rootId,
-	version: storageVersion,
+	version: snapshotVersion,
 	templateVariable: isTemplateVariableFields,
 } satisfies JSONPattern<RootStorage>;
 
@@ -68,7 +76,7 @@ export const validateRootStorage = (
 
 export const createRootStorage = (): CreateRootStorageResult => ({
 	id: rootId,
-	version: storageVersion,
+	version: snapshotVersion,
 	templateVariable: {},
 });
 

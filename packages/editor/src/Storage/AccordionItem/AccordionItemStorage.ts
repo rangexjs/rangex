@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { accordionItemId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	AccordionItemStorage,
 	CreateAccordionItemStorageResult,
@@ -15,7 +15,6 @@ import type {
  */
 export const accordionItemStoragePattern = {
 	id: accordionItemId,
-	version: storageVersion,
 } satisfies JSONPattern<AccordionItemStorage>;
 
 /*
@@ -42,7 +41,6 @@ export const validateAccordionItemStorage = (
 export const createAccordionItemStorage =
 	(): CreateAccordionItemStorageResult => ({
 		id: accordionItemId,
-		version: storageVersion,
 	});
 
 export const ensureAccordionItemStorage = ({

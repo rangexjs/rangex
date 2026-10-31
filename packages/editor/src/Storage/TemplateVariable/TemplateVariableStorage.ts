@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { templateVariableId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateTemplateVariableStorageParams,
 	CreateTemplateVariableStorageResult,
@@ -29,7 +29,6 @@ const isFieldName = (value: unknown) => {
  */
 export const templateVariableStoragePattern = {
 	id: templateVariableId,
-	version: storageVersion,
 	fieldName: isFieldName,
 } satisfies JSONPattern<TemplateVariableStorage>;
 
@@ -59,7 +58,6 @@ export const createTemplateVariableStorage = ({
 }: CreateTemplateVariableStorageParams): CreateTemplateVariableStorageResult => {
 	return {
 		id: templateVariableId,
-		version: storageVersion,
 		fieldName,
 	};
 };

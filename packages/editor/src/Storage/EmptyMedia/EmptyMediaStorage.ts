@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { emptyMediaId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateEmptyMediaStorageResult,
 	EmptyMediaStorage,
@@ -15,7 +15,6 @@ import type {
  */
 export const emptyMediaStoragePattern = {
 	id: emptyMediaId,
-	version: storageVersion,
 } satisfies JSONPattern<EmptyMediaStorage>;
 
 /*
@@ -41,7 +40,6 @@ export const validateEmptyMediaStorage = (
 
 export const createEmptyMediaStorage = (): CreateEmptyMediaStorageResult => ({
 	id: emptyMediaId,
-	version: storageVersion,
 });
 
 export const ensureEmptyMediaStorage = ({

@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { separatorId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateSeparatorStorageResult,
 	EnsureNodeSeparatorStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const separatorStoragePattern = {
 	id: separatorId,
-	version: storageVersion,
 } satisfies JSONPattern<SeparatorStorage>;
 
 /*
@@ -41,7 +40,6 @@ export const validateSeparatorStorage = (
 
 export const createSeparatorStorage = (): CreateSeparatorStorageResult => ({
 	id: separatorId,
-	version: storageVersion,
 });
 
 export const ensureSeparatorStorage = ({

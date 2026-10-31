@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { mentionId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateMentionStorageParams,
 	CreateMentionStorageResult,
@@ -27,7 +27,6 @@ export const isUserId = (value: unknown) => {
  */
 export const mentionStoragePattern = {
 	id: mentionId,
-	version: storageVersion,
 	userId: isUserId,
 } satisfies JSONPattern<MentionStorage>;
 
@@ -55,7 +54,7 @@ export const validateMentionStorage = (
 export const createMentionStorage = ({
 	userId,
 }: CreateMentionStorageParams): CreateMentionStorageResult => {
-	return { id: mentionId, version: storageVersion, userId };
+	return { id: mentionId, userId };
 };
 
 export const ensureMentionStorage = ({

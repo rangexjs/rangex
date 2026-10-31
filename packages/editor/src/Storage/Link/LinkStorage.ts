@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { linkId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateLinkStorageResult,
 	EnsureLinkStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const linkStoragePattern = {
 	id: linkId,
-	version: storageVersion,
 } satisfies JSONPattern<LinkStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateLinkStorage = (
 
 export const createLinkStorage = (): CreateLinkStorageResult => ({
 	id: linkId,
-	version: storageVersion,
 });
 
 export const ensureLinkStorage = ({

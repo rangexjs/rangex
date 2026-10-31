@@ -1,10 +1,8 @@
 import type { InlineComponent } from "@rangex/core";
 import type { TemplateVariableId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type TemplateVariableStorage = {
 	id: TemplateVariableId;
-	version: typeof storageVersion;
 	fieldName: string;
 };
 

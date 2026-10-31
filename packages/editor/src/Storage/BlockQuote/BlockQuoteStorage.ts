@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { blockQuoteId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	BlockQuoteStorage,
 	CreateBlockQuoteStorageResult,
@@ -15,7 +15,6 @@ import type {
  */
 export const blockQuoteStoragePattern = {
 	id: blockQuoteId,
-	version: storageVersion,
 } satisfies JSONPattern<BlockQuoteStorage>;
 
 /*
@@ -41,7 +40,6 @@ export const validateBlockQuoteStorage = (
 
 export const createBlockQuoteStorage = (): CreateBlockQuoteStorageResult => ({
 	id: blockQuoteId,
-	version: storageVersion,
 });
 
 export const ensureBlockQuoteStorage = ({

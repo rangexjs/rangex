@@ -22,7 +22,7 @@ const migrateIfStoredSnapshot = ({
 		return null;
 	}
 
-	// TODO: We have to add a validator that check if every storage is up to date
+	// TODO: We have to add a validator that checks if the RootStorage's version is up to date
 	const migrationResult = migrateStoredSnapshot({ storedSnapshot, limits });
 
 	if (!migrationResult.isValid) {

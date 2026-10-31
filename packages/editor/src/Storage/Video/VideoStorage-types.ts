@@ -1,10 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
 import type { VideoId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type VideoStorage = {
 	id: VideoId;
-	version: typeof storageVersion;
 };
 
 export type CreateVideoStorageResult = VideoStorage;

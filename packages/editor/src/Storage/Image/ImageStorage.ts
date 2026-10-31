@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { imageId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateImageStorageResult,
 	EnsureImageStorageParams,
@@ -15,7 +15,6 @@ import type {
  */
 export const imageStoragePattern = {
 	id: imageId,
-	version: storageVersion,
 } satisfies JSONPattern<ImageStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateImageStorage = (
 
 export const createImageStorage = (): CreateImageStorageResult => ({
 	id: imageId,
-	version: storageVersion,
 });
 
 export const ensureImageStorage = ({

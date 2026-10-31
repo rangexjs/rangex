@@ -1,6 +1,6 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 import { audioId } from "../_Constants";
-import { storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	AudioStorage,
 	CreateAudioStorageResult,
@@ -15,7 +15,6 @@ import type {
  */
 export const audioStoragePattern = {
 	id: audioId,
-	version: storageVersion,
 } satisfies JSONPattern<AudioStorage>;
 
 /*
@@ -39,7 +38,6 @@ export const validateAudioStorage = (
 
 export const createAudioStorage = (): CreateAudioStorageResult => ({
 	id: audioId,
-	version: storageVersion,
 });
 
 export const ensureAudioStorage = ({

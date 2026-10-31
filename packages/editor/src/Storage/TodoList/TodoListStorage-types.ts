@@ -1,10 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
 import type { TodoListId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
 export type TodoListStorage = {
 	id: TodoListId;
-	version: typeof storageVersion;
 };
 
 export type CreateTodoListStorageResult = TodoListStorage;
