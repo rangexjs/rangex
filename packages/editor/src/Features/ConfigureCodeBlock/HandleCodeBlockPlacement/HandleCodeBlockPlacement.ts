@@ -6,12 +6,13 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { createCodeBlock } from "../../_Utilities";
+import { createCodeBlock, validateCodeBlockPlacement } from "../../_Utilities";
 import type { HandleCodeBlockPlacementParams } from "./HandleCodeBlockPlacement-types";
 
 /*
  * Handles inserting and wrapping code block components by selection, placing the caret
- * inside the newly created line and registering a snapshot boundary. Returns a cleanup function.
+ * inside the newly created line and registering a snapshot boundary. An invalid language or theme
+ * is ignored. Returns a cleanup function.
  */
 export const handleCodeBlockPlacement = ({
 	configPort,
@@ -22,6 +23,13 @@ export const handleCodeBlockPlacement = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribeInsert = configPort.onInsert(({ language, theme }) => {
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return;
+		}
+
 		const codeBlockLine = createCodeBlock({
 			language,
 			theme,
@@ -68,6 +76,13 @@ export const handleCodeBlockPlacement = ({
 	});
 
 	const unsubscribeWrap = configPort.onWrap(({ language, theme }) => {
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return;
+		}
+
 		const codeBlockLine = createCodeBlock({ language, theme });
 
 		const list = codeBlockLine.$$querySelector(listRoleSelector);

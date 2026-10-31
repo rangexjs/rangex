@@ -153,11 +153,26 @@ matches the pattern. It gets a copy: the storage only changes through a fallback
 
 It's synchronous: a check against a database has to load what it needs first (`knownUserIds` above). It only runs in
 `validateSnapshot`, which the editor also runs on the snapshot it loads, not on later changes. A check only a server
-can do is left out of the schema the editor gets. Only the Mention, the TemplateVariable and the root have one so far.
+can do is left out of the schema the editor gets. Only the Mention, the TemplateVariable, the CodeBlock and the root have
+one so far.
 
 A failure's `reason` names the node by its path from the component, e.g.
 `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`
 (`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
+
+## CodeBlock
+
+`ValidateCodeBlock` walks the `pre`, `code`, List and ListItems down to each line's number and NestedEditable. A line's
+number comes from its position, so it's replaced instead of checked, as a snapshot read without the editor shows it.
+
+The theme's colors are the BlockComponent's `data-bg-*` and `data-fg-*` attributes, which the styles read through `attr()`.
+The highlighter sets them, so they aren't placement params. They must be hex colors, the one format that can be checked
+without the DOM. Any other value is dropped, and the styles' defaults apply until the next highlight.
+
+A language or theme is `null` or a non-empty name. A snapshot isn't loaded if its storage breaks that, so
+`validateCodeBlockPlacement` guards every creation (insert, wrap, turn into, Markdown), and `validateCodeBlockLanguage`
+and `validateCodeBlockTheme` guard `changeLanguage` and `changeTheme`. Which names exist is the consumer's call, through
+`components.codeBlock.validateStorage`.
 
 ## TemplateVariables
 
@@ -188,7 +203,7 @@ server doesn't replace this: it's what guarantees every RootEditable a valid `Ro
 If either step fails, the snapshot isn't loaded: the editor starts from `createRoot` with the first of the schema's `root.types`,
 and warns. The given snapshot isn't changed, but saving the editor's content would replace it.
 
-BlockQuote, CodeBlock, EmptyMedia, List, Separator, Table and TodoList have no validator yet: their
+BlockQuote, EmptyMedia, List, Separator, Table and TodoList have no validator yet: their
 keys in `SnapshotComponents` allow them, without checking them (`createUncheckedValidator`).
 
 ## Running without a DOM

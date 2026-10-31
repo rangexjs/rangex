@@ -4,6 +4,11 @@
 	}
 
 	& > :where([data-rx-name="code-block"]) {
+		--bg-light: attr(data-bg-light type(<color>));
+		--bg-dark: attr(data-bg-dark type(<color>));
+		--fg-light: attr(data-fg-light type(<color>));
+		--fg-dark: attr(data-fg-dark type(<color>));
+
 		background-color: light-dark(
 			var(--bg-light, var(--color-neutral-50)),
 			var(--bg-dark, var(--color-neutral-900))
@@ -17,6 +22,13 @@
 
 		& [data-rx-editor-role="content-line"] {
 			font-size: 14px;
+		}
+
+		& :is([data-token-light], [data-token-dark]) {
+			color: light-dark(
+				attr(data-token-light type(<color>), currentcolor),
+				attr(data-token-dark type(<color>), currentcolor)
+			);
 		}
 
 		& pre {

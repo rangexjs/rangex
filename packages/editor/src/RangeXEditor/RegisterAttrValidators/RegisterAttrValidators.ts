@@ -1,6 +1,7 @@
 import {
 	createAccordionItemAttrValidators,
 	createAudioAttrValidators,
+	createCodeBlockAttrValidators,
 	createEmbedAttrValidators,
 	createImageAttrValidators,
 	createLinkAttrValidators,
@@ -16,7 +17,8 @@ export const registerAttrValidators = ({
 	adapterBus,
 	components,
 }: RegisterAttrValidatorsParams) => {
-	const { accordionItem, audio, embed, image, link, video } = components;
+	const { accordionItem, audio, codeBlock, embed, image, link, video } =
+		components;
 
 	if (accordionItem) {
 		const { attrValidators = {} } = accordionItem;
@@ -33,6 +35,15 @@ export const registerAttrValidators = ({
 		adapterBus.registerAttrValidators(
 			"audio",
 			createAudioAttrValidators(attrValidators),
+		);
+	}
+
+	if (codeBlock) {
+		const { attrValidators = {} } = codeBlock;
+
+		adapterBus.registerAttrValidators(
+			"codeBlock",
+			createCodeBlockAttrValidators(attrValidators),
 		);
 	}
 

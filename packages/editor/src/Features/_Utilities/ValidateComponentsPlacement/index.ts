@@ -1,5 +1,6 @@
 export * from "./ValidateAccordionItemPlacement";
 export * from "./ValidateAudioPlacement";
+export * from "./ValidateCodeBlockPlacement";
 export * from "./ValidateEmbedPlacement";
 export * from "./ValidateImagePlacement";
 export * from "./ValidateLinkPlacement";

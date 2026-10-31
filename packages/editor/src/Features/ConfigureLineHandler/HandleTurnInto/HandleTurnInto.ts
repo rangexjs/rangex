@@ -21,6 +21,7 @@ import {
 	createTodoList,
 	getAccordionItemParts,
 	validateAccordionItemPlacement,
+	validateCodeBlockPlacement,
 } from "../../_Utilities";
 import type {
 	CreateBlockComponentParams,
@@ -34,8 +35,8 @@ import type {
 	ShouldSkipFirstLineParams,
 	ShouldSkipFirstLineResult,
 	TurnLineIntoParams,
-	ValidateTurnIntoAttrsParams,
-	ValidateTurnIntoAttrsResult,
+	ValidateTurnIntoPlacementParams,
+	ValidateTurnIntoPlacementResult,
 	WrapContentLineParams,
 } from "./HandleTurnInto-types";
 
@@ -237,24 +238,38 @@ const replaceBlockComponentLine = ({
 };
 
 /*
- * Whether the attributes the component is turned into with are valid. Only an AccordionItem has attributes.
+ * Whether the component can be turned into with the given params. Only an AccordionItem's attributes and a CodeBlock's
+ * language and theme have to be checked.
  */
-const validateTurnIntoAttrs = ({
+const validateTurnIntoPlacement = ({
 	adapterBus,
 	turnIntoParams,
-}: ValidateTurnIntoAttrsParams): ValidateTurnIntoAttrsResult => {
-	if (turnIntoParams.name !== componentsName.accordionItem) {
+}: ValidateTurnIntoPlacementParams): ValidateTurnIntoPlacementResult => {
+	if (turnIntoParams.name === componentsName.codeBlock) {
+		const { language, theme } = turnIntoParams;
+
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return false;
+		}
+
 		return true;
 	}
 
-	const placementMismatch = validateAccordionItemPlacement({
-		attrValidators: adapterBus.getAttrValidators("accordionItem"),
-		attrs: turnIntoParams.attrs,
-	});
+	if (turnIntoParams.name === componentsName.accordionItem) {
+		const placementMismatch = validateAccordionItemPlacement({
+			attrValidators: adapterBus.getAttrValidators("accordionItem"),
+			attrs: turnIntoParams.attrs,
+		});
 
-	if (placementMismatch) {
-		console.warn(placementMismatch);
-		return false;
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return false;
+		}
+
+		return true;
 	}
 
 	return true;
@@ -307,7 +322,7 @@ export const handleTurnInto = ({
 			return;
 		}
 
-		const isValid = validateTurnIntoAttrs({ adapterBus, turnIntoParams });
+		const isValid = validateTurnIntoPlacement({ adapterBus, turnIntoParams });
 
 		if (!isValid) {
 			return;

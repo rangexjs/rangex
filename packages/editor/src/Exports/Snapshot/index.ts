@@ -20,6 +20,7 @@ export type {
 } from "#snapshot";
 export { validateSnapshot } from "#snapshot";
 export type {
+	CodeBlockStorage,
 	MentionStorage,
 	RootStorage,
 	TemplateVariableStorage,

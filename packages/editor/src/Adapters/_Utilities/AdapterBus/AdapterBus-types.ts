@@ -2,6 +2,7 @@ import type {
 	AccordionItemAttrValidators,
 	AudioAttrs,
 	AudioAttrValidators,
+	CodeBlockAttrValidators,
 	EmbedAttrs,
 	EmbedAttrValidators,
 	ImageAttrs,
@@ -20,6 +21,7 @@ export type MediaType = (typeof mediaTypes)[number];
 export interface AttrValidatorsByAdapter {
 	accordionItem: AccordionItemAttrValidators;
 	audio: AudioAttrValidators;
+	codeBlock: CodeBlockAttrValidators;
 	embed: EmbedAttrValidators;
 	image: ImageAttrValidators;
 	link: LinkAttrValidators;

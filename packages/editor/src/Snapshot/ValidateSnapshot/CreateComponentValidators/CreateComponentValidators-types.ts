@@ -1,6 +1,7 @@
 import type {
 	CreateAccordionItemValidatorParams,
 	CreateAudioValidatorParams,
+	CreateCodeBlockValidatorParams,
 	CreateEmbedValidatorParams,
 	CreateImageValidatorParams,
 	CreateVideoValidatorParams,
@@ -22,7 +23,7 @@ export interface SnapshotComponents {
 	accordionItem?: CreateAccordionItemValidatorParams;
 	audio?: CreateAudioValidatorParams;
 	blockQuote?: UncheckedComponentParams;
-	codeBlock?: UncheckedComponentParams;
+	codeBlock?: CreateCodeBlockValidatorParams;
 	embed?: CreateEmbedValidatorParams;
 	emptyMedia?: UncheckedComponentParams;
 	image?: CreateImageValidatorParams;

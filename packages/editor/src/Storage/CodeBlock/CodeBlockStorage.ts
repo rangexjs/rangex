@@ -12,21 +12,27 @@ import type {
 	EnsureNodeCodeBlockStorageResult,
 } from "./CodeBlockStorage-types";
 
+export const maxCodeBlockNameLength = 256;
+
 /*
- * A language or theme name is valid if it's at most 256 characters long.
+ * A language or theme name is valid if it isn't empty and it's at most maxCodeBlockNameLength characters long. An unset
+ * language or theme is null.
  */
 const isName = (value: unknown) => {
-	const maxNameLength = 256;
-
-	return typeof value === "string" && value.length <= maxNameLength;
+	return (
+		typeof value === "string" &&
+		value !== "" &&
+		value.length <= maxCodeBlockNameLength
+	);
 };
 
-const isLanguage = (value: unknown) => value === null || isName(value);
+export const isCodeBlockLanguage = (value: unknown) =>
+	value === null || isName(value);
 
 /*
  * A theme is valid if it's null, or a light and a dark theme name.
  */
-const isTheme = (value: unknown) => {
+export const isCodeBlockTheme = (value: unknown) => {
 	if (value === null) {
 		return true;
 	}
@@ -44,8 +50,8 @@ const isTheme = (value: unknown) => {
  */
 export const codeBlockStoragePattern = {
 	id: codeBlockId,
-	language: isLanguage,
-	theme: isTheme,
+	language: isCodeBlockLanguage,
+	theme: isCodeBlockTheme,
 } satisfies JSONPattern<CodeBlockStorage>;
 
 /*

@@ -62,12 +62,12 @@ export interface TurnLineIntoParams {
 	turnIntoParams: TurnIntoPlacementOption;
 }
 
-export interface ValidateTurnIntoAttrsParams {
+export interface ValidateTurnIntoPlacementParams {
 	adapterBus: AdapterBus;
 	turnIntoParams: TurnIntoPlacementOption;
 }
 
-export type ValidateTurnIntoAttrsResult = boolean;
+export type ValidateTurnIntoPlacementResult = boolean;
 
 export interface HandleTurnIntoParams {
 	adapterBus: AdapterBus;

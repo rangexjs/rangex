@@ -28,8 +28,3 @@ export type GetLineTextResult = string;
 export interface CreateTokenViewParams {
 	themedChars: ThemedChars;
 }
-
-export interface SetStylePropertiesParams {
-	elementView: ElementView;
-	properties: Record<string, string>;
-}

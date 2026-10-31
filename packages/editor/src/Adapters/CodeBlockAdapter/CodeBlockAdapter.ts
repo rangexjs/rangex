@@ -31,9 +31,13 @@ export const createCodeBlockAdapter = (
 
 	adapterBus.registerAdapter("codeBlock");
 
+	const codeBlockAttrValidators = adapterBus.getAttrValidators("codeBlock");
+
 	const internals: CodeBlockInternals = {
 		// Providers
 		plainTextProvider: null,
+		validateLanguageProvider: null,
+		validateThemeProvider: null,
 		// Rest
 		getHighlightInfo: settings.getHighlightInfo ?? null,
 	};
@@ -91,6 +95,10 @@ export const createCodeBlockAdapter = (
 				return internals.getHighlightInfo;
 			},
 
+			get attrValidators() {
+				return codeBlockAttrValidators;
+			},
+
 			updateState(params) {
 				updateState(params);
 			},
@@ -113,6 +121,14 @@ export const createCodeBlockAdapter = (
 
 			registerPlainTextProvider(provider) {
 				internals.plainTextProvider = provider;
+			},
+
+			registerValidateLanguage(provider) {
+				internals.validateLanguageProvider = provider;
+			},
+
+			registerValidateTheme(provider) {
+				internals.validateThemeProvider = provider;
 			},
 		} satisfies CodeBlockConfigPortProps,
 	);
@@ -184,6 +200,22 @@ export const createCodeBlockAdapter = (
 				}
 
 				return internals.plainTextProvider();
+			},
+
+			validateLanguage(language) {
+				if (!internals.validateLanguageProvider) {
+					throw new Error("ValidateLanguage provider wasn't registered.");
+				}
+
+				return internals.validateLanguageProvider(language);
+			},
+
+			validateTheme(theme) {
+				if (!internals.validateThemeProvider) {
+					throw new Error("ValidateTheme provider wasn't registered.");
+				}
+
+				return internals.validateThemeProvider(theme);
 			},
 		} satisfies CodeBlockPublicPortProps,
 	);

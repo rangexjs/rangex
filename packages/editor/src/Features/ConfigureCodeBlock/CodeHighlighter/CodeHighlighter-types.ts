@@ -5,6 +5,7 @@ import type {
 	RootEditable,
 } from "@rangex/core";
 import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
+import type { CodeBlockAttrValidators } from "#dom-attrs";
 import type { CodeBlockTheme } from "#storage";
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
@@ -43,6 +44,13 @@ export interface ClearCodeBlockColorsParams {
 	list: List;
 }
 
+export interface WriteCodeBlockColorsParams {
+	blockComponent: BlockComponent;
+	attrValidators: CodeBlockAttrValidators;
+	backgrounds: CodeBlockTheme;
+	foregrounds: CodeBlockTheme;
+}
+
 export interface ApplyTokenColorsParams {
 	editorAPI: EditorAPI;
 	list: List;
@@ -53,6 +61,7 @@ export interface ApplyTokenColorsParams {
 export interface UpdateCodeBlockColorsParams {
 	editorAPI: EditorAPI;
 	getHighlightInfo: GetHighlightInfoFn | null;
+	attrValidators: CodeBlockAttrValidators;
 	cssHighlightManager: CSSHighlightManager;
 	blockComponent: BlockComponent;
 }
@@ -75,6 +84,7 @@ export interface GetOutdatedCodeBlocksParams {
 export interface CodeHighlighterConstructorParams {
 	editorAPI: EditorAPI;
 	getHighlightInfo: GetHighlightInfoFn | null;
+	attrValidators: CodeBlockAttrValidators;
 }
 
 export interface CodeHighlighterUpdateParams {

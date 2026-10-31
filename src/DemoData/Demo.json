@@ -3117,7 +3117,10 @@
 						"shouldSelectOnNavigation": false,
 						"editState": "inherit",
 						"domAttrs": {
-							"style": "--bg-light: #FFFFFF; --bg-dark: #1E1E1E; --fg-light: #000000; --fg-dark: #D4D4D4;"
+							"data-bg-light": "#FFFFFF",
+							"data-bg-dark": "#1E1E1E",
+							"data-fg-light": "#000000",
+							"data-fg-dark": "#D4D4D4"
 						},
 						"childNodes": [
 							{

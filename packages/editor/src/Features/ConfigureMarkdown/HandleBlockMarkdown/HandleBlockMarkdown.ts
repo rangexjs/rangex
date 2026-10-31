@@ -15,6 +15,7 @@ import {
 	createCodeBlock,
 	createList,
 	createTodoList,
+	validateCodeBlockPlacement,
 } from "../../_Utilities";
 import {
 	getLineMarkdownPrefix,
@@ -77,6 +78,13 @@ const matchBlockTrigger = ({
 		}
 
 		const { language, theme } = codeBlockTrigger;
+
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return null;
+		}
 
 		return { type: "codeBlock", language, theme };
 	}

@@ -2,6 +2,7 @@ import { type ComponentName, componentsName } from "#constants";
 import {
 	createAccordionItemValidator,
 	createAudioValidator,
+	createCodeBlockValidator,
 	createEmbedValidator,
 	createImageValidator,
 	createVideoValidator,
@@ -70,9 +71,7 @@ export const createComponentValidators = ({
 	}
 
 	if (codeBlock) {
-		componentValidators.push(
-			createUncheckedValidator(componentsName.codeBlock),
-		);
+		componentValidators.push(createCodeBlockValidator(codeBlock));
 	}
 
 	if (embed) {
