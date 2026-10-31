@@ -14,5 +14,3 @@ export type {
 	CreateAccordionItemAttrValidatorsParams,
 } from "#dom-attrs";
 export { AccordionItem } from "#rangex-editor";
-export type { CreateAccordionItemValidatorParams } from "#snapshot";
-export { createAccordionItemValidator } from "#snapshot";

@@ -114,15 +114,19 @@ export const createLinkAttrValidators = (validatorOverrides: CreateLinkAttrValid
 ### Consumer contract: share `attrValidators`
 
 The consumer passes the same overrides in two places: the Adapter's settings (`LinkSettings.attrValidators`, used in
-the editor) and the component's snapshot validator (`createLinkValidator({ attrValidators })`, used wherever snapshots
-are validated, e.g. on a server). Define them once and pass the same object to both; otherwise the editor saves what
+the editor) and `validateSnapshot` (`components: { link: { attrValidators } }`, used wherever snapshots are validated,
+e.g. on a server). Define them once and pass the same object to both; otherwise the editor saves what
 the validation repairs or rejects.
 
 ```ts
 const linkAttrValidators: CreateLinkAttrValidatorsParams = { anchor: { target: validateTarget } };
 
 Link({ attrValidators: linkAttrValidators });
-createLinkValidator({ attrValidators: linkAttrValidators });
+validateSnapshot({
+	storedSnapshot,
+	limits,
+	components: { link: { attrValidators: linkAttrValidators } },
+});
 ```
 
 ## The two paths
@@ -209,6 +213,6 @@ feature can validate the component's attributes too (Markdown reads them with `g
    validators and register them on the `AdapterBus` (`AttrValidatorsByAdapter`).
 4. **Parts** — `getXParts` in `src/Features/_Utilities/GetComponentParts/`, throwing on an unexpected structure.
 5. **Features** — `handleDOMAttrs` in `configureX`, and the component's `create*` factory built from `toDOMAttrs`.
-6. **Snapshot validator** — `createXValidator({ attrValidators })`, resolving each element with `resolveElementAttrs`
-   (see [SnapshotValidation](SnapshotValidation.md)).
+6. **Snapshot validator** — `createXValidator({ attrValidators })`, resolving each element with `resolveElementAttrs`,
+   and its key in `SnapshotComponents` and `createComponentValidators` (see [SnapshotValidation](SnapshotValidation.md)).
 7. **Exports** — the shape types and `CreateXAttrValidatorsParams` from `@rangex/editor/x`.

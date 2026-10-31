@@ -5,6 +5,7 @@ import type {
 	SnapshotLimits,
 	StoredSnapshot,
 } from "@rangex/core";
+import type { SnapshotComponents } from "./CreateComponentValidators";
 
 export interface ValidateComponentParams {
 	componentDraft: ComponentDraft;
@@ -24,7 +25,7 @@ export interface ComponentValidator {
 export interface ValidateSnapshotParams {
 	storedSnapshot: object;
 	limits: SnapshotLimits;
-	componentValidators: ComponentValidator[];
+	components: SnapshotComponents;
 }
 
 export interface ValidateSnapshotSucceeded {

@@ -128,6 +128,11 @@
 			"types": "./dist/Exports/Symbols/index.d.ts",
 			"import": "./dist/symbols.js"
 		},
+		"./snapshot": {
+			"@rangex/source": "./src/Exports/Snapshot/index.ts",
+			"types": "./dist/Exports/Snapshot/index.d.ts",
+			"import": "./dist/snapshot.js"
+		},
 		"./table": {
 			"@rangex/source": "./src/Exports/Table/index.ts",
 			"types": "./dist/Exports/Table/index.d.ts",

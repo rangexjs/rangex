@@ -8,5 +8,3 @@ export type {
 	CreateAudioAttrValidatorsParams,
 } from "#dom-attrs";
 export { Audio } from "#rangex-editor";
-export type { CreateAudioValidatorParams } from "#snapshot";
-export { createAudioValidator } from "#snapshot";

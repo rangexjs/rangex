@@ -15,5 +15,3 @@ export type {
 	LinkAttrValidators,
 } from "#dom-attrs";
 export { Link } from "#rangex-editor";
-export type { CreateLinkValidatorParams } from "#snapshot";
-export { createLinkValidator } from "#snapshot";

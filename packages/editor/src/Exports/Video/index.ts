@@ -8,5 +8,3 @@ export type {
 	VideoAttrValidators,
 } from "#dom-attrs";
 export { Video } from "#rangex-editor";
-export type { CreateVideoValidatorParams } from "#snapshot";
-export { createVideoValidator } from "#snapshot";

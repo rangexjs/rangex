@@ -1,3 +1,4 @@
+export * from "./CreateComponentValidators";
 export * from "./ResolveNodeStorages";
 export * from "./ValidateBlockComponents";
 export * from "./ValidateComponents";

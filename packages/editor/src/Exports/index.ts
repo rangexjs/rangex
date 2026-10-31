@@ -52,20 +52,6 @@ export type {
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
 export { configureSanitizer } from "#sanitizer";
-export type {
-	ComponentValidator,
-	SnapshotView,
-	ValidateComponentFn,
-	ValidateComponentParams,
-	ValidateComponentResult,
-	ValidateSnapshotFailed,
-	ValidateSnapshotParams,
-	ValidateSnapshotResult,
-	ValidateSnapshotSucceeded,
-} from "#snapshot";
-export {
-	createHTMLView,
-	createSnapshotView,
-	validateSnapshot,
-} from "#snapshot";
+export type { SnapshotView } from "#snapshot";
+export { createHTMLView, createSnapshotView } from "#snapshot";
 export { buildViewStyleText } from "../Styles";

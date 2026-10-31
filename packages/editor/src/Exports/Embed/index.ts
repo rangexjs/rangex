@@ -8,5 +8,3 @@ export type {
 	EmbedAttrValidators,
 } from "#dom-attrs";
 export { Embed } from "#rangex-editor";
-export type { CreateEmbedValidatorParams } from "#snapshot";
-export { createEmbedValidator } from "#snapshot";

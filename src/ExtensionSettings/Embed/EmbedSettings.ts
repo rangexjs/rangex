@@ -37,7 +37,7 @@ const validateEmbedSrc: EmbedSrcValidator = ({ value }) => {
 
 /**
  * Demo-only allowlist: the sites an Embed may frame in the dev view. A consumer building a real editor writes their
- * own, and passes the same attrValidators to createEmbedValidator wherever snapshots are validated.
+ * own, and passes the same attrValidators to validateSnapshot wherever snapshots are validated.
  */
 export const embedSettings: EmbedExtensionSettings = {
 	attrValidators: {

@@ -8,5 +8,3 @@ export type {
 	ImageAttrValidators,
 } from "#dom-attrs";
 export { Image } from "#rangex-editor";
-export type { CreateImageValidatorParams } from "#snapshot";
-export { createImageValidator } from "#snapshot";
