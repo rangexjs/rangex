@@ -12,10 +12,10 @@ import type {
 } from "./MentionStorage-types";
 
 /*
- * A user id is valid if it isn't empty and it's at most 256 characters long.
+ * A user id is valid if it isn't empty and it's at most 1024 characters long.
  */
 export const isUserId = (value: unknown) => {
-	const maxUserIdLength = 256;
+	const maxUserIdLength = 1024;
 
 	return (
 		typeof value === "string" && value !== "" && value.length <= maxUserIdLength

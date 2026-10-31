@@ -13,10 +13,10 @@ import type {
 } from "./CodeBlockStorage-types";
 
 /*
- * A language or theme name is valid if it's at most 64 characters long.
+ * A language or theme name is valid if it's at most 256 characters long.
  */
 const isName = (value: unknown) => {
-	const maxNameLength = 64;
+	const maxNameLength = 256;
 
 	return typeof value === "string" && value.length <= maxNameLength;
 };

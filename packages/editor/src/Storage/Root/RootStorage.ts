@@ -20,11 +20,11 @@ export const snapshotVersion = 1 as const;
 
 /*
  * The template variable fields are valid if they're an object of at most 200 fields, each named by a non-empty name of
- * at most 64 characters, with a value of at most 1000 characters.
+ * at most 256 characters, with a value of at most 1000 characters.
  */
 const isTemplateVariableFields = (value: unknown) => {
 	const maxFieldCount = 200;
-	const maxFieldNameLength = 64;
+	const maxFieldNameLength = 256;
 	const maxFieldValueLength = 1000;
 
 	if (typeof value !== "object" || value === null || Array.isArray(value)) {

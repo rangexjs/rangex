@@ -46,7 +46,7 @@ export const createComponentValidators = ({
 	}
 
 	if (mention) {
-		componentValidators.push(createMentionValidator());
+		componentValidators.push(createMentionValidator(mention));
 	}
 
 	if (video) {

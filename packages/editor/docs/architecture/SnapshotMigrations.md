@@ -38,7 +38,7 @@ The storage shapes (and every type nested in them, e.g. `CodeBlockTheme`) are `t
 
 Each `*Storage` module exports functions for creating, validating, and reading storage. The exact set varies by component, but the common building blocks are:
 
-- `*StoragePattern` / `match*Storage(storage: unknown)` — the storage's strict `JSONPattern` (every field, its type and its limits; any other field doesn't match), and `matchJSON` against it, returning the first mismatch or `null`. The snapshot validators use the pattern as the component's `customStorage`. Every storage defines its own, even the ones with only an `id`.
+- `*StoragePattern` / `match*Storage(storage: unknown)` — the storage's strict `JSONPattern` (every field, its type and its broad length limits; any other field doesn't match), and `matchJSON` against it, returning the first mismatch or `null`. What's valid beyond that is the consumer's (see [SnapshotValidation](SnapshotValidation.md#the-consumers-storage-check)). The snapshot validators use the pattern as the component's `customStorage`. Every storage defines its own, even the ones with only an `id`.
 - `is*Storage(storage: unknown)` — pure type guard: the value must match the pattern (`match*Storage`). No side effects. Use when iterating nodes to check identity without implying the node should be valid.
 - `validate*Storage(storage: unknown)` — calls `is*`, warns via `console.warn` if invalid. Use when the storage is expected to be valid and a failure indicates a bug.
 - `create*Storage(params)` — constructs a new storage object.

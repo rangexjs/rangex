@@ -12,10 +12,10 @@ import type {
 } from "./TemplateVariableStorage-types";
 
 /*
- * A field name is valid if it isn't empty and it's at most 64 characters long.
+ * A field name is valid if it isn't empty and it's at most 256 characters long.
  */
 const isFieldName = (value: unknown) => {
-	const maxFieldNameLength = 64;
+	const maxFieldNameLength = 256;
 
 	return (
 		typeof value === "string" &&

@@ -88,6 +88,46 @@ built that way, so they share `validateMediaComponent` (in `ValidateBlockCompone
 name, storage pattern, media element (`img`, `video`, `audio`, `iframe`) and shapes. `ValidateMention` has no attributes; its `customStorage` is matched by `mentionStoragePattern` (see
 [SnapshotMigrations](SnapshotMigrations.md)), so an invalid `userId` makes it invalid.
 
+### The consumer's storage check
+
+A `*StoragePattern` only checks the structure and broad length limits, and the consumer can't change it. What's valid
+beyond that is the consumer's: a component's key in `components` can take a `validateStorage`, which gets the whole
+storage, as its fields can be nested or related.
+
+```ts
+validateSnapshot({
+	storedSnapshot,
+	limits,
+	components: {
+		mention: {
+			validateStorage: ({ storage }) => {
+				if (knownUserIds.has(storage.userId)) {
+					return null;
+				}
+
+				return {
+					kind: "fallback",
+					reason: "unknown user",
+					value: { ...storage, userId: "deleted-user" },
+				};
+			},
+		},
+	},
+});
+```
+
+`resolveDraftStorage` (in `_Utilities/`) runs it right after the component's state check, so it only gets a storage that
+matches the pattern. It gets a copy: the storage only changes through a fallback.
+
+- `null` — the storage is valid.
+- `{ kind: "reject", reason }` — the snapshot is invalid.
+- `{ kind: "fallback", reason, value }` — `value` replaces the storage. It's matched against the pattern again, so a
+  fallback can't break the structure (a mismatch makes the snapshot invalid), but it isn't passed to `validateStorage`
+  again.
+
+It's synchronous: a check against a database has to load what it needs first (`knownUserIds` above). It only runs in
+`validateSnapshot`, not in the editor. Only the Mention has one so far.
+
 A failure's `reason` names the node by its path from the component, e.g.
 `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`
 (`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
