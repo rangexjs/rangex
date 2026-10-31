@@ -6,6 +6,7 @@
 		"customStorage": {
 			"id": "root",
 			"version": 1,
+			"type": "rich-text",
 			"templateVariable": {
 				"fullName": "{{Full name}}",
 				"firstName": "{{First name}}",

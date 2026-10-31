@@ -7,6 +7,7 @@ import { ensureSanitizerConfigured } from "#sanitizer";
 import { createComponentValidators } from "./CreateComponentValidators";
 import { resolveNodeStorages } from "./ResolveNodeStorages";
 import { validateComponents } from "./ValidateComponents";
+import { validateRoot } from "./ValidateRoot";
 import type {
 	ValidateSnapshotParams,
 	ValidateSnapshotResult,
@@ -14,7 +15,8 @@ import type {
 
 /*
  * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
- * alone if it hasn't been called), then every component in it by its validator. Only the given components are allowed:
+ * alone if it hasn't been called), then the RootEditable by the given root, then every component in it by its
+ * validator. Only the given components are allowed:
  * any other one is invalid. The storage of every other node is dropped (see resolveNodeStorages). A valid snapshot
  * is returned as a copy with the resolved storages and the components' resolved attributes (see resolveElementAttrs),
  * the one to save or restore. The nodes of a failure belong to that copy, not to the given
@@ -23,6 +25,7 @@ import type {
 export const validateSnapshot = ({
 	storedSnapshot,
 	limits,
+	root,
 	components,
 }: ValidateSnapshotParams): ValidateSnapshotResult => {
 	ensureSanitizerConfigured();
@@ -44,6 +47,12 @@ export const validateSnapshot = ({
 	);
 
 	resolveNodeStorages({ rootEditableDraft });
+
+	const rootFailed = validateRoot({ rootEditableDraft, ...root });
+
+	if (rootFailed) {
+		return { isValid: false, ...rootFailed };
+	}
 
 	const componentValidators = createComponentValidators({ components });
 

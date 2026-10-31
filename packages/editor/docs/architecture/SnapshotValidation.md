@@ -12,6 +12,7 @@ Paths are relative to `src/Snapshot/ValidateSnapshot/` unless noted otherwise.
 const result = validateSnapshot({
 	storedSnapshot,
 	limits,
+	root: { type: "rich-text" },
 	components: { link: { attrValidators }, mention: {} },
 });
 
@@ -30,12 +31,13 @@ if (result.isValid) {
 4. **Storages** — `resolveNodeStorages` sets the `customStorage` of every node except the components and the
    RootEditable to `null`: the editor never stores anything on them, and nothing reads it, so it's dropped instead of
    making the snapshot invalid.
-5. **Components** — `createComponentValidators` creates a validator for each key of `components`, and
+5. **Root** — `validateRoot` checks the RootEditable itself (see [The root](#the-root)).
+6. **Components** — `createComponentValidators` creates a validator for each key of `components`, and
    `validateComponents` runs the one of each component's `name`, nested components included. It fails on the first one
    that doesn't pass. A component that isn't in `components` is invalid, so its keys are the allowlist. Each validator
    matches its component's `customStorage` against the Storage module's strict pattern (see
    [SnapshotMigrations](SnapshotMigrations.md#the-storage-module)).
-6. **Result** — the Draft, with every resolved storage and every component's resolved attributes, turned back into a
+7. **Result** — the Draft, with every resolved storage and every component's resolved attributes, turned back into a
    snapshot.
 
 The result has the same shape as the engine's `migrateStoredSnapshot`:
@@ -43,6 +45,24 @@ The result has the same shape as the engine's `migrateStoredSnapshot`:
 - `{ isValid: true, storedSnapshot }` (`ValidateSnapshotSucceeded`) — the copy to save or restore.
 - `{ isValid: false, sourceSnapshot, failedSnapshot, reason }` (`ValidateSnapshotFailed`) — the nodes belong to the
   Draft, not to the given snapshot.
+
+## The root
+
+A RootEditable has a type: the kind of document it is (`rootTypes` in `#constants`, only `"rich-text"` so far). The
+type is kept in `RootStorage.type`, as the engine's `display` can't tell every kind apart. `rootDefinitions` holds each
+type's state (`display`, `editState` and the `allowed*` settings), and it's the one source for both ways a root comes
+into being: `createRoot` builds a new one from it, and `validateRoot` matches a stored one against it.
+
+`validateSnapshot`'s `root` says what a snapshot's root must be. It's required, as a snapshot's own `type` proves
+nothing: `validateRoot` matches the state against the given type's definition, and the storage against
+`rootStoragePattern` with that type. A mismatch makes the snapshot invalid.
+
+- **Attributes** — resolved by `rootAttrsShape` and `root.attrValidators`, so anything else on the root is dropped.
+- **Storage** — `root.validateStorage` runs on it, as on a component's (see
+  [The consumer's storage check](#the-consumers-storage-check)). A fallback can't change its `id`, `version` or `type`.
+
+Its children aren't checked here: the engine validates them by the root's settings, and `validateComponents` handles
+the components among them.
 
 ## Component validators
 
@@ -98,6 +118,7 @@ storage, as its fields can be nested or related.
 validateSnapshot({
 	storedSnapshot,
 	limits,
+	root: { type: "rich-text" },
 	components: {
 		mention: {
 			validateStorage: ({ storage }) => {
@@ -126,7 +147,7 @@ matches the pattern. It gets a copy: the storage only changes through a fallback
   again.
 
 It's synchronous: a check against a database has to load what it needs first (`knownUserIds` above). It only runs in
-`validateSnapshot`, not in the editor. Only the Mention has one so far.
+`validateSnapshot`, not in the editor. Only the Mention and the root have one so far.
 
 A failure's `reason` names the node by its path from the component, e.g.
 `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`

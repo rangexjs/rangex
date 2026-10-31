@@ -125,6 +125,7 @@ Link({ attrValidators: linkAttrValidators });
 validateSnapshot({
 	storedSnapshot,
 	limits,
+	root: { type: "rich-text" },
 	components: { link: { attrValidators: linkAttrValidators } },
 });
 ```

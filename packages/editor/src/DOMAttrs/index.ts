@@ -4,4 +4,5 @@ export * from "./Audio";
 export * from "./Embed";
 export * from "./Image";
 export * from "./Link";
+export * from "./Root";
 export * from "./Video";

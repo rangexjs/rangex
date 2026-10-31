@@ -4,5 +4,6 @@ export * from "./ResolveNodeStorages";
 export * from "./ValidateBlockComponents";
 export * from "./ValidateComponents";
 export * from "./ValidateInlineComponents";
+export * from "./ValidateRoot";
 export * from "./ValidateSnapshot";
 export * from "./ValidateSnapshot-types";

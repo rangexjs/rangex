@@ -1,18 +1,16 @@
 import {
 	type CreateFallbackRootEditable,
-	createBeamText,
-	createContentLine,
 	createEditorAPI,
-	createRootEditable,
 	migrateStoredSnapshot,
 } from "@rangex/core";
+import { rootTypes } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
-import { createRootStorage } from "#storage";
 import type {
 	CreateCoreParams,
 	MigrateIfStoredSnapshotParams,
 	MigrateIfStoredSnapshotResult,
 } from "./CreateCore-types";
+import { createRoot } from "./CreateRoot";
 
 const migrateIfStoredSnapshot = ({
 	storedSnapshot,
@@ -41,22 +39,7 @@ const createFallbackRootEditable: CreateFallbackRootEditable = ({
 		console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
 	}
 
-	const rootEditable = createRootEditable({
-		customStorage: createRootStorage(),
-		display: "block multi-line",
-		editState: "true",
-		allowedComponents: null,
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-		childNodes: [
-			createContentLine({
-				localName: "p",
-				childNodes: [createBeamText({})],
-			}),
-		],
-	});
+	const rootEditable = createRoot({ type: rootTypes.richText });
 
 	return { rootEditable };
 };

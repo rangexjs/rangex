@@ -8,6 +8,7 @@ selectors built from them. `src/Constants/` (alias `#constants`).
 | `ComponentsName/` | `componentsName` (inline and block), `isInlineComponentName` / `isBlockComponentName`, the part names (`createPart`, `todoCheckboxPart`) and their types |
 | `AttrNames/` | The attributes the editor sets and styles: `blockAlignAttr`, `blockWidthAttr`, `objectFitAttr`, `aspectRatioAttr` |
 | `CreateComponentSelector/` | `createComponentSelector(name)`: the attribute selector of a component's name |
+| `RootTypes/` | `rootTypes`, `isRootType` and `rootDefinitions`: the kinds of root and the state of each (see [SnapshotValidation](SnapshotValidation.md#the-root)) |
 
 ## Rules
 

@@ -7,12 +7,12 @@ import type {
 } from "./ResolveDraftStorage-types";
 
 /*
- * Runs the consumer's validateStorage on a component's storage, which must already match its storage pattern (see
- * validateInlineComponentState). It gets a copy, so the storage can only change through a fallback: the fallback must
- * match the pattern too, then it replaces the storage. Fails on a reject, or on a fallback that doesn't match.
+ * Runs the consumer's validateStorage on a component's or the Root's storage, which must already match its storage
+ * pattern. It gets a copy, so the storage can only change through a fallback: the fallback must match the pattern too,
+ * then it replaces the storage. Fails on a reject, or on a fallback that doesn't match.
  */
 export const resolveDraftStorage = <TStorage extends DraftStorage>({
-	componentDraft,
+	nodeDraft,
 	storagePattern,
 	validateStorage,
 }: ResolveDraftStorageParams<TStorage>): ResolveDraftStorageResult => {
@@ -20,9 +20,9 @@ export const resolveDraftStorage = <TStorage extends DraftStorage>({
 		return null;
 	}
 
-	const storage = structuredClone(componentDraft.customStorage);
+	const storage = structuredClone(nodeDraft.customStorage);
 
-	// The component's state check guarantees the storage's shape
+	// The node's state check guarantees the storage's shape
 	const validationFailed = validateStorage({ storage: storage as TStorage });
 
 	if (!validationFailed) {
@@ -31,13 +31,13 @@ export const resolveDraftStorage = <TStorage extends DraftStorage>({
 
 	if (validationFailed.kind === "reject") {
 		const nodePath = formatNodePath({
-			rootDraft: componentDraft,
-			nodeDraft: componentDraft,
+			rootDraft: nodeDraft,
+			nodeDraft,
 		});
 
 		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
+			sourceSnapshot: nodeDraft,
+			failedSnapshot: nodeDraft,
 			reason: `${nodePath}: invalid customStorage (${validationFailed.reason}).`,
 		};
 	}
@@ -49,11 +49,11 @@ export const resolveDraftStorage = <TStorage extends DraftStorage>({
 
 		if (mismatch) {
 			return {
-				sourceSnapshot: componentDraft,
-				failedSnapshot: componentDraft,
+				sourceSnapshot: nodeDraft,
+				failedSnapshot: nodeDraft,
 				reason: describeJSONMismatch({
-					rootDraft: componentDraft,
-					nodeDraft: componentDraft,
+					rootDraft: nodeDraft,
+					nodeDraft,
 					value: { customStorage: value },
 					mismatch: {
 						...mismatch,
@@ -63,7 +63,7 @@ export const resolveDraftStorage = <TStorage extends DraftStorage>({
 			};
 		}
 
-		componentDraft.customStorage = value;
+		nodeDraft.customStorage = value;
 
 		return null;
 	}

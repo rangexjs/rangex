@@ -1,7 +1,9 @@
+import { isRootType, rootTypes } from "#constants";
 import { type JSONPattern, matchJSON } from "#utilities";
 import { rootId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
+	CreateRootStorageParams,
 	CreateRootStorageResult,
 	EnsureNodeRootStorageParams,
 	EnsureNodeRootStorageResult,
@@ -52,6 +54,7 @@ const isTemplateVariableFields = (value: unknown) => {
 export const rootStoragePattern = {
 	id: rootId,
 	version: snapshotVersion,
+	type: isRootType,
 	templateVariable: isTemplateVariableFields,
 } satisfies JSONPattern<RootStorage>;
 
@@ -74,9 +77,12 @@ export const validateRootStorage = (
 	return validateStorage(storage, isRootStorage);
 };
 
-export const createRootStorage = (): CreateRootStorageResult => ({
+export const createRootStorage = ({
+	type,
+}: CreateRootStorageParams): CreateRootStorageResult => ({
 	id: rootId,
 	version: snapshotVersion,
+	type,
 	templateVariable: {},
 });
 
@@ -87,7 +93,7 @@ export const ensureRootStorage = ({
 		return storage;
 	}
 
-	return createRootStorage();
+	return createRootStorage({ type: rootTypes.richText });
 };
 
 export const ensureNodeRootStorage = ({

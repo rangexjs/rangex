@@ -51,7 +51,7 @@ const validateMention = ({
 	}
 
 	const storageFailed = resolveDraftStorage({
-		componentDraft,
+		nodeDraft: componentDraft,
 		storagePattern: mentionStoragePattern,
 		validateStorage,
 	});
