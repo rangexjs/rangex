@@ -12,8 +12,8 @@ import type {
 } from "./CreateTemplateVariable-types";
 
 /*
- * Builds an inline template variable component for the given field, displaying its text as
- * editable, formattable content.
+ * Builds an inline template variable component for the given field. Its NestedEditable allows no formatting and no
+ * components, so it only holds the display text's FormattableTexts.
  */
 export const createTemplateVariable = ({
 	fieldName,
@@ -30,11 +30,11 @@ export const createTemplateVariable = ({
 			createNestedEditable({
 				display: "inline",
 				editState: "inherit",
-				allowedComponents: null,
-				allowedContentLineLocalNames: null,
-				allowedContentLineStyleAttrNames: null,
-				allowedGlyphFormatterStyleAttrNames: null,
-				allowedGlyphFormatterInlineTags: null,
+				allowedComponents: [],
+				allowedContentLineLocalNames: [],
+				allowedContentLineStyleAttrNames: [],
+				allowedGlyphFormatterStyleAttrNames: [],
+				allowedGlyphFormatterInlineTags: [],
 				childNodes: [
 					createContentLine({
 						localName: "span",
