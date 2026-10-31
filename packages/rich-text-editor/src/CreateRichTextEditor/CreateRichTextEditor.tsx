@@ -28,7 +28,7 @@ const adoptGlobalStyleSheet = () => {
 export const createRichTextEditor = ({
 	licenseKey,
 	storedSnapshot,
-	limits,
+	snapshotSchema,
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
@@ -41,7 +41,7 @@ export const createRichTextEditor = ({
 	const { editor, host, floatingContainer, hostStyles } = createEditor({
 		licenseKey,
 		storedSnapshot,
-		limits,
+		snapshotSchema,
 		adapters,
 		styles,
 	});

@@ -1,5 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import { createImageAttrValidators, type ImageAttrsShape } from "#dom-attrs";
+import type { ImageAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
@@ -22,12 +22,11 @@ import type {
 export const createImageAdapter = (
 	...params: CreateImageAdapterParams
 ): CreateImageAdapterResult => {
-	const [{ attrValidators = {} }, { adapterBus, floatingContainer }] = params;
-
-	const imageAttrValidators = createImageAttrValidators(attrValidators);
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("image");
-	adapterBus.registerAttrValidators("image", imageAttrValidators);
+
+	const imageAttrValidators = adapterBus.getAttrValidators("image");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

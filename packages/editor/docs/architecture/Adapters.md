@@ -211,10 +211,12 @@ Three channel shapes:
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
 - **Shared value** — `registerAttrValidators(name, attrValidators)` /
-  `getAttrValidators(name)`, keyed by `AttrValidatorsByAdapter`. An Adapter registers the
-  attribute validators it built from its settings, so another Adapter's feature validates the
+  `getAttrValidators(name)`, keyed by `AttrValidatorsByAdapter`. `createEditor` registers the
+  attribute validators of every component in the `SnapshotSchema` before any Adapter is created,
+  so an Adapter can read its own during creation, and another Adapter's feature validates the
   component's attributes by the same rules (Markdown creating a Link). `getAttrValidators`
-  throws if they weren't registered — see [DOMAttrs](DOMAttrs.md).
+  throws if they weren't registered, which is how an Adapter missing from the schema's
+  `components` fails — see [DOMAttrs](DOMAttrs.md).
 
 `createEditor` builds the editor in two phases, so Adapter order never affects a lookup:
 

@@ -9,12 +9,13 @@ Paths are relative to `src/Snapshot/ValidateSnapshot/` unless noted otherwise.
 ## What it does
 
 ```ts
-const result = validateSnapshot({
-	storedSnapshot,
+const snapshotSchema: SnapshotSchema = {
 	limits,
-	root: { type: "rich-text" },
+	root: { types: ["rich-text"] },
 	components: { link: { attrValidators }, mention: {} },
-});
+};
+
+const result = validateSnapshot({ storedSnapshot, ...snapshotSchema });
 
 if (result.isValid) {
 	save(result.storedSnapshot); // the resolved copy, not the given snapshot
@@ -54,8 +55,10 @@ type's state (`display`, `editState` and the `allowed*` settings), and it's the 
 into being: `createRoot` builds a new one from it, and `validateRoot` matches a stored one against it.
 
 `validateSnapshot`'s `root` says what a snapshot's root must be. It's required, as a snapshot's own `type` proves
-nothing: `validateRoot` matches the state against the given type's definition, and the storage against
-`rootStoragePattern` with that type. A mismatch makes the snapshot invalid.
+nothing: `root.types` lists the accepted ones, so a consumer can load a snapshot without tracking which type it is.
+`validateRoot` picks the listed type the storage claims, then matches the state against that type's definition, and
+the storage against `rootStoragePattern` with that type. A type that isn't listed, or any other mismatch, makes the
+snapshot invalid. The list can't be empty, and its first type is the one `createEditor` uses for a new root.
 
 - **Attributes** — resolved by `rootAttrsShape` and `root.attrValidators`, so anything else on the root is dropped.
 - **Storage** — `root.validateStorage` runs on it, as on a component's (see
@@ -68,8 +71,8 @@ the components among them.
 
 A `ComponentValidator` is `{ name, validate }`. `validate({ componentDraft })` returns a failure or `null`, and writes
 the attributes it resolved into the Draft. Each component has a factory, e.g. `createLinkValidator`, which takes the
-component's key in `SnapshotComponents`: the same `attrValidators` as the component's settings (see
-[DOMAttrs](DOMAttrs.md#consumer-contract-share-attrvalidators)). The factories are internal.
+component's key in `SnapshotComponents`: the `attrValidators` the editor uses too (see
+[DOMAttrs](DOMAttrs.md#consumer-contract-share-the-snapshotschema)). The factories are internal.
 
 A validator walks down from the component, node by node, as the engine's validation does: each node's own state
 first, then its children.
@@ -118,7 +121,7 @@ storage, as its fields can be nested or related.
 validateSnapshot({
 	storedSnapshot,
 	limits,
-	root: { type: "rich-text" },
+	root: { types: ["rich-text"] },
 	components: {
 		mention: {
 			validateStorage: ({ storage }) => {
@@ -147,11 +150,24 @@ matches the pattern. It gets a copy: the storage only changes through a fallback
   again.
 
 It's synchronous: a check against a database has to load what it needs first (`knownUserIds` above). It only runs in
-`validateSnapshot`, not in the editor. Only the Mention and the root have one so far.
+`validateSnapshot`, which the editor also runs on the snapshot it loads, not on later changes. A check only a server
+can do is left out of the schema the editor gets. Only the Mention and the root have one so far.
 
 A failure's `reason` names the node by its path from the component, e.g.
 `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`
 (`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
+
+## In the editor
+
+`createEditor` takes the same `SnapshotSchema` (`snapshotSchema`), so a snapshot can't be loaded without passing it:
+`createCore` runs `migrateStoredSnapshot`, then `validateSnapshot`, and loads the resolved copy. Validating on the
+server doesn't replace this: it's what guarantees every RootEditable a valid `RootStorage` (`getRootStorage`).
+
+If either step fails, the snapshot isn't loaded: the editor starts from `createRoot` with the first of the schema's `root.types`,
+and warns. The given snapshot isn't changed, but saving the editor's content would replace it.
+
+BlockQuote, CodeBlock, EmptyMedia, List, Separator, Table, TemplateVariable and TodoList have no validator yet: their
+keys in `SnapshotComponents` allow them, without checking them (`createUncheckedValidator`).
 
 ## Running without a DOM
 
@@ -168,5 +184,6 @@ time: `#dom-attrs` (see [DOMAttrs](DOMAttrs.md#rules)), `#constants` (see [Const
   `validateSnapshot` on its result. `migrateStoredSnapshot` alone only checks the engine's rules: a snapshot can pass it
   and still break every rule of the editor.
 - Save `result.storedSnapshot`, not the snapshot you passed in: it's the one with the resolved attributes.
-- Give `components` a key for every component the editor is built with; any other component makes the snapshot invalid.
-- Pass each component the same `attrValidators` as the component's settings.
+- Give `components` a key for every component the editor is built with; any other component makes the snapshot invalid,
+  and an Adapter of a component with attributes throws without one.
+- Share the `SnapshotSchema` between `createEditor` and `validateSnapshot`.

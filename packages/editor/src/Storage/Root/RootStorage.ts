@@ -1,14 +1,11 @@
-import { isRootType, rootTypes } from "#constants";
-import { type JSONPattern, matchJSON } from "#utilities";
+import { isRootType } from "#constants";
+import type { JSONPattern } from "#utilities";
 import { rootId } from "../_Constants";
-import { validateStorage } from "../_Utilities";
 import type {
 	CreateRootStorageParams,
 	CreateRootStorageResult,
-	EnsureNodeRootStorageParams,
-	EnsureNodeRootStorageResult,
-	EnsureRootStorageParams,
-	EnsureRootStorageResult,
+	GetRootStorageParams,
+	GetRootStorageResult,
 	RootStorage,
 } from "./RootStorage-types";
 
@@ -58,25 +55,6 @@ export const rootStoragePattern = {
 	templateVariable: isTemplateVariableFields,
 } satisfies JSONPattern<RootStorage>;
 
-/*
- * Matches a value against rootStoragePattern, returning the first mismatch or null.
- */
-export const matchRootStorage = (storage: unknown) => {
-	return matchJSON({ value: storage, pattern: rootStoragePattern });
-};
-
-export const isRootStorage = (storage: unknown): storage is RootStorage => {
-	const mismatch = matchRootStorage(storage);
-
-	return !mismatch;
-};
-
-export const validateRootStorage = (
-	storage: unknown,
-): storage is RootStorage => {
-	return validateStorage(storage, isRootStorage);
-};
-
 export const createRootStorage = ({
 	type,
 }: CreateRootStorageParams): CreateRootStorageResult => ({
@@ -86,23 +64,11 @@ export const createRootStorage = ({
 	templateVariable: {},
 });
 
-export const ensureRootStorage = ({
-	storage,
-}: EnsureRootStorageParams): EnsureRootStorageResult => {
-	if (validateRootStorage(storage)) {
-		return storage;
-	}
-
-	return createRootStorage({ type: rootTypes.richText });
-};
-
-export const ensureNodeRootStorage = ({
+/*
+ * Reads the Root's storage. Every RootEditable has a valid one: createCore creates it with createRoot, or validates the
+ * snapshot's before loading it.
+ */
+export const getRootStorage = ({
 	rootEditable,
-}: EnsureNodeRootStorageParams): EnsureNodeRootStorageResult => {
-	const { $$customStorage } = rootEditable;
-
-	const storage = ensureRootStorage({ storage: $$customStorage });
-	rootEditable.$$customStorage = storage;
-
-	return storage;
-};
+}: GetRootStorageParams): GetRootStorageResult =>
+	rootEditable.$$customStorage as RootStorage;

@@ -1,9 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import type {
-	CreateImageAttrValidatorsParams,
-	ImageAttrsShape,
-	ImageAttrValidators,
-} from "#dom-attrs";
+import type { ImageAttrsShape, ImageAttrValidators } from "#dom-attrs";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -55,9 +51,7 @@ export interface ImageAdapter {
 	publicPort: ImagePublicPort;
 }
 
-export interface ImageSettings {
-	attrValidators?: CreateImageAttrValidatorsParams;
-}
+export interface ImageSettings {}
 
 export interface CreateImageAdapterParams
 	extends CreateAdapterParams<ImageSettings> {}

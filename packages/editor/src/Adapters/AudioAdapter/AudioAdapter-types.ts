@@ -1,9 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import type {
-	AudioAttrsShape,
-	AudioAttrValidators,
-	CreateAudioAttrValidatorsParams,
-} from "#dom-attrs";
+import type { AudioAttrsShape, AudioAttrValidators } from "#dom-attrs";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -55,9 +51,7 @@ export interface AudioAdapter {
 	publicPort: AudioPublicPort;
 }
 
-export interface AudioSettings {
-	attrValidators?: CreateAudioAttrValidatorsParams;
-}
+export interface AudioSettings {}
 
 export interface CreateAudioAdapterParams
 	extends CreateAdapterParams<AudioSettings> {}

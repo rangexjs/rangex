@@ -10,7 +10,7 @@ its own shape, as each component decides what its line has: Image's has a block 
 aligned (e.g. a code block) has no `line` element. Video, Audio and Embed follow Image (`Video/`, `Audio/`, `Embed/`);
 Embed's `sandbox`, `allow` and `loading` are fixed values that fall back to the ones every Embed is created with.
 Embed's `src` validator rejects every `src` by default: which sites an Embed frames is the consumer's decision, so an
-Embed frames nothing until the consumer gives `attrValidators: { iframe: { src } }`. Framing any page, e.g. one of the
+Embed frames nothing until the consumer gives `components: { embed: { attrValidators: { iframe: { src } } } }`. Framing any page, e.g. one of the
 app's own, would let it reach the editor's page despite the sandbox, so the validator should only accept the `https:`
 embed URLs of trusted sites. Turning a pasted share link into its embed URL is the consumer's too, before they call
 EmptyMedia's `resolve` (the rich-text-editor's `transformEmbedURL` setting); the validator can still fall back from a
@@ -111,23 +111,22 @@ export const createLinkAttrValidators = (validatorOverrides: CreateLinkAttrValid
 };
 ```
 
-### Consumer contract: share `attrValidators`
+### Consumer contract: share the `SnapshotSchema`
 
-The consumer passes the same overrides in two places: the Adapter's settings (`LinkSettings.attrValidators`, used in
-the editor) and `validateSnapshot` (`components: { link: { attrValidators } }`, used wherever snapshots are validated,
-e.g. on a server). Define them once and pass the same object to both; otherwise the editor saves what
-the validation repairs or rejects.
+The consumer gives the overrides once, in the `SnapshotSchema` (`components: { link: { attrValidators } }`).
+`createEditor` builds the components' validators from it and registers them on the `AdapterBus`, where the Adapters
+read them, so an Adapter has no `attrValidators` setting. Pass the same schema to `validateSnapshot` wherever else
+snapshots are validated, e.g. on a server; otherwise the editor saves what the validation repairs or rejects.
 
 ```ts
-const linkAttrValidators: CreateLinkAttrValidatorsParams = { anchor: { target: validateTarget } };
-
-Link({ attrValidators: linkAttrValidators });
-validateSnapshot({
-	storedSnapshot,
+const snapshotSchema: SnapshotSchema = {
 	limits,
-	root: { type: "rich-text" },
-	components: { link: { attrValidators: linkAttrValidators } },
-});
+	root: { types: ["rich-text"] },
+	components: { link: { attrValidators: { anchor: { target: validateTarget } } } },
+};
+
+createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters: [Link({})], styles });
+validateSnapshot({ storedSnapshot, ...snapshotSchema });
 ```
 
 ## The two paths

@@ -1,5 +1,5 @@
 import type { InlineComponent } from "@rangex/core";
-import { createLinkAttrValidators, type LinkAttrsShape } from "#dom-attrs";
+import type { LinkAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
@@ -32,14 +32,13 @@ export const createLinkAdapter = (
 	...params: CreateLinkAdapterParams
 ): CreateLinkAdapterResult => {
 	const [
-		{ linkMenu = defaultLinkMenuSettings, attrValidators = {} },
+		{ linkMenu = defaultLinkMenuSettings },
 		{ adapterBus, floatingContainer },
 	] = params;
 
-	const linkAttrValidators = createLinkAttrValidators(attrValidators);
-
 	adapterBus.registerAdapter("link");
-	adapterBus.registerAttrValidators("link", linkAttrValidators);
+
+	const linkAttrValidators = adapterBus.getAttrValidators("link");
 
 	const linkMenuEl = document.createElement("div");
 	floatingContainer.append(linkMenuEl);

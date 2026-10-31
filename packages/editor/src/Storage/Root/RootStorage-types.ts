@@ -17,14 +17,8 @@ export interface CreateRootStorageParams {
 
 export type CreateRootStorageResult = RootStorage;
 
-export interface EnsureRootStorageParams {
-	storage: unknown;
-}
-
-export type EnsureRootStorageResult = RootStorage;
-
-export interface EnsureNodeRootStorageParams {
+export interface GetRootStorageParams {
 	rootEditable: RootEditable;
 }
 
-export type EnsureNodeRootStorageResult = RootStorage;
+export type GetRootStorageResult = RootStorage;

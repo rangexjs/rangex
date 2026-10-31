@@ -28,7 +28,11 @@ import { UndoRedo } from "@rangex/editor/undo-redo";
 
 const { editor, host, floatingContainer, hostStyles } = createEditor({
 	licenseKey: "eyJ2IjoxLC...", // your RangeX license key; "" while developing locally
-	limits: { maxDepth: 100, maxNodeCount: 50_000, maxTextLength: 100_000 }, // how large a stored snapshot may be
+	snapshotSchema: {
+		limits: { maxDepth: 100, maxNodeCount: 50_000, maxTextLength: 100_000 }, // how large a stored snapshot may be
+		root: { types: ["rich-text"] },
+		components: { link: {} }, // every component the editor is built with
+	},
 	adapters: [Formatting({}), Link({}), UndoRedo({})],
 	styles: editorStyles, // CSS for the content inside the editor
 });
@@ -57,8 +61,10 @@ const unsubscribe = editor.undoRedo?.onCanStepBackUpdate((canStepBack) => {
 ```ts
 const storedSnapshot = editor.snapshot.createStored(); // plain JSON, ready to store
 
-createEditor({ licenseKey, storedSnapshot, limits, adapters, styles });
+createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters, styles });
 ```
+
+A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty and logs a warning. Saving then replaces the stored snapshot with the empty content.
 
 Call `editor.destroy()` when you remove the editor.
 

@@ -1,14 +1,15 @@
-import type { SnapshotLimits, StoredSnapshot } from "@rangex/core";
+import type { StoredSnapshot } from "@rangex/core";
+import type { SnapshotSchema } from "#snapshot";
 
-export interface MigrateIfStoredSnapshotParams {
+export interface ResolveStoredSnapshotParams {
 	storedSnapshot: StoredSnapshot | undefined;
-	limits: SnapshotLimits;
+	snapshotSchema: SnapshotSchema;
 }
 
-export type MigrateIfStoredSnapshotResult = StoredSnapshot | null;
+export type ResolveStoredSnapshotResult = StoredSnapshot | null;
 
 export interface CreateCoreParams {
 	licenseKey: string;
 	storedSnapshot: StoredSnapshot | undefined;
-	limits: SnapshotLimits;
+	snapshotSchema: SnapshotSchema;
 }

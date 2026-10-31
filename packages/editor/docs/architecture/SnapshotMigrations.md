@@ -55,7 +55,7 @@ A `StoredSnapshot` is a plain JSON object — upgrading it means walking the sna
 
 To identify a node as belonging to a specific component, check `customStorage.id` against the component's id constant. To identify the snapshot's version, check the RootEditable's `customStorage.version`.
 
-A snapshot at an old version doesn't match `rootStoragePattern`, so it has to be upgraded before it's loaded: `ensureRootStorage` replaces a storage that doesn't match with a fresh one, which loses what the old one held (e.g. `templateVariable`'s values).
+A snapshot at an old version doesn't match `rootStoragePattern`, so it has to be upgraded before it's loaded: otherwise `createEditor` doesn't load it and starts from a new root (see [SnapshotValidation](SnapshotValidation.md#in-the-editor)).
 
 Upgrades should be applied version by version (v1 → v2, then v2 → v3, and so on), so that a snapshot at any old version can be brought up to the current one by chaining the steps in order. Each step should only be responsible for the single version gap it covers.
 

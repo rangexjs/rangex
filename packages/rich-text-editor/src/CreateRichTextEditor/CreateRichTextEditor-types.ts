@@ -1,4 +1,4 @@
-import type { SnapshotLimits, StoredSnapshot } from "@rangex/editor";
+import type { SnapshotSchema, StoredSnapshot } from "@rangex/editor";
 import type { ToolbarButtonsLayout } from "#constants";
 import type { Extension } from "#extensions";
 
@@ -11,7 +11,7 @@ export interface RichTextEditor {
 export interface CreateRichTextEditorParams {
 	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
-	limits: SnapshotLimits;
+	snapshotSchema: SnapshotSchema;
 	extensions: Extension[];
 	toolbarButtonsLayout?: ToolbarButtonsLayout;
 }

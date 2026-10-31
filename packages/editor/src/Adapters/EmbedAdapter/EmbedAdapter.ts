@@ -1,5 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import { createEmbedAttrValidators, type EmbedAttrsShape } from "#dom-attrs";
+import type { EmbedAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
@@ -22,12 +22,11 @@ import type {
 export const createEmbedAdapter = (
 	...params: CreateEmbedAdapterParams
 ): CreateEmbedAdapterResult => {
-	const [{ attrValidators = {} }, { adapterBus, floatingContainer }] = params;
-
-	const embedAttrValidators = createEmbedAttrValidators(attrValidators);
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("embed");
-	adapterBus.registerAttrValidators("embed", embedAttrValidators);
+
+	const embedAttrValidators = adapterBus.getAttrValidators("embed");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

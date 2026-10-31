@@ -1,5 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import { createVideoAttrValidators, type VideoAttrsShape } from "#dom-attrs";
+import type { VideoAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
@@ -22,12 +22,11 @@ import type {
 export const createVideoAdapter = (
 	...params: CreateVideoAdapterParams
 ): CreateVideoAdapterResult => {
-	const [{ attrValidators = {} }, { adapterBus, floatingContainer }] = params;
-
-	const videoAttrValidators = createVideoAttrValidators(attrValidators);
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("video");
-	adapterBus.registerAttrValidators("video", videoAttrValidators);
+
+	const videoAttrValidators = adapterBus.getAttrValidators("video");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

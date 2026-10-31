@@ -16,9 +16,10 @@ export const mediaTypes = [
 ] satisfies AdapterName[];
 
 /**
- * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with, or an
- * Adapter's attribute validators), without holding direct references to one another. What the Adapters register is
- * only complete once every Adapter has been created, so read it from the configure phase on.
+ * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with), without
+ * holding direct references to one another. What the Adapters register is only complete once every Adapter has been
+ * created, so read it from the configure phase on. The attribute validators are the exception: createEditor registers
+ * them from the SnapshotSchema before any Adapter is created.
  */
 export class AdapterBus {
 	#registeredAdapters: Set<AdapterName> = new Set();
@@ -53,7 +54,7 @@ export class AdapterBus {
 
 		if (!attrValidators) {
 			throw new Error(
-				`${name} Adapter's attribute validators weren't registered.`,
+				`${name} Adapter's attribute validators weren't registered: add it to the SnapshotSchema's components.`,
 			);
 		}
 

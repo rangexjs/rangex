@@ -1,8 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import {
-	type AccordionItemAttrsShape,
-	createAccordionItemAttrValidators,
-} from "#dom-attrs";
+import type { AccordionItemAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
@@ -29,16 +26,12 @@ import type {
 export const createAccordionItemAdapter = (
 	...params: CreateAccordionItemAdapterParams
 ): CreateAccordionItemAdapterResult => {
-	const [{ attrValidators = {} }, { adapterBus }] = params;
-
-	const accordionItemAttrValidators =
-		createAccordionItemAttrValidators(attrValidators);
+	const [_settings, { adapterBus }] = params;
 
 	adapterBus.registerAdapter("accordionItem");
-	adapterBus.registerAttrValidators(
-		"accordionItem",
-		accordionItemAttrValidators,
-	);
+
+	const accordionItemAttrValidators =
+		adapterBus.getAttrValidators("accordionItem");
 
 	// States
 	const canInsertState = createStateEmitter<boolean>(false);

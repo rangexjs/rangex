@@ -1,11 +1,11 @@
-import { ensureNodeRootStorage } from "#storage";
+import { getRootStorage } from "#storage";
 import { updateAllTemplateVariableNodes } from "../_Utilities";
 import type { HandleTemplateVariableInitializationParams } from "./HandleTemplateVariableInitialization-types";
 
 /*
- * Seeds root storage with the initialValue (or placeholder) of every declared field that is unset, i.e. has no valid
- * stored value or still holds its placeholder (e.g. a loaded template snapshot). Then refreshes every template variable
- * node's display text, and resets the snapshot timeline so the seeded state becomes the initial one.
+ * Seeds root storage with the initialValue (or placeholder) of every declared field that is unset, i.e. has no stored
+ * value or still holds its placeholder (e.g. a loaded template snapshot). Then refreshes every template variable node's
+ * display text, and resets the snapshot timeline so the seeded state becomes the initial one.
  */
 export const handleTemplateVariableInitialization = ({
 	configPort,
@@ -13,19 +13,16 @@ export const handleTemplateVariableInitialization = ({
 }: HandleTemplateVariableInitializationParams) => {
 	const { rootEditable } = editorAPI;
 
-	const rootStorage = ensureNodeRootStorage({ rootEditable });
+	const rootStorage = getRootStorage({ rootEditable });
 	const { templateVariable: storage } = rootStorage;
 
 	for (const [name, { placeholder, initialValue }] of Object.entries(
 		configPort.fieldsConfig,
 	)) {
-		// Stored values come from snapshots, so their type isn't guaranteed at runtime
-		const storedValue: unknown = storage[name];
-
 		const isFieldSet =
-			typeof storedValue === "string" &&
-			storedValue !== "" &&
-			storedValue !== placeholder;
+			Object.hasOwn(storage, name) &&
+			storage[name] !== "" &&
+			storage[name] !== placeholder;
 
 		if (isFieldSet) {
 			continue;

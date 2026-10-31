@@ -1,5 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
-import { type AudioAttrsShape, createAudioAttrValidators } from "#dom-attrs";
+import type { AudioAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
@@ -22,12 +22,11 @@ import type {
 export const createAudioAdapter = (
 	...params: CreateAudioAdapterParams
 ): CreateAudioAdapterResult => {
-	const [{ attrValidators = {} }, { adapterBus, floatingContainer }] = params;
-
-	const audioAttrValidators = createAudioAttrValidators(attrValidators);
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("audio");
-	adapterBus.registerAttrValidators("audio", audioAttrValidators);
+
+	const audioAttrValidators = adapterBus.getAttrValidators("audio");
 
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 

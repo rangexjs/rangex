@@ -1,10 +1,5 @@
 import type { InlineComponent } from "@rangex/core";
-import type {
-	CreateLinkAttrValidatorsParams,
-	LinkAttrs,
-	LinkAttrsShape,
-	LinkAttrValidators,
-} from "#dom-attrs";
+import type { LinkAttrs, LinkAttrsShape, LinkAttrValidators } from "#dom-attrs";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -129,7 +124,6 @@ export interface LinkAdapter {
 
 export interface LinkSettings {
 	linkMenu?: LinkMenuSettings;
-	attrValidators?: CreateLinkAttrValidatorsParams;
 }
 
 export interface CreateLinkAdapterParams

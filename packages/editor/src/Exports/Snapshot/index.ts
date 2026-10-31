@@ -6,6 +6,7 @@ export { configureSanitizer } from "#sanitizer";
 export type {
 	SnapshotComponents,
 	SnapshotRoot,
+	SnapshotSchema,
 	StorageValidationFailed,
 	StorageValidationFailedFallback,
 	StorageValidationFailedReject,

@@ -8,16 +8,21 @@ import type {
 	RangeXEditor,
 	RegisterAdapterResult,
 } from "./RangeXEditor-types";
+import { registerAttrValidators } from "./RegisterAttrValidators";
 import { Snapshot } from "./Snapshot";
 
 export const createEditor = ({
 	licenseKey,
 	storedSnapshot,
-	limits,
+	snapshotSchema,
 	adapters,
 	styles,
 }: CreateEditorParams): CreateEditorResult => {
-	const { editorAPI } = createCore({ licenseKey, storedSnapshot, limits });
+	const { editorAPI } = createCore({
+		licenseKey,
+		storedSnapshot,
+		snapshotSchema,
+	});
 
 	const editorStyleText = buildEditorStyleText(styles);
 
@@ -42,6 +47,12 @@ export const createEditor = ({
 	};
 
 	const adapterBus = new AdapterBus();
+
+	registerAttrValidators({
+		adapterBus,
+		components: snapshotSchema.components,
+	});
+
 	const floatingContainer = document.createElement("div");
 
 	const registeredAdapters: RegisterAdapterResult[] = [];

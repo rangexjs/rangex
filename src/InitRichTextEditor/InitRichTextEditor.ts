@@ -1,7 +1,7 @@
 import {
 	createRichTextEditor,
 	type Extension,
-	type SnapshotLimits,
+	type SnapshotSchema,
 	type StoredSnapshot,
 } from "@rangex/rich-text-editor";
 import { AccordionItem } from "@rangex/rich-text-editor/accordion-item";
@@ -32,7 +32,7 @@ import { Video } from "@rangex/rich-text-editor/video";
 import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,
-	embedSettings,
+	embedAttrValidators,
 	emptyMediaSettings,
 	formattingSettings,
 	markdownSettings,
@@ -43,10 +43,30 @@ import {
 const licenseKey =
 	"eyJ2IjoxLCJraWQiOiJ0ZXN0LTEiLCJjaWQiOiI5NjFiN2FmMS05NTdhLTRiNmMtYjQ2OS0wMjM1MDdkZmQxZDQiLCJ0aWVyIjoiZnJlZSIsImlzc3VlZCI6IjIwMjYtMTAtMDIiLCJleHBpcmVzIjoiMjAyNy0wNC0wMiJ9.j3XyNzZIObuMhOJEBD1C13i1bHtP9-PQ8rUQ1atZQniT8dtEC55GsFB9ENSaX_U92G4l_SlZJOiHB4kzsRWHAw";
 
-const limits: SnapshotLimits = {
-	maxDepth: 100,
-	maxNodeCount: 50_000,
-	maxTextLength: 100_000,
+const snapshotSchema: SnapshotSchema = {
+	limits: {
+		maxDepth: 100,
+		maxNodeCount: 50_000,
+		maxTextLength: 100_000,
+	},
+	root: { types: ["rich-text"] },
+	components: {
+		accordionItem: {},
+		audio: {},
+		blockQuote: {},
+		codeBlock: {},
+		embed: { attrValidators: embedAttrValidators },
+		emptyMedia: {},
+		image: {},
+		link: {},
+		list: {},
+		mention: {},
+		separator: {},
+		table: {},
+		templateVariable: {},
+		todoList: {},
+		video: {},
+	},
 };
 
 export const initRichTextEditor = () => {
@@ -54,7 +74,7 @@ export const initRichTextEditor = () => {
 		AccordionItem({}),
 		Audio({}),
 		BlockQuote({}),
-		Embed(embedSettings),
+		Embed({}),
 		Emoji({}),
 		EmptyMedia(emptyMediaSettings),
 		FindReplace({}),
@@ -94,7 +114,7 @@ export const initRichTextEditor = () => {
 	const richTextEditor = createRichTextEditor({
 		licenseKey,
 		storedSnapshot: snapshot as StoredSnapshot,
-		limits,
+		snapshotSchema,
 		extensions,
 	});
 

@@ -1,8 +1,8 @@
-import type { EmbedExtensionSettings } from "@rangex/rich-text-editor/embed";
+import type { CreateEmbedAttrValidatorsParams } from "@rangex/rich-text-editor/embed";
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 
 type EmbedSrcValidator = NonNullable<
-	NonNullable<EmbedExtensionSettings["attrValidators"]>["iframe"]
+	CreateEmbedAttrValidatorsParams["iframe"]
 >["src"];
 
 const maxSrcLength = 4096;
@@ -37,12 +37,10 @@ const validateEmbedSrc: EmbedSrcValidator = ({ value }) => {
 
 /**
  * Demo-only allowlist: the sites an Embed may frame in the dev view. A consumer building a real editor writes their
- * own, and passes the same attrValidators to validateSnapshot wherever snapshots are validated.
+ * own, and passes the same snapshotSchema to createRichTextEditor and validateSnapshot.
  */
-export const embedSettings: EmbedExtensionSettings = {
-	attrValidators: {
-		iframe: {
-			src: validateEmbedSrc,
-		},
+export const embedAttrValidators: CreateEmbedAttrValidatorsParams = {
+	iframe: {
+		src: validateEmbedSrc,
 	},
 };

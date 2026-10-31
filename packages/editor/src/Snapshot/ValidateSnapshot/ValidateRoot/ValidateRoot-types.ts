@@ -11,14 +11,24 @@ export type RootState = Omit<
 	"uniqueId" | "childNodes" | "domAttrs"
 >;
 
+// The first one is the type of a new root, when the editor loads no snapshot
+export type SnapshotRootTypes = [RootType, ...RootType[]];
+
 /*
- * The root a snapshot must have: its type, and the same attrValidators as the editor's
+ * The root a snapshot must have: it's valid if its type is one of the given ones
  */
 export interface SnapshotRoot {
-	type: RootType;
+	types: SnapshotRootTypes;
 	attrValidators?: CreateRootAttrValidatorsParams;
 	validateStorage?: ValidateStorageFn<RootStorage>;
 }
+
+export interface ResolveRootTypeParams {
+	customStorage: RootEditableDraft["customStorage"];
+	types: SnapshotRootTypes;
+}
+
+export type ResolveRootTypeResult = RootType;
 
 export interface ValidateRootParams extends SnapshotRoot {
 	rootEditableDraft: RootEditableDraft;

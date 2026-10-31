@@ -9,20 +9,37 @@ import {
 	resolveDraftStorage,
 } from "../_Utilities";
 import type {
+	ResolveRootTypeParams,
+	ResolveRootTypeResult,
 	RootState,
 	ValidateRootParams,
 	ValidateRootResult,
 } from "./ValidateRoot-types";
 
 /*
- * Validates the RootEditable itself, not its children: its state must match the given type's definition (see
- * rootDefinitions), and its storage must match rootStoragePattern with that type, so a snapshot can't claim another
- * one. Then its domAttrs are resolved by the Root's shape and validators, and its storage by the consumer's
- * validateStorage (see resolveDraftStorage).
+ * The given type the storage claims. If it claims none of them, the first one: matching against it reports the storage's
+ * type as the mismatch.
+ */
+const resolveRootType = ({
+	customStorage,
+	types,
+}: ResolveRootTypeParams): ResolveRootTypeResult => {
+	const [firstType] = types;
+
+	const claimedType = types.find((type) => type === customStorage?.type);
+
+	return claimedType ?? firstType;
+};
+
+/*
+ * Validates the RootEditable itself, not its children: its storage must claim one of the given types, its state must
+ * match that type's definition (see rootDefinitions), and its storage must match rootStoragePattern with that type.
+ * Then its domAttrs are resolved by the Root's shape and validators, and its storage by the consumer's validateStorage
+ * (see resolveDraftStorage).
  */
 export const validateRoot = ({
 	rootEditableDraft,
-	type,
+	types,
 	attrValidators = {},
 	validateStorage,
 }: ValidateRootParams): ValidateRootResult => {
@@ -49,6 +66,8 @@ export const validateRoot = ({
 		allowedGlyphFormatterInlineTags,
 		customStorage,
 	};
+
+	const type = resolveRootType({ customStorage, types });
 
 	const storagePattern = { ...rootStoragePattern, type };
 

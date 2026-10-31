@@ -23,11 +23,19 @@ export interface ComponentValidator {
 	validate: ValidateComponentFn;
 }
 
-export interface ValidateSnapshotParams {
-	storedSnapshot: object;
+/*
+ * What a snapshot must be: createEditor validates the snapshot it loads by it, validateSnapshot wherever else one is
+ * validated. createEditor also builds the components' attribute validators from it, so the editor and a snapshot follow
+ * the same rules.
+ */
+export interface SnapshotSchema {
 	limits: SnapshotLimits;
 	root: SnapshotRoot;
 	components: SnapshotComponents;
+}
+
+export interface ValidateSnapshotParams extends SnapshotSchema {
+	storedSnapshot: object;
 }
 
 export interface ValidateSnapshotSucceeded {

@@ -4,7 +4,10 @@ export type {
 	AttributeRules,
 	ElementPolicy,
 	SanitizerPolicy,
+	SnapshotComponents,
 	SnapshotLimits,
+	SnapshotRoot,
+	SnapshotSchema,
 	SnapshotView,
 	StoredSnapshot,
 } from "@rangex/editor";

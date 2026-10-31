@@ -1,5 +1,6 @@
-import type { EditorAPI, SnapshotLimits, StoredSnapshot } from "@rangex/core";
+import type { EditorAPI, StoredSnapshot } from "@rangex/core";
 import type { AdapterOptions, AdapterPublicPorts } from "#adapters";
+import type { SnapshotSchema } from "#snapshot";
 import type { AdapterFactoryValue } from "./AdapterFactories";
 import type { Snapshot } from "./Snapshot";
 
@@ -38,7 +39,7 @@ export type AdapterFactoryFn<Settings extends object> = (
 export interface CreateEditorParams {
 	licenseKey: string;
 	storedSnapshot?: StoredSnapshot;
-	limits: SnapshotLimits;
+	snapshotSchema: SnapshotSchema;
 	adapters: AdapterFactoryValue[];
 	styles: string;
 }

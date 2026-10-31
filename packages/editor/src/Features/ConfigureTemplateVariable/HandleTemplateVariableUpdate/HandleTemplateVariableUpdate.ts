@@ -1,4 +1,4 @@
-import { ensureNodeRootStorage } from "#storage";
+import { getRootStorage } from "#storage";
 import { updateAllTemplateVariableNodes } from "../_Utilities";
 import type { HandleTemplateVariableUpdateParams } from "./HandleTemplateVariableUpdate-types";
 
@@ -14,7 +14,7 @@ export const handleTemplateVariableUpdate = ({
 	const unsubscribe = configPort.onChangeFields((fields) => {
 		const { rootEditable } = editorAPI;
 
-		const rootStorage = ensureNodeRootStorage({ rootEditable });
+		const rootStorage = getRootStorage({ rootEditable });
 		const { templateVariable: storage } = rootStorage;
 
 		let hasChanged = false;

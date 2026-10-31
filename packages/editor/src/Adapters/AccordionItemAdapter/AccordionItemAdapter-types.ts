@@ -3,7 +3,6 @@ import type {
 	AccordionItemAttrs,
 	AccordionItemAttrsShape,
 	AccordionItemAttrValidators,
-	CreateAccordionItemAttrValidatorsParams,
 } from "#dom-attrs";
 import type {
 	CreateAdapterParams,
@@ -77,9 +76,7 @@ export interface AccordionItemAdapter {
 	publicPort: AccordionItemPublicPort;
 }
 
-export interface AccordionItemSettings {
-	attrValidators?: CreateAccordionItemAttrValidatorsParams;
-}
+export interface AccordionItemSettings {}
 
 export interface CreateAccordionItemAdapterParams
 	extends CreateAdapterParams<AccordionItemSettings> {}

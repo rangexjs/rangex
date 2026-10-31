@@ -1,5 +1,5 @@
 import { createContentLine } from "@rangex/core";
-import { ensureNodeRootStorage } from "#storage";
+import { getRootStorage } from "#storage";
 import { createTemplateVariable } from "../../_Utilities";
 import {
 	getTemplateVariableDisplayText,
@@ -57,7 +57,7 @@ export const handleTemplateVariableSelect = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = configPort.onSelect(({ fieldName }) => {
-		const rootStorage = ensureNodeRootStorage({ rootEditable });
+		const rootStorage = getRootStorage({ rootEditable });
 
 		const displayText = getTemplateVariableDisplayText({
 			fieldName,

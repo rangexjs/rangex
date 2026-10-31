@@ -1,5 +1,5 @@
 import { createContentLine } from "@rangex/core";
-import { ensureNodeRootStorage } from "#storage";
+import { getRootStorage } from "#storage";
 import { createTemplateVariable } from "../../_Utilities";
 import { getTemplateVariableDisplayText } from "../_Utilities";
 import type { HandleTemplateVariableInsertionParams } from "./HandleTemplateVariableInsertion-types";
@@ -16,7 +16,7 @@ export const handleTemplateVariableInsertion = ({
 	const unsubscribe = configPort.onInsert(({ fieldName }) => {
 		const { rootEditable } = editorAPI;
 
-		const rootStorage = ensureNodeRootStorage({ rootEditable });
+		const rootStorage = getRootStorage({ rootEditable });
 
 		const displayText = getTemplateVariableDisplayText({
 			fieldName,
