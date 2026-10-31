@@ -1,10 +1,10 @@
 import { createContentLine } from "@rangex/core";
 import { getRootStorage } from "#storage";
-import { createTemplateVariable } from "../../_Utilities";
 import {
-	getTemplateVariableDisplayText,
-	getTemplateVariableQuery,
-} from "../_Utilities";
+	createTemplateVariable,
+	validateTemplateVariablePlacement,
+} from "../../_Utilities";
+import { getTemplateVariableQuery } from "../_Utilities";
 import type {
 	HandleTemplateVariableSelectParams,
 	RemoveTemplateVariableQueryTextParams,
@@ -44,9 +44,9 @@ const removeTemplateVariableQueryText = ({
 };
 
 /*
- * Subscribes to caret-menu selection and inserts the component at the cursor. Strips the
- * {{query text first, then re-reads the cursor position and inserts there. Returns a cleanup
- * function.
+ * Subscribes to caret-menu selection and inserts the component at the cursor. On select,
+ * validates the field, so one that can't be placed leaves the {{query text as it is, strips the
+ * {{query text, then re-reads the cursor position and inserts there. Returns a cleanup function.
  */
 export const handleTemplateVariableSelect = ({
 	configPort,
@@ -57,15 +57,16 @@ export const handleTemplateVariableSelect = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = configPort.onSelect(({ fieldName }) => {
-		const rootStorage = getRootStorage({ rootEditable });
+		const { templateVariable: storage } = getRootStorage({ rootEditable });
 
-		const displayText = getTemplateVariableDisplayText({
+		const placementMismatch = validateTemplateVariablePlacement({
 			fieldName,
 			fieldsConfig: configPort.fieldsConfig,
-			storage: rootStorage.templateVariable,
+			storage,
 		});
 
-		if (displayText === null) {
+		if (placementMismatch) {
+			console.warn(placementMismatch);
 			return;
 		}
 
@@ -80,7 +81,10 @@ export const handleTemplateVariableSelect = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const templateVariable = createTemplateVariable({ fieldName, displayText });
+		const templateVariable = createTemplateVariable({
+			fieldName,
+			displayText: storage[fieldName],
+		});
 
 		editorAPI.insertNode({
 			fromNode: fromText,

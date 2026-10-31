@@ -1,6 +1,7 @@
 export * from "./_Utilities";
 export * from "./CreateComponentValidators";
 export * from "./ResolveNodeStorages";
+export * from "./ResolveTemplateVariableTexts";
 export * from "./ValidateBlockComponents";
 export * from "./ValidateComponents";
 export * from "./ValidateInlineComponents";

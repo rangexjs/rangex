@@ -9,6 +9,7 @@ import {
 import {
 	createLinkValidator,
 	createMentionValidator,
+	createTemplateVariableValidator,
 } from "../ValidateInlineComponents";
 import type {
 	CreateComponentValidatorsParams,
@@ -111,9 +112,7 @@ export const createComponentValidators = ({
 	}
 
 	if (templateVariable) {
-		componentValidators.push(
-			createUncheckedValidator(componentsName.templateVariable),
-		);
+		componentValidators.push(createTemplateVariableValidator(templateVariable));
 	}
 
 	if (todoList) {

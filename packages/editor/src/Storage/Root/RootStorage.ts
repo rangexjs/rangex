@@ -1,6 +1,11 @@
 import { isRootType } from "#constants";
 import type { JSONPattern } from "#utilities";
 import { rootId } from "../_Constants";
+import {
+	isTemplateVariableFieldName,
+	isTemplateVariableFieldValue,
+	maxTemplateVariableFieldCount,
+} from "../TemplateVariable";
 import type {
 	CreateRootStorageParams,
 	CreateRootStorageResult,
@@ -18,30 +23,24 @@ import type {
 export const snapshotVersion = 1 as const;
 
 /*
- * The template variable fields are valid if they're an object of at most 200 fields, each named by a non-empty name of
- * at most 256 characters, with a value of at most 1000 characters.
+ * The template variable fields are valid if they're an object of at most maxTemplateVariableFieldCount fields, each with
+ * a valid name and value.
  */
 const isTemplateVariableFields = (value: unknown) => {
-	const maxFieldCount = 200;
-	const maxFieldNameLength = 256;
-	const maxFieldValueLength = 1000;
-
 	if (typeof value !== "object" || value === null || Array.isArray(value)) {
 		return false;
 	}
 
 	const fields = Object.entries(value);
 
-	if (fields.length > maxFieldCount) {
+	if (fields.length > maxTemplateVariableFieldCount) {
 		return false;
 	}
 
 	return fields.every(
 		([fieldName, fieldValue]) =>
-			fieldName !== "" &&
-			fieldName.length <= maxFieldNameLength &&
-			typeof fieldValue === "string" &&
-			fieldValue.length <= maxFieldValueLength,
+			isTemplateVariableFieldName(fieldName) &&
+			isTemplateVariableFieldValue(fieldValue),
 	);
 };
 

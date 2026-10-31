@@ -38,7 +38,9 @@ if (result.isValid) {
    that doesn't pass. A component that isn't in `components` is invalid, so its keys are the allowlist. Each validator
    matches its component's `customStorage` against the Storage module's strict pattern (see
    [SnapshotMigrations](SnapshotMigrations.md#the-storage-module)).
-7. **Result** — the Draft, with every resolved storage and every component's resolved attributes, turned back into a
+7. **TemplateVariables** — `resolveTemplateVariableTexts` matches every TemplateVariable's display text to its field's
+   value in the Root's storage (see [TemplateVariables](#templatevariables)).
+8. **Result** — the Draft, with every resolved storage, text and component's resolved attributes, turned back into a
    snapshot.
 
 The result has the same shape as the engine's `migrateStoredSnapshot`:
@@ -151,11 +153,31 @@ matches the pattern. It gets a copy: the storage only changes through a fallback
 
 It's synchronous: a check against a database has to load what it needs first (`knownUserIds` above). It only runs in
 `validateSnapshot`, which the editor also runs on the snapshot it loads, not on later changes. A check only a server
-can do is left out of the schema the editor gets. Only the Mention and the root have one so far.
+can do is left out of the schema the editor gets. Only the Mention, the TemplateVariable and the root have one so far.
 
 A failure's `reason` names the node by its path from the component, e.g.
 `inline-component<link> > html-layout(a)[0]: invalid value localName: "span".`
 (`formatNodePath`, `describeJSONMismatch` and `describeElementAttrsMismatch` in `_Utilities/`).
+
+## TemplateVariables
+
+The Root's storage is the source of truth for a TemplateVariable's value, and a node only names its field. Three steps
+check them, each relying on the one before:
+
+1. `validateRoot` checks the fields' structure and limits, and the consumer's `root.validateStorage` can check or
+   replace their values.
+2. `ValidateTemplateVariable` checks the node's state, and that its ContentLine holds only FormattableTexts.
+   The consumer's `components.templateVariable.validateStorage` gets `{ id, fieldName }`, so it decides which fields are
+   allowed: it can reject one, or fall back to another name.
+3. `resolveTemplateVariableTexts` compares each node's text with its field's value. A different text is replaced, so a
+   snapshot read without the editor (e.g. the HTML view) shows the right value. This never makes a snapshot invalid: a
+   node can come from another document through paste, and rejecting it would discard the whole document.
+
+A field with no value leaves its node as it is. A field that isn't declared in `fieldsConfig` stays valid, as removing a
+field from the settings must not invalidate saved documents. Both are the consumer's call, through `validateStorage`.
+
+A failed snapshot isn't loaded, so the editor must never save what `rootStoragePattern` rejects. `validateTemplateVariableField`
+guards every write to the Root's storage, and `validateTemplateVariablePlacement` every insertion.
 
 ## In the editor
 
@@ -166,7 +188,7 @@ server doesn't replace this: it's what guarantees every RootEditable a valid `Ro
 If either step fails, the snapshot isn't loaded: the editor starts from `createRoot` with the first of the schema's `root.types`,
 and warns. The given snapshot isn't changed, but saving the editor's content would replace it.
 
-BlockQuote, CodeBlock, EmptyMedia, List, Separator, Table, TemplateVariable and TodoList have no validator yet: their
+BlockQuote, CodeBlock, EmptyMedia, List, Separator, Table and TodoList have no validator yet: their
 keys in `SnapshotComponents` allow them, without checking them (`createUncheckedValidator`).
 
 ## Running without a DOM

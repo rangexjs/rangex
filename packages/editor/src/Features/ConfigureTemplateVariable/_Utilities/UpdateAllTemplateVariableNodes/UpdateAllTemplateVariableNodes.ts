@@ -8,7 +8,7 @@ import {
 } from "@rangex/core";
 import { componentsName, createComponentSelector } from "#constants";
 import { validateTemplateVariableStorage } from "#storage";
-import { getTemplateVariableDisplayText } from "../GetTemplateVariableDisplayText";
+import { validateTemplateVariablePlacement } from "../../../_Utilities";
 import type { UpdateAllTemplateVariableNodesParams } from "./UpdateAllTemplateVariableNodes-types";
 
 const templateVariableSelector = createComponentSelector(
@@ -16,8 +16,8 @@ const templateVariableSelector = createComponentSelector(
 );
 
 /*
- * Re-resolves the display text of every template variable node from the stored values. Nodes whose field isn't declared
- * keep their current text.
+ * Re-resolves the display text of every template variable node from the stored values. Nodes whose field can't be
+ * placed (e.g. it isn't declared) keep their current text.
  */
 export const updateAllTemplateVariableNodes = ({
 	rootEditable,
@@ -37,13 +37,15 @@ export const updateAllTemplateVariableNodes = ({
 			continue;
 		}
 
-		const displayText = getTemplateVariableDisplayText({
-			fieldName: nodeStorage.fieldName,
+		const { fieldName } = nodeStorage;
+
+		const placementMismatch = validateTemplateVariablePlacement({
+			fieldName,
 			fieldsConfig,
 			storage,
 		});
 
-		if (displayText === null) {
+		if (placementMismatch) {
 			continue;
 		}
 
@@ -64,7 +66,7 @@ export const updateAllTemplateVariableNodes = ({
 		contentLine.$$replaceWith(
 			createContentLine({
 				localName: "span",
-				childNodes: [...createFormattableTexts({ data: displayText })],
+				childNodes: [...createFormattableTexts({ data: storage[fieldName] })],
 			}),
 		);
 	}

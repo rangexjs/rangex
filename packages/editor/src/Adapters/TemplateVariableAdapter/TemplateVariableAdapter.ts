@@ -36,6 +36,9 @@ export const createTemplateVariableAdapter = (
 		items: Object.keys(settings.fieldsConfig).map((fieldName) => ({
 			fieldName,
 		})),
+		// Providers
+		validateFieldNameProvider: null,
+		validateFieldValueProvider: null,
 	};
 
 	// States
@@ -87,6 +90,14 @@ export const createTemplateVariableAdapter = (
 			onSelect(callback) {
 				return selectEmitter.subscribe(callback);
 			},
+
+			registerValidateFieldName(provider) {
+				internals.validateFieldNameProvider = provider;
+			},
+
+			registerValidateFieldValue(provider) {
+				internals.validateFieldValueProvider = provider;
+			},
 		} satisfies TemplateVariableConfigPortProps,
 	);
 
@@ -131,6 +142,22 @@ export const createTemplateVariableAdapter = (
 
 			select(item: TemplateVariableItem) {
 				selectEmitter.emit(item);
+			},
+
+			validateFieldName(fieldName) {
+				if (!internals.validateFieldNameProvider) {
+					throw new Error("ValidateFieldName provider wasn't registered.");
+				}
+
+				return internals.validateFieldNameProvider(fieldName);
+			},
+
+			validateFieldValue(value) {
+				if (!internals.validateFieldValueProvider) {
+					throw new Error("ValidateFieldValue provider wasn't registered.");
+				}
+
+				return internals.validateFieldValueProvider(value);
 			},
 		} satisfies TemplateVariablePublicPortProps,
 	);

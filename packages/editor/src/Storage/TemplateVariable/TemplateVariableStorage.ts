@@ -4,23 +4,33 @@ import { validateStorage } from "../_Utilities";
 import type {
 	CreateTemplateVariableStorageParams,
 	CreateTemplateVariableStorageResult,
-	EnsureNodeTemplateVariableStorageParams,
-	EnsureNodeTemplateVariableStorageResult,
-	EnsureTemplateVariableStorageParams,
-	EnsureTemplateVariableStorageResult,
 	TemplateVariableStorage,
 } from "./TemplateVariableStorage-types";
 
-/*
- * A field name is valid if it isn't empty and it's at most 256 characters long.
- */
-const isFieldName = (value: unknown) => {
-	const maxFieldNameLength = 256;
+export const maxTemplateVariableFieldCount = 200;
 
+export const maxTemplateVariableFieldNameLength = 256;
+
+export const maxTemplateVariableFieldValueLength = 1000;
+
+/*
+ * A field name is valid if it isn't empty and it's at most maxTemplateVariableFieldNameLength characters long.
+ */
+export const isTemplateVariableFieldName = (value: unknown) => {
 	return (
 		typeof value === "string" &&
 		value !== "" &&
-		value.length <= maxFieldNameLength
+		value.length <= maxTemplateVariableFieldNameLength
+	);
+};
+
+/*
+ * A stored field value is valid if it's at most maxTemplateVariableFieldValueLength characters long.
+ */
+export const isTemplateVariableFieldValue = (value: unknown) => {
+	return (
+		typeof value === "string" &&
+		value.length <= maxTemplateVariableFieldValueLength
 	);
 };
 
@@ -29,7 +39,7 @@ const isFieldName = (value: unknown) => {
  */
 export const templateVariableStoragePattern = {
 	id: templateVariableId,
-	fieldName: isFieldName,
+	fieldName: isTemplateVariableFieldName,
 } satisfies JSONPattern<TemplateVariableStorage>;
 
 /*
@@ -60,30 +70,4 @@ export const createTemplateVariableStorage = ({
 		id: templateVariableId,
 		fieldName,
 	};
-};
-
-export const ensureTemplateVariableStorage = ({
-	storage,
-	fallbacks,
-}: EnsureTemplateVariableStorageParams): EnsureTemplateVariableStorageResult => {
-	if (validateTemplateVariableStorage(storage)) {
-		return storage;
-	}
-
-	return createTemplateVariableStorage(fallbacks);
-};
-
-export const ensureNodeTemplateVariableStorage = ({
-	inlineComponent,
-	fallbacks,
-}: EnsureNodeTemplateVariableStorageParams): EnsureNodeTemplateVariableStorageResult => {
-	const { $$customStorage } = inlineComponent;
-
-	const storage = ensureTemplateVariableStorage({
-		storage: $$customStorage,
-		fallbacks,
-	});
-	inlineComponent.$$customStorage = storage;
-
-	return storage;
 };

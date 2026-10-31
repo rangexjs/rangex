@@ -6,5 +6,7 @@ export type {
 	TemplateVariableItems,
 	TemplateVariablePublicPort,
 	TemplateVariableSettings,
+	ValidateFieldNameResult,
+	ValidateFieldValueResult,
 } from "#adapters/TemplateVariable";
 export { TemplateVariable } from "#rangex-editor";

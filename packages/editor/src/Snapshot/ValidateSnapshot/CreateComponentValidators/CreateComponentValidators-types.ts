@@ -8,6 +8,7 @@ import type {
 import type {
 	CreateLinkValidatorParams,
 	CreateMentionValidatorParams,
+	CreateTemplateVariableValidatorParams,
 } from "../ValidateInlineComponents";
 import type { ComponentValidator } from "../ValidateSnapshot-types";
 
@@ -30,7 +31,7 @@ export interface SnapshotComponents {
 	mention?: CreateMentionValidatorParams;
 	separator?: UncheckedComponentParams;
 	table?: UncheckedComponentParams;
-	templateVariable?: UncheckedComponentParams;
+	templateVariable?: CreateTemplateVariableValidatorParams;
 	todoList?: UncheckedComponentParams;
 	video?: CreateVideoValidatorParams;
 }

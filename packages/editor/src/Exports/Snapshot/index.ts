@@ -19,4 +19,8 @@ export type {
 	ValidateStorageResult,
 } from "#snapshot";
 export { validateSnapshot } from "#snapshot";
-export type { MentionStorage, RootStorage } from "#storage";
+export type {
+	MentionStorage,
+	RootStorage,
+	TemplateVariableStorage,
+} from "#storage";
