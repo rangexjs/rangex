@@ -2,9 +2,12 @@ import { type ComponentName, componentsName } from "#constants";
 import {
 	createAccordionItemValidator,
 	createAudioValidator,
+	createBlockQuoteValidator,
 	createCodeBlockValidator,
 	createEmbedValidator,
+	createEmptyMediaValidator,
 	createImageValidator,
+	createSeparatorValidator,
 	createVideoValidator,
 } from "../ValidateBlockComponents";
 import {
@@ -65,9 +68,7 @@ export const createComponentValidators = ({
 	}
 
 	if (blockQuote) {
-		componentValidators.push(
-			createUncheckedValidator(componentsName.blockQuote),
-		);
+		componentValidators.push(createBlockQuoteValidator());
 	}
 
 	if (codeBlock) {
@@ -79,9 +80,7 @@ export const createComponentValidators = ({
 	}
 
 	if (emptyMedia) {
-		componentValidators.push(
-			createUncheckedValidator(componentsName.emptyMedia),
-		);
+		componentValidators.push(createEmptyMediaValidator());
 	}
 
 	if (image) {
@@ -101,9 +100,7 @@ export const createComponentValidators = ({
 	}
 
 	if (separator) {
-		componentValidators.push(
-			createUncheckedValidator(componentsName.separator),
-		);
+		componentValidators.push(createSeparatorValidator());
 	}
 
 	if (table) {

@@ -203,7 +203,7 @@ server doesn't replace this: it's what guarantees every RootEditable a valid `Ro
 If either step fails, the snapshot isn't loaded: the editor starts from `createRoot` with the first of the schema's `root.types`,
 and warns. The given snapshot isn't changed, but saving the editor's content would replace it.
 
-BlockQuote, EmptyMedia, List, Separator, Table and TodoList have no validator yet: their
+List, Table and TodoList have no validator yet: their
 keys in `SnapshotComponents` allow them, without checking them (`createUncheckedValidator`).
 
 ## Running without a DOM

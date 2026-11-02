@@ -1,9 +1,12 @@
 import type {
 	CreateAccordionItemValidatorParams,
 	CreateAudioValidatorParams,
+	CreateBlockQuoteValidatorParams,
 	CreateCodeBlockValidatorParams,
 	CreateEmbedValidatorParams,
+	CreateEmptyMediaValidatorParams,
 	CreateImageValidatorParams,
+	CreateSeparatorValidatorParams,
 	CreateVideoValidatorParams,
 } from "../ValidateBlockComponents";
 import type {
@@ -22,15 +25,15 @@ export interface UncheckedComponentParams {}
 export interface SnapshotComponents {
 	accordionItem?: CreateAccordionItemValidatorParams;
 	audio?: CreateAudioValidatorParams;
-	blockQuote?: UncheckedComponentParams;
+	blockQuote?: CreateBlockQuoteValidatorParams;
 	codeBlock?: CreateCodeBlockValidatorParams;
 	embed?: CreateEmbedValidatorParams;
-	emptyMedia?: UncheckedComponentParams;
+	emptyMedia?: CreateEmptyMediaValidatorParams;
 	image?: CreateImageValidatorParams;
 	link?: CreateLinkValidatorParams;
 	list?: UncheckedComponentParams;
 	mention?: CreateMentionValidatorParams;
-	separator?: UncheckedComponentParams;
+	separator?: CreateSeparatorValidatorParams;
 	table?: UncheckedComponentParams;
 	templateVariable?: CreateTemplateVariableValidatorParams;
 	todoList?: UncheckedComponentParams;
