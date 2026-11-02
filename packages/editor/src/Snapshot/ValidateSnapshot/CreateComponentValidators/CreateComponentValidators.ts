@@ -9,6 +9,7 @@ import {
 	createImageValidator,
 	createListValidator,
 	createSeparatorValidator,
+	createTodoListValidator,
 	createVideoValidator,
 } from "../ValidateBlockComponents";
 import {
@@ -113,7 +114,7 @@ export const createComponentValidators = ({
 	}
 
 	if (todoList) {
-		componentValidators.push(createUncheckedValidator(componentsName.todoList));
+		componentValidators.push(createTodoListValidator());
 	}
 
 	if (video) {

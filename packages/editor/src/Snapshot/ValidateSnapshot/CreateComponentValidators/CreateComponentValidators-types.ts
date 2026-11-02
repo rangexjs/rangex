@@ -8,6 +8,7 @@ import type {
 	CreateImageValidatorParams,
 	CreateListValidatorParams,
 	CreateSeparatorValidatorParams,
+	CreateTodoListValidatorParams,
 	CreateVideoValidatorParams,
 } from "../ValidateBlockComponents";
 import type {
@@ -37,7 +38,7 @@ export interface SnapshotComponents {
 	separator?: CreateSeparatorValidatorParams;
 	table?: UncheckedComponentParams;
 	templateVariable?: CreateTemplateVariableValidatorParams;
-	todoList?: UncheckedComponentParams;
+	todoList?: CreateTodoListValidatorParams;
 	video?: CreateVideoValidatorParams;
 }
 
