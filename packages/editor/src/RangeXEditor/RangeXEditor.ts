@@ -9,6 +9,7 @@ import type {
 	RegisterAdapterResult,
 } from "./RangeXEditor-types";
 import { registerAttrValidators } from "./RegisterAttrValidators";
+import { registerTableLimits } from "./RegisterTableLimits";
 import { Snapshot } from "./Snapshot";
 
 export const createEditor = ({
@@ -49,6 +50,11 @@ export const createEditor = ({
 	const adapterBus = new AdapterBus();
 
 	registerAttrValidators({
+		adapterBus,
+		components: snapshotSchema.components,
+	});
+
+	registerTableLimits({
 		adapterBus,
 		components: snapshotSchema.components,
 	});

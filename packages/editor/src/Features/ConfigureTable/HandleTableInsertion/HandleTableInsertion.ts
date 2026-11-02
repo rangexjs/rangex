@@ -1,9 +1,9 @@
-import { createTable } from "../../_Utilities";
+import { createTable, validateTablePlacement } from "../../_Utilities";
 import type { HandleTableInsertionParams } from "./HandleTableInsertion-types";
 
 /*
  * Inserts a new table at the current selection on insert requests, then places the
- * selection inside it and focuses the editor.
+ * selection inside it and focuses the editor. A size past the table's limits is ignored.
  */
 export const handleTableInsertion = ({
 	configPort,
@@ -14,6 +14,17 @@ export const handleTableInsertion = ({
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = configPort.onInsert(({ row, column }) => {
+		const placementMismatch = validateTablePlacement({
+			row,
+			column,
+			limits: configPort.limits,
+		});
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return;
+		}
+
 		const table = createTable({ rows: row, cols: column });
 
 		blockComponentPlacement.insertBySelection({

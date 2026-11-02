@@ -31,8 +31,8 @@ export const TableToolbarButton = () => {
 	const $table = Table(table);
 	const $readOnly = ReadOnly(readOnly);
 
-	const rows = 10;
-	const cols = 10;
+	const rows = Math.min(10, table.limits.maxRows);
+	const cols = Math.min(10, table.limits.maxCols);
 	const size = 12;
 
 	const [checked, setChecked] = createSignal(false);

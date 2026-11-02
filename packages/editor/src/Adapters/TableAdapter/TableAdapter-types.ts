@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+import type { TableLimits } from "#constants";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -45,9 +46,9 @@ export interface TableCellTypeState {
 }
 
 export interface TableVerticalAlignmentState {
-	top: TableActionButtonState;
-	middle: TableActionButtonState;
-	bottom: TableActionButtonState;
+	start: TableActionButtonState;
+	center: TableActionButtonState;
+	end: TableActionButtonState;
 }
 
 export interface TableCellResizingState {
@@ -75,7 +76,7 @@ export type TableInsertDeleteAction =
 	| "deleteRow"
 	| "deleteColumn";
 export type TableCellTypeAction = "header" | "data";
-export type TableVerticalAlignmentAction = "top" | "middle" | "bottom";
+export type TableVerticalAlignmentAction = "start" | "center" | "end";
 export type TableCellResizingAction = "equalizeColumns" | "minimizeRows";
 
 export interface TableState {
@@ -140,6 +141,7 @@ export type OnClearContentsCallbackFn = () => void;
 export interface UpdateStateParams extends TableState {}
 
 export interface TableConfigPortProps {
+	readonly limits: TableLimits;
 	readonly contextMenuEl: HTMLDivElement;
 
 	updateState(params: UpdateStateParams): void;
@@ -163,6 +165,7 @@ export interface TableConfigPort
 		CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TablePublicPortProps {
+	readonly limits: TableLimits;
 	readonly contextMenuEl: HTMLDivElement;
 
 	readonly canInsert: boolean;

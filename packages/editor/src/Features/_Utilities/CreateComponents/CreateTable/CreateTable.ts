@@ -4,31 +4,33 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, tableDefinition } from "#constants";
 import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
 /*
- * Builds a table block component with the given row/column counts.
+ * Builds a table block component with the given row/column counts, by the tableDefinition.
  */
 export const createTable = ({
 	rows,
 	cols,
 }: CreateTableParams): CreateTableResult => {
+	const {
+		minColWidth,
+		minRowHeight,
+		defaultRowHeight,
+		tableCellsEditable,
+		cellNestedEditableProps,
+	} = tableDefinition;
+
 	const table = createEngineTable({
 		rows,
 		cols,
-		minColWidth: 40,
-		minRowHeight: 40,
-		defaultRowHeight: 40,
-		tableCellsEditable: "true",
-		cellNestedEditableProps: {
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
-		},
+		minColWidth,
+		minRowHeight,
+		defaultRowHeight,
+		tableCellsEditable,
+		cellNestedEditableProps: { ...cellNestedEditableProps },
 	});
 
 	return createBlockComponentLine({

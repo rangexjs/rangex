@@ -1,3 +1,4 @@
+import type { TableLimitsParams } from "#constants";
 import type {
 	CreateAccordionItemValidatorParams,
 	CreateAudioValidatorParams,
@@ -36,7 +37,7 @@ export interface SnapshotComponents {
 	list?: CreateListValidatorParams;
 	mention?: CreateMentionValidatorParams;
 	separator?: CreateSeparatorValidatorParams;
-	table?: UncheckedComponentParams;
+	table?: TableLimitsParams;
 	templateVariable?: CreateTemplateVariableValidatorParams;
 	todoList?: CreateTodoListValidatorParams;
 	video?: CreateVideoValidatorParams;

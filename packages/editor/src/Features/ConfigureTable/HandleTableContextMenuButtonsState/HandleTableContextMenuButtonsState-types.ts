@@ -21,9 +21,9 @@ export interface GetCellTypeButtonsStateParams {
 export interface GetCellTypeButtonsStateResult extends CellTypeState {}
 
 export interface VerticalAlignmentState {
-	top: boolean;
-	middle: boolean;
-	bottom: boolean;
+	start: boolean;
+	center: boolean;
+	end: boolean;
 }
 
 export interface GetVerticalAlignmentButtonsStateParams {

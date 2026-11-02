@@ -5,9 +5,11 @@ import {
 	tableRole,
 	tableRoleSelector,
 } from "@rangex/core";
+import { verticalAlignAttr } from "#constants";
 import {
 	getCommonTableCellFromSelection,
 	getCommonTableFromSelection,
+	getTableCapacity,
 } from "../_Utilities";
 import type {
 	GetActiveTableCellsParams,
@@ -89,6 +91,21 @@ const handleMergeSplit = ({
 			return;
 		}
 
+		const { canSplitHorizontally, canSplitVertically } = getTableCapacity({
+			table,
+			tableCell: getCommonTableCellFromSelection({ editorAPI }),
+			limits: configPort.limits,
+		});
+
+		const isWithinLimits =
+			(action !== "splitHorizontally" || canSplitHorizontally) &&
+			(action !== "splitVertically" || canSplitVertically);
+
+		if (!isWithinLimits) {
+			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
+			return;
+		}
+
 		({
 			mergeSelected: () => table.$$mergeCells({ type: "selection" }),
 			mergeLeft: () =>
@@ -118,6 +135,25 @@ const handleInsertDelete = ({
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
+			return;
+		}
+
+		const { canAddRow, canAddCol } = getTableCapacity({
+			table,
+			tableCell: getCommonTableCellFromSelection({ editorAPI }),
+			limits: configPort.limits,
+		});
+
+		const isRowInsert =
+			action === "insertRowAbove" || action === "insertRowBelow";
+		const isColInsert =
+			action === "insertColumnLeft" || action === "insertColumnRight";
+
+		const isWithinLimits =
+			(!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
+
+		if (!isWithinLimits) {
+			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
 			return;
 		}
 
@@ -183,16 +219,10 @@ const handleVerticalAlignment = ({
 	configPort,
 	editorAPI,
 }: HandleVerticalAlignmentParams) => {
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+
 	return configPort.onChangeVerticalAlignment((action) => {
 		const tableCells = getActiveTableCells({ editorAPI });
-
-		const alignContent = (
-			{
-				top: "start",
-				middle: "center",
-				bottom: "end",
-			} as const
-		)[action];
 
 		for (const tableCell of tableCells) {
 			const nestedEditable = tableCell.$$querySelector(
@@ -203,8 +233,10 @@ const handleVerticalAlignment = ({
 				throw new Error("NestedEditable's type is invalid.");
 			}
 
-			nestedEditable.style.alignContent = alignContent;
+			nestedEditable.$$setAttribute(verticalAlignAttr.name, action);
 		}
+
+		snapshotTimeline.registerSnapshotBoundary();
 
 		editorAPI.focus();
 	});

@@ -99,7 +99,11 @@ export const buildCommandMenuActions = ({
 	if (table) {
 		actions.set("table", {
 			icon: "Table",
-			onSelect: () => table.insert({ row: 5, column: 5 }),
+			onSelect: () =>
+				table.insert({
+					row: Math.min(5, table.limits.maxRows),
+					column: Math.min(5, table.limits.maxCols),
+				}),
 		});
 	}
 

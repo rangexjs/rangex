@@ -1,3 +1,4 @@
+import type { TableLimits } from "#constants";
 import { createEmitter } from "../CreateEmitter";
 import type { AdapterName } from "../Utilities-types";
 import type {
@@ -18,8 +19,8 @@ export const mediaTypes = [
 /**
  * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with), without
  * holding direct references to one another. What the Adapters register is only complete once every Adapter has been
- * created, so read it from the configure phase on. The attribute validators are the exception: createEditor registers
- * them from the SnapshotSchema before any Adapter is created.
+ * created, so read it from the configure phase on. The attribute validators and the Table's limits are the exception:
+ * createEditor registers them from the SnapshotSchema before any Adapter is created.
  */
 export class AdapterBus {
 	#registeredAdapters: Set<AdapterName> = new Set();
@@ -28,6 +29,8 @@ export class AdapterBus {
 		AttrValidatorsAdapterName,
 		AttrValidatorsByAdapter[AttrValidatorsAdapterName]
 	>();
+
+	#tableLimits: TableLimits | null = null;
 
 	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
 	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
@@ -59,6 +62,20 @@ export class AdapterBus {
 		}
 
 		return attrValidators as AttrValidatorsByAdapter[Name];
+	}
+
+	registerTableLimits(tableLimits: TableLimits) {
+		this.#tableLimits = tableLimits;
+	}
+
+	getTableLimits(): TableLimits {
+		if (!this.#tableLimits) {
+			throw new Error(
+				"Table Adapter's limits weren't registered: add it to the SnapshotSchema's components.",
+			);
+		}
+
+		return this.#tableLimits;
 	}
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {

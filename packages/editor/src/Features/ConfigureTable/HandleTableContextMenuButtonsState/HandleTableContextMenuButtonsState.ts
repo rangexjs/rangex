@@ -5,8 +5,12 @@ import {
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
 } from "@rangex/core";
+import { verticalAlignAttr } from "#constants";
 import { isScopedEditableEmpty } from "#engine-links";
-import { getCommonTableCellFromSelection } from "../_Utilities";
+import {
+	getCommonTableCellFromSelection,
+	getTableCapacity,
+} from "../_Utilities";
 import type {
 	CellTypeState,
 	GetActiveTableCellsParams,
@@ -79,9 +83,9 @@ const getVerticalAlignmentButtonsState = ({
 	const activeTableCells = getActiveTableCells({ editorAPI, table });
 
 	const verticalAlignmentState: VerticalAlignmentState = {
-		top: false,
-		middle: false,
-		bottom: false,
+		start: false,
+		center: false,
+		end: false,
 	};
 
 	for (const tableCell of activeTableCells) {
@@ -93,13 +97,15 @@ const getVerticalAlignmentButtonsState = ({
 			throw new Error("nestedEditable's type is invalid.");
 		}
 
-		const { alignContent } = getComputedStyle(nestedEditable);
+		const verticalAlign = nestedEditable.getAttribute(verticalAlignAttr.name);
 
-		/** "normal" is the browser default for table cells and resolves to top alignment. */
-		verticalAlignmentState.top ||=
-			alignContent === "start" || alignContent === "normal";
-		verticalAlignmentState.middle ||= alignContent === "center";
-		verticalAlignmentState.bottom ||= alignContent === "end";
+		// Without the attribute, the cell is top-aligned
+		verticalAlignmentState.start ||=
+			verticalAlign === null || verticalAlign === verticalAlignAttr.value.start;
+		verticalAlignmentState.center ||=
+			verticalAlign === verticalAlignAttr.value.center;
+		verticalAlignmentState.end ||=
+			verticalAlign === verticalAlignAttr.value.end;
 	}
 
 	return verticalAlignmentState;
@@ -158,6 +164,33 @@ const updateTableContextMenuButtonsState = ({
 		type: "selection",
 	});
 
+	const { limits } = configPort;
+
+	const tableCapacity = getTableCapacity({
+		table,
+		tableCell: getCommonTableCellFromSelection({ editorAPI }),
+		limits,
+	});
+
+	const maxRowsInfo = `A table can have at most ${limits.maxRows} rows.`;
+	const maxColsInfo = `A table can have at most ${limits.maxCols} columns.`;
+
+	const insertRowInfo = resolveInfo([
+		[
+			insertRowValidityState.canInsert,
+			"A row cannot be inserted in the current selection.",
+		],
+		[tableCapacity.canAddRow, maxRowsInfo],
+	]);
+
+	const insertColInfo = resolveInfo([
+		[
+			insertColValidityState.canInsert,
+			"A column cannot be inserted in the current selection.",
+		],
+		[tableCapacity.canAddCol, maxColsInfo],
+	]);
+
 	const mergeCellsInfo = resolveInfo([
 		[
 			mergeCellsValidityState.hasMultipleCells,
@@ -212,6 +245,7 @@ const updateTableContextMenuButtonsState = ({
 			splitValidityState.horizontal.hasSingleCell,
 			"A single cell must be selected.",
 		],
+		[tableCapacity.canSplitHorizontally, maxColsInfo],
 	]);
 
 	const splitVerticallyInfo = resolveInfo([
@@ -219,6 +253,7 @@ const updateTableContextMenuButtonsState = ({
 			splitValidityState.vertical.hasSingleCell,
 			"A single cell must be selected.",
 		],
+		[tableCapacity.canSplitVertically, maxRowsInfo],
 	]);
 
 	const splitFullyInfo = resolveInfo([
@@ -262,11 +297,17 @@ const updateTableContextMenuButtonsState = ({
 			mergeUp: { disabled: !mergeUp.canMerge, info: mergeUpInfo },
 			mergeDown: { disabled: !mergeDown.canMerge, info: mergeDownInfo },
 			splitHorizontally: {
-				disabled: !splitValidityState.horizontal.canSplit,
+				disabled: !(
+					splitValidityState.horizontal.canSplit &&
+					tableCapacity.canSplitHorizontally
+				),
 				info: splitHorizontallyInfo,
 			},
 			splitVertically: {
-				disabled: !splitValidityState.vertical.canSplit,
+				disabled: !(
+					splitValidityState.vertical.canSplit &&
+					tableCapacity.canSplitVertically
+				),
 				info: splitVerticallyInfo,
 			},
 			splitFully: {
@@ -276,20 +317,28 @@ const updateTableContextMenuButtonsState = ({
 		},
 		insertDelete: {
 			insertRowAbove: {
-				disabled: !insertRowValidityState.canInsert,
-				info: "A row cannot be inserted in the current selection.",
+				disabled: !(
+					insertRowValidityState.canInsert && tableCapacity.canAddRow
+				),
+				info: insertRowInfo,
 			},
 			insertRowBelow: {
-				disabled: !insertRowValidityState.canInsert,
-				info: "A row cannot be inserted in the current selection.",
+				disabled: !(
+					insertRowValidityState.canInsert && tableCapacity.canAddRow
+				),
+				info: insertRowInfo,
 			},
 			insertColumnLeft: {
-				disabled: !insertColValidityState.canInsert,
-				info: "A column cannot be inserted in the current selection.",
+				disabled: !(
+					insertColValidityState.canInsert && tableCapacity.canAddCol
+				),
+				info: insertColInfo,
 			},
 			insertColumnRight: {
-				disabled: !insertColValidityState.canInsert,
-				info: "A column cannot be inserted in the current selection.",
+				disabled: !(
+					insertColValidityState.canInsert && tableCapacity.canAddCol
+				),
+				info: insertColInfo,
 			},
 			deleteRow: {
 				disabled: !deleteRowsValidityState.canDelete,
@@ -305,9 +354,9 @@ const updateTableContextMenuButtonsState = ({
 			data: { disabled: false, checked: cellTypeState.data },
 		},
 		verticalAlignment: {
-			top: { disabled: false, checked: verticalAlignmentState.top },
-			middle: { disabled: false, checked: verticalAlignmentState.middle },
-			bottom: { disabled: false, checked: verticalAlignmentState.bottom },
+			start: { disabled: false, checked: verticalAlignmentState.start },
+			center: { disabled: false, checked: verticalAlignmentState.center },
+			end: { disabled: false, checked: verticalAlignmentState.end },
 		},
 		cellResizing: {
 			equalizeColumns: { disabled: false },
