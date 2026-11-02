@@ -1,2 +1,2 @@
 export * from "./ValidateList";
-export * from "./ValidateList-types";
+export type { CreateListValidatorParams } from "./ValidateList-types";

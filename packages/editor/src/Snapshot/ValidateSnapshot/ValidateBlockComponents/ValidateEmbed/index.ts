@@ -1,2 +1,2 @@
 export * from "./ValidateEmbed";
-export * from "./ValidateEmbed-types";
+export type { CreateEmbedValidatorParams } from "./ValidateEmbed-types";

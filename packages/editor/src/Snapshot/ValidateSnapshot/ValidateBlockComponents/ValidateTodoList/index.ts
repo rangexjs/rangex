@@ -1,2 +1,2 @@
 export * from "./ValidateTodoList";
-export * from "./ValidateTodoList-types";
+export type { CreateTodoListValidatorParams } from "./ValidateTodoList-types";

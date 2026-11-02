@@ -1,2 +1,2 @@
 export * from "./ValidateAccordionItem";
-export * from "./ValidateAccordionItem-types";
+export type { CreateAccordionItemValidatorParams } from "./ValidateAccordionItem-types";

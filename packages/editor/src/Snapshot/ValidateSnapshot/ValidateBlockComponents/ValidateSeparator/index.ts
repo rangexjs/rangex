@@ -1,2 +1,2 @@
 export * from "./ValidateSeparator";
-export * from "./ValidateSeparator-types";
+export type { CreateSeparatorValidatorParams } from "./ValidateSeparator-types";

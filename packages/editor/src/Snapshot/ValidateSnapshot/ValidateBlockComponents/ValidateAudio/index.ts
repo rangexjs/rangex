@@ -1,2 +1,2 @@
 export * from "./ValidateAudio";
-export * from "./ValidateAudio-types";
+export type { CreateAudioValidatorParams } from "./ValidateAudio-types";

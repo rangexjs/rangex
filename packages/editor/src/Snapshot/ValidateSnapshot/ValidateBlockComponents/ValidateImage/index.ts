@@ -1,2 +1,2 @@
 export * from "./ValidateImage";
-export * from "./ValidateImage-types";
+export type { CreateImageValidatorParams } from "./ValidateImage-types";

@@ -1,2 +1,2 @@
 export * from "./ValidateLink";
-export * from "./ValidateLink-types";
+export type { CreateLinkValidatorParams } from "./ValidateLink-types";

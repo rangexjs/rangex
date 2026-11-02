@@ -1,2 +1,2 @@
 export * from "./ValidateMention";
-export * from "./ValidateMention-types";
+export type { CreateMentionValidatorParams } from "./ValidateMention-types";

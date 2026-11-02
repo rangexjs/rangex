@@ -1,2 +1,2 @@
 export * from "./ValidateEmptyMedia";
-export * from "./ValidateEmptyMedia-types";
+export type { CreateEmptyMediaValidatorParams } from "./ValidateEmptyMedia-types";

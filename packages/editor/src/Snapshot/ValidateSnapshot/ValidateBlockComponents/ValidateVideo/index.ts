@@ -1,2 +1,2 @@
 export * from "./ValidateVideo";
-export * from "./ValidateVideo-types";
+export type { CreateVideoValidatorParams } from "./ValidateVideo-types";

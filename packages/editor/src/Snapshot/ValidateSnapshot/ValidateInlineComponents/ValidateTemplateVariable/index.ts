@@ -1,2 +1,2 @@
 export * from "./ValidateTemplateVariable";
-export * from "./ValidateTemplateVariable-types";
+export type { CreateTemplateVariableValidatorParams } from "./ValidateTemplateVariable-types";

@@ -1,2 +1,2 @@
 export * from "./ValidateBlockQuote";
-export * from "./ValidateBlockQuote-types";
+export type { CreateBlockQuoteValidatorParams } from "./ValidateBlockQuote-types";
