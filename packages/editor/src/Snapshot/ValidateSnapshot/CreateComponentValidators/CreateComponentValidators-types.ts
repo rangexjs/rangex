@@ -6,6 +6,7 @@ import type {
 	CreateEmbedValidatorParams,
 	CreateEmptyMediaValidatorParams,
 	CreateImageValidatorParams,
+	CreateListValidatorParams,
 	CreateSeparatorValidatorParams,
 	CreateVideoValidatorParams,
 } from "../ValidateBlockComponents";
@@ -31,7 +32,7 @@ export interface SnapshotComponents {
 	emptyMedia?: CreateEmptyMediaValidatorParams;
 	image?: CreateImageValidatorParams;
 	link?: CreateLinkValidatorParams;
-	list?: UncheckedComponentParams;
+	list?: CreateListValidatorParams;
 	mention?: CreateMentionValidatorParams;
 	separator?: CreateSeparatorValidatorParams;
 	table?: UncheckedComponentParams;

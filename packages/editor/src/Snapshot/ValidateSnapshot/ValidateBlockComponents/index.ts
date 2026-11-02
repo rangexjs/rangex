@@ -6,5 +6,6 @@ export * from "./ValidateCodeBlock";
 export * from "./ValidateEmbed";
 export * from "./ValidateEmptyMedia";
 export * from "./ValidateImage";
+export * from "./ValidateList";
 export * from "./ValidateSeparator";
 export * from "./ValidateVideo";

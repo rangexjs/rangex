@@ -1,2 +1,2 @@
 export * from "./ValidateCodeBlock";
-export * from "./ValidateCodeBlock-types";
+export type { CreateCodeBlockValidatorParams } from "./ValidateCodeBlock-types";

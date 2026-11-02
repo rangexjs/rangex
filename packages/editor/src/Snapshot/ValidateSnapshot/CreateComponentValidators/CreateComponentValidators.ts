@@ -7,6 +7,7 @@ import {
 	createEmbedValidator,
 	createEmptyMediaValidator,
 	createImageValidator,
+	createListValidator,
 	createSeparatorValidator,
 	createVideoValidator,
 } from "../ValidateBlockComponents";
@@ -92,7 +93,7 @@ export const createComponentValidators = ({
 	}
 
 	if (list) {
-		componentValidators.push(createUncheckedValidator(componentsName.list));
+		componentValidators.push(createListValidator());
 	}
 
 	if (mention) {
