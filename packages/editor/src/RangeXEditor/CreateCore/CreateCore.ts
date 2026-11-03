@@ -3,6 +3,7 @@ import {
 	createEditorAPI,
 	migrateStoredSnapshot,
 } from "@rangex/core";
+import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
 import { validateSnapshot } from "#snapshot";
 import type {
@@ -72,7 +73,10 @@ export const createCore = ({
 
 		const rootEditable = createRoot({ type });
 
-		return { rootEditable };
+		return {
+			rootEditable,
+			glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
+		};
 	};
 
 	const { editorAPI } = createEditorAPI({

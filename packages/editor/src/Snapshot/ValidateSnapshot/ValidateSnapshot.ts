@@ -3,6 +3,7 @@ import {
 	snapshotManager,
 	validateStoredSnapshot,
 } from "@rangex/core";
+import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
 import { createComponentValidators } from "./CreateComponentValidators";
 import { resolveNodeStorages } from "./ResolveNodeStorages";
@@ -21,7 +22,7 @@ import type {
  * any other one is invalid. The storage of every other node is dropped (see resolveNodeStorages). Finally, the
  * TemplateVariables' display texts are matched to the Root's storage (see resolveTemplateVariableTexts). A valid snapshot
  * is returned as a copy with the resolved storages, texts and the components' resolved attributes (see
- * resolveElementAttrs), the one to save or restore. The nodes of a failure belong to that copy, not to the given
+ * resolveElementAttrs), and the editor's glyphFormatterInlineTagsOrder in place of its own: the one to save or restore. The nodes of a failure belong to that copy, not to the given
  * snapshot.
  */
 export const validateSnapshot = ({
@@ -74,6 +75,10 @@ export const validateSnapshot = ({
 
 	return {
 		isValid: true,
-		storedSnapshot: { ...validStoredSnapshot, snapshot: resolvedSnapshot },
+		storedSnapshot: {
+			...validStoredSnapshot,
+			snapshot: resolvedSnapshot,
+			glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
+		},
 	};
 };

@@ -41,7 +41,9 @@ if (result.isValid) {
 7. **TemplateVariables** — `resolveTemplateVariableTexts` matches every TemplateVariable's display text to its field's
    value in the Root's storage (see [TemplateVariables](#templatevariables)).
 8. **Result** — the Draft, with every resolved storage, text and component's resolved attributes, turned back into a
-   snapshot.
+   snapshot. Its `glyphFormatterInlineTagsOrder` is replaced by the editor's (`#constants`): the engine accepts any order
+   that holds every tag, but the order decides how the tags nest in HTML and how their styles cascade, so a snapshot
+   can't bring its own. It's repaired, not rejected, as it only changes the rendering. A new root gets the same order.
 
 The result has the same shape as the engine's `migrateStoredSnapshot`:
 
