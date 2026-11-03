@@ -115,9 +115,9 @@ export const ColorToolbarButton = () => {
 			formatting.setColor({
 				light: {
 					type: "solid",
-					value: ColorFormat.hsl(lightHsl()).color(),
+					value: ColorFormat.hsl(lightHsl()).hex().hex,
 				},
-				dark: { type: "solid", value: ColorFormat.hsl(darkHsl()).color() },
+				dark: { type: "solid", value: ColorFormat.hsl(darkHsl()).hex().hex },
 			});
 		}
 	};
