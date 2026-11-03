@@ -1,4 +1,3 @@
-import { type ComponentName, componentsName } from "#constants";
 import {
 	createAccordionItemValidator,
 	createAudioValidator,
@@ -9,6 +8,7 @@ import {
 	createImageValidator,
 	createListValidator,
 	createSeparatorValidator,
+	createTableValidator,
 	createTodoListValidator,
 	createVideoValidator,
 } from "../ValidateBlockComponents";
@@ -20,20 +20,7 @@ import {
 import type {
 	CreateComponentValidatorsParams,
 	CreateComponentValidatorsResult,
-	CreateUncheckedValidatorResult,
 } from "./CreateComponentValidators-types";
-
-/*
- * Allows a component that has no validator yet, so a snapshot containing it stays valid.
- *
- * TODO: Remove it once every component has a validator
- */
-const createUncheckedValidator = (
-	name: ComponentName,
-): CreateUncheckedValidatorResult => ({
-	name,
-	validate: () => null,
-});
 
 /*
  * Creates the validator of every given component, the ones left out don't get one.
@@ -106,7 +93,7 @@ export const createComponentValidators = ({
 	}
 
 	if (table) {
-		componentValidators.push(createUncheckedValidator(componentsName.table));
+		componentValidators.push(createTableValidator(table));
 	}
 
 	if (templateVariable) {

@@ -203,8 +203,13 @@ server doesn't replace this: it's what guarantees every RootEditable a valid `Ro
 If either step fails, the snapshot isn't loaded: the editor starts from `createRoot` with the first of the schema's `root.types`,
 and warns. The given snapshot isn't changed, but saving the editor's content would replace it.
 
-Table has no validator yet: its key in `SnapshotComponents` allows it, without checking it
-(`createUncheckedValidator`).
+Every component has a validator. The Table's checks rest on the engine's, which validates its whole grid (sections,
+rows, spans and sizes): `ValidateTable` matches its settings to `tableDefinition` (the same one `createTable` builds
+with), and each cell's NestedEditable to the cells' settings. `components.table` takes `{ maxRows, maxCols }` (100 and
+40 by default): a larger table makes the snapshot invalid, and the editor never inserts or grows a table past them. A
+table taller than `maxTableHeight` (100,000px across its rows) is repaired instead, by resetting every row to the
+default height, as dragging a row can make it as tall as any height. The cells' NestedEditables keep their
+`data-vertical-align`; every other attribute in the table is dropped.
 
 ## Running without a DOM
 

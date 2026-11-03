@@ -6,5 +6,6 @@ export * from "./Embed";
 export * from "./Image";
 export * from "./Link";
 export * from "./Root";
+export * from "./Table";
 export * from "./TodoList";
 export * from "./Video";
