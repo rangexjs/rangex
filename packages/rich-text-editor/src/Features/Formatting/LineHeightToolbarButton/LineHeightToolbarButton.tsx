@@ -1,4 +1,4 @@
-import type { FormattingLineHeightValue } from "@rangex/editor/formatting";
+import type { LineHeightValue } from "@rangex/editor/formatting";
 import { LineHeight, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
@@ -10,7 +10,7 @@ import {
 	type ToolbarDropdownList,
 } from "../../_Utilities";
 
-const defaultValues: Set<FormattingLineHeightValue> = new Set([
+const defaultValues: Set<LineHeightValue> = new Set([
 	{ type: "number", value: 0.8 },
 	{ type: "number", value: 0.9 },
 	{ type: "number", value: 1 },
@@ -45,7 +45,7 @@ export const LineHeightToolbarButton = () => {
 
 	const sortedList = createMemo(
 		() => {
-			const deduplicatedValues: FormattingLineHeightValue[] = [];
+			const deduplicatedValues: LineHeightValue[] = [];
 
 			const commonValues = [...defaultValues, ...$lineHeight.values()];
 
@@ -70,7 +70,7 @@ export const LineHeightToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $lineHeight.values();
 
-		const contains = (value: FormattingLineHeightValue) => {
+		const contains = (value: LineHeightValue) => {
 			return !![...activeValues].find(
 				(activeValue) =>
 					activeValue.type === value.type && activeValue.value === value.value,

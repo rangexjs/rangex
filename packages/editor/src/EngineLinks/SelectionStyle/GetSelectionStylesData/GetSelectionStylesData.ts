@@ -1,13 +1,20 @@
-import { createStructuredStyleValue } from "@rangex/core";
 import type { FormattingTogglePressed } from "#adapters/Formatting";
-import { assertNever } from "#utilities";
+import {
+	createBackgroundColorStructuredStyle,
+	createColorStructuredStyle,
+	createFontFamilyStructuredStyle,
+	createFontSizeStructuredStyle,
+	createLetterSpacingStructuredStyle,
+	createLineHeightStructuredStyle,
+	createPaddingBlockStructuredStyle,
+	createTextAlignStructuredStyle,
+	createTextIndentStructuredStyle,
+} from "#structured-style";
 import type {
 	GetBackgroundColorStylesParams,
 	GetBackgroundColorStylesResult,
 	GetColorStylesParams,
 	GetColorStylesResult,
-	GetColorValueFromStructuredColorParams,
-	GetColorValueFromStructuredColorResult,
 	GetFontFamilyStylesParams,
 	GetFontFamilyStylesResult,
 	GetFontSizeStylesParams,
@@ -30,26 +37,6 @@ import type {
 	GetTextIndentStylesResult,
 } from "./GetSelectionStylesData-types";
 
-const getColorValueFromStructuredColor = ({
-	color,
-}: GetColorValueFromStructuredColorParams): GetColorValueFromStructuredColorResult => {
-	if (color.type === "solid") {
-		return color.value;
-	}
-
-	if (color.type === "linear-gradient") {
-		const { deg, colors } = color;
-
-		const colorValues = colors
-			.map(({ value, offset }) => `${value} ${offset}%`)
-			.join(",");
-
-		return `linear-gradient(${deg}deg, ${colorValues})`;
-	}
-
-	return assertNever(color);
-};
-
 const getBackgroundColorStyles = ({
 	formattingActionState,
 }: GetBackgroundColorStylesParams): GetBackgroundColorStylesResult => {
@@ -63,23 +50,7 @@ const getBackgroundColorStyles = ({
 		return null;
 	}
 
-	const { light, dark } = backgroundColor;
-
-	return createStructuredStyleValue({
-		type: "background-color",
-		values: { light, dark },
-		resolve: ({ light, dark }) => {
-			const lightValue = getColorValueFromStructuredColor({
-				color: light,
-			});
-
-			const darkValue = getColorValueFromStructuredColor({
-				color: dark,
-			});
-
-			return `light-dark(${lightValue},${darkValue})`;
-		},
-	});
+	return createBackgroundColorStructuredStyle({ backgroundColor });
 };
 
 const getColorStyles = ({
@@ -95,23 +66,7 @@ const getColorStyles = ({
 		return null;
 	}
 
-	const { light, dark } = color;
-
-	return createStructuredStyleValue({
-		type: "color",
-		values: { light, dark },
-		resolve: ({ light, dark }) => {
-			const lightValue = getColorValueFromStructuredColor({
-				color: light,
-			});
-
-			const darkValue = getColorValueFromStructuredColor({
-				color: dark,
-			});
-
-			return `light-dark(${lightValue},${darkValue})`;
-		},
-	});
+	return createColorStructuredStyle({ color });
 };
 
 const getFontFamilyStyles = ({
@@ -127,13 +82,7 @@ const getFontFamilyStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "font-family",
-		values: { fontFamily },
-		resolve: ({ fontFamily }) => {
-			return fontFamily;
-		},
-	});
+	return createFontFamilyStructuredStyle({ fontFamily });
 };
 
 const getFontSizeStyles = ({
@@ -149,17 +98,7 @@ const getFontSizeStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "font-size",
-		values: { fontSize },
-		resolve: ({ fontSize }) => {
-			if (fontSize.type === "px") {
-				return `${fontSize.value}px`;
-			}
-
-			return assertNever(fontSize.type);
-		},
-	});
+	return createFontSizeStructuredStyle({ fontSize });
 };
 
 const getLetterSpacingStyles = ({
@@ -175,17 +114,7 @@ const getLetterSpacingStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "letter-spacing",
-		values: { letterSpacing },
-		resolve: ({ letterSpacing }) => {
-			if (letterSpacing.type === "px") {
-				return `${letterSpacing.value}px`;
-			}
-
-			return assertNever(letterSpacing.type);
-		},
-	});
+	return createLetterSpacingStructuredStyle({ letterSpacing });
 };
 
 const getLineHeightStyles = ({
@@ -201,17 +130,7 @@ const getLineHeightStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "line-height",
-		values: { lineHeight },
-		resolve: ({ lineHeight }) => {
-			if (lineHeight.type === "number") {
-				return `${lineHeight.value}`;
-			}
-
-			return assertNever(lineHeight.type);
-		},
-	});
+	return createLineHeightStructuredStyle({ lineHeight });
 };
 
 const getPaddingBlockStyles = ({
@@ -227,17 +146,7 @@ const getPaddingBlockStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "padding-block",
-		values: { paddingBlock: lineSpacing },
-		resolve: ({ paddingBlock }) => {
-			if (paddingBlock.type === "px") {
-				return `${paddingBlock.value}px`;
-			}
-
-			return assertNever(paddingBlock.type);
-		},
-	});
+	return createPaddingBlockStructuredStyle({ paddingBlock: lineSpacing });
 };
 
 const getTextAlignStyles = ({
@@ -253,13 +162,7 @@ const getTextAlignStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "text-align",
-		values: { textAlign },
-		resolve: ({ textAlign }) => {
-			return textAlign;
-		},
-	});
+	return createTextAlignStructuredStyle({ textAlign });
 };
 
 const getTextIndentStyles = ({
@@ -275,17 +178,7 @@ const getTextIndentStyles = ({
 		return null;
 	}
 
-	return createStructuredStyleValue({
-		type: "text-indent",
-		values: { textIndent: indentation },
-		resolve: ({ textIndent }) => {
-			if (textIndent.type === "px") {
-				return `${textIndent.value}px`;
-			}
-
-			return assertNever(textIndent.type);
-		},
-	});
+	return createTextIndentStructuredStyle({ textIndent: indentation });
 };
 
 const getStyles = ({

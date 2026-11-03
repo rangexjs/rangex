@@ -1,4 +1,4 @@
-import type { FormattingLetterSpacingValue } from "@rangex/editor/formatting";
+import type { LetterSpacingValue } from "@rangex/editor/formatting";
 import { LetterSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
@@ -10,7 +10,7 @@ import {
 	type ToolbarDropdownList,
 } from "../../_Utilities";
 
-const defaultValues: Set<FormattingLetterSpacingValue> = new Set([
+const defaultValues: Set<LetterSpacingValue> = new Set([
 	{ type: "px", value: -3 },
 	{ type: "px", value: -2 },
 	{ type: "px", value: -1.5 },
@@ -52,7 +52,7 @@ export const LetterSpacingToolbarButton = () => {
 
 	const sortedLetterSpacings = createMemo(
 		() => {
-			const deduplicatedValues: FormattingLetterSpacingValue[] = [];
+			const deduplicatedValues: LetterSpacingValue[] = [];
 
 			const commonValues = [...defaultValues, ...$letterSpacing.values()];
 
@@ -77,7 +77,7 @@ export const LetterSpacingToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $letterSpacing.values();
 
-		const contains = (value: FormattingLetterSpacingValue) => {
+		const contains = (value: LetterSpacingValue) => {
 			return !![...activeValues].find(
 				(activeValue) =>
 					activeValue.type === value.type && activeValue.value === value.value,

@@ -1,25 +1,25 @@
-import type { FormattingTextAlignValue } from "@rangex/editor/formatting";
+import type { TextAlignValue } from "@rangex/editor/formatting";
 import { ReadOnly, TextAlign } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon, type IconName } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
-export const textAlignValues: FormattingTextAlignValue[] = [
+export const textAlignValues: TextAlignValue[] = [
 	"start",
 	"center",
 	"end",
 	"justify",
 ];
 
-const iconNameOptions: Record<FormattingTextAlignValue, IconName> = {
+const iconNameOptions: Record<TextAlignValue, IconName> = {
 	start: "TextAlignLeft",
 	center: "TextAlignCenter",
 	end: "TextAlignRight",
 	justify: "TextAlignJustify",
 };
 
-const labelOptions: Record<FormattingTextAlignValue, string> = {
+const labelOptions: Record<TextAlignValue, string> = {
 	start: "Align left",
 	center: "Align center",
 	end: "Align right",
@@ -27,7 +27,7 @@ const labelOptions: Record<FormattingTextAlignValue, string> = {
 };
 
 const getToolbarIconFromActiveValues = (
-	activeValues: Set<FormattingTextAlignValue>,
+	activeValues: Set<TextAlignValue>,
 ): IconName => {
 	if (activeValues.size === 0) {
 		return iconNameOptions.start;
@@ -67,12 +67,12 @@ export const TextAlignToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const isTextAlignChecked = (textAlignValue: FormattingTextAlignValue) =>
+	const isTextAlignChecked = (textAlignValue: TextAlignValue) =>
 		$textAlign.values().has(textAlignValue) ||
 		(textAlignValue === "start" && $textAlign.hasUnset());
 
 	// "start" is ContentLine.css's default, so it's stored as unset.
-	const onTextAlignClick = (textAlignValue: FormattingTextAlignValue) => {
+	const onTextAlignClick = (textAlignValue: TextAlignValue) => {
 		formatting.setTextAlign(textAlignValue === "start" ? null : textAlignValue);
 	};
 

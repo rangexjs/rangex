@@ -1,3 +1,14 @@
+import type {
+	BackgroundColorValue,
+	ColorValue,
+	FontFamilyValue,
+	FontSizeValue,
+	LetterSpacingValue,
+	LineHeightValue,
+	PaddingBlockValue,
+	TextAlignValue,
+	TextIndentValue,
+} from "#structured-style";
 import type { CreateAdapterParams } from "../_Utilities";
 
 export type FormattingWhenMixed = "apply" | "remove";
@@ -15,62 +26,11 @@ export interface FormattingToggleButton extends FormattingToggleState {
 
 export interface CreateToggleButtonParams extends FormattingToggleState {}
 
-export type FormattingSolidColor = {
-	type: "solid";
-	value: string;
-};
-
-export type FormattingLinearGradientColor = {
-	type: "linear-gradient";
-	deg: number;
-	colors: { value: string; offset: number }[];
-};
-
-export type FormattingStructuredColor =
-	| FormattingSolidColor
-	| FormattingLinearGradientColor;
-
-export type FormattingStructuredThemeColors = {
-	light: FormattingStructuredColor;
-	dark: FormattingStructuredColor;
-};
-
-export type FormattingBackgroundColorValue = FormattingStructuredThemeColors;
-export type FormattingColorValue = FormattingStructuredThemeColors;
-export type FormattingFontFamilyValue = string;
-
-export type FormattingFontSizeValue = {
-	type: "px";
-	value: number;
-};
-
-export type FormattingIndentationValue = {
-	type: "px";
-	value: number;
-};
-
-export type FormattingLetterSpacingValue = {
-	type: "px";
-	value: number;
-};
-
-export type FormattingLineHeightValue = {
-	type: "number";
-	value: number;
-};
-
 export type FormattingLineLocalNameValue = "p" | `h${1 | 2 | 3 | 4 | 5 | 6}`;
-
-export type FormattingLineSpacingValue = {
-	type: "px";
-	value: number;
-};
-
-export type FormattingTextAlignValue = "start" | "center" | "justify" | "end";
 
 export interface FormattingBackgroundColorState {
 	disabled: boolean;
-	values: Set<FormattingBackgroundColorValue>;
+	values: Set<BackgroundColorValue>;
 }
 
 export interface FormattingBoldState extends FormattingToggleButton {}
@@ -79,38 +39,38 @@ export interface FormattingCodeState extends FormattingToggleButton {}
 
 export interface FormattingColorState {
 	disabled: boolean;
-	values: Set<FormattingColorValue>;
+	values: Set<ColorValue>;
 }
 
 export interface FormattingFontFamilyState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingFontFamilyValue>;
+	values: Set<FontFamilyValue>;
 }
 
 export interface FormattingFontSizeState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingFontSizeValue>;
+	values: Set<FontSizeValue>;
 }
 
 export interface FormattingIndentationState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingIndentationValue>;
+	values: Set<TextIndentValue>;
 }
 
 export interface FormattingItalicState extends FormattingToggleButton {}
 
 export interface FormattingLetterSpacingState {
 	disabled: boolean;
-	values: Set<FormattingLetterSpacingValue>;
+	values: Set<LetterSpacingValue>;
 }
 
 export interface FormattingLineHeightState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingLineHeightValue>;
+	values: Set<LineHeightValue>;
 }
 
 export interface FormattingLineLocalNameState {
@@ -121,7 +81,7 @@ export interface FormattingLineLocalNameState {
 export interface FormattingLineSpacingState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingLineSpacingValue>;
+	values: Set<PaddingBlockValue>;
 }
 
 export interface FormattingSubscriptState extends FormattingToggleButton {}
@@ -133,7 +93,7 @@ export interface FormattingStrikethroughState extends FormattingToggleButton {}
 export interface FormattingTextAlignState {
 	disabled: boolean;
 	hasUnset: boolean;
-	values: Set<FormattingTextAlignValue>;
+	values: Set<TextAlignValue>;
 }
 
 export interface FormattingUnderlineState extends FormattingToggleButton {}
@@ -169,22 +129,22 @@ export interface FormattingState {
 export interface UpdateStateParams extends FormattingState {}
 
 export interface FormattingActionState {
-	backgroundColor?: FormattingBackgroundColorValue | null;
+	backgroundColor?: BackgroundColorValue | null;
 	bold?: FormattingTogglePressed;
 	code?: FormattingTogglePressed;
-	color?: FormattingColorValue | null;
-	fontFamily?: FormattingFontFamilyValue | null;
-	fontSize?: FormattingFontSizeValue | null;
-	indentation?: FormattingIndentationValue | null;
+	color?: ColorValue | null;
+	fontFamily?: FontFamilyValue | null;
+	fontSize?: FontSizeValue | null;
+	indentation?: TextIndentValue | null;
 	italic?: FormattingTogglePressed;
-	letterSpacing?: FormattingLetterSpacingValue | null;
-	lineHeight?: FormattingLineHeightValue | null;
+	letterSpacing?: LetterSpacingValue | null;
+	lineHeight?: LineHeightValue | null;
 	lineLocalName?: FormattingLineLocalNameValue;
-	lineSpacing?: FormattingLineSpacingValue | null;
+	lineSpacing?: PaddingBlockValue | null;
 	subscript?: FormattingTogglePressed;
 	superscript?: FormattingTogglePressed;
 	strikethrough?: FormattingTogglePressed;
-	textAlign?: FormattingTextAlignValue | null;
+	textAlign?: TextAlignValue | null;
 	underline?: FormattingTogglePressed;
 }
 
@@ -294,24 +254,22 @@ export interface FormattingPublicPortProps {
 	onRemoveLineUpdate(callback: OnRemoveLineUpdateCallbackFn): () => void;
 	onRemoveTextUpdate(callback: OnRemoveTextUpdateCallbackFn): () => void;
 
-	setBackgroundColor(
-		backgroundColor: FormattingBackgroundColorValue | null,
-	): void;
+	setBackgroundColor(backgroundColor: BackgroundColorValue | null): void;
 	toggleBold(): void;
 	toggleCode(): void;
-	setColor(color: FormattingColorValue | null): void;
-	setFontFamily(fontFamily: FormattingFontFamilyValue | null): void;
-	setFontSize(fontSize: FormattingFontSizeValue | null): void;
-	setIndentation(indentation: FormattingIndentationValue | null): void;
+	setColor(color: ColorValue | null): void;
+	setFontFamily(fontFamily: FontFamilyValue | null): void;
+	setFontSize(fontSize: FontSizeValue | null): void;
+	setIndentation(indentation: TextIndentValue | null): void;
 	toggleItalic(): void;
-	setLetterSpacing(letterSpacing: FormattingLetterSpacingValue | null): void;
-	setLineHeight(lineHeight: FormattingLineHeightValue | null): void;
+	setLetterSpacing(letterSpacing: LetterSpacingValue | null): void;
+	setLineHeight(lineHeight: LineHeightValue | null): void;
 	setLineLocalName(lineLocalName: FormattingLineLocalNameValue): void;
-	setLineSpacing(lineSpacing: FormattingLineSpacingValue | null): void;
+	setLineSpacing(lineSpacing: PaddingBlockValue | null): void;
 	toggleSubscript(): void;
 	toggleSuperscript(): void;
 	toggleStrikethrough(): void;
-	setTextAlign(textAlign: FormattingTextAlignValue | null): void;
+	setTextAlign(textAlign: TextAlignValue | null): void;
 	toggleUnderline(): void;
 	removeLineFormat(): void;
 	removeTextFormat(): void;

@@ -1,4 +1,4 @@
-import type { FormattingLineSpacingValue } from "@rangex/editor/formatting";
+import type { PaddingBlockValue } from "@rangex/editor/formatting";
 import { LineSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
@@ -10,7 +10,7 @@ import {
 	type ToolbarDropdownList,
 } from "../../_Utilities";
 
-const defaultValues: Set<FormattingLineSpacingValue> = new Set([
+const defaultValues: Set<PaddingBlockValue> = new Set([
 	{ type: "px", value: 4 },
 	{ type: "px", value: 8 },
 	{ type: "px", value: 16 },
@@ -40,7 +40,7 @@ export const LineSpacingToolbarButton = () => {
 
 	const sortedList = createMemo(
 		() => {
-			const deduplicatedValues: FormattingLineSpacingValue[] = [];
+			const deduplicatedValues: PaddingBlockValue[] = [];
 
 			const commonValues = [...defaultValues, ...$lineSpacing.values()];
 
@@ -65,7 +65,7 @@ export const LineSpacingToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $lineSpacing.values();
 
-		const contains = (value: FormattingLineSpacingValue) => {
+		const contains = (value: PaddingBlockValue) => {
 			return !![...activeValues].find(
 				(activeValue) =>
 					activeValue.type === value.type && activeValue.value === value.value,

@@ -1,12 +1,9 @@
-import type {
-	FormattingStructuredColor,
-	FormattingStructuredThemeColors,
-} from "@rangex/editor/formatting";
+import type { StructuredColor, ThemeColors } from "@rangex/editor/formatting";
 import { ColorFormat, type HslFormat } from "#color";
 import { assertNever } from "#utilities";
 import type { ColorMode } from "./ColorPanel";
 
-const getHslFromColorType = (color: FormattingStructuredColor): HslFormat => {
+const getHslFromColorType = (color: StructuredColor): HslFormat => {
 	if (color.type === "solid") {
 		const { value } = color;
 
@@ -23,7 +20,7 @@ const getHslFromColorType = (color: FormattingStructuredColor): HslFormat => {
 };
 
 interface GetHslThemeColorsParams {
-	colors: Set<FormattingStructuredThemeColors>;
+	colors: Set<ThemeColors>;
 }
 
 interface GetHslThemeColorsResult {

@@ -203,6 +203,10 @@
 		"#features": {
 			"@rangex/source": "./src/Features/index.ts",
 			"types": "./dist/Features/index.d.ts"
+		},
+		"#structured-style": {
+			"@rangex/source": "./src/StructuredStyle/index.ts",
+			"types": "./dist/StructuredStyle/index.d.ts"
 		}
 	},
 	"files": [

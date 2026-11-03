@@ -1,4 +1,4 @@
-import type { FormattingIndentationValue } from "@rangex/editor/formatting";
+import type { TextIndentValue } from "@rangex/editor/formatting";
 import { Indentation, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
@@ -10,7 +10,7 @@ import {
 	type ToolbarDropdownList,
 } from "../../_Utilities";
 
-const defaultValues: Set<FormattingIndentationValue> = new Set([
+const defaultValues: Set<TextIndentValue> = new Set([
 	{ type: "px", value: 4 },
 	{ type: "px", value: 8 },
 	{ type: "px", value: 12 },
@@ -49,7 +49,7 @@ export const IndentationToolbarButton = () => {
 
 	const sortedList = createMemo(
 		() => {
-			const deduplicatedValues: FormattingIndentationValue[] = [];
+			const deduplicatedValues: TextIndentValue[] = [];
 
 			const commonValues = [...defaultValues, ...$indentation.values()];
 
@@ -74,7 +74,7 @@ export const IndentationToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $indentation.values();
 
-		const contains = (value: FormattingIndentationValue) => {
+		const contains = (value: TextIndentValue) => {
 			return !![...activeValues].find(
 				(activeValue) =>
 					activeValue.type === value.type && activeValue.value === value.value,

@@ -5,7 +5,6 @@ import type {
 } from "@rangex/core";
 import type {
 	FormattingActionState,
-	FormattingStructuredColor,
 	FormattingWhenMixed,
 } from "#adapters/Formatting";
 import type {
@@ -18,13 +17,7 @@ import type {
 	PaddingBlockStructuredStyleValue,
 	TextAlignStructuredStyleValue,
 	TextIndentStructuredStyleValue,
-} from "../StructuredStyleValue";
-
-export interface GetColorValueFromStructuredColorParams {
-	color: FormattingStructuredColor;
-}
-
-export type GetColorValueFromStructuredColorResult = string;
+} from "#structured-style";
 
 export interface GetBackgroundColorStylesParams {
 	formattingActionState: FormattingActionState;

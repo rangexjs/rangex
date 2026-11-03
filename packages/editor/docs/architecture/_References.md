@@ -15,4 +15,5 @@ touches it.
 | [Snapshot.md](Snapshot.md) | `StoredSnapshot` -> `SnapshotView` -> HTML output pipeline |
 | [SnapshotValidation.md](SnapshotValidation.md) | `validateSnapshot` — engine + component validation, resolved attributes, running without a DOM |
 | [SnapshotMigrations.md](SnapshotMigrations.md) | Breaking changes to stored snapshots, `customStorage` versioning, `*Storage` modules |
+| [StructuredStyle.md](StructuredStyle.md) | `#structured-style` — the structured styles' value types, creators and guards, DOM-free |
 | [Styles.md](Styles.md) | Engine and host style text, `EditorStyles`/`ViewStyles` |

@@ -3,12 +3,11 @@ import {
 	createContentLine,
 	createHTMLLayout,
 	createNestedEditable,
-	createStructuredStyleValue,
 	type HTMLLayout,
 	htmlLayoutRole,
 } from "@rangex/core";
 import type { CaptionPosition } from "#adapters";
-import type { TextAlignStructuredStyleValue } from "#engine-links";
+import { createTextAlignStructuredStyle } from "#structured-style";
 import { getAudioElement } from "../GetAudioElements";
 import type {
 	GetAudioCaptionParams,
@@ -78,11 +77,7 @@ export const setAudioCaptionEnabled = ({
 		return;
 	}
 
-	const textAlign: TextAlignStructuredStyleValue = createStructuredStyleValue({
-		type: "text-align",
-		values: { textAlign: "center" },
-		resolve: ({ textAlign }) => textAlign,
-	});
+	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
 	const nestedEditable = createNestedEditable({
 		display: "block single-line",

@@ -1,11 +1,8 @@
-import type {
-	FormattingBackgroundColorValue,
-	FormattingColorValue,
-	FormattingFontFamilyValue,
-	FormattingFontSizeValue,
-	FormattingLetterSpacingValue,
-} from "#adapters/Formatting";
 import {
+	type BackgroundColorValue,
+	type ColorValue,
+	type FontFamilyValue,
+	type FontSizeValue,
 	isValidBackgroundColorStructuredStyle,
 	isValidColorStructuredStyle,
 	isValidFontFamilyStructuredStyle,
@@ -15,7 +12,8 @@ import {
 	isValidPaddingBlockStructuredStyle,
 	isValidTextAlignStructuredStyle,
 	isValidTextIndentStructuredStyle,
-} from "../StructuredStyleValue";
+	type LetterSpacingValue,
+} from "#structured-style";
 import type {
 	GetBackgroundColorToolbarButtonStateParams,
 	GetBackgroundColorToolbarButtonStateResult,
@@ -215,9 +213,7 @@ const getBackgroundColorToolbarButtonState = ({
 			return { disabled: true, values: new Set() };
 		}
 
-		const values = new Set<FormattingBackgroundColorValue>([
-			backgroundColor.values,
-		]);
+		const values = new Set<BackgroundColorValue>([backgroundColor.values]);
 
 		return { disabled: false, values };
 	}
@@ -256,7 +252,7 @@ const getColorToolbarButtonState = ({
 			return { disabled: true, values: new Set() };
 		}
 
-		const values = new Set<FormattingColorValue>([color.values]);
+		const values = new Set<ColorValue>([color.values]);
 
 		return { disabled: false, values };
 	}
@@ -295,9 +291,7 @@ const getFontFamilyToolbarButtonState = ({
 			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
-		const values = new Set<FormattingFontFamilyValue>([
-			fontFamily.values.fontFamily,
-		]);
+		const values = new Set<FontFamilyValue>([fontFamily.values.fontFamily]);
 
 		return { disabled: false, hasUnset: false, values };
 	}
@@ -340,7 +334,7 @@ const getFontSizeToolbarButtonState = ({
 			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
-		const values = new Set<FormattingFontSizeValue>([fontSize.values.fontSize]);
+		const values = new Set<FontSizeValue>([fontSize.values.fontSize]);
 
 		return { disabled: false, hasUnset: false, values };
 	}
@@ -383,7 +377,7 @@ const getLetterSpacingToolbarButtonState = ({
 			return { disabled: true, values: new Set() };
 		}
 
-		const values = new Set<FormattingLetterSpacingValue>([
+		const values = new Set<LetterSpacingValue>([
 			letterSpacing.values.letterSpacing,
 		]);
 
