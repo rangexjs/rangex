@@ -1,7 +1,6 @@
-import type { EditorElement } from "@rangex/core";
-import type { AnyElementAttrs } from "../DOMAttrs-types";
+import type { AnyElementAttrs, AttrEditorElement } from "../DOMAttrs-types";
 
 export interface WriteElementAttrsParams {
-	element: EditorElement;
+	element: AttrEditorElement;
 	elementAttrs: AnyElementAttrs;
 }

@@ -1,8 +1,14 @@
 import type {
 	AllowedNamespaceURI,
+	DOMAttrsPublicProps,
 	EditorElement,
 	EditorElementRole,
 } from "@rangex/core";
+
+/*
+ * An EditorElement that can have attributes: every kind except ContentLine and GlyphFormatter
+ */
+export type AttrEditorElement = Extract<EditorElement, DOMAttrsPublicProps>;
 
 /*
  * Whether an element's attribute must always be set
@@ -70,7 +76,7 @@ export interface ElementDescriptor {
 export type ComponentElements<
 	TComponentAttrsShape extends ComponentAttrsShape,
 > = {
-	[ElementName in keyof TComponentAttrsShape]: EditorElement;
+	[ElementName in keyof TComponentAttrsShape]: AttrEditorElement;
 };
 
 /*
