@@ -24,6 +24,7 @@ export const tableDefinition = {
 			componentsName.link,
 			componentsName.mention,
 			componentsName.templateVariable,
+			componentsName.comment,
 		],
 		allowedContentLineLocalNames: null,
 		allowedContentLineStyleAttrNames: null,

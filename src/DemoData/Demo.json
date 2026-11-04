@@ -403,7 +403,8 @@
 												"allowedComponents": [
 													"link",
 													"mention",
-													"template-variable"
+													"template-variable",
+													"comment"
 												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
@@ -494,7 +495,8 @@
 												"allowedComponents": [
 													"link",
 													"mention",
-													"template-variable"
+													"template-variable",
+													"comment"
 												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
@@ -607,7 +609,8 @@
 												"allowedComponents": [
 													"link",
 													"mention",
-													"template-variable"
+													"template-variable",
+													"comment"
 												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
@@ -785,7 +788,8 @@
 												"allowedComponents": [
 													"link",
 													"mention",
-													"template-variable"
+													"template-variable",
+													"comment"
 												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
@@ -878,6 +882,7 @@
 											"link",
 											"mention",
 											"template-variable",
+											"comment",
 											"audio",
 											"block-quote",
 											"code-block",
@@ -1017,7 +1022,8 @@
 																	"allowedComponents": [
 																		"link",
 																		"mention",
-																		"template-variable"
+																		"template-variable",
+																		"comment"
 																	],
 																	"allowedContentLineLocalNames": null,
 																	"allowedContentLineStyleAttrNames": null,
@@ -1078,7 +1084,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1172,7 +1179,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1283,7 +1291,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1377,7 +1386,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1479,7 +1489,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1573,7 +1584,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1675,7 +1687,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1769,7 +1782,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1871,7 +1885,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -1965,7 +1980,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2067,7 +2083,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2161,7 +2178,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2263,7 +2281,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2357,7 +2376,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2459,7 +2479,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
@@ -2553,7 +2574,8 @@
 																								"allowedComponents": [
 																									"link",
 																									"mention",
-																									"template-variable"
+																									"template-variable",
+																									"comment"
 																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,

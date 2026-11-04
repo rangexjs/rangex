@@ -8,6 +8,7 @@ export const inlineComponentsName = {
 	link: "link",
 	mention: "mention",
 	templateVariable: "template-variable",
+	comment: "comment",
 } as const;
 
 export const blockComponentsName = {
