@@ -3,7 +3,7 @@ import {
 	htmlLayoutRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { blockQuoteDefinition, componentsName } from "#constants";
 import { blockQuoteStoragePattern } from "#storage";
 import {
 	formatNodePath,
@@ -23,8 +23,8 @@ import type {
 
 /*
  * Validates a BlockQuote, its BlockComponentLine, and everything down to its NestedEditable, node by node: each node's
- * own state, then its children. It's built as a BlockComponent holding a blockquote, which holds the multi-line
- * NestedEditable. It has no attributes, so every attribute of these nodes is dropped. The NestedEditable's content is
+ * own state, then its children. It's built as a BlockComponent holding a blockquote, which holds the NestedEditable
+ * (its state by the blockQuoteDefinition). It has no attributes, so every attribute of these nodes is dropped. The NestedEditable's content is
  * left to the engine's validation.
  */
 const validateBlockQuote = ({
@@ -136,13 +136,7 @@ const validateBlockQuote = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block multi-line",
-			editState: "inherit",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...blockQuoteDefinition.nestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

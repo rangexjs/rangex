@@ -1,5 +1,6 @@
 import type {
 	ResolveTableLimitsResult,
+	TableDefinition,
 	TableLimits,
 	TableLimitsParams,
 } from "./TableDefinition-types";
@@ -23,7 +24,7 @@ export const tableDefinition = {
 		allowedGlyphFormatterStyleAttrNames: null,
 		allowedGlyphFormatterInlineTags: null,
 	},
-} as const;
+} satisfies TableDefinition;
 
 export const defaultTableLimits: TableLimits = {
 	maxRows: 100,

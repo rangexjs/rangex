@@ -10,6 +10,7 @@ selectors built from them. `src/Constants/` (alias `#constants`).
 | `CreateComponentSelector/` | `createComponentSelector(name)`: the attribute selector of a component's name |
 | `GlyphFormatterInlineTagsOrder/` | `glyphFormatterInlineTagsOrder`: the fixed order inline tags nest in (see [SnapshotValidation](SnapshotValidation.md#what-it-does)) |
 | `RootTypes/` | `rootTypes`, `isRootType` and `rootDefinitions`: the kinds of root and the state of each (see [SnapshotValidation](SnapshotValidation.md#the-root)) |
+| `ComponentDefinitions/` | The state of a component's nodes, which its `create*` builds with and its snapshot validator matches against, so the two can't drift apart: `blockQuoteDefinition` (its NestedEditable; `allowedComponents` lists every allowed component by name, only the inline ones, so a new component isn't allowed until it's added) and `tableDefinition` (with `defaultTableLimits`, `maxTableHeight` and `resolveTableLimits`, its size limits) |
 
 ## Rules
 
