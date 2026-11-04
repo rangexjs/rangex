@@ -38,9 +38,11 @@ if (result.isValid) {
    that doesn't pass. A component that isn't in `components` is invalid, so its keys are the allowlist. Each validator
    matches its component's `customStorage` against the Storage module's strict pattern (see
    [SnapshotMigrations](SnapshotMigrations.md#the-storage-module)).
-7. **TemplateVariables** — `resolveTemplateVariableTexts` matches every TemplateVariable's display text to its field's
+7. **Styles** — `validateFormattingElements` checks the `structuredStyle` of every ContentLine and GlyphFormatter (see
+   [Styles](#styles)).
+8. **TemplateVariables** — `resolveTemplateVariableTexts` matches every TemplateVariable's display text to its field's
    value in the Root's storage (see [TemplateVariables](#templatevariables)).
-8. **Result** — the Draft, with every resolved storage, text and component's resolved attributes, turned back into a
+9. **Result** — the Draft, with every resolved storage, text and component's resolved attributes, turned back into a
    snapshot. Its `glyphFormatterInlineTagsOrder` is replaced by the editor's (`#constants`): the engine accepts any order
    that holds every tag, but the order decides how the tags nest in HTML and how their styles cascade, so a snapshot
    can't bring its own. It's repaired, not rejected, as it only changes the rendering. A new root gets the same order.
@@ -175,6 +177,19 @@ A language or theme is `null` or a non-empty name. A snapshot isn't loaded if it
 `validateCodeBlockPlacement` guards every creation (insert, wrap, turn into, Markdown), and `validateCodeBlockLanguage`
 and `validateCodeBlockTheme` guard `changeLanguage` and `changeTheme`. Which names exist is the consumer's call, through
 `components.codeBlock.validateStorage`.
+
+## Styles
+
+The engine only checks a `structuredStyle`'s names (by the `allowed*StyleAttrNames`), not its values.
+`validateContentLine` and `validateGlyphFormatter` (in `ValidateFormattingElements/`) match it with `matchJSON` against
+a pattern with a key for every style name of the engine's, so a style the engine adds doesn't compile until it's handled.
+Each key the editor sets is checked by its `is*StructuredStyle` (see [StructuredStyle](StructuredStyle.md)); the ones it
+never sets (a GlyphFormatter's `fontStyle`, `fontWeight` and `textDecoration`) fail whatever their value. So an
+unsupported style or an invalid value makes the snapshot invalid. It's
+rejected, not repaired: a style is rendered, so dropping it would change the content without anyone noticing.
+
+A failure names the element itself, e.g. `glyph-formatter: invalid value structuredStyle.fontSize: {…}.`, and its
+`failedSnapshot` is that element.
 
 ## TemplateVariables
 

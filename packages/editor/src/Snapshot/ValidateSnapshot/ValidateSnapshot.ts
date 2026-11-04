@@ -9,6 +9,7 @@ import { createComponentValidators } from "./CreateComponentValidators";
 import { resolveNodeStorages } from "./ResolveNodeStorages";
 import { resolveTemplateVariableTexts } from "./ResolveTemplateVariableTexts";
 import { validateComponents } from "./ValidateComponents";
+import { validateFormattingElements } from "./ValidateFormattingElements";
 import { validateRoot } from "./ValidateRoot";
 import type {
 	ValidateSnapshotParams,
@@ -19,7 +20,8 @@ import type {
  * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
  * alone if it hasn't been called), then the RootEditable by the given root, then every component in it by its
  * validator. Only the given components are allowed:
- * any other one is invalid. The storage of every other node is dropped (see resolveNodeStorages). Finally, the
+ * any other one is invalid. Then the structuredStyle of every ContentLine and GlyphFormatter (see
+ * validateFormattingElements). The storage of every other node is dropped (see resolveNodeStorages). Finally, the
  * TemplateVariables' display texts are matched to the Root's storage (see resolveTemplateVariableTexts). A valid snapshot
  * is returned as a copy with the resolved storages, texts and the components' resolved attributes (see
  * resolveElementAttrs), and the editor's glyphFormatterInlineTagsOrder in place of its own: the one to save or restore. The nodes of a failure belong to that copy, not to the given
@@ -66,6 +68,14 @@ export const validateSnapshot = ({
 
 	if (componentsFailed) {
 		return { isValid: false, ...componentsFailed };
+	}
+
+	const formattingElementsFailed = validateFormattingElements({
+		rootEditableDraft,
+	});
+
+	if (formattingElementsFailed) {
+		return { isValid: false, ...formattingElementsFailed };
 	}
 
 	resolveTemplateVariableTexts({ rootEditableDraft });

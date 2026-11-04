@@ -4,6 +4,7 @@ export * from "./ResolveNodeStorages";
 export * from "./ResolveTemplateVariableTexts";
 export * from "./ValidateBlockComponents";
 export * from "./ValidateComponents";
+export * from "./ValidateFormattingElements";
 export * from "./ValidateInlineComponents";
 export * from "./ValidateRoot";
 export * from "./ValidateSnapshot";

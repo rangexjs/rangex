@@ -22,5 +22,6 @@ actions) and the media captions' `text-align`.
 
 ## Rules
 
-- **DOM-free at import time.** The snapshot validation will check structured styles on a server, so nothing here may
-  touch the DOM when it's imported. Only import `@rangex/core`, `#utilities` and `#constants`.
+- **DOM-free at import time.** The snapshot validation checks structured styles on a server (see
+  [SnapshotValidation](SnapshotValidation.md#styles)), so nothing here may touch the DOM when it's imported. Only
+  import `@rangex/core`, `#utilities` and `#constants`.
