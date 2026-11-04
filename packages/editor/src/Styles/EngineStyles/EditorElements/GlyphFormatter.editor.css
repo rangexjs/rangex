@@ -1,0 +1,9 @@
+[data-rx-editor-role="glyph-formatter"] {
+	/* Each tag sets text-decoration on its own, so with one of each kind only the last would show */
+	&:is([data-rx-inline-tags~="u"], [data-rx-inline-tags~="ins"]):is(
+			[data-rx-inline-tags~="s"],
+			[data-rx-inline-tags~="del"]
+		) {
+		text-decoration: underline line-through;
+	}
+}
