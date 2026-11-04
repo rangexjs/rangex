@@ -12,15 +12,13 @@ import type {
 } from "./CreateMention-types";
 
 /*
- * Builds an inline mention component displaying "@displayName" as editable, formattable text and
- * storing the referenced user id.
+ * Builds an inline mention component displaying its displayText as formattable text and storing the referenced
+ * user id.
  */
 export const createMention = ({
 	userId,
-	displayName,
+	displayText,
 }: CreateMentionParams): CreateMentionResult => {
-	const data = `@${displayName}`;
-
 	return createInlineComponent({
 		name: componentsName.mention,
 		content: { type: "custom" },
@@ -40,7 +38,7 @@ export const createMention = ({
 				childNodes: [
 					createContentLine({
 						localName: "span",
-						childNodes: [...createFormattableTexts({ data })],
+						childNodes: [...createFormattableTexts({ data: displayText })],
 					}),
 				],
 			}),

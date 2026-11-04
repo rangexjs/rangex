@@ -47,8 +47,8 @@ export const handleMentionSelect = ({
 }: HandleMentionSelectParams) => {
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onSelect(({ userId, displayName }) => {
-		const placementMismatch = validateMentionPlacement({ userId, displayName });
+	const unsubscribe = configPort.onSelect(({ userId, displayText }) => {
+		const placementMismatch = validateMentionPlacement({ userId, displayText });
 
 		if (placementMismatch) {
 			console.warn(placementMismatch);
@@ -66,7 +66,7 @@ export const handleMentionSelect = ({
 
 		const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const mention = createMention({ userId, displayName });
+		const mention = createMention({ userId, displayText });
 
 		editorAPI.insertNode({
 			fromNode: fromText,

@@ -25,7 +25,7 @@ export const createMentionAdapter = (
 
 	const internals: MentionInternals = {
 		// Providers
-		validateDisplayNameProvider: null,
+		validateDisplayTextProvider: null,
 	};
 
 	// CommandListeners
@@ -46,8 +46,8 @@ export const createMentionAdapter = (
 				return selectEmitter.subscribe(callback);
 			},
 
-			registerValidateDisplayName(provider) {
-				internals.validateDisplayNameProvider = provider;
+			registerValidateDisplayText(provider) {
+				internals.validateDisplayTextProvider = provider;
 			},
 		} satisfies MentionConfigPortProps,
 	);
@@ -63,12 +63,12 @@ export const createMentionAdapter = (
 				selectEmitter.emit(params);
 			},
 
-			validateDisplayName(displayName) {
-				if (!internals.validateDisplayNameProvider) {
-					throw new Error("ValidateDisplayName provider wasn't registered.");
+			validateDisplayText(displayText) {
+				if (!internals.validateDisplayTextProvider) {
+					throw new Error("ValidateDisplayText provider wasn't registered.");
 				}
 
-				return internals.validateDisplayNameProvider(displayName);
+				return internals.validateDisplayTextProvider(displayText);
 			},
 		} satisfies MentionPublicPortProps,
 	);

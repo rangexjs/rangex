@@ -6,30 +6,30 @@ import type { MentionItems } from "@rangex/rich-text-editor/mention";
 export const mentionItems: MentionItems = [
 	{
 		userId: "1",
-		displayName: "JohnDoe",
+		displayText: "JohnDoe",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "2",
-		displayName: "AliceSmith",
+		displayText: "AliceSmith",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "3",
-		displayName: "BobJohnson",
+		displayText: "BobJohnson",
 	},
 	{
 		userId: "4",
-		displayName: "CarolWhite",
+		displayText: "CarolWhite",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "5",
-		displayName: "DavidBrown",
+		displayText: "DavidBrown",
 	},
 	{
 		userId: "6",
-		displayName: "EmmaDavis",
+		displayText: "EmmaDavis",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
@@ -38,77 +38,77 @@ export const mentionItems: MentionItems = [
 	},
 	{
 		userId: "8",
-		displayName: "GraceWilson",
+		displayText: "GraceWilson",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "9",
-		displayName: "HenryMoore",
+		displayText: "HenryMoore",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "10",
-		displayName: "IsabelTaylor",
+		displayText: "IsabelTaylor",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "11",
-		displayName: "JackAnderson",
+		displayText: "JackAnderson",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "12",
-		displayName: "KarenThomas",
+		displayText: "KarenThomas",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "13",
-		displayName: "LiamJackson",
+		displayText: "LiamJackson",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "14",
-		displayName: "MiaHarris",
+		displayText: "MiaHarris",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "15",
-		displayName: "NoahMartin",
+		displayText: "NoahMartin",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "16",
-		displayName: "OliviaGarcia",
+		displayText: "OliviaGarcia",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "17",
-		displayName: "PeterMartinez",
+		displayText: "PeterMartinez",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "18",
-		displayName: "QuinnRobinson",
+		displayText: "QuinnRobinson",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "19",
-		displayName: "RachelClark",
+		displayText: "RachelClark",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "20",
-		displayName: "SamuelLewis",
+		displayText: "SamuelLewis",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "21",
-		displayName: "Bartholomew Christophersen-Vandenberg",
+		displayText: "Bartholomew Christophersen-Vandenberg",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 	{
 		userId: "22",
-		displayName: "Alexandrina Maximilliana Featherington-Worthington",
+		displayText: "Alexandrina Maximilliana Featherington-Worthington",
 		img: "https://media.gettyimages.com/id/590150276/photo/nintendo-pokemon-go-character-pikachu-and-iphone.jpg?s=612x612&w=0&k=20&c=BlN5r2ohii12T2Z9MOoVGcgAYBG9twEnw0qR2gWfuEA=",
 	},
 ];

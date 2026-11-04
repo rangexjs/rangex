@@ -8,26 +8,26 @@ import type {
 
 export interface SelectParams {
 	userId: string;
-	displayName: string;
+	displayText: string;
 }
 
-export interface DisplayNameMismatch {
+export interface DisplayTextMismatch {
 	reason: string;
 }
 
-export type ValidateDisplayNameResult = DisplayNameMismatch | null;
+export type ValidateDisplayTextResult = DisplayTextMismatch | null;
 
 export type OnSelectCallbackFn = (params: SelectParams) => void;
-export type ValidateDisplayNameProviderFn = (
-	displayName: string,
-) => ValidateDisplayNameResult;
+export type ValidateDisplayTextProviderFn = (
+	displayText: string,
+) => ValidateDisplayTextResult;
 
 export interface MentionConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
 
 	onSelect(callback: OnSelectCallbackFn): () => void;
 
-	registerValidateDisplayName(provider: ValidateDisplayNameProviderFn): void;
+	registerValidateDisplayText(provider: ValidateDisplayTextProviderFn): void;
 }
 
 export interface MentionConfigPort
@@ -39,7 +39,7 @@ export interface MentionPublicPortProps {
 
 	select(params: SelectParams): void;
 
-	validateDisplayName(displayName: string): ValidateDisplayNameResult;
+	validateDisplayText(displayText: string): ValidateDisplayTextResult;
 }
 
 export interface MentionPublicPort
@@ -47,7 +47,7 @@ export interface MentionPublicPort
 		UnwrapPublicPort {}
 
 export interface MentionInternals {
-	validateDisplayNameProvider: ValidateDisplayNameProviderFn | null;
+	validateDisplayTextProvider: ValidateDisplayTextProviderFn | null;
 }
 
 export interface MentionAdapter {

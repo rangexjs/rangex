@@ -1,8 +1,8 @@
 export type {
-	DisplayNameMismatch,
+	DisplayTextMismatch,
 	MentionPublicPort,
 	MentionSettings,
 	SelectParams,
-	ValidateDisplayNameResult,
+	ValidateDisplayTextResult,
 } from "#adapters/Mention";
 export { Mention } from "#rangex-editor";

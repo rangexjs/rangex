@@ -17,7 +17,7 @@ import type {
 /*
  * Validates a Mention and its NestedEditable, node by node: each node's own state, then its children. Its storage must
  * match mentionStoragePattern, then it's resolved by the consumer's validateStorage (see resolveDraftStorage). The
- * NestedEditable's content (the "@displayName" text) is left to the engine's
+ * NestedEditable's content (its display text) is left to the engine's
  * validation, which checks it by the NestedEditable's settings.
  */
 const validateMention = ({

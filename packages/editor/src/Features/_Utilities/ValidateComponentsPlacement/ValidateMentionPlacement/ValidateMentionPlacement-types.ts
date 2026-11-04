@@ -1,18 +1,18 @@
 import type {
 	SelectParams,
-	ValidateDisplayNameResult,
+	ValidateDisplayTextResult,
 } from "#adapters/Mention";
 
-export interface ValidateMentionDisplayNameParams {
-	displayName: string;
+export interface ValidateMentionDisplayTextParams {
+	displayText: string;
 }
 
-export type ValidateMentionDisplayNameResult = ValidateDisplayNameResult;
+export type ValidateMentionDisplayTextResult = ValidateDisplayTextResult;
 
 export interface ValidateMentionPlacementParams extends SelectParams {}
 
 export interface MentionPlacementMismatch {
-	field: "userId" | "displayName";
+	field: "userId" | "displayText";
 	reason: string;
 }
 

@@ -2,7 +2,7 @@ import type { InlineComponent } from "@rangex/core";
 
 export interface CreateMentionParams {
 	userId: string;
-	displayName: string;
+	displayText: string;
 }
 
 export type CreateMentionResult = InlineComponent;
