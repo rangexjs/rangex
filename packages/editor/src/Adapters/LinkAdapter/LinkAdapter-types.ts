@@ -44,12 +44,12 @@ export type LinkDisplayText =
 	| null;
 
 export interface InsertParams {
-	text: string;
+	displayText: string;
 	attrs: LinkAttrs;
 }
 
-export interface ModifyParams {
-	text: string;
+export interface ChangeDisplayTextParams {
+	displayText: string;
 }
 
 export interface LinkState {
@@ -59,7 +59,9 @@ export interface LinkState {
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
-export type OnModifyCallbackFn = (params: ModifyParams) => void;
+export type OnChangeDisplayTextCallbackFn = (
+	params: ChangeDisplayTextParams,
+) => void;
 export type OnLinkClickCallbackFn = () => void;
 export type OnLinkSelectionInCallbackFn = () => void;
 export type OnLinkMenuToggleCallbackFn = () => void;
@@ -79,7 +81,7 @@ export interface LinkConfigPortProps {
 	notifyLinkMenuToggle(): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
-	onModify(callback: OnModifyCallbackFn): () => void;
+	onChangeDisplayText(callback: OnChangeDisplayTextCallbackFn): () => void;
 
 	registerDisplayText(provider: DisplayTextProviderFn): void;
 }
@@ -102,7 +104,7 @@ export interface LinkPublicPortProps {
 	onLinkMenuToggle(callback: OnLinkMenuToggleCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
-	modify(params: ModifyParams): void;
+	changeDisplayText(params: ChangeDisplayTextParams): void;
 
 	getDisplayText(): LinkDisplayText;
 }

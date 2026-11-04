@@ -1,9 +1,9 @@
 export type {
+	ChangeDisplayTextParams,
 	InsertParams,
 	LinkDisplayText,
 	LinkPublicPort,
 	LinkSettings,
-	ModifyParams,
 } from "#adapters/Link";
 export type {
 	AnchorAttrs,

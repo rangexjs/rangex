@@ -88,7 +88,7 @@ export const LinkSelectionMenu = () => {
 		const url = urlHandle.value();
 
 		link.insert({
-			text: displayTextHandle.value(),
+			displayText: displayTextHandle.value(),
 			attrs: {
 				anchor: {
 					href: url,

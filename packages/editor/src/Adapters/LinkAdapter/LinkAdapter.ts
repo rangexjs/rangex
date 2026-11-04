@@ -11,6 +11,7 @@ import {
 } from "../_Utilities";
 import { defaultLinkMenuSettings } from "./LinkAdapter-default";
 import type {
+	ChangeDisplayTextParams,
 	CreateLinkAdapterParams,
 	CreateLinkAdapterResult,
 	InsertParams,
@@ -19,12 +20,11 @@ import type {
 	LinkInternals,
 	LinkPublicPort,
 	LinkPublicPortProps,
-	ModifyParams,
+	OnChangeDisplayTextCallbackFn,
 	OnInsertCallbackFn,
 	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
 	OnLinkSelectionInCallbackFn,
-	OnModifyCallbackFn,
 	UpdateStateParams,
 } from "./LinkAdapter-types";
 
@@ -53,7 +53,8 @@ export const createLinkAdapter = (
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
-	const modifyEmitter = createEmitter<OnModifyCallbackFn>();
+	const changeDisplayTextEmitter =
+		createEmitter<OnChangeDisplayTextCallbackFn>();
 	const linkClickEmitter = createEmitter<OnLinkClickCallbackFn>();
 	const linkSelectionInEmitter = createEmitter<OnLinkSelectionInCallbackFn>();
 	const linkMenuToggleEmitter = createEmitter<OnLinkMenuToggleCallbackFn>();
@@ -110,8 +111,8 @@ export const createLinkAdapter = (
 				return insertEmitter.subscribe(callback);
 			},
 
-			onModify(callback) {
-				return modifyEmitter.subscribe(callback);
+			onChangeDisplayText(callback) {
+				return changeDisplayTextEmitter.subscribe(callback);
 			},
 
 			registerDisplayText(provider) {
@@ -161,8 +162,8 @@ export const createLinkAdapter = (
 				insertEmitter.emit(params);
 			},
 
-			modify(params: ModifyParams) {
-				modifyEmitter.emit(params);
+			changeDisplayText(params: ChangeDisplayTextParams) {
+				changeDisplayTextEmitter.emit(params);
 			},
 
 			getDisplayText() {

@@ -5,26 +5,26 @@ import {
 	createFormattableTexts,
 } from "@rangex/core";
 import type {
-	HandleLinkModificationParams,
-	OnModifyCallback,
-} from "./HandleLinkModification-types";
+	HandleDisplayTextChangeParams,
+	OnChangeDisplayTextCallback,
+} from "./HandleDisplayTextChange-types";
 
 /*
  * Registers a callback that replaces the currently open link's content in place, moves the
  * caret to the end of the new content, and registers a snapshot boundary. Returns a cleanup
  * function.
  */
-export const handleLinkModification = ({
+export const handleDisplayTextChange = ({
 	configPort,
 	editorAPI,
-}: HandleLinkModificationParams) => {
+}: HandleDisplayTextChangeParams) => {
 	const selection = editorAPI.getEditorSelection();
 
-	const callback: OnModifyCallback = ({ text }) => {
+	const callback: OnChangeDisplayTextCallback = ({ displayText }) => {
 		const { currentComponent } = configPort;
 
 		if (!currentComponent) {
-			console.warn("handleLinkModification: no link is currently open.");
+			console.warn("handleDisplayTextChange: no link is currently open.");
 			return;
 		}
 
@@ -38,7 +38,7 @@ export const handleLinkModification = ({
 
 		const createdContentLine = createContentLine({
 			localName: "span",
-			childNodes: [...createFormattableTexts({ data: text })],
+			childNodes: [...createFormattableTexts({ data: displayText })],
 		});
 
 		contentLine.$$replaceWith(createdContentLine);
@@ -57,7 +57,7 @@ export const handleLinkModification = ({
 		editorAPI.focus();
 	};
 
-	const unsubscribe = configPort.onModify(callback);
+	const unsubscribe = configPort.onChangeDisplayText(callback);
 
 	return () => {
 		unsubscribe();

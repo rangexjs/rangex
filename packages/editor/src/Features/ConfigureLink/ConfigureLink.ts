@@ -9,17 +9,17 @@ import {
 	handleSelectionMenuInteraction,
 } from "../_Utilities";
 import type { ConfigureLinkParams } from "./ConfigureLink-types";
+import { handleDisplayTextChange } from "./HandleDisplayTextChange";
 import { handleDisplayTextRegistration } from "./HandleDisplayTextRegistration";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkInteraction } from "./HandleLinkInteraction";
 import { handleLinkMenuClose } from "./HandleLinkMenuClose";
-import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkPlacementState } from "./HandleLinkPlacementState";
 import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
 
 /*
  * Wires up the link feature: selection menu appearance, display text, placement state, menu
- * open/close, interaction tracking, insertion, modification, and unwrap handling. Returns a
+ * open/close, interaction tracking, insertion, display text change, and unwrap handling. Returns a
  * cleanup function that tears down all of it.
  */
 export const configureLink = ({
@@ -79,7 +79,7 @@ export const configureLink = ({
 		linkMenuPopoverController,
 	});
 
-	const modificationCleanup = handleLinkModification({
+	const displayTextChangeCleanup = handleDisplayTextChange({
 		configPort,
 		editorAPI,
 	});
@@ -113,7 +113,7 @@ export const configureLink = ({
 		menuOpenCleanup();
 		linkInteractionCleanup();
 		insertionCleanup();
-		modificationCleanup();
+		displayTextChangeCleanup();
 		domAttrsCleanup();
 		unwrapCleanup();
 		menuCloseCleanup();

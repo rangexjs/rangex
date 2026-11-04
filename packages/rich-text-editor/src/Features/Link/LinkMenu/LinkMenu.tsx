@@ -128,7 +128,7 @@ export const LinkMenu = () => {
 		setIsNewTab((prev) => !prev);
 	};
 
-	const onModify = () => {
+	const onChangeDisplayText = () => {
 		urlHandle.validate();
 
 		flush();
@@ -153,9 +153,9 @@ export const LinkMenu = () => {
 		// The href as it was written (normalized)
 		const { href } = getDOMAttrs().anchor;
 
-		const text = displayTextHandle.value() || href;
+		const displayText = displayTextHandle.value() || href;
 
-		link.modify({ text });
+		link.changeDisplayText({ displayText });
 
 		setView("preview");
 	};
@@ -187,7 +187,7 @@ export const LinkMenu = () => {
 				urlControls={urlControls}
 				onNewTabChange={onNewTabChange}
 				isNewTab={isNewTab()}
-				onApply={onModify}
+				onApply={onChangeDisplayText}
 				onCancel={onCancel}
 				class={{ hidden: view() !== "edit" }}
 			/>

@@ -159,7 +159,7 @@ export const handleLinkInsertion = ({
 	editorAPI,
 	linkMenuPopoverController,
 }: HandleLinkInsertionParams) => {
-	const unsubscribe = configPort.onInsert(({ text, attrs }) => {
+	const unsubscribe = configPort.onInsert(({ displayText, attrs }) => {
 		if (configPort.currentComponent) {
 			console.warn("handleLinkInsertion: link is not supposed to be active.");
 			return;
@@ -188,7 +188,7 @@ export const handleLinkInsertion = ({
 			insertAtCaret({
 				configPort,
 				editorAPI,
-				text: text || normalizedAttrs.anchor.href,
+				text: displayText || normalizedAttrs.anchor.href,
 				attrs: normalizedAttrs,
 				linkMenuPopoverController,
 			});
