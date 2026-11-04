@@ -1,3 +1,4 @@
+import { componentsName } from "../../ComponentsName";
 import type {
 	ResolveTableLimitsResult,
 	TableDefinition,
@@ -10,7 +11,8 @@ const engineMaxTableCols = 1000;
 const engineMaxTableGridSize = 500_000;
 
 /*
- * The state of every table: createTable builds it with this, and a snapshot's table must match it
+ * The state of every table: createTable builds it with this, and a snapshot's table must match it. A cell only allows
+ * inline components, each listed by name, so a new component stays out until it's added.
  */
 export const tableDefinition = {
 	minColWidth: 40,
@@ -18,7 +20,11 @@ export const tableDefinition = {
 	defaultRowHeight: 40,
 	tableCellsEditable: "true",
 	cellNestedEditableProps: {
-		allowedComponents: null,
+		allowedComponents: [
+			componentsName.link,
+			componentsName.mention,
+			componentsName.templateVariable,
+		],
 		allowedContentLineLocalNames: null,
 		allowedContentLineStyleAttrNames: null,
 		allowedGlyphFormatterStyleAttrNames: null,

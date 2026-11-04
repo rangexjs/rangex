@@ -7,7 +7,7 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { accordionItemDefinition, componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createAccordionItemStorage } from "#storage";
 import type {
@@ -25,26 +25,14 @@ export const createAccordionItem = ({
 	childNodes,
 }: CreateAccordionItemParams): CreateAccordionItemResult => {
 	const summaryNestedEditable = createNestedEditable({
-		display: "block single-line",
-		editState: "inherit",
-		allowedComponents: null,
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
+		...accordionItemDefinition.summaryNestedEditableProps,
 		childNodes: [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],
 	});
 
 	const bodyNestedEditable = createNestedEditable({
-		display: "block multi-line",
-		editState: "inherit",
-		allowedComponents: null,
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
+		...accordionItemDefinition.bodyNestedEditableProps,
 		childNodes: childNodes ?? [
 			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 		],

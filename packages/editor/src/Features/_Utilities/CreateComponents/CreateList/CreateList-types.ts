@@ -1,13 +1,7 @@
-import type {
-	BlockComponentLine,
-	Line,
-	ListLineType,
-	ListLocalName,
-} from "@rangex/core";
+import type { BlockComponentLine, Line, ListLocalName } from "@rangex/core";
 
 export interface CreateListParams {
 	localName: ListLocalName;
-	lineType: ListLineType;
 	childNodes?: Line[];
 }
 

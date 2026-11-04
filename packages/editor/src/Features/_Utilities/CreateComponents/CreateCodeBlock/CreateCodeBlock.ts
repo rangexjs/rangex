@@ -10,7 +10,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { codeBlockDefinition, componentsName } from "#constants";
 import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,
@@ -44,13 +44,7 @@ export const createCodeBlock = ({
 								shadowTree: [document.createTextNode("0")],
 							}),
 							createNestedEditable({
-								display: "block single-line",
-								editState: "inherit",
-								allowedComponents: [],
-								allowedContentLineLocalNames: [],
-								allowedContentLineStyleAttrNames: [],
-								allowedGlyphFormatterInlineTags: [],
-								allowedGlyphFormatterStyleAttrNames: [],
+								...codeBlockDefinition.lineNestedEditableProps,
 								childNodes: [line],
 							}),
 						],

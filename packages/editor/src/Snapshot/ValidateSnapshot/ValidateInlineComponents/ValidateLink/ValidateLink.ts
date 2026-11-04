@@ -3,7 +3,7 @@ import {
 	inlineComponentRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, linkDefinition } from "#constants";
 import { createLinkAttrValidators, linkAttrsShape } from "#dom-attrs";
 import { linkStoragePattern } from "#storage";
 import {
@@ -76,13 +76,7 @@ const validateAnchor = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "inline",
-			editState: "inherit",
-			allowedComponents: [],
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...linkDefinition.nestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

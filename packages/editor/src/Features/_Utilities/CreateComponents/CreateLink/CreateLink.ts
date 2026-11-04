@@ -5,7 +5,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, linkDefinition } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createLinkStorage } from "#storage";
 import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
@@ -31,13 +31,7 @@ export const createLink = ({
 				domAttrs: toDOMAttrs(attrs.anchor),
 				childNodes: [
 					createNestedEditable({
-						allowedComponents: [],
-						display: "inline",
-						editState: "inherit",
-						allowedContentLineLocalNames: null,
-						allowedContentLineStyleAttrNames: null,
-						allowedGlyphFormatterStyleAttrNames: null,
-						allowedGlyphFormatterInlineTags: null,
+						...linkDefinition.nestedEditableProps,
 						childNodes: [
 							createContentLine({
 								localName: "span",

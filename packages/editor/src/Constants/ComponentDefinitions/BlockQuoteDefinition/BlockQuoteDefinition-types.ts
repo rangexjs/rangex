@@ -1,17 +1,5 @@
-import type { CreateNestedEditableParams } from "@rangex/core";
-
-export interface BlockQuoteNestedEditableProps
-	extends Pick<
-		CreateNestedEditableParams,
-		| "display"
-		| "editState"
-		| "allowedComponents"
-		| "allowedContentLineLocalNames"
-		| "allowedContentLineStyleAttrNames"
-		| "allowedGlyphFormatterStyleAttrNames"
-		| "allowedGlyphFormatterInlineTags"
-	> {}
+import type { NestedEditableDefinition } from "../_Utilities";
 
 export interface BlockQuoteDefinition {
-	nestedEditableProps: BlockQuoteNestedEditableProps;
+	nestedEditableProps: NestedEditableDefinition;
 }

@@ -4,7 +4,7 @@ import {
 	isFormattableTextDraft,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, templateVariableDefinition } from "#constants";
 import { templateVariableStoragePattern } from "#storage";
 import {
 	formatNodePath,
@@ -86,13 +86,7 @@ const validateTemplateVariable = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "inline",
-			editState: "inherit",
-			allowedComponents: [],
-			allowedContentLineLocalNames: [],
-			allowedContentLineStyleAttrNames: [],
-			allowedGlyphFormatterStyleAttrNames: [],
-			allowedGlyphFormatterInlineTags: [],
+			...templateVariableDefinition.nestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

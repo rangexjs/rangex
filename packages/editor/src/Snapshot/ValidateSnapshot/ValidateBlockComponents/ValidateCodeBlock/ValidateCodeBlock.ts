@@ -5,7 +5,7 @@ import {
 	listRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { codeBlockDefinition, componentsName } from "#constants";
 import { codeBlockAttrsShape, createCodeBlockAttrValidators } from "#dom-attrs";
 import { codeBlockStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
@@ -171,13 +171,7 @@ const validateListItem = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block single-line",
-			editState: "inherit",
-			allowedComponents: [],
-			allowedContentLineLocalNames: [],
-			allowedContentLineStyleAttrNames: [],
-			allowedGlyphFormatterStyleAttrNames: [],
-			allowedGlyphFormatterInlineTags: [],
+			...codeBlockDefinition.lineNestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

@@ -9,7 +9,12 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName, dataPartName, todoCheckboxPart } from "#constants";
+import {
+	componentsName,
+	dataPartName,
+	todoCheckboxPart,
+	todoListDefinition,
+} from "#constants";
 import { createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
@@ -26,9 +31,9 @@ export const createTodoList = ({
 	],
 }: CreateTodoListParams): CreateTodoListResult => {
 	const list = createList({
-		localName: "ul",
-		lineType: "single-line",
-		editState: "inherit",
+		localName: todoListDefinition.localName,
+		lineType: todoListDefinition.lineType,
+		editState: todoListDefinition.editState,
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
@@ -41,13 +46,7 @@ export const createTodoList = ({
 						childNodes: [],
 					}),
 					createNestedEditable({
-						display: "block single-line",
-						editState: "inherit",
-						allowedComponents: null,
-						allowedContentLineLocalNames: null,
-						allowedContentLineStyleAttrNames: null,
-						allowedGlyphFormatterStyleAttrNames: null,
-						allowedGlyphFormatterInlineTags: null,
+						...todoListDefinition.itemNestedEditableProps,
 						childNodes: [line],
 					}),
 				],

@@ -3,7 +3,7 @@ import {
 	htmlLayoutRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { accordionItemDefinition, componentsName } from "#constants";
 import {
 	accordionItemAttrsShape,
 	createAccordionItemAttrValidators,
@@ -83,13 +83,7 @@ const validateSummary = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block single-line",
-			editState: "inherit",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...accordionItemDefinition.summaryNestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},
@@ -167,13 +161,7 @@ const validateDetails = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block multi-line",
-			editState: "inherit",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...accordionItemDefinition.bodyNestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

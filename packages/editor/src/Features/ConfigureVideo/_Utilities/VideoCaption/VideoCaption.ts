@@ -7,6 +7,7 @@ import {
 	htmlLayoutRole,
 } from "@rangex/core";
 import type { CaptionPosition } from "#adapters";
+import { mediaCaptionDefinition } from "#constants";
 import { createTextAlignStructuredStyle } from "#structured-style";
 import { getVideoElement } from "../GetVideoElements";
 import type {
@@ -80,13 +81,7 @@ export const setVideoCaptionEnabled = ({
 	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
 	const nestedEditable = createNestedEditable({
-		display: "block single-line",
-		editState: "true",
-		allowedComponents: null,
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
+		...mediaCaptionDefinition.nestedEditableProps,
 		childNodes: [
 			createContentLine({
 				localName: "p",

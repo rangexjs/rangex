@@ -197,7 +197,7 @@ const convertToList = ({
 	wrapListShaped({
 		editorAPI,
 		blockComponentPlacement,
-		blockComponentLine: createList({ localName, lineType: "multi-line" }),
+		blockComponentLine: createList({ localName }),
 	});
 };
 

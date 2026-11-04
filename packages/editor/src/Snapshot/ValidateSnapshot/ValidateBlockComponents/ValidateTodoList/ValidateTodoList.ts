@@ -4,7 +4,7 @@ import {
 	listRole,
 	nestedEditableRole,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, todoListDefinition } from "#constants";
 import { createTodoListAttrValidators, todoListAttrsShape } from "#dom-attrs";
 import { todoListStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
@@ -77,7 +77,7 @@ const validateCheckbox = ({
 };
 
 /*
- * Validates a todo item: a ListItem holding its checkbox, then its single-line NestedEditable. The NestedEditable's
+ * Validates a todo item: a ListItem holding its checkbox, then its multi-line NestedEditable. The NestedEditable's
  * content is left to the engine's validation.
  */
 const validateTodoItem = ({
@@ -127,13 +127,7 @@ const validateTodoItem = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block single-line",
-			editState: "inherit",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...todoListDefinition.itemNestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},
@@ -161,9 +155,9 @@ const validateTodoListNode = ({
 	const listMismatch = matchJSON({
 		value: listState,
 		pattern: {
-			localName: "ul",
-			lineType: "single-line",
-			editState: "inherit",
+			localName: todoListDefinition.localName,
+			lineType: todoListDefinition.lineType,
+			editState: todoListDefinition.editState,
 			customStorage: null,
 		},
 	});
@@ -209,7 +203,7 @@ const validateTodoListNode = ({
 
 /*
  * Validates a TodoList, its BlockComponentLine, and everything down to its NestedEditables, node by node: each node's
- * own state, then its children. It's built as a BlockComponent holding an unordered single-line List, whose ListItems
+ * own state, then its children. It's built as a BlockComponent holding an unordered multi-line List, whose ListItems
  * each hold a checkbox and a NestedEditable. The checkboxes' domAttrs are resolved by the TodoList's validators, every
  * other node's by an empty shape. The NestedEditables' content is left to the engine's validation.
  */

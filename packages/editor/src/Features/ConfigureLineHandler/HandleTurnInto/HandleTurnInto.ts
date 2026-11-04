@@ -112,7 +112,6 @@ const createBlockComponent = (
 	if (params.name === componentsName.list) {
 		const blockComponentLine = createList({
 			localName: params.localName,
-			lineType: "multi-line",
 			childNodes,
 		});
 		const wrapTarget = getListTarget({ blockComponentLine });

@@ -1,5 +1,5 @@
 import { inlineComponentRole, nestedEditableRole } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, mentionDefinition } from "#constants";
 import { mentionStoragePattern } from "#storage";
 import {
 	formatNodePath,
@@ -80,13 +80,7 @@ const validateMention = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "inline",
-			editState: "inherit",
-			allowedComponents: [],
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...mentionDefinition.nestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

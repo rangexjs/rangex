@@ -373,7 +373,7 @@
 								"uniqueId": "1787515033982-403507098",
 								"customStorage": null,
 								"localName": "ul",
-								"lineType": "single-line",
+								"lineType": "multi-line",
 								"editState": "inherit",
 								"domAttrs": {},
 								"childNodes": [
@@ -399,8 +399,12 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787515033983-3523992147",
 												"customStorage": null,
-												"display": "block single-line",
-												"allowedComponents": null,
+												"display": "block multi-line",
+												"allowedComponents": [
+													"link",
+													"mention",
+													"template-variable"
+												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -486,8 +490,12 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787515037971-4280037377",
 												"customStorage": null,
-												"display": "block single-line",
-												"allowedComponents": null,
+												"display": "block multi-line",
+												"allowedComponents": [
+													"link",
+													"mention",
+													"template-variable"
+												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -595,8 +603,12 @@
 												"editorRole": "nested-editable",
 												"uniqueId": "1787520105731-1713490911",
 												"customStorage": null,
-												"display": "block single-line",
-												"allowedComponents": null,
+												"display": "block multi-line",
+												"allowedComponents": [
+													"link",
+													"mention",
+													"template-variable"
+												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -770,7 +782,11 @@
 												"uniqueId": "1787519516632-1010715937",
 												"customStorage": null,
 												"display": "block single-line",
-												"allowedComponents": null,
+												"allowedComponents": [
+													"link",
+													"mention",
+													"template-variable"
+												],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -858,7 +874,22 @@
 										"uniqueId": "1787519516632-3312999611",
 										"customStorage": null,
 										"display": "block multi-line",
-										"allowedComponents": null,
+										"allowedComponents": [
+											"link",
+											"mention",
+											"template-variable",
+											"audio",
+											"block-quote",
+											"code-block",
+											"embed",
+											"empty-media",
+											"image",
+											"list",
+											"separator",
+											"table",
+											"todo-list",
+											"video"
+										],
 										"allowedContentLineLocalNames": null,
 										"allowedContentLineStyleAttrNames": null,
 										"allowedGlyphFormatterStyleAttrNames": null,
@@ -983,7 +1014,11 @@
 																},
 																"cellNestedEditableProps": {
 																	"domAttrs": {},
-																	"allowedComponents": null,
+																	"allowedComponents": [
+																		"link",
+																		"mention",
+																		"template-variable"
+																	],
 																	"allowedContentLineLocalNames": null,
 																	"allowedContentLineStyleAttrNames": null,
 																	"allowedGlyphFormatterStyleAttrNames": null,
@@ -1040,7 +1075,11 @@
 																								"uniqueId": "1787561150973-2400927478",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1130,7 +1169,11 @@
 																								"uniqueId": "1787561150973-2853409304",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1237,7 +1280,11 @@
 																								"uniqueId": "1787561150973-3084736006",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1327,7 +1374,11 @@
 																								"uniqueId": "1787561150973-1434020243",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1425,7 +1476,11 @@
 																								"uniqueId": "1787561150973-1488985333",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1515,7 +1570,11 @@
 																								"uniqueId": "1787561150973-2643812325",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1613,7 +1672,11 @@
 																								"uniqueId": "1787561150973-2780608402",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1703,7 +1766,11 @@
 																								"uniqueId": "1787561150973-3303704283",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1801,7 +1868,11 @@
 																								"uniqueId": "1787561150973-741561450",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1891,7 +1962,11 @@
 																								"uniqueId": "1787561150973-4005262346",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -1989,7 +2064,11 @@
 																								"uniqueId": "1787561150973-3178303241",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -2079,7 +2158,11 @@
 																								"uniqueId": "1787561150973-1786809796",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -2177,7 +2260,11 @@
 																								"uniqueId": "1787561150973-2890893517",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -2267,7 +2354,11 @@
 																								"uniqueId": "1787561150973-1027410341",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -2365,7 +2456,11 @@
 																								"uniqueId": "1787561150973-2230719851",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,
@@ -2455,7 +2550,11 @@
 																								"uniqueId": "1787561150973-799958797",
 																								"customStorage": null,
 																								"display": "block multi-line",
-																								"allowedComponents": null,
+																								"allowedComponents": [
+																									"link",
+																									"mention",
+																									"template-variable"
+																								],
 																								"allowedContentLineLocalNames": null,
 																								"allowedContentLineStyleAttrNames": null,
 																								"allowedGlyphFormatterStyleAttrNames": null,

@@ -1,5 +1,5 @@
 import { blockComponentRole, listRole, nestedEditableRole } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, listDefinition } from "#constants";
 import { listStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
 import {
@@ -61,13 +61,7 @@ const validateListItem = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block multi-line",
-			editState: "inherit",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...listDefinition.itemNestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},
@@ -94,8 +88,8 @@ const validateListNode = ({
 	const listMismatch = matchJSON({
 		value: listState,
 		pattern: {
-			lineType: "multi-line",
-			editState: "inherit",
+			lineType: listDefinition.lineType,
+			editState: listDefinition.editState,
 			customStorage: null,
 		},
 	});

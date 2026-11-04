@@ -4,6 +4,7 @@ import {
 	htmlLayoutRole,
 	nestedEditableRole,
 } from "@rangex/core";
+import { mediaCaptionDefinition } from "#constants";
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
@@ -131,13 +132,7 @@ const validateFigcaption = ({
 		nestedEditableDraft,
 		expectedState: {
 			editorRole: nestedEditableRole,
-			display: "block single-line",
-			editState: "true",
-			allowedComponents: null,
-			allowedContentLineLocalNames: null,
-			allowedContentLineStyleAttrNames: null,
-			allowedGlyphFormatterStyleAttrNames: null,
-			allowedGlyphFormatterInlineTags: null,
+			...mediaCaptionDefinition.nestedEditableProps,
 			domAttrs: {},
 			customStorage: null,
 		},

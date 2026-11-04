@@ -24,7 +24,6 @@ export const handleListPlacement = ({
 	const unsubscribeInsert = configPort.onInsert(({ localName }) => {
 		const listLine = createList({
 			localName,
-			lineType: "multi-line",
 			childNodes: [
 				createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 			],
@@ -68,7 +67,7 @@ export const handleListPlacement = ({
 	});
 
 	const unsubscribeWrap = configPort.onWrap(({ localName }) => {
-		const listLine = createList({ localName, lineType: "multi-line" });
+		const listLine = createList({ localName });
 
 		const list = listLine.$$querySelector(listRoleSelector);
 

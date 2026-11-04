@@ -4,7 +4,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, mentionDefinition } from "#constants";
 import { createMentionStorage } from "#storage";
 import type {
 	CreateMentionParams,
@@ -28,13 +28,7 @@ export const createMention = ({
 		shouldSelectOnNavigation: false,
 		childNodes: [
 			createNestedEditable({
-				display: "inline",
-				editState: "inherit",
-				allowedComponents: [],
-				allowedContentLineLocalNames: null,
-				allowedContentLineStyleAttrNames: null,
-				allowedGlyphFormatterStyleAttrNames: null,
-				allowedGlyphFormatterInlineTags: null,
+				...mentionDefinition.nestedEditableProps,
 				childNodes: [
 					createContentLine({
 						localName: "span",

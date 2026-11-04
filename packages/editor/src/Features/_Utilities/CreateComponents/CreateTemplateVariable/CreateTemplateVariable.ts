@@ -4,7 +4,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#constants";
+import { componentsName, templateVariableDefinition } from "#constants";
 import { createTemplateVariableStorage } from "#storage";
 import type {
 	CreateTemplateVariableParams,
@@ -28,13 +28,7 @@ export const createTemplateVariable = ({
 		shouldSelectBeforeRemove: false,
 		childNodes: [
 			createNestedEditable({
-				display: "inline",
-				editState: "inherit",
-				allowedComponents: [],
-				allowedContentLineLocalNames: [],
-				allowedContentLineStyleAttrNames: [],
-				allowedGlyphFormatterStyleAttrNames: [],
-				allowedGlyphFormatterInlineTags: [],
+				...templateVariableDefinition.nestedEditableProps,
 				childNodes: [
 					createContentLine({
 						localName: "span",
