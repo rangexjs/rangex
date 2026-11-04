@@ -3,15 +3,15 @@ import {
 	type ColorValue,
 	type FontFamilyValue,
 	type FontSizeValue,
-	isValidBackgroundColorStructuredStyle,
-	isValidColorStructuredStyle,
-	isValidFontFamilyStructuredStyle,
-	isValidFontSizeStructuredStyle,
-	isValidLetterSpacingStructuredStyle,
-	isValidLineHeightStructuredStyle,
-	isValidPaddingBlockStructuredStyle,
-	isValidTextAlignStructuredStyle,
-	isValidTextIndentStructuredStyle,
+	isBackgroundColorStructuredStyle,
+	isColorStructuredStyle,
+	isFontFamilyStructuredStyle,
+	isFontSizeStructuredStyle,
+	isLetterSpacingStructuredStyle,
+	isLineHeightStructuredStyle,
+	isPaddingBlockStructuredStyle,
+	isTextAlignStructuredStyle,
+	isTextIndentStructuredStyle,
 	type LetterSpacingValue,
 } from "#structured-style";
 import type {
@@ -98,7 +98,7 @@ const getLineHeightToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidLineHeightStructuredStyle,
+		isLineHeightStructuredStyle,
 	);
 
 	const values = new Set(
@@ -128,7 +128,7 @@ const getLineSpacingToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidPaddingBlockStructuredStyle,
+		isPaddingBlockStructuredStyle,
 	);
 
 	const values = new Set(
@@ -158,7 +158,7 @@ const getIndentationToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidTextIndentStructuredStyle,
+		isTextIndentStructuredStyle,
 	);
 
 	const values = new Set(
@@ -187,9 +187,7 @@ const getTextAlignToolbarButtonState = ({
 		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
-	const validStructuredStyles = style.values.filter(
-		isValidTextAlignStructuredStyle,
-	);
+	const validStructuredStyles = style.values.filter(isTextAlignStructuredStyle);
 
 	const values = new Set(
 		validStructuredStyles.map(
@@ -209,11 +207,13 @@ const getBackgroundColorToolbarButtonState = ({
 	if (textFormatStylesState.backgroundColor) {
 		const { backgroundColor } = textFormatStylesState;
 
-		if (!isValidBackgroundColorStructuredStyle(backgroundColor)) {
+		if (!isBackgroundColorStructuredStyle(backgroundColor)) {
 			return { disabled: true, values: new Set() };
 		}
 
-		const values = new Set<BackgroundColorValue>([backgroundColor.values]);
+		const values = new Set<BackgroundColorValue>([
+			backgroundColor.values.backgroundColor,
+		]);
 
 		return { disabled: false, values };
 	}
@@ -231,11 +231,13 @@ const getBackgroundColorToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidBackgroundColorStructuredStyle,
+		isBackgroundColorStructuredStyle,
 	);
 
 	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values),
+		validStructuredStyles.map(
+			(structuredStyle) => structuredStyle.values.backgroundColor,
+		),
 	);
 
 	return { disabled: false, values };
@@ -248,11 +250,11 @@ const getColorToolbarButtonState = ({
 	if (textFormatStylesState.color) {
 		const { color } = textFormatStylesState;
 
-		if (!isValidColorStructuredStyle(color)) {
+		if (!isColorStructuredStyle(color)) {
 			return { disabled: true, values: new Set() };
 		}
 
-		const values = new Set<ColorValue>([color.values]);
+		const values = new Set<ColorValue>([color.values.color]);
 
 		return { disabled: false, values };
 	}
@@ -269,12 +271,12 @@ const getColorToolbarButtonState = ({
 		return { disabled: false, values: new Set() };
 	}
 
-	const validStructuredStyles = style.values.filter(
-		isValidColorStructuredStyle,
-	);
+	const validStructuredStyles = style.values.filter(isColorStructuredStyle);
 
 	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values),
+		validStructuredStyles.map(
+			(structuredStyle) => structuredStyle.values.color,
+		),
 	);
 
 	return { disabled: false, values };
@@ -287,7 +289,7 @@ const getFontFamilyToolbarButtonState = ({
 	if (textFormatStylesState.fontFamily) {
 		const { fontFamily } = textFormatStylesState;
 
-		if (!isValidFontFamilyStructuredStyle(fontFamily)) {
+		if (!isFontFamilyStructuredStyle(fontFamily)) {
 			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
@@ -309,7 +311,7 @@ const getFontFamilyToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidFontFamilyStructuredStyle,
+		isFontFamilyStructuredStyle,
 	);
 
 	const values = new Set(
@@ -330,7 +332,7 @@ const getFontSizeToolbarButtonState = ({
 	if (textFormatStylesState.fontSize) {
 		const { fontSize } = textFormatStylesState;
 
-		if (!isValidFontSizeStructuredStyle(fontSize)) {
+		if (!isFontSizeStructuredStyle(fontSize)) {
 			return { disabled: true, hasUnset: true, values: new Set() };
 		}
 
@@ -351,9 +353,7 @@ const getFontSizeToolbarButtonState = ({
 		return { disabled: false, hasUnset: true, values: new Set() };
 	}
 
-	const validStructuredStyles = style.values.filter(
-		isValidFontSizeStructuredStyle,
-	);
+	const validStructuredStyles = style.values.filter(isFontSizeStructuredStyle);
 
 	const values = new Set(
 		validStructuredStyles.map(
@@ -373,7 +373,7 @@ const getLetterSpacingToolbarButtonState = ({
 	if (textFormatStylesState.letterSpacing) {
 		const { letterSpacing } = textFormatStylesState;
 
-		if (!isValidLetterSpacingStructuredStyle(letterSpacing)) {
+		if (!isLetterSpacingStructuredStyle(letterSpacing)) {
 			return { disabled: true, values: new Set() };
 		}
 
@@ -397,7 +397,7 @@ const getLetterSpacingToolbarButtonState = ({
 	}
 
 	const validStructuredStyles = style.values.filter(
-		isValidLetterSpacingStructuredStyle,
+		isLetterSpacingStructuredStyle,
 	);
 
 	const values = new Set(

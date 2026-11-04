@@ -31,12 +31,11 @@ export type {
 	FontFamilyValue,
 	FontSizeValue,
 	LetterSpacingValue,
-	LinearGradientColor,
+	LightDarkColor,
 	LineHeightValue,
 	PaddingBlockValue,
 	SolidColor,
 	StructuredColor,
 	TextAlignValue,
 	TextIndentValue,
-	ThemeColors,
 } from "#structured-style";

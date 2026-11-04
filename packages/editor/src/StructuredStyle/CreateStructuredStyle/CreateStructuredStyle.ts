@@ -1,11 +1,6 @@
-import {
-	createStructuredStyleValue,
-	type StructuredStyleValue,
-} from "@rangex/core";
+import { createStructuredStyleValue } from "@rangex/core";
 import { assertNever } from "#utilities";
 import type {
-	BackgroundColorStructuredStyleValue,
-	ColorStructuredStyleValue,
 	CreateBackgroundColorStructuredStyleParams,
 	CreateBackgroundColorStructuredStyleResult,
 	CreateColorStructuredStyleParams,
@@ -26,35 +21,14 @@ import type {
 	CreateTextAlignStructuredStyleResult,
 	CreateTextIndentStructuredStyleParams,
 	CreateTextIndentStructuredStyleResult,
-	FontFamilyStructuredStyleValue,
-	FontSizeStructuredStyleValue,
-	LetterSpacingStructuredStyleValue,
-	LineHeightStructuredStyleValue,
-	PaddingBlockStructuredStyleValue,
-	PaddingInlineStructuredStyleValue,
+	ResolveLightDarkColorParams,
+	ResolveLightDarkColorResult,
 	ResolveStructuredColorParams,
 	ResolveStructuredColorResult,
-	ResolveThemeColorsParams,
-	ResolveThemeColorsResult,
-	StructuredStyleValueType,
-	TextAlignStructuredStyleValue,
-	TextIndentStructuredStyleValue,
-} from "./StructuredStyle-types";
-
-const isStructuredStyleOfType = (
-	value: StructuredStyleValue,
-	type: StructuredStyleValueType,
-) => {
-	if (value.type === type) {
-		return true;
-	}
-
-	console.warn("Unknown structured style value was found.", value);
-	return false;
-};
+} from "./CreateStructuredStyle-types";
 
 /*
- * A color's CSS value: the color itself, or a linear-gradient() of its colors
+ * A color's CSS value
  */
 const resolveStructuredColor = ({
 	color,
@@ -63,27 +37,17 @@ const resolveStructuredColor = ({
 		return color.value;
 	}
 
-	if (color.type === "linear-gradient") {
-		const { deg, colors } = color;
-
-		const colorValues = colors
-			.map(({ value, offset }) => `${value} ${offset}%`)
-			.join(",");
-
-		return `linear-gradient(${deg}deg, ${colorValues})`;
-	}
-
-	return assertNever(color);
+	return assertNever(color.type);
 };
 
 /*
- * A light-dark() of the theme's two colors
+ * A light-dark() of the color's light and dark values
  */
-const resolveThemeColors = ({
-	themeColors,
-}: ResolveThemeColorsParams): ResolveThemeColorsResult => {
-	const lightValue = resolveStructuredColor({ color: themeColors.light });
-	const darkValue = resolveStructuredColor({ color: themeColors.dark });
+const resolveLightDarkColor = ({
+	lightDarkColor,
+}: ResolveLightDarkColorParams): ResolveLightDarkColorResult => {
+	const lightValue = resolveStructuredColor({ color: lightDarkColor.light });
+	const darkValue = resolveStructuredColor({ color: lightDarkColor.dark });
 
 	return `light-dark(${lightValue},${darkValue})`;
 };
@@ -93,8 +57,14 @@ export const createBackgroundColorStructuredStyle = ({
 }: CreateBackgroundColorStructuredStyleParams): CreateBackgroundColorStructuredStyleResult => {
 	return createStructuredStyleValue({
 		type: "background-color",
-		values: { light: backgroundColor.light, dark: backgroundColor.dark },
-		resolve: (themeColors) => resolveThemeColors({ themeColors }),
+		values: {
+			backgroundColor: {
+				light: backgroundColor.light,
+				dark: backgroundColor.dark,
+			},
+		},
+		resolve: ({ backgroundColor }) =>
+			resolveLightDarkColor({ lightDarkColor: backgroundColor }),
 	});
 };
 
@@ -103,8 +73,8 @@ export const createColorStructuredStyle = ({
 }: CreateColorStructuredStyleParams): CreateColorStructuredStyleResult => {
 	return createStructuredStyleValue({
 		type: "color",
-		values: { light: color.light, dark: color.dark },
-		resolve: (themeColors) => resolveThemeColors({ themeColors }),
+		values: { color: { light: color.light, dark: color.dark } },
+		resolve: ({ color }) => resolveLightDarkColor({ lightDarkColor: color }),
 	});
 };
 
@@ -222,64 +192,4 @@ export const createTextIndentStructuredStyle = ({
 			return assertNever(textIndent.type);
 		},
 	});
-};
-
-export const isValidBackgroundColorStructuredStyle = (
-	value: StructuredStyleValue,
-): value is BackgroundColorStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "background-color");
-};
-
-export const isValidColorStructuredStyle = (
-	value: StructuredStyleValue,
-): value is ColorStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "color");
-};
-
-export const isValidFontFamilyStructuredStyle = (
-	value: StructuredStyleValue,
-): value is FontFamilyStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "font-family");
-};
-
-export const isValidFontSizeStructuredStyle = (
-	value: StructuredStyleValue,
-): value is FontSizeStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "font-size");
-};
-
-export const isValidLetterSpacingStructuredStyle = (
-	value: StructuredStyleValue,
-): value is LetterSpacingStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "letter-spacing");
-};
-
-export const isValidLineHeightStructuredStyle = (
-	value: StructuredStyleValue,
-): value is LineHeightStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "line-height");
-};
-
-export const isValidPaddingBlockStructuredStyle = (
-	value: StructuredStyleValue,
-): value is PaddingBlockStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "padding-block");
-};
-
-export const isValidPaddingInlineStructuredStyle = (
-	value: StructuredStyleValue,
-): value is PaddingInlineStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "padding-inline");
-};
-
-export const isValidTextAlignStructuredStyle = (
-	value: StructuredStyleValue,
-): value is TextAlignStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "text-align");
-};
-
-export const isValidTextIndentStructuredStyle = (
-	value: StructuredStyleValue,
-): value is TextIndentStructuredStyleValue => {
-	return isStructuredStyleOfType(value, "text-indent");
 };

@@ -1,4 +1,7 @@
-import type { StructuredColor, ThemeColors } from "@rangex/editor/formatting";
+import type {
+	LightDarkColor,
+	StructuredColor,
+} from "@rangex/editor/formatting";
 import { ColorFormat, type HslFormat } from "#color";
 import { assertNever } from "#utilities";
 import type { ColorMode } from "./ColorPanel";
@@ -12,15 +15,11 @@ const getHslFromColorType = (color: StructuredColor): HslFormat => {
 		return hsl;
 	}
 
-	if (color.type === "linear-gradient") {
-		throw new Error("LinearGradient type hasn't implemented yet.");
-	}
-
-	return assertNever(color);
+	return assertNever(color.type);
 };
 
 interface GetHslThemeColorsParams {
-	colors: Set<ThemeColors>;
+	colors: Set<LightDarkColor>;
 }
 
 interface GetHslThemeColorsResult {
