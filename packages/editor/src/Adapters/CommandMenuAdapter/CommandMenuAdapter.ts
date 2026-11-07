@@ -1,79 +1,73 @@
 import { extendObjectProperties } from "#utilities";
-import { createCaretMenuPort, createEmitter } from "../_Utilities";
+import {
+	createCaretMenuPort,
+	createEmitter,
+	createStateEmitter,
+} from "../_Utilities";
 import type {
+	CommandMenuAvailableItems,
 	CommandMenuConfigPort,
 	CommandMenuConfigPortProps,
-	CommandMenuInternals,
-	CommandMenuItems,
 	CommandMenuItemValue,
 	CommandMenuPublicPort,
 	CommandMenuPublicPortProps,
 	CreateCommandMenuAdapterParams,
 	CreateCommandMenuAdapterResult,
 	OnBeforeSelectCallbackFn,
+	UpdateStateParams,
 } from "./CommandMenuAdapter-types";
 
-const ALL_ITEMS: CommandMenuItems = [
-	{ value: "p", label: "Text" },
-	{ value: "h1", label: "Heading 1" },
-	{ value: "h2", label: "Heading 2" },
-	{ value: "h3", label: "Heading 3" },
-	{ value: "h4", label: "Heading 4" },
-	{ value: "h5", label: "Heading 5" },
-	{ value: "h6", label: "Heading 6" },
-	{ value: "bulleted-list", label: "Bulleted list" },
-	{ value: "numbered-list", label: "Numbered list" },
-	{ value: "todo-list", label: "Todo list" },
-	{ value: "block-quote", label: "Blockquote" },
-	{ value: "code-block", label: "Code block" },
-	{ value: "table", label: "Table" },
-	{ value: "media", label: "Media" },
-	{ value: "accordion-item", label: "Accordion item" },
-	{ value: "separator", label: "Separator" },
+/*
+ * Every item the command menu can offer, in the order it lists them. Which ones are available at the selection is
+ * the availableItems state.
+ */
+export const commandMenuItemValues: CommandMenuItemValue[] = [
+	"p",
+	"h1",
+	"h2",
+	"h3",
+	"h4",
+	"h5",
+	"h6",
+	"unordered-list",
+	"ordered-list",
+	"todo-list",
+	"block-quote",
+	"code-block",
+	"table",
+	"media",
+	"accordion-item",
+	"separator",
 ];
-
-const resolveItems = (
-	values: CommandMenuItemValue[] | undefined,
-): CommandMenuItems => {
-	if (!values) {
-		return ALL_ITEMS;
-	}
-
-	const items: CommandMenuItems = [];
-
-	for (const value of values) {
-		const item = ALL_ITEMS.find((candidate) => candidate.value === value);
-
-		if (item) {
-			items.push(item);
-		}
-	}
-
-	return items;
-};
 
 export const createCommandMenuAdapter = (
 	...params: CreateCommandMenuAdapterParams
 ): CreateCommandMenuAdapterResult => {
-	const [{ items }, { adapterBus, floatingContainer }] = params;
+	const [_settings, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("commandMenu");
 
-	const resolvedItems = resolveItems(items);
-
-	const internals: CommandMenuInternals = {
-		// Rest
-		items: resolvedItems,
-	};
+	// States
+	const availableItemsState = createStateEmitter<CommandMenuAvailableItems>([]);
 
 	// CommandListeners
 	const beforeSelectEmitter = createEmitter<OnBeforeSelectCallbackFn>();
 
 	const caretMenuPort = createCaretMenuPort({ floatingContainer });
 
+	const updateState = ({ availableItems }: UpdateStateParams) => {
+		if (availableItems !== undefined) {
+			availableItemsState.set(availableItems);
+		}
+	};
+
 	const configPort: CommandMenuConfigPort = extendObjectProperties({}, {
 		get caretMenu() {
 			return caretMenuPort.configPort;
+		},
+
+		updateState(params) {
+			updateState(params);
 		},
 
 		onBeforeSelect(callback) {
@@ -86,8 +80,12 @@ export const createCommandMenuAdapter = (
 			return caretMenuPort.publicPort;
 		},
 
-		get items() {
-			return internals.items;
+		get availableItems() {
+			return availableItemsState.get();
+		},
+
+		onAvailableItemsUpdate(callback) {
+			return availableItemsState.subscribe(callback);
 		},
 
 		beforeSelect() {

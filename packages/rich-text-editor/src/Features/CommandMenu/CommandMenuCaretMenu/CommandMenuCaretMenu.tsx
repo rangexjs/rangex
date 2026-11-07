@@ -21,25 +21,26 @@ export const CommandMenuCaretMenu = () => {
 
 	const $commandMenu = CommandMenu(commandMenu);
 
-	const actions = createMemo(() =>
-		buildCommandMenuActions({ editor, uiOptions }),
-	);
+	const actions = buildCommandMenuActions({ editor, uiOptions });
 
-	const filteredItems = createMemo(() =>
-		filterCaretMenuItems({
-			items: commandMenu.items,
-			query: $commandMenu.caretMenu.query(),
-			getKeys: (item) => [item.label],
-		}),
+	// The items available at the selection that have an action
+	const availableEntries = createMemo(() =>
+		$commandMenu
+			.availableItems()
+			.map((value) => {
+				const action = actions.get(value);
+
+				return action ? { value, action } : null;
+			})
+			.filter((entry) => entry !== null),
 	);
 
 	const entries = createMemo(() =>
-		filteredItems()
-			.map((item) => {
-				const action = actions().get(item.value);
-				return action ? { item, action } : null;
-			})
-			.filter((entry) => entry !== null),
+		filterCaretMenuItems({
+			items: availableEntries(),
+			query: $commandMenu.caretMenu.query(),
+			getKeys: (entry) => [entry.action.label],
+		}),
 	);
 
 	const selectEntry = (action: CommandMenuAction) => {
@@ -48,7 +49,7 @@ export const CommandMenuCaretMenu = () => {
 	};
 
 	const items = () =>
-		entries().map(({ item, action }): CaretItemFn => {
+		entries().map(({ action }): CaretItemFn => {
 			return ({ isActive }) => (
 				<button
 					type="button"
@@ -59,7 +60,7 @@ export const CommandMenuCaretMenu = () => {
 					onClick={() => selectEntry(action)}
 				>
 					<Icon name={action.icon} class="size-4" />
-					<span>{item.label}</span>
+					<span>{action.label}</span>
 				</button>
 			);
 		});
