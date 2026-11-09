@@ -1,10 +1,11 @@
 import type { MediaResolveDetail } from "@rangex/editor/empty-media";
 import { assertNever } from "#utilities";
+import { createImageAltAttrs } from "../../../_Utilities";
 import type { CreateMediaResolveDetailParams } from "./CreateMediaResolveDetail-types";
 
 /*
  * Builds every attribute of the media to insert: centered, with the media element's src and its defaults (e.g. an
- * image's object fit, a video's controls). An embed's iframe gets the configured attributes.
+ * image's object fit and its alt without alt text, a video's controls). An embed's iframe gets the configured attributes.
  */
 export const createMediaResolveDetail = ({
 	type,
@@ -19,7 +20,11 @@ export const createMediaResolveDetail = ({
 			attrs: {
 				line,
 				block: {},
-				img: { src, alt: "", "data-object-fit": "cover" },
+				img: {
+					src,
+					...createImageAltAttrs(""),
+					"data-object-fit": "cover",
+				},
 			},
 		};
 	}

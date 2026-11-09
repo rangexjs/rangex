@@ -21,6 +21,8 @@ import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
 	BlockAlign,
+	createImageAltAttrs,
+	getImageAltText,
 	isAspectRatioValue,
 	isObjectFitValue,
 	type ObjectFitValue,
@@ -82,10 +84,10 @@ export const ImageQuickActions = () => {
 	const isAltTextDirty = () => altHandle.value() !== committedAltText();
 
 	createEffect(
-		() => imgAttrs()?.alt ?? "",
-		(alt) => {
-			altHandle.setValue(alt);
-			setCommittedAltText(alt);
+		() => getImageAltText(imgAttrs()),
+		(altText) => {
+			altHandle.setValue(altText);
+			setCommittedAltText(altText);
 		},
 	);
 
@@ -114,7 +116,7 @@ export const ImageQuickActions = () => {
 			return;
 		}
 
-		changeImgAttrs({ alt: altHandle.value() });
+		changeImgAttrs(createImageAltAttrs(altHandle.value()));
 	};
 
 	const onAltTextKeyDown = (event: KeyboardEvent) => {
