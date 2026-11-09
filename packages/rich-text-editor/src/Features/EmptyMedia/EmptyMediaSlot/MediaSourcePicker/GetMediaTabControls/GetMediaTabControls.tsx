@@ -9,16 +9,15 @@ const TabLabel = (icon: IconName, label: string) => (
 	</span>
 );
 
+/*
+ * An Upload tab if a supported media type can be a file (every one but embed), and a Link tab.
+ */
 export const getMediaTabControls = (
 	supportedMediaTypes: MediaType[],
 ): SegmentedControlControls<MediaTab> => {
 	const controls: SegmentedControlControls<MediaTab> = [];
 
-	if (
-		supportedMediaTypes.includes("image") ||
-		supportedMediaTypes.includes("video") ||
-		supportedMediaTypes.includes("audio")
-	) {
+	if (supportedMediaTypes.some((type) => type !== "embed")) {
 		controls.push({
 			id: "upload",
 			node: TabLabel("FileArrowUp", "Upload"),
@@ -26,41 +25,11 @@ export const getMediaTabControls = (
 		});
 	}
 
-	if (supportedMediaTypes.includes("image")) {
-		controls.push({
-			id: "image",
-			node: TabLabel("FileImage", "Image"),
-			"aria-label": "Image",
-		});
-	}
-
-	if (supportedMediaTypes.includes("video")) {
-		controls.push({
-			id: "video",
-			node: TabLabel("FileVideo", "Video"),
-			"aria-label": "Video",
-		});
-	}
-
-	if (supportedMediaTypes.includes("audio")) {
-		controls.push({
-			id: "audio",
-			node: TabLabel("FileAudio", "Audio"),
-			"aria-label": "Audio",
-		});
-	}
-
-	if (supportedMediaTypes.includes("embed")) {
-		controls.push({
-			id: "embed",
-			node: TabLabel("FileCloud", "Embed"),
-			"aria-label": "Embed",
-		});
-	}
-
-	if (!controls.length) {
-		throw new Error("No tabs available for the supported media types.");
-	}
+	controls.push({
+		id: "link",
+		node: TabLabel("SimpleLink", "Link"),
+		"aria-label": "Link",
+	});
 
 	return controls;
 };

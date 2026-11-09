@@ -39,7 +39,7 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				return;
 			}
 
-			mediaResolver.resolve(type, file);
+			mediaResolver.resolveFile(type, file);
 		},
 	});
 
@@ -84,8 +84,11 @@ export const EmptyMediaSlot = (props: EmptyMediaSlotProps) => {
 				supportedMediaTypes={supportedMediaTypes}
 				visible={pickerVisible()}
 				errorMessage={errorMessage()}
-				onSubmit={(type, src) => {
-					mediaResolver.resolve(type, src);
+				onSubmitFile={(type, file) => {
+					mediaResolver.resolveFile(type, file);
+				}}
+				onSubmitUrl={(url) => {
+					mediaResolver.resolveUrl(url);
 				}}
 			/>
 

@@ -1,4 +1,3 @@
-import type { MediaType } from "@rangex/editor";
 import { createMemo, createSignal, flush } from "solid-js";
 import {
 	createTextFieldState,
@@ -15,16 +14,10 @@ import type {
 	MediaTab,
 } from "./MediaSourcePicker-types";
 
-const urlPlaceholderByType: Record<MediaType, string> = {
-	image: "https://example.com/image.png",
-	video: "https://example.com/video.mp4",
-	audio: "https://example.com/audio.mp3",
-	embed: "https://example.com/embed",
-};
-
 /*
- * A SegmentedControl between an Upload tab (file picker) and one URL tab per media type. Stays mounted while it's hidden,
- * so the picked source survives a failed attempt.
+ * A SegmentedControl between an Upload tab (file picker) and a Link tab, whose media type is detected once it's
+ * submitted. The SegmentedControl is hidden if there's only the Link tab. Stays mounted while it's hidden, so the picked
+ * source survives a failed attempt.
  */
 export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 	const mediaTabControls = getMediaTabControls(props.supportedMediaTypes);
@@ -97,7 +90,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 				return;
 			}
 
-			props.onSubmit(type, file);
+			props.onSubmitFile(type, file);
 			return;
 		}
 
@@ -109,7 +102,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 			return;
 		}
 
-		props.onSubmit(tab, urlHandle.value());
+		props.onSubmitUrl(urlHandle.value());
 	};
 
 	const onUrlKeyDown = (event: KeyboardEvent) => {
@@ -148,7 +141,10 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 				onChange={onTabChange}
 				label="Media source"
 				appearance="primary-outline"
-				class="rounded-sm border-solid"
+				class={[
+					"rounded-sm border-solid",
+					{ hidden: mediaTabControls.length < 2 },
+				]}
 				commonButtonClass="inline-flex items-center justify-center py-1.5 font-medium text-xs"
 			/>
 
@@ -171,14 +167,14 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 
 			<FormField
 				for={urlHandle.id}
-				class={{ hidden: activeTab() === "upload" }}
+				class={{ hidden: activeTab() !== "link" }}
 				state={urlHandle.state()}
 			>
 				<TextFieldWrapper appearance="primary-outline" size="medium">
 					<InputTextField
 						type="text"
-						aria-label="URL"
-						placeholder={urlPlaceholderByType[activeTab() as MediaType]}
+						aria-label="Link"
+						placeholder="Paste a link…"
 						spellcheck={false}
 						{...urlControls}
 						onKeyDown={onUrlKeyDown}

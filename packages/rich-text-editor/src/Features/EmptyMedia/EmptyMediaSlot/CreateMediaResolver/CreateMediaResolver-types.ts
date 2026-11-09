@@ -1,6 +1,7 @@
-import type { MediaType, RangeXEditor } from "@rangex/editor";
+import type { RangeXEditor } from "@rangex/editor";
 import type { EmptyMediaPublicPort } from "@rangex/editor/empty-media";
 import type { Accessor } from "solid-js";
+import type { MediaFileType } from "../../_Utilities";
 import type {
 	EmptyMediaSlotSettings,
 	SlotStatus,
@@ -15,5 +16,6 @@ export interface CreateMediaResolverParams {
 
 export interface CreateMediaResolverResult {
 	status: Accessor<SlotStatus>;
-	resolve(type: MediaType, src: string | File): Promise<void>;
+	resolveFile(type: MediaFileType, file: File): Promise<void>;
+	resolveUrl(url: string): Promise<void>;
 }

@@ -1,5 +1,5 @@
 import type { RangeXEditor } from "@rangex/editor";
-import type { MediaResolveDetailSettings } from "../_Utilities";
+import type { DetectMediaUrlTypeSettings } from "../_Utilities";
 
 export type SlotStatus =
 	| { status: "idle" }
@@ -18,11 +18,9 @@ export type UploadMediaFileFn = (
 	params: UploadMediaFileParams,
 ) => Promise<string | null>;
 
-export interface EmptyMediaSlotSettings extends MediaResolveDetailSettings {
+export interface EmptyMediaSlotSettings extends DetectMediaUrlTypeSettings {
 	// Uploads a picked or dropped file (e.g. to the app's storage)
 	uploadFile: UploadMediaFileFn;
-	// Turns a pasted embed URL into the one to frame (e.g. a share link into its embed URL)
-	transformEmbedURL?: (url: string) => string;
 }
 
 export interface EmptyMediaSlotProps {

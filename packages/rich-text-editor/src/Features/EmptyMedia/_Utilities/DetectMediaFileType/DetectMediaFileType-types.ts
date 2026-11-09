@@ -5,4 +5,6 @@ export interface DetectMediaFileTypeParams {
 	supportedMediaTypes: MediaType[];
 }
 
-export type DetectMediaFileTypeResult = Exclude<MediaType, "embed"> | null;
+export type MediaFileType = Exclude<MediaType, "embed">;
+
+export type DetectMediaFileTypeResult = MediaFileType | null;

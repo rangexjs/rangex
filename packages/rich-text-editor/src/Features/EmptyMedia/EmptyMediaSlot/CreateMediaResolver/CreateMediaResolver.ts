@@ -2,8 +2,9 @@ import type { MediaType } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 import {
 	createMediaResolveDetail,
+	detectMediaUrlType,
 	isWellFormedUrl,
-	probeMediaSrc,
+	type MediaFileType,
 	validateMediaAttrs,
 } from "../../_Utilities";
 import type { SlotStatus } from "../EmptyMediaSlot-types";
@@ -12,10 +13,32 @@ import type {
 	CreateMediaResolverResult,
 } from "./CreateMediaResolver-types";
 
+const mediaTypeNouns: Record<MediaType, string> = {
+	image: "an image",
+	video: "a video",
+	audio: "an audio file",
+	embed: "an embeddable page",
+};
+
+const listFormat = new Intl.ListFormat("en", {
+	style: "long",
+	type: "disjunction",
+});
+
 /*
- * Takes a capture from a URL or a file down to `emptyMedia.resolve`, which replaces the placeholder: a file is uploaded
- * first (see uploadFile), then the capture is validated and checked that it loads (not for an embed). Holds the status
- * of the attempt. The upload is aborted once the placeholder is removed (the slot is disposed with it).
+ * The error of a link that's none of the supported media types, listing them.
+ */
+const createUnknownLinkMessage = (supportedMediaTypes: MediaType[]) => {
+	const nouns = supportedMediaTypes.map((type) => mediaTypeNouns[type]);
+
+	return `Couldn't find ${listFormat.format(nouns)} at that link.`;
+};
+
+/*
+ * Takes a capture from a file or a link down to `emptyMedia.resolve`, which replaces the placeholder: a file is uploaded
+ * first (see uploadMediaFile), and a link's media type is detected (see detectMediaUrlType). The media's attributes must
+ * be valid. Holds the status of the attempt. The upload and the detection are aborted once the placeholder is removed
+ * (the slot is disposed with it).
  */
 export const createMediaResolver = ({
 	editor,
@@ -26,6 +49,7 @@ export const createMediaResolver = ({
 	const [status, setStatus] = createSignal<SlotStatus>({ status: "idle" });
 
 	const abortController = new AbortController();
+	const { signal } = abortController;
 
 	onCleanup(() => {
 		abortController.abort();
@@ -36,8 +60,6 @@ export const createMediaResolver = ({
 	 * the slot was disposed meanwhile.
 	 */
 	const uploadMediaFile = async (file: File) => {
-		const { signal } = abortController;
-
 		setStatus({ status: "uploading", progress: 0 });
 
 		const src = await settings
@@ -66,35 +88,10 @@ export const createMediaResolver = ({
 	};
 
 	/*
-	 * Resolves a capture down to the media element's src: a file is uploaded, and a typed URL is transformed if it's an
-	 * embed's (see transformEmbedURL), then it must be well-formed. An uploaded file's URL isn't checked: it comes from
-	 * uploadFile, and it can be a relative one. Returns null if there's no valid src.
+	 * Replaces the placeholder with the media, if its attributes are valid.
 	 */
-	const resolveSrc = async (type: MediaType, src: string | File) => {
-		if (typeof src !== "string") {
-			return uploadMediaFile(src);
-		}
-
-		const { transformEmbedURL = (url) => url } = settings;
-
-		const url = type === "embed" ? transformEmbedURL(src) : src;
-
-		if (!isWellFormedUrl(url)) {
-			setStatus({ status: "error", message: "Enter a valid URL." });
-			return null;
-		}
-
-		return url;
-	};
-
-	const resolve = async (type: MediaType, src: string | File) => {
-		const mediaSrc = await resolveSrc(type, src);
-
-		if (mediaSrc === null) {
-			return;
-		}
-
-		const detail = createMediaResolveDetail({ type, src: mediaSrc, settings });
+	const insertMedia = (type: MediaType, src: string) => {
+		const detail = createMediaResolveDetail({ type, src, settings });
 
 		if (!validateMediaAttrs({ editor, detail })) {
 			const message =
@@ -106,30 +103,52 @@ export const createMediaResolver = ({
 			return;
 		}
 
-		// An embed can't be probed: it's a page, not a media file
-		if (detail.type !== "embed") {
-			setStatus({ status: "checking" });
-
-			const loaded = await probeMediaSrc({
-				type: detail.type,
-				src: mediaSrc,
-			});
-
-			if (abortController.signal.aborted) {
-				return;
-			}
-
-			if (!loaded) {
-				setStatus({
-					status: "error",
-					message: `Couldn't load that ${detail.type}. Check the link and try again.`,
-				});
-				return;
-			}
-		}
-
 		emptyMedia.resolve({ element: container, detail });
 	};
 
-	return { status, resolve };
+	/*
+	 * An uploaded file's URL isn't checked: it comes from uploadFile, and it can be a relative one.
+	 */
+	const resolveFile = async (type: MediaFileType, file: File) => {
+		const src = await uploadMediaFile(file);
+
+		if (src === null) {
+			return;
+		}
+
+		insertMedia(type, src);
+	};
+
+	const resolveUrl = async (url: string) => {
+		if (!isWellFormedUrl(url)) {
+			setStatus({ status: "error", message: "Enter a valid URL." });
+			return;
+		}
+
+		setStatus({ status: "checking" });
+
+		const detection = await detectMediaUrlType({
+			editor,
+			url,
+			supportedMediaTypes: emptyMedia.supportedMediaTypes,
+			settings,
+			signal,
+		});
+
+		if (signal.aborted) {
+			return;
+		}
+
+		if (detection.status === "unknown") {
+			setStatus({
+				status: "error",
+				message: createUnknownLinkMessage(emptyMedia.supportedMediaTypes),
+			});
+			return;
+		}
+
+		insertMedia(detection.type, detection.src);
+	};
+
+	return { status, resolveFile, resolveUrl };
 };
