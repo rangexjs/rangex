@@ -4,38 +4,46 @@ import type {
 } from "@rangex/rich-text-editor/empty-media";
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 
+// Served by the dev server (see configs/DevUploads)
+const devUploadsPath = "/__dev-uploads";
+
 /**
- * Demo-only stand-in for a real upload — inlines the file as a base64 data URL instead of
- * sending it anywhere. A consumer building a real editor should replace this with a function
- * that uploads to their own storage and resolves the resulting URL.
+ * Demo-only upload to the dev server, which keeps the file in memory until it stops, and resolves its URL. A consumer
+ * building a real editor should replace this with a function that uploads to their own storage and resolves the
+ * resulting URL. It's an XMLHttpRequest, as fetch can't report an upload's progress.
  */
 const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
 	return new Promise((resolve) => {
-		const reader = new FileReader();
+		const request = new XMLHttpRequest();
 
-		reader.onprogress = (event) => {
+		request.upload.addEventListener("progress", (event) => {
 			if (event.lengthComputable) {
 				onProgress(event.loaded / event.total);
 			}
-		};
-
-		reader.onload = () => {
-			resolve(reader.result as string);
-		};
-
-		reader.onerror = () => {
-			resolve(null);
-		};
-
-		reader.onabort = () => {
-			resolve(null);
-		};
-
-		signal.addEventListener("abort", () => {
-			reader.abort();
 		});
 
-		reader.readAsDataURL(file);
+		request.addEventListener("load", () => {
+			resolve(request.status === 201 ? request.responseText : null);
+		});
+
+		request.addEventListener("error", () => {
+			resolve(null);
+		});
+
+		request.addEventListener("abort", () => {
+			resolve(null);
+		});
+
+		signal.addEventListener("abort", () => {
+			request.abort();
+		});
+
+		request.open("POST", devUploadsPath);
+		request.setRequestHeader(
+			"Content-Type",
+			file.type || "application/octet-stream",
+		);
+		request.send(file);
 	});
 };
 

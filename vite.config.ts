@@ -1,6 +1,7 @@
 import solid from "@solidjs/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defaultClientConditions, defineConfig } from "vite";
+import { devUploads } from "./configs/DevUploads";
 import tsconfig from "./tsconfig.json" with { type: "json" };
 
 export default defineConfig(() => ({
@@ -18,5 +19,6 @@ export default defineConfig(() => ({
 		solid({
 			performanceTracks: false,
 		}),
+		devUploads(),
 	],
 }));
