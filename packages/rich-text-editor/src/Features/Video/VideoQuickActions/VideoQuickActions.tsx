@@ -23,6 +23,7 @@ import {
 	BlockAlign,
 	isAspectRatioValue,
 	isObjectFitValue,
+	MediaSource,
 	type ObjectFitValue,
 	OptionDropdown,
 	type OptionDropdownOption,
@@ -210,11 +211,16 @@ export const VideoQuickActions = () => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
+	let mediaSourcePopover: HTMLDivElement | undefined;
 
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover];
+		const nestedPopovers = [
+			blockAlignPopover,
+			mediaSourcePopover,
+			optionsPopover,
+		];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -261,6 +267,14 @@ export const VideoQuickActions = () => {
 				>
 					<Icon name="Swap" class="size-4" />
 				</button>
+
+				<MediaSource
+					src={$video.domAttrs()?.video.src ?? null}
+					label="Video source"
+					popoverRef={(el) => {
+						mediaSourcePopover = el;
+					}}
+				/>
 
 				<span>
 					<button

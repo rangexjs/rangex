@@ -17,7 +17,7 @@ import {
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
-import { BlockAlign } from "../../_Utilities";
+import { BlockAlign, MediaSource } from "../../_Utilities";
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
@@ -129,11 +129,16 @@ export const AudioQuickActions = () => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
+	let mediaSourcePopover: HTMLDivElement | undefined;
 
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover];
+		const nestedPopovers = [
+			blockAlignPopover,
+			mediaSourcePopover,
+			optionsPopover,
+		];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -180,6 +185,14 @@ export const AudioQuickActions = () => {
 				>
 					<Icon name="Swap" class="size-4" />
 				</button>
+
+				<MediaSource
+					src={$audio.domAttrs()?.audio.src ?? null}
+					label="Audio source"
+					popoverRef={(el) => {
+						mediaSourcePopover = el;
+					}}
+				/>
 
 				<span>
 					<button
