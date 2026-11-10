@@ -37,15 +37,12 @@ export const AudioQuickActions = () => {
 
 	const audioAttrs = () => $audio.domAttrs()?.audio ?? null;
 
-	const hasAudioAttr = (
-		attrName: "controls" | "autoplay" | "loop" | "muted",
-	) => {
+	const hasAudioAttr = (attrName: "autoplay" | "loop" | "muted") => {
 		const value = audioAttrs()?.[attrName] ?? null;
 
 		return value !== null;
 	};
 
-	const controls = () => hasAudioAttr("controls");
 	const autoplay = () => hasAudioAttr("autoplay");
 	const loop = () => hasAudioAttr("loop");
 	const muted = () => hasAudioAttr("muted");
@@ -76,10 +73,6 @@ export const AudioQuickActions = () => {
 		if (changeFailed) {
 			console.warn("Audio's attributes were rejected.", changeFailed);
 		}
-	};
-
-	const onControlsToggle = () => {
-		changeAudioAttrs({ controls: controls() ? null : "" });
 	};
 
 	const onAutoplayToggle = () => {
@@ -214,17 +207,6 @@ export const AudioQuickActions = () => {
 						popover="auto"
 						class="w-52 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 					>
-						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Controls
-							</span>
-							<ToggleButton
-								checked={controls()}
-								label="Controls"
-								onClick={onControlsToggle}
-							/>
-						</div>
-
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Autoplay

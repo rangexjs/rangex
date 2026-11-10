@@ -9,6 +9,9 @@ implementation: `Link/LinkDOMAttrs.ts`. Image (`Image/ImageDOMAttrs.ts`) adds an
 its own shape, as each component decides what its line has: Image's has a block align, a component that can't be
 aligned (e.g. a code block) has no `line` element. Video, Audio and Embed follow Image (`Video/`, `Audio/`, `Embed/`);
 Embed's `sandbox`, `allow` and `loading` are fixed values that fall back to the ones every Embed is created with.
+Audio's `controls` is required and can't be changed: its validator can't be replaced and `AudioAttrsPatch` leaves it out,
+as an audio without controls can't be played (the HTMLView has no JS). A stored audio without it gets it back (a missing
+required attribute is validated as `""`).
 Embed's `src` validator rejects every `src` by default: which sites an Embed frames is the consumer's decision, so an
 Embed frames nothing until the consumer gives `components: { embed: { attrValidators: { iframe: { src } } } }`. Framing any page, e.g. one of the
 app's own, would let it reach the editor's page despite the sandbox, so the validator should only accept the `https:`

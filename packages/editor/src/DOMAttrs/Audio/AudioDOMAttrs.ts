@@ -10,6 +10,7 @@ import {
 	createComponentAttrValidators,
 	type ElementAttrsShape,
 	type ElementDescriptor,
+	type ValidateAttrFn,
 	validateBlockAlign,
 	validateBlockWidth,
 	validateBooleanAttr,
@@ -31,7 +32,7 @@ const blockAttrsShape = {
 
 const audioElementAttrsShape = {
 	src: "required",
-	controls: "optional",
+	controls: "required",
 	autoplay: "optional",
 	loop: "optional",
 	muted: "optional",
@@ -62,6 +63,14 @@ export const audioAttrsShape = {
 	audio: audioElementAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
+const validateControls: ValidateAttrFn<string> = ({ value }) => {
+	if (value !== "") {
+		return { kind: "fallback", reason: "must be empty", value: "" };
+	}
+
+	return null;
+};
+
 /*
  * Creates the Audio's attribute validators: the defaults, replaced by the given ones of the same attributes (see
  * createComponentAttrValidators).
@@ -85,7 +94,7 @@ export const createAudioAttrValidators = (
 			},
 			audio: {
 				src: validateMediaSrc,
-				controls: validateBooleanAttr,
+				controls: validateControls,
 				autoplay: validateBooleanAttr,
 				loop: validateBooleanAttr,
 				muted: validateBooleanAttr,

@@ -11,13 +11,24 @@ export type AudioAttrsShape = typeof audioAttrsShape;
 
 export type AudioAttrs = ComponentAttrs<AudioAttrsShape>;
 
-export type AudioAttrsPatch = ComponentAttrsPatch<AudioAttrsShape>;
+type AudioAttrsFullPatch = ComponentAttrsPatch<AudioAttrsShape>;
+
+export type AudioAttrsPatch = Omit<AudioAttrsFullPatch, "audio"> & {
+	audio?: Omit<NonNullable<AudioAttrsFullPatch["audio"]>, "controls">;
+};
 
 export type AudioAttrValidators = ComponentAttrValidators<AudioAttrsShape>;
 
 export type AudioAttrsMismatch = ComponentAttrsMismatch<AudioAttrsShape>;
 
-export type CreateAudioAttrValidatorsParams =
+type AudioAttrValidatorOverrides =
 	ComponentAttrValidatorOverrides<AudioAttrsShape>;
+
+export type CreateAudioAttrValidatorsParams = Omit<
+	AudioAttrValidatorOverrides,
+	"audio"
+> & {
+	audio?: Omit<NonNullable<AudioAttrValidatorOverrides["audio"]>, "controls">;
+};
 
 export type CreateAudioAttrValidatorsResult = AudioAttrValidators;
