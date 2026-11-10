@@ -56,7 +56,7 @@ const joinChunks = (chunks: Uint8Array[], size: number) => {
 };
 
 /**
- * The path the dev server takes uploads at, and serves them from. Also in src/ExtensionSettings/EmptyMedia, which
+ * The path the dev server takes uploads at, and serves them from. Also in src/ExtensionSettings/SourcePlaceholder, which
  * uploads to it: this file can't be imported from src, as its Vite types would bring Node's into the browser code.
  */
 export const devUploadsPath = "/__dev-uploads";

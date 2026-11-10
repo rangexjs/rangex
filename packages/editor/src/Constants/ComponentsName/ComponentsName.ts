@@ -17,7 +17,7 @@ export const blockComponentsName = {
 	blockQuote: "block-quote",
 	codeBlock: "code-block",
 	embed: "embed",
-	emptyMedia: "empty-media",
+	sourcePlaceholder: "source-placeholder",
 	image: "image",
 	list: "list",
 	separator: "separator",

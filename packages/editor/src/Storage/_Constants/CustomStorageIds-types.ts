@@ -4,13 +4,13 @@ import type {
 	blockQuoteId,
 	codeBlockId,
 	embedId,
-	emptyMediaId,
 	imageId,
 	linkId,
 	listId,
 	mentionId,
 	rootId,
 	separatorId,
+	sourcePlaceholderId,
 	tableId,
 	templateVariableId,
 	todoListId,
@@ -22,7 +22,7 @@ export type AudioId = typeof audioId;
 export type BlockQuoteId = typeof blockQuoteId;
 export type CodeBlockId = typeof codeBlockId;
 export type EmbedId = typeof embedId;
-export type EmptyMediaId = typeof emptyMediaId;
+export type SourcePlaceholderId = typeof sourcePlaceholderId;
 export type ImageId = typeof imageId;
 export type LinkId = typeof linkId;
 export type ListId = typeof listId;

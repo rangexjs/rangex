@@ -33,7 +33,7 @@ export const accordionItemDefinition = {
 			componentsName.blockQuote,
 			componentsName.codeBlock,
 			componentsName.embed,
-			componentsName.emptyMedia,
+			componentsName.sourcePlaceholder,
 			componentsName.image,
 			componentsName.list,
 			componentsName.separator,

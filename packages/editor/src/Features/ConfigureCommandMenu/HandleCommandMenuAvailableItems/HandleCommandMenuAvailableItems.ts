@@ -31,7 +31,7 @@ const blockComponentItems: BlockComponentItems = {
 	"block-quote": componentsName.blockQuote,
 	"code-block": componentsName.codeBlock,
 	table: componentsName.table,
-	media: componentsName.emptyMedia,
+	media: componentsName.sourcePlaceholder,
 	"accordion-item": componentsName.accordionItem,
 	separator: componentsName.separator,
 };

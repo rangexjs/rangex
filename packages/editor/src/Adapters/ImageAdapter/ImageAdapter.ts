@@ -8,7 +8,7 @@ import {
 	createCurrentComponentPort,
 	createDOMAttrsPort,
 	createQuickActionsPort,
-	createSwapToEmptyMediaPort,
+	createSwapToSourcePlaceholderPort,
 } from "../_Utilities";
 import type {
 	CreateImageAdapterParams,
@@ -34,7 +34,9 @@ export const createImageAdapter = (
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 	const domAttrsPort = createDOMAttrsPort<ImageAttrsShape>();
-	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
+	const swapToSourcePlaceholderPort = createSwapToSourcePlaceholderPort({
+		adapterBus,
+	});
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const configPort: ImageConfigPort = extendObjectProperties(
@@ -42,7 +44,7 @@ export const createImageAdapter = (
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
 		domAttrsPort.configPort,
-		swapToEmptyMediaPort.configPort,
+		swapToSourcePlaceholderPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
@@ -68,7 +70,7 @@ export const createImageAdapter = (
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
 		domAttrsPort.publicPort,
-		swapToEmptyMediaPort.publicPort,
+		swapToSourcePlaceholderPort.publicPort,
 		{
 			get quickActions() {
 				return quickActionsPort.publicPort;

@@ -8,7 +8,7 @@ import {
 	createCurrentComponentPort,
 	createDOMAttrsPort,
 	createQuickActionsPort,
-	createSwapToEmptyMediaPort,
+	createSwapToSourcePlaceholderPort,
 } from "../_Utilities";
 import type {
 	CreateEmbedAdapterParams,
@@ -34,7 +34,9 @@ export const createEmbedAdapter = (
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 	const domAttrsPort = createDOMAttrsPort<EmbedAttrsShape>();
-	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
+	const swapToSourcePlaceholderPort = createSwapToSourcePlaceholderPort({
+		adapterBus,
+	});
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const configPort: EmbedConfigPort = extendObjectProperties(
@@ -42,7 +44,7 @@ export const createEmbedAdapter = (
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
 		domAttrsPort.configPort,
-		swapToEmptyMediaPort.configPort,
+		swapToSourcePlaceholderPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
@@ -68,7 +70,7 @@ export const createEmbedAdapter = (
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
 		domAttrsPort.publicPort,
-		swapToEmptyMediaPort.publicPort,
+		swapToSourcePlaceholderPort.publicPort,
 		{
 			get quickActions() {
 				return quickActionsPort.publicPort;

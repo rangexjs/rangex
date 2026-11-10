@@ -887,7 +887,7 @@
 											"block-quote",
 											"code-block",
 											"embed",
-											"empty-media",
+											"source-placeholder",
 											"image",
 											"list",
 											"separator",
@@ -3383,7 +3383,7 @@
 																						"editorRole": "basic-text",
 																						"uniqueId": "1787515569941-458088269",
 																						"customStorage": null,
-																						"data": "  extensions: [UndoRedo({}), Formatting({}), Link({}), Table({}), EmptyMedia({ uploadFile })]"
+																						"data": "  extensions: [UndoRedo({}), Formatting({}), Link({}), Table({}), SourcePlaceholder({ uploadFile })]"
 																					}
 																				]
 																			}
@@ -3605,8 +3605,8 @@
 					{
 						"editorRole": "block-component",
 						"uniqueId": "1787515686749-2914192422",
-						"customStorage": { "id": "empty-media" },
-						"name": "empty-media",
+						"customStorage": { "id": "source-placeholder" },
+						"name": "source-placeholder",
 						"content": { "type": "custom" },
 						"shouldSelectBeforeRemove": true,
 						"shouldSelectOnNavigation": true,

@@ -14,8 +14,8 @@ import type {
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface ImageConfigPortProps {
@@ -32,7 +32,7 @@ export interface ImageConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		DOMAttrsConfigPort<ImageAttrsShape>,
-		SwapToEmptyMediaConfigPort {}
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface ImagePublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -44,7 +44,7 @@ export interface ImagePublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		DOMAttrsPublicPort<ImageAttrsShape>,
-		SwapToEmptyMediaPublicPort {}
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface ImageAdapter {
 	configPort: ImageConfigPort;

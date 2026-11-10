@@ -6,7 +6,7 @@ import type {
 	AttrValidatorsByAdapter,
 	MediaResolveDetail,
 	OnMediaResolveCallbackFn,
-	OnSwapToEmptyMediaCallbackFn,
+	OnSwapToSourcePlaceholderCallbackFn,
 } from "./AdapterBus-types";
 
 export const mediaTypes = [
@@ -33,7 +33,8 @@ export class AdapterBus {
 	#tableLimits: TableLimits | null = null;
 
 	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
-	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
+	#swapToSourcePlaceholderEmitter =
+		createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
 
 	registerAdapter(name: AdapterName) {
 		this.#registeredAdapters.add(name);
@@ -86,11 +87,11 @@ export class AdapterBus {
 		this.#mediaResolveEmitter.emit(params);
 	}
 
-	onSwapToEmptyMedia(callback: OnSwapToEmptyMediaCallbackFn) {
-		return this.#swapToEmptyMediaEmitter.subscribe(callback);
+	onSwapToSourcePlaceholder(callback: OnSwapToSourcePlaceholderCallbackFn) {
+		return this.#swapToSourcePlaceholderEmitter.subscribe(callback);
 	}
 
-	emitSwapToEmptyMedia() {
-		this.#swapToEmptyMediaEmitter.emit();
+	emitSwapToSourcePlaceholder() {
+		this.#swapToSourcePlaceholderEmitter.emit();
 	}
 }

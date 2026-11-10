@@ -9,7 +9,7 @@ import {
 	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
-	handleSwapToEmptyMedia,
+	handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
 	getAudioCaption,
@@ -22,7 +22,7 @@ import { handleAudioInsertion } from "./HandleAudioInsertion";
 
 /*
  * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
- * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureAudio = ({
 	adapterBus,
@@ -93,7 +93,7 @@ export const configureAudio = ({
 		},
 	});
 
-	const swapCleanup = handleSwapToEmptyMedia({
+	const swapCleanup = handleSwapToSourcePlaceholder({
 		port: configPort,
 		editorAPI,
 	});

@@ -9,7 +9,7 @@ import {
 	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
-	handleSwapToEmptyMedia,
+	handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
 	getEmbedCaption,
@@ -22,7 +22,7 @@ import { handleEmbedInsertion } from "./HandleEmbedInsertion";
 
 /*
  * Wires up the embed feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
- * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureEmbed = ({
 	adapterBus,
@@ -89,7 +89,7 @@ export const configureEmbed = ({
 		},
 	});
 
-	const swapCleanup = handleSwapToEmptyMedia({
+	const swapCleanup = handleSwapToSourcePlaceholder({
 		port: configPort,
 		editorAPI,
 	});

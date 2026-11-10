@@ -20,7 +20,7 @@ export const buildCommandMenuActions = ({
 		blockQuote,
 		accordionItem,
 		codeBlock,
-		emptyMedia,
+		sourcePlaceholder,
 		formatting,
 		list,
 		separator,
@@ -121,11 +121,11 @@ export const buildCommandMenuActions = ({
 		});
 	}
 
-	if (emptyMedia) {
+	if (sourcePlaceholder) {
 		actions.set("media", {
 			label: "Media",
 			icon: "FileArrowUp",
-			onSelect: () => emptyMedia.insert(),
+			onSelect: () => sourcePlaceholder.insert(),
 		});
 	}
 

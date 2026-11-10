@@ -14,6 +14,6 @@ export * from "./HandleQuickActionsAppearance";
 export * from "./HandleSelectionComponent";
 export * from "./HandleSelectionContextChange";
 export * from "./HandleSelectionMenuInteraction";
-export * from "./HandleSwapToEmptyMedia";
+export * from "./HandleSwapToSourcePlaceholder";
 export * from "./Utilities-types";
 export * from "./ValidateComponentsPlacement";

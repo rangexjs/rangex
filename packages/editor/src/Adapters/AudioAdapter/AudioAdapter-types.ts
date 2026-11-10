@@ -14,8 +14,8 @@ import type {
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface AudioConfigPortProps {
@@ -32,7 +32,7 @@ export interface AudioConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		DOMAttrsConfigPort<AudioAttrsShape>,
-		SwapToEmptyMediaConfigPort {}
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface AudioPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -44,7 +44,7 @@ export interface AudioPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		DOMAttrsPublicPort<AudioAttrsShape>,
-		SwapToEmptyMediaPublicPort {}
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface AudioAdapter {
 	configPort: AudioConfigPort;

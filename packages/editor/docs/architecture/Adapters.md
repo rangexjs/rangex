@@ -162,7 +162,7 @@ ports one of two ways:
 - **Flat-merge** — `extendObjectProperties(xxxPort.configPort, ..., { own props })`;
   the port's members land directly on the Adapter's port. For a singleton capability an
   Adapter can only ever have one of (`Remove`, `Unwrap`, `CommitSnapshot`, `Duplicate`,
-  `InsertRootLine`, `BlockAlign`, `Caption`, `SwapToEmptyMedia`) — no collision risk, by
+  `InsertRootLine`, `BlockAlign`, `Caption`, `SwapToSourcePlaceholder`) — no collision risk, by
   construction. `BlockAlignPort` is the reference.
 - **Nest** — `{ xxx: xxxPort.configPort, ...own props }`, reached as `adapterPort.xxx`.
   For a port that's one instance of a reusable widget/concept that could need more than
@@ -204,10 +204,10 @@ field became `element`, since the composed key is already `selectionMenu`).
 Three channel shapes:
 
 - **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
-  `onSwapToEmptyMedia`).
+  `onSwapToSourcePlaceholder`).
 - **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
   Answers "was the editor built with Adapter X?" for anything that depends on another
-  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`, and every
+  Adapter (SourcePlaceholder's `supportedMediaTypes`, `SwapToSourcePlaceholderPort.canSwap`, and every
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
 - **Shared value** — `registerAttrValidators(name, attrValidators)` /

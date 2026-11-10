@@ -63,10 +63,10 @@
 			"types": "./dist/Exports/Emoji/index.d.ts",
 			"import": "./dist/emoji.js"
 		},
-		"./empty-media": {
-			"@rangex/source": "./src/Exports/EmptyMedia/index.ts",
-			"types": "./dist/Exports/EmptyMedia/index.d.ts",
-			"import": "./dist/empty-media.js"
+		"./source-placeholder": {
+			"@rangex/source": "./src/Exports/SourcePlaceholder/index.ts",
+			"types": "./dist/Exports/SourcePlaceholder/index.d.ts",
+			"import": "./dist/source-placeholder.js"
 		},
 		"./find-replace": {
 			"@rangex/source": "./src/Exports/FindReplace/index.ts",

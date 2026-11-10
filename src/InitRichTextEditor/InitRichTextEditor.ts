@@ -11,7 +11,6 @@ import { CodeBlock } from "@rangex/rich-text-editor/code-block";
 import { CommandMenu } from "@rangex/rich-text-editor/command-menu";
 import { Embed } from "@rangex/rich-text-editor/embed";
 import { Emoji } from "@rangex/rich-text-editor/emoji";
-import { EmptyMedia } from "@rangex/rich-text-editor/empty-media";
 import { FindReplace } from "@rangex/rich-text-editor/find-replace";
 import { Formatting } from "@rangex/rich-text-editor/formatting";
 import { Image } from "@rangex/rich-text-editor/image";
@@ -23,6 +22,7 @@ import { Mention } from "@rangex/rich-text-editor/mention";
 import { ReadOnly } from "@rangex/rich-text-editor/read-only";
 import { Separator } from "@rangex/rich-text-editor/separator";
 import { Shortcuts } from "@rangex/rich-text-editor/shortcuts";
+import { SourcePlaceholder } from "@rangex/rich-text-editor/source-placeholder";
 import { Symbols } from "@rangex/rich-text-editor/symbols";
 import { Table } from "@rangex/rich-text-editor/table";
 import { TemplateVariable } from "@rangex/rich-text-editor/template-variable";
@@ -33,10 +33,10 @@ import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,
 	embedAttrValidators,
-	emptyMediaSettings,
 	formattingSettings,
 	markdownSettings,
 	mentionSettings,
+	sourcePlaceholderSettings,
 	templateVariableSettings,
 } from "../ExtensionSettings";
 
@@ -56,7 +56,7 @@ const snapshotSchema: SnapshotSchema = {
 		blockQuote: {},
 		codeBlock: {},
 		embed: { attrValidators: embedAttrValidators },
-		emptyMedia: {},
+		sourcePlaceholder: {},
 		image: {},
 		link: {},
 		list: {},
@@ -76,7 +76,7 @@ export const initRichTextEditor = () => {
 		BlockQuote({}),
 		Embed({}),
 		Emoji({}),
-		EmptyMedia(emptyMediaSettings),
+		SourcePlaceholder(sourcePlaceholderSettings),
 		FindReplace({}),
 		Formatting(formattingSettings),
 		CodeBlock(codeBlockSettings),

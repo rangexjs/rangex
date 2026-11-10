@@ -8,5 +8,5 @@ export * from "./InsertRootLinePort";
 export * from "./QuickActionsPort";
 export * from "./RemovePort";
 export * from "./SelectionMenuPort";
-export * from "./SwapToEmptyMediaPort";
+export * from "./SwapToSourcePlaceholderPort";
 export * from "./UnwrapPort";

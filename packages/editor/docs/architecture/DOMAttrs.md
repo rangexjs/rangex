@@ -16,13 +16,13 @@ Embed's `src` validator rejects every `src` by default: which sites an Embed fra
 Embed frames nothing until the consumer gives `components: { embed: { attrValidators: { iframe: { src } } } }`. Framing any page, e.g. one of the
 app's own, would let it reach the editor's page despite the sandbox, so the validator should only accept the `https:`
 embed URLs of trusted sites. Turning a pasted share link into its embed URL is the consumer's too, before they call
-EmptyMedia's `resolve` (the rich-text-editor's `transformEmbedURL` setting); the validator can still fall back from a
+SourcePlaceholder's `resolve` (the rich-text-editor's `transformEmbedURL` setting); the validator can still fall back from a
 share link to its embed URL, which repairs a stored snapshot. The dev view's `src/ExtensionSettings/Embed/` is an example
 (YouTube, Vimeo, Spotify, Loom, Dailymotion, CodePen).
 
-Media is inserted with every attribute of its component, as Link is: `emptyMedia.resolve({ element, detail })` takes
+Media is inserted with every attribute of its component, as Link is: `sourcePlaceholder.resolve({ element, detail })` takes
 `{ type, attrs }` (`MediaResolveDetail`), with the media element's `src` as a URL: uploading a file and checking that
-the media loads are the consumer's, before they call `resolve`. EmptyMedia validates the attributes by the component's
+the media loads are the consumer's, before they call `resolve`. SourcePlaceholder validates the attributes by the component's
 validators (`adapterBus.getAttrValidators(type)`), and only then replaces the placeholder: invalid attributes are
 ignored, so the consumer should check them first (`validateDOMAttrs` of the media's port) to report why. The
 component's `create*` takes the complete attributes, with no defaults of its own.

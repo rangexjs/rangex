@@ -4,10 +4,10 @@ import {
 	createBlockQuoteValidator,
 	createCodeBlockValidator,
 	createEmbedValidator,
-	createEmptyMediaValidator,
 	createImageValidator,
 	createListValidator,
 	createSeparatorValidator,
+	createSourcePlaceholderValidator,
 	createTableValidator,
 	createTodoListValidator,
 	createVideoValidator,
@@ -34,7 +34,7 @@ export const createComponentValidators = ({
 		blockQuote,
 		codeBlock,
 		embed,
-		emptyMedia,
+		sourcePlaceholder,
 		image,
 		link,
 		list,
@@ -68,8 +68,8 @@ export const createComponentValidators = ({
 		componentValidators.push(createEmbedValidator(embed));
 	}
 
-	if (emptyMedia) {
-		componentValidators.push(createEmptyMediaValidator());
+	if (sourcePlaceholder) {
+		componentValidators.push(createSourcePlaceholderValidator());
 	}
 
 	if (image) {

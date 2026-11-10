@@ -41,4 +41,4 @@ export type MediaResolveDetail =
 
 export type OnMediaResolveCallbackFn = (params: MediaResolveDetail) => void;
 
-export type OnSwapToEmptyMediaCallbackFn = () => void;
+export type OnSwapToSourcePlaceholderCallbackFn = () => void;

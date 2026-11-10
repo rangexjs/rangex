@@ -14,8 +14,8 @@ import type {
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface VideoConfigPortProps {
@@ -32,7 +32,7 @@ export interface VideoConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		DOMAttrsConfigPort<VideoAttrsShape>,
-		SwapToEmptyMediaConfigPort {}
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface VideoPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -44,7 +44,7 @@ export interface VideoPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		DOMAttrsPublicPort<VideoAttrsShape>,
-		SwapToEmptyMediaPublicPort {}
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface VideoAdapter {
 	configPort: VideoConfigPort;

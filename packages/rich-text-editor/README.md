@@ -41,7 +41,7 @@ document.querySelector("#editor")?.append(richTextEditor.editorHost);
 Some extensions need settings from your app, e.g. where to upload files or where to look up users:
 
 ```ts
-EmptyMedia({ uploadFile: ({ file, onProgress, signal }) => uploadToYourStorage(file, onProgress, signal) });
+SourcePlaceholder({ uploadFile: ({ file, onProgress, signal }) => uploadToYourStorage(file, onProgress, signal) });
 Mention({ getItems: ({ query, signal }) => searchYourUsers(query, signal) });
 ```
 

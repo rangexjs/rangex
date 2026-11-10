@@ -14,8 +14,8 @@ import type {
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface EmbedConfigPortProps {
@@ -32,7 +32,7 @@ export interface EmbedConfigPort
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
 		DOMAttrsConfigPort<EmbedAttrsShape>,
-		SwapToEmptyMediaConfigPort {}
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface EmbedPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -44,7 +44,7 @@ export interface EmbedPublicPort
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
 		DOMAttrsPublicPort<EmbedAttrsShape>,
-		SwapToEmptyMediaPublicPort {}
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface EmbedAdapter {
 	configPort: EmbedConfigPort;

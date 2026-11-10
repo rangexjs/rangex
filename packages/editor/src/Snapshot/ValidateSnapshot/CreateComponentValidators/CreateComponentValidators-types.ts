@@ -4,10 +4,10 @@ import type {
 	CreateBlockQuoteValidatorParams,
 	CreateCodeBlockValidatorParams,
 	CreateEmbedValidatorParams,
-	CreateEmptyMediaValidatorParams,
 	CreateImageValidatorParams,
 	CreateListValidatorParams,
 	CreateSeparatorValidatorParams,
+	CreateSourcePlaceholderValidatorParams,
 	CreateTableValidatorParams,
 	CreateTodoListValidatorParams,
 	CreateVideoValidatorParams,
@@ -28,7 +28,7 @@ export interface SnapshotComponents {
 	blockQuote?: CreateBlockQuoteValidatorParams;
 	codeBlock?: CreateCodeBlockValidatorParams;
 	embed?: CreateEmbedValidatorParams;
-	emptyMedia?: CreateEmptyMediaValidatorParams;
+	sourcePlaceholder?: CreateSourcePlaceholderValidatorParams;
 	image?: CreateImageValidatorParams;
 	link?: CreateLinkValidatorParams;
 	list?: CreateListValidatorParams;
