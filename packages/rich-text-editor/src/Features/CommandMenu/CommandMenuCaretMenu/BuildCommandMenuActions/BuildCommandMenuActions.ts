@@ -123,7 +123,8 @@ export const buildCommandMenuActions = ({
 
 	if (sourcePlaceholder) {
 		actions.set("media", {
-			label: "Media",
+			label: "Media / Source",
+			keywords: ["image", "video", "audio", "embed", "upload", "file", "link"],
 			icon: "FileArrowUp",
 			onSelect: () => sourcePlaceholder.insert(),
 		});

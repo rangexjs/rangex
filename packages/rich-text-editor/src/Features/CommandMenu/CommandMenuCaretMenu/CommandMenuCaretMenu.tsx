@@ -39,7 +39,10 @@ export const CommandMenuCaretMenu = () => {
 		filterCaretMenuItems({
 			items: availableEntries(),
 			query: $commandMenu.caretMenu.query(),
-			getKeys: (entry) => [entry.action.label],
+			getKeys: (entry) => [
+				entry.action.label,
+				...(entry.action.keywords ?? []),
+			],
 		}),
 	);
 
