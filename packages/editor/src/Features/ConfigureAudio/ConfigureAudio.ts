@@ -51,6 +51,10 @@ export const configureAudio = ({
 		quickActionsPort: configPort.quickActions,
 		editorAPI,
 		componentName: componentsName.audio,
+		anchorStyle: {
+			bottom: "calc(anchor(top) + 4px)",
+			right: "anchor(right)",
+		},
 	});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
