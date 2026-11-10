@@ -12,19 +12,6 @@ import type {
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
 
-let globalStyleSheet: CSSStyleSheet | null = null;
-
-// Adds the UI's global styles to the document once, shared by every editor instance.
-const adoptGlobalStyleSheet = () => {
-	if (globalStyleSheet) {
-		return;
-	}
-
-	globalStyleSheet = new CSSStyleSheet();
-	globalStyleSheet.replaceSync(globalStyles);
-	document.adoptedStyleSheets.push(globalStyleSheet);
-};
-
 export const createRichTextEditor = ({
 	licenseKey,
 	storedSnapshot,
@@ -32,8 +19,6 @@ export const createRichTextEditor = ({
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
-	adoptGlobalStyleSheet();
-
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
 	const styles = getEditorStyles();
@@ -47,7 +32,7 @@ export const createRichTextEditor = ({
 	});
 
 	const editorStyle = new CSSStyleSheet();
-	editorStyle.replaceSync(hostStyles);
+	editorStyle.replaceSync(globalStyles + hostStyles);
 
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {
