@@ -11,6 +11,5 @@ export interface HandleQuickActionsAppearanceParams {
 	quickActionsPort: QuickActionsConfigPort;
 	editorAPI: EditorAPI;
 	componentName: BlockComponentName;
-	// Where the overlay is placed relative to the block: inside its top right corner by default
 	anchorStyle?: Omit<AnchorPositionStyle, "position">;
 }
