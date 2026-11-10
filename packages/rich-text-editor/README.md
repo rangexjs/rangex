@@ -36,6 +36,9 @@ const richTextEditor = createRichTextEditor({
 });
 
 document.querySelector("#editor")?.append(richTextEditor.editorHost);
+
+// Styles for the document or shadow root the editor lives in
+document.adoptedStyleSheets.push(richTextEditor.editorStyle);
 ```
 
 Some extensions need settings from your app, e.g. where to upload files or where to look up users:

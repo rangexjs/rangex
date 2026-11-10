@@ -46,10 +46,8 @@ export const createRichTextEditor = ({
 		styles,
 	});
 
-	// TODO: `hostStyles` should be exposed via RichTextEditor and the user supposed to attach to the RootNode
-	const styleSheet = new CSSStyleSheet();
-	styleSheet.replaceSync(hostStyles);
-	document.adoptedStyleSheets.push(styleSheet);
+	const editorStyle = new CSSStyleSheet();
+	editorStyle.replaceSync(hostStyles);
 
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {
@@ -89,6 +87,10 @@ export const createRichTextEditor = ({
 	const richTextEditor: RichTextEditor = {
 		get editorHost() {
 			return editorHost;
+		},
+
+		get editorStyle() {
+			return editorStyle;
 		},
 
 		createStoredSnapshot() {
