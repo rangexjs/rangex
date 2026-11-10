@@ -1,5 +1,6 @@
 import AccordionItemInline from "./AccordionItem.css?inline";
 import AccordionItemEditorInline from "./AccordionItem.editor.css?inline";
+import AudioInline from "./Audio.css?inline";
 import BlockQuoteInline from "./BlockQuote.css?inline";
 import CodeBlockInline from "./CodeBlock.css?inline";
 import ComponentEditorInline from "./Component.editor.css?inline";
@@ -18,6 +19,7 @@ import VideoInline from "./Video.css?inline";
 
 export const AccordionItem = AccordionItemInline;
 export const AccordionItemEditor = AccordionItemEditorInline;
+export const Audio = AudioInline;
 export const BlockQuote = BlockQuoteInline;
 export const CodeBlock = CodeBlockInline;
 export const ComponentEditor = ComponentEditorInline;

@@ -7,6 +7,7 @@ import {
 import {
 	AccordionItem,
 	AccordionItemEditor,
+	Audio,
 	BlockQuote,
 	CodeBlock,
 	ComponentEditor,
@@ -39,6 +40,7 @@ export const getEditorStyles = () => {
 
 	const componentsCommon =
 		AccordionItem +
+		Audio +
 		BlockQuote +
 		CodeBlock +
 		Embed +

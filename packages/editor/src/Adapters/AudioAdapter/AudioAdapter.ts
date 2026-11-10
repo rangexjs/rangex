@@ -28,7 +28,7 @@ export const createAudioAdapter = (
 
 	const audioAttrValidators = adapterBus.getAttrValidators("audio");
 
-	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
+	const blockResize = createBlockResize({ floatingContainer, xPos: 0 });
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();

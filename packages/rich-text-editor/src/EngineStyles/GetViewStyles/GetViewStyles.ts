@@ -1,6 +1,7 @@
 import { Colors, EngineGlobalStyles } from "../Base";
 import {
 	AccordionItem,
+	Audio,
 	BlockQuote,
 	CodeBlock,
 	Embed,
@@ -28,6 +29,7 @@ export const getViewStyles = () => {
 
 	const componentsCommon =
 		AccordionItem +
+		Audio +
 		BlockQuote +
 		CodeBlock +
 		Embed +
