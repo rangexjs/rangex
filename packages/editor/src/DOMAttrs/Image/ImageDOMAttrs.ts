@@ -68,26 +68,25 @@ export const imageAttrsShape = {
 } as const satisfies ComponentAttrsShape;
 
 /*
- * A src is valid if it isn't empty, and it's at most 4096 characters long (5 MiB for a "data:image/*" one). Whether it's
- * a safe URL is the Sanitizer's job. An invalid one is rejected: an image has no src to fall back to.
+ * A src is valid if it isn't empty, it isn't a "data:image/*" URL (it would store the whole image in the snapshot), and
+ * it's at most 4096 characters long. Whether it's a safe URL is the Sanitizer's job. An invalid one is rejected: an
+ * image has no src to fall back to.
  */
 const validateSrc: ValidateAttrFn<string> = ({ value }) => {
 	const maxSrcLength = 4096;
-	// A "data:image/*" src holds the whole image
-	const maxDataImageSrcLength = 5 * 1024 * 1024;
 
 	if (value.trim() === "") {
 		return { kind: "reject", reason: "must not be empty" };
 	}
 
-	const maxLength = isDataImageURL(value)
-		? maxDataImageSrcLength
-		: maxSrcLength;
+	if (isDataImageURL(value)) {
+		return { kind: "reject", reason: "must not be a data URL" };
+	}
 
-	if (value.length > maxLength) {
+	if (value.length > maxSrcLength) {
 		return {
 			kind: "reject",
-			reason: `must be at most ${maxLength} characters long`,
+			reason: `must be at most ${maxSrcLength} characters long`,
 		};
 	}
 
