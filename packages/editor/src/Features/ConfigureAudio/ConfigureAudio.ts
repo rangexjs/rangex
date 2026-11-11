@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { audioAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	getMediaParts,
 	handleBlockAlignState,
@@ -24,11 +25,7 @@ import { handleAudioInsertion } from "./HandleAudioInsertion";
  * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
-export const configureAudio = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-}: ConfigureAudioParams) => {
+export const configureAudio = ({ adapterBus, configPort, editorAPI }: ConfigureAudioParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,

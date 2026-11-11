@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateFormattingAdapterParams,
@@ -31,10 +32,7 @@ import type {
 	OnFormattingChangeCallbackFn,
 	UpdateStateParams,
 } from "./FormattingAdapter-types";
-import {
-	isRemoveLineDisabled,
-	isRemoveTextDisabled,
-} from "./IsRemoveFormatDisabled";
+import { isRemoveLineDisabled, isRemoveTextDisabled } from "./IsRemoveFormatDisabled";
 
 export const createFormattingAdapter = (
 	...params: CreateFormattingAdapterParams
@@ -55,11 +53,10 @@ export const createFormattingAdapter = (
 	});
 
 	// States
-	const backgroundColorState =
-		createStateEmitter<FormattingBackgroundColorState>({
-			disabled: true,
-			values: new Set(),
-		});
+	const backgroundColorState = createStateEmitter<FormattingBackgroundColorState>({
+		disabled: true,
+		values: new Set(),
+	});
 	const boldState = createStateEmitter<FormattingBoldState>(
 		createToggleButton({ disabled: true, pressed: "false" }),
 	);

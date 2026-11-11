@@ -1,4 +1,5 @@
 import type { Component } from "@rangex/core";
+
 import {
 	type ComponentAttrs,
 	type ComponentAttrsShape,
@@ -8,6 +9,7 @@ import {
 	validateComponentAttrsPatch,
 	writeComponentAttrs,
 } from "#dom-attrs";
+
 import type {
 	CreateDOMAttrsObserverParams,
 	CreateDOMAttrsObserverResult,
@@ -32,18 +34,12 @@ const getAttrNames = (componentAttrsShape: ComponentAttrsShape) => {
  * whenever its structure or one of the shape's attributes changes (e.g. by undo/redo). An element outside the
  * component (e.g. its BlockComponentLine) is observed too, for its attributes only.
  */
-const createDOMAttrsObserver = <
-	TComponent extends Component,
-	TShape extends ComponentAttrsShape,
->({
+const createDOMAttrsObserver = <TComponent extends Component, TShape extends ComponentAttrsShape>({
 	domAttrsPort,
 	componentAttrsShape,
 	readDOMAttrs,
 	resolveElements,
-}: CreateDOMAttrsObserverParams<
-	TComponent,
-	TShape
->): CreateDOMAttrsObserverResult<TComponent> => {
+}: CreateDOMAttrsObserverParams<TComponent, TShape>): CreateDOMAttrsObserverResult<TComponent> => {
 	const internals: DOMAttrsObserverInternals<TComponent> = {
 		observedComponent: null,
 	};
@@ -113,10 +109,7 @@ const createDOMAttrsObserver = <
  * attributes; changeDOMAttrs checks all of them once merged, writes the valid ones, then registers a snapshot boundary.
  * Returns a cleanup function.
  */
-export const handleDOMAttrs = <
-	TComponent extends Component,
-	TShape extends ComponentAttrsShape,
->({
+export const handleDOMAttrs = <TComponent extends Component, TShape extends ComponentAttrsShape>({
 	currentComponentPort,
 	domAttrsPort,
 	editorAPI,
@@ -147,10 +140,11 @@ export const handleDOMAttrs = <
 
 	domAttrsObserver.observe(currentComponentPort.currentComponent);
 
-	const unsubscribeCurrentComponentUpdate =
-		currentComponentPort.onCurrentComponentUpdate((currentComponent) => {
+	const unsubscribeCurrentComponentUpdate = currentComponentPort.onCurrentComponentUpdate(
+		(currentComponent) => {
 			domAttrsObserver.observe(currentComponent);
-		});
+		},
+	);
 
 	domAttrsPort.registerValidateDOMAttrs((patch) => {
 		const normalizedPatch = normalizeDOMAttrs(patch);

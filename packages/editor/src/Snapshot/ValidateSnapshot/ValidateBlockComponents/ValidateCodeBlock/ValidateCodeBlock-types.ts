@@ -5,11 +5,10 @@ import type {
 	ListDraft,
 	ListItemDraft,
 } from "@rangex/core";
-import type {
-	CodeBlockAttrValidators,
-	CreateCodeBlockAttrValidatorsParams,
-} from "#dom-attrs";
+
+import type { CodeBlockAttrValidators, CreateCodeBlockAttrValidatorsParams } from "#dom-attrs";
 import type { CodeBlockStorage } from "#storage";
+
 import type { ValidateStorageFn } from "../../_Utilities";
 import type {
 	ComponentValidator,

@@ -1,4 +1,5 @@
 import type { DOMAttrs } from "@rangex/core";
+
 import type {
 	ResolveElementAttrsParams,
 	ResolveElementAttrsResult,

@@ -17,17 +17,11 @@ import type {
  */
 export const optional = Symbol("optional");
 
-const isOptionalKeyPattern = (
-	pattern: unknown,
-): pattern is OptionalKeyPattern<unknown> => {
+const isOptionalKeyPattern = (pattern: unknown): pattern is OptionalKeyPattern<unknown> => {
 	return typeof pattern === "object" && pattern !== null && optional in pattern;
 };
 
-const matchJSONArray = ({
-	value,
-	pattern,
-	path,
-}: MatchJSONArrayParams): MatchJSONAtResult => {
+const matchJSONArray = ({ value, pattern, path }: MatchJSONArrayParams): MatchJSONAtResult => {
 	if (!Array.isArray(value) || value.length !== pattern.length) {
 		return { path, kind: "invalid-value" };
 	}
@@ -47,11 +41,7 @@ const matchJSONArray = ({
 	return null;
 };
 
-const matchJSONObject = ({
-	value,
-	pattern,
-	path,
-}: MatchJSONObjectParams): MatchJSONAtResult => {
+const matchJSONObject = ({ value, pattern, path }: MatchJSONObjectParams): MatchJSONAtResult => {
 	if (!isJSONObject(value)) {
 		return { path, kind: "invalid-value" };
 	}
@@ -93,11 +83,7 @@ const matchJSONObject = ({
 	return null;
 };
 
-const matchJSONAt = ({
-	value,
-	pattern,
-	path,
-}: MatchJSONAtParams): MatchJSONAtResult => {
+const matchJSONAt = ({ value, pattern, path }: MatchJSONAtParams): MatchJSONAtResult => {
 	if (typeof pattern === "function") {
 		const predicate = pattern as JSONPredicate<unknown>;
 
@@ -123,9 +109,6 @@ const matchJSONAt = ({
  *   and every key of the pattern must be in the value unless it's marked as optional (see optional),
  * - any other value must be JSON-equal to the value (see isJSONEqual).
  */
-export const matchJSON = <Value>({
-	value,
-	pattern,
-}: MatchJSONParams<Value>): MatchJSONResult => {
+export const matchJSON = <Value>({ value, pattern }: MatchJSONParams<Value>): MatchJSONResult => {
 	return matchJSONAt({ value, pattern, path: [] });
 };

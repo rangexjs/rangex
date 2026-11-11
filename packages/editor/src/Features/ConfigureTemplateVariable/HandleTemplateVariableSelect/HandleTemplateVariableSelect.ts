@@ -1,9 +1,8 @@
 import { createContentLine } from "@rangex/core";
+
 import { getRootStorage } from "#storage";
-import {
-	createTemplateVariable,
-	validateTemplateVariablePlacement,
-} from "../../_Utilities";
+
+import { createTemplateVariable, validateTemplateVariablePlacement } from "../../_Utilities";
 import { getTemplateVariableQuery } from "../_Utilities";
 import type {
 	HandleTemplateVariableSelectParams,
@@ -89,9 +88,7 @@ export const handleTemplateVariableSelect = ({
 		editorAPI.insertNode({
 			fromNode: fromText,
 			fromOffset,
-			lines: [
-				createContentLine({ localName: "p", childNodes: [templateVariable] }),
-			],
+			lines: [createContentLine({ localName: "p", childNodes: [templateVariable] })],
 			breakBeforeInsert: false,
 		});
 

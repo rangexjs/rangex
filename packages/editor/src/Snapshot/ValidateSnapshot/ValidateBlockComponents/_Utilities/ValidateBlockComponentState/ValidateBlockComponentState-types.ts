@@ -1,5 +1,7 @@
 import type { BlockComponentDraft, BlockComponentSnapshot } from "@rangex/core";
+
 import type { JSONPattern } from "#utilities";
+
 import type { ValidateComponentResult } from "../../../ValidateSnapshot-types";
 
 // Without domAttrs: they're resolved by the component's shape (see resolveDraftDOMAttrs)

@@ -1,4 +1,5 @@
 import { editorSelectionChangeEventType } from "@rangex/core";
+
 import type { HandleSelectionContextChangeParams } from "./HandleSelectionContextChange-types";
 
 /*

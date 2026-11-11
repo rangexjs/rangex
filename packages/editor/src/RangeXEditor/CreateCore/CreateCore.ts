@@ -3,9 +3,11 @@ import {
 	createEditorAPI,
 	migrateStoredSnapshot,
 } from "@rangex/core";
+
 import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
 import { validateSnapshot } from "#snapshot";
+
 import type {
 	CreateCoreParams,
 	ResolveStoredSnapshotParams,
@@ -50,11 +52,7 @@ const resolveStoredSnapshot = ({
 	return validationResult.storedSnapshot;
 };
 
-export const createCore = ({
-	licenseKey,
-	storedSnapshot,
-	snapshotSchema,
-}: CreateCoreParams) => {
+export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: CreateCoreParams) => {
 	ensureSanitizerConfigured();
 
 	const resolvedStoredSnapshot = resolveStoredSnapshot({
@@ -62,9 +60,7 @@ export const createCore = ({
 		snapshotSchema,
 	});
 
-	const createFallbackRootEditable: CreateFallbackRootEditable = ({
-		storedSnapshotFailed,
-	}) => {
+	const createFallbackRootEditable: CreateFallbackRootEditable = ({ storedSnapshotFailed }) => {
 		if (storedSnapshotFailed) {
 			console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
 		}

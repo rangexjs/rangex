@@ -16,16 +16,16 @@
 
 	&:where([data-rx-interactive-range-included-selection="true"]) {
 		&:where(
-				[data-rx-name="accordion-item"],
-				[data-rx-name="audio"],
-				[data-rx-name="embed"],
-				[data-rx-name="source-placeholder"],
-				[data-rx-name="image"],
-				[data-rx-name="separator"],
-				[data-rx-name="table"],
-				[data-rx-name="video"],
-				[data-rx-name="template-variable"]
-			) {
+			[data-rx-name="accordion-item"],
+			[data-rx-name="audio"],
+			[data-rx-name="embed"],
+			[data-rx-name="source-placeholder"],
+			[data-rx-name="image"],
+			[data-rx-name="separator"],
+			[data-rx-name="table"],
+			[data-rx-name="video"],
+			[data-rx-name="template-variable"]
+		) {
 			position: relative;
 			outline-style: solid;
 			outline-color: var(--shadow-color);
@@ -48,15 +48,15 @@
 
 		/* BlockComponents */
 		&:where(
-				[data-rx-name="accordion-item"],
-				[data-rx-name="audio"],
-				[data-rx-name="embed"],
-				[data-rx-name="source-placeholder"],
-				[data-rx-name="image"],
-				[data-rx-name="separator"],
-				[data-rx-name="table"],
-				[data-rx-name="video"]
-			) {
+			[data-rx-name="accordion-item"],
+			[data-rx-name="audio"],
+			[data-rx-name="embed"],
+			[data-rx-name="source-placeholder"],
+			[data-rx-name="image"],
+			[data-rx-name="separator"],
+			[data-rx-name="table"],
+			[data-rx-name="video"]
+		) {
 			--outline-width: 4px;
 			border-radius: 6px;
 			animation-name: range-included-outline;

@@ -1,7 +1,5 @@
-import {
-	configureSanitizer as configureEngineSanitizer,
-	type SanitizerPolicy,
-} from "@rangex/core";
+import { configureSanitizer as configureEngineSanitizer, type SanitizerPolicy } from "@rangex/core";
+
 import { basePolicy } from "../BasePolicy";
 
 let isSanitizerConfigured = false;

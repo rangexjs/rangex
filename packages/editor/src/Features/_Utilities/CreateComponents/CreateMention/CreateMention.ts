@@ -4,12 +4,11 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
+
 import { componentsName, mentionDefinition } from "#constants";
 import { createMentionStorage } from "#storage";
-import type {
-	CreateMentionParams,
-	CreateMentionResult,
-} from "./CreateMention-types";
+
+import type { CreateMentionParams, CreateMentionResult } from "./CreateMention-types";
 
 /*
  * Builds an inline mention component displaying its displayText as formattable text and storing the referenced

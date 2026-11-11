@@ -1,8 +1,6 @@
 import { getRootStorage } from "#storage";
-import {
-	updateAllTemplateVariableNodes,
-	validateTemplateVariableField,
-} from "../_Utilities";
+
+import { updateAllTemplateVariableNodes, validateTemplateVariableField } from "../_Utilities";
 import type { HandleTemplateVariableInitializationParams } from "./HandleTemplateVariableInitialization-types";
 
 /*
@@ -20,13 +18,9 @@ export const handleTemplateVariableInitialization = ({
 	const rootStorage = getRootStorage({ rootEditable });
 	const { templateVariable: storage } = rootStorage;
 
-	for (const [name, { placeholder, initialValue }] of Object.entries(
-		configPort.fieldsConfig,
-	)) {
+	for (const [name, { placeholder, initialValue }] of Object.entries(configPort.fieldsConfig)) {
 		const isFieldSet =
-			Object.hasOwn(storage, name) &&
-			storage[name] !== "" &&
-			storage[name] !== placeholder;
+			Object.hasOwn(storage, name) && storage[name] !== "" && storage[name] !== placeholder;
 
 		if (isFieldSet) {
 			continue;

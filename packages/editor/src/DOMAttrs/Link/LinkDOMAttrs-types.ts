@@ -19,7 +19,6 @@ export type LinkAttrValidators = ComponentAttrValidators<LinkAttrsShape>;
 
 export type LinkAttrsMismatch = ComponentAttrsMismatch<LinkAttrsShape>;
 
-export type CreateLinkAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<LinkAttrsShape>;
+export type CreateLinkAttrValidatorsParams = ComponentAttrValidatorOverrides<LinkAttrsShape>;
 
 export type CreateLinkAttrValidatorsResult = LinkAttrValidators;

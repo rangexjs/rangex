@@ -1,8 +1,4 @@
-import type {
-	ImageAttrs,
-	ImageAttrsMismatch,
-	ImageAttrValidators,
-} from "#dom-attrs";
+import type { ImageAttrs, ImageAttrsMismatch, ImageAttrValidators } from "#dom-attrs";
 
 export interface ValidateImagePlacementParams {
 	attrValidators: ImageAttrValidators;

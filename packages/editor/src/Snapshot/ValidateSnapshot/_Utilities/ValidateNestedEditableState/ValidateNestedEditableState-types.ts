@@ -1,15 +1,10 @@
-import type {
-	ComponentDraft,
-	NestedEditableDraft,
-	NestedEditableSnapshot,
-} from "@rangex/core";
+import type { ComponentDraft, NestedEditableDraft, NestedEditableSnapshot } from "@rangex/core";
+
 import type { JSONPattern } from "#utilities";
+
 import type { ValidateComponentResult } from "../../ValidateSnapshot-types";
 
-export type NestedEditableState = Omit<
-	NestedEditableSnapshot,
-	"uniqueId" | "childNodes"
->;
+export type NestedEditableState = Omit<NestedEditableSnapshot, "uniqueId" | "childNodes">;
 
 export interface ValidateNestedEditableStateParams {
 	componentDraft: ComponentDraft;

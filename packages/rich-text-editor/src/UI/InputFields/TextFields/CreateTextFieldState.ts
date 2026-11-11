@@ -1,9 +1,6 @@
 import { createSignal, merge, onSettled } from "solid-js";
-import type {
-	HTMLTextFieldElement,
-	TextFieldControls,
-	TextFieldStateHandle,
-} from "./_Utilities";
+
+import type { HTMLTextFieldElement, TextFieldControls, TextFieldStateHandle } from "./_Utilities";
 import {
 	type CreateTextFieldControllerParams,
 	createTextFieldController,
@@ -11,8 +8,10 @@ import {
 
 export type CreateTextFieldStateParams = CreateTextFieldControllerParams;
 
-export type CreateTextFieldStateResult<TextField extends HTMLTextFieldElement> =
-	[TextFieldStateHandle, TextFieldControls<TextField>];
+export type CreateTextFieldStateResult<TextField extends HTMLTextFieldElement> = [
+	TextFieldStateHandle,
+	TextFieldControls<TextField>,
+];
 
 /**
  * Wraps {@link createTextFieldController}, trading direct `element` access
@@ -58,11 +57,7 @@ export const createTextFieldState = <TextField extends HTMLTextFieldElement>(
 		const abortController = new AbortController();
 		const { signal } = abortController;
 
-		handle.element.addEventListener(
-			"input",
-			() => setValue(handle.element.value),
-			{ signal },
-		);
+		handle.element.addEventListener("input", () => setValue(handle.element.value), { signal });
 
 		return () => {
 			abortController.abort();

@@ -1,4 +1,5 @@
 import type { EditorAPI, TableCell } from "@rangex/core";
+
 import type { AnchoredOverlayController } from "#engine-links";
 
 export interface PositionToTableCellParams {

@@ -1,5 +1,7 @@
 import { editorSelectionChangeEventType } from "@rangex/core";
+
 import { getRootStorage } from "#storage";
+
 import { canInsertTemplateVariable } from "../_Utilities";
 import type { HandleTemplateVariablePlacementStateParams } from "./HandleTemplateVariablePlacementState-types";
 

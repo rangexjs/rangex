@@ -8,7 +8,9 @@ import {
 	isEditorNode,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
+
 import type {
 	HandleAccordionItemSummaryToggleParams,
 	ToggleDetailsParams,
@@ -39,9 +41,7 @@ const isAccordionItemSummary = (element: EditorElement) => {
  * Returns the AccordionItem `summary` whose nested editable holds the text, or null if it's in none.
  */
 const getTextSummary = (text: EditorText) => {
-	const nestedEditable = text.$$parentElement?.$$closest(
-		nestedEditableRoleSelector,
-	);
+	const nestedEditable = text.$$parentElement?.$$closest(nestedEditableRoleSelector);
 
 	const summary = nestedEditable?.$$parentElement;
 

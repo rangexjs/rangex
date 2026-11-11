@@ -4,10 +4,7 @@ import type { HandleStepChangeParams } from "./HandleStepChange-types";
 /*
  * Steps forward or backward through matches in response to navigation actions.
  */
-export const handleStepChange = ({
-	configPort,
-	editorAPI,
-}: HandleStepChangeParams) => {
+export const handleStepChange = ({ configPort, editorAPI }: HandleStepChangeParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
 	const stepBackCleanup = configPort.onStepBack(() => {

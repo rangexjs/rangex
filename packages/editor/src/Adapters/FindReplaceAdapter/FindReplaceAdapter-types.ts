@@ -22,9 +22,7 @@ export interface FindReplaceState {
 }
 
 export type OnCurrentIndexUpdateCallbackFn = (currentIndex: number) => void;
-export type OnResultsUpdateCallbackFn = (
-	results: FindReplaceSearchResult[],
-) => void;
+export type OnResultsUpdateCallbackFn = (results: FindReplaceSearchResult[]) => void;
 
 export interface NavigateToIndexParams {
 	index: number;
@@ -39,9 +37,7 @@ export type OnCloseCallbackFn = () => void;
 export type OnSearchCallbackFn = (criteria: FindReplaceCriteria) => void;
 export type OnStepBackCallbackFn = () => void;
 export type OnStepForwardCallbackFn = () => void;
-export type OnNavigateToIndexCallbackFn = (
-	params: NavigateToIndexParams,
-) => void;
+export type OnNavigateToIndexCallbackFn = (params: NavigateToIndexParams) => void;
 export type OnReplaceCallbackFn = (params: ReplaceParams) => void;
 export type OnReplaceAllCallbackFn = (params: ReplaceParams) => void;
 
@@ -88,7 +84,6 @@ export interface FindReplaceAdapter {
 
 export interface FindReplaceSettings {}
 
-export interface CreateFindReplaceAdapterParams
-	extends CreateAdapterParams<FindReplaceSettings> {}
+export interface CreateFindReplaceAdapterParams extends CreateAdapterParams<FindReplaceSettings> {}
 
 export interface CreateFindReplaceAdapterResult extends FindReplaceAdapter {}

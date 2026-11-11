@@ -8,9 +8,7 @@ import type {
 /*
  * Reads every element's attributes of a component (see readElementAttrs).
  */
-export const readComponentAttrs = <
-	TComponentAttrsShape extends ComponentAttrsShape,
->({
+export const readComponentAttrs = <TComponentAttrsShape extends ComponentAttrsShape>({
 	componentElements,
 	componentAttrsShape,
 }: ReadComponentAttrsParams<TComponentAttrsShape>): ReadComponentAttrsResult<TComponentAttrsShape> => {

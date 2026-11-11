@@ -1,4 +1,5 @@
 import { validateComponentAttrs, videoAttrsShape } from "#dom-attrs";
+
 import type {
 	ValidateVideoPlacementParams,
 	ValidateVideoPlacementResult,

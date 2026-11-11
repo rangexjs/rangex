@@ -13,55 +13,49 @@ export const handleCaptionState = ({
 	setCaptionEnabled,
 	setCaptionPosition,
 }: HandleCaptionStateParams) => {
-	const unsubscribeCurrentComponentUpdate = port.onCurrentComponentUpdate(
-		(currentComponent) => {
-			if (!currentComponent) {
-				return;
-			}
+	const unsubscribeCurrentComponentUpdate = port.onCurrentComponentUpdate((currentComponent) => {
+		if (!currentComponent) {
+			return;
+		}
 
-			const figure = getFigure({ blockComponent: currentComponent });
+		const figure = getFigure({ blockComponent: currentComponent });
 
-			port.updateCaption(getCaption({ figure }));
-		},
-	);
+		port.updateCaption(getCaption({ figure }));
+	});
 
-	const unsubscribeCaptionEnabledChange = port.onChangeCaptionEnabled(
-		(enabled) => {
-			const { currentComponent } = port;
+	const unsubscribeCaptionEnabledChange = port.onChangeCaptionEnabled((enabled) => {
+		const { currentComponent } = port;
 
-			if (!currentComponent) {
-				return;
-			}
+		if (!currentComponent) {
+			return;
+		}
 
-			const figure = getFigure({ blockComponent: currentComponent });
+		const figure = getFigure({ blockComponent: currentComponent });
 
-			setCaptionEnabled({ figure, enabled, position: port.captionPosition });
-			port.updateCaption(getCaption({ figure }));
+		setCaptionEnabled({ figure, enabled, position: port.captionPosition });
+		port.updateCaption(getCaption({ figure }));
 
-			const snapshotTimeline = editorAPI.getSnapshotTimeline();
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		snapshotTimeline.registerSnapshotBoundary();
+	});
 
-	const unsubscribeCaptionPositionChange = port.onChangeCaptionPosition(
-		(position) => {
-			const { currentComponent } = port;
+	const unsubscribeCaptionPositionChange = port.onChangeCaptionPosition((position) => {
+		const { currentComponent } = port;
 
-			if (!currentComponent) {
-				return;
-			}
+		if (!currentComponent) {
+			return;
+		}
 
-			const figure = getFigure({ blockComponent: currentComponent });
+		const figure = getFigure({ blockComponent: currentComponent });
 
-			setCaptionPosition({ figure, position });
-			port.updateCaption(getCaption({ figure }));
+		setCaptionPosition({ figure, position });
+		port.updateCaption(getCaption({ figure }));
 
-			const snapshotTimeline = editorAPI.getSnapshotTimeline();
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-			snapshotTimeline.registerSnapshotBoundary();
-		},
-	);
+		snapshotTimeline.registerSnapshotBoundary();
+	});
 
 	return () => {
 		unsubscribeCurrentComponentUpdate();

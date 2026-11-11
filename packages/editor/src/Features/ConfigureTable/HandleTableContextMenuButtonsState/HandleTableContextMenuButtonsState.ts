@@ -4,6 +4,7 @@ import {
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
 } from "@rangex/core";
+
 import { getCommonTableCellFromSelection } from "../_Utilities";
 import type { HandleTableContextMenuButtonsStateParams } from "./HandleTableContextMenuButtonsState-types";
 import { updateTableContextMenuButtonsState } from "./UpdateTableContextMenuButtonsState";

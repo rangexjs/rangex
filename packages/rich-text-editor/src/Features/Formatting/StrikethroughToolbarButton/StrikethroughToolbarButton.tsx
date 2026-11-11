@@ -1,7 +1,9 @@
 import { ReadOnly, Strikethrough } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const StrikethroughToolbarButton = () => {
@@ -15,9 +17,7 @@ export const StrikethroughToolbarButton = () => {
 	const $strikethrough = Strikethrough(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $strikethrough.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $strikethrough.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.toggleStrikethrough();

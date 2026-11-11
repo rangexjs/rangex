@@ -5,6 +5,7 @@ import {
 	type GlyphFormatterDraft,
 	glyphFormatterRole,
 } from "@rangex/core";
+
 import { validateContentLine } from "./ValidateContentLine";
 import type {
 	ValidateFormattingElementsParams,
@@ -12,15 +13,11 @@ import type {
 } from "./ValidateFormattingElements-types";
 import { validateGlyphFormatter } from "./ValidateGlyphFormatter";
 
-const isContentLineDraft = (
-	nodeDraft: EditorNodeDraft,
-): nodeDraft is ContentLineDraft => {
+const isContentLineDraft = (nodeDraft: EditorNodeDraft): nodeDraft is ContentLineDraft => {
 	return nodeDraft.editorRole === contentLineRole;
 };
 
-const isGlyphFormatterDraft = (
-	nodeDraft: EditorNodeDraft,
-): nodeDraft is GlyphFormatterDraft => {
+const isGlyphFormatterDraft = (nodeDraft: EditorNodeDraft): nodeDraft is GlyphFormatterDraft => {
 	return nodeDraft.editorRole === glyphFormatterRole;
 };
 
@@ -32,8 +29,7 @@ export const validateFormattingElements = ({
 	rootEditableDraft,
 }: ValidateFormattingElementsParams): ValidateFormattingElementsResult => {
 	const nodeDrafts = rootEditableDraft.queryAll(
-		(nodeDraft) =>
-			isContentLineDraft(nodeDraft) || isGlyphFormatterDraft(nodeDraft),
+		(nodeDraft) => isContentLineDraft(nodeDraft) || isGlyphFormatterDraft(nodeDraft),
 	);
 
 	for (const nodeDraft of nodeDrafts) {

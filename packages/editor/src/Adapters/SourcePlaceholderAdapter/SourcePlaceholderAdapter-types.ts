@@ -1,8 +1,4 @@
-import type {
-	CreateAdapterParams,
-	MediaResolveDetail,
-	MediaType,
-} from "../_Utilities";
+import type { CreateAdapterParams, MediaResolveDetail, MediaType } from "../_Utilities";
 
 export interface ResolveOption {
 	element: HTMLDivElement;
@@ -40,12 +36,9 @@ export interface SourcePlaceholderConfigPortProps {
 	emitMediaResolve(detail: MediaResolveDetail): void;
 }
 
-export interface SourcePlaceholderConfigPort
-	extends SourcePlaceholderConfigPortProps {}
+export interface SourcePlaceholderConfigPort extends SourcePlaceholderConfigPortProps {}
 
-export type RegisterSlottedElementCallbackFn = (
-	container: HTMLDivElement,
-) => () => void;
+export type RegisterSlottedElementCallbackFn = (container: HTMLDivElement) => () => void;
 
 export interface SourcePlaceholderPublicPortProps {
 	readonly canInsert: boolean;
@@ -59,8 +52,7 @@ export interface SourcePlaceholderPublicPortProps {
 	resolve(params: ResolveOption): void;
 }
 
-export interface SourcePlaceholderPublicPort
-	extends SourcePlaceholderPublicPortProps {}
+export interface SourcePlaceholderPublicPort extends SourcePlaceholderPublicPortProps {}
 
 export interface SourcePlaceholderInternals {
 	registerSlottedElement: RegisterSlottedElementCallbackFn | null;
@@ -73,8 +65,6 @@ export interface SourcePlaceholderAdapter {
 
 export interface SourcePlaceholderSettings {}
 
-export interface CreateSourcePlaceholderAdapterParams
-	extends CreateAdapterParams<SourcePlaceholderSettings> {}
+export interface CreateSourcePlaceholderAdapterParams extends CreateAdapterParams<SourcePlaceholderSettings> {}
 
-export interface CreateSourcePlaceholderAdapterResult
-	extends SourcePlaceholderAdapter {}
+export interface CreateSourcePlaceholderAdapterResult extends SourcePlaceholderAdapter {}

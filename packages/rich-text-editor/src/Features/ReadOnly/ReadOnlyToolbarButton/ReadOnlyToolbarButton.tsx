@@ -1,6 +1,8 @@
 import { ReadOnly } from "@rangex/solid";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const ReadOnlyToolbarButton = () => {

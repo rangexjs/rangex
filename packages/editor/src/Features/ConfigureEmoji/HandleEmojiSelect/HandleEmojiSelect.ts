@@ -1,4 +1,5 @@
 import { createContentLine, createFormattableTexts } from "@rangex/core";
+
 import { getEmojiQuery } from "../_Utilities";
 import type {
 	HandleEmojiSelectParams,
@@ -43,10 +44,7 @@ const removeEmojiQueryText = ({
  * Subscribes to emoji selection and inserts the chosen emoji at the cursor, first stripping the
  * :query text that triggered it and re-reading the cursor position before inserting.
  */
-export const handleEmojiSelect = ({
-	configPort,
-	editorAPI,
-}: HandleEmojiSelectParams) => {
+export const handleEmojiSelect = ({ configPort, editorAPI }: HandleEmojiSelectParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();

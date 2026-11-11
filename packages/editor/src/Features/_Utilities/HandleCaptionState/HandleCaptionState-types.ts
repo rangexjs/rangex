@@ -1,4 +1,5 @@
 import type { BlockComponent, EditorAPI, HTMLLayout } from "@rangex/core";
+
 import type {
 	CaptionConfigPort,
 	CaptionPosition,
@@ -16,8 +17,5 @@ export interface HandleCaptionStateParams {
 		enabled: boolean;
 		position: CaptionPosition;
 	}) => void;
-	setCaptionPosition: (params: {
-		figure: HTMLLayout;
-		position: CaptionPosition;
-	}) => void;
+	setCaptionPosition: (params: { figure: HTMLLayout; position: CaptionPosition }) => void;
 }

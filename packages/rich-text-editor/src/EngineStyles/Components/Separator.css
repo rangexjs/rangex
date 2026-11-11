@@ -10,10 +10,7 @@
 		& hr {
 			border: none;
 			height: 1px;
-			background-color: light-dark(
-				var(--color-neutral-300),
-				var(--color-neutral-700)
-			);
+			background-color: light-dark(var(--color-neutral-300), var(--color-neutral-700));
 			margin: 0;
 		}
 	}

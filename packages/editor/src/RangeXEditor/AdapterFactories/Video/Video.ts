@@ -1,5 +1,6 @@
 import { createVideoAdapter, type VideoSettings } from "#adapters/Video";
 import { configureVideo } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Video: AdapterFactoryFn<VideoSettings> = (settings) => {

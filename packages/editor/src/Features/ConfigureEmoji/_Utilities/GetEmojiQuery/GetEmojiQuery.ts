@@ -1,7 +1,4 @@
-import type {
-	GetEmojiQueryParams,
-	GetEmojiQueryResult,
-} from "./GetEmojiQuery-types";
+import type { GetEmojiQueryParams, GetEmojiQueryResult } from "./GetEmojiQuery-types";
 
 /*
  * Scans backward from the cursor to find a :-triggered emoji query, stopping early on whitespace

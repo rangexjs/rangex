@@ -1,5 +1,7 @@
 import type { BlockComponent, ListLocalName } from "@rangex/core";
+
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createEmitter,
@@ -19,9 +21,7 @@ import type {
 	UpdateStateParams,
 } from "./ListAdapter-types";
 
-export const createListAdapter = (
-	...params: CreateListAdapterParams
-): CreateListAdapterResult => {
+export const createListAdapter = (...params: CreateListAdapterParams): CreateListAdapterResult => {
 	const [_settings, { adapterBus }] = params;
 
 	adapterBus.registerAdapter("list");
@@ -39,11 +39,7 @@ export const createListAdapter = (
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 
-	const updateState = ({
-		canInsert,
-		canWrap,
-		localName,
-	}: UpdateStateParams) => {
+	const updateState = ({ canInsert, canWrap, localName }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			canInsertState.set(canInsert);
 		}

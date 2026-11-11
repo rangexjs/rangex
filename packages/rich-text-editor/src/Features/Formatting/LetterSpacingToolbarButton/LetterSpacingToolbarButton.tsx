@@ -1,14 +1,12 @@
 import type { LetterSpacingValue } from "@rangex/editor/formatting";
 import { LetterSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { isDeepEqual } from "#utilities";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const defaultValues: Set<LetterSpacingValue> = new Set([
 	{ type: "px", value: -3 },
@@ -58,8 +56,7 @@ export const LetterSpacingToolbarButton = () => {
 
 			for (const commonValue of commonValues) {
 				const matchedValue = deduplicatedValues.find(
-					(val) =>
-						val.type === commonValue.type && val.value === commonValue.value,
+					(val) => val.type === commonValue.type && val.value === commonValue.value,
 				);
 
 				if (matchedValue) {
@@ -79,30 +76,25 @@ export const LetterSpacingToolbarButton = () => {
 
 		const contains = (value: LetterSpacingValue) => {
 			return !![...activeValues].find(
-				(activeValue) =>
-					activeValue.type === value.type && activeValue.value === value.value,
+				(activeValue) => activeValue.type === value.type && activeValue.value === value.value,
 			);
 		};
 
-		return sortedLetterSpacings().map<ToolbarDropdownList[number]>(
-			(spacing) => {
-				return {
-					checked: contains(spacing),
-					text: `${spacing.value}`,
-					button: {
-						onClick: () => {
-							formatting.setLetterSpacing(spacing);
-						},
-						class: "justify-center",
+		return sortedLetterSpacings().map<ToolbarDropdownList[number]>((spacing) => {
+			return {
+				checked: contains(spacing),
+				text: `${spacing.value}`,
+				button: {
+					onClick: () => {
+						formatting.setLetterSpacing(spacing);
 					},
-				};
-			},
-		);
+					class: "justify-center",
+				},
+			};
+		});
 	});
 
-	const disabled = createMemo(
-		() => $letterSpacing.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $letterSpacing.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>

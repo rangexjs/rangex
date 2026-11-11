@@ -1,7 +1,9 @@
 import { Link, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, onCleanup, onSettled } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const LinkToolbarButton = () => {
@@ -15,9 +17,7 @@ export const LinkToolbarButton = () => {
 	const $link = Link(link);
 	const $readOnly = ReadOnly(readOnly);
 
-	const [selectionMenuIsOpen, setSelectionMenuIsOpen] = createSignal(
-		link.selectionMenu.isOpen,
-	);
+	const [selectionMenuIsOpen, setSelectionMenuIsOpen] = createSignal(link.selectionMenu.isOpen);
 
 	const cleanupToggle = link.selectionMenu.onToggle(() => {
 		setSelectionMenuIsOpen(link.selectionMenu.isOpen);
@@ -37,9 +37,7 @@ export const LinkToolbarButton = () => {
 		};
 	});
 
-	const disabled = createMemo(
-		() => !$link.canInsert() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => !$link.canInsert() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		if (link.selectionMenu.isOpen) {

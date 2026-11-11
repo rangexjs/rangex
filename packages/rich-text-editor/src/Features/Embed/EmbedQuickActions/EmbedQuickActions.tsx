@@ -1,12 +1,8 @@
 import type { CaptionPosition } from "@rangex/editor";
 import type { EmbedAttrsPatch } from "@rangex/editor/embed";
 import { Embed, FloatingPortal, ReadOnly } from "@rangex/solid";
-import {
-	createEffect,
-	createSignal,
-	createUniqueId,
-	onCleanup,
-} from "solid-js";
+import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js";
+
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -17,6 +13,7 @@ import {
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
+
 import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
@@ -122,11 +119,7 @@ export const EmbedQuickActions = () => {
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [
-			blockAlignPopover,
-			mediaSourcePopover,
-			optionsPopover,
-		];
+		const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -136,6 +129,7 @@ export const EmbedQuickActions = () => {
 			if (nestedPopover.matches(":popover-open")) {
 				// Force a synchronous reflow before hiding — otherwise the popover can
 				// briefly animate from a stale, not-yet-committed style.
+				// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
 				nestedPopover.offsetHeight;
 				nestedPopover.hidePopover();
 			}
@@ -248,10 +242,7 @@ export const EmbedQuickActions = () => {
 									Enter to save
 								</span>
 							</div>
-							<TextFieldWrapper
-								appearance="neutral-filled-underline"
-								size="small"
-							>
+							<TextFieldWrapper appearance="neutral-filled-underline" size="small">
 								<InputTextField
 									type="text"
 									placeholder="Describe this embed for screen readers"

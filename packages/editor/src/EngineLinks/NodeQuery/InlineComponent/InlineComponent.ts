@@ -1,4 +1,5 @@
 import { inlineComponentRole, isEditorElement } from "@rangex/core";
+
 import type {
 	GetClosestInlineComponentParams,
 	GetClosestInlineComponentResult,

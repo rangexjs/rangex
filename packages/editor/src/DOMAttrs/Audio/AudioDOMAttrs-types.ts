@@ -21,13 +21,9 @@ export type AudioAttrValidators = ComponentAttrValidators<AudioAttrsShape>;
 
 export type AudioAttrsMismatch = ComponentAttrsMismatch<AudioAttrsShape>;
 
-type AudioAttrValidatorOverrides =
-	ComponentAttrValidatorOverrides<AudioAttrsShape>;
+type AudioAttrValidatorOverrides = ComponentAttrValidatorOverrides<AudioAttrsShape>;
 
-export type CreateAudioAttrValidatorsParams = Omit<
-	AudioAttrValidatorOverrides,
-	"audio"
-> & {
+export type CreateAudioAttrValidatorsParams = Omit<AudioAttrValidatorOverrides, "audio"> & {
 	audio?: Omit<NonNullable<AudioAttrValidatorOverrides["audio"]>, "controls">;
 };
 

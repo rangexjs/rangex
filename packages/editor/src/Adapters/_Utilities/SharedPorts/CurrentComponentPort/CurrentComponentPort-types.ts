@@ -10,17 +10,13 @@ export interface UpdateStateParams<TComponent extends Component> {
 	selectionComponent?: TComponent | null;
 }
 
-export type OnCurrentComponentUpdateCallbackFn = (
-	currentComponent: HTMLElement | null,
-) => void;
+export type OnCurrentComponentUpdateCallbackFn = (currentComponent: HTMLElement | null) => void;
 
-export type OnIsSelectionActiveUpdateCallbackFn = (
-	isSelectionActive: boolean,
-) => void;
+export type OnIsSelectionActiveUpdateCallbackFn = (isSelectionActive: boolean) => void;
 
-export type OnConfigCurrentComponentUpdateCallbackFn<
-	TComponent extends Component,
-> = (currentComponent: TComponent | null) => void;
+export type OnConfigCurrentComponentUpdateCallbackFn<TComponent extends Component> = (
+	currentComponent: TComponent | null,
+) => void;
 
 export interface CurrentComponentConfigPort<TComponent extends Component> {
 	readonly currentComponent: TComponent | null;
@@ -36,13 +32,9 @@ export interface CurrentComponentPublicPort {
 	readonly currentComponent: HTMLElement | null;
 	readonly isSelectionActive: boolean;
 
-	onCurrentComponentUpdate(
-		callback: OnCurrentComponentUpdateCallbackFn,
-	): () => void;
+	onCurrentComponentUpdate(callback: OnCurrentComponentUpdateCallbackFn): () => void;
 
-	onIsSelectionActiveUpdate(
-		callback: OnIsSelectionActiveUpdateCallbackFn,
-	): () => void;
+	onIsSelectionActiveUpdate(callback: OnIsSelectionActiveUpdateCallbackFn): () => void;
 }
 
 export interface CurrentComponentPort<TComponent extends Component> {
@@ -50,5 +42,6 @@ export interface CurrentComponentPort<TComponent extends Component> {
 	publicPort: CurrentComponentPublicPort;
 }
 
-export interface CreateCurrentComponentPortResult<TComponent extends Component>
-	extends CurrentComponentPort<TComponent> {}
+export interface CreateCurrentComponentPortResult<
+	TComponent extends Component,
+> extends CurrentComponentPort<TComponent> {}

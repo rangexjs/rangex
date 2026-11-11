@@ -1,8 +1,7 @@
 import type { Line } from "@rangex/core";
-import {
-	createAnchoredOverlayController,
-	observeEditorNodeAttachment,
-} from "#engine-links";
+
+import { createAnchoredOverlayController, observeEditorNodeAttachment } from "#engine-links";
+
 import type {
 	CollectShadowRootsParams,
 	CollectShadowRootsResult,
@@ -17,9 +16,7 @@ import type {
 /*
  * Collects ShadowRoots upwards from editorAPI's ShadowRoot.
  */
-const collectShadowRoots = ({
-	editorAPI,
-}: CollectShadowRootsParams): CollectShadowRootsResult => {
+const collectShadowRoots = ({ editorAPI }: CollectShadowRootsParams): CollectShadowRootsResult => {
 	const shadowRoots: ShadowRoot[] = [];
 
 	let current = editorAPI.shadowRoot;
@@ -86,17 +83,13 @@ const findLineAtPoint = ({
 
 	const { offsetNode } = caretPosition;
 
-	const line = rootEditable.$$childNodes.find((line) =>
-		line.contains(offsetNode),
-	);
+	const line = rootEditable.$$childNodes.find((line) => line.contains(offsetNode));
 
 	if (line) {
 		return line;
 	}
 
-	const slottedElement = [...editorHost.children].find((child) =>
-		child.contains(offsetNode),
-	);
+	const slottedElement = [...editorHost.children].find((child) => child.contains(offsetNode));
 
 	const assignedSlot = slottedElement?.assignedSlot;
 
@@ -104,9 +97,7 @@ const findLineAtPoint = ({
 		return null;
 	}
 
-	const assignedLine = rootEditable.$$childNodes.find((line) =>
-		line.contains(assignedSlot),
-	);
+	const assignedLine = rootEditable.$$childNodes.find((line) => line.contains(assignedSlot));
 
 	return assignedLine ?? null;
 };
@@ -156,8 +147,7 @@ export const handleLineHover = ({
 	};
 
 	const hideNestedPopovers = () => {
-		const openPopovers =
-			anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
+		const openPopovers = anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
 
 		for (const openPopover of openPopovers) {
 			openPopover.hidePopover();
@@ -179,8 +169,7 @@ export const handleLineHover = ({
 
 	const updateLineAtPoint = (clientX: number, clientY: number) => {
 		const line = findLineAtPoint({ editorAPI, clientX, clientY });
-		const hasOpenPopover =
-			anchoredOverlay.querySelector(":popover-open") !== null;
+		const hasOpenPopover = anchoredOverlay.querySelector(":popover-open") !== null;
 
 		if (line && currentLine !== line && !hasOpenPopover) {
 			relocateTo(line);
@@ -218,10 +207,7 @@ export const handleLineHover = ({
 					return;
 				}
 
-				updateLineAtPoint(
-					lastPointerPosition.clientX,
-					lastPointerPosition.clientY,
-				);
+				updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
 			},
 			{ capture: true, signal },
 		);

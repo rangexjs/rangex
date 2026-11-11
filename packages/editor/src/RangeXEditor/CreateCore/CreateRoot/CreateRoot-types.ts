@@ -1,4 +1,5 @@
 import type { CreateRootEditableParams, RootEditable } from "@rangex/core";
+
 import type { RootTypes } from "#constants";
 import type { RootAttrs } from "#dom-attrs";
 

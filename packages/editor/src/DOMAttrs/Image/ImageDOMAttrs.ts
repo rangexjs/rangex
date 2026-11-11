@@ -4,13 +4,10 @@ import {
 	htmlLayoutRole,
 	xhtmlNamespaceURI,
 } from "@rangex/core";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	blockWidthAttr,
-	objectFitAttr,
-} from "#constants";
+
+import { aspectRatioAttr, blockAlignAttr, blockWidthAttr, objectFitAttr } from "#constants";
 import { isDataImageURL } from "#utilities";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

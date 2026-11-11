@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+
 import type { HslFormat } from "#color";
 
 export interface ThumbPosition {

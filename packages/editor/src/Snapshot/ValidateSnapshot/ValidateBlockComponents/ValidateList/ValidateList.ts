@@ -1,17 +1,16 @@
 import { blockComponentRole, listRole, nestedEditableRole } from "@rangex/core";
+
 import { componentsName, listDefinition } from "#constants";
 import { listStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
+
 import {
 	describeJSONMismatch,
 	formatNodePath,
 	resolveDraftDOMAttrs,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateListValidatorResult,
 	ValidateListItemParams,
@@ -45,10 +44,7 @@ const validateListItem = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: listItemDraft,
@@ -135,9 +131,7 @@ const validateListNode = ({
  * item. It has no attributes, so every attribute of these nodes is dropped. The NestedEditables' content is left to the
  * engine's validation.
  */
-const validateList = ({
-	componentDraft,
-}: ValidateListParams): ValidateListResult => {
+const validateList = ({ componentDraft }: ValidateListParams): ValidateListResult => {
 	if (componentDraft.editorRole !== blockComponentRole) {
 		return {
 			sourceSnapshot: componentDraft,

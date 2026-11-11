@@ -1,5 +1,7 @@
 import type { StructuredStyleValue } from "@rangex/core";
+
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import {
 	createBackgroundColorStructuredStyle,
 	createColorStructuredStyle,
@@ -39,12 +41,7 @@ const fontFamilyPattern = /^[\p{L}\p{N} _-]+$/u;
 
 const maxFontFamilyLength = 128;
 
-const textAligns: unknown[] = [
-	"start",
-	"center",
-	"justify",
-	"end",
-] satisfies TextAlignValue[];
+const textAligns: unknown[] = ["start", "center", "justify", "end"] satisfies TextAlignValue[];
 
 /*
  * A color is valid if it's a hex color of 3, 4, 6 or 8 digits. Without the DOM, it's the one format that can be checked
@@ -71,18 +68,14 @@ const isTextAlign = (value: unknown) => {
  */
 const isNumberBetween = (min: number, max: number) => {
 	return (value: unknown) =>
-		typeof value === "number" &&
-		Number.isFinite(value) &&
-		value >= min &&
-		value <= max;
+		typeof value === "number" && Number.isFinite(value) && value >= min && value <= max;
 };
 
 /*
  * A predicate for an integer from min to max
  */
 const isIntegerBetween = (min: number, max: number) => {
-	return (value: unknown) =>
-		Number.isInteger(value) && isNumberBetween(min, max)(value);
+	return (value: unknown) => Number.isInteger(value) && isNumberBetween(min, max)(value);
 };
 
 const solidColorPattern = {

@@ -1,4 +1,5 @@
 import { useContext } from "solid-js";
+
 import { EditorContext } from "./EditorContext";
 
 export const useEditorContext = () => {

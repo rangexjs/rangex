@@ -1,9 +1,7 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveTextAlignPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveTextAlignPort } from "./_Utilities";
 
 export const TextAlign = <T extends FormattingPublicPort | undefined>(
 	formatting: T,

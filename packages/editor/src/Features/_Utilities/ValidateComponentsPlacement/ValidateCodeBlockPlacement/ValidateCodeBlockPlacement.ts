@@ -1,8 +1,5 @@
-import {
-	isCodeBlockLanguage,
-	isCodeBlockTheme,
-	maxCodeBlockNameLength,
-} from "#storage";
+import { isCodeBlockLanguage, isCodeBlockTheme, maxCodeBlockNameLength } from "#storage";
+
 import type {
 	ValidateCodeBlockLanguageParams,
 	ValidateCodeBlockLanguageResult,

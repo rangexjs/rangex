@@ -1,4 +1,5 @@
 import { assertNever } from "#utilities";
+
 import { getClosestScopedEditable } from "../../NodeQuery";
 import type {
 	CanInsertBlockLinesParams,

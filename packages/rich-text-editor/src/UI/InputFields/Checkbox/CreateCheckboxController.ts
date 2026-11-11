@@ -1,4 +1,5 @@
 import { createUniqueId, merge, onSettled } from "solid-js";
+
 import { showInputFieldError } from "../_Utilities";
 import {
 	type CheckboxControls,
@@ -20,10 +21,7 @@ export type CreateCheckboxControllerResult = [CheckboxHandle, CheckboxControls];
 export const createCheckboxController = (
 	props: CreateCheckboxControllerParams,
 ): CreateCheckboxControllerResult => {
-	const finalProps = merge(
-		{ defaultChecked: false, error: {}, validateOnChange: false },
-		props,
-	);
+	const finalProps = merge({ defaultChecked: false, error: {}, validateOnChange: false }, props);
 
 	const id = createUniqueId();
 	let localCheckbox: HTMLInputElement | null;
@@ -40,10 +38,7 @@ export const createCheckboxController = (
 	const stateChangeListeners: StateChangeListeners = new Set();
 
 	const emitStateChange = () => {
-		localCheckbox?.setAttribute(
-			"data-invalid",
-			`${showInputFieldError(state)}`,
-		);
+		localCheckbox?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
 
 		for (const listener of stateChangeListeners) {
 			listener(state);
@@ -58,8 +53,7 @@ export const createCheckboxController = (
 		return localCheckbox;
 	};
 
-	const currentChecked = () =>
-		localCheckbox?.checked ?? finalProps.defaultChecked;
+	const currentChecked = () => localCheckbox?.checked ?? finalProps.defaultChecked;
 
 	const checkboxHandle: CheckboxHandle = {
 		get id() {
@@ -92,10 +86,7 @@ export const createCheckboxController = (
 		},
 
 		checkValidity() {
-			const { hasError, message } = getErrorState(
-				currentChecked(),
-				finalProps.error,
-			);
+			const { hasError, message } = getErrorState(currentChecked(), finalProps.error);
 
 			return { hasError, message, isDirty: state.isDirty };
 		},

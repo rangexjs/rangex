@@ -24,8 +24,7 @@
 						height: 16px;
 						margin: 0;
 						margin-top: 6px;
-						border: 1px solid
-							light-dark(var(--color-neutral-300), var(--color-neutral-600));
+						border: 1px solid light-dark(var(--color-neutral-300), var(--color-neutral-600));
 						border-radius: 4px;
 						display: grid;
 						place-items: center;
@@ -43,10 +42,7 @@
 						}
 
 						&:hover:not(:checked) {
-							border-color: light-dark(
-								var(--color-neutral-400),
-								var(--color-neutral-500)
-							);
+							border-color: light-dark(var(--color-neutral-400), var(--color-neutral-500));
 						}
 
 						&:checked {

@@ -42,10 +42,9 @@
 		"dev": "vp dev",
 		"build": "vp build && tsc -p ./tsconfig.build.json",
 		"prepublishOnly": "npm run build",
-		"fix": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
+		"fix": "vp check --fix && tsc -p ./tsconfig.json"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.4",
 		"typescript": "^7.0.2",
 		"vite-plus": "1.6.0"
 	},

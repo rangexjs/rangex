@@ -5,7 +5,9 @@ import {
 	detachedContextRoleSelector,
 	listChildNodesChangeEventType,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
+
 import type { HandleLineNumbersParams } from "./HandleLineNumbers-types";
 
 /*
@@ -28,9 +30,7 @@ export const handleLineNumbers = ({ editorAPI }: HandleLineNumbersParams) => {
 				}
 
 				for (let i = 0; i < list.$$children.length; i++) {
-					const detachedContext = list.$$children[i].$$querySelector(
-						detachedContextRoleSelector,
-					);
+					const detachedContext = list.$$children[i].$$querySelector(detachedContextRoleSelector);
 
 					if (detachedContext?.$$editorRole !== detachedContextRole) {
 						throw new Error("DetachedContext's type is invalid.");

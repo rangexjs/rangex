@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createEmitter,

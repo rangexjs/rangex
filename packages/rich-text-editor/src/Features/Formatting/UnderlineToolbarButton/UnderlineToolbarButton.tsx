@@ -1,7 +1,9 @@
 import { ReadOnly, Underline } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const UnderlineToolbarButton = () => {
@@ -15,9 +17,7 @@ export const UnderlineToolbarButton = () => {
 	const $underline = Underline(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $underline.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $underline.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.toggleUnderline();

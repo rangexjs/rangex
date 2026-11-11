@@ -1,4 +1,5 @@
 import type { RangeXEditor } from "@rangex/editor";
+
 import type { DetectMediaUrlTypeSettings } from "../_Utilities";
 
 export type SlotStatus =
@@ -14,12 +15,9 @@ export interface UploadMediaFileParams {
 }
 
 // Resolves to the uploaded file's URL, or null if it couldn't be uploaded
-export type UploadMediaFileFn = (
-	params: UploadMediaFileParams,
-) => Promise<string | null>;
+export type UploadMediaFileFn = (params: UploadMediaFileParams) => Promise<string | null>;
 
-export interface SourcePlaceholderSlotSettings
-	extends DetectMediaUrlTypeSettings {
+export interface SourcePlaceholderSlotSettings extends DetectMediaUrlTypeSettings {
 	// Uploads a picked or dropped file (e.g. to the app's storage)
 	uploadFile: UploadMediaFileFn;
 }

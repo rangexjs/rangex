@@ -1,12 +1,8 @@
 import type { CaptionPosition } from "@rangex/editor";
 import type { AudioAttrsPatch } from "@rangex/editor/audio";
 import { Audio, FloatingPortal, ReadOnly } from "@rangex/solid";
-import {
-	createEffect,
-	createSignal,
-	createUniqueId,
-	onCleanup,
-} from "solid-js";
+import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js";
+
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -17,6 +13,7 @@ import {
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
+
 import { BlockAlign, MediaSource } from "../../_Utilities";
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -127,11 +124,7 @@ export const AudioQuickActions = () => {
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [
-			blockAlignPopover,
-			mediaSourcePopover,
-			optionsPopover,
-		];
+		const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -141,6 +134,7 @@ export const AudioQuickActions = () => {
 			if (nestedPopover.matches(":popover-open")) {
 				// Force a synchronous reflow before hiding — otherwise the popover can
 				// briefly animate from a stale, not-yet-committed style.
+				// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
 				nestedPopover.offsetHeight;
 				nestedPopover.hidePopover();
 			}
@@ -211,33 +205,17 @@ export const AudioQuickActions = () => {
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Autoplay
 							</span>
-							<ToggleButton
-								checked={autoplay()}
-								label="Autoplay"
-								onClick={onAutoplayToggle}
-							/>
+							<ToggleButton checked={autoplay()} label="Autoplay" onClick={onAutoplayToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Loop
-							</span>
-							<ToggleButton
-								checked={loop()}
-								label="Loop"
-								onClick={onLoopToggle}
-							/>
+							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Loop</span>
+							<ToggleButton checked={loop()} label="Loop" onClick={onLoopToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Muted
-							</span>
-							<ToggleButton
-								checked={muted()}
-								label="Muted"
-								onClick={onMutedToggle}
-							/>
+							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Muted</span>
+							<ToggleButton checked={muted()} label="Muted" onClick={onMutedToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
@@ -278,10 +256,7 @@ export const AudioQuickActions = () => {
 									Enter to save
 								</span>
 							</div>
-							<TextFieldWrapper
-								appearance="neutral-filled-underline"
-								size="small"
-							>
+							<TextFieldWrapper appearance="neutral-filled-underline" size="small">
 								<InputTextField
 									type="text"
 									placeholder="Describe the audio"

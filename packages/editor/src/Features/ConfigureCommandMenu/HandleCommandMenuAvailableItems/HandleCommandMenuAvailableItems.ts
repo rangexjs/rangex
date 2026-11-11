@@ -1,10 +1,9 @@
 import type { BlockContentLineLocalName } from "@rangex/core";
-import {
-	type CommandMenuItemValue,
-	commandMenuItemValues,
-} from "#adapters/CommandMenu";
+
+import { type CommandMenuItemValue, commandMenuItemValues } from "#adapters/CommandMenu";
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
+
 import { handleSelectionContextChange } from "../../_Utilities";
 import type {
 	BlockComponentItems,
@@ -36,9 +35,7 @@ const blockComponentItems: BlockComponentItems = {
 	separator: componentsName.separator,
 };
 
-const isLineLocalNameItem = (
-	value: CommandMenuItemValue,
-): value is BlockContentLineLocalName => {
+const isLineLocalNameItem = (value: CommandMenuItemValue): value is BlockContentLineLocalName => {
 	return lineLocalNameItems.includes(value);
 };
 
@@ -77,8 +74,7 @@ const isItemAvailable = ({
 
 		// With a single allowed tag, every line already has it: there's nothing to switch to
 		return (
-			$$allowedContentLineLocalNames.length >= 2 &&
-			$$allowedContentLineLocalNames.includes(value)
+			$$allowedContentLineLocalNames.length >= 2 && $$allowedContentLineLocalNames.includes(value)
 		);
 	}
 

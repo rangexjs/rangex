@@ -1,4 +1,5 @@
 import { isComponentDraft } from "@rangex/core";
+
 import type { ResolveNodeStoragesParams } from "./ResolveNodeStorages-types";
 
 /*
@@ -6,12 +7,8 @@ import type { ResolveNodeStoragesParams } from "./ResolveNodeStorages-types";
  * components, whose storage their validators check. Nothing reads these values, so they're set to null instead of
  * making the snapshot invalid. The RootEditable's own storage isn't touched.
  */
-export const resolveNodeStorages = ({
-	rootEditableDraft,
-}: ResolveNodeStoragesParams) => {
-	const nodeDrafts = rootEditableDraft.queryAll(
-		(nodeDraft) => !isComponentDraft(nodeDraft),
-	);
+export const resolveNodeStorages = ({ rootEditableDraft }: ResolveNodeStoragesParams) => {
+	const nodeDrafts = rootEditableDraft.queryAll((nodeDraft) => !isComponentDraft(nodeDraft));
 
 	for (const nodeDraft of nodeDrafts) {
 		nodeDraft.customStorage = null;

@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { separatorId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -24,17 +25,13 @@ export const matchSeparatorStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: separatorStoragePattern });
 };
 
-export const isSeparatorStorage = (
-	storage: unknown,
-): storage is SeparatorStorage => {
+export const isSeparatorStorage = (storage: unknown): storage is SeparatorStorage => {
 	const mismatch = matchSeparatorStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateSeparatorStorage = (
-	storage: unknown,
-): storage is SeparatorStorage => {
+export const validateSeparatorStorage = (storage: unknown): storage is SeparatorStorage => {
 	return validateStorage(storage, isSeparatorStorage);
 };
 

@@ -5,11 +5,13 @@ import type {
 	ComponentAttrsShape,
 } from "#dom-attrs";
 
-export type ValidateDOMAttrsResult<TShape extends ComponentAttrsShape> =
-	ComponentAttrsMismatch<TShape> | null;
+export type ValidateDOMAttrsResult<
+	TShape extends ComponentAttrsShape,
+> = ComponentAttrsMismatch<TShape> | null;
 
-export type ChangeDOMAttrsResult<TShape extends ComponentAttrsShape> =
-	ComponentAttrsMismatch<TShape> | null;
+export type ChangeDOMAttrsResult<
+	TShape extends ComponentAttrsShape,
+> = ComponentAttrsMismatch<TShape> | null;
 
 export type OnDOMAttrsUpdateCallbackFn<TShape extends ComponentAttrsShape> = (
 	domAttrs: ComponentAttrs<TShape> | null,
@@ -42,12 +44,8 @@ export interface DOMAttrsPublicPort<TShape extends ComponentAttrsShape> {
 
 	onDOMAttrsUpdate(callback: OnDOMAttrsUpdateCallbackFn<TShape>): () => void;
 
-	validateDOMAttrs(
-		patch: ComponentAttrsPatch<TShape>,
-	): ValidateDOMAttrsResult<TShape>;
-	changeDOMAttrs(
-		patch: ComponentAttrsPatch<TShape>,
-	): ChangeDOMAttrsResult<TShape>;
+	validateDOMAttrs(patch: ComponentAttrsPatch<TShape>): ValidateDOMAttrsResult<TShape>;
+	changeDOMAttrs(patch: ComponentAttrsPatch<TShape>): ChangeDOMAttrsResult<TShape>;
 }
 
 export interface DOMAttrsPort<TShape extends ComponentAttrsShape> {
@@ -55,5 +53,6 @@ export interface DOMAttrsPort<TShape extends ComponentAttrsShape> {
 	publicPort: DOMAttrsPublicPort<TShape>;
 }
 
-export interface CreateDOMAttrsPortResult<TShape extends ComponentAttrsShape>
-	extends DOMAttrsPort<TShape> {}
+export interface CreateDOMAttrsPortResult<
+	TShape extends ComponentAttrsShape,
+> extends DOMAttrsPort<TShape> {}

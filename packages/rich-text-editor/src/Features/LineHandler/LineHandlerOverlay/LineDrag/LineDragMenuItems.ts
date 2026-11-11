@@ -1,8 +1,7 @@
-import type {
-	LineHandlerPublicPort,
-	TurnIntoAvailability,
-} from "@rangex/editor/line-handler";
+import type { LineHandlerPublicPort, TurnIntoAvailability } from "@rangex/editor/line-handler";
+
 import type { UIOptions } from "#context";
+
 import { accordionItemAttrs } from "../../../_Utilities";
 import type { MenuItem } from "../_Utilities";
 

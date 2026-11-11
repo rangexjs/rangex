@@ -1,8 +1,5 @@
-import type {
-	DOMAttrs,
-	EditorElementDraft,
-	EditorNodeDraft,
-} from "@rangex/core";
+import type { DOMAttrs, EditorElementDraft, EditorNodeDraft } from "@rangex/core";
+
 import type { ElementAttrsMismatch } from "#dom-attrs";
 import type { JSONMismatch } from "#utilities";
 

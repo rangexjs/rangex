@@ -15,7 +15,6 @@ export interface ShortcutsAdapter {
 
 export interface ShortcutsSettings {}
 
-export interface CreateShortcutsAdapterParams
-	extends CreateAdapterParams<ShortcutsSettings> {}
+export interface CreateShortcutsAdapterParams extends CreateAdapterParams<ShortcutsSettings> {}
 
 export interface CreateShortcutsAdapterResult extends ShortcutsAdapter {}

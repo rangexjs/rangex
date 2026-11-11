@@ -7,6 +7,7 @@ import type {
 	List,
 	NestedEditable,
 } from "@rangex/core";
+
 import type { AdapterBus } from "#adapters";
 import type { BlockComponentName } from "#constants";
 
@@ -86,9 +87,7 @@ export interface CanWrapBySelectionParams {
 
 export type CanWrapBySelectionResult = boolean;
 
-export type CanWrapBySelectionFn = (
-	params: CanWrapBySelectionParams,
-) => CanWrapBySelectionResult;
+export type CanWrapBySelectionFn = (params: CanWrapBySelectionParams) => CanWrapBySelectionResult;
 
 export interface WrapBySelectionParams {
 	blockComponentLine: BlockComponentLine;
@@ -114,5 +113,4 @@ export interface CreateBlockComponentPlacementParams {
 	adapterBus: AdapterBus;
 }
 
-export interface CreateBlockComponentPlacementResult
-	extends BlockComponentPlacement {}
+export interface CreateBlockComponentPlacementResult extends BlockComponentPlacement {}

@@ -1,4 +1,5 @@
 import { resolveElementAttrs } from "#dom-attrs";
+
 import { describeElementAttrsMismatch } from "../Utilities";
 import type {
 	ResolveDraftDOMAttrsParams,

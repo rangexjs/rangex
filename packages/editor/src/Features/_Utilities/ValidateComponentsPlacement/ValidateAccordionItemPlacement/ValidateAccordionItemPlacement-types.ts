@@ -9,5 +9,4 @@ export interface ValidateAccordionItemPlacementParams {
 	attrs: AccordionItemAttrs;
 }
 
-export type ValidateAccordionItemPlacementResult =
-	AccordionItemAttrsMismatch | null;
+export type ValidateAccordionItemPlacementResult = AccordionItemAttrsMismatch | null;

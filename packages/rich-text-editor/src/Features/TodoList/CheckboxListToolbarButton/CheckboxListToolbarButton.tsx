@@ -1,7 +1,9 @@
 import { ReadOnly, TodoList } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const CheckboxListToolbarButton = () => {
@@ -16,9 +18,7 @@ export const CheckboxListToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() =>
-			!($todoList.isSelectionActive() || $todoList.canWrap()) ||
-			!!$readOnly?.checked(),
+		() => !($todoList.isSelectionActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

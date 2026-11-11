@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { sourcePlaceholderId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -41,10 +42,9 @@ export const validateSourcePlaceholderStorage = (
 	return validateStorage(storage, isSourcePlaceholderStorage);
 };
 
-export const createSourcePlaceholderStorage =
-	(): CreateSourcePlaceholderStorageResult => ({
-		id: sourcePlaceholderId,
-	});
+export const createSourcePlaceholderStorage = (): CreateSourcePlaceholderStorageResult => ({
+	id: sourcePlaceholderId,
+});
 
 export const ensureSourcePlaceholderStorage = ({
 	storage,

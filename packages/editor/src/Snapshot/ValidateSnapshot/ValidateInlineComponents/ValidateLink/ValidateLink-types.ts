@@ -1,8 +1,7 @@
 import type { HTMLLayoutDraft, InlineComponentDraft } from "@rangex/core";
-import type {
-	CreateLinkAttrValidatorsParams,
-	LinkAttrValidators,
-} from "#dom-attrs";
+
+import type { CreateLinkAttrValidatorsParams, LinkAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

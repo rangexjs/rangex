@@ -1,4 +1,5 @@
 import type { InlineComponent } from "@rangex/core";
+
 import type { MentionId } from "../_Constants";
 
 export type MentionStorage = {

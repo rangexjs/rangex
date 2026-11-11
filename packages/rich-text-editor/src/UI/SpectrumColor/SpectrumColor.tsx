@@ -1,4 +1,5 @@
 import { createMemo, createSignal, untrack } from "solid-js";
+
 import { ColorFormat, type HslFormat } from "../../Color";
 import { TransparentBackground } from "../ComplexSVGs";
 import { type OnThumbChangeFn, type RenderChildrenFn, Slider } from "../Slider";
@@ -28,19 +29,16 @@ const getPositionFromSaturationLightness = ({
 
 	const lightFactor = s * (l < 0.5 ? l : 1 - l);
 
-	const xPosition =
-		(lightFactor === 0 ? 0 : (2 * lightFactor) / (l + lightFactor)) * 100;
+	const xPosition = (lightFactor === 0 ? 0 : (2 * lightFactor) / (l + lightFactor)) * 100;
 
 	const yPosition = (l + lightFactor) * 100;
 
 	return { xPosition, yPosition };
 };
 
-const getHueThumbPosition = ({ hue }: GetHueThumbPositionProps) =>
-	Math.round((hue / 359) * 100);
+const getHueThumbPosition = ({ hue }: GetHueThumbPositionProps) => Math.round((hue / 359) * 100);
 
-const getAlphaThumbPosition = ({ alpha }: GetAlphaThumbPositionProps) =>
-	Math.round(alpha * 100);
+const getAlphaThumbPosition = ({ alpha }: GetAlphaThumbPositionProps) => Math.round(alpha * 100);
 
 const isSameHsl = (a: HslFormat, b: HslFormat) =>
 	a.h === b.h && a.s === b.s && a.l === b.l && a.a === b.a;
@@ -97,8 +95,7 @@ const getThumbPositionInPercentage = ({
 	clientX,
 	clientY,
 }: GetThumbPositionInPercentageProps): GetThumbPositionInPercentageReturn => {
-	const { bottom, height, left, right, top, width } =
-		panel.getBoundingClientRect();
+	const { bottom, height, left, right, top, width } = panel.getBoundingClientRect();
 
 	const xPosition = getHorizontalThumbPosition({
 		clientX,
@@ -133,8 +130,7 @@ const getSaturationLightnessFromPosition = ({
 	}
 
 	const saturation =
-		((xPercentage * yPercentage) /
-			(lightnessScale < 1 ? lightnessScale : 2 - lightnessScale)) *
+		((xPercentage * yPercentage) / (lightnessScale < 1 ? lightnessScale : 2 - lightnessScale)) *
 		100;
 
 	return { saturation, lightness };
@@ -169,13 +165,12 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 	});
 
 	// Writable derived: recomputed when the HSL changes from outside, set directly while dragging.
-	const [spectrumThumbPosition, setSpectrumThumbPosition] =
-		createSignal<ThumbPosition>(() =>
-			getPositionFromSaturationLightness({
-				saturation: externalHsl().s,
-				lightness: externalHsl().l,
-			}),
-		);
+	const [spectrumThumbPosition, setSpectrumThumbPosition] = createSignal<ThumbPosition>(() =>
+		getPositionFromSaturationLightness({
+			saturation: externalHsl().s,
+			lightness: externalHsl().l,
+		}),
+	);
 
 	const [hueThumbPosition, setHueThumbPosition] = createSignal<number>(() =>
 		getHueThumbPosition({ hue: externalHsl().h }),
@@ -189,9 +184,7 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 
 	const hslColor = createMemo(() => ColorFormat.hsl(props.hsl).color());
 
-	const filledHslColor = createMemo(() =>
-		ColorFormat.hsl({ ...props.hsl, a: 1 }).color(),
-	);
+	const filledHslColor = createMemo(() => ColorFormat.hsl({ ...props.hsl, a: 1 }).color());
 
 	const hueColor = createMemo(() =>
 		ColorFormat.hsl({ h: props.hsl.h, s: 100, l: 50, a: 1 }).color(),
@@ -203,20 +196,14 @@ export const SpectrumColor = (props: SpectrumColorProps) => {
 		).join(", "),
 	);
 
-	const alphaSliderTrackColor = createMemo(() =>
-		ColorFormat.hsl({ ...props.hsl, a: 0.7 }).color(),
-	);
+	const alphaSliderTrackColor = createMemo(() => ColorFormat.hsl({ ...props.hsl, a: 0.7 }).color());
 
 	const manageColorUpdate = ({ hsl }: ManageColorUpdateProps) => {
 		scopedHsl = hsl;
 		props.onColorChange({ hsl });
 	};
 
-	const manageThumbUpdate = ({
-		clientX,
-		clientY,
-		panel,
-	}: ManageThumbUpdateProps) => {
+	const manageThumbUpdate = ({ clientX, clientY, panel }: ManageThumbUpdateProps) => {
 		const { xPosition, yPosition } = getThumbPositionInPercentage({
 			clientX,
 			clientY,

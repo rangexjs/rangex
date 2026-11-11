@@ -8,8 +8,10 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
+
 import { componentsName, listDefinition } from "#constants";
 import { createListStorage } from "#storage";
+
 import type { CreateListParams, CreateListResult } from "./CreateList-types";
 
 /*
@@ -18,9 +20,7 @@ import type { CreateListParams, CreateListResult } from "./CreateList-types";
  */
 export const createList = ({
 	localName,
-	childNodes = [
-		createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-	],
+	childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 }: CreateListParams): CreateListResult => {
 	const list = createEngineList({
 		localName,

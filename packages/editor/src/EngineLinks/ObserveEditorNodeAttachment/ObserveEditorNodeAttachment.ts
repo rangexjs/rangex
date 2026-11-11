@@ -1,4 +1,5 @@
 import { type EditorNode, isEditorNode } from "@rangex/core";
+
 import type { ObserveEditorNodeAttachmentParams } from "./ObserveEditorNodeAttachment-types";
 
 export const observeEditorNodeAttachment = ({

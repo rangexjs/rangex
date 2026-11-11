@@ -35,10 +35,7 @@ const sliderAnchor = "--slider-anchor";
 export const Slider = (props: SliderProps) => {
 	let sliderTrack: HTMLDivElement | undefined;
 
-	const manageThumbUpdate = ({
-		clientX,
-		sliderTrack,
-	}: ManageThumbUpdateProps) => {
+	const manageThumbUpdate = ({ clientX, sliderTrack }: ManageThumbUpdateProps) => {
 		const position = getThumbPositionInPercentage({ clientX, sliderTrack });
 
 		props.onThumbChange({ position });

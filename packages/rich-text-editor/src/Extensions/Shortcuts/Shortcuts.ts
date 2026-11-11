@@ -1,4 +1,5 @@
 import { Shortcuts as ShortcutsFactory } from "@rangex/editor/shortcuts";
+
 import type { Extension } from "../_Utilities";
 import type { ShortcutsExtensionSettings } from "./Shortcuts-types";
 

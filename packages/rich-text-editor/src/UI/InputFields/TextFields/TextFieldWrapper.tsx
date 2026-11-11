@@ -23,8 +23,7 @@ export const TextFieldWrapper = (props: TextFieldWrapperProps) => {
 				"inline-flex items-center gap-1",
 				{
 					"text-field-primary-outline": props.appearance === "primary-outline",
-					"text-field-neutral-filled-underline":
-						props.appearance === "neutral-filled-underline",
+					"text-field-neutral-filled-underline": props.appearance === "neutral-filled-underline",
 					"p-1.5 text-xs": props.size === "small",
 					"p-2 text-sm": props.size === "medium",
 				},
@@ -33,23 +32,13 @@ export const TextFieldWrapper = (props: TextFieldWrapperProps) => {
 			style={props.style}
 		>
 			<Show when={props.prefix}>
-				<span
-					class={[
-						"text-neutral-600 text-xs dark:text-neutral-300",
-						props.prefixClass,
-					]}
-				>
+				<span class={["text-neutral-600 text-xs dark:text-neutral-300", props.prefixClass]}>
 					{props.prefix}
 				</span>
 			</Show>
 			{props.children}
 			<Show when={props.postfix}>
-				<span
-					class={[
-						"text-neutral-600 text-xs dark:text-neutral-300",
-						props.postfixClass,
-					]}
-				>
+				<span class={["text-neutral-600 text-xs dark:text-neutral-300", props.postfixClass]}>
 					{props.postfix}
 				</span>
 			</Show>

@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { Show } from "solid-js";
+
 import { Icon } from "#ui";
 
 export interface ToolbarButtonProps {
@@ -31,9 +32,7 @@ export const ToolbarButton = (props: ToolbarButtonProps) => {
 			aria-expanded={props["aria-expanded"]}
 			data-checked={`${!!props.checked}`}
 		>
-			<span class={["inline-flex items-center", props.containerClass]}>
-				{props.children}
-			</span>
+			<span class={["inline-flex items-center", props.containerClass]}>{props.children}</span>
 			<Show when={props.hasChevron}>
 				<Icon name="CaretDown" class="size-2" />
 			</Show>

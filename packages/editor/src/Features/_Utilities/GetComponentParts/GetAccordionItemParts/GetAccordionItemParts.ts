@@ -1,8 +1,5 @@
-import {
-	blockComponentLineRole,
-	htmlLayoutRole,
-	nestedEditableRole,
-} from "@rangex/core";
+import { blockComponentLineRole, htmlLayoutRole, nestedEditableRole } from "@rangex/core";
+
 import type {
 	GetAccordionItemPartsParams,
 	GetAccordionItemPartsResult,
@@ -25,21 +22,13 @@ export const getAccordionItemParts = ({
 
 	const [details] = blockComponent.$$childNodes;
 
-	if (
-		!details ||
-		details.$$editorRole !== htmlLayoutRole ||
-		details.$$localName !== "details"
-	) {
+	if (!details || details.$$editorRole !== htmlLayoutRole || details.$$localName !== "details") {
 		throw new Error("AccordionItem's first child must be the details.");
 	}
 
 	const [summary, bodyNestedEditable] = details.$$childNodes;
 
-	if (
-		!summary ||
-		summary.$$editorRole !== htmlLayoutRole ||
-		summary.$$localName !== "summary"
-	) {
+	if (!summary || summary.$$editorRole !== htmlLayoutRole || summary.$$localName !== "summary") {
 		throw new Error("Details' first child must be the summary.");
 	}
 
@@ -50,9 +39,7 @@ export const getAccordionItemParts = ({
 	const [summaryNestedEditable] = summary.$$childNodes;
 
 	if (summaryNestedEditable?.$$editorRole !== nestedEditableRole) {
-		throw new Error(
-			"Summary's first child must be the summary NestedEditable.",
-		);
+		throw new Error("Summary's first child must be the summary NestedEditable.");
 	}
 
 	return {

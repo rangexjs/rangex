@@ -3,10 +3,8 @@ import type {
 	TextFormatInlineTags,
 	UpdateSelectionStylesParams,
 } from "@rangex/core";
-import type {
-	FormattingActionState,
-	FormattingWhenMixed,
-} from "#adapters/Formatting";
+
+import type { FormattingActionState, FormattingWhenMixed } from "#adapters/Formatting";
 import type {
 	BackgroundColorStructuredStyleValue,
 	ColorStructuredStyleValue,
@@ -23,10 +21,7 @@ export interface GetBackgroundColorStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetBackgroundColorStylesResult =
-	| BackgroundColorStructuredStyleValue
-	| null
-	| undefined;
+export type GetBackgroundColorStylesResult = BackgroundColorStructuredStyleValue | null | undefined;
 
 export interface GetColorStylesParams {
 	formattingActionState: FormattingActionState;
@@ -38,64 +33,43 @@ export interface GetFontFamilyStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetFontFamilyStylesResult =
-	| FontFamilyStructuredStyleValue
-	| null
-	| undefined;
+export type GetFontFamilyStylesResult = FontFamilyStructuredStyleValue | null | undefined;
 
 export interface GetFontSizeStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetFontSizeStylesResult =
-	| FontSizeStructuredStyleValue
-	| null
-	| undefined;
+export type GetFontSizeStylesResult = FontSizeStructuredStyleValue | null | undefined;
 
 export interface GetLetterSpacingStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetLetterSpacingStylesResult =
-	| LetterSpacingStructuredStyleValue
-	| null
-	| undefined;
+export type GetLetterSpacingStylesResult = LetterSpacingStructuredStyleValue | null | undefined;
 
 export interface GetLineHeightStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetLineHeightStylesResult =
-	| LineHeightStructuredStyleValue
-	| null
-	| undefined;
+export type GetLineHeightStylesResult = LineHeightStructuredStyleValue | null | undefined;
 
 export interface GetPaddingBlockStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetPaddingBlockStylesResult =
-	| PaddingBlockStructuredStyleValue
-	| null
-	| undefined;
+export type GetPaddingBlockStylesResult = PaddingBlockStructuredStyleValue | null | undefined;
 
 export interface GetTextAlignStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetTextAlignStylesResult =
-	| TextAlignStructuredStyleValue
-	| null
-	| undefined;
+export type GetTextAlignStylesResult = TextAlignStructuredStyleValue | null | undefined;
 
 export interface GetTextIndentStylesParams {
 	formattingActionState: FormattingActionState;
 }
 
-export type GetTextIndentStylesResult =
-	| TextIndentStructuredStyleValue
-	| null
-	| undefined;
+export type GetTextIndentStylesResult = TextIndentStructuredStyleValue | null | undefined;
 
 export interface GetStylesParams {
 	formattingActionState: FormattingActionState;
@@ -115,5 +89,4 @@ export interface GetSelectionStylesDataParams {
 	whenMixed: FormattingWhenMixed;
 }
 
-export interface GetSelectionStylesDataResult
-	extends UpdateSelectionStylesParams {}
+export interface GetSelectionStylesDataResult extends UpdateSelectionStylesParams {}

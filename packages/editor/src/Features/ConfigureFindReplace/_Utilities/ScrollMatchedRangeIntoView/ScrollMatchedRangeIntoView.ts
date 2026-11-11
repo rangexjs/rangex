@@ -1,12 +1,11 @@
 import { EditorRange } from "@rangex/core";
+
 import type { ScrollMatchedRangeIntoViewParams } from "./ScrollMatchedRangeIntoView-types";
 
 /*
  * Scrolls the current find-replace match into view.
  */
-export const scrollMatchedRangeIntoView = ({
-	findReplace,
-}: ScrollMatchedRangeIntoViewParams) => {
+export const scrollMatchedRangeIntoView = ({ findReplace }: ScrollMatchedRangeIntoViewParams) => {
 	const matchedRange = findReplace.matchedRanges.at(findReplace.currentIndex);
 
 	if (!matchedRange) {

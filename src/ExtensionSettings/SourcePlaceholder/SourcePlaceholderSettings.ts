@@ -2,6 +2,7 @@ import type {
 	SourcePlaceholderExtensionSettings,
 	UploadMediaFileFn,
 } from "@rangex/rich-text-editor/source-placeholder";
+
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 
 // Served by the dev server (see configs/DevUploads)
@@ -39,10 +40,7 @@ const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
 		});
 
 		request.open("POST", devUploadsPath);
-		request.setRequestHeader(
-			"Content-Type",
-			file.type || "application/octet-stream",
-		);
+		request.setRequestHeader("Content-Type", file.type || "application/octet-stream");
 		request.send(file);
 	});
 };
@@ -65,15 +63,13 @@ const transformEmbedURL = (url: string) => {
 /*
  * Demo-only policy every Embed is inserted with: the sandbox and the browser features its iframe may use.
  */
-const embedIframeAttrs: SourcePlaceholderExtensionSettings["embedIframeAttrs"] =
-	{
-		title: "Embedded content",
-		sandbox:
-			"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation",
-		allow:
-			"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write",
-		loading: "lazy",
-	};
+const embedIframeAttrs: SourcePlaceholderExtensionSettings["embedIframeAttrs"] = {
+	title: "Embedded content",
+	sandbox:
+		"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation",
+	allow: "fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write",
+	loading: "lazy",
+};
 
 export const sourcePlaceholderSettings: SourcePlaceholderExtensionSettings = {
 	uploadFile,

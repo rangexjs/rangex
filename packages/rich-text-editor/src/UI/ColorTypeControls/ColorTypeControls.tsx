@@ -1,11 +1,7 @@
-import {
-	createEffect,
-	createSignal,
-	createUniqueId,
-	For,
-	untrack,
-} from "solid-js";
+import { createEffect, createSignal, createUniqueId, For, untrack } from "solid-js";
+
 import { ColorFormat, type HslFormat } from "#color";
+
 import { Icon } from "../Icon";
 import { createTextFieldState, InputTextField } from "../InputFields";
 import type {
@@ -89,38 +85,29 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 		defaultValue: getHexValue(initialHsl),
 	});
 
-	const [rgbRedHandle, rgbRedControls] = createTextFieldState<HTMLInputElement>(
-		{
-			defaultValue: getRgbValue(initialHsl).r,
-		},
-	);
+	const [rgbRedHandle, rgbRedControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getRgbValue(initialHsl).r,
+	});
 
-	const [rgbGreenHandle, rgbGreenControls] =
-		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(initialHsl).g,
-		});
+	const [rgbGreenHandle, rgbGreenControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getRgbValue(initialHsl).g,
+	});
 
-	const [rgbBlueHandle, rgbBlueControls] =
-		createTextFieldState<HTMLInputElement>({
-			defaultValue: getRgbValue(initialHsl).b,
-		});
+	const [rgbBlueHandle, rgbBlueControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getRgbValue(initialHsl).b,
+	});
 
-	const [hslHueHandle, hslHueControls] = createTextFieldState<HTMLInputElement>(
-		{
-			defaultValue: getHslValue(initialHsl).h,
-		},
-	);
+	const [hslHueHandle, hslHueControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getHslValue(initialHsl).h,
+	});
 
-	const [hslSatHandle, hslSatControls] = createTextFieldState<HTMLInputElement>(
-		{
-			defaultValue: getHslValue(initialHsl).s,
-		},
-	);
+	const [hslSatHandle, hslSatControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getHslValue(initialHsl).s,
+	});
 
-	const [hslLightHandle, hslLightControls] =
-		createTextFieldState<HTMLInputElement>({
-			defaultValue: getHslValue(initialHsl).l,
-		});
+	const [hslLightHandle, hslLightControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: getHslValue(initialHsl).l,
+	});
 
 	const [alphaHandle, alphaControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: getAlphaInPercentage(initialHsl.a),
@@ -344,9 +331,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 				]}
 			>
 				<div class="w-full">
-					<div
-						class={["h-full content-center", { hidden: colorType() !== "Hex" }]}
-					>
+					<div class={["h-full content-center", { hidden: colorType() !== "Hex" }]}>
 						<InputTextField
 							type="text"
 							class="w-full text-center outline-none"

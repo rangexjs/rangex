@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import type { Accessor, Setter } from "solid-js";
+
 import type { HslFormat } from "#color";
 
 export type ColorType = "HSL" | "RGB" | "Hex";

@@ -5,7 +5,9 @@ import {
 	isEditorNode,
 	listChildNodesChangeEventType,
 } from "@rangex/core";
+
 import { componentsName, todoCheckboxPart } from "#constants";
+
 import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckboxState-types";
 
 /*
@@ -13,9 +15,7 @@ import type { HandleTodoListCheckboxStateParams } from "./HandleTodoListCheckbox
  * restoring it whenever list items are added (unchecking copies, e.g. after pressing Enter), and
  * writing it back whenever the checkbox itself is toggled. Returns a cleanup function.
  */
-export const handleTodoListCheckboxState = ({
-	editorAPI,
-}: HandleTodoListCheckboxStateParams) => {
+export const handleTodoListCheckboxState = ({ editorAPI }: HandleTodoListCheckboxStateParams) => {
 	const unsubscribeListChange = editorAPI.subscribeEditorEvent({
 		type: listChildNodesChangeEventType,
 		callback: ({ lists }) => {

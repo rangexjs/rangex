@@ -1,12 +1,9 @@
-import type {
-	BlockComponent,
-	EditorAPI,
-	List,
-	RootEditable,
-} from "@rangex/core";
+import type { BlockComponent, EditorAPI, List, RootEditable } from "@rangex/core";
+
 import type { GetHighlightInfoFn, ThemedCodeLines } from "#adapters/CodeBlock";
 import type { CodeBlockAttrValidators } from "#dom-attrs";
 import type { CodeBlockTheme } from "#storage";
+
 import type { CSSHighlightManager } from "./CSSHighlightManager";
 
 export interface OnCodeChangeParams {

@@ -1,10 +1,8 @@
-import {
-	type BlockComponent,
-	blockComponentRole,
-	isEditorNode,
-} from "@rangex/core";
+import { type BlockComponent, blockComponentRole, isEditorNode } from "@rangex/core";
+
 import { blockWidthAttr } from "#constants";
 import { createAnchoredOverlayController } from "#engine-links";
+
 import { getBlockAlign } from "../BlockAlign";
 import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppearance-types";
 
@@ -32,8 +30,7 @@ const calcFlexBasis = ({
 	const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
 	const isSameCorner =
-		(align === "left" && handleSide === "left") ||
-		(align === "right" && handleSide === "right");
+		(align === "left" && handleSide === "left") || (align === "right" && handleSide === "right");
 
 	if (isSameCorner) {
 		const numFlexBasis = dragStartWidth + deltaPx;
@@ -43,8 +40,7 @@ const calcFlexBasis = ({
 	}
 
 	const isOppositeCorner =
-		(align === "left" && handleSide === "right") ||
-		(align === "right" && handleSide === "left");
+		(align === "left" && handleSide === "right") || (align === "right" && handleSide === "left");
 
 	if (isOppositeCorner || align === "center") {
 		const rect = blockComponent.getBoundingClientRect();
@@ -145,24 +141,22 @@ export const handleBlockResizeAppearance = ({
 		},
 	});
 
-	const unsubscribeResizeMove = blockResize.onResizeMove(
-		({ deltaPx, side }) => {
-			if (!currentBlock) {
-				return;
-			}
+	const unsubscribeResizeMove = blockResize.onResizeMove(({ deltaPx, side }) => {
+		if (!currentBlock) {
+			return;
+		}
 
-			dragStartWidth ??= currentBlock.getBoundingClientRect().width;
+		dragStartWidth ??= currentBlock.getBoundingClientRect().width;
 
-			const flexBasis = calcFlexBasis({
-				blockComponent: currentBlock,
-				deltaPx,
-				handleSide: side,
-				dragStartWidth,
-			});
+		const flexBasis = calcFlexBasis({
+			blockComponent: currentBlock,
+			deltaPx,
+			handleSide: side,
+			dragStartWidth,
+		});
 
-			currentBlock.$$setAttribute(blockWidthAttr.name, `${flexBasis}`);
-		},
-	);
+		currentBlock.$$setAttribute(blockWidthAttr.name, `${flexBasis}`);
+	});
 
 	const unsubscribeResizeEnd = blockResize.onResizeEnd(() => {
 		dragStartWidth = null;

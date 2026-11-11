@@ -7,8 +7,7 @@ import type {
 
 export type InlineComponentsName = typeof inlineComponentsName;
 
-export type InlineComponentName =
-	InlineComponentsName[keyof InlineComponentsName];
+export type InlineComponentName = InlineComponentsName[keyof InlineComponentsName];
 
 export type BlockComponentsName = typeof blockComponentsName;
 

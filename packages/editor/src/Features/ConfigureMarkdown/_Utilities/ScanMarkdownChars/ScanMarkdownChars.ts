@@ -1,8 +1,6 @@
 import type { PlainTextScanStep } from "@rangex/core";
-import type {
-	ScanMarkdownCharsParams,
-	ScanMarkdownCharsResult,
-} from "./ScanMarkdownChars-types";
+
+import type { ScanMarkdownCharsParams, ScanMarkdownCharsResult } from "./ScanMarkdownChars-types";
 
 /*
  * Scans backward from the cursor up to `maxChars` characters, returning the scanned text

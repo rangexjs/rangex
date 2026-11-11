@@ -1,14 +1,7 @@
 import type { CaretMenuPublicPort } from "@rangex/editor";
 import { FloatingPortal } from "@rangex/solid";
 import type { JSX } from "@solidjs/web";
-import {
-	type Accessor,
-	createEffect,
-	createSignal,
-	For,
-	onCleanup,
-	onSettled,
-} from "solid-js";
+import { type Accessor, createEffect, createSignal, For, onCleanup, onSettled } from "solid-js";
 
 interface CaretItemParams {
 	index: Accessor<number>;

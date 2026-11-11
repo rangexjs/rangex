@@ -1,7 +1,4 @@
-import type {
-	CheckboxErrorRestriction,
-	CheckboxErrorState,
-} from "./Utilities-types";
+import type { CheckboxErrorRestriction, CheckboxErrorState } from "./Utilities-types";
 
 export const getErrorState = (
 	checked: boolean,

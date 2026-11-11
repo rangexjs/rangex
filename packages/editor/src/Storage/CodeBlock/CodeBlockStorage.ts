@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { codeBlockId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -19,15 +20,10 @@ export const maxCodeBlockNameLength = 256;
  * language or theme is null.
  */
 const isName = (value: unknown) => {
-	return (
-		typeof value === "string" &&
-		value !== "" &&
-		value.length <= maxCodeBlockNameLength
-	);
+	return typeof value === "string" && value !== "" && value.length <= maxCodeBlockNameLength;
 };
 
-export const isCodeBlockLanguage = (value: unknown) =>
-	value === null || isName(value);
+export const isCodeBlockLanguage = (value: unknown) => value === null || isName(value);
 
 /*
  * A theme is valid if it's null, or a light and a dark theme name.
@@ -61,17 +57,13 @@ export const matchCodeBlockStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: codeBlockStoragePattern });
 };
 
-export const isCodeBlockStorage = (
-	storage: unknown,
-): storage is CodeBlockStorage => {
+export const isCodeBlockStorage = (storage: unknown): storage is CodeBlockStorage => {
 	const mismatch = matchCodeBlockStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateCodeBlockStorage = (
-	storage: unknown,
-): storage is CodeBlockStorage => {
+export const validateCodeBlockStorage = (storage: unknown): storage is CodeBlockStorage => {
 	return validateStorage(storage, isCodeBlockStorage);
 };
 

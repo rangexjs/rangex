@@ -3,13 +3,10 @@ import type {
 	TemplateVariablePublicPort,
 } from "@rangex/editor/template-variable";
 import { flush } from "solid-js";
+
 import type { TemplateVariableModalSettings } from "#context";
-import {
-	createTextFieldState,
-	FormField,
-	InputTextField,
-	TextFieldWrapper,
-} from "#ui";
+import { createTextFieldState, FormField, InputTextField, TextFieldWrapper } from "#ui";
+
 import { FixedPosModal } from "../../../_Utilities";
 
 interface TemplateVariableModalProps {
@@ -83,10 +80,7 @@ export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 
 		const inputValues = inputs.map(({ handle }) => handle.value());
 
-		const updatedFields = props.settings.onUpdate(
-			inputValues,
-			props.templateVariable.fieldsConfig,
-		);
+		const updatedFields = props.settings.onUpdate(inputValues, props.templateVariable.fieldsConfig);
 
 		const fields: TemplateVariableFields = {};
 
@@ -116,11 +110,7 @@ export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 	};
 
 	return (
-		<FixedPosModal
-			id={props.modalId}
-			title={props.settings.title}
-			onToggle={onToggle}
-		>
+		<FixedPosModal id={props.modalId} title={props.settings.title} onToggle={onToggle}>
 			{inputs.map(({ input, handle, controls }, index) => (
 				<FormField
 					class={index === inputs.length - 1 ? "mb-4" : "mb-2"}

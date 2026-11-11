@@ -1,15 +1,10 @@
 import { blockComponentRole, htmlLayoutRole } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { separatorStoragePattern } from "#storage";
-import {
-	formatNodePath,
-	resolveDraftDOMAttrs,
-	validateHTMLLayoutState,
-} from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+
+import { formatNodePath, resolveDraftDOMAttrs, validateHTMLLayoutState } from "../../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateSeparatorValidatorResult,
 	ValidateSeparatorParams,
@@ -73,10 +68,7 @@ const validateSeparator = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,

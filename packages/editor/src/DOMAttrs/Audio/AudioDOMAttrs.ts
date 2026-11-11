@@ -4,7 +4,9 @@ import {
 	htmlLayoutRole,
 	xhtmlNamespaceURI,
 } from "@rangex/core";
+
 import { blockAlignAttr, blockWidthAttr } from "#constants";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

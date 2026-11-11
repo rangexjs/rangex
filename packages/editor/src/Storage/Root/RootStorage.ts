@@ -1,5 +1,6 @@
 import { isRootType } from "#constants";
 import type { JSONPattern } from "#utilities";
+
 import { rootId } from "../_Constants";
 import {
 	isTemplateVariableFieldName,
@@ -39,8 +40,7 @@ const isTemplateVariableFields = (value: unknown) => {
 
 	return fields.every(
 		([fieldName, fieldValue]) =>
-			isTemplateVariableFieldName(fieldName) &&
-			isTemplateVariableFieldValue(fieldValue),
+			isTemplateVariableFieldName(fieldName) && isTemplateVariableFieldValue(fieldValue),
 	);
 };
 
@@ -54,9 +54,7 @@ export const rootStoragePattern = {
 	templateVariable: isTemplateVariableFields,
 } satisfies JSONPattern<RootStorage>;
 
-export const createRootStorage = ({
-	type,
-}: CreateRootStorageParams): CreateRootStorageResult => ({
+export const createRootStorage = ({ type }: CreateRootStorageParams): CreateRootStorageResult => ({
 	id: rootId,
 	version: snapshotVersion,
 	type,
@@ -67,7 +65,5 @@ export const createRootStorage = ({
  * Reads the Root's storage. Every RootEditable has a valid one: createCore creates it with createRoot, or validates the
  * snapshot's before loading it.
  */
-export const getRootStorage = ({
-	rootEditable,
-}: GetRootStorageParams): GetRootStorageResult =>
+export const getRootStorage = ({ rootEditable }: GetRootStorageParams): GetRootStorageResult =>
 	rootEditable.$$customStorage as RootStorage;

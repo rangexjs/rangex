@@ -6,6 +6,7 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { createTodoList } from "../../_Utilities";
 import type { HandleTodoListPlacementParams } from "./HandleTodoListPlacement-types";
 
@@ -23,9 +24,7 @@ export const handleTodoListPlacement = ({
 
 	const unsubscribeInsert = configPort.onInsert(() => {
 		const todoListLine = createTodoList({
-			childNodes: [
-				createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-			],
+			childNodes: [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 		});
 
 		blockComponentPlacement.insertBySelection({
@@ -45,9 +44,7 @@ export const handleTodoListPlacement = ({
 			throw new Error("LastListItem can't be undefined.");
 		}
 
-		const nestedEditable = lastListItem.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = lastListItem.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
@@ -85,9 +82,7 @@ export const handleTodoListPlacement = ({
 			throw new Error("LastListItem can't be undefined.");
 		}
 
-		const nestedEditable = lastListItem.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = lastListItem.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");

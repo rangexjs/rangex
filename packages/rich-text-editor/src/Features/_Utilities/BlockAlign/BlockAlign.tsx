@@ -1,5 +1,6 @@
 import type { BlockAlignValue } from "@rangex/editor";
 import { createUniqueId, For } from "solid-js";
+
 import { Icon, type IconName } from "#ui";
 
 const iconNameOptions: Record<BlockAlignValue, IconName> = {

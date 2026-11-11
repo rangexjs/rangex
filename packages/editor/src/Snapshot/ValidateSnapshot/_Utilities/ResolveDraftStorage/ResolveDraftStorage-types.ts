@@ -1,5 +1,7 @@
 import type { ComponentDraft, RootEditableDraft } from "@rangex/core";
+
 import type { JSONPattern } from "#utilities";
+
 import type { ValidateComponentResult } from "../../ValidateSnapshot-types";
 
 export type DraftStorage = ComponentDraft["customStorage"];
@@ -13,9 +15,7 @@ export interface ValidateStorageParams<TStorage extends DraftStorage> {
 /*
  * The storage is replaced by the fallback, which must still match the storage pattern
  */
-export interface StorageValidationFailedFallback<
-	TStorage extends DraftStorage,
-> {
+export interface StorageValidationFailedFallback<TStorage extends DraftStorage> {
 	kind: "fallback";
 	reason: string;
 	value: TStorage;
@@ -33,8 +33,9 @@ export type StorageValidationFailed<TStorage extends DraftStorage> =
 	| StorageValidationFailedFallback<TStorage>
 	| StorageValidationFailedReject;
 
-export type ValidateStorageResult<TStorage extends DraftStorage> =
-	StorageValidationFailed<TStorage> | null;
+export type ValidateStorageResult<
+	TStorage extends DraftStorage,
+> = StorageValidationFailed<TStorage> | null;
 
 /*
  * The consumer's own check of a storage. It gets a copy that already matches the storage pattern.

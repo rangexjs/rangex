@@ -1,5 +1,7 @@
 import type { LinkDisplayText } from "@rangex/editor/link";
+
 import { assertNever } from "#utilities";
+
 import type { GetDisplayTextFieldResult } from "./GetDisplayTextField-types";
 
 /*
@@ -7,9 +9,7 @@ import type { GetDisplayTextFieldResult } from "./GetDisplayTextField-types";
  * current text for a single wrap or an edit, disabled when the selection wraps into several
  * links.
  */
-export const getDisplayTextField = (
-	displayText: LinkDisplayText,
-): GetDisplayTextFieldResult => {
+export const getDisplayTextField = (displayText: LinkDisplayText): GetDisplayTextFieldResult => {
 	if (!displayText) {
 		console.warn("getDisplayTextField: selection can't take a link.");
 		return { value: "", disabled: false, placeholder: "Example" };

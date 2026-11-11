@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
+
 import type {
 	CreateFileDropzoneParams,
 	CreateFileDropzoneResult,
 } from "./CreateFileDropzone-types";
 
-const isFileDrag = (event: DragEvent) =>
-	!!event.dataTransfer?.types.includes("Files");
+const isFileDrag = (event: DragEvent) => !!event.dataTransfer?.types.includes("Files");
 
 /*
  * Tracks a file being dragged over an element and passes on the dropped one. The returned handlers go on that element.

@@ -1,5 +1,6 @@
 import type { ReadOnlyPublicPort } from "@rangex/editor/read-only";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveReadOnlyPort } from "./ReadOnly-types";
 

@@ -11,9 +11,7 @@ export interface StateEmitter<State> {
  * notifies subscribers only when it differs (isDeepEqual) from the previous one. Subscribing
  * does not replay the current state.
  */
-export const createStateEmitter = <State>(
-	initialState: State,
-): StateEmitter<State> => {
+export const createStateEmitter = <State>(initialState: State): StateEmitter<State> => {
 	const listeners = new Set<(state: State) => void>();
 
 	let state = initialState;

@@ -1,4 +1,5 @@
 import type { MediaType } from "@rangex/editor";
+
 import type { MediaFileType } from "../../_Utilities";
 
 export type MediaTab = "upload" | "link";

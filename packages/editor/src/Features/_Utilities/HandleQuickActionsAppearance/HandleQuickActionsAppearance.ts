@@ -1,7 +1,5 @@
-import {
-	createAnchoredOverlayController,
-	createOverlayAppearanceHandler,
-} from "#engine-links";
+import { createAnchoredOverlayController, createOverlayAppearanceHandler } from "#engine-links";
+
 import type { HandleQuickActionsAppearanceParams } from "./HandleQuickActionsAppearance-types";
 
 const defaultAnchorStyle = {
@@ -34,29 +32,28 @@ export const handleQuickActionsAppearance = ({
 		},
 	});
 
-	const { cleanup: registrationCleanup } =
-		overlayAppearanceHandler.registerComponent({
-			popover: anchorController.element,
-			shouldShow({ blockComponent }) {
-				return blockComponent.$$name === componentName;
-			},
-			onShow({ blockComponent }) {
-				anchorController.hide({});
+	const { cleanup: registrationCleanup } = overlayAppearanceHandler.registerComponent({
+		popover: anchorController.element,
+		shouldShow({ blockComponent }) {
+			return blockComponent.$$name === componentName;
+		},
+		onShow({ blockComponent }) {
+			anchorController.hide({});
 
-				port.updateCurrentComponent({ hoverComponent: blockComponent });
+			port.updateCurrentComponent({ hoverComponent: blockComponent });
 
-				anchorController.show(blockComponent, {
-					clear: true,
-					position: "absolute",
-					...anchorStyle,
-				});
-			},
-			onClose() {
-				anchorController.hide({});
+			anchorController.show(blockComponent, {
+				clear: true,
+				position: "absolute",
+				...anchorStyle,
+			});
+		},
+		onClose() {
+			anchorController.hide({});
 
-				port.updateCurrentComponent({ hoverComponent: null });
-			},
-		});
+			port.updateCurrentComponent({ hoverComponent: null });
+		},
+	});
 
 	return () => {
 		overlayAppearanceHandler.cleanup();

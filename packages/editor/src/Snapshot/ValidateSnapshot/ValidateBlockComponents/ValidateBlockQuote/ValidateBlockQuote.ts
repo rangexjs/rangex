@@ -1,20 +1,15 @@
-import {
-	blockComponentRole,
-	htmlLayoutRole,
-	nestedEditableRole,
-} from "@rangex/core";
+import { blockComponentRole, htmlLayoutRole, nestedEditableRole } from "@rangex/core";
+
 import { blockQuoteDefinition, componentsName } from "#constants";
 import { blockQuoteStoragePattern } from "#storage";
+
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
 	validateHTMLLayoutState,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateBlockQuoteValidatorResult,
 	ValidateBlockQuoteParams,
@@ -80,10 +75,7 @@ const validateBlockQuote = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
@@ -120,10 +112,7 @@ const validateBlockQuote = ({
 
 	const nestedEditableDraft = htmlLayoutChildNodes.at(0);
 
-	if (
-		htmlLayoutChildNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (htmlLayoutChildNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
@@ -152,10 +141,9 @@ const validateBlockQuote = ({
 /*
  * Creates the BlockQuote's ComponentValidator.
  */
-export const createBlockQuoteValidator =
-	(): CreateBlockQuoteValidatorResult => {
-		return {
-			name: componentsName.blockQuote,
-			validate: ({ componentDraft }) => validateBlockQuote({ componentDraft }),
-		};
+export const createBlockQuoteValidator = (): CreateBlockQuoteValidatorResult => {
+	return {
+		name: componentsName.blockQuote,
+		validate: ({ componentDraft }) => validateBlockQuote({ componentDraft }),
 	};
+};

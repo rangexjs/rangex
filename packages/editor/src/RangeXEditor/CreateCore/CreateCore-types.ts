@@ -1,4 +1,5 @@
 import type { StoredSnapshot } from "@rangex/core";
+
 import type { SnapshotSchema } from "#snapshot";
 
 export interface ResolveStoredSnapshotParams {

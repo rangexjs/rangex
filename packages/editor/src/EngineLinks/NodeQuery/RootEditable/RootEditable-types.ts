@@ -1,8 +1,4 @@
-import type {
-	EditorNode,
-	RootEditable,
-	RootEditableDisplay,
-} from "@rangex/core";
+import type { EditorNode, RootEditable, RootEditableDisplay } from "@rangex/core";
 
 export interface GetClosestRootEditableParams {
 	fromNode: EditorNode;

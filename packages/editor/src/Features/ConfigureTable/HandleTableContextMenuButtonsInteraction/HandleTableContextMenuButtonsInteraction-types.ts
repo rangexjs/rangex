@@ -1,4 +1,5 @@
 import type { EditorAPI, Table } from "@rangex/core";
+
 import type { TableConfigPort } from "#adapters/Table";
 
 export interface GetActiveTableParams {

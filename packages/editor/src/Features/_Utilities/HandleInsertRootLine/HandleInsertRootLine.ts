@@ -1,4 +1,5 @@
 import { createBeamText, createContentLine } from "@rangex/core";
+
 import type { HandleInsertRootLineParams } from "./HandleInsertRootLine-types";
 
 /*

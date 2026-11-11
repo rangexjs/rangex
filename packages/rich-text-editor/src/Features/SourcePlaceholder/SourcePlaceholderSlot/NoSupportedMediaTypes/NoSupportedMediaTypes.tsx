@@ -5,9 +5,8 @@ export const NoSupportedMediaTypes = () => (
 		<Icon name="WarningCircle" class="size-6" />
 		<span>No media types are available</span>
 		<span class="text-xs">
-			This editor has no Image, Video, Audio, or Embed extension registered —
-			add at least one to the `extensions` array passed to createRichTextEditor
-			to enable media insertion.
+			This editor has no Image, Video, Audio, or Embed extension registered — add at least one to
+			the `extensions` array passed to createRichTextEditor to enable media insertion.
 		</span>
 	</div>
 );

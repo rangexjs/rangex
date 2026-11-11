@@ -1,8 +1,5 @@
-import {
-	linkAttrsShape,
-	normalizeLinkAttrs,
-	validateComponentAttrs,
-} from "#dom-attrs";
+import { linkAttrsShape, normalizeLinkAttrs, validateComponentAttrs } from "#dom-attrs";
+
 import type {
 	ValidateLinkPlacementParams,
 	ValidateLinkPlacementResult,

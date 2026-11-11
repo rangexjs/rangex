@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { EmbedAttrsShape, EmbedAttrValidators } from "#dom-attrs";
+
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -27,7 +29,8 @@ export interface EmbedConfigPortProps {
 }
 
 export interface EmbedConfigPort
-	extends EmbedConfigPortProps,
+	extends
+		EmbedConfigPortProps,
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
@@ -39,7 +42,8 @@ export interface EmbedPublicPortProps {
 }
 
 export interface EmbedPublicPort
-	extends EmbedPublicPortProps,
+	extends
+		EmbedPublicPortProps,
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
@@ -53,7 +57,6 @@ export interface EmbedAdapter {
 
 export interface EmbedSettings {}
 
-export interface CreateEmbedAdapterParams
-	extends CreateAdapterParams<EmbedSettings> {}
+export interface CreateEmbedAdapterParams extends CreateAdapterParams<EmbedSettings> {}
 
 export interface CreateEmbedAdapterResult extends EmbedAdapter {}

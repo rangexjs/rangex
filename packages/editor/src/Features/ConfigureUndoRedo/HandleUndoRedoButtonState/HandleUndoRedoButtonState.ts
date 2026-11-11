@@ -1,4 +1,5 @@
 import { snapshotIndexChangeEventType } from "@rangex/core";
+
 import type { HandleUndoRedoButtonStateParams } from "./HandleUndoRedoButtonState-types";
 
 /*

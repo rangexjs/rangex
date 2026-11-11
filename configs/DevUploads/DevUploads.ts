@@ -1,4 +1,5 @@
 import type { Plugin } from "vite-plus";
+
 import type { ByteRange, DevUpload } from "./DevUploads-types";
 
 const maxUploadSize = 100 * 1024 * 1024;
@@ -7,10 +8,7 @@ const maxUploadSize = 100 * 1024 * 1024;
  * Returns the bytes a Range header asks for (e.g. "bytes=0-1023", "bytes=1024-", "bytes=-500"), or null if it isn't
  * one this server can serve: the whole file is sent instead.
  */
-const parseByteRange = (
-	rangeHeader: string | undefined,
-	size: number,
-): ByteRange | null => {
+const parseByteRange = (rangeHeader: string | undefined, size: number): ByteRange | null => {
 	const match = rangeHeader?.match(/^bytes=(\d*)-(\d*)$/);
 
 	if (!match) {
@@ -94,8 +92,7 @@ export const devUploads = (): Plugin => {
 
 					request.on("end", () => {
 						const id = crypto.randomUUID();
-						const contentType =
-							request.headers["content-type"] ?? "application/octet-stream";
+						const contentType = request.headers["content-type"] ?? "application/octet-stream";
 
 						uploads.set(id, { contentType, data: joinChunks(chunks, size) });
 
@@ -134,10 +131,7 @@ export const devUploads = (): Plugin => {
 				const { start, end } = range;
 
 				response.statusCode = 206;
-				response.setHeader(
-					"Content-Range",
-					`bytes ${start}-${end}/${data.length}`,
-				);
+				response.setHeader("Content-Range", `bytes ${start}-${end}/${data.length}`);
 				response.setHeader("Content-Length", end - start + 1);
 				response.end(data.subarray(start, end + 1));
 			});

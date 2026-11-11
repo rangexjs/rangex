@@ -1,4 +1,5 @@
 import type { EditorAPI, EditorText } from "@rangex/core";
+
 import type { CaretMenuConfigPort } from "#adapters";
 
 export interface GetCaretMenuQueryParams {
@@ -13,9 +14,7 @@ export type GetCaretMenuQueryResult = {
 	query: string;
 } | null;
 
-export type GetCaretMenuQueryFn = (
-	params: GetCaretMenuQueryParams,
-) => GetCaretMenuQueryResult;
+export type GetCaretMenuQueryFn = (params: GetCaretMenuQueryParams) => GetCaretMenuQueryResult;
 
 export interface HandleCaretMenuAppearanceParams {
 	port: CaretMenuConfigPort;

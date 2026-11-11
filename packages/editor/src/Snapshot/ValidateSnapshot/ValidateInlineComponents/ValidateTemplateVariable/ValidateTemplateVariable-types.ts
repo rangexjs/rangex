@@ -1,4 +1,5 @@
 import type { TemplateVariableStorage } from "#storage";
+
 import type { ValidateStorageFn } from "../../_Utilities";
 import type {
 	ComponentValidator,
@@ -6,8 +7,7 @@ import type {
 	ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
-export interface ValidateTemplateVariableParams
-	extends ValidateComponentParams {
+export interface ValidateTemplateVariableParams extends ValidateComponentParams {
 	validateStorage: ValidateStorageFn<TemplateVariableStorage> | undefined;
 }
 

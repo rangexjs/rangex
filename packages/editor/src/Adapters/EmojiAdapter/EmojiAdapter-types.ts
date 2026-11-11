@@ -1,8 +1,4 @@
-import type {
-	CaretMenuConfigPort,
-	CaretMenuPublicPort,
-	CreateAdapterParams,
-} from "../_Utilities";
+import type { CaretMenuConfigPort, CaretMenuPublicPort, CreateAdapterParams } from "../_Utilities";
 
 export interface EmojiItem {
 	emoji: string;
@@ -45,7 +41,6 @@ export interface EmojiSettings {
 	items?: EmojiItems;
 }
 
-export interface CreateEmojiAdapterParams
-	extends CreateAdapterParams<EmojiSettings> {}
+export interface CreateEmojiAdapterParams extends CreateAdapterParams<EmojiSettings> {}
 
 export interface CreateEmojiAdapterResult extends EmojiAdapter {}

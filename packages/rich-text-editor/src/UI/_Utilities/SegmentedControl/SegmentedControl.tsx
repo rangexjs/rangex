@@ -31,11 +31,7 @@ const appearanceStyles: Record<
 			"disabled:bg-neutral-100 dark:disabled:bg-neutral-800",
 			"disabled:text-neutral-400 dark:disabled:text-neutral-600",
 		],
-		activeBox: [
-			"rounded-sm",
-			"border border-primary-500/40",
-			"bg-primary-500/10",
-		],
+		activeBox: ["rounded-sm", "border border-primary-500/40", "bg-primary-500/10"],
 		activeBoxShrink: -1,
 	},
 };
@@ -51,9 +47,7 @@ interface SegmentedControlProps<Id extends string> {
 	commonButtonClass?: JSX.ClassValue;
 }
 
-export const SegmentedControl = <Id extends string>(
-	props: SegmentedControlProps<Id>,
-) => {
+export const SegmentedControl = <Id extends string>(props: SegmentedControlProps<Id>) => {
 	const anchorName = "--segmented-control";
 	const styles = createMemo(() => appearanceStyles[props.appearance]);
 

@@ -1,6 +1,8 @@
 import { TodoList as TodoListFactory } from "@rangex/editor/todo-list";
+
 import { toolbarButtonsName } from "#constants";
 import { CheckboxListToolbarButton } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { TodoListExtensionSettings } from "./TodoList-types";
 

@@ -1,8 +1,5 @@
-import {
-	createContentLine,
-	createFormattableTexts,
-	EditorRange,
-} from "@rangex/core";
+import { createContentLine, createFormattableTexts, EditorRange } from "@rangex/core";
+
 import { getEmojiQuery } from "../_Utilities";
 import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-types";
 

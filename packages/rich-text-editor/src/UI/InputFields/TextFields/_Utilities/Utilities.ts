@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+
 import type {
 	TextFieldErrorRestriction,
 	TextFieldErrorState,
@@ -62,9 +63,7 @@ export const getErrorState = (
 	}
 
 	if (errors.patterns !== undefined) {
-		const patternError = errors.patterns.find(
-			(pattern) => !pattern.value.test(value),
-		);
+		const patternError = errors.patterns.find((pattern) => !pattern.value.test(value));
 
 		if (patternError) {
 			hasError = true;
@@ -89,9 +88,7 @@ export const getErrorState = (
 	}
 
 	// Make sure that the priority contains every ErrorVariant
-	const priority = [
-		...new Set([...(errors.priority ?? []), ...defaultPriority]),
-	];
+	const priority = [...new Set([...(errors.priority ?? []), ...defaultPriority])];
 
 	const messageKey = priority.find((variant) => messages[variant]);
 

@@ -4,18 +4,18 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createImageStorage } from "#storage";
+
 import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
 
 /*
  * Builds an image block component wrapping a `figure`/`img` element, with the given attributes of its line, block and
  * `img`. They aren't validated here.
  */
-export const createImage = ({
-	attrs,
-}: CreateImageParams): CreateImageResult => {
+export const createImage = ({ attrs }: CreateImageParams): CreateImageResult => {
 	return createBlockComponentLine({
 		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),

@@ -17,7 +17,6 @@ export type VideoAttrValidators = ComponentAttrValidators<VideoAttrsShape>;
 
 export type VideoAttrsMismatch = ComponentAttrsMismatch<VideoAttrsShape>;
 
-export type CreateVideoAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<VideoAttrsShape>;
+export type CreateVideoAttrValidatorsParams = ComponentAttrValidatorOverrides<VideoAttrsShape>;
 
 export type CreateVideoAttrValidatorsResult = VideoAttrValidators;

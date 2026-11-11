@@ -1,4 +1,5 @@
 import { blockAlignAttr } from "#constants";
+
 import type { ValidateAttrFn } from "../../DOMAttrs-types";
 
 /*
@@ -6,9 +7,7 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
  * block is created with.
  */
 export const validateBlockAlign: ValidateAttrFn<string> = ({ value }) => {
-	const allowedBlockAligns = new Set<string>(
-		Object.values(blockAlignAttr.value),
-	);
+	const allowedBlockAligns = new Set<string>(Object.values(blockAlignAttr.value));
 
 	if (!allowedBlockAligns.has(value)) {
 		return {

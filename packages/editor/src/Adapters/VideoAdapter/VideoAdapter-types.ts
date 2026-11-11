@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { VideoAttrsShape, VideoAttrValidators } from "#dom-attrs";
+
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -27,7 +29,8 @@ export interface VideoConfigPortProps {
 }
 
 export interface VideoConfigPort
-	extends VideoConfigPortProps,
+	extends
+		VideoConfigPortProps,
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
@@ -39,7 +42,8 @@ export interface VideoPublicPortProps {
 }
 
 export interface VideoPublicPort
-	extends VideoPublicPortProps,
+	extends
+		VideoPublicPortProps,
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
@@ -53,7 +57,6 @@ export interface VideoAdapter {
 
 export interface VideoSettings {}
 
-export interface CreateVideoAdapterParams
-	extends CreateAdapterParams<VideoSettings> {}
+export interface CreateVideoAdapterParams extends CreateAdapterParams<VideoSettings> {}
 
 export interface CreateVideoAdapterResult extends VideoAdapter {}

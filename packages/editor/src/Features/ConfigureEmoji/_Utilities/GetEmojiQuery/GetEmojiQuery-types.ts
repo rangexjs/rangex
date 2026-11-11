@@ -1,7 +1,4 @@
-import type {
-	GetCaretMenuQueryParams,
-	GetCaretMenuQueryResult,
-} from "../../../_Utilities";
+import type { GetCaretMenuQueryParams, GetCaretMenuQueryResult } from "../../../_Utilities";
 
 export interface GetEmojiQueryParams extends GetCaretMenuQueryParams {
 	hasClosingColon: boolean;

@@ -1,4 +1,5 @@
 import type { ComponentDraft, ListDraft, ListItemDraft } from "@rangex/core";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

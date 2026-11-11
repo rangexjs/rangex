@@ -1,5 +1,7 @@
 import { createStructuredStyleValue } from "@rangex/core";
+
 import { assertNever } from "#utilities";
+
 import type {
 	CreateBackgroundColorStructuredStyleParams,
 	CreateBackgroundColorStructuredStyleResult,
@@ -63,8 +65,7 @@ export const createBackgroundColorStructuredStyle = ({
 				dark: backgroundColor.dark,
 			},
 		},
-		resolve: ({ backgroundColor }) =>
-			resolveLightDarkColor({ lightDarkColor: backgroundColor }),
+		resolve: ({ backgroundColor }) => resolveLightDarkColor({ lightDarkColor: backgroundColor }),
 	});
 };
 

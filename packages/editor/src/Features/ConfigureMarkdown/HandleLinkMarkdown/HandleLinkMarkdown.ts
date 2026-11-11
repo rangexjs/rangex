@@ -1,11 +1,9 @@
-import {
-	createContentLine,
-	createFormattableTexts,
-	EditorRange,
-} from "@rangex/core";
+import { createContentLine, createFormattableTexts, EditorRange } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { normalizeLinkAttrs } from "#dom-attrs";
 import { getClosestScopedEditable } from "#engine-links";
+
 import { createLink, validateLinkPlacement } from "../../_Utilities";
 import { scanMarkdownChars } from "../_Utilities";
 import type {
@@ -78,10 +76,7 @@ const canApplyLink = ({ adapterBus, editorAPI }: CanApplyLinkParams) => {
  * Detects a completed "[text](url)" or "![alt](url)" marker on the closing ")" keystroke,
  * letting the keystroke insert natively first so a single undo can restore the literal text.
  */
-export const handleLinkMarkdown = ({
-	adapterBus,
-	editorAPI,
-}: HandleLinkMarkdownParams) => {
+export const handleLinkMarkdown = ({ adapterBus, editorAPI }: HandleLinkMarkdownParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();

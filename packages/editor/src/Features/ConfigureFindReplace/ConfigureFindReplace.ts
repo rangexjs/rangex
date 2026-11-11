@@ -9,10 +9,7 @@ import { handleStepChange } from "./HandleStepChange";
 /*
  * Registers all find-replace event handlers between the UI and the editor engine.
  */
-export const configureFindReplace = ({
-	configPort,
-	editorAPI,
-}: ConfigureFindReplaceParams) => {
+export const configureFindReplace = ({ configPort, editorAPI }: ConfigureFindReplaceParams) => {
 	const activationCleanup = handleFindReplaceActivation({
 		configPort,
 		editorAPI,

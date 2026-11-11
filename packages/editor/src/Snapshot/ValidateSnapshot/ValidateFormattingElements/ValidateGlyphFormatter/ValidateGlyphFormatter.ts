@@ -6,6 +6,7 @@ import {
 	isLetterSpacingStructuredStyle,
 } from "#structured-style";
 import { matchJSON, optional } from "#utilities";
+
 import { describeJSONMismatch } from "../../_Utilities";
 import type {
 	ValidateGlyphFormatterParams,

@@ -4,9 +4,11 @@ import {
 	detachedContextRole,
 	isEditorNode,
 } from "@rangex/core";
+
 import { componentsName, createComponentSelector } from "#constants";
 import { getClosestBlockComponent } from "#engine-links";
 import { assertNever } from "#utilities";
+
 import {
 	validateAudioPlacement,
 	validateEmbedPlacement,
@@ -21,9 +23,7 @@ import type {
 	WatchSourcePlaceholderResult,
 } from "./WatchSourcePlaceholder-types";
 
-const sourcePlaceholderSelector = createComponentSelector(
-	componentsName.sourcePlaceholder,
-);
+const sourcePlaceholderSelector = createComponentSelector(componentsName.sourcePlaceholder);
 
 const getMediaDetachedContext = (blockComponent: BlockComponent) => {
 	const detachedContext = blockComponent.$$firstChild;
@@ -125,10 +125,7 @@ export const watchSourcePlaceholder = ({
 	 * `blockComponent`: it no longer exists in the tree by the time this fires. The media component's Adapter inserts
 	 * its block at the now-collapsed selection (see its handleXInsertion).
 	 */
-	const finalizeResolve = ({
-		blockComponent,
-		detail,
-	}: FinalizeResolveParams) => {
+	const finalizeResolve = ({ blockComponent, detail }: FinalizeResolveParams) => {
 		const blockComponentLine = blockComponent.$$parentElement;
 
 		if (!blockComponentLine) {
@@ -178,15 +175,9 @@ export const watchSourcePlaceholder = ({
 	});
 
 	const queryMediaBlocks = (): Set<BlockComponent> => {
-		const queriedMediaBlocks = rootEditable.$$querySelectorAll(
-			sourcePlaceholderSelector,
-		);
+		const queriedMediaBlocks = rootEditable.$$querySelectorAll(sourcePlaceholderSelector);
 
-		if (
-			!queriedMediaBlocks.every(
-				(mediaBlock) => mediaBlock.$$editorRole === blockComponentRole,
-			)
-		) {
+		if (!queriedMediaBlocks.every((mediaBlock) => mediaBlock.$$editorRole === blockComponentRole)) {
 			throw new Error("Media block's type is invalid.");
 		}
 

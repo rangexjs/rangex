@@ -1,9 +1,7 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveColorPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveColorPort } from "./_Utilities";
 
 export const Color = <T extends FormattingPublicPort | undefined>(
 	formatting: T,

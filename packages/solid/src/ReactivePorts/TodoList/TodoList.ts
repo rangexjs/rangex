@@ -1,5 +1,6 @@
 import type { TodoListPublicPort } from "@rangex/editor/todo-list";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveTodoListPort } from "./TodoList-types";
 
@@ -12,12 +13,8 @@ export const TodoList = <T extends TodoListPublicPort | undefined>(
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
-	const [currentComponent, setCurrentComponent] = createSignal(
-		publicPort.currentComponent,
-	);
-	const [isSelectionActive, setIsSelectionActive] = createSignal(
-		publicPort.isSelectionActive,
-	);
+	const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));

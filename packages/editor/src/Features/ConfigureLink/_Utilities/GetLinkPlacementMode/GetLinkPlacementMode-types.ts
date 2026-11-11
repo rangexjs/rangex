@@ -13,9 +13,6 @@ export interface WrapLinkPlacementMode {
 	segments: GetInlineWrappableSegmentsResult;
 }
 
-export type LinkPlacementMode =
-	| InsertLinkPlacementMode
-	| WrapLinkPlacementMode
-	| null;
+export type LinkPlacementMode = InsertLinkPlacementMode | WrapLinkPlacementMode | null;
 
 export type GetLinkPlacementModeResult = LinkPlacementMode;

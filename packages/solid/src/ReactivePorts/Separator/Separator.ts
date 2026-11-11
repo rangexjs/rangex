@@ -1,5 +1,6 @@
 import type { SeparatorPublicPort } from "@rangex/editor/separator";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveSeparatorPort } from "./Separator-types";
 

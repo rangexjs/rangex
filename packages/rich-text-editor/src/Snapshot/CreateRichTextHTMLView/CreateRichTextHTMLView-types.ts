@@ -1,8 +1,4 @@
-import type {
-	createHTMLView,
-	SnapshotLimits,
-	StoredSnapshot,
-} from "@rangex/editor";
+import type { createHTMLView, SnapshotLimits, StoredSnapshot } from "@rangex/editor";
 import type { HighlightCodeFn } from "@rangex/editor/code-block";
 
 export interface CreateRichTextHTMLViewParams {
@@ -11,5 +7,4 @@ export interface CreateRichTextHTMLViewParams {
 	highlightCode?: HighlightCodeFn;
 }
 
-export interface CreateRichTextHTMLViewResult
-	extends ReturnType<typeof createHTMLView> {}
+export interface CreateRichTextHTMLViewResult extends ReturnType<typeof createHTMLView> {}

@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -28,9 +29,7 @@ export interface BlockQuoteConfigPortProps {
 }
 
 export interface BlockQuoteConfigPort
-	extends BlockQuoteConfigPortProps,
-		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+	extends BlockQuoteConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface BlockQuotePublicPortProps {
 	readonly canInsert: boolean;
@@ -44,9 +43,7 @@ export interface BlockQuotePublicPortProps {
 }
 
 export interface BlockQuotePublicPort
-	extends BlockQuotePublicPortProps,
-		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+	extends BlockQuotePublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface BlockQuoteAdapter {
 	configPort: BlockQuoteConfigPort;
@@ -55,7 +52,6 @@ export interface BlockQuoteAdapter {
 
 export interface BlockQuoteSettings {}
 
-export interface CreateBlockQuoteAdapterParams
-	extends CreateAdapterParams<BlockQuoteSettings> {}
+export interface CreateBlockQuoteAdapterParams extends CreateAdapterParams<BlockQuoteSettings> {}
 
 export interface CreateBlockQuoteAdapterResult extends BlockQuoteAdapter {}

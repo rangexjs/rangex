@@ -1,4 +1,5 @@
 import type { BlockComponentLine } from "@rangex/core";
+
 import type { VideoAttrs } from "#dom-attrs";
 
 export interface CreateVideoParams {

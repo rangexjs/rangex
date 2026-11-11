@@ -25,7 +25,4 @@ export type {
 	RichTextEditor,
 } from "../CreateRichTextEditor";
 export { createRichTextEditor } from "../CreateRichTextEditor";
-export {
-	createRichTextHTMLView,
-	createRichTextSnapshotView,
-} from "../Snapshot";
+export { createRichTextHTMLView, createRichTextSnapshotView } from "../Snapshot";

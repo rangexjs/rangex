@@ -4,18 +4,18 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createAudioStorage } from "#storage";
+
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 /*
  * Builds an audio block component wrapping a `figure`/`audio` element, with the given attributes of its line, block
  * and `audio`. They aren't validated here.
  */
-export const createAudio = ({
-	attrs,
-}: CreateAudioParams): CreateAudioResult => {
+export const createAudio = ({ attrs }: CreateAudioParams): CreateAudioResult => {
 	return createBlockComponentLine({
 		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),

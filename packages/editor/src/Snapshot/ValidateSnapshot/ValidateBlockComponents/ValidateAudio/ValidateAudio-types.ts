@@ -1,7 +1,5 @@
-import type {
-	AudioAttrValidators,
-	CreateAudioAttrValidatorsParams,
-} from "#dom-attrs";
+import type { AudioAttrValidators, CreateAudioAttrValidatorsParams } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

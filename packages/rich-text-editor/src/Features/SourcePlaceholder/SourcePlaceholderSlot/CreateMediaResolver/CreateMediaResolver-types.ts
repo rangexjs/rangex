@@ -1,11 +1,9 @@
 import type { RangeXEditor } from "@rangex/editor";
 import type { SourcePlaceholderPublicPort } from "@rangex/editor/source-placeholder";
 import type { Accessor } from "solid-js";
+
 import type { MediaFileType } from "../../_Utilities";
-import type {
-	SlotStatus,
-	SourcePlaceholderSlotSettings,
-} from "../SourcePlaceholderSlot-types";
+import type { SlotStatus, SourcePlaceholderSlotSettings } from "../SourcePlaceholderSlot-types";
 
 export interface CreateMediaResolverParams {
 	editor: RangeXEditor;

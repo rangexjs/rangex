@@ -1,5 +1,6 @@
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
+
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertTemplateVariableParams } from "./GetTemplateVariableQuery-types";
 
@@ -19,8 +20,7 @@ export const canInsertTemplateVariable = ({
 	const { $$allowedComponents } = scopedEditable;
 
 	return (
-		$$allowedComponents === null ||
-		$$allowedComponents.includes(componentsName.templateVariable)
+		$$allowedComponents === null || $$allowedComponents.includes(componentsName.templateVariable)
 	);
 };
 

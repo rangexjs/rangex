@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { createUniqueId, For } from "solid-js";
+
 import { Icon, type IconName } from "#ui";
 import { assertNever } from "#utilities";
 
@@ -55,16 +56,9 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
 					<Icon name={props.icon} class="size-3 shrink-0" />
 					{props.label}
 				</span>
-				<Icon
-					name="CaretRight"
-					class="size-2 shrink-0 text-neutral-700 dark:text-neutral-200"
-				/>
+				<Icon name="CaretRight" class="size-2 shrink-0 text-neutral-700 dark:text-neutral-200" />
 			</button>
-			<Submenu
-				mainPopoverId={props.mainPopoverId}
-				popoverId={popoverId}
-				items={props.items}
-			/>
+			<Submenu mainPopoverId={props.mainPopoverId} popoverId={popoverId} items={props.items} />
 		</div>
 	);
 };
@@ -91,15 +85,11 @@ const MenuBase = (props: MenuBaseProps) => (
 		<For each={props.items}>
 			{(item) => {
 				if (item.type === "button") {
-					return (
-						<ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />
-					);
+					return <ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 				}
 
 				if (item.type === "submenu") {
-					return (
-						<SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />
-					);
+					return <SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 				}
 
 				return assertNever(item);

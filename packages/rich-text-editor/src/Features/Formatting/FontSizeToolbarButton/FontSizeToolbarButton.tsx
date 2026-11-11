@@ -1,14 +1,11 @@
 import type { FontSizeValue } from "@rangex/editor/formatting";
 import { FontSize, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
+
 import { useEditorContext } from "#context";
-import {
-	createTextFieldState,
-	Icon,
-	InputTextField,
-	TextFieldWrapper,
-} from "#ui";
+import { createTextFieldState, Icon, InputTextField, TextFieldWrapper } from "#ui";
 import { isDeepEqual } from "#utilities";
+
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const fontSizeValues: FontSizeValue[] = [
@@ -66,10 +63,9 @@ export const FontSizeToolbarButton = () => {
 		getInputValueFromActiveValues($fontSize.values(), $fontSize.hasUnset()),
 	);
 
-	const [fontSizeHandle, fontSizeControls] =
-		createTextFieldState<HTMLInputElement>({
-			defaultValue: untrack(() => activeInputValue()),
-		});
+	const [fontSizeHandle, fontSizeControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: untrack(() => activeInputValue()),
+	});
 
 	const popoverId = createUniqueId();
 
@@ -132,8 +128,7 @@ export const FontSizeToolbarButton = () => {
 
 			for (const commonValue of commonValues) {
 				const matchedValue = deduplicatedValues.find(
-					(val) =>
-						val.type === commonValue.type && val.value === commonValue.value,
+					(val) => val.type === commonValue.type && val.value === commonValue.value,
 				);
 
 				if (matchedValue) {
@@ -153,8 +148,7 @@ export const FontSizeToolbarButton = () => {
 
 		const contains = (value: FontSizeValue) => {
 			return !![...activeValues].find(
-				(activeValue) =>
-					activeValue.type === value.type && activeValue.value === value.value,
+				(activeValue) => activeValue.type === value.type && activeValue.value === value.value,
 			);
 		};
 
@@ -167,25 +161,21 @@ export const FontSizeToolbarButton = () => {
 			},
 		};
 
-		const fontSizeItems = sortedFontSizes().map<ToolbarDropdownList[number]>(
-			(fontSizeItem) => {
-				return {
-					checked: contains(fontSizeItem),
-					text: `${fontSizeItem.value}`,
-					button: {
-						onClick: () => formatting.setFontSize(fontSizeItem),
-						class: "justify-center",
-					},
-				};
-			},
-		);
+		const fontSizeItems = sortedFontSizes().map<ToolbarDropdownList[number]>((fontSizeItem) => {
+			return {
+				checked: contains(fontSizeItem),
+				text: `${fontSizeItem.value}`,
+				button: {
+					onClick: () => formatting.setFontSize(fontSizeItem),
+					class: "justify-center",
+				},
+			};
+		});
 
 		return [defaultItem, ...fontSizeItems];
 	});
 
-	const disabled = createMemo(
-		() => $fontSize.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $fontSize.disabled() || !!$readOnly?.checked());
 
 	const anchorName = "--font-size-anchor";
 

@@ -1,7 +1,9 @@
 import { AccordionItem, ReadOnly, Separator } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { accordionItemAttrs } from "../AccordionItemAttrs";
 import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
@@ -36,9 +38,7 @@ export const CustomComponentToolbarButton = () => {
 		const items: ToolbarDropdownList = [];
 
 		if (accordionItem && $accordionItem) {
-			const disabled = !(
-				$accordionItem.isSelectionActive() || $accordionItem.canInsert()
-			);
+			const disabled = !($accordionItem.isSelectionActive() || $accordionItem.canInsert());
 
 			items.push({
 				icon: "CaretCircleRight",

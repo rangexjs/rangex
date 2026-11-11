@@ -13,8 +13,5 @@ export type {
 	CreateCheckboxControllerResult,
 } from "./CreateCheckboxController";
 export { createCheckboxController } from "./CreateCheckboxController";
-export type {
-	CreateCheckboxStateParams,
-	CreateCheckboxStateResult,
-} from "./CreateCheckboxState";
+export type { CreateCheckboxStateParams, CreateCheckboxStateResult } from "./CreateCheckboxState";
 export { createCheckboxState } from "./CreateCheckboxState";

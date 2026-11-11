@@ -1,7 +1,4 @@
-import type {
-	GetTableCapacityParams,
-	GetTableCapacityResult,
-} from "./GetTableCapacity-types";
+import type { GetTableCapacityParams, GetTableCapacityResult } from "./GetTableCapacity-types";
 
 /*
  * Whether the table can grow by a row or a column within its limits. Splitting the given cell only adds one when it

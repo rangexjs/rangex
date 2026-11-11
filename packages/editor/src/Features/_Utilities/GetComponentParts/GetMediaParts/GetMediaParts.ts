@@ -1,8 +1,6 @@
 import { blockComponentLineRole, htmlLayoutRole } from "@rangex/core";
-import type {
-	GetMediaPartsParams,
-	GetMediaPartsResult,
-} from "./GetMediaParts-types";
+
+import type { GetMediaPartsParams, GetMediaPartsResult } from "./GetMediaParts-types";
 
 /*
  * Returns a media component's (Image, Video, Audio, Embed) parts: its line, the BlockComponentLine it's in, its block,
@@ -21,19 +19,12 @@ export const getMediaParts = ({
 
 	const [figure] = blockComponent.$$children;
 
-	if (
-		!figure ||
-		figure.$$editorRole !== htmlLayoutRole ||
-		figure.$$localName !== "figure"
-	) {
+	if (!figure || figure.$$editorRole !== htmlLayoutRole || figure.$$localName !== "figure") {
 		throw new Error("Media's first child must be the figure.");
 	}
 
 	for (const child of figure.$$children) {
-		if (
-			child.$$editorRole === htmlLayoutRole &&
-			child.$$localName === mediaLocalName
-		) {
+		if (child.$$editorRole === htmlLayoutRole && child.$$localName === mediaLocalName) {
 			return { line, block: blockComponent, media: child };
 		}
 	}

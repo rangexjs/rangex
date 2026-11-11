@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createEmitter,
@@ -79,12 +81,11 @@ export const createTableAdapter = (
 		header: { disabled: true },
 		data: { disabled: true },
 	});
-	const verticalAlignmentState =
-		createStateEmitter<TableVerticalAlignmentState>({
-			start: { disabled: true },
-			center: { disabled: true },
-			end: { disabled: true },
-		});
+	const verticalAlignmentState = createStateEmitter<TableVerticalAlignmentState>({
+		start: { disabled: true },
+		center: { disabled: true },
+		end: { disabled: true },
+	});
 	const cellResizingState = createStateEmitter<TableCellResizingState>({
 		equalizeColumns: { disabled: true },
 		minimizeRows: { disabled: true },
@@ -95,19 +96,14 @@ export const createTableAdapter = (
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
-	const changeSectionTypeEmitter =
-		createEmitter<OnChangeSectionTypeCallbackFn>();
+	const changeSectionTypeEmitter = createEmitter<OnChangeSectionTypeCallbackFn>();
 	const changeMergeSplitEmitter = createEmitter<OnChangeMergeSplitCallbackFn>();
-	const changeInsertDeleteEmitter =
-		createEmitter<OnChangeInsertDeleteCallbackFn>();
+	const changeInsertDeleteEmitter = createEmitter<OnChangeInsertDeleteCallbackFn>();
 	const changeCellTypeEmitter = createEmitter<OnChangeCellTypeCallbackFn>();
-	const changeVerticalAlignmentEmitter =
-		createEmitter<OnChangeVerticalAlignmentCallbackFn>();
-	const changeCellResizingEmitter =
-		createEmitter<OnChangeCellResizingCallbackFn>();
+	const changeVerticalAlignmentEmitter = createEmitter<OnChangeVerticalAlignmentCallbackFn>();
+	const changeCellResizingEmitter = createEmitter<OnChangeCellResizingCallbackFn>();
 	const clearContentsEmitter = createEmitter<OnClearContentsCallbackFn>();
-	const contextMenuToggleEmitter =
-		createEmitter<OnContextMenuToggleCallbackFn>();
+	const contextMenuToggleEmitter = createEmitter<OnContextMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();

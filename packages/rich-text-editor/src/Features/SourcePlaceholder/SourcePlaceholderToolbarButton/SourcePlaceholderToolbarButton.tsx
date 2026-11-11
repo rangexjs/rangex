@@ -1,7 +1,9 @@
 import { ReadOnly, SourcePlaceholder } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const SourcePlaceholderToolbarButton = () => {
@@ -15,9 +17,7 @@ export const SourcePlaceholderToolbarButton = () => {
 	const $sourcePlaceholder = SourcePlaceholder(sourcePlaceholder);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => !$sourcePlaceholder.canInsert() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => !$sourcePlaceholder.canInsert() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		sourcePlaceholder.insert();

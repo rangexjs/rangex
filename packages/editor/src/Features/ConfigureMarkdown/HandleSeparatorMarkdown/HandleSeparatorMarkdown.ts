@@ -1,14 +1,9 @@
-import {
-	createContentLine,
-	createFormattableTexts,
-	EditorRange,
-} from "@rangex/core";
+import { createContentLine, createFormattableTexts, EditorRange } from "@rangex/core";
+
 import { componentsName } from "#constants";
+
 import { createSeparator } from "../../_Utilities";
-import {
-	getLineMarkdownPrefix,
-	isPrefixAtContentLineStart,
-} from "../_Utilities";
+import { getLineMarkdownPrefix, isPrefixAtContentLineStart } from "../_Utilities";
 import type { HandleSeparatorMarkdownParams } from "./HandleSeparatorMarkdown-types";
 
 /*

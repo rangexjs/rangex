@@ -8,6 +8,7 @@ import type {
 	TableVerticalAlignmentAction,
 } from "@rangex/editor/table";
 import type { ReactiveTablePort } from "@rangex/solid";
+
 import type { TableContextMenuUIOptions } from "#context";
 
 export interface ActionItem {
@@ -222,10 +223,7 @@ export const createContextMenuItems = ({
 		},
 	};
 
-	const verticalAlignmentItems: Record<
-		TableVerticalAlignmentAction,
-		ActionItem
-	> = {
+	const verticalAlignmentItems: Record<TableVerticalAlignmentAction, ActionItem> = {
 		start: {
 			type: "button",
 			label: "Top",
@@ -304,9 +302,7 @@ export const createContextMenuItems = ({
 		},
 	];
 
-	const items: ContextMenuItem[] = submenus.filter(
-		(submenu) => submenu.items.length > 0,
-	);
+	const items: ContextMenuItem[] = submenus.filter((submenu) => submenu.items.length > 0);
 
 	if (clearContents) {
 		items.push({

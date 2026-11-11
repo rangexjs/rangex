@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { videoAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	getMediaParts,
 	handleBlockAlignState,
@@ -24,11 +25,7 @@ import { handleVideoInsertion } from "./HandleVideoInsertion";
  * Wires up the video feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
-export const configureVideo = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-}: ConfigureVideoParams) => {
+export const configureVideo = ({ adapterBus, configPort, editorAPI }: ConfigureVideoParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,

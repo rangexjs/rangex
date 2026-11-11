@@ -1,7 +1,5 @@
-import type {
-	CreateVideoAttrValidatorsParams,
-	VideoAttrValidators,
-} from "#dom-attrs";
+import type { CreateVideoAttrValidatorsParams, VideoAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

@@ -1,9 +1,6 @@
 import { extendObjectProperties } from "#utilities";
-import {
-	createCaretMenuPort,
-	createEmitter,
-	createStateEmitter,
-} from "../_Utilities";
+
+import { createCaretMenuPort, createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CommandMenuAvailableItems,
 	CommandMenuConfigPort,

@@ -11,10 +11,7 @@ const defaultTimeoutMs = 15_000;
 /*
  * A signal that aborts once any of `signals` does, or once `timeoutMs` elapses.
  */
-const createProbeSignal = (
-	signals: (AbortSignal | undefined)[],
-	timeoutMs: number,
-) => {
+const createProbeSignal = (signals: (AbortSignal | undefined)[], timeoutMs: number) => {
 	const definedSignals = signals.filter((signal) => signal !== undefined);
 
 	return AbortSignal.any([...definedSignals, AbortSignal.timeout(timeoutMs)]);
@@ -130,34 +127,24 @@ export const probeMediaType = async ({
 	timeoutMs = defaultTimeoutMs,
 }: ProbeMediaTypeParams): ProbeMediaTypeResult => {
 	const settledController = new AbortController();
-	const probeSignal = createProbeSignal(
-		[signal, settledController.signal],
-		timeoutMs,
-	);
+	const probeSignal = createProbeSignal([signal, settledController.signal], timeoutMs);
 
 	const probes: Promise<ProbeableMediaType | null>[] = [];
 
 	if (supportedMediaTypes.includes("image")) {
-		const imageProbe = loadImage(src, probeSignal).then((loaded) =>
-			loaded ? "image" : null,
-		);
+		const imageProbe = loadImage(src, probeSignal).then((loaded) => (loaded ? "image" : null));
 
 		probes.push(imageProbe);
 	}
 
-	if (
-		supportedMediaTypes.includes("video") ||
-		supportedMediaTypes.includes("audio")
-	) {
-		const mediaElementProbe = loadMediaElement(src, probeSignal).then(
-			(type) => {
-				if (type === null) {
-					return null;
-				}
+	if (supportedMediaTypes.includes("video") || supportedMediaTypes.includes("audio")) {
+		const mediaElementProbe = loadMediaElement(src, probeSignal).then((type) => {
+			if (type === null) {
+				return null;
+			}
 
-				return supportedMediaTypes.includes(type) ? type : null;
-			},
-		);
+			return supportedMediaTypes.includes(type) ? type : null;
+		});
 
 		probes.push(mediaElementProbe);
 	}

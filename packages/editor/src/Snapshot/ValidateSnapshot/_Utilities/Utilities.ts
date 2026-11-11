@@ -1,5 +1,7 @@
 import { type EditorNodeDraft, isComponentDraft } from "@rangex/core";
+
 import { assertNever, formatJSONMismatch } from "#utilities";
+
 import type {
 	DescribeElementAttrsMismatchParams,
 	DescribeJSONMismatchParams,
@@ -24,10 +26,7 @@ export const formatValue = (value: string) => {
  * and its index among its parent's childNodes, e.g. `html-layout(a)[0]` or `block-component<image>[1]`. The path's root
  * has no index.
  */
-const formatNodeSegment = ({
-	rootDraft,
-	nodeDraft,
-}: FormatNodeSegmentParams) => {
+const formatNodeSegment = ({ rootDraft, nodeDraft }: FormatNodeSegmentParams) => {
 	const { editorRole, parentElement } = nodeDraft;
 
 	let segment: string = editorRole;
@@ -54,10 +53,7 @@ const formatNodeSegment = ({
  * Formats the path from a root (e.g. a component) down to one of its nodes for a failure's reason, e.g.
  * `inline-component<link> > html-layout(a)[0] > nested-editable[0]`. Every node is formatted by formatNodeSegment.
  */
-export const formatNodePath = ({
-	rootDraft,
-	nodeDraft,
-}: FormatNodePathParams) => {
+export const formatNodePath = ({ rootDraft, nodeDraft }: FormatNodePathParams) => {
 	const segments: string[] = [];
 
 	let currentDraft: EditorNodeDraft | null = nodeDraft;

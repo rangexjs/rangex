@@ -20,14 +20,8 @@
 
 	&:hover {
 		color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
-		border-color: light-dark(
-			var(--color-neutral-200),
-			var(--color-neutral-700)
-		);
-		background-color: light-dark(
-			var(--color-neutral-100),
-			var(--color-neutral-800)
-		);
+		border-color: light-dark(var(--color-neutral-200), var(--color-neutral-700));
+		background-color: light-dark(var(--color-neutral-100), var(--color-neutral-800));
 
 		&[data-checked="true"] {
 			color: var(--color-primary-500);
@@ -37,16 +31,9 @@
 	}
 
 	&:active {
-		border-color: color(
-			from var(--color-primary-500) srgb r g b /
-			0.6
-		) !important;
-		background-color: light-dark(
-			var(--color-neutral-100),
-			var(--color-neutral-800)
-		);
-		box-shadow: 0px 0px 0px 2px
-			color(from var(--color-primary-500) srgb r g b / 0.2);
+		border-color: color(from var(--color-primary-500) srgb r g b / 0.6) !important;
+		background-color: light-dark(var(--color-neutral-100), var(--color-neutral-800));
+		box-shadow: 0px 0px 0px 2px color(from var(--color-primary-500) srgb r g b / 0.2);
 
 		&[data-checked="true"] {
 			background-color: color(from var(--color-primary-500) srgb r g b / 0.2);

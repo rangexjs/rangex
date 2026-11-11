@@ -1,5 +1,6 @@
 import { createSymbolsAdapter, type SymbolsSettings } from "#adapters/Symbols";
 import { configureSymbols } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Symbols: AdapterFactoryFn<SymbolsSettings> = (settings) => {

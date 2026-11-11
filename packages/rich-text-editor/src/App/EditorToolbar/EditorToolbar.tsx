@@ -1,5 +1,6 @@
 import { dynamic } from "@solidjs/web";
 import { createMemo, For, Show } from "solid-js";
+
 import type { ToolbarButtonsLayout } from "#constants";
 import type { ExtensionToolbarButtons } from "#extensions";
 
@@ -14,9 +15,7 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 		const toolbarButtons = props.toolbarButtons;
 
 		const rows = props.toolbarButtonsLayout.map((row) => {
-			const groups = row.map((group) =>
-				group.filter((name) => toolbarButtons[name]),
-			);
+			const groups = row.map((group) => group.filter((name) => toolbarButtons[name]));
 
 			return groups.filter((group) => group.length > 0);
 		});
@@ -43,9 +42,7 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
 									<span class="space-x-0.5">
 										<For each={group}>
 											{(name) => {
-												const ToolbarButton = dynamic(
-													() => props.toolbarButtons[name],
-												);
+												const ToolbarButton = dynamic(() => props.toolbarButtons[name]);
 
 												return <ToolbarButton />;
 											}}

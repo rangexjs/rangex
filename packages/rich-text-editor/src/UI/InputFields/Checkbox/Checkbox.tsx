@@ -1,13 +1,13 @@
 import type { JSX } from "@solidjs/web";
 import { omit, untrack } from "solid-js";
+
 import { Icon } from "../../Icon";
 import type { CheckboxControls } from "./_Utilities";
 
-interface InputProps
-	extends Omit<
-		JSX.InputHTMLAttributes<HTMLInputElement>,
-		"ref" | "id" | "type" | "checked" | "defaultChecked"
-	> {}
+interface InputProps extends Omit<
+	JSX.InputHTMLAttributes<HTMLInputElement>,
+	"ref" | "id" | "type" | "checked" | "defaultChecked"
+> {}
 
 export interface CheckboxProps extends InputProps, CheckboxControls {}
 

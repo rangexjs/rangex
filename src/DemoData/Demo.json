@@ -400,12 +400,7 @@
 												"uniqueId": "1787515033983-3523992147",
 												"customStorage": null,
 												"display": "block multi-line",
-												"allowedComponents": [
-													"link",
-													"mention",
-													"template-variable",
-													"comment"
-												],
+												"allowedComponents": ["link", "mention", "template-variable", "comment"],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -492,12 +487,7 @@
 												"uniqueId": "1787515037971-4280037377",
 												"customStorage": null,
 												"display": "block multi-line",
-												"allowedComponents": [
-													"link",
-													"mention",
-													"template-variable",
-													"comment"
-												],
+												"allowedComponents": ["link", "mention", "template-variable", "comment"],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -606,12 +596,7 @@
 												"uniqueId": "1787520105731-1713490911",
 												"customStorage": null,
 												"display": "block multi-line",
-												"allowedComponents": [
-													"link",
-													"mention",
-													"template-variable",
-													"comment"
-												],
+												"allowedComponents": ["link", "mention", "template-variable", "comment"],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,
@@ -785,12 +770,7 @@
 												"uniqueId": "1787519516632-1010715937",
 												"customStorage": null,
 												"display": "block single-line",
-												"allowedComponents": [
-													"link",
-													"mention",
-													"template-variable",
-													"comment"
-												],
+												"allowedComponents": ["link", "mention", "template-variable", "comment"],
 												"allowedContentLineLocalNames": null,
 												"allowedContentLineStyleAttrNames": null,
 												"allowedGlyphFormatterStyleAttrNames": null,

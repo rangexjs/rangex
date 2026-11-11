@@ -1,11 +1,9 @@
 import { TemplateVariable } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext, useUIOptionsContext } from "#context";
-import {
-	type CaretItemFn,
-	CaretMenu,
-	filterCaretMenuItems,
-} from "../../_Utilities";
+
+import { type CaretItemFn, CaretMenu, filterCaretMenuItems } from "../../_Utilities";
 
 export const TemplateVariableCaretMenu = () => {
 	const editor = useEditorContext();
@@ -24,9 +22,7 @@ export const TemplateVariableCaretMenu = () => {
 	const $templateVariable = TemplateVariable(templateVariable);
 
 	const getLabel = (fieldName: string) => {
-		const dropdownItem = options.dropdown.find(
-			(item) => item.fieldName === fieldName,
-		);
+		const dropdownItem = options.dropdown.find((item) => item.fieldName === fieldName);
 
 		return dropdownItem?.label ?? fieldName;
 	};

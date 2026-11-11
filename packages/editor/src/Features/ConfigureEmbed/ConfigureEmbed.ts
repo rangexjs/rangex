@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { embedAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	getMediaParts,
 	handleBlockAlignState,
@@ -24,11 +25,7 @@ import { handleEmbedInsertion } from "./HandleEmbedInsertion";
  * Wires up the embed feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
-export const configureEmbed = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-}: ConfigureEmbedParams) => {
+export const configureEmbed = ({ adapterBus, configPort, editorAPI }: ConfigureEmbedParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,

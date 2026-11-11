@@ -1,8 +1,6 @@
 import type { GetHighlightInfoFn } from "@rangex/editor/code-block";
-import type {
-	WorkerRequest,
-	WorkerResponse,
-} from "../InitEditorHighlighterWorker";
+
+import type { WorkerRequest, WorkerResponse } from "../InitEditorHighlighterWorker";
 
 /*
  * Wraps a consumer-supplied Shiki worker (built with `initEditorHighlighterWorker`) into a

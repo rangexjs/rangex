@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { audioId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -30,9 +31,7 @@ export const isAudioStorage = (storage: unknown): storage is AudioStorage => {
 	return !mismatch;
 };
 
-export const validateAudioStorage = (
-	storage: unknown,
-): storage is AudioStorage => {
+export const validateAudioStorage = (storage: unknown): storage is AudioStorage => {
 	return validateStorage(storage, isAudioStorage);
 };
 

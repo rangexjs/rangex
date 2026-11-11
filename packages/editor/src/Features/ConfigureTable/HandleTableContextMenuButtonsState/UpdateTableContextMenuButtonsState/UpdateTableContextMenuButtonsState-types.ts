@@ -1,4 +1,5 @@
 import type { EditorAPI, Table, TableCell } from "@rangex/core";
+
 import type { TableConfigPort } from "#adapters/Table";
 
 export interface CellTypeState {
@@ -24,8 +25,7 @@ export interface GetVerticalAlignmentButtonsStateParams {
 	table: Table;
 }
 
-export interface GetVerticalAlignmentButtonsStateResult
-	extends VerticalAlignmentState {}
+export interface GetVerticalAlignmentButtonsStateResult extends VerticalAlignmentState {}
 
 export interface IsTableCellEmptyParams {
 	tableCell: TableCell;

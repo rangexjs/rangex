@@ -1,12 +1,7 @@
-import {
-	EditorRange,
-	editorSelectionChangeEventType,
-	selectionOutEventType,
-} from "@rangex/core";
-import {
-	createAnchoredOverlayController,
-	positionToSelection,
-} from "#engine-links";
+import { EditorRange, editorSelectionChangeEventType, selectionOutEventType } from "@rangex/core";
+
+import { createAnchoredOverlayController, positionToSelection } from "#engine-links";
+
 import type { HandleCaretMenuAppearanceParams } from "./HandleCaretMenuAppearance-types";
 
 /*
@@ -64,8 +59,7 @@ export const handleCaretMenuAppearance = ({
 	const unsubscribeAppearance = editorAPI.subscribeEditorEvent({
 		type: editorSelectionChangeEventType,
 		callback: () => {
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
+			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 			const range = new EditorRange({
 				fromNode: fromText,

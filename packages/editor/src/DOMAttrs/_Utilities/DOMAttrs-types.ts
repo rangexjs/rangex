@@ -28,8 +28,9 @@ export type ComponentAttrsShape = Readonly<Record<string, ElementAttrsShape>>;
 /*
  * A required attribute is always a string, an optional one is null when it isn't set
  */
-export type AttrValue<TRequirement extends AttrRequirement> =
-	TRequirement extends "required" ? string : string | null;
+export type AttrValue<TRequirement extends AttrRequirement> = TRequirement extends "required"
+	? string
+	: string | null;
 
 type AttrNameByRequirement<
 	TElementAttrsShape extends ElementAttrsShape,
@@ -44,21 +45,13 @@ type AttrNameByRequirement<
  * An element's attributes by its shape: a required attribute must be given, an optional one can be left out
  */
 export type ElementAttrs<TElementAttrsShape extends ElementAttrsShape> = {
-	[AttrName in AttrNameByRequirement<
-		TElementAttrsShape,
-		"required"
-	>]: AttrValue<"required">;
+	[AttrName in AttrNameByRequirement<TElementAttrsShape, "required">]: AttrValue<"required">;
 } & {
-	[AttrName in AttrNameByRequirement<
-		TElementAttrsShape,
-		"optional"
-	>]?: AttrValue<"optional">;
+	[AttrName in AttrNameByRequirement<TElementAttrsShape, "optional">]?: AttrValue<"optional">;
 };
 
 export type ComponentAttrs<TComponentAttrsShape extends ComponentAttrsShape> = {
-	[ElementName in keyof TComponentAttrsShape]: ElementAttrs<
-		TComponentAttrsShape[ElementName]
-	>;
+	[ElementName in keyof TComponentAttrsShape]: ElementAttrs<TComponentAttrsShape[ElementName]>;
 };
 
 /*
@@ -73,9 +66,7 @@ export interface ElementDescriptor {
 /*
  * A component's elements that have attributes, by element name
  */
-export type ComponentElements<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> = {
+export type ComponentElements<TComponentAttrsShape extends ComponentAttrsShape> = {
 	[ElementName in keyof TComponentAttrsShape]: AttrEditorElement;
 };
 
@@ -89,18 +80,14 @@ export type AnyElementAttrs = Partial<Record<string, string | null>>;
  * it is.
  */
 export type ElementAttrsPatch<TElementAttrsShape extends ElementAttrsShape> = {
-	[AttrName in keyof TElementAttrsShape]?: AttrValue<
-		TElementAttrsShape[AttrName]
-	>;
+	[AttrName in keyof TElementAttrsShape]?: AttrValue<TElementAttrsShape[AttrName]>;
 };
 
 /*
  * Changes a component's attributes: a string sets the attribute, null removes it, and an element or attribute left
  * out stays as it is.
  */
-export type ComponentAttrsPatch<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> = {
+export type ComponentAttrsPatch<TComponentAttrsShape extends ComponentAttrsShape> = {
 	[ElementName in keyof TComponentAttrsShape]?: ElementAttrsPatch<
 		TComponentAttrsShape[ElementName]
 	>;
@@ -113,8 +100,9 @@ interface AttrValidationFailedBase {
 /*
  * The invalid value is replaced by the fallback; null removes the attribute
  */
-export interface AttrValidationFailedFallback<Value extends string | null>
-	extends AttrValidationFailedBase {
+export interface AttrValidationFailedFallback<
+	Value extends string | null,
+> extends AttrValidationFailedBase {
 	kind: "fallback";
 	value: Value;
 }
@@ -134,8 +122,7 @@ export interface ValidateAttrParams {
 	value: string;
 }
 
-export type ValidateAttrResult<Value extends string | null> =
-	AttrValidationFailed<Value> | null;
+export type ValidateAttrResult<Value extends string | null> = AttrValidationFailed<Value> | null;
 
 /*
  * Validates a set attribute's value. Value is the attribute's type, so a required attribute can't fall back to null.
@@ -144,17 +131,11 @@ export type ValidateAttrFn<Value extends string | null> = (
 	params: ValidateAttrParams,
 ) => ValidateAttrResult<Value>;
 
-export type ElementAttrValidators<
-	TElementAttrsShape extends ElementAttrsShape,
-> = {
-	[AttrName in keyof TElementAttrsShape]: ValidateAttrFn<
-		AttrValue<TElementAttrsShape[AttrName]>
-	>;
+export type ElementAttrValidators<TElementAttrsShape extends ElementAttrsShape> = {
+	[AttrName in keyof TElementAttrsShape]: ValidateAttrFn<AttrValue<TElementAttrsShape[AttrName]>>;
 };
 
-export type ComponentAttrValidators<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> = {
+export type ComponentAttrValidators<TComponentAttrsShape extends ComponentAttrsShape> = {
 	[ElementName in keyof TComponentAttrsShape]: ElementAttrValidators<
 		TComponentAttrsShape[ElementName]
 	>;
@@ -164,9 +145,7 @@ export type ComponentAttrValidators<
  * Replaces the validators of a component's attributes, by element and attribute name. Which attributes exist, and
  * which of them are required, is decided by the shape.
  */
-export type ComponentAttrValidatorOverrides<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> = {
+export type ComponentAttrValidatorOverrides<TComponentAttrsShape extends ComponentAttrsShape> = {
 	[ElementName in keyof TComponentAttrsShape]?: Partial<
 		ElementAttrValidators<TComponentAttrsShape[ElementName]>
 	>;
@@ -175,9 +154,7 @@ export type ComponentAttrValidatorOverrides<
 /*
  * Any element's validators by attribute name
  */
-export type AnyElementAttrValidators = Partial<
-	Record<string, ValidateAttrFn<string | null>>
->;
+export type AnyElementAttrValidators = Partial<Record<string, ValidateAttrFn<string | null>>>;
 
 export interface UnknownAttrMismatch {
 	kind: "unknown-attr";
@@ -195,17 +172,12 @@ export interface InvalidAttrMismatch {
 	validationFailed: AttrValidationFailed<string | null>;
 }
 
-export type ElementAttrsMismatch =
-	| UnknownAttrMismatch
-	| MissingAttrMismatch
-	| InvalidAttrMismatch;
+export type ElementAttrsMismatch = UnknownAttrMismatch | MissingAttrMismatch | InvalidAttrMismatch;
 
 /*
  * A component's failed attributes: the element they belong to, and the mismatch
  */
-export interface ComponentAttrsMismatch<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> {
+export interface ComponentAttrsMismatch<TComponentAttrsShape extends ComponentAttrsShape> {
 	elementName: keyof TComponentAttrsShape & string;
 	mismatch: ElementAttrsMismatch;
 }

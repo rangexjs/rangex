@@ -4,11 +4,7 @@ import type { HandleLineRemoveParams } from "./HandleLineRemove-types";
  * Wires a remove control to the engine, removing the current line and moving the selection
  * to a sibling line, or clearing its content if it has no siblings.
  */
-export const handleLineRemove = ({
-	port,
-	editorAPI,
-	getCurrentLine,
-}: HandleLineRemoveParams) => {
+export const handleLineRemove = ({ port, editorAPI, getCurrentLine }: HandleLineRemoveParams) => {
 	const selection = editorAPI.getEditorSelection();
 	const unsubscribeRemove = port.onRemove(() => {
 		const currentLine = getCurrentLine();

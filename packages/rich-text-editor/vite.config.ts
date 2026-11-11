@@ -1,6 +1,7 @@
 import solid from "@solidjs/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defaultClientConditions, defineConfig } from "vite-plus";
+
 import packageJson from "./package.json" with { type: "json" };
 import tsconfig from "./tsconfig.json" with { type: "json" };
 
@@ -8,9 +9,7 @@ import tsconfig from "./tsconfig.json" with { type: "json" };
 // e.g. "@solidjs/web" becomes /^@solidjs\/web(\/.*)?$/, matching "@solidjs/web" and "@solidjs/web/jsx-runtime",
 // but not "@solidjs/web-foo".
 const externalPackageNames = Object.keys(packageJson.peerDependencies);
-const external = externalPackageNames.map(
-	(name) => new RegExp(`^${name}(/.*)?$`),
-);
+const external = externalPackageNames.map((name) => new RegExp(`^${name}(/.*)?$`));
 
 // One build entry per `exports` subpath, named after it, so "./link" builds src/Exports/Link/index.ts into dist/link.js.
 const entry = Object.fromEntries(
@@ -25,10 +24,7 @@ export default defineConfig({
 	base: "./",
 	plugins: [tailwindcss(), solid()],
 	resolve: {
-		conditions: [
-			...tsconfig.compilerOptions.customConditions,
-			...defaultClientConditions,
-		],
+		conditions: [...tsconfig.compilerOptions.customConditions, ...defaultClientConditions],
 	},
 	build: {
 		outDir: "dist",

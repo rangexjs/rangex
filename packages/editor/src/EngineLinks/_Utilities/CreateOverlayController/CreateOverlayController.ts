@@ -1,10 +1,9 @@
+// oxlint-disable-next-line typescript/triple-slash-reference -- Pulls in the CloseWatcher typings, which TypeScript does not ship yet
 /// <reference path="./CloseWatcher.d.ts" />
 import { dataAnchorName } from "@rangex/core";
-import {
-	addERClass,
-	forceReflowWithoutTransition,
-	removeERClass,
-} from "#utilities";
+
+import { addERClass, forceReflowWithoutTransition, removeERClass } from "#utilities";
+
 import type {
 	AnchoredOverlayController,
 	ApplyAnchorPositionParams,
@@ -101,11 +100,7 @@ const registerLightDismiss = ({
  * back gesture/button. Single-use: once it closes or is destroyed, a new one must be created
  * for the next open.
  */
-const createCloseWatcher = ({
-	hide,
-	onEscape,
-	signal,
-}: CreateCloseWatcherParams) => {
+const createCloseWatcher = ({ hide, onEscape, signal }: CreateCloseWatcherParams) => {
 	const watcher = new CloseWatcher({ signal });
 
 	watcher.addEventListener("close", () => {
@@ -180,9 +175,7 @@ export const createAnchoredOverlayController = ({
 			const anchorName = anchor.getAttribute(dataAnchorName);
 
 			if (anchorName === null) {
-				throw new Error(
-					`Anchor element is missing the "${dataAnchorName}" attribute.`,
-				);
+				throw new Error(`Anchor element is missing the "${dataAnchorName}" attribute.`);
 			}
 
 			applyAnchorPosition({

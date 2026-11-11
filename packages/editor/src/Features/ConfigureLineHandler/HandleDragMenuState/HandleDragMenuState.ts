@@ -4,8 +4,10 @@ import {
 	blockComponentRoleSelector,
 	contentLineRole,
 } from "@rangex/core";
+
 import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
+
 import type {
 	HandleBlockComponentLineParams,
 	HandleContentLineParams,
@@ -42,8 +44,7 @@ const handleContentLine = ({
 	const isVisible = (name: BlockComponentName) =>
 		isAllowedAtLine({ blockComponentPlacement, line: contentLine, name });
 
-	const { accordionItem, blockQuote, codeBlock, list, todoList } =
-		componentsName;
+	const { accordionItem, blockQuote, codeBlock, list, todoList } = componentsName;
 
 	configPort.updateState({
 		turnIntoAvailability: {
@@ -64,9 +65,7 @@ const handleBlockComponentLine = ({
 	blockComponentPlacement,
 	blockComponentLine,
 }: HandleBlockComponentLineParams) => {
-	const blockComponent = blockComponentLine.$$querySelector(
-		blockComponentRoleSelector,
-	);
+	const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
 	if (blockComponent?.$$editorRole !== blockComponentRole) {
 		throw new Error("BlockComponent's type is invalid.");
@@ -74,8 +73,7 @@ const handleBlockComponentLine = ({
 
 	const { $$name } = blockComponent;
 
-	const { accordionItem, blockQuote, codeBlock, list, table, todoList } =
-		componentsName;
+	const { accordionItem, blockQuote, codeBlock, list, table, todoList } = componentsName;
 
 	const turnableComponents: BlockComponentName[] = [
 		accordionItem,
@@ -87,9 +85,7 @@ const handleBlockComponentLine = ({
 
 	const isVisible = (name: BlockComponentName) =>
 		$$name !== name &&
-		turnableComponents.includes(
-			$$name as (typeof turnableComponents)[number],
-		) &&
+		turnableComponents.includes($$name as (typeof turnableComponents)[number]) &&
 		isAllowedAtLine({
 			blockComponentPlacement,
 			line: blockComponentLine,

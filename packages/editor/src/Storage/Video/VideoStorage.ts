@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { videoId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -30,9 +31,7 @@ export const isVideoStorage = (storage: unknown): storage is VideoStorage => {
 	return !mismatch;
 };
 
-export const validateVideoStorage = (
-	storage: unknown,
-): storage is VideoStorage => {
+export const validateVideoStorage = (storage: unknown): storage is VideoStorage => {
 	return validateStorage(storage, isVideoStorage);
 };
 

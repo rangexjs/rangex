@@ -1,9 +1,8 @@
 import { UndoRedo as UndoRedoFactory } from "@rangex/editor/undo-redo";
+
 import { toolbarButtonsName } from "#constants";
-import {
-	HistoryBackToolbarButton,
-	HistoryForwardToolbarButton,
-} from "#features";
+import { HistoryBackToolbarButton, HistoryForwardToolbarButton } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { UndoRedoExtensionSettings } from "./UndoRedo-types";
 

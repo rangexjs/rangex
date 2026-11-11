@@ -1,11 +1,6 @@
 import { BackgroundColor, ReadOnly } from "@rangex/solid";
-import {
-	createEffect,
-	createMemo,
-	createSignal,
-	createUniqueId,
-	untrack,
-} from "solid-js";
+import { createEffect, createMemo, createSignal, createUniqueId, untrack } from "solid-js";
+
 import { ColorFormat, type HslFormat } from "#color";
 import { useEditorContext } from "#context";
 import {
@@ -17,6 +12,7 @@ import {
 	Icon,
 	type OnActionFn,
 } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 /**
@@ -44,22 +40,16 @@ export const BackgroundColorToolbarButton = () => {
 		setChecked(newState === "open");
 	};
 
-	const initialHslColors = untrack(() =>
-		getHslThemeColors({ colors: $backgroundColor.values() }),
-	);
+	const initialHslColors = untrack(() => getHslThemeColors({ colors: $backgroundColor.values() }));
 	const initialColorMode = getColorMode(initialHslColors);
 
 	const [lightHsl, setLightHsl] = createSignal<HslFormat>(
-		initialHslColors.lightColors.at(0) ??
-			ColorFormat.fromColor({ color: "white" }).hslFormat(),
+		initialHslColors.lightColors.at(0) ?? ColorFormat.fromColor({ color: "white" }).hslFormat(),
 	);
 	const [darkHsl, setDarkHsl] = createSignal<HslFormat>(
-		initialHslColors.darkColors.at(0) ??
-			ColorFormat.fromColor({ color: "black" }).hslFormat(),
+		initialHslColors.darkColors.at(0) ?? ColorFormat.fromColor({ color: "black" }).hslFormat(),
 	);
-	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(
-		untrack(() => lightHsl()),
-	);
+	const [spectrumHsl, setSpectrumHsl] = createSignal<HslFormat>(untrack(() => lightHsl()));
 	const [colorMode, setColorMode] = createSignal<ColorMode>(initialColorMode);
 	const initialActiveColors = getDeduplicatedColors([
 		...initialHslColors.lightColors,
@@ -75,16 +65,13 @@ export const BackgroundColorToolbarButton = () => {
 
 			setColorMode(colorMode);
 			setLightHsl(
-				hslColors.lightColors.at(0) ??
-					ColorFormat.fromColor({ color: "white" }).hslFormat(),
+				hslColors.lightColors.at(0) ?? ColorFormat.fromColor({ color: "white" }).hslFormat(),
 			);
 			setDarkHsl(
-				hslColors.darkColors.at(0) ??
-					ColorFormat.fromColor({ color: "black" }).hslFormat(),
+				hslColors.darkColors.at(0) ?? ColorFormat.fromColor({ color: "black" }).hslFormat(),
 			);
 			setSpectrumHsl(
-				hslColors.lightColors.at(0) ??
-					ColorFormat.fromColor({ color: "white" }).hslFormat(),
+				hslColors.lightColors.at(0) ?? ColorFormat.fromColor({ color: "white" }).hslFormat(),
 			);
 
 			const activeColors = getDeduplicatedColors([
@@ -122,9 +109,7 @@ export const BackgroundColorToolbarButton = () => {
 		}
 	};
 
-	const disabled = createMemo(
-		() => $backgroundColor.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $backgroundColor.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>

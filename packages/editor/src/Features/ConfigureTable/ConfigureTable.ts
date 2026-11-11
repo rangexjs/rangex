@@ -1,9 +1,7 @@
 import { componentsName } from "#constants";
-import {
-	createAnchoredOverlayController,
-	createBlockComponentPlacement,
-} from "#engine-links";
+import { createAnchoredOverlayController, createBlockComponentPlacement } from "#engine-links";
 import { addERClass } from "#utilities";
+
 import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
 import type { ConfigureTableParams } from "./ConfigureTable-types";
 import { handleTableContextMenuButtonsInteraction } from "./HandleTableContextMenuButtonsInteraction";
@@ -16,11 +14,7 @@ import { handleTablePlacementState } from "./HandleTablePlacementState";
  * Wires up all table feature handlers (insertion, toolbar state, context-menu visibility,
  * button state, and button interactions) and returns their combined cleanup.
  */
-export const configureTable = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-}: ConfigureTableParams) => {
+export const configureTable = ({ adapterBus, configPort, editorAPI }: ConfigureTableParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -65,8 +59,10 @@ export const configureTable = ({
 		editorAPI,
 	});
 
-	const contextMenuInteractionCleanup =
-		handleTableContextMenuButtonsInteraction({ configPort, editorAPI });
+	const contextMenuInteractionCleanup = handleTableContextMenuButtonsInteraction({
+		configPort,
+		editorAPI,
+	});
 
 	const tableInsertionCleanup = handleTableInsertion({
 		configPort,

@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { AccordionItemId } from "../_Constants";
 
 export type AccordionItemStorage = {

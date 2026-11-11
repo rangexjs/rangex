@@ -1,14 +1,12 @@
 import type { LineHeightValue } from "@rangex/editor/formatting";
 import { LineHeight, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { isDeepEqual } from "#utilities";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const defaultValues: Set<LineHeightValue> = new Set([
 	{ type: "number", value: 0.8 },
@@ -51,8 +49,7 @@ export const LineHeightToolbarButton = () => {
 
 			for (const commonValue of commonValues) {
 				const matchedValue = deduplicatedValues.find(
-					(val) =>
-						val.type === commonValue.type && val.value === commonValue.value,
+					(val) => val.type === commonValue.type && val.value === commonValue.value,
 				);
 
 				if (matchedValue) {
@@ -72,8 +69,7 @@ export const LineHeightToolbarButton = () => {
 
 		const contains = (value: LineHeightValue) => {
 			return !![...activeValues].find(
-				(activeValue) =>
-					activeValue.type === value.type && activeValue.value === value.value,
+				(activeValue) => activeValue.type === value.type && activeValue.value === value.value,
 			);
 		};
 
@@ -86,27 +82,23 @@ export const LineHeightToolbarButton = () => {
 			},
 		};
 
-		const lineHeightItems = sortedList().map<ToolbarDropdownList[number]>(
-			(lineHeightItem) => {
-				return {
-					checked: contains(lineHeightItem),
-					text: `${lineHeightItem.value}`,
-					button: {
-						onClick: () => {
-							formatting.setLineHeight(lineHeightItem);
-						},
-						class: "justify-center",
+		const lineHeightItems = sortedList().map<ToolbarDropdownList[number]>((lineHeightItem) => {
+			return {
+				checked: contains(lineHeightItem),
+				text: `${lineHeightItem.value}`,
+				button: {
+					onClick: () => {
+						formatting.setLineHeight(lineHeightItem);
 					},
-				};
-			},
-		);
+					class: "justify-center",
+				},
+			};
+		});
 
 		return [defaultItem, ...lineHeightItems];
 	});
 
-	const disabled = createMemo(
-		() => $lineHeight.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $lineHeight.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>

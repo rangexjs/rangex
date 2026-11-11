@@ -1,9 +1,8 @@
 import type { CreateEmbedAttrValidatorsParams } from "@rangex/rich-text-editor/embed";
+
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 
-type EmbedSrcValidator = NonNullable<
-	CreateEmbedAttrValidatorsParams["iframe"]
->["src"];
+type EmbedSrcValidator = NonNullable<CreateEmbedAttrValidatorsParams["iframe"]>["src"];
 
 const maxSrcLength = 4096;
 

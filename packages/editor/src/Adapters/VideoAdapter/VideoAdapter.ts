@@ -1,6 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { VideoAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createBlockAlignPort,
 	createBlockResize,

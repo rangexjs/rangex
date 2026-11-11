@@ -1,4 +1,5 @@
 import { createBlockComponentPlacement } from "#engine-links";
+
 import type { ConfigureSeparatorParams } from "./ConfigureSeparator-types";
 import { handleSeparatorPlacement } from "./HandleSeparatorPlacement";
 import { handleSeparatorPlacementState } from "./HandleSeparatorPlacementState";

@@ -8,10 +8,7 @@ import { handleEmojiSelect } from "./HandleEmojiSelect";
  * Wires up the emoji feature: shortcode selection, colon-triggered auto-complete and the
  * caret menu that surfaces matching emoji while typing a shortcode. Returns a cleanup function.
  */
-export const configureEmoji = ({
-	configPort,
-	editorAPI,
-}: ConfigureEmojiParams) => {
+export const configureEmoji = ({ configPort, editorAPI }: ConfigureEmojiParams) => {
 	const selectCleanup = handleEmojiSelect({
 		configPort,
 		editorAPI,

@@ -1,4 +1,5 @@
 import type { EditorAPI } from "@rangex/core";
+
 import type { ChangeDisplayTextParams, LinkConfigPort } from "#adapters/Link";
 
 export interface HandleDisplayTextChangeParams {
@@ -6,6 +7,4 @@ export interface HandleDisplayTextChangeParams {
 	editorAPI: EditorAPI;
 }
 
-export type OnChangeDisplayTextCallback = (
-	params: ChangeDisplayTextParams,
-) => void;
+export type OnChangeDisplayTextCallback = (params: ChangeDisplayTextParams) => void;

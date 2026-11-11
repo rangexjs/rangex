@@ -1,4 +1,5 @@
 import { createUniqueId, merge, onSettled } from "solid-js";
+
 import { showInputFieldError } from "../_Utilities";
 import {
 	getErrorState,
@@ -19,21 +20,17 @@ export interface CreateTextFieldControllerParams {
 	validateOn?: ValidateOn;
 }
 
-export type CreateTextFieldControllerResult<
-	TextField extends HTMLTextFieldElement,
-> = [TextFieldHandle<TextField>, TextFieldControls<TextField>];
+export type CreateTextFieldControllerResult<TextField extends HTMLTextFieldElement> = [
+	TextFieldHandle<TextField>,
+	TextFieldControls<TextField>,
+];
 
-export const createTextFieldController = <
-	TextField extends HTMLTextFieldElement,
->(
+export const createTextFieldController = <TextField extends HTMLTextFieldElement>(
 	props: CreateTextFieldControllerParams,
 ): CreateTextFieldControllerResult<TextField> => {
 	const defaultValidateOn: ValidateOn = [];
 
-	const finalProps = merge(
-		{ defaultValue: "", error: {}, validateOn: defaultValidateOn },
-		props,
-	);
+	const finalProps = merge({ defaultValue: "", error: {}, validateOn: defaultValidateOn }, props);
 
 	const id = createUniqueId();
 	let localTextField: TextField | null;
@@ -52,10 +49,7 @@ export const createTextFieldController = <
 	const stateChangeListeners: StateChangeListeners = new Set();
 
 	const emitStateChange = () => {
-		localTextField?.setAttribute(
-			"data-invalid",
-			`${showInputFieldError(state)}`,
-		);
+		localTextField?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
 
 		for (const listener of stateChangeListeners) {
 			listener(state);
@@ -103,10 +97,7 @@ export const createTextFieldController = <
 		},
 
 		checkValidity() {
-			const { hasError, message } = getErrorState(
-				currentValue(),
-				finalProps.error,
-			);
+			const { hasError, message } = getErrorState(currentValue(), finalProps.error);
 
 			return { hasError, message, isDirty: state.isDirty };
 		},

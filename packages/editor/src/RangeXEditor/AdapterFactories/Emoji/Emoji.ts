@@ -1,5 +1,6 @@
 import { createEmojiAdapter, type EmojiSettings } from "#adapters/Emoji";
 import { configureEmoji } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Emoji: AdapterFactoryFn<EmojiSettings> = (settings) => {

@@ -4,6 +4,7 @@ import {
 	createContentLine,
 	createFormattableTexts,
 } from "@rangex/core";
+
 import type {
 	HandleDisplayTextChangeParams,
 	OnChangeDisplayTextCallback,
@@ -28,9 +29,7 @@ export const handleDisplayTextChange = ({
 			return;
 		}
 
-		const contentLine = currentComponent.$$querySelector(
-			contentLineRoleSelector,
-		);
+		const contentLine = currentComponent.$$querySelector(contentLineRoleSelector);
 
 		if (contentLine?.$$editorRole !== contentLineRole) {
 			throw new Error("Link is missing its ContentLine.");

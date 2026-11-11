@@ -1,4 +1,5 @@
 import { buildViewStyleText, createSnapshotView } from "@rangex/editor";
+
 import { getViewStyles } from "../../EngineStyles";
 import type {
 	CreateRichTextSnapshotViewParams,

@@ -65,14 +65,7 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		canWrap({
-			fromNode,
-			fromOffset,
-			toNode,
-			toOffset,
-			scope,
-			allowedComponents,
-		}) {
+		canWrap({ fromNode, fromOffset, toNode, toOffset, scope, allowedComponents }) {
 			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
 				return false;
 			}
@@ -88,14 +81,7 @@ export const createBlockComponentPlacement = ({
 			});
 		},
 
-		wrap({
-			fromNode,
-			fromOffset,
-			toNode,
-			toOffset,
-			blockComponentLine,
-			target,
-		}) {
+		wrap({ fromNode, fromOffset, toNode, toOffset, blockComponentLine, target }) {
 			wrapBlockComponent({
 				editorAPI,
 				fromNode,
@@ -114,8 +100,7 @@ export const createBlockComponentPlacement = ({
 
 			const selection = editorAPI.getEditorSelection();
 
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
+			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 			return canWrapBlockComponent({
 				editorAPI,
@@ -131,8 +116,7 @@ export const createBlockComponentPlacement = ({
 		wrapBySelection({ blockComponentLine, target }) {
 			const selection = editorAPI.getEditorSelection();
 
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
+			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 			wrapBlockComponent({
 				editorAPI,

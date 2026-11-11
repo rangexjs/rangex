@@ -1,4 +1,5 @@
 import { blockComponentRole, isEditorElement } from "@rangex/core";
+
 import type {
 	GetClosestBlockComponentParams,
 	GetClosestBlockComponentResult,

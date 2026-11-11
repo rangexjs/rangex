@@ -1,12 +1,11 @@
 import { defineConfig } from "vite-plus";
+
 import packageJson from "./package.json" with { type: "json" };
 
 // Packages the consumer installs stay out of the bundle, subpath imports included.
 // e.g. "shiki" becomes /^shiki(\/.*)?$/, matching "shiki" and "shiki/core", but not "shiki-foo".
 const externalPackageNames = Object.keys(packageJson.peerDependencies);
-const external = externalPackageNames.map(
-	(name) => new RegExp(`^${name}(/.*)?$`),
-);
+const external = externalPackageNames.map((name) => new RegExp(`^${name}(/.*)?$`));
 
 export default defineConfig({
 	base: "./",

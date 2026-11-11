@@ -1,5 +1,6 @@
 import type { CodeBlockPublicPort } from "@rangex/editor/code-block";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveCodeBlockPort } from "./CodeBlock-types";
 
@@ -14,12 +15,8 @@ export const CodeBlock = <T extends CodeBlockPublicPort | undefined>(
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
 	const [language, setLanguage] = createSignal(publicPort.language);
 	const [theme, setTheme] = createSignal(publicPort.theme);
-	const [currentComponent, setCurrentComponent] = createSignal(
-		publicPort.currentComponent,
-	);
-	const [isSelectionActive, setIsSelectionActive] = createSignal(
-		publicPort.isSelectionActive,
-	);
+	const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));

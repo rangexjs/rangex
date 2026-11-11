@@ -3,10 +3,7 @@ import type { NodeStorage, ValidateStorageCallbackFn } from "./Utilities-types";
 /*
  * Runs the given storage check and warns when the value has an unexpected shape.
  */
-export const validateStorage = (
-	storage: unknown,
-	isStorage: ValidateStorageCallbackFn,
-) => {
+export const validateStorage = (storage: unknown, isStorage: ValidateStorageCallbackFn) => {
 	const isValid = isStorage(storage);
 
 	if (!isValid) {

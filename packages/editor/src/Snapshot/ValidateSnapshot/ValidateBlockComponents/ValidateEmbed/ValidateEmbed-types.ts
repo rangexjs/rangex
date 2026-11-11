@@ -1,7 +1,5 @@
-import type {
-	CreateEmbedAttrValidatorsParams,
-	EmbedAttrValidators,
-} from "#dom-attrs";
+import type { CreateEmbedAttrValidatorsParams, EmbedAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

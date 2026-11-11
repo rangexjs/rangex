@@ -1,12 +1,6 @@
-import {
-	blockComponentLineRole,
-	contentLineRole,
-	type EditorNode,
-} from "@rangex/core";
-import type {
-	GetClosestBlockLevelLineParams,
-	GetClosestBlockLevelLineResult,
-} from "./Line-types";
+import { blockComponentLineRole, contentLineRole, type EditorNode } from "@rangex/core";
+
+import type { GetClosestBlockLevelLineParams, GetClosestBlockLevelLineResult } from "./Line-types";
 
 export const getClosestBlockLevelLine = ({
 	fromNode,

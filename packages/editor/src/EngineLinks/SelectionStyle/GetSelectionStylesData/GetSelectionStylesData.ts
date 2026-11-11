@@ -10,6 +10,7 @@ import {
 	createTextAlignStructuredStyle,
 	createTextIndentStructuredStyle,
 } from "#structured-style";
+
 import type {
 	GetBackgroundColorStylesParams,
 	GetBackgroundColorStylesResult,
@@ -53,9 +54,7 @@ const getBackgroundColorStyles = ({
 	return createBackgroundColorStructuredStyle({ backgroundColor });
 };
 
-const getColorStyles = ({
-	formattingActionState,
-}: GetColorStylesParams): GetColorStylesResult => {
+const getColorStyles = ({ formattingActionState }: GetColorStylesParams): GetColorStylesResult => {
 	const { color } = formattingActionState;
 
 	if (color === undefined) {
@@ -181,9 +180,7 @@ const getTextIndentStyles = ({
 	return createTextIndentStructuredStyle({ textIndent: indentation });
 };
 
-const getStyles = ({
-	formattingActionState,
-}: GetStylesParams): GetStylesResult => {
+const getStyles = ({ formattingActionState }: GetStylesParams): GetStylesResult => {
 	const backgroundColor = getBackgroundColorStyles({ formattingActionState });
 	const color = getColorStyles({ formattingActionState });
 	const fontFamily = getFontFamilyStyles({ formattingActionState });

@@ -1,5 +1,7 @@
 import { EditorRange, editorSelectionChangeEventType } from "@rangex/core";
+
 import { observeEditorNodeAttachment } from "#engine-links";
+
 import type {
 	CloseOnLinkRemovalParams,
 	CloseOnSelectionChangeParams,
@@ -27,8 +29,7 @@ const closeOnSelectionChange = ({
 			const { anchorElement } = linkMenuPopoverController;
 
 			if (currentComponent && anchorElement === currentComponent) {
-				const { fromText, fromOffset, toText, toOffset } =
-					selection.getBoundaryPoints();
+				const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 				const range = new EditorRange({
 					fromNode: fromText,
@@ -52,10 +53,7 @@ const closeOnSelectionChange = ({
  * Closes the popover when the link it is anchored to is detached from the document (e.g. undo, external
  * removal). The controller skips the hide animation on its own for a detached anchor.
  */
-const closeOnLinkRemoval = ({
-	editorAPI,
-	linkMenuPopoverController,
-}: CloseOnLinkRemovalParams) => {
+const closeOnLinkRemoval = ({ editorAPI, linkMenuPopoverController }: CloseOnLinkRemovalParams) => {
 	return observeEditorNodeAttachment({
 		editorAPI,
 		onMutation: () => {

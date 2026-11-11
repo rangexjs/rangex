@@ -1,11 +1,9 @@
 import { inlineComponentRole, nestedEditableRole } from "@rangex/core";
+
 import { componentsName, mentionDefinition } from "#constants";
 import { mentionStoragePattern } from "#storage";
-import {
-	formatNodePath,
-	resolveDraftStorage,
-	validateNestedEditableState,
-} from "../../_Utilities";
+
+import { formatNodePath, resolveDraftStorage, validateNestedEditableState } from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
 	CreateMentionValidatorParams,
@@ -64,10 +62,7 @@ const validateMention = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
@@ -101,7 +96,6 @@ export const createMentionValidator = ({
 }: CreateMentionValidatorParams): CreateMentionValidatorResult => {
 	return {
 		name: componentsName.mention,
-		validate: ({ componentDraft }) =>
-			validateMention({ componentDraft, validateStorage }),
+		validate: ({ componentDraft }) => validateMention({ componentDraft, validateStorage }),
 	};
 };

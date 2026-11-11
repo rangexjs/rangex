@@ -1,11 +1,6 @@
 import type { FindReplaceSearchResult } from "@rangex/editor/find-replace";
-import {
-	type Accessor,
-	createEffect,
-	createSignal,
-	For,
-	untrack,
-} from "solid-js";
+import { type Accessor, createEffect, createSignal, For, untrack } from "solid-js";
+
 import { Icon } from "#ui";
 import { createDebouncer } from "#utilities";
 
@@ -22,9 +17,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 	const resultsDebouncer = createDebouncer({ delayInMs: 300 });
 
 	/** Results can update on every keystroke; delays re-rendering the list so bursts collapse into one render. */
-	const [debouncedResults, setDebouncedResults] = createSignal<
-		FindReplaceSearchResult[]
-	>([]);
+	const [debouncedResults, setDebouncedResults] = createSignal<FindReplaceSearchResult[]>([]);
 
 	createEffect(
 		() => props.results(),
@@ -36,10 +29,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 	const resultsCount = () =>
 		resultsDebouncer.isScheduled() ? "loading..." : debouncedResults().length;
 
-	const scrollIntoListItem = (
-		currentIndex: number,
-		block: ScrollLogicalPosition,
-	) => {
+	const scrollIntoListItem = (currentIndex: number, block: ScrollLogicalPosition) => {
 		if (!listRef) {
 			return;
 		}
@@ -67,11 +57,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 		(currentIndex) => scrollIntoListItem(currentIndex, "nearest"),
 	);
 
-	const getSnippet = (
-		segmentText: string,
-		matchStart: number,
-		matchEnd: number,
-	) => {
+	const getSnippet = (segmentText: string, matchStart: number, matchEnd: number) => {
 		const maxLength = 40;
 		const beforeHighlight = segmentText.slice(0, matchStart);
 		const highlighted = segmentText.slice(matchStart, matchEnd);
@@ -107,10 +93,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 	return (
 		<details ref={detailsRef} class="group mb-3" onToggle={onToggle}>
 			<summary class="flex cursor-pointer select-none items-center gap-1 font-medium text-neutral-600 text-xs transition-colors hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-300 dark:active:text-white dark:hover:text-neutral-100">
-				<Icon
-					name="CaretRight"
-					class="size-2 transition-transform group-open:rotate-90"
-				/>
+				<Icon name="CaretRight" class="size-2 transition-transform group-open:rotate-90" />
 				Results ({resultsCount()})
 			</summary>
 			<ol
@@ -122,11 +105,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 			>
 				<For each={debouncedResults()}>
 					{(result, index) => {
-						const snippet = getSnippet(
-							result.segmentText,
-							result.matchStart,
-							result.matchEnd,
-						);
+						const snippet = getSnippet(result.segmentText, result.matchStart, result.matchEnd);
 						return (
 							<li class="flex font-mono">
 								<span
@@ -136,13 +115,13 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 										{
 											"border-neutral-200 text-neutral-500 dark:border-neutral-700 dark:text-neutral-400":
 												props.currentIndex() !== index(),
-											"border-amber-600 text-amber-600":
-												props.currentIndex() === index(),
+											"border-amber-600 text-amber-600": props.currentIndex() === index(),
 										},
 									]}
 								>
 									{index() + 1}
 								</span>
+								{/* oxlint-disable-next-line jsx-a11y/control-has-associated-label -- The label is the snippet text rendered inside */}
 								<button
 									type="button"
 									class="w-full px-1 text-left text-xs transition-colors hover:bg-neutral-50 active:bg-neutral-100 active:text-neutral-900 dark:active:bg-neutral-700 dark:active:text-white dark:hover:bg-neutral-800"

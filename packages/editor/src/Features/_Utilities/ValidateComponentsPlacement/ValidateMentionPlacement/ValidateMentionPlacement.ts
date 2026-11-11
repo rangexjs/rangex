@@ -1,4 +1,5 @@
 import { isUserId } from "#storage";
+
 import type {
 	ValidateMentionDisplayTextParams,
 	ValidateMentionDisplayTextResult,

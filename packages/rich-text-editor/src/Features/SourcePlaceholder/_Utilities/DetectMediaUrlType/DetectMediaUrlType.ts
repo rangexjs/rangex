@@ -1,4 +1,5 @@
 import type { RangeXEditor } from "@rangex/editor";
+
 import { createMediaResolveDetail } from "../CreateMediaResolveDetail";
 import { type ProbeableMediaType, probeMediaType } from "../ProbeMediaType";
 import { validateMediaAttrs } from "../ValidateMediaAttrs";
@@ -13,26 +14,12 @@ import type {
  * listed: the link is probed instead.
  */
 const extensionsByMediaType: Record<ProbeableMediaType, string[]> = {
-	image: [
-		"apng",
-		"avif",
-		"bmp",
-		"gif",
-		"ico",
-		"jpeg",
-		"jpg",
-		"png",
-		"svg",
-		"webp",
-	],
+	image: ["apng", "avif", "bmp", "gif", "ico", "jpeg", "jpg", "png", "svg", "webp"],
 	video: ["m4v", "mov", "mp4", "ogv", "webm"],
 	audio: ["aac", "flac", "m4a", "mp3", "oga", "opus", "wav"],
 };
 
-const mediaTypeEntries = Object.entries(extensionsByMediaType) as [
-	ProbeableMediaType,
-	string[],
-][];
+const mediaTypeEntries = Object.entries(extensionsByMediaType) as [ProbeableMediaType, string[]][];
 
 const mediaTypeByExtension = new Map<string, ProbeableMediaType>();
 

@@ -1,16 +1,9 @@
-import type {
-	blockComponentAttrName,
-	inlineComponentAttrName,
-} from "@rangex/core";
-import type {
-	BlockComponentName,
-	ComponentName,
-	InlineComponentName,
-} from "../ComponentsName";
+import type { blockComponentAttrName, inlineComponentAttrName } from "@rangex/core";
 
-export type ComponentAttrNameByName<TName extends ComponentName> =
-	TName extends BlockComponentName
-		? typeof blockComponentAttrName.dataName
-		: TName extends InlineComponentName
-			? typeof inlineComponentAttrName.dataName
-			: never;
+import type { BlockComponentName, ComponentName, InlineComponentName } from "../ComponentsName";
+
+export type ComponentAttrNameByName<TName extends ComponentName> = TName extends BlockComponentName
+	? typeof blockComponentAttrName.dataName
+	: TName extends InlineComponentName
+		? typeof inlineComponentAttrName.dataName
+		: never;

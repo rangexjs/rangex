@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { todoListId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -24,17 +25,13 @@ export const matchTodoListStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: todoListStoragePattern });
 };
 
-export const isTodoListStorage = (
-	storage: unknown,
-): storage is TodoListStorage => {
+export const isTodoListStorage = (storage: unknown): storage is TodoListStorage => {
 	const mismatch = matchTodoListStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateTodoListStorage = (
-	storage: unknown,
-): storage is TodoListStorage => {
+export const validateTodoListStorage = (storage: unknown): storage is TodoListStorage => {
 	return validateStorage(storage, isTodoListStorage);
 };
 

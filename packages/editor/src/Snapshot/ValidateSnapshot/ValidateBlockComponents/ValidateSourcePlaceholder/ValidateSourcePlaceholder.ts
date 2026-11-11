@@ -1,11 +1,10 @@
 import { blockComponentRole, detachedContextRole } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { sourcePlaceholderStoragePattern } from "#storage";
+
 import { formatNodePath, resolveDraftDOMAttrs } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateSourcePlaceholderValidatorResult,
 	ValidateSourcePlaceholderParams,
@@ -99,11 +98,9 @@ const validateSourcePlaceholder = ({
 /*
  * Creates the SourcePlaceholder's ComponentValidator.
  */
-export const createSourcePlaceholderValidator =
-	(): CreateSourcePlaceholderValidatorResult => {
-		return {
-			name: componentsName.sourcePlaceholder,
-			validate: ({ componentDraft }) =>
-				validateSourcePlaceholder({ componentDraft }),
-		};
+export const createSourcePlaceholderValidator = (): CreateSourcePlaceholderValidatorResult => {
+	return {
+		name: componentsName.sourcePlaceholder,
+		validate: ({ componentDraft }) => validateSourcePlaceholder({ componentDraft }),
 	};
+};

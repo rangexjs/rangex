@@ -6,9 +6,11 @@ import {
 	type HTMLLayout,
 	htmlLayoutRole,
 } from "@rangex/core";
+
 import type { CaptionPosition } from "#adapters";
 import { mediaCaptionDefinition } from "#constants";
 import { createTextAlignStructuredStyle } from "#structured-style";
+
 import { getAudioElement } from "../GetAudioElements";
 import type {
 	GetAudioCaptionParams,
@@ -21,10 +23,7 @@ const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	for (const child of figure.$$children) {
-		if (
-			child.$$editorRole === htmlLayoutRole &&
-			child.$$localName === figcaptionLocalName
-		) {
+		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
 			return child;
 		}
 	}
@@ -36,9 +35,7 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * Reads whether a figure's caption is currently shown and, if so, whether it sits above or below
  * the audio — derived from the figcaption's presence and DOM order, not a stored flag.
  */
-export const getAudioCaption = ({
-	figure,
-}: GetAudioCaptionParams): GetAudioCaptionResult => {
+export const getAudioCaption = ({ figure }: GetAudioCaptionParams): GetAudioCaptionResult => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {
@@ -50,9 +47,7 @@ export const getAudioCaption = ({
 	const { $$children } = figure;
 
 	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(audio)
-			? "above"
-			: "below";
+		$$children.indexOf(figcaption) < $$children.indexOf(audio) ? "above" : "below";
 
 	return { captionEnabled: true, captionPosition: position };
 };
@@ -106,10 +101,7 @@ export const setAudioCaptionEnabled = ({
  * Moves the figcaption before or after the audio, always repositioning relative to the audio
  * rather than checking the current order first. Throws if the figure has no figcaption.
  */
-export const setAudioCaptionPosition = ({
-	figure,
-	position,
-}: SetAudioCaptionPositionParams) => {
+export const setAudioCaptionPosition = ({ figure, position }: SetAudioCaptionPositionParams) => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {

@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { createMemo, Show } from "solid-js";
+
 import { Icon } from "../../Icon";
 import { type InputFieldState, showInputFieldError } from "../_Utilities";
 
@@ -18,16 +19,10 @@ interface FormFieldProps {
 }
 
 export const FormField = (props: FormFieldProps) => {
-	const showError = createMemo(
-		() => !!props.state && showInputFieldError(props.state),
-	);
+	const showError = createMemo(() => !!props.state && showInputFieldError(props.state));
 
 	const isInfoContainerVisible = createMemo(
-		() =>
-			!!(
-				(showError() && props.state?.message) ||
-				(!showError() && props.description)
-			),
+		() => !!((showError() && props.state?.message) || (!showError() && props.description)),
 	);
 
 	return (
@@ -54,18 +49,9 @@ export const FormField = (props: FormFieldProps) => {
 					<Show when={!showError()}>{props.description}</Show>
 				</p>
 				{/* Alert requires the description/error message to be separated */}
-				<p
-					role="alert"
-					class={[
-						"flex gap-1 text-red-600 dark:text-red-700",
-						props.errorClass,
-					]}
-				>
+				<p role="alert" class={["flex gap-1 text-red-600 dark:text-red-700", props.errorClass]}>
 					<Show when={showError()}>
-						<Icon
-							name="WarningCircle"
-							class="mt-0.5 size-3 shrink-0 align-baseline"
-						/>
+						<Icon name="WarningCircle" class="mt-0.5 size-3 shrink-0 align-baseline" />
 						<span>{props.state?.message}</span>
 					</Show>
 				</p>

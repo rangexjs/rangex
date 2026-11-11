@@ -1,4 +1,5 @@
 import type { BlockComponent, ListLocalName } from "@rangex/core";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -15,9 +16,7 @@ export interface ListState {
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
-export type OnLocalNameUpdateCallbackFn = (
-	localName: ListLocalName | null,
-) => void;
+export type OnLocalNameUpdateCallbackFn = (localName: ListLocalName | null) => void;
 
 export interface ListPlacementOption {
 	localName: ListLocalName;
@@ -44,9 +43,7 @@ export interface ListConfigPortProps {
 }
 
 export interface ListConfigPort
-	extends ListConfigPortProps,
-		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+	extends ListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface InsertParams extends ListPlacementOption {}
 
@@ -67,9 +64,7 @@ export interface ListPublicPortProps {
 }
 
 export interface ListPublicPort
-	extends ListPublicPortProps,
-		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+	extends ListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface ListAdapter {
 	configPort: ListConfigPort;
@@ -78,7 +73,6 @@ export interface ListAdapter {
 
 export interface ListSettings {}
 
-export interface CreateListAdapterParams
-	extends CreateAdapterParams<ListSettings> {}
+export interface CreateListAdapterParams extends CreateAdapterParams<ListSettings> {}
 
 export interface CreateListAdapterResult extends ListAdapter {}

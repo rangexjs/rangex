@@ -1,7 +1,9 @@
 import { Table as TableFactory } from "@rangex/editor/table";
+
 import { toolbarButtonsName } from "#constants";
 import type { TableContextMenuUIOptions } from "#context";
 import { TableContextMenu, TableToolbarButton } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { TableExtensionSettings } from "./Table-types";
 

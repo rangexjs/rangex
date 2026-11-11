@@ -1,9 +1,7 @@
-import {
-	editorSelectionChangeEventType,
-	inlineComponentRole,
-	isEditorNode,
-} from "@rangex/core";
+import { editorSelectionChangeEventType, inlineComponentRole, isEditorNode } from "@rangex/core";
+
 import { componentsName } from "#constants";
+
 import type {
 	HandleLinkInteractionParams,
 	OpenLinkMenuParams,
@@ -11,10 +9,7 @@ import type {
 	RegisterSelectionInParams,
 } from "./HandleLinkInteraction-types";
 
-const openLinkMenu = ({
-	configPort,
-	linkMenuPopoverController,
-}: OpenLinkMenuParams) => {
+const openLinkMenu = ({ configPort, linkMenuPopoverController }: OpenLinkMenuParams) => {
 	const { currentComponent } = configPort;
 
 	if (!currentComponent) {
@@ -40,8 +35,7 @@ const registerClick = ({
 }: RegisterClickParams) => {
 	const unsubscribe = editorAPI.registerDOMEvent({
 		when: ({ element }) =>
-			element.$$editorRole === inlineComponentRole &&
-			element.$$name === componentsName.link,
+			element.$$editorRole === inlineComponentRole && element.$$name === componentsName.link,
 		eventListener: {
 			type: "click",
 			listener(event) {

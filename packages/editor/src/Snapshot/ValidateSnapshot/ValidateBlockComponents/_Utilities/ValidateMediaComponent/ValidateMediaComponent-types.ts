@@ -1,10 +1,8 @@
-import type {
-	BlockComponentDraft,
-	ComponentDraft,
-	HTMLLayoutDraft,
-} from "@rangex/core";
+import type { BlockComponentDraft, ComponentDraft, HTMLLayoutDraft } from "@rangex/core";
+
 import type { AnyElementAttrValidators, ElementAttrsShape } from "#dom-attrs";
 import type { JSONPattern } from "#utilities";
+
 import type { ValidateComponentResult } from "../../../ValidateSnapshot-types";
 import type { BlockComponentState } from "../ValidateBlockComponentState";
 

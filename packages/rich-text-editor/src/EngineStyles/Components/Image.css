@@ -33,13 +33,9 @@
 					align-items: center;
 					justify-content: center;
 					min-height: 120px;
-					border: 1px dashed
-						light-dark(var(--color-neutral-300), var(--color-neutral-600));
+					border: 1px dashed light-dark(var(--color-neutral-300), var(--color-neutral-600));
 					border-radius: 6px;
-					background-color: light-dark(
-						var(--color-neutral-50),
-						var(--color-neutral-900)
-					);
+					background-color: light-dark(var(--color-neutral-50), var(--color-neutral-900));
 					color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
 					font-size: 14px;
 				}

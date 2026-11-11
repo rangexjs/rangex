@@ -1,13 +1,8 @@
-import {
-	blockComponentLineRole,
-	blockComponentTextHolderRole,
-} from "@rangex/core";
+import { blockComponentLineRole, blockComponentTextHolderRole } from "@rangex/core";
+
 import { matchJSON } from "#utilities";
-import {
-	describeJSONMismatch,
-	formatNodePath,
-	resolveDraftDOMAttrs,
-} from "../../../_Utilities";
+
+import { describeJSONMismatch, formatNodePath, resolveDraftDOMAttrs } from "../../../_Utilities";
 import type {
 	BlockComponentLineState,
 	BlockComponentTextHolderState,

@@ -1,4 +1,5 @@
 import { createBlockComponentPlacement } from "#engine-links";
+
 import { handleCaretMenuAppearance } from "../_Utilities";
 import { getCommandMenuQuery } from "./_Utilities";
 import type { ConfigureCommandMenuParams } from "./ConfigureCommandMenu-types";

@@ -4,8 +4,10 @@ import {
 	createContentLine,
 	type InlineComponent,
 } from "@rangex/core";
+
 import { normalizeLinkAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
+
 import { createLink, validateLinkPlacement } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
@@ -19,10 +21,7 @@ import type {
 /*
  * Collapses the selection to the end of the link's content so the caret lands inside it.
  */
-const setSelectionToLinkEnd = ({
-	link,
-	selection,
-}: SetSelectionToLinkEndParams) => {
+const setSelectionToLinkEnd = ({ link, selection }: SetSelectionToLinkEndParams) => {
 	const contentLine = link.$$querySelector(contentLineRoleSelector);
 
 	if (contentLine?.$$editorRole !== contentLineRole) {
@@ -37,10 +36,7 @@ const setSelectionToLinkEnd = ({
 	});
 };
 
-const anchorToLink = ({
-	link,
-	linkMenuPopoverController,
-}: AnchorToLinkParams) => {
+const anchorToLink = ({ link, linkMenuPopoverController }: AnchorToLinkParams) => {
 	linkMenuPopoverController.show(link, {
 		clear: true,
 		position: "fixed",
@@ -101,8 +97,7 @@ const wrapWithLink = ({
 	let currentLink: InlineComponent | null = null;
 
 	for (const segment of segments) {
-		const { startText, startOffset, endText, endOffset } =
-			segment.getBoundaryPoints();
+		const { startText, startOffset, endText, endOffset } = segment.getBoundaryPoints();
 
 		const plainText = editorAPI.getPlainText({
 			fromNode: startText,

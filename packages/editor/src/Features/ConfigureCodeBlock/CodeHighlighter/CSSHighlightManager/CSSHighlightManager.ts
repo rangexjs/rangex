@@ -1,8 +1,4 @@
-import type {
-	AddHighlightParams,
-	ClearParams,
-	CodeBlockMap,
-} from "./CSSHighlightManager-types";
+import type { AddHighlightParams, ClearParams, CodeBlockMap } from "./CSSHighlightManager-types";
 
 export class CSSHighlightManager {
 	#cssStyleSheet = new CSSStyleSheet();

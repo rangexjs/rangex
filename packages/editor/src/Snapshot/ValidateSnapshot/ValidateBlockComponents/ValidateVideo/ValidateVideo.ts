@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { createVideoAttrValidators, videoAttrsShape } from "#dom-attrs";
 import { videoStoragePattern } from "#storage";
+
 import { validateMediaComponent } from "../_Utilities";
 import type {
 	CreateVideoValidatorParams,

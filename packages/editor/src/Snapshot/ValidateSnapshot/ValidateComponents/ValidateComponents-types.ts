@@ -1,8 +1,6 @@
 import type { RootEditableDraft } from "@rangex/core";
-import type {
-	ComponentValidator,
-	ValidateComponentResult,
-} from "../ValidateSnapshot-types";
+
+import type { ComponentValidator, ValidateComponentResult } from "../ValidateSnapshot-types";
 
 export interface ValidateComponentsParams {
 	rootEditableDraft: RootEditableDraft;

@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import type {
 	CreateMarkdownAdapterParams,
 	CreateMarkdownAdapterResult,
@@ -17,9 +18,7 @@ export const createMarkdownAdapter = (
 	adapterBus.registerAdapter("markdown");
 
 	const internals: MarkdownInternals = {
-		codeBlockTriggers: settings.codeBlockTriggers ?? [
-			{ trigger: "", language: null, theme: null },
-		],
+		codeBlockTriggers: settings.codeBlockTriggers ?? [{ trigger: "", language: null, theme: null }],
 	};
 
 	const configPort: MarkdownConfigPort = extendObjectProperties({}, {

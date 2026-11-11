@@ -1,5 +1,7 @@
 import { Embed as EmbedFactory } from "@rangex/editor/embed";
+
 import { EmbedQuickActions } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { EmbedExtensionSettings } from "./Embed-types";
 

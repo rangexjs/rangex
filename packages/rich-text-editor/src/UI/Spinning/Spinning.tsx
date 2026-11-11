@@ -37,10 +37,11 @@ export const Spinning = (props: SpinningProps) => {
 			{ duration: 4000, easing: "ease-in-out", iterations: Infinity },
 		);
 
-		spinning.animate(
-			[{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }],
-			{ duration: 2000, easing: "linear", iterations: Infinity },
-		);
+		spinning.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], {
+			duration: 2000,
+			easing: "linear",
+			iterations: Infinity,
+		});
 	});
 
 	const pathProps = {

@@ -5,6 +5,7 @@ import {
 	tableSelectionChangeEventType,
 	tableStructureChangeEventType,
 } from "@rangex/core";
+
 import { getCommonTableCellFromSelection } from "../_Utilities";
 import type {
 	HandleTableContextMenuVisibilityParams,
@@ -12,10 +13,7 @@ import type {
 	SyncOverlayVisibilityParams,
 } from "./HandleTableContextMenuVisibility-types";
 
-const positionToTableCell = ({
-	tableCell,
-	anchorController,
-}: PositionToTableCellParams) => {
+const positionToTableCell = ({ tableCell, anchorController }: PositionToTableCellParams) => {
 	anchorController.show(tableCell, {
 		clear: true,
 		position: "absolute",
@@ -30,10 +28,7 @@ const positionToTableCell = ({
  * and returns early. If no table selection is active, falls back to the common TableCell
  * of the cursor selection, if one exists.
  */
-const syncOverlayVisibility = ({
-	editorAPI,
-	anchorController,
-}: SyncOverlayVisibilityParams) => {
+const syncOverlayVisibility = ({ editorAPI, anchorController }: SyncOverlayVisibilityParams) => {
 	const { rootEditable } = editorAPI;
 
 	anchorController.hide({});
@@ -52,9 +47,7 @@ const syncOverlayVisibility = ({
 		const { $$focusTableCell } = table;
 
 		if (!$$focusTableCell) {
-			throw new Error(
-				"FocusTableCell can't be null on table with active selection.",
-			);
+			throw new Error("FocusTableCell can't be null on table with active selection.");
 		}
 
 		positionToTableCell({ tableCell: $$focusTableCell, anchorController });

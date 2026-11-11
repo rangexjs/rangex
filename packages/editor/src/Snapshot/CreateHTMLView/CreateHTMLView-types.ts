@@ -1,10 +1,5 @@
-import type {
-	ElementView,
-	NodeView,
-	SnapshotLimits,
-	StoredSnapshot,
-	TextView,
-} from "@rangex/core";
+import type { ElementView, NodeView, SnapshotLimits, StoredSnapshot, TextView } from "@rangex/core";
+
 import type { HighlightCodeFn } from "#adapters/CodeBlock";
 import type { NodeStorage } from "#storage";
 

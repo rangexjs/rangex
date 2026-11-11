@@ -1,9 +1,7 @@
 /*
  * Checks whether a value is a plain object, the only kind of object JSON.parse creates.
  */
-export const isJSONObject = (
-	value: unknown,
-): value is Record<string, unknown> => {
+export const isJSONObject = (value: unknown): value is Record<string, unknown> => {
 	if (typeof value !== "object" || value === null || Array.isArray(value)) {
 		return false;
 	}
@@ -27,10 +25,7 @@ const isJSONArrayEqual = (a: unknown[], b: unknown[]) => {
 	return true;
 };
 
-const isJSONObjectEqual = (
-	a: Record<string, unknown>,
-	b: Record<string, unknown>,
-) => {
+const isJSONObjectEqual = (a: Record<string, unknown>, b: Record<string, unknown>) => {
 	const aKeys = Object.keys(a);
 	const bKeys = Object.keys(b);
 

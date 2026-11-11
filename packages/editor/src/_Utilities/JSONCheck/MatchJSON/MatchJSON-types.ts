@@ -20,9 +20,7 @@ type JSONStructurePattern<Value> = Value extends readonly (infer Item)[]
 		? JSONObjectPattern<Value>
 		: Value;
 
-export type JSONPattern<Value> =
-	| JSONPredicate<Value>
-	| JSONStructurePattern<Value>;
+export type JSONPattern<Value> = JSONPredicate<Value> | JSONStructurePattern<Value>;
 
 export type JSONMismatchPath = (string | number)[];
 

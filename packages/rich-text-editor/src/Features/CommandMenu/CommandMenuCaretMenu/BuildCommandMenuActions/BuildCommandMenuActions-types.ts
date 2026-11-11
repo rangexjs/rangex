@@ -1,5 +1,6 @@
 import type { RangeXEditor } from "@rangex/editor";
 import type { CommandMenuItemValue } from "@rangex/editor/command-menu";
+
 import type { UIOptions } from "#context";
 import type { IconName } from "#ui";
 

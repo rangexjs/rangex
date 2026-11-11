@@ -1,7 +1,9 @@
 import { List, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const UnorderedListToolbarButton = () => {
@@ -16,8 +18,7 @@ export const UnorderedListToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() =>
-			!($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
+		() => !($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

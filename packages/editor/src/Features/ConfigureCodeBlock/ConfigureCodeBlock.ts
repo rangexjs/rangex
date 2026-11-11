@@ -1,5 +1,6 @@
 import { componentsName } from "#constants";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	handleComponentUnwrap,
 	handleQuickActionsAppearance,
@@ -24,13 +25,9 @@ export const configureCodeBlock = ({
 	configPort,
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
-	configPort.registerValidateLanguage((language) =>
-		validateCodeBlockLanguage({ language }),
-	);
+	configPort.registerValidateLanguage((language) => validateCodeBlockLanguage({ language }));
 
-	configPort.registerValidateTheme((theme) =>
-		validateCodeBlockTheme({ theme }),
-	);
+	configPort.registerValidateTheme((theme) => validateCodeBlockTheme({ theme }));
 
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,

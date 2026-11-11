@@ -1,6 +1,8 @@
 import type { RootEditable } from "@rangex/core";
+
 import type { TemplateVariableFields } from "#adapters/TemplateVariable";
 import type { RootType } from "#constants";
+
 import type { RootId } from "../_Constants";
 import type { snapshotVersion } from "./RootStorage";
 

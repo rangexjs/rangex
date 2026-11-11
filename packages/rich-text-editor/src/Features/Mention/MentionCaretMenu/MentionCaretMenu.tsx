@@ -1,11 +1,13 @@
 import { Mention } from "@rangex/solid";
 import { createEffect, createMemo, createSignal } from "solid-js";
+
 import {
 	type MentionItem,
 	type MentionItems,
 	useEditorContext,
 	useUIOptionsContext,
 } from "#context";
+
 import { type CaretItemFn, CaretMenu } from "../../_Utilities";
 
 export const MentionCaretMenu = () => {
@@ -64,9 +66,7 @@ export const MentionCaretMenu = () => {
 	);
 
 	// Every row gets the image circle once any item has an image, so the names stay aligned
-	const hasAnyImage = createMemo(() =>
-		loadedItems().some((item) => !!item.img),
-	);
+	const hasAnyImage = createMemo(() => loadedItems().some((item) => !!item.img));
 
 	const getDisplayText = (item: MentionItem) => item.displayText || item.userId;
 

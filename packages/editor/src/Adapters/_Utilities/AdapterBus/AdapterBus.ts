@@ -1,4 +1,5 @@
 import type { TableLimits } from "#constants";
+
 import { createEmitter } from "../CreateEmitter";
 import type { AdapterName } from "../Utilities-types";
 import type {
@@ -9,12 +10,7 @@ import type {
 	OnSwapToSourcePlaceholderCallbackFn,
 } from "./AdapterBus-types";
 
-export const mediaTypes = [
-	"audio",
-	"embed",
-	"image",
-	"video",
-] satisfies AdapterName[];
+export const mediaTypes = ["audio", "embed", "image", "video"] satisfies AdapterName[];
 
 /**
  * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with), without
@@ -33,8 +29,7 @@ export class AdapterBus {
 	#tableLimits: TableLimits | null = null;
 
 	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
-	#swapToSourcePlaceholderEmitter =
-		createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
+	#swapToSourcePlaceholderEmitter = createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
 
 	registerAdapter(name: AdapterName) {
 		this.#registeredAdapters.add(name);

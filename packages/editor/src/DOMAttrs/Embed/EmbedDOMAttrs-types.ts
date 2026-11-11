@@ -17,7 +17,6 @@ export type EmbedAttrValidators = ComponentAttrValidators<EmbedAttrsShape>;
 
 export type EmbedAttrsMismatch = ComponentAttrsMismatch<EmbedAttrsShape>;
 
-export type CreateEmbedAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<EmbedAttrsShape>;
+export type CreateEmbedAttrValidatorsParams = ComponentAttrValidatorOverrides<EmbedAttrsShape>;
 
 export type CreateEmbedAttrValidatorsResult = EmbedAttrValidators;

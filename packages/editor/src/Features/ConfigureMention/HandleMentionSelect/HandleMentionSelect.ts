@@ -1,4 +1,5 @@
 import { createContentLine } from "@rangex/core";
+
 import { createMention, validateMentionPlacement } from "../../_Utilities";
 import { getMentionQuery } from "../_Utilities";
 import type {
@@ -41,10 +42,7 @@ const removeMentionQueryText = ({
  * text, then re-reads the cursor position and inserts the component there. Returns a cleanup
  * function.
  */
-export const handleMentionSelect = ({
-	configPort,
-	editorAPI,
-}: HandleMentionSelectParams) => {
+export const handleMentionSelect = ({ configPort, editorAPI }: HandleMentionSelectParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const unsubscribe = configPort.onSelect(({ userId, displayText }) => {

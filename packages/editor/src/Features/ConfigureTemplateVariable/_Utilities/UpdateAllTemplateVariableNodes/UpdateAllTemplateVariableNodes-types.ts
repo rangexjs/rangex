@@ -1,4 +1,5 @@
 import type { RootEditable } from "@rangex/core";
+
 import type {
 	TemplateVariableFields,
 	TemplateVariableFieldsConfig,

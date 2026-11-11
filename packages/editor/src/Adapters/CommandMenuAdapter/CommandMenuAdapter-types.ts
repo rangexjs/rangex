@@ -1,8 +1,4 @@
-import type {
-	CaretMenuConfigPort,
-	CaretMenuPublicPort,
-	CreateAdapterParams,
-} from "../_Utilities";
+import type { CaretMenuConfigPort, CaretMenuPublicPort, CreateAdapterParams } from "../_Utilities";
 
 export type CommandMenuItemValue =
 	| "p"
@@ -30,9 +26,7 @@ export interface CommandMenuState {
 
 export type OnBeforeSelectCallbackFn = () => void;
 
-export type OnAvailableItemsUpdateCallbackFn = (
-	availableItems: CommandMenuAvailableItems,
-) => void;
+export type OnAvailableItemsUpdateCallbackFn = (availableItems: CommandMenuAvailableItems) => void;
 
 export interface UpdateStateParams extends CommandMenuState {}
 
@@ -49,9 +43,7 @@ export interface CommandMenuPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
 	readonly availableItems: CommandMenuAvailableItems;
 
-	onAvailableItemsUpdate(
-		callback: OnAvailableItemsUpdateCallbackFn,
-	): () => void;
+	onAvailableItemsUpdate(callback: OnAvailableItemsUpdateCallbackFn): () => void;
 	beforeSelect(): void;
 }
 
@@ -64,7 +56,6 @@ export interface CommandMenuAdapter {
 
 export interface CommandMenuSettings {}
 
-export interface CreateCommandMenuAdapterParams
-	extends CreateAdapterParams<CommandMenuSettings> {}
+export interface CreateCommandMenuAdapterParams extends CreateAdapterParams<CommandMenuSettings> {}
 
 export interface CreateCommandMenuAdapterResult extends CommandMenuAdapter {}

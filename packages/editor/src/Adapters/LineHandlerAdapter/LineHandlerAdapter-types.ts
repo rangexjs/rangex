@@ -1,4 +1,5 @@
 import type { BlockComponentName } from "#constants";
+
 import type {
 	CreateAdapterParams,
 	DuplicateConfigPort,
@@ -64,7 +65,8 @@ export interface LineHandlerConfigPortProps {
 }
 
 export interface LineHandlerConfigPort
-	extends LineHandlerConfigPortProps,
+	extends
+		LineHandlerConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
 		DuplicateConfigPort,
@@ -78,9 +80,7 @@ export interface LineHandlerPublicPortProps {
 	readonly canDuplicate: boolean;
 	readonly canUnwrap: boolean;
 
-	onTurnIntoAvailabilityUpdate(
-		callback: OnTurnIntoAvailabilityUpdateCallbackFn,
-	): () => void;
+	onTurnIntoAvailabilityUpdate(callback: OnTurnIntoAvailabilityUpdateCallbackFn): () => void;
 	onCanRemoveUpdate(callback: OnCanRemoveUpdateCallbackFn): () => void;
 	onCanDuplicateUpdate(callback: OnCanDuplicateUpdateCallbackFn): () => void;
 	onCanUnwrapUpdate(callback: OnCanUnwrapUpdateCallbackFn): () => void;
@@ -90,7 +90,8 @@ export interface LineHandlerPublicPortProps {
 }
 
 export interface LineHandlerPublicPort
-	extends LineHandlerPublicPortProps,
+	extends
+		LineHandlerPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
 		DuplicatePublicPort,
@@ -103,7 +104,6 @@ export interface LineHandlerAdapter {
 
 export interface LineHandlerSettings {}
 
-export interface CreateLineHandlerAdapterParams
-	extends CreateAdapterParams<LineHandlerSettings> {}
+export interface CreateLineHandlerAdapterParams extends CreateAdapterParams<LineHandlerSettings> {}
 
 export interface CreateLineHandlerAdapterResult extends LineHandlerAdapter {}

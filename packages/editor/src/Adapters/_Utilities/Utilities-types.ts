@@ -30,10 +30,7 @@ export interface AdapterOptions {
 	floatingContainer: HTMLDivElement;
 }
 
-export type CreateAdapterParams<Settings extends object> = [
-	Settings,
-	AdapterOptions,
-];
+export type CreateAdapterParams<Settings extends object> = [Settings, AdapterOptions];
 
 export interface AdapterMap {
 	accordionItem: AccordionItemAdapter;

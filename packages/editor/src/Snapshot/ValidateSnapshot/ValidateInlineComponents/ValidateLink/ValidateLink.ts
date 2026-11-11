@@ -1,11 +1,9 @@
-import {
-	htmlLayoutRole,
-	inlineComponentRole,
-	nestedEditableRole,
-} from "@rangex/core";
+import { htmlLayoutRole, inlineComponentRole, nestedEditableRole } from "@rangex/core";
+
 import { componentsName, linkDefinition } from "#constants";
 import { createLinkAttrValidators, linkAttrsShape } from "#dom-attrs";
 import { linkStoragePattern } from "#storage";
+
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
@@ -60,10 +58,7 @@ const validateAnchor = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
@@ -127,10 +122,7 @@ const validateLink = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,

@@ -1,7 +1,9 @@
 import { FloatingPortal, LineHandler, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { LineButton } from "./_Utilities";
 import { LineDrag } from "./LineDrag";
 

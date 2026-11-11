@@ -1,5 +1,7 @@
 import type { MediaType } from "@rangex/editor";
+
 import { Icon, type IconName, type SegmentedControlControls } from "#ui";
+
 import type { MediaTab } from "../MediaSourcePicker-types";
 
 const TabLabel = (icon: IconName, label: string) => (

@@ -1,4 +1,5 @@
 import type { EditorAPI, Line } from "@rangex/core";
+
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
 
 export interface CollectShadowRootsParams {

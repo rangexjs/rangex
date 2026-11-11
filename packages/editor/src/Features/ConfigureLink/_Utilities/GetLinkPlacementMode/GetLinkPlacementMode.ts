@@ -1,9 +1,8 @@
-import {
-	EditorRange,
-	type GetInlineWrappableSegmentsResult,
-} from "@rangex/core";
+import { EditorRange, type GetInlineWrappableSegmentsResult } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
+
 import type {
 	GetLinkPlacementModeParams,
 	GetLinkPlacementModeResult,
@@ -20,8 +19,7 @@ export const getLinkPlacementMode = ({
 }: GetLinkPlacementModeParams): GetLinkPlacementModeResult => {
 	const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset, toText, toOffset } =
-		selection.getBoundaryPoints();
+	const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 	const range = new EditorRange({
 		fromNode: fromText,
@@ -39,10 +37,7 @@ export const getLinkPlacementMode = ({
 
 		const { $$allowedComponents } = scopedEditable;
 
-		if (
-			!$$allowedComponents ||
-			$$allowedComponents.includes(componentsName.link)
-		) {
+		if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
 			return { type: "insert" };
 		}
 
@@ -72,10 +67,7 @@ export const getLinkPlacementMode = ({
 
 		const { $$allowedComponents } = $$parentElement;
 
-		if (
-			!$$allowedComponents ||
-			$$allowedComponents.includes(componentsName.link)
-		) {
+		if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
 			wrappableSegments.push(segment);
 		}
 	}

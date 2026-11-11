@@ -6,6 +6,7 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { createCodeBlock, validateCodeBlockPlacement } from "../../_Utilities";
 import type { HandleCodeBlockPlacementParams } from "./HandleCodeBlockPlacement-types";
 
@@ -33,9 +34,7 @@ export const handleCodeBlockPlacement = ({
 		const codeBlockLine = createCodeBlock({
 			language,
 			theme,
-			childNodes: [
-				createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-			],
+			childNodes: [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 		});
 
 		blockComponentPlacement.insertBySelection({
@@ -55,9 +54,7 @@ export const handleCodeBlockPlacement = ({
 			throw new Error("LastListItem can't be undefined.");
 		}
 
-		const nestedEditable = lastListItem.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = lastListItem.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
@@ -102,9 +99,7 @@ export const handleCodeBlockPlacement = ({
 			throw new Error("LastListItem can't be undefined.");
 		}
 
-		const nestedEditable = lastListItem.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = lastListItem.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");

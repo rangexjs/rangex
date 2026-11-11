@@ -4,17 +4,16 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "@rangex/core";
+
 import { componentsName, tableDefinition } from "#constants";
 import { createTableStorage } from "#storage";
+
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
 /*
  * Builds a table block component with the given row/column counts, by the tableDefinition.
  */
-export const createTable = ({
-	rows,
-	cols,
-}: CreateTableParams): CreateTableResult => {
+export const createTable = ({ rows, cols }: CreateTableParams): CreateTableResult => {
 	const {
 		minColWidth,
 		minRowHeight,

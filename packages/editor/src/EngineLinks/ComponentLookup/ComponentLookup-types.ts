@@ -1,21 +1,12 @@
-import type {
-	BlockComponent,
-	ContentFlowNode,
-	EditorAPI,
-	InlineComponent,
-} from "@rangex/core";
-import type {
-	BlockComponentName,
-	ComponentName,
-	InlineComponentName,
-} from "#constants";
+import type { BlockComponent, ContentFlowNode, EditorAPI, InlineComponent } from "@rangex/core";
 
-export type ComponentByName<TName extends ComponentName> =
-	TName extends BlockComponentName
-		? BlockComponent
-		: TName extends InlineComponentName
-			? InlineComponent
-			: never;
+import type { BlockComponentName, ComponentName, InlineComponentName } from "#constants";
+
+export type ComponentByName<TName extends ComponentName> = TName extends BlockComponentName
+	? BlockComponent
+	: TName extends InlineComponentName
+		? InlineComponent
+		: never;
 
 export interface ClosestParams<TName extends ComponentName> {
 	fromNode: ContentFlowNode;
@@ -25,8 +16,7 @@ export interface ClosestParams<TName extends ComponentName> {
 	components: TName[];
 }
 
-export type ClosestResult<TName extends ComponentName> =
-	ComponentByName<TName> | null;
+export type ClosestResult<TName extends ComponentName> = ComponentByName<TName> | null;
 
 export type ClosestFn = <TName extends ComponentName>(
 	params: ClosestParams<TName>,

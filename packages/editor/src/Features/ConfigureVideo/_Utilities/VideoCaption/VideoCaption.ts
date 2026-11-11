@@ -6,9 +6,11 @@ import {
 	type HTMLLayout,
 	htmlLayoutRole,
 } from "@rangex/core";
+
 import type { CaptionPosition } from "#adapters";
 import { mediaCaptionDefinition } from "#constants";
 import { createTextAlignStructuredStyle } from "#structured-style";
+
 import { getVideoElement } from "../GetVideoElements";
 import type {
 	GetVideoCaptionParams,
@@ -21,10 +23,7 @@ const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	for (const child of figure.$$children) {
-		if (
-			child.$$editorRole === htmlLayoutRole &&
-			child.$$localName === figcaptionLocalName
-		) {
+		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
 			return child;
 		}
 	}
@@ -36,9 +35,7 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * Reads whether a figure's caption is currently shown and, if so, whether it sits above or below
  * the video — derived from the figcaption's presence and DOM order, not a stored flag.
  */
-export const getVideoCaption = ({
-	figure,
-}: GetVideoCaptionParams): GetVideoCaptionResult => {
+export const getVideoCaption = ({ figure }: GetVideoCaptionParams): GetVideoCaptionResult => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {
@@ -50,9 +47,7 @@ export const getVideoCaption = ({
 	const { $$children } = figure;
 
 	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(video)
-			? "above"
-			: "below";
+		$$children.indexOf(figcaption) < $$children.indexOf(video) ? "above" : "below";
 
 	return { captionEnabled: true, captionPosition: position };
 };
@@ -106,10 +101,7 @@ export const setVideoCaptionEnabled = ({
  * Moves the figcaption before or after the video, always repositioning relative to the video
  * rather than checking the current order first. Throws if the figure has no figcaption.
  */
-export const setVideoCaptionPosition = ({
-	figure,
-	position,
-}: SetVideoCaptionPositionParams) => {
+export const setVideoCaptionPosition = ({ figure, position }: SetVideoCaptionPositionParams) => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {

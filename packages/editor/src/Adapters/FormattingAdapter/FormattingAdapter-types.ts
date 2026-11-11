@@ -9,6 +9,7 @@ import type {
 	TextAlignValue,
 	TextIndentValue,
 } from "#structured-style";
+
 import type { CreateAdapterParams } from "../_Utilities";
 
 export type FormattingWhenMixed = "apply" | "remove";
@@ -148,9 +149,7 @@ export interface FormattingActionState {
 	underline?: FormattingTogglePressed;
 }
 
-export type OnFormattingChangeCallbackFn = (
-	params: FormattingActionState,
-) => void;
+export type OnFormattingChangeCallbackFn = (params: FormattingActionState) => void;
 
 export interface FormattingConfigPortProps {
 	readonly whenMixed: FormattingWhenMixed;
@@ -161,55 +160,25 @@ export interface FormattingConfigPortProps {
 
 export interface FormattingConfigPort extends FormattingConfigPortProps {}
 
-export type OnBackgroundColorUpdateCallbackFn = (
-	value: FormattingBackgroundColorState,
-) => void;
+export type OnBackgroundColorUpdateCallbackFn = (value: FormattingBackgroundColorState) => void;
 export type OnBoldUpdateCallbackFn = (value: FormattingBoldState) => void;
 export type OnCodeUpdateCallbackFn = (value: FormattingCodeState) => void;
 export type OnColorUpdateCallbackFn = (value: FormattingColorState) => void;
-export type OnFontFamilyUpdateCallbackFn = (
-	value: FormattingFontFamilyState,
-) => void;
-export type OnFontSizeUpdateCallbackFn = (
-	value: FormattingFontSizeState,
-) => void;
-export type OnIndentationUpdateCallbackFn = (
-	value: FormattingIndentationState,
-) => void;
+export type OnFontFamilyUpdateCallbackFn = (value: FormattingFontFamilyState) => void;
+export type OnFontSizeUpdateCallbackFn = (value: FormattingFontSizeState) => void;
+export type OnIndentationUpdateCallbackFn = (value: FormattingIndentationState) => void;
 export type OnItalicUpdateCallbackFn = (value: FormattingItalicState) => void;
-export type OnLetterSpacingUpdateCallbackFn = (
-	value: FormattingLetterSpacingState,
-) => void;
-export type OnLineHeightUpdateCallbackFn = (
-	value: FormattingLineHeightState,
-) => void;
-export type OnLineLocalNameUpdateCallbackFn = (
-	value: FormattingLineLocalNameState,
-) => void;
-export type OnLineSpacingUpdateCallbackFn = (
-	value: FormattingLineSpacingState,
-) => void;
-export type OnSubscriptUpdateCallbackFn = (
-	value: FormattingSubscriptState,
-) => void;
-export type OnSuperscriptUpdateCallbackFn = (
-	value: FormattingSuperscriptState,
-) => void;
-export type OnStrikethroughUpdateCallbackFn = (
-	value: FormattingStrikethroughState,
-) => void;
-export type OnTextAlignUpdateCallbackFn = (
-	value: FormattingTextAlignState,
-) => void;
-export type OnUnderlineUpdateCallbackFn = (
-	value: FormattingUnderlineState,
-) => void;
-export type OnRemoveLineUpdateCallbackFn = (
-	value: FormattingRemoveLineState,
-) => void;
-export type OnRemoveTextUpdateCallbackFn = (
-	value: FormattingRemoveTextState,
-) => void;
+export type OnLetterSpacingUpdateCallbackFn = (value: FormattingLetterSpacingState) => void;
+export type OnLineHeightUpdateCallbackFn = (value: FormattingLineHeightState) => void;
+export type OnLineLocalNameUpdateCallbackFn = (value: FormattingLineLocalNameState) => void;
+export type OnLineSpacingUpdateCallbackFn = (value: FormattingLineSpacingState) => void;
+export type OnSubscriptUpdateCallbackFn = (value: FormattingSubscriptState) => void;
+export type OnSuperscriptUpdateCallbackFn = (value: FormattingSuperscriptState) => void;
+export type OnStrikethroughUpdateCallbackFn = (value: FormattingStrikethroughState) => void;
+export type OnTextAlignUpdateCallbackFn = (value: FormattingTextAlignState) => void;
+export type OnUnderlineUpdateCallbackFn = (value: FormattingUnderlineState) => void;
+export type OnRemoveLineUpdateCallbackFn = (value: FormattingRemoveLineState) => void;
+export type OnRemoveTextUpdateCallbackFn = (value: FormattingRemoveTextState) => void;
 
 export interface FormattingPublicPortProps {
 	readonly backgroundColor: FormattingBackgroundColorState;
@@ -232,9 +201,7 @@ export interface FormattingPublicPortProps {
 	readonly removeLine: FormattingRemoveLineState;
 	readonly removeText: FormattingRemoveTextState;
 
-	onBackgroundColorUpdate(
-		callback: OnBackgroundColorUpdateCallbackFn,
-	): () => void;
+	onBackgroundColorUpdate(callback: OnBackgroundColorUpdateCallbackFn): () => void;
 	onBoldUpdate(callback: OnBoldUpdateCallbackFn): () => void;
 	onCodeUpdate(callback: OnCodeUpdateCallbackFn): () => void;
 	onColorUpdate(callback: OnColorUpdateCallbackFn): () => void;
@@ -286,7 +253,6 @@ export interface FormattingSettings {
 	whenMixed?: FormattingWhenMixed;
 }
 
-export interface CreateFormattingAdapterParams
-	extends CreateAdapterParams<FormattingSettings> {}
+export interface CreateFormattingAdapterParams extends CreateAdapterParams<FormattingSettings> {}
 
 export interface CreateFormattingAdapterResult extends FormattingAdapter {}

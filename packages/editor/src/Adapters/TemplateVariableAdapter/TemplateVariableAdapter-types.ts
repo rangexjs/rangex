@@ -6,18 +6,17 @@ import type {
 	UnwrapPublicPort,
 } from "../_Utilities";
 
-export type TemplateVariableFields<FieldName extends string = string> = Record<
-	FieldName,
-	string
->;
+export type TemplateVariableFields<FieldName extends string = string> = Record<FieldName, string>;
 
 export interface TemplateVariableFieldConfig {
 	placeholder: string;
 	initialValue?: string;
 }
 
-export type TemplateVariableFieldsConfig<FieldName extends string = string> =
-	Record<FieldName, TemplateVariableFieldConfig>;
+export type TemplateVariableFieldsConfig<FieldName extends string = string> = Record<
+	FieldName,
+	TemplateVariableFieldConfig
+>;
 
 export interface TemplateVariableItem {
 	fieldName: string;
@@ -46,12 +45,8 @@ export type ValidateFieldValueResult = FieldMismatch | null;
 export type OnInsertCallbackFn = (params: InsertParams) => void;
 export type OnChangeFieldsCallbackFn = (fields: TemplateVariableFields) => void;
 export type OnSelectCallbackFn = (item: TemplateVariableItem) => void;
-export type ValidateFieldNameProviderFn = (
-	fieldName: string,
-) => ValidateFieldNameResult;
-export type ValidateFieldValueProviderFn = (
-	value: string,
-) => ValidateFieldValueResult;
+export type ValidateFieldNameProviderFn = (fieldName: string) => ValidateFieldNameResult;
+export type ValidateFieldValueProviderFn = (value: string) => ValidateFieldValueResult;
 
 export interface TemplateVariableConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
@@ -68,8 +63,7 @@ export interface TemplateVariableConfigPortProps {
 }
 
 export interface TemplateVariableConfigPort
-	extends TemplateVariableConfigPortProps,
-		UnwrapConfigPort {}
+	extends TemplateVariableConfigPortProps, UnwrapConfigPort {}
 
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 export type OnFieldsUpdateCallbackFn = (value: TemplateVariableFields) => void;
@@ -93,8 +87,7 @@ export interface TemplateVariablePublicPortProps {
 }
 
 export interface TemplateVariablePublicPort
-	extends TemplateVariablePublicPortProps,
-		UnwrapPublicPort {}
+	extends TemplateVariablePublicPortProps, UnwrapPublicPort {}
 
 export interface TemplateVariableInternals {
 	fieldsConfig: TemplateVariableFieldsConfig;
@@ -113,8 +106,6 @@ export interface TemplateVariableSettings {
 	fieldsConfig: TemplateVariableFieldsConfig;
 }
 
-export interface CreateTemplateVariableAdapterParams
-	extends CreateAdapterParams<TemplateVariableSettings> {}
+export interface CreateTemplateVariableAdapterParams extends CreateAdapterParams<TemplateVariableSettings> {}
 
-export interface CreateTemplateVariableAdapterResult
-	extends TemplateVariableAdapter {}
+export interface CreateTemplateVariableAdapterResult extends TemplateVariableAdapter {}

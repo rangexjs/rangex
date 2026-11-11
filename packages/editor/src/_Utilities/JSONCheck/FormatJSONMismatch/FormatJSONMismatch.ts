@@ -20,9 +20,7 @@ const findValueAtPath = ({ value, path }: FindValueAtPathParams) => {
 		const container = currentValue as Record<string | number, unknown>;
 
 		// An own key only, so a missing key named like an inherited one (e.g. "constructor") still gives undefined
-		currentValue = Object.hasOwn(container, segment)
-			? container[segment]
-			: undefined;
+		currentValue = Object.hasOwn(container, segment) ? container[segment] : undefined;
 	}
 
 	return currentValue;

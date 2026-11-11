@@ -1,5 +1,7 @@
 import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
+
 import { dataPartName, todoCheckboxPart } from "#constants";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

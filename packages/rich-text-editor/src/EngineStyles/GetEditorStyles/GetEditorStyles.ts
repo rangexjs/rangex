@@ -53,8 +53,7 @@ export const getEditorStyles = () => {
 		TemplateVariable +
 		TodoList +
 		Video;
-	const componentsEditor =
-		AccordionItemEditor + ComponentEditor + LinkEditor + TableEditor;
+	const componentsEditor = AccordionItemEditor + ComponentEditor + LinkEditor + TableEditor;
 
 	const editorElementsCommon = ContentLine + RootEditable;
 	const editorElementsEditor = GlyphFormatterEditor + RootEditableEditor;

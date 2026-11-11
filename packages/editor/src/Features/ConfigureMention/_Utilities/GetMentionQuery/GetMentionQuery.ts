@@ -1,14 +1,13 @@
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
+
 import type { GetCaretMenuQueryFn } from "../../../_Utilities";
 import type { CanInsertMentionParams } from "./GetMentionQuery-types";
 
 /*
  * Returns true if the closest ScopedEditable from fromText allows the mention component.
  */
-export const canInsertMention = ({
-	fromText,
-}: CanInsertMentionParams): boolean => {
+export const canInsertMention = ({ fromText }: CanInsertMentionParams): boolean => {
 	const scopedEditable = getClosestScopedEditable({ fromNode: fromText });
 
 	if (!scopedEditable) {
@@ -17,21 +16,14 @@ export const canInsertMention = ({
 
 	const { $$allowedComponents } = scopedEditable;
 
-	return (
-		$$allowedComponents === null ||
-		$$allowedComponents.includes(componentsName.mention)
-	);
+	return $$allowedComponents === null || $$allowedComponents.includes(componentsName.mention);
 };
 
 /*
  * Scans backward from the cursor to find an @-triggered mention query. Returns null if the
  * surrounding ScopedEditable doesn't allow mentions, or @ isn't found within the char limit.
  */
-export const getMentionQuery: GetCaretMenuQueryFn = ({
-	editorAPI,
-	fromText,
-	fromOffset,
-}) => {
+export const getMentionQuery: GetCaretMenuQueryFn = ({ editorAPI, fromText, fromOffset }) => {
 	if (!canInsertMention({ fromText })) {
 		return null;
 	}

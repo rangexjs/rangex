@@ -1,9 +1,8 @@
-import type {
-	LightDarkColor,
-	StructuredColor,
-} from "@rangex/editor/formatting";
+import type { LightDarkColor, StructuredColor } from "@rangex/editor/formatting";
+
 import { ColorFormat, type HslFormat } from "#color";
 import { assertNever } from "#utilities";
+
 import type { ColorMode } from "./ColorPanel";
 
 const getHslFromColorType = (color: StructuredColor): HslFormat => {
@@ -27,9 +26,7 @@ interface GetHslThemeColorsResult {
 	darkColors: HslFormat[];
 }
 
-export const getHslThemeColors = ({
-	colors,
-}: GetHslThemeColorsParams): GetHslThemeColorsResult => {
+export const getHslThemeColors = ({ colors }: GetHslThemeColorsParams): GetHslThemeColorsResult => {
 	const lightColors: HslFormat[] = [];
 	const darkColors: HslFormat[] = [];
 
@@ -81,8 +78,7 @@ export const getColorMode = ({
 	const deduplicatedDarkColors = getDeduplicatedColors(darkColors);
 
 	if (
-		(deduplicatedLightColors.length === 0 &&
-			deduplicatedDarkColors.length === 0) ||
+		(deduplicatedLightColors.length === 0 && deduplicatedDarkColors.length === 0) ||
 		deduplicatedLightColors.length !== deduplicatedDarkColors.length
 	) {
 		return "common";
@@ -108,22 +104,17 @@ interface GetGridPaletteColorsParams {
 	paletteCols: number;
 }
 
-export const getGridPaletteColors = ({
-	paletteRows,
-	paletteCols,
-}: GetGridPaletteColorsParams) => {
-	const gridFilledColors = Array.from(
-		{ length: paletteRows - 3 },
-		(_, rowIndex) =>
-			Array.from({ length: paletteCols }, (_, colIndex) => {
-				const h = (360 / paletteCols) * colIndex;
+export const getGridPaletteColors = ({ paletteRows, paletteCols }: GetGridPaletteColorsParams) => {
+	const gridFilledColors = Array.from({ length: paletteRows - 3 }, (_, rowIndex) =>
+		Array.from({ length: paletteCols }, (_, colIndex) => {
+			const h = (360 / paletteCols) * colIndex;
 
-				const s = (100 / paletteRows) * (paletteRows - rowIndex);
+			const s = (100 / paletteRows) * (paletteRows - rowIndex);
 
-				const l = (100 / paletteRows) * (paletteRows - (rowIndex + 1));
+			const l = (100 / paletteRows) * (paletteRows - (rowIndex + 1));
 
-				return { h, s, l, a: 1 };
-			}),
+			return { h, s, l, a: 1 };
+		}),
 	);
 
 	const grayColors: HslFormat[] = [
@@ -135,10 +126,7 @@ export const getGridPaletteColors = ({
 		{ h: 0, s: 0, l: 0, a: 1 },
 	];
 
-	const gridPaletteColors: HslFormat[] = [
-		grayColors,
-		...gridFilledColors,
-	].flat();
+	const gridPaletteColors: HslFormat[] = [grayColors, ...gridFilledColors].flat();
 
 	return gridPaletteColors;
 };

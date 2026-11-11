@@ -1,7 +1,9 @@
 import { FloatingPortal, Link } from "@rangex/solid";
 import { createEffect, createSignal, flush, onCleanup } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
+
 import { getDisplayTextField, LinkEdit, LinkPreview } from "../_Utilities";
 
 type MenuView = "preview" | "edit";
@@ -18,8 +20,7 @@ export const LinkMenu = () => {
 
 	const [view, setView] = createSignal<MenuView>("preview");
 
-	const [displayTextHandle, displayTextControls] =
-		createTextFieldState<HTMLInputElement>({});
+	const [displayTextHandle, displayTextControls] = createTextFieldState<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
@@ -58,9 +59,7 @@ export const LinkMenu = () => {
 	};
 
 	const focusDisplayTextInput = () => {
-		const input = linkMenuEl.querySelector<HTMLInputElement>(
-			`#${displayTextHandle.id}`,
-		);
+		const input = linkMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
 
 		if (!input) {
 			throw new Error("Input wasn't found.");
@@ -78,9 +77,7 @@ export const LinkMenu = () => {
 
 			const { anchor } = domAttrs;
 
-			const { value, disabled, placeholder } = getDisplayTextField(
-				link.getDisplayText(),
-			);
+			const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
 
 			displayTextHandle.reset();
 			displayTextHandle.setValue(value);

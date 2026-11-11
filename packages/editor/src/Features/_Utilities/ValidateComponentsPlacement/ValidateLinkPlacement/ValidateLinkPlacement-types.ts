@@ -1,8 +1,4 @@
-import type {
-	LinkAttrs,
-	LinkAttrsMismatch,
-	LinkAttrValidators,
-} from "#dom-attrs";
+import type { LinkAttrs, LinkAttrsMismatch, LinkAttrValidators } from "#dom-attrs";
 
 export interface ValidateLinkPlacementParams {
 	attrValidators: LinkAttrValidators;

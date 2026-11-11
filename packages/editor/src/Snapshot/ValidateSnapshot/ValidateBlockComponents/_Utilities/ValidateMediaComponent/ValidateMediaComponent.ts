@@ -4,7 +4,9 @@ import {
 	htmlLayoutRole,
 	nestedEditableRole,
 } from "@rangex/core";
+
 import { mediaCaptionDefinition } from "#constants";
+
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
@@ -32,8 +34,7 @@ const findHTMLLayoutDraft = ({
 }: FindHTMLLayoutDraftParams): FindHTMLLayoutDraftResult =>
 	childNodes.find(
 		(childDraft): childDraft is HTMLLayoutDraft =>
-			childDraft.editorRole === htmlLayoutRole &&
-			childDraft.localName === localName,
+			childDraft.editorRole === htmlLayoutRole && childDraft.localName === localName,
 	);
 
 const validateMedia = ({
@@ -116,10 +117,7 @@ const validateFigcaption = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
@@ -298,10 +296,7 @@ export const validateMediaComponent = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,

@@ -9,8 +9,7 @@ export type TodoListAttrsShape = typeof todoListAttrsShape;
 
 export type TodoListAttrs = ComponentAttrs<TodoListAttrsShape>;
 
-export type TodoListAttrValidators =
-	ComponentAttrValidators<TodoListAttrsShape>;
+export type TodoListAttrValidators = ComponentAttrValidators<TodoListAttrsShape>;
 
 export type CreateTodoListAttrValidatorsParams =
 	ComponentAttrValidatorOverrides<TodoListAttrsShape>;

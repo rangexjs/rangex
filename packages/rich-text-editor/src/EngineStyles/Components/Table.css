@@ -8,10 +8,7 @@
 	th {
 		border-width: 1px;
 		border-style: solid;
-		border-color: light-dark(
-			var(--color-neutral-400),
-			var(--color-neutral-700)
-		);
+		border-color: light-dark(var(--color-neutral-400), var(--color-neutral-700));
 	}
 
 	td,
@@ -24,16 +21,10 @@
 	}
 
 	thead {
-		background-color: light-dark(
-			var(--color-neutral-200),
-			var(--color-neutral-900)
-		);
+		background-color: light-dark(var(--color-neutral-200), var(--color-neutral-900));
 	}
 
 	tfoot {
-		background-color: light-dark(
-			var(--color-neutral-300),
-			var(--color-neutral-800)
-		);
+		background-color: light-dark(var(--color-neutral-300), var(--color-neutral-800));
 	}
 }

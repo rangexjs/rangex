@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import type {
 	CreateShortcutsAdapterParams,
 	CreateShortcutsAdapterResult,

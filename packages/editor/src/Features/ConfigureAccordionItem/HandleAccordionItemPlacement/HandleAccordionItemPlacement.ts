@@ -1,4 +1,5 @@
 import { blockComponentRole, blockComponentRoleSelector } from "@rangex/core";
+
 import {
 	createAccordionItem,
 	getAccordionItemParts,
@@ -28,9 +29,7 @@ const createValidAccordionItem = ({
 	}
 
 	const accordionItemLine = createAccordionItem({ attrs });
-	const accordionItem = accordionItemLine.$$querySelector(
-		blockComponentRoleSelector,
-	);
+	const accordionItem = accordionItemLine.$$querySelector(blockComponentRoleSelector);
 
 	if (accordionItem?.$$editorRole !== blockComponentRole) {
 		throw new Error("AccordionItem's type is invalid.");
@@ -58,8 +57,7 @@ export const handleAccordionItemPlacement = ({
 			return;
 		}
 
-		const { line: accordionItemLine, summaryNestedEditable } =
-			accordionItemParts;
+		const { line: accordionItemLine, summaryNestedEditable } = accordionItemParts;
 
 		blockComponentPlacement.insertBySelection({
 			lines: [accordionItemLine],

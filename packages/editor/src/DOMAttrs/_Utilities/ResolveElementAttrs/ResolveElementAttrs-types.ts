@@ -1,4 +1,5 @@
 import type { DOMAttrs } from "@rangex/core";
+
 import type {
 	AnyElementAttrs,
 	AnyElementAttrValidators,
@@ -22,6 +23,4 @@ export interface ResolveElementAttrsInvalid {
 	mismatch: InvalidAttrMismatch;
 }
 
-export type ResolveElementAttrsResult =
-	| ResolveElementAttrsValid
-	| ResolveElementAttrsInvalid;
+export type ResolveElementAttrsResult = ResolveElementAttrsValid | ResolveElementAttrsInvalid;

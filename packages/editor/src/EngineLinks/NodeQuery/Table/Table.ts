@@ -1,15 +1,9 @@
 import { isEditorElement, tableRole, tableRoleSelector } from "@rangex/core";
-import type {
-	GetClosestTableParams,
-	GetClosestTableResult,
-} from "./Table-types";
 
-export const getClosestTable = ({
-	fromNode,
-}: GetClosestTableParams): GetClosestTableResult => {
-	const element = isEditorElement(fromNode)
-		? fromNode
-		: fromNode.$$parentElement;
+import type { GetClosestTableParams, GetClosestTableResult } from "./Table-types";
+
+export const getClosestTable = ({ fromNode }: GetClosestTableParams): GetClosestTableResult => {
+	const element = isEditorElement(fromNode) ? fromNode : fromNode.$$parentElement;
 
 	if (!element) {
 		return null;

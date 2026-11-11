@@ -1,4 +1,5 @@
 import { matchJSON } from "#utilities";
+
 import { describeJSONMismatch } from "../../../_Utilities";
 import type {
 	BlockComponentState,

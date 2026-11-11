@@ -5,11 +5,9 @@ interface StatusIndicatorProps {
 }
 
 export const StatusIndicator = (props: StatusIndicatorProps) => {
-	const progress = () =>
-		props.status.status === "uploading" ? props.status.progress : 0;
+	const progress = () => (props.status.status === "uploading" ? props.status.progress : 0);
 
-	const isVisible = () =>
-		props.status.status === "checking" || props.status.status === "uploading";
+	const isVisible = () => props.status.status === "checking" || props.status.status === "uploading";
 
 	return (
 		<div

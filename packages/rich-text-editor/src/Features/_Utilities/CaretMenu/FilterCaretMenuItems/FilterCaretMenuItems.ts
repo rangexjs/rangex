@@ -183,9 +183,7 @@ export const filterCaretMenuItems = <T>({
 		}
 	}
 
-	rankedItems.sort(
-		(a, b) => compareMatches(a.match, b.match) || a.index - b.index,
-	);
+	rankedItems.sort((a, b) => compareMatches(a.match, b.match) || a.index - b.index);
 
 	const sortedItems = rankedItems.map(({ item }) => item);
 
