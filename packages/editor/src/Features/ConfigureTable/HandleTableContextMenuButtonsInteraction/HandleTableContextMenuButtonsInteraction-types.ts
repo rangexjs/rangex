@@ -1,4 +1,4 @@
-import type { EditorAPI, Table, TableCell } from "@rangex/core";
+import type { EditorAPI, Table } from "@rangex/core";
 import type { TableConfigPort } from "#adapters/Table";
 
 export interface GetActiveTableParams {
@@ -26,12 +26,6 @@ export interface HandleCellTypeParams {
 	configPort: TableConfigPort;
 	editorAPI: EditorAPI;
 }
-
-export interface GetActiveTableCellsParams {
-	editorAPI: EditorAPI;
-}
-
-export type GetActiveTableCellsResult = TableCell[];
 
 export interface HandleVerticalAlignmentParams {
 	configPort: TableConfigPort;

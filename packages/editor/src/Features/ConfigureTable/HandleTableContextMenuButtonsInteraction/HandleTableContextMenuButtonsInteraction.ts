@@ -7,13 +7,12 @@ import {
 } from "@rangex/core";
 import { verticalAlignAttr } from "#constants";
 import {
+	getActiveTableCells,
 	getCommonTableCellFromSelection,
 	getCommonTableFromSelection,
 	getTableCapacity,
 } from "../_Utilities";
 import type {
-	GetActiveTableCellsParams,
-	GetActiveTableCellsResult,
 	GetActiveTableParams,
 	GetActiveTableResult,
 	HandleCellResizingParams,
@@ -199,22 +198,6 @@ const handleCellType = ({ configPort, editorAPI }: HandleCellTypeParams) => {
 	});
 };
 
-const getActiveTableCells = ({
-	editorAPI,
-}: GetActiveTableCellsParams): GetActiveTableCellsResult => {
-	const table = getActiveTable({ editorAPI });
-
-	if (table?.$$isTableSelectionActive) {
-		return table.$$tableCells.filter(
-			(tableCell) => tableCell.$$isInMultiSelection,
-		);
-	}
-
-	const tableCell = getCommonTableCellFromSelection({ editorAPI });
-
-	return tableCell ? [tableCell] : [];
-};
-
 const handleVerticalAlignment = ({
 	configPort,
 	editorAPI,
@@ -222,7 +205,13 @@ const handleVerticalAlignment = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	return configPort.onChangeVerticalAlignment((action) => {
-		const tableCells = getActiveTableCells({ editorAPI });
+		const table = getActiveTable({ editorAPI });
+
+		if (!table) {
+			return;
+		}
+
+		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
 			const nestedEditable = tableCell.$$querySelector(
@@ -299,7 +288,13 @@ const handleClearContents = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	return configPort.onClear(() => {
-		const tableCells = getActiveTableCells({ editorAPI });
+		const table = getActiveTable({ editorAPI });
+
+		if (!table) {
+			return;
+		}
+
+		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
 			const nestedEditable = tableCell.$$querySelector(
