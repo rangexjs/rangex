@@ -217,23 +217,22 @@
 		"tag": "beta"
 	},
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build && tsc -p ./tsconfig.build.json",
-		"prepublishOnly": "bun run build",
-		"test": "vitest",
-		"test:coverage": "vitest --coverage",
-		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts && tsc && vitest"
+		"dev": "vp dev",
+		"build": "vp build && tsc -p ./tsconfig.build.json",
+		"prepublishOnly": "npm run build",
+		"test": "vp test",
+		"test:coverage": "vp test --coverage",
+		"fix": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
+		"pre:check": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts && tsc && vp test"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
 		"@happy-dom/global-registrator": "^20.10.6",
-		"@vitest/coverage-v8": "^4.1.10",
+		"@vitest/coverage-v8": "5.1.0",
 		"typescript": "^7.0.2",
-		"vite": "^8.1.5",
-		"vitest": "^4.1.10"
+		"vite-plus": "1.6.0"
 	},
 	"dependencies": {
-		"@rangex/core": "workspace:*"
+		"@rangex/core": "1.0.0-beta.0"
 	}
 }

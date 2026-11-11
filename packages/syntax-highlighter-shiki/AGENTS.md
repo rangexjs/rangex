@@ -15,7 +15,7 @@ Shiki is a single peer dependency: `shiki`. Import everything through its subpat
 - `shiki/types` — `LanguageInput`, `ThemeInput`, `LanguageRegistration`, …
 - `shiki` — `BundledLanguage`, `BundledTheme` (types only)
 
-Never import from `@shikijs/*` in `src/`. Bun uses isolated installs, so this package can only resolve what its own `package.json` declares, and `@shikijs/*` is not declared. Shiki's docs use `@shikijs/*` — translate those imports to the `shiki/*` subpath. (Comments may still mention `@shikijs/langs/*`: that is what consumers import, not this package.)
+Never import from `@shikijs/*` in `src/`. `@shikijs/*` is not declared in this package's `package.json`: it resolves here only because npm hoists it, and would break for consumers. Shiki's docs use `@shikijs/*` — translate those imports to the `shiki/*` subpath. (Comments may still mention `@shikijs/langs/*`: that is what consumers import, not this package.)
 
 ## Two highlighting paths
 
@@ -35,4 +35,4 @@ Every exported function gets a `/* … */` block comment describing its behavior
 
 ## Checks
 
-No tests exist in this package. Verify with `bun run lint` from the repo root, and `bun run build` in this package when changing exports or types.
+No tests exist in this package. Verify with `npm run lint` from the repo root, and `npm run build` in this package when changing exports or types.

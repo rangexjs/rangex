@@ -23,7 +23,7 @@ The engine itself (`@rangex/core`, the "core" package) is closed-source. Most ed
 
 ## Repository structure
 
-This is a monorepo (Bun workspaces) for the RangeX rich text editor project:
+This is a monorepo (npm workspaces) for the RangeX rich text editor project:
 
 | Package | Path | Notes |
 |---|---|---|
@@ -43,39 +43,34 @@ Some packages have their own `AGENTS.md` / `CLAUDE.md` with package-specific gui
 
 ## Commands
 
-All commands use Bun unless noted. Run from the repo root unless a package path is specified.
+All commands use npm unless noted; scripts run Vite+ (`vp`) for dev, build and tests. Run from the repo root unless a package path is specified.
 
 **Root dev server** (full editor, port 3000):
 ```bash
-bun run dev
+npm run dev
 ```
 
 **Browser checks:** before checking anything in the browser, check whether the dev server is listening on port 3000. If it is not, do not start it yourself — ask the user to start it.
 
 **Build:**
 ```bash
-bun run build           # root: editor, solid, syntax-highlighter-shiki, rich-text-editor, in that order
-bun run build           # inside any package directory: that package only (the engine is built this way)
+npm run build           # root: editor, solid, syntax-highlighter-shiki, rich-text-editor, in that order
+npm run build           # inside any package directory: that package only (the engine is built this way)
 ```
 
-Development doesn't need builds: the dev server, lint and type-check read every package's source through the `@rangex/source` condition. Build only to check the published output (`dist/`). Publishing (`bun publish`) builds automatically through `prepublishOnly`.
+Development doesn't need builds: the dev server, lint and type-check read every package's source through the `@rangex/source` condition. Build only to check the published output (`dist/`). Publishing (`npm publish`) builds automatically through `prepublishOnly`.
 
 **Tests** (only the engine has test files; run inside `packages/core`):
 ```bash
-bun run test                        # all tests
-bun run test -- <pattern>           # single file by name/path
-bun run test:coverage               # with coverage
+npm run test                        # all tests
+npm run test -- <pattern>           # single file by name/path
+npm run test:coverage               # with coverage
 ```
 
 **Lint / type-check:**
 ```bash
-bun run lint           # biome check + tsc (no emit) for the root, then each package's `fix` (biome --write + tsc)
-bun run fix            # same, with biome --write for the root too
+npm run lint           # biome check + tsc (no emit) for the root, then each package's `fix` (biome --write + tsc)
+npm run fix            # same, with biome --write for the root too
 ```
 
-**Clean reinstall** (Bun's isolated linker doesn't remove links to dependencies that were dropped; do this after removing one):
-```bash
-bun run clean && bun install    # deletes every node_modules in the repo, then reinstalls
-```
-
-**After any code change:** always run `bun run lint` from the repo root and fix all errors before finishing.
+**After any code change:** always run `npm run lint` from the repo root and fix all errors before finishing.

@@ -52,4 +52,4 @@ Consumers store a port in a `$`-prefixed variable (`const $link = Link(link)`) a
 
 ## Checks
 
-No tests exist in this package. Verify with `bun run lint` from the repo root, and `bun run build` in this package when changing exports or types.
+No tests exist in this package. Verify with `npm run lint` from the repo root, and `npm run build` in this package when changing exports or types.
