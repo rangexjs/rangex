@@ -9,11 +9,13 @@ import {
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "@rangex/core";
+import { componentsName, createComponentSelector } from "#constants";
 import {
-	componentsName,
-	createComponentSelector,
-	getClosestBlockComponent,
-} from "#engine-links";
+	codeBlockAttrsShape,
+	resolveElementAttrs,
+	writeElementAttrs,
+} from "#dom-attrs";
+import { getClosestBlockComponent } from "#engine-links";
 import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
@@ -33,10 +35,18 @@ import type {
 	OnCodeChangeParams,
 	UpdateCodeBlockColorsParams,
 	WatchCodeBlocksParams,
+	WriteCodeBlockColorsParams,
 } from "./CodeHighlighter-types";
 import { CSSHighlightManager } from "./CSSHighlightManager";
 
 const codeBlockSelector = createComponentSelector(componentsName.codeBlock);
+
+const emptyCodeBlockColors = {
+	"data-bg-light": null,
+	"data-bg-dark": null,
+	"data-fg-light": null,
+	"data-fg-dark": null,
+};
 
 /**
  * Tracks CodeBlocks added to {@link rootEditable}, calling {@link onCodeChange}
@@ -187,10 +197,48 @@ const clearCodeBlockColors = ({
 	list,
 }: ClearCodeBlockColorsParams) => {
 	cssHighlightManager.clear({ list });
-	blockComponent.style.removeProperty("--bg-light");
-	blockComponent.style.removeProperty("--bg-dark");
-	blockComponent.style.removeProperty("--fg-light");
-	blockComponent.style.removeProperty("--fg-dark");
+
+	writeElementAttrs({
+		element: blockComponent,
+		elementAttrs: emptyCodeBlockColors,
+	});
+};
+
+/*
+ * Sets the theme's colors on the code block. A color the CodeBlock's attribute validators don't accept isn't set, so the
+ * styles' defaults apply.
+ */
+const writeCodeBlockColors = ({
+	blockComponent,
+	attrValidators,
+	backgrounds,
+	foregrounds,
+}: WriteCodeBlockColorsParams) => {
+	const resolvedColors = resolveElementAttrs({
+		elementAttrs: {
+			"data-bg-light": backgrounds.light,
+			"data-bg-dark": backgrounds.dark,
+			"data-fg-light": foregrounds.light,
+			"data-fg-dark": foregrounds.dark,
+		},
+		elementAttrsShape: codeBlockAttrsShape.codeBlock,
+		elementAttrValidators: attrValidators.codeBlock,
+	});
+
+	if (resolvedColors.kind === "invalid") {
+		console.warn(resolvedColors.mismatch);
+
+		writeElementAttrs({
+			element: blockComponent,
+			elementAttrs: emptyCodeBlockColors,
+		});
+		return;
+	}
+
+	writeElementAttrs({
+		element: blockComponent,
+		elementAttrs: { ...emptyCodeBlockColors, ...resolvedColors.elementAttrs },
+	});
 };
 
 /**
@@ -271,6 +319,7 @@ const applyTokenColors = ({
 const updateCodeBlockColors = async ({
 	editorAPI,
 	getHighlightInfo,
+	attrValidators,
 	cssHighlightManager,
 	blockComponent,
 }: UpdateCodeBlockColorsParams) => {
@@ -301,10 +350,12 @@ const updateCodeBlockColors = async ({
 
 	const { backgrounds, foregrounds, codeLines } = highlightInfo;
 
-	blockComponent.style.setProperty("--bg-light", backgrounds.light);
-	blockComponent.style.setProperty("--bg-dark", backgrounds.dark);
-	blockComponent.style.setProperty("--fg-light", foregrounds.light);
-	blockComponent.style.setProperty("--fg-dark", foregrounds.dark);
+	writeCodeBlockColors({
+		blockComponent,
+		attrValidators,
+		backgrounds,
+		foregrounds,
+	});
 
 	applyTokenColors({ editorAPI, list, cssHighlightManager, codeLines });
 };
@@ -365,6 +416,7 @@ const getOutdatedCodeBlocks = ({
 export class CodeHighlighter {
 	#editorAPI;
 	#getHighlightInfo;
+	#attrValidators;
 	#cssHighlightManager = new CSSHighlightManager();
 	// The language/theme each code block was last highlighted with.
 	#appliedHighlights = new WeakMap<BlockComponent, CodeBlockHighlight>();
@@ -373,9 +425,11 @@ export class CodeHighlighter {
 	constructor({
 		editorAPI,
 		getHighlightInfo,
+		attrValidators,
 	}: CodeHighlighterConstructorParams) {
 		this.#editorAPI = editorAPI;
 		this.#getHighlightInfo = getHighlightInfo;
+		this.#attrValidators = attrValidators;
 
 		const { shadowRoot, rootEditable } = this.#editorAPI;
 
@@ -432,6 +486,7 @@ export class CodeHighlighter {
 		updateCodeBlockColors({
 			editorAPI: this.#editorAPI,
 			getHighlightInfo: this.#getHighlightInfo,
+			attrValidators: this.#attrValidators,
 			cssHighlightManager: this.#cssHighlightManager,
 			blockComponent,
 		});

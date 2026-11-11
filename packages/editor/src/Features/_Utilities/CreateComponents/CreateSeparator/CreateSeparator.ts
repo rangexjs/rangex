@@ -4,7 +4,7 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import { createSeparatorStorage } from "#storage";
 import type { CreateSeparatorResult } from "./CreateSeparator-types";
 
@@ -13,9 +13,6 @@ import type { CreateSeparatorResult } from "./CreateSeparator-types";
  */
 export const createSeparator = (): CreateSeparatorResult => {
 	const blockComponentLine = createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.separator,
@@ -24,7 +21,12 @@ export const createSeparator = (): CreateSeparatorResult => {
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
-			childNodes: [createHTMLLayout({ localName: "hr" })],
+			childNodes: [
+				createHTMLLayout({
+					localName: "hr",
+					childNodes: [],
+				}),
+			],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
 	});

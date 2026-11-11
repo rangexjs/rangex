@@ -1,22 +1,20 @@
 import type { BlockComponent } from "@rangex/core";
 import type { ListId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
-export interface ListStorage {
+export type ListStorage = {
 	id: ListId;
-	version: typeof storageVersion;
-}
+};
 
-export interface CreateListStorageResult extends ListStorage {}
+export type CreateListStorageResult = ListStorage;
 
 export interface EnsureListStorageParams {
 	storage: unknown;
 }
 
-export interface EnsureListStorageResult extends ListStorage {}
+export type EnsureListStorageResult = ListStorage;
 
 export interface EnsureNodeListStorageParams {
 	blockComponent: BlockComponent;
 }
 
-export interface EnsureNodeListStorageResult extends ListStorage {}
+export type EnsureNodeListStorageResult = ListStorage;

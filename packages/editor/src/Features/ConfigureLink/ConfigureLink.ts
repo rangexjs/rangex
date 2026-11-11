@@ -1,21 +1,25 @@
-import { componentsName, createPopoverOverlayController } from "#engine-links";
+import { componentsName } from "#constants";
+import { linkAttrsShape, normalizeLinkAttrs } from "#dom-attrs";
+import { createPopoverOverlayController } from "#engine-links";
 import {
+	getLinkParts,
 	handleComponentUnwrap,
+	handleDOMAttrs,
 	handleSelectionComponent,
 	handleSelectionMenuInteraction,
 } from "../_Utilities";
 import type { ConfigureLinkParams } from "./ConfigureLink-types";
+import { handleDisplayTextChange } from "./HandleDisplayTextChange";
 import { handleDisplayTextRegistration } from "./HandleDisplayTextRegistration";
 import { handleLinkInsertion } from "./HandleLinkInsertion";
 import { handleLinkInteraction } from "./HandleLinkInteraction";
 import { handleLinkMenuClose } from "./HandleLinkMenuClose";
-import { handleLinkModification } from "./HandleLinkModification";
 import { handleLinkPlacementState } from "./HandleLinkPlacementState";
 import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
 
 /*
  * Wires up the link feature: selection menu appearance, display text, placement state, menu
- * open/close, interaction tracking, insertion, modification, and unwrap handling. Returns a
+ * open/close, interaction tracking, insertion, display text change, and unwrap handling. Returns a
  * cleanup function that tears down all of it.
  */
 export const configureLink = ({
@@ -75,9 +79,19 @@ export const configureLink = ({
 		linkMenuPopoverController,
 	});
 
-	const modificationCleanup = handleLinkModification({
+	const displayTextChangeCleanup = handleDisplayTextChange({
 		configPort,
 		editorAPI,
+	});
+
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: linkAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		normalizeDOMAttrs: normalizeLinkAttrs,
+		resolveElements: (link) => getLinkParts({ link }),
 	});
 
 	const unwrapCleanup = handleComponentUnwrap({
@@ -99,7 +113,8 @@ export const configureLink = ({
 		menuOpenCleanup();
 		linkInteractionCleanup();
 		insertionCleanup();
-		modificationCleanup();
+		displayTextChangeCleanup();
+		domAttrsCleanup();
 		unwrapCleanup();
 		menuCloseCleanup();
 		linkMenuPopoverController.cleanup();

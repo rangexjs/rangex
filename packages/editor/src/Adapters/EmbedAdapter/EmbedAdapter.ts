@@ -1,12 +1,14 @@
 import type { BlockComponent } from "@rangex/core";
+import type { EmbedAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
 	createBlockResize,
 	createCaptionPort,
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createQuickActionsPort,
-	createSwapToEmptyMediaPort,
+	createSwapToSourcePlaceholderPort,
 } from "../_Utilities";
 import type {
 	CreateEmbedAdapterParams,
@@ -24,22 +26,32 @@ export const createEmbedAdapter = (
 
 	adapterBus.registerAdapter("embed");
 
+	const embedAttrValidators = adapterBus.getAttrValidators("embed");
+
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
-	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
+	const domAttrsPort = createDOMAttrsPort<EmbedAttrsShape>();
+	const swapToSourcePlaceholderPort = createSwapToSourcePlaceholderPort({
+		adapterBus,
+	});
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const configPort: EmbedConfigPort = extendObjectProperties(
 		captionPort.configPort,
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
-		swapToEmptyMediaPort.configPort,
+		domAttrsPort.configPort,
+		swapToSourcePlaceholderPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
+			},
+
+			get attrValidators() {
+				return embedAttrValidators;
 			},
 
 			get quickActions() {
@@ -57,7 +69,8 @@ export const createEmbedAdapter = (
 		captionPort.publicPort,
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
-		swapToEmptyMediaPort.publicPort,
+		domAttrsPort.publicPort,
+		swapToSourcePlaceholderPort.publicPort,
 		{
 			get quickActions() {
 				return quickActionsPort.publicPort;

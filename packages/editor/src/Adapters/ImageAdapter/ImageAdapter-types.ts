@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+import type { ImageAttrsShape, ImageAttrValidators } from "#dom-attrs";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -8,15 +9,18 @@ import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface ImageConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly attrValidators: ImageAttrValidators;
 	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
@@ -27,7 +31,8 @@ export interface ImageConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
-		SwapToEmptyMediaConfigPort {}
+		DOMAttrsConfigPort<ImageAttrsShape>,
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface ImagePublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -38,7 +43,8 @@ export interface ImagePublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
-		SwapToEmptyMediaPublicPort {}
+		DOMAttrsPublicPort<ImageAttrsShape>,
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface ImageAdapter {
 	configPort: ImageConfigPort;

@@ -1,5 +1,5 @@
+import { componentsName } from "#constants";
 import {
-	componentsName,
 	createAnchoredOverlayController,
 	createBlockComponentPlacement,
 } from "#engine-links";

@@ -3,6 +3,7 @@ import {
 	contentLineRoleSelector,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+import { assertNever } from "#utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	GetDisplayTextFromLinkParams,
@@ -38,49 +39,53 @@ const getDisplayTextFromLink = ({
 		toOffset: contentLine.$$childNodes.length,
 	});
 
-	return { value, disabled: false };
+	return { type: "edit", value };
 };
 
 /*
- * Pre-fills the display text field from the current selection, or disables it when the
- * selection spans more than one wrappable segment, since no single value can represent it.
+ * Resolves the display text from the current selection: empty for an insert, the selected
+ * text when it wraps into a single link, none when it wraps into several.
  */
 const getDisplayTextFromSelection = ({
 	editorAPI,
 }: GetDisplayTextFromSelectionParams): GetDisplayTextInfoResult => {
 	const mode = getLinkPlacementMode({ editorAPI });
 
-	if (mode === "insert") {
-		return { value: "", disabled: false };
+	if (!mode) {
+		return null;
 	}
 
-	if (mode === "wrap") {
-		const selection = editorAPI.getEditorSelection();
+	if (mode.type === "insert") {
+		return { type: "insert" };
+	}
 
-		const { fromText, fromOffset, toText, toOffset } =
-			selection.getBoundaryPoints();
+	if (mode.type === "wrap") {
+		const { segments } = mode;
 
-		const segments = editorAPI.getInlineWrappableSegments({
-			fromNode: fromText,
-			fromOffset,
-			toNode: toText,
-			toOffset,
+		if (segments.length > 1) {
+			return { type: "multiple-wrap" };
+		}
+
+		const [segment] = segments;
+
+		if (!segment) {
+			throw new Error("Wrap mode is missing its segment.");
+		}
+
+		const { startText, startOffset, endText, endOffset } =
+			segment.getBoundaryPoints();
+
+		const value = editorAPI.getPlainText({
+			fromNode: startText,
+			fromOffset: startOffset,
+			toNode: endText,
+			toOffset: endOffset,
 		});
 
-		if (segments.length === 1) {
-			const value = editorAPI.getPlainText({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-			});
-
-			return { value, disabled: false };
-		}
+		return { type: "single-wrap", value };
 	}
 
-	console.warn("Selection doesn't map to a single display text value.");
-	return { value: "", disabled: false };
+	return assertNever(mode);
 };
 
 /*

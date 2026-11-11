@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { embedId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateEmbedStorageResult,
 	EmbedStorage,
@@ -9,8 +10,24 @@ import type {
 	EnsureNodeEmbedStorageResult,
 } from "./EmbedStorage-types";
 
+/*
+ * The Embed's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const embedStoragePattern = {
+	id: embedId,
+} satisfies JSONPattern<EmbedStorage>;
+
+/*
+ * Matches a value against embedStoragePattern, returning the first mismatch or null.
+ */
+export const matchEmbedStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: embedStoragePattern });
+};
+
 export const isEmbedStorage = (storage: unknown): storage is EmbedStorage => {
-	return isStorage(storage, { id: embedId });
+	const mismatch = matchEmbedStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateEmbedStorage = (
@@ -21,7 +38,6 @@ export const validateEmbedStorage = (
 
 export const createEmbedStorage = (): CreateEmbedStorageResult => ({
 	id: embedId,
-	version: storageVersion,
 });
 
 export const ensureEmbedStorage = ({

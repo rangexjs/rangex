@@ -3,7 +3,7 @@ import {
 	inlineComponentRole,
 	isEditorNode,
 } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName } from "#constants";
 import type {
 	HandleLinkInteractionParams,
 	OpenLinkMenuParams,

@@ -1,0 +1,22 @@
+[data-rx-editor-role="block-component-line"] {
+	&:has([data-rx-name="audio"]) {
+		margin-block: 8px;
+	}
+
+	[data-rx-editor-role="block-component"] {
+		&[data-rx-name="audio"] {
+			& figure {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				margin: 0;
+			}
+
+			& audio {
+				display: block;
+				max-width: 100%;
+				width: 100%;
+			}
+		}
+	}
+}

@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { EmbedAttrsPatch } from "@rangex/editor/embed";
 import { Embed, FloatingPortal, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
@@ -20,17 +21,17 @@ import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
 	BlockAlign,
-	getAspectRatio,
+	isAspectRatioValue,
+	MediaSource,
 	OptionDropdown,
 	type OptionDropdownOption,
-	setAspectRatio,
 } from "../../_Utilities";
 
-const aspectRatioOptions: OptionDropdownOption<AspectRatioValue>[] = [
-	{ label: "Auto", value: "auto" },
-	{ label: "1:1", value: "1-1" },
-	{ label: "4:3", value: "4-3" },
-	{ label: "16:9", value: "16-9" },
+const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
+	{ label: "Auto", value: null },
+	{ label: "1:1", value: "1 / 1" },
+	{ label: "4:3", value: "4 / 3" },
+	{ label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -49,14 +50,14 @@ export const EmbedQuickActions = () => {
 	const $embed = Embed(embed);
 	const $readOnly = ReadOnly(readOnly);
 
-	const embedElement = () => {
-		const currentBlock = $embed.currentComponent();
+	const iframeAttrs = () => $embed.domAttrs()?.iframe ?? null;
 
-		return currentBlock?.querySelector<HTMLIFrameElement>("iframe") ?? null;
+	// An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
+	const aspectRatio = (): AspectRatioValue | null => {
+		const value = iframeAttrs()?.[aspectRatioAttrName] ?? null;
+
+		return isAspectRatioValue(value) ? value : null;
 	};
-
-	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue>("auto");
 
 	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -66,58 +67,36 @@ export const EmbedQuickActions = () => {
 
 	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
-	const syncFromEmbed = (embedEl: HTMLIFrameElement) => {
-		const aspectRatioValue = getAspectRatio(embedEl) ?? "auto";
-
-		setAspectRatioSignal(aspectRatioValue);
-
-		titleHandle.setValue(embedEl.title);
-		setCommittedTitle(embedEl.title);
-	};
-
 	createEffect(
-		() => embedElement(),
-		(embedEl) => {
-			if (!embedEl) {
-				return;
-			}
-
-			syncFromEmbed(embedEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromEmbed(embedEl);
-			});
-
-			observer.observe(embedEl, {
-				attributes: true,
-				attributeFilter: [aspectRatioAttrName, "title"],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => iframeAttrs()?.title ?? "",
+		(title) => {
+			titleHandle.setValue(title);
+			setCommittedTitle(title);
 		},
 	);
 
-	const onAspectRatioSelect = (value: AspectRatioValue) => {
-		const embedEl = embedElement();
-
-		if (!embedEl) {
+	const changeEmbedAttrs = (iframeAttrsPatch: EmbedAttrsPatch["iframe"]) => {
+		if (!embed.domAttrs) {
 			return;
 		}
 
-		setAspectRatio(embedEl, value);
-		editor.snapshot.commit();
+		const changeFailed = embed.changeDOMAttrs({ iframe: iframeAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Embed's attributes were rejected.", changeFailed);
+		}
+	};
+
+	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
+		changeEmbedAttrs({ [aspectRatioAttrName]: value });
 	};
 
 	const onTitleCommit = () => {
-		const embedEl = embedElement();
-
-		if (!embedEl) {
+		if (!isTitleDirty()) {
 			return;
 		}
 
-		embedEl.title = titleHandle.value();
+		changeEmbedAttrs({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
@@ -138,11 +117,16 @@ export const EmbedQuickActions = () => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
+	let mediaSourcePopover: HTMLDivElement | undefined;
 
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover];
+		const nestedPopovers = [
+			blockAlignPopover,
+			mediaSourcePopover,
+			optionsPopover,
+		];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -190,6 +174,14 @@ export const EmbedQuickActions = () => {
 					<Icon name="Swap" class="size-4" />
 				</button>
 
+				<MediaSource
+					src={$embed.domAttrs()?.iframe.src ?? null}
+					label="Embed source"
+					popoverRef={(el) => {
+						mediaSourcePopover = el;
+					}}
+				/>
+
 				<span>
 					<button
 						type="button"
@@ -214,6 +206,7 @@ export const EmbedQuickActions = () => {
 							label="Aspect ratio"
 							value={aspectRatio()}
 							options={aspectRatioOptions}
+							notFoundLabel="Custom"
 							onSelect={onAspectRatioSelect}
 						/>
 

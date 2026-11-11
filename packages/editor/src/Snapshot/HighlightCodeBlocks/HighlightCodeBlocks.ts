@@ -14,7 +14,6 @@ import type {
 	GetLineTextResult,
 	HighlightCodeBlockParams,
 	HighlightCodeBlocksParams,
-	SetStylePropertiesParams,
 } from "./HighlightCodeBlocks-types";
 
 const isTextView = (nodeView: NodeView): nodeView is TextView => {
@@ -56,14 +55,11 @@ const getLineText = ({ contentLine }: GetLineTextParams): GetLineTextResult => {
 };
 
 /*
- * Wraps a token's text in a span colored for both color schemes. Falls back to the inherited color for a scheme the
- * theme leaves uncolored.
+ * Wraps a token's text in a span with its color for both color schemes, which the CodeBlock's styles read through
+ * attr(). A scheme the theme leaves uncolored has no attribute, so it keeps the inherited color.
  */
 const createTokenView = ({ themedChars }: CreateTokenViewParams) => {
 	const { colors, content } = themedChars;
-
-	const light = colors.light || "currentcolor";
-	const dark = colors.dark || "currentcolor";
 
 	const textView: TextView = {
 		customStorage: null,
@@ -71,48 +67,25 @@ const createTokenView = ({ themedChars }: CreateTokenViewParams) => {
 		data: content,
 	};
 
+	const attributes: ElementView["attributes"] = {};
+
+	if (colors.light) {
+		attributes["data-token-light"] = colors.light;
+	}
+
+	if (colors.dark) {
+		attributes["data-token-dark"] = colors.dark;
+	}
+
 	const tokenView: ElementView = {
 		customStorage: null,
 		type: "element",
 		localName: "span",
-		attributes: { style: `color: light-dark(${light}, ${dark});` },
+		attributes,
 		childNodes: [textView],
 	};
 
 	return tokenView;
-};
-
-/*
- * Sets the given properties in the element's inline style, replacing earlier values of the same properties and
- * keeping every other declaration.
- */
-const setStyleProperties = ({
-	elementView,
-	properties,
-}: SetStylePropertiesParams) => {
-	const { attributes } = elementView;
-
-	const currentStyle = attributes.style ?? "";
-	const currentDeclarations = currentStyle.split(";");
-
-	const keptDeclarations = currentDeclarations.filter((declaration) => {
-		const [name] = declaration.split(":");
-		const trimmedName = name.trim();
-
-		return trimmedName !== "" && !Object.hasOwn(properties, trimmedName);
-	});
-
-	const propertyEntries = Object.entries(properties);
-	const newDeclarations = propertyEntries.map(
-		([name, value]) => `${name}: ${value}`,
-	);
-
-	const declarations = [...keptDeclarations, ...newDeclarations];
-	const trimmedDeclarations = declarations.map((declaration) =>
-		declaration.trim(),
-	);
-
-	attributes.style = `${trimmedDeclarations.join("; ")};`;
 };
 
 /*
@@ -141,15 +114,13 @@ const highlightCodeBlock = ({
 
 	const { backgrounds, foregrounds, codeLines } = highlightInfo;
 
-	setStyleProperties({
-		elementView,
-		properties: {
-			"--bg-light": backgrounds.light,
-			"--bg-dark": backgrounds.dark,
-			"--fg-light": foregrounds.light,
-			"--fg-dark": foregrounds.dark,
-		},
-	});
+	elementView.attributes = {
+		...elementView.attributes,
+		"data-bg-light": backgrounds.light,
+		"data-bg-dark": backgrounds.dark,
+		"data-fg-light": foregrounds.light,
+		"data-fg-dark": foregrounds.dark,
+	};
 
 	for (let i = 0; i < contentLines.length; i++) {
 		const contentLine = contentLines[i];

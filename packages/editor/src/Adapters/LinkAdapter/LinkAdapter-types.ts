@@ -1,8 +1,11 @@
 import type { InlineComponent } from "@rangex/core";
+import type { LinkAttrs, LinkAttrsShape, LinkAttrValidators } from "#dom-attrs";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	SelectionMenuConfigPort,
 	SelectionMenuPublicPort,
 	UnwrapConfigPort,
@@ -15,18 +18,38 @@ export interface LinkMenuSettings {
 	openAt: LinkMenuOpenTrigger[];
 }
 
-export interface LinkDisplayText {
-	value: string;
-	disabled: boolean;
+interface InsertDisplayText {
+	type: "insert";
 }
+
+interface SingleWrapDisplayText {
+	type: "single-wrap";
+	value: string;
+}
+
+interface MultipleWrapDisplayText {
+	type: "multiple-wrap";
+}
+
+interface EditDisplayText {
+	type: "edit";
+	value: string;
+}
+
+export type LinkDisplayText =
+	| InsertDisplayText
+	| SingleWrapDisplayText
+	| MultipleWrapDisplayText
+	| EditDisplayText
+	| null;
 
 export interface InsertParams {
-	text: string;
-	afterInsertion?: (link: HTMLElement) => void;
+	displayText: string;
+	attrs: LinkAttrs;
 }
 
-export interface ModifyParams {
-	text: string;
+export interface ChangeDisplayTextParams {
+	displayText: string;
 }
 
 export interface LinkState {
@@ -36,7 +59,9 @@ export interface LinkState {
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
-export type OnModifyCallbackFn = (params: ModifyParams) => void;
+export type OnChangeDisplayTextCallbackFn = (
+	params: ChangeDisplayTextParams,
+) => void;
 export type OnLinkClickCallbackFn = () => void;
 export type OnLinkSelectionInCallbackFn = () => void;
 export type OnLinkMenuToggleCallbackFn = () => void;
@@ -47,6 +72,7 @@ export interface UpdateStateParams extends LinkState {}
 export interface LinkConfigPortProps {
 	readonly linkMenuEl: HTMLDivElement;
 	readonly linkMenuSettings: LinkMenuSettings;
+	readonly attrValidators: LinkAttrValidators;
 	readonly selectionMenu: SelectionMenuConfigPort;
 
 	updateState(params: UpdateStateParams): void;
@@ -55,7 +81,7 @@ export interface LinkConfigPortProps {
 	notifyLinkMenuToggle(): void;
 
 	onInsert(callback: OnInsertCallbackFn): () => void;
-	onModify(callback: OnModifyCallbackFn): () => void;
+	onChangeDisplayText(callback: OnChangeDisplayTextCallbackFn): () => void;
 
 	registerDisplayText(provider: DisplayTextProviderFn): void;
 }
@@ -63,7 +89,8 @@ export interface LinkConfigPortProps {
 export interface LinkConfigPort
 	extends LinkConfigPortProps,
 		UnwrapConfigPort,
-		CurrentComponentConfigPort<InlineComponent> {}
+		CurrentComponentConfigPort<InlineComponent>,
+		DOMAttrsConfigPort<LinkAttrsShape> {}
 
 export interface LinkPublicPortProps {
 	readonly linkMenuEl: HTMLDivElement;
@@ -77,7 +104,7 @@ export interface LinkPublicPortProps {
 	onLinkMenuToggle(callback: OnLinkMenuToggleCallbackFn): () => void;
 
 	insert(params: InsertParams): void;
-	modify(params: ModifyParams): void;
+	changeDisplayText(params: ChangeDisplayTextParams): void;
 
 	getDisplayText(): LinkDisplayText;
 }
@@ -85,7 +112,8 @@ export interface LinkPublicPortProps {
 export interface LinkPublicPort
 	extends LinkPublicPortProps,
 		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+		CurrentComponentPublicPort,
+		DOMAttrsPublicPort<LinkAttrsShape> {}
 
 export interface LinkInternals {
 	displayTextProvider: DisplayTextProviderFn | null;

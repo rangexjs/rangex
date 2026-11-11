@@ -1,9 +1,12 @@
+import type { TableLimits } from "#constants";
 import { createEmitter } from "../CreateEmitter";
 import type { AdapterName } from "../Utilities-types";
 import type {
-	MediaResolveCallbackParams,
+	AttrValidatorsAdapterName,
+	AttrValidatorsByAdapter,
+	MediaResolveDetail,
 	OnMediaResolveCallbackFn,
-	OnSwapToEmptyMediaCallbackFn,
+	OnSwapToSourcePlaceholderCallbackFn,
 } from "./AdapterBus-types";
 
 export const mediaTypes = [
@@ -14,18 +17,24 @@ export const mediaTypes = [
 ] satisfies AdapterName[];
 
 /**
- * Lets Adapters talk to each other without holding direct references to one another. Two
- * channel shapes coexist here, picked per the data's own nature: a transient event
- * (`onXxx`/`emitXxx`, fire-and-forget, never cached) for something that happens, and the
- * adapter registry (`registerAdapter`/`hasAdapter`) for which Adapters the editor was built with.
- * The registry is only complete once every Adapter has been created, so `hasAdapter` is only
- * meaningful from the configure phase on, never during Adapter creation.
+ * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with), without
+ * holding direct references to one another. What the Adapters register is only complete once every Adapter has been
+ * created, so read it from the configure phase on. The attribute validators and the Table's limits are the exception:
+ * createEditor registers them from the SnapshotSchema before any Adapter is created.
  */
 export class AdapterBus {
 	#registeredAdapters: Set<AdapterName> = new Set();
 
+	#registeredAttrValidators = new Map<
+		AttrValidatorsAdapterName,
+		AttrValidatorsByAdapter[AttrValidatorsAdapterName]
+	>();
+
+	#tableLimits: TableLimits | null = null;
+
 	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
-	#swapToEmptyMediaEmitter = createEmitter<OnSwapToEmptyMediaCallbackFn>();
+	#swapToSourcePlaceholderEmitter =
+		createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
 
 	registerAdapter(name: AdapterName) {
 		this.#registeredAdapters.add(name);
@@ -35,19 +44,54 @@ export class AdapterBus {
 		return this.#registeredAdapters.has(name);
 	}
 
+	registerAttrValidators<Name extends AttrValidatorsAdapterName>(
+		name: Name,
+		attrValidators: AttrValidatorsByAdapter[Name],
+	) {
+		this.#registeredAttrValidators.set(name, attrValidators);
+	}
+
+	getAttrValidators<Name extends AttrValidatorsAdapterName>(
+		name: Name,
+	): AttrValidatorsByAdapter[Name] {
+		const attrValidators = this.#registeredAttrValidators.get(name);
+
+		if (!attrValidators) {
+			throw new Error(
+				`${name} Adapter's attribute validators weren't registered: add it to the SnapshotSchema's components.`,
+			);
+		}
+
+		return attrValidators as AttrValidatorsByAdapter[Name];
+	}
+
+	registerTableLimits(tableLimits: TableLimits) {
+		this.#tableLimits = tableLimits;
+	}
+
+	getTableLimits(): TableLimits {
+		if (!this.#tableLimits) {
+			throw new Error(
+				"Table Adapter's limits weren't registered: add it to the SnapshotSchema's components.",
+			);
+		}
+
+		return this.#tableLimits;
+	}
+
 	onMediaResolve(callback: OnMediaResolveCallbackFn) {
 		return this.#mediaResolveEmitter.subscribe(callback);
 	}
 
-	emitMediaResolve(params: MediaResolveCallbackParams) {
+	emitMediaResolve(params: MediaResolveDetail) {
 		this.#mediaResolveEmitter.emit(params);
 	}
 
-	onSwapToEmptyMedia(callback: OnSwapToEmptyMediaCallbackFn) {
-		return this.#swapToEmptyMediaEmitter.subscribe(callback);
+	onSwapToSourcePlaceholder(callback: OnSwapToSourcePlaceholderCallbackFn) {
+		return this.#swapToSourcePlaceholderEmitter.subscribe(callback);
 	}
 
-	emitSwapToEmptyMedia() {
-		this.#swapToEmptyMediaEmitter.emit();
+	emitSwapToSourcePlaceholder() {
+		this.#swapToSourcePlaceholderEmitter.emit();
 	}
 }

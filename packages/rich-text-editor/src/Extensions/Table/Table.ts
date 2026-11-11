@@ -17,7 +17,7 @@ const defaultContextMenu: Required<TableContextMenuUIOptions> = {
 		"deleteColumn",
 	],
 	cellType: ["header", "data"],
-	verticalAlignment: ["top", "middle", "bottom"],
+	verticalAlignment: ["start", "center", "end"],
 	cellResizing: ["equalizeColumns", "minimizeRows"],
 	clearContents: true,
 };

@@ -1,4 +1,4 @@
-import type { FormattingFontFamilyValue } from "@rangex/editor/formatting";
+import type { FontFamilyValue } from "@rangex/editor/formatting";
 import { FontFamily, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext, useUIOptionsContext } from "#context";
@@ -11,7 +11,7 @@ import {
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const getInputValueFromActiveValues = (
-	fontFamily: Set<FormattingFontFamilyValue>,
+	fontFamily: Set<FontFamilyValue>,
 	hasUnset: boolean,
 ): string => {
 	if (fontFamily.size === 0) {
@@ -126,7 +126,7 @@ export const FontFamilyToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $fontFamily.values();
 
-		const getText = (value: FormattingFontFamilyValue) => {
+		const getText = (value: FontFamilyValue) => {
 			const option = fontFamilyOptions.find((o) => o.value === value);
 
 			if (!option) {

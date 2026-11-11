@@ -17,7 +17,8 @@
 }
 
 @layer base {
-	:root {
+	:root,
+	:host {
 		interpolate-size: allow-keywords;
 	}
 }

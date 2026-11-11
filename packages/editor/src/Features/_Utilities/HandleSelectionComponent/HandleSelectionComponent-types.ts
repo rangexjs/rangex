@@ -1,6 +1,6 @@
 import type { Component, EditorAPI } from "@rangex/core";
 import type { CurrentComponentConfigPort } from "#adapters";
-import type { ComponentName } from "#engine-links";
+import type { ComponentName } from "#constants";
 
 export interface HandleSelectionComponentParams {
 	port: CurrentComponentConfigPort<Component>;

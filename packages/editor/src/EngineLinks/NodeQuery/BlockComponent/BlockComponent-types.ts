@@ -1,5 +1,5 @@
 import type { BlockComponent, EditorNode } from "@rangex/core";
-import type { BlockComponentName } from "../../Constants";
+import type { BlockComponentName } from "#constants";
 
 export interface GetClosestBlockComponentParams {
 	fromNode: EditorNode;

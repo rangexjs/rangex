@@ -1,29 +1,34 @@
 import {
 	type CreateFallbackRootEditable,
-	configureSanitizer,
-	createBeamText,
-	createContentLine,
 	createEditorAPI,
-	createRootEditable,
 	migrateStoredSnapshot,
 } from "@rangex/core";
-import { createRootStorage } from "#storage";
+import { glyphFormatterInlineTagsOrder } from "#constants";
+import { ensureSanitizerConfigured } from "#sanitizer";
+import { validateSnapshot } from "#snapshot";
 import type {
 	CreateCoreParams,
-	MigrateIfStoredSnapshotParams,
-	MigrateIfStoredSnapshotResult,
+	ResolveStoredSnapshotParams,
+	ResolveStoredSnapshotResult,
 } from "./CreateCore-types";
+import { createRoot } from "./CreateRoot";
 
-const migrateIfStoredSnapshot = ({
+/*
+ * Migrates the given snapshot, then validates it by the SnapshotSchema. Resolves to the copy to load, or to null if it
+ * can't be loaded, which makes the editor start from a new root instead.
+ */
+const resolveStoredSnapshot = ({
 	storedSnapshot,
-	limits,
-}: MigrateIfStoredSnapshotParams): MigrateIfStoredSnapshotResult => {
+	snapshotSchema,
+}: ResolveStoredSnapshotParams): ResolveStoredSnapshotResult => {
 	if (!storedSnapshot) {
 		return null;
 	}
 
-	// TODO: We have to add a validator that check if every storage is up to date
-	const migrationResult = migrateStoredSnapshot({ storedSnapshot, limits });
+	const migrationResult = migrateStoredSnapshot({
+		storedSnapshot,
+		limits: snapshotSchema.limits,
+	});
 
 	if (!migrationResult.isValid) {
 		console.warn("Snapshot migration failed.", migrationResult.reason);
@@ -31,47 +36,53 @@ const migrateIfStoredSnapshot = ({
 		return null;
 	}
 
-	return migrationResult.storedSnapshot;
-};
-
-const createFallbackRootEditable: CreateFallbackRootEditable = ({
-	storedSnapshotFailed,
-}) => {
-	if (storedSnapshotFailed) {
-		console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
-	}
-
-	const rootEditable = createRootEditable({
-		customStorage: createRootStorage(),
-		display: "block multi-line",
-		childNodes: [
-			createContentLine({
-				localName: "p",
-				childNodes: [createBeamText({})],
-			}),
-		],
+	const validationResult = validateSnapshot({
+		...snapshotSchema,
+		storedSnapshot: migrationResult.storedSnapshot,
 	});
 
-	return { rootEditable };
-};
+	if (!validationResult.isValid) {
+		console.warn("Snapshot validation failed.", validationResult.reason);
 
-// TODO: Set policy rules
-configureSanitizer({ "*": { "*": () => true } });
+		return null;
+	}
+
+	return validationResult.storedSnapshot;
+};
 
 export const createCore = ({
 	licenseKey,
 	storedSnapshot,
-	limits,
+	snapshotSchema,
 }: CreateCoreParams) => {
-	const migratedStoredSnapshot = migrateIfStoredSnapshot({
+	ensureSanitizerConfigured();
+
+	const resolvedStoredSnapshot = resolveStoredSnapshot({
 		storedSnapshot,
-		limits,
+		snapshotSchema,
 	});
+
+	const createFallbackRootEditable: CreateFallbackRootEditable = ({
+		storedSnapshotFailed,
+	}) => {
+		if (storedSnapshotFailed) {
+			console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
+		}
+
+		const [type] = snapshotSchema.root.types;
+
+		const rootEditable = createRoot({ type });
+
+		return {
+			rootEditable,
+			glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
+		};
+	};
 
 	const { editorAPI } = createEditorAPI({
 		licenseKey,
-		storedSnapshot: migratedStoredSnapshot,
-		limits,
+		storedSnapshot: resolvedStoredSnapshot,
+		limits: snapshotSchema.limits,
 		createFallbackRootEditable,
 		shadowRootOptions: {
 			mode: "open",

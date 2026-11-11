@@ -1,4 +1,4 @@
-import type { FormattingFontSizeValue } from "@rangex/editor/formatting";
+import type { FontSizeValue } from "@rangex/editor/formatting";
 import { FontSize, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 import { useEditorContext } from "#context";
@@ -11,7 +11,7 @@ import {
 import { isDeepEqual } from "#utilities";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
-const fontSizeValues: FormattingFontSizeValue[] = [
+const fontSizeValues: FontSizeValue[] = [
 	{ type: "px", value: 10 },
 	{ type: "px", value: 11 },
 	{ type: "px", value: 12 },
@@ -31,7 +31,7 @@ const fontSizeValues: FormattingFontSizeValue[] = [
 ] as const;
 
 const getInputValueFromActiveValues = (
-	fontSizes: Set<FormattingFontSizeValue>,
+	fontSizes: Set<FontSizeValue>,
 	hasUnset: boolean,
 ): string => {
 	if (fontSizes.size === 0) {
@@ -126,7 +126,7 @@ export const FontSizeToolbarButton = () => {
 
 	const sortedFontSizes = createMemo(
 		() => {
-			const deduplicatedValues: FormattingFontSizeValue[] = [];
+			const deduplicatedValues: FontSizeValue[] = [];
 
 			const commonValues = [...fontSizeValues, ...$fontSize.values()];
 
@@ -151,7 +151,7 @@ export const FontSizeToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $fontSize.values();
 
-		const contains = (value: FormattingFontSizeValue) => {
+		const contains = (value: FontSizeValue) => {
 			return !![...activeValues].find(
 				(activeValue) =>
 					activeValue.type === value.type && activeValue.value === value.value,

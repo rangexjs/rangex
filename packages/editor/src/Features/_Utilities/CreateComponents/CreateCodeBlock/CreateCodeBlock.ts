@@ -10,7 +10,7 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { codeBlockDefinition, componentsName } from "#constants";
 import { createCodeBlockStorage } from "#storage";
 import type {
 	CreateCodeBlockParams,
@@ -32,6 +32,7 @@ export const createCodeBlock = ({
 	const list = createList({
 		localName: "ol",
 		lineType: "single-line",
+		editState: "inherit",
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
@@ -43,13 +44,7 @@ export const createCodeBlock = ({
 								shadowTree: [document.createTextNode("0")],
 							}),
 							createNestedEditable({
-								display: "block single-line",
-								editState: "inherit",
-								allowedComponents: [],
-								allowedContentLineLocalNames: [],
-								allowedContentLineStyleAttrNames: [],
-								allowedGlyphFormatterInlineTags: [],
-								allowedGlyphFormatterStyleAttrNames: [],
+								...codeBlockDefinition.lineNestedEditableProps,
 								childNodes: [line],
 							}),
 						],
@@ -60,14 +55,14 @@ export const createCodeBlock = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.codeBlock,
 			content: { type: "list" },
 			customStorage: createCodeBlockStorage({ language, theme }),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [
 				createHTMLLayout({
 					localName: "pre",

@@ -1,7 +1,7 @@
-import { createSnapshotView } from "@rangex/core";
 import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
 import { buildViewStyleText } from "../../Styles";
+import { createSnapshotView } from "../CreateSnapshotView";
 import { highlightCodeBlocks } from "../HighlightCodeBlocks";
 import type {
 	CreateElementParams,

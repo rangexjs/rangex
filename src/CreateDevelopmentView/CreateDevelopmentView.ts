@@ -16,6 +16,7 @@ export const createDevelopmentView = () => {
 
 	const richTextEditor = initRichTextEditor();
 
+	document.adoptedStyleSheets.push(richTextEditor.editorStyle);
 	container.append(richTextEditor.editorHost);
 
 	return container;

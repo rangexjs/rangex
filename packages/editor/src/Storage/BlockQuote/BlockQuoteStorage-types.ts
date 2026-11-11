@@ -1,22 +1,20 @@
 import type { BlockComponent } from "@rangex/core";
 import type { BlockQuoteId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
 
-export interface BlockQuoteStorage {
+export type BlockQuoteStorage = {
 	id: BlockQuoteId;
-	version: typeof storageVersion;
-}
+};
 
-export interface CreateBlockQuoteStorageResult extends BlockQuoteStorage {}
+export type CreateBlockQuoteStorageResult = BlockQuoteStorage;
 
 export interface EnsureBlockQuoteStorageParams {
 	storage: unknown;
 }
 
-export interface EnsureBlockQuoteStorageResult extends BlockQuoteStorage {}
+export type EnsureBlockQuoteStorageResult = BlockQuoteStorage;
 
 export interface EnsureNodeBlockQuoteStorageParams {
 	blockComponent: BlockComponent;
 }
 
-export interface EnsureNodeBlockQuoteStorageResult extends BlockQuoteStorage {}
+export type EnsureNodeBlockQuoteStorageResult = BlockQuoteStorage;

@@ -1,5 +1,4 @@
 import {
-	AttributeStyles,
 	Colors,
 	EngineGlobalStyles,
 	EngineGlobalStylesEditor,
@@ -8,6 +7,7 @@ import {
 import {
 	AccordionItem,
 	AccordionItemEditor,
+	Audio,
 	BlockQuote,
 	CodeBlock,
 	ComponentEditor,
@@ -35,11 +35,12 @@ import {
  * Builds the custom style text for the live editor: shared component/base styles plus the editor-only styles.
  */
 export const getEditorStyles = () => {
-	const baseCommon = AttributeStyles + Colors + EngineGlobalStyles;
+	const baseCommon = Colors + EngineGlobalStyles;
 	const baseEditor = EngineGlobalStylesEditor + WidgetElementsEditor;
 
 	const componentsCommon =
 		AccordionItem +
+		Audio +
 		BlockQuote +
 		CodeBlock +
 		Embed +

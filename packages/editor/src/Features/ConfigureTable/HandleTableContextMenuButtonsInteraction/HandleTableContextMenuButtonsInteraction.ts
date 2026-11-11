@@ -5,13 +5,14 @@ import {
 	tableRole,
 	tableRoleSelector,
 } from "@rangex/core";
+import { verticalAlignAttr } from "#constants";
 import {
+	getActiveTableCells,
 	getCommonTableCellFromSelection,
 	getCommonTableFromSelection,
+	getTableCapacity,
 } from "../_Utilities";
 import type {
-	GetActiveTableCellsParams,
-	GetActiveTableCellsResult,
 	GetActiveTableParams,
 	GetActiveTableResult,
 	HandleCellResizingParams,
@@ -89,6 +90,21 @@ const handleMergeSplit = ({
 			return;
 		}
 
+		const { canSplitHorizontally, canSplitVertically } = getTableCapacity({
+			table,
+			tableCell: getCommonTableCellFromSelection({ editorAPI }),
+			limits: configPort.limits,
+		});
+
+		const isWithinLimits =
+			(action !== "splitHorizontally" || canSplitHorizontally) &&
+			(action !== "splitVertically" || canSplitVertically);
+
+		if (!isWithinLimits) {
+			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
+			return;
+		}
+
 		({
 			mergeSelected: () => table.$$mergeCells({ type: "selection" }),
 			mergeLeft: () =>
@@ -118,6 +134,25 @@ const handleInsertDelete = ({
 		const table = getActiveTable({ editorAPI });
 
 		if (!table) {
+			return;
+		}
+
+		const { canAddRow, canAddCol } = getTableCapacity({
+			table,
+			tableCell: getCommonTableCellFromSelection({ editorAPI }),
+			limits: configPort.limits,
+		});
+
+		const isRowInsert =
+			action === "insertRowAbove" || action === "insertRowBelow";
+		const isColInsert =
+			action === "insertColumnLeft" || action === "insertColumnRight";
+
+		const isWithinLimits =
+			(!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
+
+		if (!isWithinLimits) {
+			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
 			return;
 		}
 
@@ -163,36 +198,20 @@ const handleCellType = ({ configPort, editorAPI }: HandleCellTypeParams) => {
 	});
 };
 
-const getActiveTableCells = ({
-	editorAPI,
-}: GetActiveTableCellsParams): GetActiveTableCellsResult => {
-	const table = getActiveTable({ editorAPI });
-
-	if (table?.$$isTableSelectionActive) {
-		return table.$$tableCells.filter(
-			(tableCell) => tableCell.$$isInMultiSelection,
-		);
-	}
-
-	const tableCell = getCommonTableCellFromSelection({ editorAPI });
-
-	return tableCell ? [tableCell] : [];
-};
-
 const handleVerticalAlignment = ({
 	configPort,
 	editorAPI,
 }: HandleVerticalAlignmentParams) => {
-	return configPort.onChangeVerticalAlignment((action) => {
-		const tableCells = getActiveTableCells({ editorAPI });
+	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		const alignContent = (
-			{
-				top: "start",
-				middle: "center",
-				bottom: "end",
-			} as const
-		)[action];
+	return configPort.onChangeVerticalAlignment((action) => {
+		const table = getActiveTable({ editorAPI });
+
+		if (!table) {
+			return;
+		}
+
+		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
 			const nestedEditable = tableCell.$$querySelector(
@@ -203,8 +222,10 @@ const handleVerticalAlignment = ({
 				throw new Error("NestedEditable's type is invalid.");
 			}
 
-			nestedEditable.style.alignContent = alignContent;
+			nestedEditable.$$setAttribute(verticalAlignAttr.name, action);
 		}
+
+		snapshotTimeline.registerSnapshotBoundary();
 
 		editorAPI.focus();
 	});
@@ -267,7 +288,13 @@ const handleClearContents = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	return configPort.onClear(() => {
-		const tableCells = getActiveTableCells({ editorAPI });
+		const table = getActiveTable({ editorAPI });
+
+		if (!table) {
+			return;
+		}
+
+		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
 			const nestedEditable = tableCell.$$querySelector(

@@ -1,11 +1,15 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { componentsName } from "#constants";
+import { imageAttrsShape } from "#dom-attrs";
+import { createBlockComponentPlacement } from "#engine-links";
 import {
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
-	handleSwapToEmptyMedia,
+	handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
 	getImageCaption,
@@ -17,8 +21,8 @@ import type { ConfigureImageParams } from "./ConfigureImage-types";
 import { handleImageInsertion } from "./HandleImageInsertion";
 
 /*
- * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption and
- * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
+ * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureImage = ({
 	adapterBus,
@@ -69,7 +73,23 @@ export const configureImage = ({
 		setCaptionPosition: setImageCaptionPosition,
 	});
 
-	const swapCleanup = handleSwapToEmptyMedia({
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: imageAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (image) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: image,
+				mediaLocalName: "img",
+			});
+
+			return { line, block, img: media };
+		},
+	});
+
+	const swapCleanup = handleSwapToSourcePlaceholder({
 		port: configPort,
 		editorAPI,
 	});
@@ -81,6 +101,7 @@ export const configureImage = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

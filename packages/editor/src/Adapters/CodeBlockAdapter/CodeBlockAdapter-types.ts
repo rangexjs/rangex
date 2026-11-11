@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+import type { CodeBlockAttrValidators } from "#dom-attrs";
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -75,11 +76,26 @@ export type OnChangeThemeCallbackFn = (theme: CodeBlockTheme | null) => void;
 
 export type PlainTextProviderFn = () => string[];
 
+export interface CodeBlockFieldMismatch {
+	reason: string;
+}
+
+export type ValidateLanguageResult = CodeBlockFieldMismatch | null;
+export type ValidateThemeResult = CodeBlockFieldMismatch | null;
+
+export type ValidateLanguageProviderFn = (
+	language: string | null,
+) => ValidateLanguageResult;
+export type ValidateThemeProviderFn = (
+	theme: CodeBlockTheme | null,
+) => ValidateThemeResult;
+
 export interface UpdateStateParams extends CodeBlockState {}
 
 export interface CodeBlockConfigPortProps {
 	readonly quickActions: QuickActionsConfigPort;
 	readonly getHighlightInfo: GetHighlightInfoFn | null;
+	readonly attrValidators: CodeBlockAttrValidators;
 
 	updateState(params: UpdateStateParams): void;
 
@@ -88,6 +104,8 @@ export interface CodeBlockConfigPortProps {
 	onChangeLanguage(callback: OnChangeLanguageCallbackFn): () => void;
 	onChangeTheme(callback: OnChangeThemeCallbackFn): () => void;
 	registerPlainTextProvider(provider: PlainTextProviderFn): void;
+	registerValidateLanguage(provider: ValidateLanguageProviderFn): void;
+	registerValidateTheme(provider: ValidateThemeProviderFn): void;
 }
 
 export interface CodeBlockConfigPort
@@ -120,6 +138,9 @@ export interface CodeBlockPublicPortProps {
 	changeTheme(theme: CodeBlockTheme | null): void;
 
 	getPlainText(): string[];
+
+	validateLanguage(language: string | null): ValidateLanguageResult;
+	validateTheme(theme: CodeBlockTheme | null): ValidateThemeResult;
 }
 
 export interface CodeBlockPublicPort
@@ -131,6 +152,8 @@ export interface CodeBlockPublicPort
 export interface CodeBlockInternals {
 	getHighlightInfo: GetHighlightInfoFn | null;
 	plainTextProvider: PlainTextProviderFn | null;
+	validateLanguageProvider: ValidateLanguageProviderFn | null;
+	validateThemeProvider: ValidateThemeProviderFn | null;
 }
 
 export interface CodeBlockAdapter {

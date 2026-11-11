@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { AudioAttrsPatch } from "@rangex/editor/audio";
 import { Audio, FloatingPortal, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
@@ -16,7 +17,7 @@ import {
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
-import { BlockAlign } from "../../_Utilities";
+import { BlockAlign, MediaSource } from "../../_Utilities";
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
 	{ id: "above", node: "Above" },
@@ -34,16 +35,17 @@ export const AudioQuickActions = () => {
 	const $audio = Audio(audio);
 	const $readOnly = ReadOnly(readOnly);
 
-	const audioElement = () => {
-		const currentBlock = $audio.currentComponent();
+	const audioAttrs = () => $audio.domAttrs()?.audio ?? null;
 
-		return currentBlock?.querySelector<HTMLAudioElement>("audio") ?? null;
+	const hasAudioAttr = (attrName: "autoplay" | "loop" | "muted") => {
+		const value = audioAttrs()?.[attrName] ?? null;
+
+		return value !== null;
 	};
 
-	const [controls, setControlsSignal] = createSignal(false);
-	const [autoplay, setAutoplaySignal] = createSignal(false);
-	const [loop, setLoopSignal] = createSignal(false);
-	const [muted, setMutedSignal] = createSignal(false);
+	const autoplay = () => hasAudioAttr("autoplay");
+	const loop = () => hasAudioAttr("loop");
+	const muted = () => hasAudioAttr("muted");
 
 	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -53,83 +55,37 @@ export const AudioQuickActions = () => {
 
 	const isTitleDirty = () => titleHandle.value() !== committedTitle();
 
-	const syncFromAudio = (audioEl: HTMLAudioElement) => {
-		setControlsSignal(audioEl.hasAttribute("controls"));
-		setAutoplaySignal(audioEl.hasAttribute("autoplay"));
-		setLoopSignal(audioEl.hasAttribute("loop"));
-		setMutedSignal(audioEl.hasAttribute("muted"));
-
-		titleHandle.setValue(audioEl.title);
-		setCommittedTitle(audioEl.title);
-	};
-
 	createEffect(
-		() => audioElement(),
-		(audioEl) => {
-			if (!audioEl) {
-				return;
-			}
-
-			syncFromAudio(audioEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromAudio(audioEl);
-			});
-
-			observer.observe(audioEl, {
-				attributes: true,
-				attributeFilter: ["controls", "autoplay", "loop", "muted", "title"],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => audioAttrs()?.title ?? "",
+		(title) => {
+			titleHandle.setValue(title);
+			setCommittedTitle(title);
 		},
 	);
 
-	const onControlsToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+	const changeAudioAttrs = (audioAttrsPatch: AudioAttrsPatch["audio"]) => {
+		if (!audio.domAttrs) {
 			return;
 		}
 
-		if (controls()) {
-			audioEl.removeAttribute("controls");
-		} else {
-			audioEl.setAttribute("controls", "");
+		const changeFailed = audio.changeDOMAttrs({ audio: audioAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Audio's attributes were rejected.", changeFailed);
 		}
 	};
 
 	const onAutoplayToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+		if (autoplay()) {
+			changeAudioAttrs({ autoplay: null });
 			return;
 		}
 
-		const nextAutoplay = !autoplay();
-
-		if (nextAutoplay) {
-			audioEl.setAttribute("autoplay", "");
-			audioEl.setAttribute("muted", "");
-		} else {
-			audioEl.removeAttribute("autoplay");
-		}
+		changeAudioAttrs({ autoplay: "", muted: "" });
 	};
 
 	const onLoopToggle = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
-			return;
-		}
-
-		if (loop()) {
-			audioEl.removeAttribute("loop");
-		} else {
-			audioEl.setAttribute("loop", "");
-		}
+		changeAudioAttrs({ loop: loop() ? null : "" });
 	};
 
 	const onMutedToggle = () => {
@@ -137,27 +93,15 @@ export const AudioQuickActions = () => {
 			return;
 		}
 
-		const audioEl = audioElement();
-
-		if (!audioEl) {
-			return;
-		}
-
-		if (muted()) {
-			audioEl.removeAttribute("muted");
-		} else {
-			audioEl.setAttribute("muted", "");
-		}
+		changeAudioAttrs({ muted: muted() ? null : "" });
 	};
 
 	const onTitleCommit = () => {
-		const audioEl = audioElement();
-
-		if (!audioEl) {
+		if (!isTitleDirty()) {
 			return;
 		}
 
-		audioEl.title = titleHandle.value();
+		changeAudioAttrs({ title: titleHandle.value() });
 	};
 
 	const onTitleKeyDown = (event: KeyboardEvent) => {
@@ -178,11 +122,16 @@ export const AudioQuickActions = () => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
+	let mediaSourcePopover: HTMLDivElement | undefined;
 
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover];
+		const nestedPopovers = [
+			blockAlignPopover,
+			mediaSourcePopover,
+			optionsPopover,
+		];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -230,6 +179,14 @@ export const AudioQuickActions = () => {
 					<Icon name="Swap" class="size-4" />
 				</button>
 
+				<MediaSource
+					src={$audio.domAttrs()?.audio.src ?? null}
+					label="Audio source"
+					popoverRef={(el) => {
+						mediaSourcePopover = el;
+					}}
+				/>
+
 				<span>
 					<button
 						type="button"
@@ -250,17 +207,6 @@ export const AudioQuickActions = () => {
 						popover="auto"
 						class="w-52 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
 					>
-						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Controls
-							</span>
-							<ToggleButton
-								checked={controls()}
-								label="Controls"
-								onClick={onControlsToggle}
-							/>
-						</div>
-
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Autoplay

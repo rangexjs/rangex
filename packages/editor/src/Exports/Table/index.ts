@@ -15,4 +15,5 @@ export type {
 	TableVerticalAlignmentAction,
 	TableVerticalAlignmentState,
 } from "#adapters/Table";
+export type { TableLimits } from "#constants";
 export { Table } from "#rangex-editor";

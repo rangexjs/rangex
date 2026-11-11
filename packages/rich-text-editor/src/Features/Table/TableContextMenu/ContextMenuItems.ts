@@ -226,29 +226,29 @@ export const createContextMenuItems = ({
 		TableVerticalAlignmentAction,
 		ActionItem
 	> = {
-		top: {
+		start: {
 			type: "button",
 			label: "Top",
-			disabled: () => $table.verticalAlignment().top.disabled,
-			checked: () => $table.verticalAlignment().top.checked,
-			info: () => $table.verticalAlignment().top.info,
-			onClick: () => table.changeVerticalAlignment("top"),
+			disabled: () => $table.verticalAlignment().start.disabled,
+			checked: () => $table.verticalAlignment().start.checked,
+			info: () => $table.verticalAlignment().start.info,
+			onClick: () => table.changeVerticalAlignment("start"),
 		},
-		middle: {
+		center: {
 			type: "button",
 			label: "Middle",
-			disabled: () => $table.verticalAlignment().middle.disabled,
-			checked: () => $table.verticalAlignment().middle.checked,
-			info: () => $table.verticalAlignment().middle.info,
-			onClick: () => table.changeVerticalAlignment("middle"),
+			disabled: () => $table.verticalAlignment().center.disabled,
+			checked: () => $table.verticalAlignment().center.checked,
+			info: () => $table.verticalAlignment().center.info,
+			onClick: () => table.changeVerticalAlignment("center"),
 		},
-		bottom: {
+		end: {
 			type: "button",
 			label: "Bottom",
-			disabled: () => $table.verticalAlignment().bottom.disabled,
-			checked: () => $table.verticalAlignment().bottom.checked,
-			info: () => $table.verticalAlignment().bottom.info,
-			onClick: () => table.changeVerticalAlignment("bottom"),
+			disabled: () => $table.verticalAlignment().end.disabled,
+			checked: () => $table.verticalAlignment().end.checked,
+			info: () => $table.verticalAlignment().end.info,
+			onClick: () => table.changeVerticalAlignment("end"),
 		},
 	};
 

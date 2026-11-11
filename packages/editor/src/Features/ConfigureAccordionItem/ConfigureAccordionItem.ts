@@ -1,5 +1,12 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
-import { handleComponentUnwrap, handleSelectionComponent } from "../_Utilities";
+import { componentsName } from "#constants";
+import { accordionItemAttrsShape } from "#dom-attrs";
+import { createBlockComponentPlacement } from "#engine-links";
+import {
+	getAccordionItemParts,
+	handleComponentUnwrap,
+	handleDOMAttrs,
+	handleSelectionComponent,
+} from "../_Utilities";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
 import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
 import { handleAccordionItemPlacementState } from "./HandleAccordionItemPlacementState";
@@ -43,6 +50,16 @@ export const configureAccordionItem = ({
 		blockComponentPlacement,
 	});
 
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: accordionItemAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (accordionItem) =>
+			getAccordionItemParts({ blockComponent: accordionItem }),
+	});
+
 	const summaryToggleCleanup = handleAccordionItemSummaryToggle({ editorAPI });
 
 	return () => {
@@ -50,6 +67,7 @@ export const configureAccordionItem = ({
 		placementStateCleanup();
 		unwrapCleanup();
 		insertionCleanup();
+		domAttrsCleanup();
 		summaryToggleCleanup();
 	};
 };

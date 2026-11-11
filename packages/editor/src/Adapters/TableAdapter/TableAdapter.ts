@@ -40,6 +40,8 @@ export const createTableAdapter = (
 
 	adapterBus.registerAdapter("table");
 
+	const tableLimits = adapterBus.getTableLimits();
+
 	const contextMenuEl = document.createElement("div");
 	floatingContainer.append(contextMenuEl);
 
@@ -79,9 +81,9 @@ export const createTableAdapter = (
 	});
 	const verticalAlignmentState =
 		createStateEmitter<TableVerticalAlignmentState>({
-			top: { disabled: true },
-			middle: { disabled: true },
-			bottom: { disabled: true },
+			start: { disabled: true },
+			center: { disabled: true },
+			end: { disabled: true },
 		});
 	const cellResizingState = createStateEmitter<TableCellResizingState>({
 		equalizeColumns: { disabled: true },
@@ -168,6 +170,10 @@ export const createTableAdapter = (
 				return contextMenuEl;
 			},
 
+			get limits() {
+				return tableLimits;
+			},
+
 			updateState(params) {
 				updateState(params);
 			},
@@ -216,6 +222,10 @@ export const createTableAdapter = (
 		{
 			get contextMenuEl() {
 				return contextMenuEl;
+			},
+
+			get limits() {
+				return tableLimits;
 			},
 
 			get canInsert() {

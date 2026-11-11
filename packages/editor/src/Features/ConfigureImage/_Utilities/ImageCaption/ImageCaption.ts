@@ -3,12 +3,12 @@ import {
 	createContentLine,
 	createHTMLLayout,
 	createNestedEditable,
-	createStructuredStyleValue,
 	type HTMLLayout,
 	htmlLayoutRole,
 } from "@rangex/core";
 import type { CaptionPosition } from "#adapters";
-import type { TextAlignStructuredStyleValue } from "#engine-links";
+import { mediaCaptionDefinition } from "#constants";
+import { createTextAlignStructuredStyle } from "#structured-style";
 import { getImageImg } from "../GetImageElements";
 import type {
 	GetImageCaptionParams,
@@ -78,15 +78,10 @@ export const setImageCaptionEnabled = ({
 		return;
 	}
 
-	const textAlign: TextAlignStructuredStyleValue = createStructuredStyleValue({
-		type: "text-align",
-		values: { textAlign: "center" },
-		resolve: ({ textAlign }) => textAlign,
-	});
+	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
 	const nestedEditable = createNestedEditable({
-		display: "block single-line",
-		editState: "true",
+		...mediaCaptionDefinition.nestedEditableProps,
 		childNodes: [
 			createContentLine({
 				localName: "p",

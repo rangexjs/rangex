@@ -1,8 +1,11 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { componentsName } from "#constants";
+import { createBlockComponentPlacement } from "#engine-links";
 import {
 	handleComponentUnwrap,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
+	validateCodeBlockLanguage,
+	validateCodeBlockTheme,
 } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
@@ -12,14 +15,23 @@ import { handleCodeBlockState } from "./HandleCodeBlockState";
 import { handleLineNumbers } from "./HandleLineNumbers";
 
 /*
- * Wires up the code block component: toolbar button state, insert/wrap placement, line numbers,
- * syntax highlighting, and the quick actions overlay. Returns a cleanup function.
+ * Wires up the code block component: the language's and theme's validators, toolbar button state,
+ * insert/wrap placement, line numbers, syntax highlighting, and the quick actions overlay. Returns
+ * a cleanup function.
  */
 export const configureCodeBlock = ({
 	adapterBus,
 	configPort,
 	editorAPI,
 }: ConfigureCodeBlockParams) => {
+	configPort.registerValidateLanguage((language) =>
+		validateCodeBlockLanguage({ language }),
+	);
+
+	configPort.registerValidateTheme((theme) =>
+		validateCodeBlockTheme({ theme }),
+	);
+
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,
@@ -27,6 +39,7 @@ export const configureCodeBlock = ({
 	const codeHighlighter = new CodeHighlighter({
 		editorAPI,
 		getHighlightInfo: configPort.getHighlightInfo,
+		attrValidators: configPort.attrValidators,
 	});
 
 	const selectionComponentCleanup = handleSelectionComponent({

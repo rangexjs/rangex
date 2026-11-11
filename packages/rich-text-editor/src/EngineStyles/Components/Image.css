@@ -15,6 +15,43 @@
 			& img {
 				display: block;
 				max-width: 100%;
+
+				/*
+				 * A loaded img is a replaced element, which never renders ::before/::after: they only show once the image
+				 * fails to load. The ::before gives the fallback its size, so a broken image can't collapse. They need a
+				 * non-empty alt: an image without alt text gets a placeholder one, hidden from screen readers (aria-hidden).
+				 */
+
+				/* A broken image renders its alt as text: the placeholder one is hidden */
+				&[aria-hidden="true"] {
+					font-size: 0;
+				}
+
+				&::before {
+					content: "Couldn't load image";
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					min-height: 120px;
+					border: 1px dashed
+						light-dark(var(--color-neutral-300), var(--color-neutral-600));
+					border-radius: 6px;
+					background-color: light-dark(
+						var(--color-neutral-50),
+						var(--color-neutral-900)
+					);
+					color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+					font-size: 14px;
+				}
+
+				&::after {
+					content: attr(src);
+					display: block;
+					padding-top: 4px;
+					color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+					font-size: 12px;
+					word-break: break-all;
+				}
 			}
 		}
 	}

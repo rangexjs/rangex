@@ -162,7 +162,7 @@ ports one of two ways:
 - **Flat-merge** — `extendObjectProperties(xxxPort.configPort, ..., { own props })`;
   the port's members land directly on the Adapter's port. For a singleton capability an
   Adapter can only ever have one of (`Remove`, `Unwrap`, `CommitSnapshot`, `Duplicate`,
-  `InsertRootLine`, `BlockAlign`, `Caption`, `SwapToEmptyMedia`) — no collision risk, by
+  `InsertRootLine`, `BlockAlign`, `Caption`, `SwapToSourcePlaceholder`) — no collision risk, by
   construction. `BlockAlignPort` is the reference.
 - **Nest** — `{ xxx: xxxPort.configPort, ...own props }`, reached as `adapterPort.xxx`.
   For a port that's one instance of a reusable widget/concept that could need more than
@@ -187,6 +187,10 @@ Naming inside a SharedPort follows the same State/Command/Provider rules as an A
   `// CommandListeners` as a `createEmitter()`, not a state emitter under `// States`, even
   though nothing UI-triggered it.
 
+`DOMAttrsPort` is the flat-merged port for a component's attributes (`domAttrs`, `onDOMAttrsUpdate`,
+`validateDOMAttrs`, `changeDOMAttrs`). It only holds the state and the two provider slots; the logic is in
+`handleDOMAttrs` — see [DOMAttrs](DOMAttrs.md#domattrsport-and-handledomattrs).
+
 Once nested, interior members drop the port-name prefix — the key already gives that
 context: `selectionMenu.isOpen`, not `selectionMenu.selectionMenuOpen`; `open()`/
 `close()`, not `openSelectionMenu()`/`closeSelectionMenu()`. Rename any field that would
@@ -197,15 +201,22 @@ field became `element`, since the composed key is already `selectionMenu`).
 
 `_Utilities/AdapterBus/` is the one shared object every Adapter receives through
 `AdapterOptions`; Adapters use it to talk to each other without holding direct references.
-Two channel shapes:
+Three channel shapes:
 
 - **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
-  `onSwapToEmptyMedia`).
+  `onSwapToSourcePlaceholder`).
 - **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
   Answers "was the editor built with Adapter X?" for anything that depends on another
-  Adapter (EmptyMedia's `supportedMediaTypes`, `SwapToEmptyMediaPort.canSwap`, and every
+  Adapter (SourcePlaceholder's `supportedMediaTypes`, `SwapToSourcePlaceholderPort.canSwap`, and every
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
+- **Shared value** — `registerAttrValidators(name, attrValidators)` /
+  `getAttrValidators(name)`, keyed by `AttrValidatorsByAdapter`. `createEditor` registers the
+  attribute validators of every component in the `SnapshotSchema` before any Adapter is created,
+  so an Adapter can read its own during creation, and another Adapter's feature validates the
+  component's attributes by the same rules (Markdown creating a Link). `getAttrValidators`
+  throws if they weren't registered, which is how an Adapter missing from the schema's
+  `components` fails — see [DOMAttrs](DOMAttrs.md).
 
 `createEditor` builds the editor in two phases, so Adapter order never affects a lookup:
 

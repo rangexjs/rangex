@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { linkId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateLinkStorageResult,
 	EnsureLinkStorageParams,
@@ -9,8 +10,24 @@ import type {
 	LinkStorage,
 } from "./LinkStorage-types";
 
+/*
+ * The Link's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const linkStoragePattern = {
+	id: linkId,
+} satisfies JSONPattern<LinkStorage>;
+
+/*
+ * Matches a value against linkStoragePattern, returning the first mismatch or null.
+ */
+export const matchLinkStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: linkStoragePattern });
+};
+
 export const isLinkStorage = (storage: unknown): storage is LinkStorage => {
-	return isStorage(storage, { id: linkId });
+	const mismatch = matchLinkStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateLinkStorage = (
@@ -21,7 +38,6 @@ export const validateLinkStorage = (
 
 export const createLinkStorage = (): CreateLinkStorageResult => ({
 	id: linkId,
-	version: storageVersion,
 });
 
 export const ensureLinkStorage = ({

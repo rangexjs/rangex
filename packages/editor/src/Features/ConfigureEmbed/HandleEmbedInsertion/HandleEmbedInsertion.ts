@@ -13,12 +13,12 @@ export const handleEmbedInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve(({ type, src }) => {
-		if (type !== "embed") {
+	const unsubscribe = configPort.onMediaResolve((params) => {
+		if (params.type !== "embed") {
 			return;
 		}
 
-		const embed = createEmbed({ src });
+		const embed = createEmbed({ attrs: params.attrs });
 
 		blockComponentPlacement.insertBySelection({
 			lines: [embed],

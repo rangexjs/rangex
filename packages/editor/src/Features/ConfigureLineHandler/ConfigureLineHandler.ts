@@ -50,6 +50,7 @@ export const configureLineHandler = ({
 	});
 
 	const turnIntoCleanup = handleTurnInto({
+		adapterBus,
 		configPort,
 		editorAPI,
 		blockComponentPlacement,

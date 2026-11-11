@@ -8,7 +8,7 @@ import type {
 	BlockComponentName,
 	ComponentName,
 	InlineComponentName,
-} from "../Constants";
+} from "#constants";
 
 export type ComponentByName<TName extends ComponentName> =
 	TName extends BlockComponentName

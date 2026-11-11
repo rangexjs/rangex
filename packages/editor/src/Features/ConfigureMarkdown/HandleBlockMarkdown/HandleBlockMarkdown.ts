@@ -7,13 +7,15 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { componentsName, getClosestScopedEditable } from "#engine-links";
+import { componentsName } from "#constants";
+import { getClosestScopedEditable } from "#engine-links";
 import { assertNever } from "#utilities";
 import {
 	createBlockQuote,
 	createCodeBlock,
 	createList,
 	createTodoList,
+	validateCodeBlockPlacement,
 } from "../../_Utilities";
 import {
 	getLineMarkdownPrefix,
@@ -76,6 +78,13 @@ const matchBlockTrigger = ({
 		}
 
 		const { language, theme } = codeBlockTrigger;
+
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return null;
+		}
 
 		return { type: "codeBlock", language, theme };
 	}
@@ -188,7 +197,7 @@ const convertToList = ({
 	wrapListShaped({
 		editorAPI,
 		blockComponentPlacement,
-		blockComponentLine: createList({ localName, lineType: "multi-line" }),
+		blockComponentLine: createList({ localName }),
 	});
 };
 

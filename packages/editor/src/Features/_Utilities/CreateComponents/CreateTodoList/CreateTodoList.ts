@@ -10,11 +10,11 @@ import {
 	createNestedEditable,
 } from "@rangex/core";
 import {
-	blockAlignAttr,
 	componentsName,
 	dataPartName,
 	todoCheckboxPart,
-} from "#engine-links";
+	todoListDefinition,
+} from "#constants";
 import { createTodoListStorage } from "#storage";
 import type {
 	CreateTodoListParams,
@@ -31,8 +31,9 @@ export const createTodoList = ({
 	],
 }: CreateTodoListParams): CreateTodoListResult => {
 	const list = createList({
-		localName: "ul",
-		lineType: "single-line",
+		localName: todoListDefinition.localName,
+		lineType: todoListDefinition.lineType,
+		editState: todoListDefinition.editState,
 		childNodes: childNodes.map((line) =>
 			createListItem({
 				childNodes: [
@@ -42,10 +43,10 @@ export const createTodoList = ({
 							type: "checkbox",
 							[dataPartName]: todoCheckboxPart.name,
 						},
+						childNodes: [],
 					}),
 					createNestedEditable({
-						display: "block single-line",
-						editState: "inherit",
+						...todoListDefinition.itemNestedEditableProps,
 						childNodes: [line],
 					}),
 				],
@@ -54,14 +55,14 @@ export const createTodoList = ({
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.todoList,
 			content: { type: "list" },
 			customStorage: createTodoListStorage(),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [list],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

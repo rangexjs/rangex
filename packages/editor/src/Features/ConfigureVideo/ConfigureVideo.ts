@@ -1,11 +1,15 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { componentsName } from "#constants";
+import { videoAttrsShape } from "#dom-attrs";
+import { createBlockComponentPlacement } from "#engine-links";
 import {
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
-	handleSwapToEmptyMedia,
+	handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
 	getVideoCaption,
@@ -17,8 +21,8 @@ import type { ConfigureVideoParams } from "./ConfigureVideo-types";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
 
 /*
- * Wires up the video feature: insertion, quick-actions overlay, resize, alignment, caption and
- * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ * Wires up the video feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
+ * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureVideo = ({
 	adapterBus,
@@ -69,7 +73,23 @@ export const configureVideo = ({
 		setCaptionPosition: setVideoCaptionPosition,
 	});
 
-	const swapCleanup = handleSwapToEmptyMedia({
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: videoAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (video) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: video,
+				mediaLocalName: "video",
+			});
+
+			return { line, block, video: media };
+		},
+	});
+
+	const swapCleanup = handleSwapToSourcePlaceholder({
 		port: configPort,
 		editorAPI,
 	});
@@ -81,6 +101,7 @@ export const configureVideo = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

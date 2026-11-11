@@ -11,6 +11,7 @@ export const Link = <T extends LinkPublicPort | undefined>(
 	}
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
+	const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
@@ -19,11 +20,13 @@ export const Link = <T extends LinkPublicPort | undefined>(
 	);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
+	onCleanup(publicPort.onDOMAttrsUpdate(setDOMAttrs));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
 	const port: ReactiveLinkPort = {
 		canInsert,
+		domAttrs,
 		currentComponent,
 		isSelectionActive,
 	};

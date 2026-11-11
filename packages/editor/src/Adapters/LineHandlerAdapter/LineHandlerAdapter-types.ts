@@ -1,4 +1,4 @@
-import type { BlockComponentName } from "#engine-links";
+import type { BlockComponentName } from "#constants";
 import type {
 	CreateAdapterParams,
 	DuplicateConfigPort,
@@ -10,6 +10,7 @@ import type {
 	UnwrapConfigPort,
 	UnwrapPublicPort,
 } from "../_Utilities";
+import type { AccordionItemPlacementOption } from "../AccordionItemAdapter";
 import type { CodeBlockPlacementOption } from "../CodeBlockAdapter";
 import type { ListPlacementOption } from "../ListAdapter";
 
@@ -21,7 +22,7 @@ export type TurnableComponentName = Extract<
 export type TurnIntoAvailability = Record<TurnableComponentName, boolean>;
 
 export interface TurnIntoPlacementOptions {
-	"accordion-item": object;
+	"accordion-item": AccordionItemPlacementOption;
 	"block-quote": object;
 	"code-block": CodeBlockPlacementOption;
 	list: ListPlacementOption;

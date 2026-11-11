@@ -4,8 +4,9 @@ import {
 	createContentLine,
 	type InlineComponent,
 } from "@rangex/core";
+import { normalizeLinkAttrs } from "#dom-attrs";
 import { assertNever } from "#utilities";
-import { createLink } from "../../_Utilities";
+import { createLink, validateLinkPlacement } from "../../_Utilities";
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	AnchorToLinkParams,
@@ -55,10 +56,10 @@ const insertAtCaret = ({
 	configPort,
 	editorAPI,
 	text,
+	attrs,
 	linkMenuPopoverController,
-	afterInsertion,
 }: InsertAtCaretParams) => {
-	const link = createLink({ text });
+	const link = createLink({ text, attrs });
 
 	const selection = editorAPI.getEditorSelection();
 
@@ -78,8 +79,6 @@ const insertAtCaret = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	afterInsertion?.(link);
-
 	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link, linkMenuPopoverController });
 	}
@@ -88,34 +87,20 @@ const insertAtCaret = ({
 };
 
 /*
- * Wraps each valid segment in the selection with a link, skipping any that already contain an
- * InlineComponent.
+ * Wraps each of the given wrappable segments with a link.
  */
 const wrapWithLink = ({
 	configPort,
 	editorAPI,
+	segments,
+	attrs,
 	linkMenuPopoverController,
-	afterInsertion,
 }: WrapWithLinkParams) => {
 	const selection = editorAPI.getEditorSelection();
-
-	const { fromText, fromOffset, toText, toOffset } =
-		selection.getBoundaryPoints();
-
-	const segments = editorAPI.getInlineWrappableSegments({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
 
 	let currentLink: InlineComponent | null = null;
 
 	for (const segment of segments) {
-		if (segment.getInlineComponentListInSegment().length) {
-			continue;
-		}
-
 		const { startText, startOffset, endText, endOffset } =
 			segment.getBoundaryPoints();
 
@@ -126,7 +111,7 @@ const wrapWithLink = ({
 			toOffset: endOffset,
 		});
 
-		const link = createLink({ text: plainText });
+		const link = createLink({ text: plainText, attrs });
 
 		currentLink = link;
 
@@ -158,8 +143,6 @@ const wrapWithLink = ({
 
 	snapshotTimeline.registerSnapshotBoundary();
 
-	afterInsertion?.(currentLink);
-
 	if (configPort.linkMenuSettings.openAt.includes("after-insertion")) {
 		anchorToLink({ link: currentLink, linkMenuPopoverController });
 	}
@@ -176,7 +159,7 @@ export const handleLinkInsertion = ({
 	editorAPI,
 	linkMenuPopoverController,
 }: HandleLinkInsertionParams) => {
-	const unsubscribe = configPort.onInsert(({ text, afterInsertion }) => {
+	const unsubscribe = configPort.onInsert(({ displayText, attrs }) => {
 		if (configPort.currentComponent) {
 			console.warn("handleLinkInsertion: link is not supposed to be active.");
 			return;
@@ -189,23 +172,36 @@ export const handleLinkInsertion = ({
 			return;
 		}
 
-		if (mode === "insert") {
+		const placementMismatch = validateLinkPlacement({
+			attrValidators: configPort.attrValidators,
+			attrs,
+		});
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return;
+		}
+
+		const normalizedAttrs = normalizeLinkAttrs(attrs);
+
+		if (mode.type === "insert") {
 			insertAtCaret({
 				configPort,
 				editorAPI,
-				text,
+				text: displayText || normalizedAttrs.anchor.href,
+				attrs: normalizedAttrs,
 				linkMenuPopoverController,
-				afterInsertion,
 			});
 			return;
 		}
 
-		if (mode === "wrap") {
+		if (mode.type === "wrap") {
 			wrapWithLink({
 				configPort,
 				editorAPI,
+				segments: mode.segments,
+				attrs: normalizedAttrs,
 				linkMenuPopoverController,
-				afterInsertion,
 			});
 			return;
 		}

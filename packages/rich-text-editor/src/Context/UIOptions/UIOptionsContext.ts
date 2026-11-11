@@ -44,7 +44,7 @@ export interface FormattingUIOptions {
 // Mention
 export interface MentionItem {
 	userId: string;
-	displayName?: string;
+	displayText?: string;
 	img?: string;
 }
 

@@ -4,6 +4,8 @@ import type { UIOptions } from "#context";
 import type { IconName } from "#ui";
 
 export interface CommandMenuAction {
+	label: string;
+	keywords?: string[];
 	icon: IconName;
 	onSelect: () => void;
 }

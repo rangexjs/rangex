@@ -12,9 +12,9 @@ const getMentionItems = async ({ query }: GetMentionItemsParams) => {
 	const lowerQuery = query.toLowerCase();
 
 	return mentionItems.filter((item) => {
-		const displayName = item.displayName || item.userId;
+		const displayText = item.displayText || item.userId;
 
-		return displayName.toLowerCase().includes(lowerQuery);
+		return displayText.toLowerCase().includes(lowerQuery);
 	});
 };
 

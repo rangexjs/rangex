@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { listId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateListStorageResult,
 	EnsureListStorageParams,
@@ -9,8 +10,24 @@ import type {
 	ListStorage,
 } from "./ListStorage-types";
 
+/*
+ * The List's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const listStoragePattern = {
+	id: listId,
+} satisfies JSONPattern<ListStorage>;
+
+/*
+ * Matches a value against listStoragePattern, returning the first mismatch or null.
+ */
+export const matchListStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: listStoragePattern });
+};
+
 export const isListStorage = (storage: unknown): storage is ListStorage => {
-	return isStorage(storage, { id: listId });
+	const mismatch = matchListStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateListStorage = (
@@ -21,7 +38,6 @@ export const validateListStorage = (
 
 export const createListStorage = (): CreateListStorageResult => ({
 	id: listId,
-	version: storageVersion,
 });
 
 export const ensureListStorage = ({

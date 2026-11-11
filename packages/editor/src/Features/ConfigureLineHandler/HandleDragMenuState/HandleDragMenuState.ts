@@ -4,7 +4,7 @@ import {
 	blockComponentRoleSelector,
 	contentLineRole,
 } from "@rangex/core";
-import { type BlockComponentName, componentsName } from "#engine-links";
+import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
 import type {
 	HandleBlockComponentLineParams,

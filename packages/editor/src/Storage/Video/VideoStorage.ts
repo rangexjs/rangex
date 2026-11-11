@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { videoId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateVideoStorageResult,
 	EnsureNodeVideoStorageParams,
@@ -9,8 +10,24 @@ import type {
 	VideoStorage,
 } from "./VideoStorage-types";
 
+/*
+ * The Video's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const videoStoragePattern = {
+	id: videoId,
+} satisfies JSONPattern<VideoStorage>;
+
+/*
+ * Matches a value against videoStoragePattern, returning the first mismatch or null.
+ */
+export const matchVideoStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: videoStoragePattern });
+};
+
 export const isVideoStorage = (storage: unknown): storage is VideoStorage => {
-	return isStorage(storage, { id: videoId });
+	const mismatch = matchVideoStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateVideoStorage = (
@@ -21,7 +38,6 @@ export const validateVideoStorage = (
 
 export const createVideoStorage = (): CreateVideoStorageResult => ({
 	id: videoId,
-	version: storageVersion,
 });
 
 export const ensureVideoStorage = ({

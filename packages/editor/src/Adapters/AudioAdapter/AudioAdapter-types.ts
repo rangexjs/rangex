@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+import type { AudioAttrsShape, AudioAttrValidators } from "#dom-attrs";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -8,15 +9,18 @@ import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface AudioConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly attrValidators: AudioAttrValidators;
 	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
@@ -27,7 +31,8 @@ export interface AudioConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
-		SwapToEmptyMediaConfigPort {}
+		DOMAttrsConfigPort<AudioAttrsShape>,
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface AudioPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -38,7 +43,8 @@ export interface AudioPublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
-		SwapToEmptyMediaPublicPort {}
+		DOMAttrsPublicPort<AudioAttrsShape>,
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface AudioAdapter {
 	configPort: AudioConfigPort;

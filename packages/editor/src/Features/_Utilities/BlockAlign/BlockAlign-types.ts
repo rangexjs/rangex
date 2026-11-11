@@ -1,5 +1,5 @@
 import type { BlockComponentLine } from "@rangex/core";
-import type { blockAlignAttr } from "#engine-links";
+import type { blockAlignAttr } from "#constants";
 
 export type BlockAlignValue = keyof typeof blockAlignAttr.value;
 

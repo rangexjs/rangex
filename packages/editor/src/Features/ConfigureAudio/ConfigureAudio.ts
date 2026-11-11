@@ -1,11 +1,15 @@
-import { componentsName, createBlockComponentPlacement } from "#engine-links";
+import { componentsName } from "#constants";
+import { audioAttrsShape } from "#dom-attrs";
+import { createBlockComponentPlacement } from "#engine-links";
 import {
+	getMediaParts,
 	handleBlockAlignState,
 	handleBlockResizeAppearance,
 	handleCaptionState,
+	handleDOMAttrs,
 	handleQuickActionsAppearance,
 	handleSelectionComponent,
-	handleSwapToEmptyMedia,
+	handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
 	getAudioCaption,
@@ -17,8 +21,8 @@ import type { ConfigureAudioParams } from "./ConfigureAudio-types";
 import { handleAudioInsertion } from "./HandleAudioInsertion";
 
 /*
- * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption and
- * empty-media swap behavior. Returns a cleanup function that tears down all of it.
+ * Wires up the audio feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
+ * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureAudio = ({
 	adapterBus,
@@ -47,6 +51,10 @@ export const configureAudio = ({
 		quickActionsPort: configPort.quickActions,
 		editorAPI,
 		componentName: componentsName.audio,
+		anchorStyle: {
+			bottom: "calc(anchor(top) + 4px)",
+			right: "anchor(right)",
+		},
 	});
 
 	const resizeAppearanceCleanup = handleBlockResizeAppearance({
@@ -69,7 +77,23 @@ export const configureAudio = ({
 		setCaptionPosition: setAudioCaptionPosition,
 	});
 
-	const swapCleanup = handleSwapToEmptyMedia({
+	const domAttrsCleanup = handleDOMAttrs({
+		currentComponentPort: configPort,
+		domAttrsPort: configPort,
+		editorAPI,
+		componentAttrsShape: audioAttrsShape,
+		componentAttrValidators: configPort.attrValidators,
+		resolveElements: (audio) => {
+			const { line, block, media } = getMediaParts({
+				blockComponent: audio,
+				mediaLocalName: "audio",
+			});
+
+			return { line, block, audio: media };
+		},
+	});
+
+	const swapCleanup = handleSwapToSourcePlaceholder({
 		port: configPort,
 		editorAPI,
 	});
@@ -81,6 +105,7 @@ export const configureAudio = ({
 		resizeAppearanceCleanup();
 		alignStateCleanup();
 		captionStateCleanup();
+		domAttrsCleanup();
 		swapCleanup();
 	};
 };

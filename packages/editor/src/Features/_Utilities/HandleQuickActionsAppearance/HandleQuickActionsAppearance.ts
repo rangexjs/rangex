@@ -4,9 +4,14 @@ import {
 } from "#engine-links";
 import type { HandleQuickActionsAppearanceParams } from "./HandleQuickActionsAppearance-types";
 
+const defaultAnchorStyle = {
+	top: "calc(anchor(top) + 4px)",
+	right: "calc(anchor(right) + 4px)",
+};
+
 /*
  * Wires a block component's quick-actions overlay appearance to the engine, anchoring it to
- * the hovered block and tracking that block as the port's hover component while open.
+ * the hovered block (by `anchorStyle`) and tracking that block as the port's hover component while open.
  * Returns a cleanup function.
  */
 export const handleQuickActionsAppearance = ({
@@ -14,6 +19,7 @@ export const handleQuickActionsAppearance = ({
 	quickActionsPort,
 	editorAPI,
 	componentName,
+	anchorStyle = defaultAnchorStyle,
 }: HandleQuickActionsAppearanceParams) => {
 	const overlayAppearanceHandler = createOverlayAppearanceHandler({
 		editorAPI,
@@ -42,8 +48,7 @@ export const handleQuickActionsAppearance = ({
 				anchorController.show(blockComponent, {
 					clear: true,
 					position: "absolute",
-					top: "calc(anchor(top) + 4px)",
-					right: "calc(anchor(right) + 4px)",
+					...anchorStyle,
 				});
 			},
 			onClose() {

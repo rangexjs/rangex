@@ -4,7 +4,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName, mentionDefinition } from "#constants";
 import { createMentionStorage } from "#storage";
 import type {
 	CreateMentionParams,
@@ -12,27 +12,27 @@ import type {
 } from "./CreateMention-types";
 
 /*
- * Builds an inline mention component displaying "@displayName" as editable, formattable text and
- * storing the referenced user id.
+ * Builds an inline mention component displaying its displayText as formattable text and storing the referenced
+ * user id.
  */
 export const createMention = ({
 	userId,
-	displayName,
+	displayText,
 }: CreateMentionParams): CreateMentionResult => {
-	const data = `@${displayName}`;
-
 	return createInlineComponent({
 		name: componentsName.mention,
 		content: { type: "custom" },
 		customStorage: createMentionStorage({ userId }),
 		editState: "false",
+		shouldSelectBeforeRemove: false,
+		shouldSelectOnNavigation: false,
 		childNodes: [
 			createNestedEditable({
-				display: "inline",
+				...mentionDefinition.nestedEditableProps,
 				childNodes: [
 					createContentLine({
 						localName: "span",
-						childNodes: [...createFormattableTexts({ data })],
+						childNodes: [...createFormattableTexts({ data: displayText })],
 					}),
 				],
 			}),

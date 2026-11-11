@@ -1,4 +1,5 @@
 import type { CaptionPosition } from "@rangex/editor";
+import type { ImageAttrsPatch } from "@rangex/editor/image";
 import { FloatingPortal, Image, ReadOnly } from "@rangex/solid";
 import {
 	createEffect,
@@ -20,14 +21,15 @@ import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
 	BlockAlign,
-	getAspectRatio,
-	getObjectFit,
+	createImageAltAttrs,
+	getImageAltText,
+	isAspectRatioValue,
+	isObjectFitValue,
+	MediaSource,
 	type ObjectFitValue,
 	OptionDropdown,
 	type OptionDropdownOption,
 	objectFitAttrName,
-	setAspectRatio,
-	setObjectFit,
 } from "../../_Utilities";
 
 const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
@@ -36,11 +38,11 @@ const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
 	{ label: "Fill", value: "fill" },
 ];
 
-const aspectRatioOptions: OptionDropdownOption<AspectRatioValue>[] = [
-	{ label: "Auto", value: "auto" },
-	{ label: "1:1", value: "1-1" },
-	{ label: "4:3", value: "4-3" },
-	{ label: "16:9", value: "16-9" },
+const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
+	{ label: "Auto", value: null },
+	{ label: "1:1", value: "1 / 1" },
+	{ label: "4:3", value: "4 / 3" },
+	{ label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
@@ -59,15 +61,20 @@ export const ImageQuickActions = () => {
 	const $image = Image(image);
 	const $readOnly = ReadOnly(readOnly);
 
-	const img = () => {
-		const currentBlock = $image.currentComponent();
+	const imgAttrs = () => $image.domAttrs()?.img ?? null;
 
-		return currentBlock?.querySelector<HTMLImageElement>("img") ?? null;
+	const objectFit = (): ObjectFitValue => {
+		const value = imgAttrs()?.[objectFitAttrName] ?? null;
+
+		return isObjectFitValue(value) ? value : "cover";
 	};
 
-	const [objectFit, setObjectFitSignal] = createSignal<ObjectFitValue>("cover");
-	const [aspectRatio, setAspectRatioSignal] =
-		createSignal<AspectRatioValue>("auto");
+	// An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
+	const aspectRatio = (): AspectRatioValue | null => {
+		const value = imgAttrs()?.[aspectRatioAttrName] ?? null;
+
+		return isAspectRatioValue(value) ? value : null;
+	};
 
 	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
 		defaultValue: "",
@@ -77,71 +84,40 @@ export const ImageQuickActions = () => {
 
 	const isAltTextDirty = () => altHandle.value() !== committedAltText();
 
-	const syncFromImg = (imgEl: HTMLImageElement) => {
-		const objectFitValue = getObjectFit(imgEl) ?? "cover";
-		const aspectRatioValue = getAspectRatio(imgEl) ?? "auto";
-
-		setObjectFitSignal(objectFitValue);
-		setAspectRatioSignal(aspectRatioValue);
-
-		altHandle.setValue(imgEl.alt);
-		setCommittedAltText(imgEl.alt);
-	};
-
 	createEffect(
-		() => img(),
-		(imgEl) => {
-			if (!imgEl) {
-				return;
-			}
-
-			syncFromImg(imgEl);
-
-			const observer = new MutationObserver(() => {
-				syncFromImg(imgEl);
-			});
-
-			observer.observe(imgEl, {
-				attributes: true,
-				attributeFilter: [objectFitAttrName, aspectRatioAttrName, "alt"],
-			});
-
-			return () => {
-				observer.disconnect();
-			};
+		() => getImageAltText(imgAttrs()),
+		(altText) => {
+			altHandle.setValue(altText);
+			setCommittedAltText(altText);
 		},
 	);
 
-	const onObjectFitSelect = (value: ObjectFitValue) => {
-		const imgEl = img();
-
-		if (!imgEl) {
+	const changeImgAttrs = (imgAttrsPatch: ImageAttrsPatch["img"]) => {
+		if (!image.domAttrs) {
 			return;
 		}
 
-		setObjectFit(imgEl, value);
-		editor.snapshot.commit();
+		const changeFailed = image.changeDOMAttrs({ img: imgAttrsPatch });
+
+		if (changeFailed) {
+			console.warn("Image's attributes were rejected.", changeFailed);
+		}
 	};
 
-	const onAspectRatioSelect = (value: AspectRatioValue) => {
-		const imgEl = img();
+	const onObjectFitSelect = (value: ObjectFitValue) => {
+		changeImgAttrs({ [objectFitAttrName]: value });
+	};
 
-		if (!imgEl) {
-			return;
-		}
-
-		setAspectRatio(imgEl, value);
-		editor.snapshot.commit();
+	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
+		changeImgAttrs({ [aspectRatioAttrName]: value });
 	};
 
 	const onAltTextCommit = () => {
-		const imgEl = img();
-
-		if (!imgEl) {
+		if (!isAltTextDirty()) {
 			return;
 		}
 
-		imgEl.alt = altHandle.value();
+		changeImgAttrs(createImageAltAttrs(altHandle.value()));
 	};
 
 	const onAltTextKeyDown = (event: KeyboardEvent) => {
@@ -162,11 +138,16 @@ export const ImageQuickActions = () => {
 
 	let blockAlignPopover: HTMLDivElement | undefined;
 	let optionsPopover: HTMLDivElement | undefined;
+	let mediaSourcePopover: HTMLDivElement | undefined;
 
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, optionsPopover];
+		const nestedPopovers = [
+			blockAlignPopover,
+			mediaSourcePopover,
+			optionsPopover,
+		];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -214,6 +195,14 @@ export const ImageQuickActions = () => {
 					<Icon name="Swap" class="size-4" />
 				</button>
 
+				<MediaSource
+					src={$image.domAttrs()?.img.src ?? null}
+					label="Image source"
+					popoverRef={(el) => {
+						mediaSourcePopover = el;
+					}}
+				/>
+
 				<span>
 					<button
 						type="button"
@@ -245,6 +234,7 @@ export const ImageQuickActions = () => {
 							label="Aspect ratio"
 							value={aspectRatio()}
 							options={aspectRatioOptions}
+							notFoundLabel="Custom"
 							onSelect={onAspectRatioSelect}
 						/>
 

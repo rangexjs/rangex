@@ -2,6 +2,7 @@ import { AccordionItem, ReadOnly, Separator } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+import { accordionItemAttrs } from "../AccordionItemAttrs";
 import { ToolbarButton } from "../ToolbarButton";
 import { ToolbarDropdown, type ToolbarDropdownList } from "../ToolbarDropdown";
 
@@ -51,7 +52,7 @@ export const CustomComponentToolbarButton = () => {
 							return;
 						}
 
-						accordionItem.insert();
+						accordionItem.insert({ attrs: accordionItemAttrs });
 					},
 				},
 			});

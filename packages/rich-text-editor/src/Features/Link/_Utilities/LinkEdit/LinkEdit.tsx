@@ -15,6 +15,7 @@ interface LinkEditProps {
 	displayTextHandle: TextFieldStateHandle;
 	displayTextControls: TextFieldControls<HTMLInputElement>;
 	displayTextDisabled: boolean;
+	displayTextPlaceholder: string;
 	urlHandle: TextFieldStateHandle;
 	urlControls: TextFieldControls<HTMLInputElement>;
 	isNewTab: boolean;
@@ -48,7 +49,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 					<TextFieldWrapper appearance="primary-outline" size="medium">
 						<InputTextField
 							type="text"
-							placeholder="Example"
+							placeholder={props.displayTextPlaceholder}
 							spellcheck={false}
 							{...props.displayTextControls}
 							disabled={props.displayTextDisabled}

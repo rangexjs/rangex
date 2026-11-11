@@ -1,4 +1,4 @@
-import { blockAlignAttr } from "#engine-links";
+import { blockAlignAttr } from "#constants";
 import type {
 	GetBlockAlignParams,
 	GetBlockAlignResult,
@@ -38,7 +38,7 @@ export const setBlockAlign = ({
 	blockComponentLine,
 	align,
 }: SetBlockAlignParams) => {
-	blockComponentLine.setAttribute(
+	blockComponentLine.$$setAttribute(
 		blockAlignAttr.name,
 		blockAlignAttr.value[align],
 	);

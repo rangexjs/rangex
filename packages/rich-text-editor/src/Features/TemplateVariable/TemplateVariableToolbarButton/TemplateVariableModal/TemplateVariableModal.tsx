@@ -21,7 +21,22 @@ interface TemplateVariableModalProps {
 export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 	const inputs = props.settings.inputs.map((input) => {
 		const [handle, controls] = createTextFieldState<HTMLInputElement>({
-			error: { patterns: input.patterns },
+			error: {
+				patterns: input.patterns,
+				custom: {
+					// An empty input is valid: the consumer's onUpdate falls back to the placeholder
+					isValid: (value) => {
+						if (value === "") {
+							return true;
+						}
+
+						const mismatch = props.templateVariable.validateFieldValue(value);
+
+						return !mismatch;
+					},
+					message: "Value is too long.",
+				},
+			},
 		});
 
 		return { input, handle, controls };

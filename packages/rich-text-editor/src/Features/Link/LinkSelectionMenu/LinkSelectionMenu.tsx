@@ -2,7 +2,7 @@ import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
-import { allowedPrefixes, LinkEdit } from "../_Utilities";
+import { getDisplayTextField, LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
 	const editor = useEditorContext();
@@ -15,9 +15,24 @@ export const LinkSelectionMenu = () => {
 	const [displayTextHandle, displayTextControls] =
 		createTextFieldState<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
+	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
-		error: { required: { value: true, message: "Field can't be empty." } },
+		error: {
+			required: { value: true, message: "Field can't be empty." },
+			custom: {
+				isValid: (value) => {
+					const mismatch = link.validateDOMAttrs({
+						anchor: {
+							href: value,
+						},
+					});
+
+					return !mismatch;
+				},
+				message: "URL isn't allowed.",
+			},
+		},
 	});
 
 	const [isNewTab, setIsNewTab] = createSignal(false);
@@ -26,9 +41,12 @@ export const LinkSelectionMenu = () => {
 
 	const refreshFields = () => {
 		displayTextHandle.reset();
-		const displayText = link.getDisplayText();
-		displayTextHandle.setValue(displayText.value);
-		setDisplayTextDisabled(displayText.disabled);
+		const { value, disabled, placeholder } = getDisplayTextField(
+			link.getDisplayText(),
+		);
+		displayTextHandle.setValue(value);
+		setDisplayTextDisabled(disabled);
+		setDisplayTextPlaceholder(placeholder);
 
 		urlHandle.reset();
 		setIsNewTab(false);
@@ -67,26 +85,15 @@ export const LinkSelectionMenu = () => {
 			return;
 		}
 
-		const rawUrl = urlHandle.value();
-		const normalizedUrl = allowedPrefixes.some((prefix) =>
-			rawUrl.startsWith(prefix),
-		)
-			? rawUrl
-			: `https://${rawUrl}`;
-
-		const text = displayTextHandle.value() || normalizedUrl;
+		const url = urlHandle.value();
 
 		link.insert({
-			text,
-			afterInsertion(linkEl) {
-				const anchor = linkEl.querySelector<HTMLAnchorElement>("a");
-
-				if (!anchor) {
-					throw new Error("Anchor wasn't found.");
-				}
-
-				anchor.href = normalizedUrl;
-				anchor.target = isNewTab() ? "_blank" : "_self";
+			displayText: displayTextHandle.value(),
+			attrs: {
+				anchor: {
+					href: url,
+					target: isNewTab() ? "_blank" : null,
+				},
 			},
 		});
 
@@ -112,6 +119,7 @@ export const LinkSelectionMenu = () => {
 				displayTextHandle={displayTextHandle}
 				displayTextControls={displayTextControls}
 				displayTextDisabled={displayTextDisabled()}
+				displayTextPlaceholder={displayTextPlaceholder()}
 				urlHandle={urlHandle}
 				urlControls={urlControls}
 				onNewTabChange={onNewTabChange}

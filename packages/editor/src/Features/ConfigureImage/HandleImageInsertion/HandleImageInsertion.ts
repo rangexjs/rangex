@@ -13,12 +13,12 @@ export const handleImageInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve(({ type, src }) => {
-		if (type !== "image") {
+	const unsubscribe = configPort.onMediaResolve((params) => {
+		if (params.type !== "image") {
 			return;
 		}
 
-		const image = createImage({ src });
+		const image = createImage({ attrs: params.attrs });
 
 		blockComponentPlacement.insertBySelection({
 			lines: [image],

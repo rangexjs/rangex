@@ -17,6 +17,7 @@ export const Video = <T extends VideoPublicPort | undefined>(
 		publicPort.captionPosition,
 	);
 	const [align, setAlign] = createSignal(publicPort.align);
+	const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
 	const [currentComponent, setCurrentComponent] = createSignal(
 		publicPort.currentComponent,
 	);
@@ -27,6 +28,7 @@ export const Video = <T extends VideoPublicPort | undefined>(
 	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
 	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
 	onCleanup(publicPort.onAlignUpdate(setAlign));
+	onCleanup(publicPort.onDOMAttrsUpdate(setDOMAttrs));
 	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
 	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
@@ -34,6 +36,7 @@ export const Video = <T extends VideoPublicPort | undefined>(
 		captionEnabled,
 		captionPosition,
 		align,
+		domAttrs,
 		currentComponent,
 		isSelectionActive,
 	};

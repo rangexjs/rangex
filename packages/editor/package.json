@@ -63,10 +63,10 @@
 			"types": "./dist/Exports/Emoji/index.d.ts",
 			"import": "./dist/emoji.js"
 		},
-		"./empty-media": {
-			"@rangex/source": "./src/Exports/EmptyMedia/index.ts",
-			"types": "./dist/Exports/EmptyMedia/index.d.ts",
-			"import": "./dist/empty-media.js"
+		"./source-placeholder": {
+			"@rangex/source": "./src/Exports/SourcePlaceholder/index.ts",
+			"types": "./dist/Exports/SourcePlaceholder/index.d.ts",
+			"import": "./dist/source-placeholder.js"
 		},
 		"./find-replace": {
 			"@rangex/source": "./src/Exports/FindReplace/index.ts",
@@ -128,6 +128,11 @@
 			"types": "./dist/Exports/Symbols/index.d.ts",
 			"import": "./dist/symbols.js"
 		},
+		"./snapshot": {
+			"@rangex/source": "./src/Exports/Snapshot/index.ts",
+			"types": "./dist/Exports/Snapshot/index.d.ts",
+			"import": "./dist/snapshot.js"
+		},
 		"./table": {
 			"@rangex/source": "./src/Exports/Table/index.ts",
 			"types": "./dist/Exports/Table/index.d.ts",
@@ -159,6 +164,10 @@
 			"@rangex/source": "./src/_Utilities/index.ts",
 			"types": "./dist/_Utilities/index.d.ts"
 		},
+		"#constants": {
+			"@rangex/source": "./src/Constants/index.ts",
+			"types": "./dist/Constants/index.d.ts"
+		},
 		"#adapters": {
 			"@rangex/source": "./src/Adapters/index.ts",
 			"types": "./dist/Adapters/index.d.ts"
@@ -183,9 +192,21 @@
 			"@rangex/source": "./src/Snapshot/index.ts",
 			"types": "./dist/Snapshot/index.d.ts"
 		},
+		"#dom-attrs": {
+			"@rangex/source": "./src/DOMAttrs/index.ts",
+			"types": "./dist/DOMAttrs/index.d.ts"
+		},
+		"#sanitizer": {
+			"@rangex/source": "./src/Sanitizer/index.ts",
+			"types": "./dist/Sanitizer/index.d.ts"
+		},
 		"#features": {
 			"@rangex/source": "./src/Features/index.ts",
 			"types": "./dist/Features/index.d.ts"
+		},
+		"#structured-style": {
+			"@rangex/source": "./src/StructuredStyle/index.ts",
+			"types": "./dist/StructuredStyle/index.d.ts"
 		}
 	},
 	"files": [

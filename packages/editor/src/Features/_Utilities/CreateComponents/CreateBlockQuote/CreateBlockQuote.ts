@@ -7,7 +7,7 @@ import {
 	createHTMLLayout,
 	createNestedEditable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { blockQuoteDefinition, componentsName } from "#constants";
 import { createBlockQuoteStorage } from "#storage";
 import type {
 	CreateBlockQuoteParams,
@@ -15,8 +15,8 @@ import type {
 } from "./CreateBlockQuote-types";
 
 /*
- * Builds a block quote component wrapping a `blockquote` element with an editable text area,
- * holding the given child lines or a single empty one.
+ * Builds a block quote component wrapping a `blockquote` element with an editable text area (by the
+ * blockQuoteDefinition), holding the given child lines or a single empty one.
  */
 export const createBlockQuote = ({
 	childNodes = [
@@ -24,19 +24,19 @@ export const createBlockQuote = ({
 	],
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {
 	const nestedEditable = createNestedEditable({
-		display: "block multi-line",
+		...blockQuoteDefinition.nestedEditableProps,
 		childNodes,
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.blockQuote,
 			content: { type: "styled-block" },
 			customStorage: createBlockQuoteStorage(),
+			shouldSelectBeforeRemove: false,
+			shouldSelectOnNavigation: false,
+			editState: "inherit",
 			childNodes: [
 				createHTMLLayout({
 					localName: "blockquote",

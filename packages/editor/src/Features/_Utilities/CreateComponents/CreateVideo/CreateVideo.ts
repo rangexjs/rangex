@@ -4,24 +4,20 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import {
-	aspectRatioAttr,
-	blockAlignAttr,
-	componentsName,
-	objectFitAttr,
-} from "#engine-links";
+import { componentsName } from "#constants";
+import { toDOMAttrs } from "#dom-attrs";
 import { createVideoStorage } from "#storage";
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*
- * Builds a video block component wrapping a `figure`/`video` element with playback controls
- * and default fit and aspect-ratio attributes.
+ * Builds a video block component wrapping a `figure`/`video` element, with the given attributes of its line, block and
+ * `video`. They aren't validated here.
  */
-export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
+export const createVideo = ({
+	attrs,
+}: CreateVideoParams): CreateVideoResult => {
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.video,
@@ -30,18 +26,15 @@ export const createVideo = ({ src }: CreateVideoParams): CreateVideoResult => {
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
+			domAttrs: toDOMAttrs(attrs.block),
 			childNodes: [
 				createHTMLLayout({
 					localName: "figure",
 					childNodes: [
 						createHTMLLayout({
 							localName: "video",
-							domAttrs: {
-								src,
-								controls: "",
-								[objectFitAttr.name]: objectFitAttr.value.cover,
-								[aspectRatioAttr.name]: aspectRatioAttr.value.auto,
-							},
+							domAttrs: toDOMAttrs(attrs.video),
+							childNodes: [],
 						}),
 					],
 				}),

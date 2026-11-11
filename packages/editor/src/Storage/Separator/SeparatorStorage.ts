@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { separatorId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateSeparatorStorageResult,
 	EnsureNodeSeparatorStorageParams,
@@ -9,10 +10,26 @@ import type {
 	SeparatorStorage,
 } from "./SeparatorStorage-types";
 
+/*
+ * The Separator's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const separatorStoragePattern = {
+	id: separatorId,
+} satisfies JSONPattern<SeparatorStorage>;
+
+/*
+ * Matches a value against separatorStoragePattern, returning the first mismatch or null.
+ */
+export const matchSeparatorStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: separatorStoragePattern });
+};
+
 export const isSeparatorStorage = (
 	storage: unknown,
 ): storage is SeparatorStorage => {
-	return isStorage(storage, { id: separatorId });
+	const mismatch = matchSeparatorStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateSeparatorStorage = (
@@ -23,7 +40,6 @@ export const validateSeparatorStorage = (
 
 export const createSeparatorStorage = (): CreateSeparatorStorageResult => ({
 	id: separatorId,
-	version: storageVersion,
 });
 
 export const ensureSeparatorStorage = ({

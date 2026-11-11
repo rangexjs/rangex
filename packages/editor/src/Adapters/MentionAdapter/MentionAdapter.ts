@@ -23,7 +23,10 @@ export const createMentionAdapter = (
 
 	adapterBus.registerAdapter("mention");
 
-	const _internals: MentionInternals = {};
+	const internals: MentionInternals = {
+		// Providers
+		validateDisplayTextProvider: null,
+	};
 
 	// CommandListeners
 	const selectEmitter = createEmitter<OnSelectCallbackFn>();
@@ -42,6 +45,10 @@ export const createMentionAdapter = (
 			onSelect(callback) {
 				return selectEmitter.subscribe(callback);
 			},
+
+			registerValidateDisplayText(provider) {
+				internals.validateDisplayTextProvider = provider;
+			},
 		} satisfies MentionConfigPortProps,
 	);
 
@@ -54,6 +61,14 @@ export const createMentionAdapter = (
 
 			select(params: SelectParams) {
 				selectEmitter.emit(params);
+			},
+
+			validateDisplayText(displayText) {
+				if (!internals.validateDisplayTextProvider) {
+					throw new Error("ValidateDisplayText provider wasn't registered.");
+				}
+
+				return internals.validateDisplayTextProvider(displayText);
 			},
 		} satisfies MentionPublicPortProps,
 	);

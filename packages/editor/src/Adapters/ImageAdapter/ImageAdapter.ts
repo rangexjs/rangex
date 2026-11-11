@@ -1,12 +1,14 @@
 import type { BlockComponent } from "@rangex/core";
+import type { ImageAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createBlockAlignPort,
 	createBlockResize,
 	createCaptionPort,
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createQuickActionsPort,
-	createSwapToEmptyMediaPort,
+	createSwapToSourcePlaceholderPort,
 } from "../_Utilities";
 import type {
 	CreateImageAdapterParams,
@@ -24,22 +26,32 @@ export const createImageAdapter = (
 
 	adapterBus.registerAdapter("image");
 
+	const imageAttrValidators = adapterBus.getAttrValidators("image");
+
 	const blockResize = createBlockResize({ floatingContainer, xPos: 16 });
 
 	const captionPort = createCaptionPort();
 	const blockAlignPort = createBlockAlignPort();
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
-	const swapToEmptyMediaPort = createSwapToEmptyMediaPort({ adapterBus });
+	const domAttrsPort = createDOMAttrsPort<ImageAttrsShape>();
+	const swapToSourcePlaceholderPort = createSwapToSourcePlaceholderPort({
+		adapterBus,
+	});
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
 	const configPort: ImageConfigPort = extendObjectProperties(
 		captionPort.configPort,
 		blockAlignPort.configPort,
 		currentComponentPort.configPort,
-		swapToEmptyMediaPort.configPort,
+		domAttrsPort.configPort,
+		swapToSourcePlaceholderPort.configPort,
 		{
 			get blockResize() {
 				return blockResize;
+			},
+
+			get attrValidators() {
+				return imageAttrValidators;
 			},
 
 			get quickActions() {
@@ -57,7 +69,8 @@ export const createImageAdapter = (
 		captionPort.publicPort,
 		blockAlignPort.publicPort,
 		currentComponentPort.publicPort,
-		swapToEmptyMediaPort.publicPort,
+		domAttrsPort.publicPort,
+		swapToSourcePlaceholderPort.publicPort,
 		{
 			get quickActions() {
 				return quickActionsPort.publicPort;

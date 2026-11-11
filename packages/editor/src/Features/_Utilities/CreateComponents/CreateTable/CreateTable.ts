@@ -4,26 +4,36 @@ import {
 	createBlockComponentTextHolder,
 	createTable as createEngineTable,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { componentsName, tableDefinition } from "#constants";
 import { createTableStorage } from "#storage";
 import type { CreateTableParams, CreateTableResult } from "./CreateTable-types";
 
 /*
- * Builds a table block component with the given row/column counts.
+ * Builds a table block component with the given row/column counts, by the tableDefinition.
  */
 export const createTable = ({
 	rows,
 	cols,
 }: CreateTableParams): CreateTableResult => {
+	const {
+		minColWidth,
+		minRowHeight,
+		defaultRowHeight,
+		tableCellsEditable,
+		cellNestedEditableProps,
+	} = tableDefinition;
+
 	const table = createEngineTable({
 		rows,
 		cols,
+		minColWidth,
+		minRowHeight,
+		defaultRowHeight,
+		tableCellsEditable,
+		cellNestedEditableProps: { ...cellNestedEditableProps },
 	});
 
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.table,
@@ -31,6 +41,7 @@ export const createTable = ({
 			customStorage: createTableStorage(),
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
+			editState: "inherit",
 			childNodes: [table],
 		}),
 		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),

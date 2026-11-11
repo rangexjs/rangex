@@ -1,6 +1,5 @@
 export type {
-	CommandMenuItem,
-	CommandMenuItems,
+	CommandMenuAvailableItems,
 	CommandMenuItemValue,
 	CommandMenuPublicPort,
 	CommandMenuSettings,

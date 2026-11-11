@@ -4,7 +4,7 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
-import { componentsName } from "#engine-links";
+import { componentsName, templateVariableDefinition } from "#constants";
 import { createTemplateVariableStorage } from "#storage";
 import type {
 	CreateTemplateVariableParams,
@@ -12,8 +12,8 @@ import type {
 } from "./CreateTemplateVariable-types";
 
 /*
- * Builds an inline template variable component for the given field, displaying its text as
- * editable, formattable content.
+ * Builds an inline template variable component for the given field. Its NestedEditable allows no formatting and no
+ * components, so it only holds the display text's FormattableTexts.
  */
 export const createTemplateVariable = ({
 	fieldName,
@@ -25,9 +25,10 @@ export const createTemplateVariable = ({
 		editState: "false",
 		shouldSelectOnNavigation: true,
 		customStorage: createTemplateVariableStorage({ fieldName }),
+		shouldSelectBeforeRemove: false,
 		childNodes: [
 			createNestedEditable({
-				display: "inline",
+				...templateVariableDefinition.nestedEditableProps,
 				childNodes: [
 					createContentLine({
 						localName: "span",

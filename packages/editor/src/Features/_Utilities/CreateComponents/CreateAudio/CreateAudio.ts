@@ -4,18 +4,20 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { blockAlignAttr, componentsName } from "#engine-links";
+import { componentsName } from "#constants";
+import { toDOMAttrs } from "#dom-attrs";
 import { createAudioStorage } from "#storage";
 import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 /*
- * Builds an audio block component wrapping an HTML `audio` element with playback controls.
+ * Builds an audio block component wrapping a `figure`/`audio` element, with the given attributes of its line, block
+ * and `audio`. They aren't validated here.
  */
-export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
+export const createAudio = ({
+	attrs,
+}: CreateAudioParams): CreateAudioResult => {
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.audio,
@@ -24,16 +26,15 @@ export const createAudio = ({ src }: CreateAudioParams): CreateAudioResult => {
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
+			domAttrs: toDOMAttrs(attrs.block),
 			childNodes: [
 				createHTMLLayout({
 					localName: "figure",
 					childNodes: [
 						createHTMLLayout({
 							localName: "audio",
-							domAttrs: {
-								src,
-								controls: "",
-							},
+							domAttrs: toDOMAttrs(attrs.audio),
+							childNodes: [],
 						}),
 					],
 				}),

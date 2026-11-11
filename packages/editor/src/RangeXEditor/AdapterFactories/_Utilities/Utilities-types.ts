@@ -5,7 +5,6 @@ import type { CodeBlock } from "../CodeBlock";
 import type { CommandMenu } from "../CommandMenu";
 import type { Embed } from "../Embed";
 import type { Emoji } from "../Emoji";
-import type { EmptyMedia } from "../EmptyMedia";
 import type { FindReplace } from "../FindReplace";
 import type { Formatting } from "../Formatting";
 import type { Image } from "../Image";
@@ -17,6 +16,7 @@ import type { Mention } from "../Mention";
 import type { ReadOnly } from "../ReadOnly";
 import type { Separator } from "../Separator";
 import type { Shortcuts } from "../Shortcuts";
+import type { SourcePlaceholder } from "../SourcePlaceholder";
 import type { Symbols } from "../Symbols";
 import type { Table } from "../Table";
 import type { TemplateVariable } from "../TemplateVariable";
@@ -32,7 +32,7 @@ export type AdapterFactory =
 	| typeof CommandMenu
 	| typeof Embed
 	| typeof Emoji
-	| typeof EmptyMedia
+	| typeof SourcePlaceholder
 	| typeof FindReplace
 	| typeof Formatting
 	| typeof Image

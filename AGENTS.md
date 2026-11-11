@@ -12,6 +12,8 @@ RangeX is a rich text editor engine that manages all editor logic: text manipula
 
 **Engine types** are in `packages/core/src/PublicTypes/index.ts` (all public types re-exported from a single entry point). In development, packages resolve the engine's types there through the `@rangex/source` condition, so type changes apply without rebuilding the engine. This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
 
+**Engine docs:** before any engine-related task, read `packages/editor/AGENTS.local.md` (local and gitignored, so it may be missing). It gives the path to the engine's handbook, the authoritative reference for engine behavior. When the handbook is available, read it instead of guessing behavior from the engine's code or usage patterns.
+
 This repo (`rangex`) serves three purposes:
 1. **Zero-config editor** — `@rangex/rich-text-editor` provides a ready-to-use editor built on the engine with no setup required
 2. **Demo** — showcases the engine's capabilities (formatting, components, etc.) so developers can evaluate RangeX before building on it

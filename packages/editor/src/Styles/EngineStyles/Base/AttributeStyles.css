@@ -1,0 +1,14 @@
+[data-rx-editor-role="root-editable"] {
+	[data-aspect-ratio] {
+		aspect-ratio: attr(data-aspect-ratio type(*));
+		width: 100%;
+	}
+
+	[data-object-fit] {
+		object-fit: attr(data-object-fit type(<custom-ident>));
+	}
+
+	[data-vertical-align] {
+		align-content: attr(data-vertical-align type(<custom-ident>));
+	}
+}

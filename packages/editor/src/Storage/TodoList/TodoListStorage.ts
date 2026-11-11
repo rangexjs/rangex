@@ -1,5 +1,6 @@
+import { type JSONPattern, matchJSON } from "#utilities";
 import { todoListId } from "../_Constants";
-import { isStorage, storageVersion, validateStorage } from "../_Utilities";
+import { validateStorage } from "../_Utilities";
 import type {
 	CreateTodoListStorageResult,
 	EnsureNodeTodoListStorageParams,
@@ -9,10 +10,26 @@ import type {
 	TodoListStorage,
 } from "./TodoListStorage-types";
 
+/*
+ * The TodoList's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
+ */
+export const todoListStoragePattern = {
+	id: todoListId,
+} satisfies JSONPattern<TodoListStorage>;
+
+/*
+ * Matches a value against todoListStoragePattern, returning the first mismatch or null.
+ */
+export const matchTodoListStorage = (storage: unknown) => {
+	return matchJSON({ value: storage, pattern: todoListStoragePattern });
+};
+
 export const isTodoListStorage = (
 	storage: unknown,
 ): storage is TodoListStorage => {
-	return isStorage(storage, { id: todoListId });
+	const mismatch = matchTodoListStorage(storage);
+
+	return !mismatch;
 };
 
 export const validateTodoListStorage = (
@@ -23,7 +40,6 @@ export const validateTodoListStorage = (
 
 export const createTodoListStorage = (): CreateTodoListStorageResult => ({
 	id: todoListId,
-	version: storageVersion,
 });
 
 export const ensureTodoListStorage = ({

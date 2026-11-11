@@ -1,7 +1,19 @@
 // Resolves the relative URLs, so they get the protocol of a regular web page
 const baseURL = "https://base.invalid/";
 
-const safeProtocols = new Set(["http:", "https:", "mailto:", "tel:"]);
+// Can't run script: they only navigate, or open another app (e.g. the mail or phone app)
+export const safeProtocols = new Set([
+	"http:",
+	"https:",
+	"ftp:",
+	"ftps:",
+	"mailto:",
+	"tel:",
+	"callto:",
+	"sms:",
+	"cid:",
+	"xmpp:",
+]);
 
 /**
  * Parses the URL the same way the browser parses it. Returns null if it's invalid.
@@ -20,7 +32,7 @@ const parseURL = (url: string): URL | null => {
 };
 
 /**
- * Relative URLs and the http, https, mailto and tel protocols are safe.
+ * Relative URLs and the protocols in safeProtocols are safe.
  * The URL is parsed the same way the browser parses it, so obfuscated protocols (e.g. "java\tscript:") are caught.
  */
 export const isSafeURL = (url: string): boolean => {

@@ -36,9 +36,22 @@ export interface InsertParams {
 	fieldName: string;
 }
 
+export interface FieldMismatch {
+	reason: string;
+}
+
+export type ValidateFieldNameResult = FieldMismatch | null;
+export type ValidateFieldValueResult = FieldMismatch | null;
+
 export type OnInsertCallbackFn = (params: InsertParams) => void;
 export type OnChangeFieldsCallbackFn = (fields: TemplateVariableFields) => void;
 export type OnSelectCallbackFn = (item: TemplateVariableItem) => void;
+export type ValidateFieldNameProviderFn = (
+	fieldName: string,
+) => ValidateFieldNameResult;
+export type ValidateFieldValueProviderFn = (
+	value: string,
+) => ValidateFieldValueResult;
 
 export interface TemplateVariableConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
@@ -49,6 +62,9 @@ export interface TemplateVariableConfigPortProps {
 	onInsert(callback: OnInsertCallbackFn): () => void;
 	onChangeFields(callback: OnChangeFieldsCallbackFn): () => void;
 	onSelect(callback: OnSelectCallbackFn): () => void;
+
+	registerValidateFieldName(provider: ValidateFieldNameProviderFn): void;
+	registerValidateFieldValue(provider: ValidateFieldValueProviderFn): void;
 }
 
 export interface TemplateVariableConfigPort
@@ -71,6 +87,9 @@ export interface TemplateVariablePublicPortProps {
 	insert(params: InsertParams): void;
 	changeFields(fields: TemplateVariableFields): void;
 	select(item: TemplateVariableItem): void;
+
+	validateFieldName(fieldName: string): ValidateFieldNameResult;
+	validateFieldValue(value: string): ValidateFieldValueResult;
 }
 
 export interface TemplateVariablePublicPort
@@ -80,6 +99,9 @@ export interface TemplateVariablePublicPort
 export interface TemplateVariableInternals {
 	fieldsConfig: TemplateVariableFieldsConfig;
 	items: TemplateVariableItems;
+	// Providers
+	validateFieldNameProvider: ValidateFieldNameProviderFn | null;
+	validateFieldValueProvider: ValidateFieldValueProviderFn | null;
 }
 
 export interface TemplateVariableAdapter {

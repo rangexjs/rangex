@@ -13,12 +13,12 @@ export const handleVideoInsertion = ({
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 	const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve(({ type, src }) => {
-		if (type !== "video") {
+	const unsubscribe = configPort.onMediaResolve((params) => {
+		if (params.type !== "video") {
 			return;
 		}
 
-		const video = createVideo({ src });
+		const video = createVideo({ attrs: params.attrs });
 
 		blockComponentPlacement.insertBySelection({
 			lines: [video],

@@ -1,5 +1,5 @@
 import { editorSelectionChangeEventType } from "@rangex/core";
-import { ensureNodeRootStorage } from "#storage";
+import { getRootStorage } from "#storage";
 import { canInsertTemplateVariable } from "../_Utilities";
 import type { HandleTemplateVariablePlacementStateParams } from "./HandleTemplateVariablePlacementState-types";
 
@@ -22,7 +22,7 @@ export const handleTemplateVariablePlacementState = ({
 
 			const canInsert = canInsertTemplateVariable({ fromText });
 
-			const rootStorage = ensureNodeRootStorage({ rootEditable });
+			const rootStorage = getRootStorage({ rootEditable });
 
 			configPort.updateState({
 				canInsert,

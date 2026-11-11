@@ -1,5 +1,5 @@
 import type { AdapterName } from "#adapters";
-import { type BlockComponentName, blockComponentsName } from "../../Constants";
+import { type BlockComponentName, blockComponentsName } from "#constants";
 import type {
 	HasComponentAdaptersParams,
 	HasComponentAdaptersResult,
@@ -11,7 +11,7 @@ const componentAdapterNames: Record<BlockComponentName, AdapterName> = {
 	[blockComponentsName.blockQuote]: "blockQuote",
 	[blockComponentsName.codeBlock]: "codeBlock",
 	[blockComponentsName.embed]: "embed",
-	[blockComponentsName.emptyMedia]: "emptyMedia",
+	[blockComponentsName.sourcePlaceholder]: "sourcePlaceholder",
 	[blockComponentsName.image]: "image",
 	[blockComponentsName.list]: "list",
 	[blockComponentsName.separator]: "separator",

@@ -11,7 +11,7 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
-import { type BlockComponentName, componentsName } from "#engine-links";
+import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
 import {
 	createAccordionItem,
@@ -20,6 +20,8 @@ import {
 	createList,
 	createTodoList,
 	getAccordionItemParts,
+	validateAccordionItemPlacement,
+	validateCodeBlockPlacement,
 } from "../../_Utilities";
 import type {
 	CreateBlockComponentParams,
@@ -33,6 +35,8 @@ import type {
 	ShouldSkipFirstLineParams,
 	ShouldSkipFirstLineResult,
 	TurnLineIntoParams,
+	ValidateTurnIntoPlacementParams,
+	ValidateTurnIntoPlacementResult,
 	WrapContentLineParams,
 } from "./HandleTurnInto-types";
 
@@ -69,11 +73,19 @@ const createBlockComponent = (
 
 	if (params.name === componentsName.accordionItem) {
 		const blockComponentLine = createAccordionItem({
-			open: true,
+			attrs: params.attrs,
 			childNodes,
 		});
+		const accordionItem = blockComponentLine.$$querySelector(
+			blockComponentRoleSelector,
+		);
+
+		if (accordionItem?.$$editorRole !== blockComponentRole) {
+			throw new Error("AccordionItem's type is invalid.");
+		}
+
 		const { bodyNestedEditable } = getAccordionItemParts({
-			accordionItem: blockComponentLine,
+			blockComponent: accordionItem,
 		});
 
 		return { blockComponentLine, wrapTarget: bodyNestedEditable };
@@ -100,7 +112,6 @@ const createBlockComponent = (
 	if (params.name === componentsName.list) {
 		const blockComponentLine = createList({
 			localName: params.localName,
-			lineType: "multi-line",
 			childNodes,
 		});
 		const wrapTarget = getListTarget({ blockComponentLine });
@@ -225,6 +236,44 @@ const replaceBlockComponentLine = ({
 	});
 };
 
+/*
+ * Whether the component can be turned into with the given params. Only an AccordionItem's attributes and a CodeBlock's
+ * language and theme have to be checked.
+ */
+const validateTurnIntoPlacement = ({
+	adapterBus,
+	turnIntoParams,
+}: ValidateTurnIntoPlacementParams): ValidateTurnIntoPlacementResult => {
+	if (turnIntoParams.name === componentsName.codeBlock) {
+		const { language, theme } = turnIntoParams;
+
+		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return false;
+		}
+
+		return true;
+	}
+
+	if (turnIntoParams.name === componentsName.accordionItem) {
+		const placementMismatch = validateAccordionItemPlacement({
+			attrValidators: adapterBus.getAttrValidators("accordionItem"),
+			attrs: turnIntoParams.attrs,
+		});
+
+		if (placementMismatch) {
+			console.warn(placementMismatch);
+			return false;
+		}
+
+		return true;
+	}
+
+	return true;
+};
+
 const turnLineInto = ({
 	editorAPI,
 	blockComponentPlacement,
@@ -257,6 +306,7 @@ const turnLineInto = ({
  * wrapped into it, while a BlockComponentLine has its component replaced by it.
  */
 export const handleTurnInto = ({
+	adapterBus,
 	configPort,
 	editorAPI,
 	blockComponentPlacement,
@@ -268,6 +318,12 @@ export const handleTurnInto = ({
 		const currentLine = getCurrentLine();
 
 		if (!currentLine) {
+			return;
+		}
+
+		const isValid = validateTurnIntoPlacement({ adapterBus, turnIntoParams });
+
+		if (!isValid) {
 			return;
 		}
 

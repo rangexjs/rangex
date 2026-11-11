@@ -68,12 +68,12 @@ export const MentionCaretMenu = () => {
 		loadedItems().some((item) => !!item.img),
 	);
 
-	const getDisplayName = (item: MentionItem) => item.displayName || item.userId;
+	const getDisplayText = (item: MentionItem) => item.displayText || item.userId;
 
 	const selectItem = (item: MentionItem) => {
 		mention.select({
 			userId: item.userId,
-			displayName: getDisplayName(item),
+			displayText: `@${getDisplayText(item)}`,
 		});
 	};
 
@@ -110,7 +110,7 @@ export const MentionCaretMenu = () => {
 								{ "text-neutral-800 dark:text-neutral-50": isActive() },
 							]}
 						>
-							{getDisplayName(item)}
+							{getDisplayText(item)}
 						</span>
 					</button>
 				);

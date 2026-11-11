@@ -1,5 +1,11 @@
-import type { EditorAPI, EditorSelection, InlineComponent } from "@rangex/core";
+import type {
+	EditorAPI,
+	EditorSelection,
+	GetInlineWrappableSegmentsResult,
+	InlineComponent,
+} from "@rangex/core";
 import type { LinkConfigPort } from "#adapters/Link";
+import type { LinkAttrs } from "#dom-attrs";
 import type { PopoverOverlayController } from "#engine-links";
 
 export interface HandleLinkInsertionParams {
@@ -22,13 +28,14 @@ export interface InsertAtCaretParams {
 	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
 	text: string;
+	attrs: LinkAttrs;
 	linkMenuPopoverController: PopoverOverlayController;
-	afterInsertion?: (link: HTMLElement) => void;
 }
 
 export interface WrapWithLinkParams {
 	configPort: LinkConfigPort;
 	editorAPI: EditorAPI;
+	segments: GetInlineWrappableSegmentsResult;
+	attrs: LinkAttrs;
 	linkMenuPopoverController: PopoverOverlayController;
-	afterInsertion?: (link: HTMLElement) => void;
 }

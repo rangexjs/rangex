@@ -1,24 +1,24 @@
 import type { RootEditable } from "@rangex/core";
 import type { TemplateVariableFields } from "#adapters/TemplateVariable";
+import type { RootType } from "#constants";
 import type { RootId } from "../_Constants";
-import type { storageVersion } from "../_Utilities";
+import type { snapshotVersion } from "./RootStorage";
 
-export interface RootStorage {
+export type RootStorage = {
 	id: RootId;
-	version: typeof storageVersion;
+	version: typeof snapshotVersion;
+	type: RootType;
 	templateVariable: TemplateVariableFields;
+};
+
+export interface CreateRootStorageParams {
+	type: RootType;
 }
 
-export interface CreateRootStorageResult extends RootStorage {}
+export type CreateRootStorageResult = RootStorage;
 
-export interface EnsureRootStorageParams {
-	storage: unknown;
-}
-
-export interface EnsureRootStorageResult extends RootStorage {}
-
-export interface EnsureNodeRootStorageParams {
+export interface GetRootStorageParams {
 	rootEditable: RootEditable;
 }
 
-export interface EnsureNodeRootStorageResult extends RootStorage {}
+export type GetRootStorageResult = RootStorage;

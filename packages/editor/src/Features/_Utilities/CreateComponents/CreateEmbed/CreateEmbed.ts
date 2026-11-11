@@ -4,29 +4,20 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
-import { aspectRatioAttr, blockAlignAttr, componentsName } from "#engine-links";
+import { componentsName } from "#constants";
+import { toDOMAttrs } from "#dom-attrs";
 import { createEmbedStorage } from "#storage";
 import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
 
-// Arbitrary third-party executable content, unlike img/video/audio — `sandbox`/`allow` are
-// fixed rather than user-configurable so every embed gets a sane default policy.
-// `allow-same-origin` alongside `allow-scripts` is safe here specifically because the
-// iframe's origin is always the third-party provider's, never ours; the sandbox-escape
-// concern that combination is usually flagged for only applies to same-origin content.
-const embedSandbox =
-	"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation";
-const embedAllow =
-	"fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write";
-
 /*
- * Builds an embed block component wrapping a sandboxed `iframe` for third-party content,
- * with a fixed sandbox/allow policy and a default 16:9 aspect ratio.
+ * Builds an embed block component wrapping a `figure`/`iframe` element for third-party content, with the given
+ * attributes of its line, block and `iframe`. They aren't validated here.
  */
-export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
+export const createEmbed = ({
+	attrs,
+}: CreateEmbedParams): CreateEmbedResult => {
 	return createBlockComponentLine({
-		domAttrs: {
-			[blockAlignAttr.name]: blockAlignAttr.value.center,
-		},
+		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
 		blockComponent: createBlockComponent({
 			name: componentsName.embed,
@@ -35,20 +26,15 @@ export const createEmbed = ({ src }: CreateEmbedParams): CreateEmbedResult => {
 			editState: "false",
 			shouldSelectOnNavigation: true,
 			shouldSelectBeforeRemove: true,
+			domAttrs: toDOMAttrs(attrs.block),
 			childNodes: [
 				createHTMLLayout({
 					localName: "figure",
 					childNodes: [
 						createHTMLLayout({
 							localName: "iframe",
-							domAttrs: {
-								src,
-								title: "Embedded content",
-								sandbox: embedSandbox,
-								allow: embedAllow,
-								loading: "lazy",
-								[aspectRatioAttr.name]: aspectRatioAttr.value["16-9"],
-							},
+							domAttrs: toDOMAttrs(attrs.iframe),
+							childNodes: [],
 						}),
 					],
 				}),

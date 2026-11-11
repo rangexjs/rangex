@@ -9,6 +9,10 @@ import {
 	codeBlockStorageFallbacks,
 	ensureNodeCodeBlockStorage,
 } from "#storage";
+import {
+	validateCodeBlockLanguage,
+	validateCodeBlockTheme,
+} from "../../_Utilities";
 import type {
 	HandleCodeBlockStateParams,
 	IsHighlightedParams,
@@ -20,7 +24,8 @@ const isHighlighted = ({ language, theme }: IsHighlightedParams) =>
 /*
  * Keeps the port's language/theme in sync with the current code block (including undo/redo) and wires language/theme
  * changes and plain-text export to it, re-highlighting and registering a snapshot boundary on
- * change. Returns a cleanup function.
+ * change. An invalid language or theme is ignored, as a snapshot saved with it couldn't be loaded.
+ * Returns a cleanup function.
  *
  * Note: a code block is highlighted only when both a language and a theme are set. The snapshot boundary
  * is skipped when it is unhighlighted both before and after the change, since nothing visibly changes.
@@ -63,6 +68,13 @@ export const handleCodeBlockState = ({
 			return;
 		}
 
+		const languageMismatch = validateCodeBlockLanguage({ language });
+
+		if (languageMismatch) {
+			console.warn(languageMismatch);
+			return;
+		}
+
 		const storage = ensureNodeCodeBlockStorage({
 			blockComponent: currentCodeBlock,
 			fallbacks: codeBlockStorageFallbacks,
@@ -89,6 +101,13 @@ export const handleCodeBlockState = ({
 	const unsubscribeThemeChange = configPort.onChangeTheme((theme) => {
 		const currentCodeBlock = configPort.currentComponent;
 		if (!currentCodeBlock) {
+			return;
+		}
+
+		const themeMismatch = validateCodeBlockTheme({ theme });
+
+		if (themeMismatch) {
+			console.warn(themeMismatch);
 			return;
 		}
 

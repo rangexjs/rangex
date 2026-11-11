@@ -1,7 +1,9 @@
 import type { InlineComponent } from "@rangex/core";
+import type { LinkAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
 import {
 	createCurrentComponentPort,
+	createDOMAttrsPort,
 	createEmitter,
 	createSelectionMenuPort,
 	createStateEmitter,
@@ -9,6 +11,7 @@ import {
 } from "../_Utilities";
 import { defaultLinkMenuSettings } from "./LinkAdapter-default";
 import type {
+	ChangeDisplayTextParams,
 	CreateLinkAdapterParams,
 	CreateLinkAdapterResult,
 	InsertParams,
@@ -17,12 +20,11 @@ import type {
 	LinkInternals,
 	LinkPublicPort,
 	LinkPublicPortProps,
-	ModifyParams,
+	OnChangeDisplayTextCallbackFn,
 	OnInsertCallbackFn,
 	OnLinkClickCallbackFn,
 	OnLinkMenuToggleCallbackFn,
 	OnLinkSelectionInCallbackFn,
-	OnModifyCallbackFn,
 	UpdateStateParams,
 } from "./LinkAdapter-types";
 
@@ -35,6 +37,8 @@ export const createLinkAdapter = (
 	] = params;
 
 	adapterBus.registerAdapter("link");
+
+	const linkAttrValidators = adapterBus.getAttrValidators("link");
 
 	const linkMenuEl = document.createElement("div");
 	floatingContainer.append(linkMenuEl);
@@ -49,13 +53,15 @@ export const createLinkAdapter = (
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
-	const modifyEmitter = createEmitter<OnModifyCallbackFn>();
+	const changeDisplayTextEmitter =
+		createEmitter<OnChangeDisplayTextCallbackFn>();
 	const linkClickEmitter = createEmitter<OnLinkClickCallbackFn>();
 	const linkSelectionInEmitter = createEmitter<OnLinkSelectionInCallbackFn>();
 	const linkMenuToggleEmitter = createEmitter<OnLinkMenuToggleCallbackFn>();
 
 	const unwrapPort = createUnwrapPort();
 	const currentComponentPort = createCurrentComponentPort<InlineComponent>();
+	const domAttrsPort = createDOMAttrsPort<LinkAttrsShape>();
 	const selectionMenuPort = createSelectionMenuPort({ floatingContainer });
 
 	const updateState = ({ canInsert }: UpdateStateParams) => {
@@ -67,6 +73,7 @@ export const createLinkAdapter = (
 	const configPort: LinkConfigPort = extendObjectProperties(
 		unwrapPort.configPort,
 		currentComponentPort.configPort,
+		domAttrsPort.configPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;
@@ -74,6 +81,10 @@ export const createLinkAdapter = (
 
 			get linkMenuSettings() {
 				return linkMenu;
+			},
+
+			get attrValidators() {
+				return linkAttrValidators;
 			},
 
 			get selectionMenu() {
@@ -100,8 +111,8 @@ export const createLinkAdapter = (
 				return insertEmitter.subscribe(callback);
 			},
 
-			onModify(callback) {
-				return modifyEmitter.subscribe(callback);
+			onChangeDisplayText(callback) {
+				return changeDisplayTextEmitter.subscribe(callback);
 			},
 
 			registerDisplayText(provider) {
@@ -113,6 +124,7 @@ export const createLinkAdapter = (
 	const publicPort: LinkPublicPort = extendObjectProperties(
 		unwrapPort.publicPort,
 		currentComponentPort.publicPort,
+		domAttrsPort.publicPort,
 		{
 			get linkMenuEl() {
 				return linkMenuEl;
@@ -150,8 +162,8 @@ export const createLinkAdapter = (
 				insertEmitter.emit(params);
 			},
 
-			modify(params: ModifyParams) {
-				modifyEmitter.emit(params);
+			changeDisplayText(params: ChangeDisplayTextParams) {
+				changeDisplayTextEmitter.emit(params);
 			},
 
 			getDisplayText() {

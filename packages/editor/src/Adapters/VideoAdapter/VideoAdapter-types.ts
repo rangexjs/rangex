@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+import type { VideoAttrsShape, VideoAttrValidators } from "#dom-attrs";
 import type {
 	BlockAlignConfigPort,
 	BlockAlignPublicPort,
@@ -8,15 +9,18 @@ import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
 	CurrentComponentPublicPort,
+	DOMAttrsConfigPort,
+	DOMAttrsPublicPort,
 	OnMediaResolveCallbackFn,
 	QuickActionsConfigPort,
 	QuickActionsPublicPort,
-	SwapToEmptyMediaConfigPort,
-	SwapToEmptyMediaPublicPort,
+	SwapToSourcePlaceholderConfigPort,
+	SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface VideoConfigPortProps {
 	readonly blockResize: BlockResize;
+	readonly attrValidators: VideoAttrValidators;
 	readonly quickActions: QuickActionsConfigPort;
 
 	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
@@ -27,7 +31,8 @@ export interface VideoConfigPort
 		CaptionConfigPort,
 		BlockAlignConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
-		SwapToEmptyMediaConfigPort {}
+		DOMAttrsConfigPort<VideoAttrsShape>,
+		SwapToSourcePlaceholderConfigPort {}
 
 export interface VideoPublicPortProps {
 	readonly quickActions: QuickActionsPublicPort;
@@ -38,7 +43,8 @@ export interface VideoPublicPort
 		CaptionPublicPort,
 		BlockAlignPublicPort,
 		CurrentComponentPublicPort,
-		SwapToEmptyMediaPublicPort {}
+		DOMAttrsPublicPort<VideoAttrsShape>,
+		SwapToSourcePlaceholderPublicPort {}
 
 export interface VideoAdapter {
 	configPort: VideoConfigPort;
