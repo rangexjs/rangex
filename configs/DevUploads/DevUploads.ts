@@ -1,4 +1,4 @@
-import type { Plugin } from "vite";
+import type { Plugin } from "vite-plus";
 import type { ByteRange, DevUpload } from "./DevUploads-types";
 
 const maxUploadSize = 100 * 1024 * 1024;

@@ -1,5 +1,5 @@
 import solid from "@solidjs/vite-plugin";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 import packageJson from "./package.json" with { type: "json" };
 
 // Packages the consumer installs stay out of the bundle, subpath imports included.

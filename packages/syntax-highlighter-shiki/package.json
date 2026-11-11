@@ -39,20 +39,18 @@
 		"tag": "beta"
 	},
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build && tsc -p ./tsconfig.build.json",
-		"prepublishOnly": "bun run build",
-		"fix": "biome check ./src ./package.json ./tsconfig*.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
+		"dev": "vp dev",
+		"build": "vp build && tsc -p ./tsconfig.build.json",
+		"prepublishOnly": "npm run build",
+		"fix": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts --write && tsc -p ./tsconfig.json"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
-		"@rangex/editor": "workspace:*",
-		"shiki": "4.3.1",
 		"typescript": "^7.0.2",
-		"vite": "^8.1.5"
+		"vite-plus": "1.6.0"
 	},
 	"peerDependencies": {
-		"@rangex/editor": "workspace:^",
+		"@rangex/editor": "^1.0.0-beta.0",
 		"shiki": "^4.3.1"
 	}
 }

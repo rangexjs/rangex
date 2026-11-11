@@ -1,4 +1,4 @@
-import { defaultClientConditions, defineConfig } from "vite";
+import { defaultClientConditions, defineConfig } from "vite-plus";
 import packageJson from "./package.json" with { type: "json" };
 import tsconfig from "./tsconfig.json" with { type: "json" };
 
