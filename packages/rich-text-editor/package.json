@@ -18,7 +18,6 @@
 	},
 	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/rich-text-editor#readme",
 	"bugs": "https://github.com/rangexjs/rangex/issues",
-	"private": true,
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -209,8 +208,8 @@
 		"vite-plus": "1.6.0"
 	},
 	"peerDependencies": {
-		"@rangex/editor": "^1.0.0-beta.0",
-		"@rangex/solid": "^1.0.0-beta.0",
+		"@rangex/editor": "1.0.0-beta.0",
+		"@rangex/solid": "1.0.0-beta.0",
 		"@solidjs/web": "^2.0.0-rc.13",
 		"solid-js": "^2.0.0-rc.13"
 	}
