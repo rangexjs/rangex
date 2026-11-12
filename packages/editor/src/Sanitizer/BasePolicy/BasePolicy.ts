@@ -1,4 +1,5 @@
 import type { AttributeRuleFn, SanitizerPolicy } from "@rangex/core";
+
 import { isDataImageURL, isSafeURL } from "#utilities";
 
 // The attributes an animation can't target: animating them would set a URL or an event handler the rules never see

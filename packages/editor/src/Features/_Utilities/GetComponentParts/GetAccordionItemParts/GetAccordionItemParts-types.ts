@@ -1,9 +1,4 @@
-import type {
-	BlockComponent,
-	BlockComponentLine,
-	HTMLLayout,
-	NestedEditable,
-} from "@rangex/core";
+import type { BlockComponent, BlockComponentLine, HTMLLayout, NestedEditable } from "@rangex/core";
 
 export interface GetAccordionItemPartsParams {
 	blockComponent: BlockComponent;

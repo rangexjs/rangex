@@ -1,7 +1,9 @@
 import { ReadOnly, Superscript } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const SuperscriptToolbarButton = () => {
@@ -15,9 +17,7 @@ export const SuperscriptToolbarButton = () => {
 	const $superscript = Superscript(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $superscript.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $superscript.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.toggleSuperscript();

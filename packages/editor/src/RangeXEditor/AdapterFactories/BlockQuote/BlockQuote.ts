@@ -1,8 +1,6 @@
-import {
-	type BlockQuoteSettings,
-	createBlockQuoteAdapter,
-} from "#adapters/BlockQuote";
+import { type BlockQuoteSettings, createBlockQuoteAdapter } from "#adapters/BlockQuote";
 import { configureBlockQuote } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const BlockQuote: AdapterFactoryFn<BlockQuoteSettings> = (settings) => {

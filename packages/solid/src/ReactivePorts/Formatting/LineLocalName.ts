@@ -1,18 +1,13 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveLineLocalNamePort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveLineLocalNamePort } from "./_Utilities";
 
 export const LineLocalName = <T extends FormattingPublicPort | undefined>(
 	formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveLineLocalNamePort> => {
 	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<
-			T,
-			ReactiveLineLocalNamePort
-		>;
+		return undefined as FromFormattingToReactivePort<T, ReactiveLineLocalNamePort>;
 	}
 
 	const [state, setState] = createSignal(formatting.lineLocalName);

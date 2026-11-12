@@ -1,14 +1,12 @@
 import type { TextIndentValue } from "@rangex/editor/formatting";
 import { Indentation, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { isDeepEqual } from "#utilities";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const defaultValues: Set<TextIndentValue> = new Set([
 	{ type: "px", value: 4 },
@@ -55,8 +53,7 @@ export const IndentationToolbarButton = () => {
 
 			for (const commonValue of commonValues) {
 				const matchedValue = deduplicatedValues.find(
-					(val) =>
-						val.type === commonValue.type && val.value === commonValue.value,
+					(val) => val.type === commonValue.type && val.value === commonValue.value,
 				);
 
 				if (matchedValue) {
@@ -76,8 +73,7 @@ export const IndentationToolbarButton = () => {
 
 		const contains = (value: TextIndentValue) => {
 			return !![...activeValues].find(
-				(activeValue) =>
-					activeValue.type === value.type && activeValue.value === value.value,
+				(activeValue) => activeValue.type === value.type && activeValue.value === value.value,
 			);
 		};
 
@@ -90,27 +86,23 @@ export const IndentationToolbarButton = () => {
 			},
 		};
 
-		const indentationItems = sortedList().map<ToolbarDropdownList[number]>(
-			(indentationItem) => {
-				return {
-					checked: contains(indentationItem),
-					text: `${indentationItem.value}`,
-					button: {
-						onClick: () => {
-							formatting.setIndentation(indentationItem);
-						},
-						class: "justify-center",
+		const indentationItems = sortedList().map<ToolbarDropdownList[number]>((indentationItem) => {
+			return {
+				checked: contains(indentationItem),
+				text: `${indentationItem.value}`,
+				button: {
+					onClick: () => {
+						formatting.setIndentation(indentationItem);
 					},
-				};
-			},
-		);
+					class: "justify-center",
+				},
+			};
+		});
 
 		return [defaultItem, ...indentationItems];
 	});
 
-	const disabled = createMemo(
-		() => $indentation.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $indentation.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>

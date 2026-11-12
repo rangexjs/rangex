@@ -1,16 +1,13 @@
 import { htmlLayoutRole, snapshotManager } from "@rangex/core";
-import type {
-	GetMediaSourcesParams,
-	GetMediaSourcesResult,
-} from "./GetMediaSources-types";
+
+import type { GetMediaSourcesParams, GetMediaSourcesResult } from "./GetMediaSources-types";
 
 const mediaLocalNames = ["audio", "img", "video"];
 
 export const getMediaSources = ({
 	rootEditableSnapshot,
 }: GetMediaSourcesParams): GetMediaSourcesResult => {
-	const rootEditableDraft =
-		snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
+	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
 
 	const mediaElements = rootEditableDraft.queryAll((node) => {
 		if (node.editorRole !== htmlLayoutRole) {

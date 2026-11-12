@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createEmitter,
@@ -59,12 +61,7 @@ export const createCodeBlockAdapter = (
 	const currentComponentPort = createCurrentComponentPort<BlockComponent>();
 	const quickActionsPort = createQuickActionsPort({ floatingContainer });
 
-	const updateState = ({
-		canInsert,
-		canWrap,
-		language,
-		theme,
-	}: UpdateStateParams) => {
+	const updateState = ({ canInsert, canWrap, language, theme }: UpdateStateParams) => {
 		if (canInsert !== undefined) {
 			canInsertState.set(canInsert);
 		}

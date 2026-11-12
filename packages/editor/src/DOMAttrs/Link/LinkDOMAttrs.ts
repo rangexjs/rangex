@@ -1,5 +1,7 @@
 import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
+
 import { isSafeURL, safeProtocols } from "#utilities";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,
@@ -102,13 +104,7 @@ const validateTarget: ValidateAttrFn<string | null> = ({ value }) => {
  * A rel is valid if it has at least one token, and each of them is allowed and only listed once.
  */
 const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
-	const allowedRelTokens = new Set([
-		"noopener",
-		"noreferrer",
-		"nofollow",
-		"ugc",
-		"sponsored",
-	]);
+	const allowedRelTokens = new Set(["noopener", "noreferrer", "nofollow", "ugc", "sponsored"]);
 
 	const tokens = value.split(/\s+/);
 	const nonEmptyTokens = tokens.filter((token) => token !== "");
@@ -160,9 +156,7 @@ const normalizeHref = (href: string | undefined) => {
 
 	const lowerCaseHref = trimmedHref.toLowerCase();
 
-	const isKept = keptHrefPrefixes.some((prefix) =>
-		lowerCaseHref.startsWith(prefix),
-	);
+	const isKept = keptHrefPrefixes.some((prefix) => lowerCaseHref.startsWith(prefix));
 
 	return isKept ? trimmedHref : `https://${trimmedHref}`;
 };

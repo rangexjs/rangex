@@ -1,4 +1,5 @@
 import { AdapterBus } from "#adapters";
+
 import { buildEditorStyleText, getHostStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
 import type {
@@ -64,10 +65,7 @@ export const createEditor = ({
 	const registeredAdapters: RegisterAdapterResult[] = [];
 
 	for (const adapter of adapters) {
-		const registeredAdapter = adapter(
-			{ adapterBus, floatingContainer },
-			{ editor },
-		);
+		const registeredAdapter = adapter({ adapterBus, floatingContainer }, { editor });
 
 		registeredAdapters.push(registeredAdapter);
 	}

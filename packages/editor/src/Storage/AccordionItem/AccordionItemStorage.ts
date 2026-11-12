@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { accordionItemId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -24,24 +25,19 @@ export const matchAccordionItemStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: accordionItemStoragePattern });
 };
 
-export const isAccordionItemStorage = (
-	storage: unknown,
-): storage is AccordionItemStorage => {
+export const isAccordionItemStorage = (storage: unknown): storage is AccordionItemStorage => {
 	const mismatch = matchAccordionItemStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateAccordionItemStorage = (
-	storage: unknown,
-): storage is AccordionItemStorage => {
+export const validateAccordionItemStorage = (storage: unknown): storage is AccordionItemStorage => {
 	return validateStorage(storage, isAccordionItemStorage);
 };
 
-export const createAccordionItemStorage =
-	(): CreateAccordionItemStorageResult => ({
-		id: accordionItemId,
-	});
+export const createAccordionItemStorage = (): CreateAccordionItemStorageResult => ({
+	id: accordionItemId,
+});
 
 export const ensureAccordionItemStorage = ({
 	storage,

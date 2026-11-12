@@ -1,12 +1,11 @@
 import type { CodeBlockPublicPort } from "@rangex/editor/code-block";
-import type {
-	ReactiveCodeBlockPort,
-	ReactiveReadOnlyPort,
-} from "@rangex/solid";
+import type { ReactiveCodeBlockPort, ReactiveReadOnlyPort } from "@rangex/solid";
 import type { JSX } from "@solidjs/web";
 import { createMemo, createUniqueId, onCleanup } from "solid-js";
+
 import type { CodeBlockUIOptions } from "#context";
 import { Icon } from "#ui";
+
 import { OptionDropdown } from "../../../_Utilities";
 
 interface LanguageDropdownProps {
@@ -48,9 +47,7 @@ interface ThemeDropdownProps {
 const ThemeDropdown = (props: ThemeDropdownProps) => {
 	const themes = createMemo(() => props.options.themes ?? []);
 
-	const themeValue = createMemo(
-		() => props.$codeBlock.theme()?.[props.theme] ?? null,
-	);
+	const themeValue = createMemo(() => props.$codeBlock.theme()?.[props.theme] ?? null);
 
 	const label = { light: "☀ Light", dark: "☾ Dark" }[props.theme];
 
@@ -92,9 +89,7 @@ export interface CodeBlockHighlightProps {
 export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 	const optionsPopoverId = createUniqueId();
 
-	const hasLanguages = createMemo(
-		() => (props.options.languages ?? []).length > 0,
-	);
+	const hasLanguages = createMemo(() => (props.options.languages ?? []).length > 0);
 	const hasThemes = createMemo(() => (props.options.themes ?? []).length > 0);
 	const hasOptions = createMemo(() => hasLanguages() || hasThemes());
 
@@ -108,6 +103,7 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
 		if (optionsPopover.matches(":popover-open")) {
 			// Force a synchronous reflow before hiding — otherwise the popover can
 			// briefly animate from a stale, not-yet-committed style.
+			// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
 			optionsPopover.offsetHeight;
 			optionsPopover.hidePopover();
 		}

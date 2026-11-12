@@ -1,8 +1,4 @@
-import type {
-	VideoAttrs,
-	VideoAttrsMismatch,
-	VideoAttrValidators,
-} from "#dom-attrs";
+import type { VideoAttrs, VideoAttrsMismatch, VideoAttrValidators } from "#dom-attrs";
 
 export interface ValidateVideoPlacementParams {
 	attrValidators: VideoAttrValidators;

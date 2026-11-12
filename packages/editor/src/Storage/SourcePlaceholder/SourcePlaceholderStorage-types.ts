@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { SourcePlaceholderId } from "../_Constants";
 
 export type SourcePlaceholderStorage = {

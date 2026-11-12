@@ -1,8 +1,5 @@
 ::highlight(range-x-editor-selection) {
-	background-color: light-dark(
-		var(--color-primary-100),
-		var(--color-primary-900)
-	);
+	background-color: light-dark(var(--color-primary-100), var(--color-primary-900));
 }
 
 ::highlight(range-x-find-replace) {

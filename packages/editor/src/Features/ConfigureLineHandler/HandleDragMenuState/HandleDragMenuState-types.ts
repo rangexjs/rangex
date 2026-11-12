@@ -1,7 +1,9 @@
 import type { BlockComponentLine, ContentLine, Line } from "@rangex/core";
+
 import type { LineHandlerConfigPort } from "#adapters/LineHandler";
 import type { BlockComponentName } from "#constants";
 import type { BlockComponentPlacement } from "#engine-links";
+
 import type { OnLineChangeFn } from "../HandleLineHover";
 
 export interface IsAllowedAtLineParams {

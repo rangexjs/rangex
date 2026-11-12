@@ -1,14 +1,12 @@
 import type { PaddingBlockValue } from "@rangex/editor/formatting";
 import { LineSpacing, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
 import { isDeepEqual } from "#utilities";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const defaultValues: Set<PaddingBlockValue> = new Set([
 	{ type: "px", value: 4 },
@@ -46,8 +44,7 @@ export const LineSpacingToolbarButton = () => {
 
 			for (const commonValue of commonValues) {
 				const matchedValue = deduplicatedValues.find(
-					(val) =>
-						val.type === commonValue.type && val.value === commonValue.value,
+					(val) => val.type === commonValue.type && val.value === commonValue.value,
 				);
 
 				if (matchedValue) {
@@ -67,8 +64,7 @@ export const LineSpacingToolbarButton = () => {
 
 		const contains = (value: PaddingBlockValue) => {
 			return !![...activeValues].find(
-				(activeValue) =>
-					activeValue.type === value.type && activeValue.value === value.value,
+				(activeValue) => activeValue.type === value.type && activeValue.value === value.value,
 			);
 		};
 
@@ -81,27 +77,23 @@ export const LineSpacingToolbarButton = () => {
 			},
 		};
 
-		const lineSpacingItems = sortedList().map<ToolbarDropdownList[number]>(
-			(lineSpacingItem) => {
-				return {
-					checked: contains(lineSpacingItem),
-					text: `${lineSpacingItem.value}`,
-					button: {
-						onClick: () => {
-							formatting.setLineSpacing(lineSpacingItem);
-						},
-						class: "justify-center",
+		const lineSpacingItems = sortedList().map<ToolbarDropdownList[number]>((lineSpacingItem) => {
+			return {
+				checked: contains(lineSpacingItem),
+				text: `${lineSpacingItem.value}`,
+				button: {
+					onClick: () => {
+						formatting.setLineSpacing(lineSpacingItem);
 					},
-				};
-			},
-		);
+					class: "justify-center",
+				},
+			};
+		});
 
 		return [defaultItem, ...lineSpacingItems];
 	});
 
-	const disabled = createMemo(
-		() => $lineSpacing.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $lineSpacing.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>
@@ -112,11 +104,7 @@ export const LineSpacingToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon
-					name="ArrowsOutLineVertical"
-					title="Line spacing"
-					class="size-4"
-				/>
+				<Icon name="ArrowsOutLineVertical" title="Line spacing" class="size-4" />
 			</ToolbarButton>
 			<ToolbarDropdown
 				id={popoverId}

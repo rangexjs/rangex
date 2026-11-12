@@ -5,18 +5,11 @@ import {
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "@rangex/core";
-import {
-	codeBlockStorageFallbacks,
-	ensureNodeCodeBlockStorage,
-} from "#storage";
-import {
-	validateCodeBlockLanguage,
-	validateCodeBlockTheme,
-} from "../../_Utilities";
-import type {
-	HandleCodeBlockStateParams,
-	IsHighlightedParams,
-} from "./HandleCodeBlockState-types";
+
+import { codeBlockStorageFallbacks, ensureNodeCodeBlockStorage } from "#storage";
+
+import { validateCodeBlockLanguage, validateCodeBlockTheme } from "../../_Utilities";
+import type { HandleCodeBlockStateParams, IsHighlightedParams } from "./HandleCodeBlockState-types";
 
 const isHighlighted = ({ language, theme }: IsHighlightedParams) =>
 	language !== null && theme !== null;
@@ -53,8 +46,7 @@ export const handleCodeBlockState = ({
 		});
 	};
 
-	const unsubscribeCurrentComponentUpdate =
-		configPort.onCurrentComponentUpdate(syncState);
+	const unsubscribeCurrentComponentUpdate = configPort.onCurrentComponentUpdate(syncState);
 
 	// Undo/redo can restore a different language/theme on the current code block.
 	const unsubscribeSnapshotIndexChange = editorAPI.subscribeEditorEvent({

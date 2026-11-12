@@ -5,11 +5,7 @@ import type { GetCaretMenuQueryFn } from "../../../_Utilities";
  * the start of the line or preceded by a space — mid-word slashes stay literal text. Returns null
  * if no valid trigger is found within the scan limit.
  */
-export const getCommandMenuQuery: GetCaretMenuQueryFn = ({
-	editorAPI,
-	fromText,
-	fromOffset,
-}) => {
+export const getCommandMenuQuery: GetCaretMenuQueryFn = ({ editorAPI, fromText, fromOffset }) => {
 	const { plainTextScanner } = editorAPI.createPlainTextScanner({
 		fromNode: fromText,
 		fromOffset,
@@ -32,8 +28,7 @@ export const getCommandMenuQuery: GetCaretMenuQueryFn = ({
 			const nextStep = plainTextScanner.next();
 
 			const precededByLineStart = nextStep.done;
-			const precededBySpace =
-				!nextStep.done && nextStep.value.data.startsWith(" ");
+			const precededBySpace = !nextStep.done && nextStep.value.data.startsWith(" ");
 
 			if (!(precededByLineStart || precededBySpace)) {
 				return null;

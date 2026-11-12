@@ -1,4 +1,5 @@
 import { getClosestTable, getClosestTableCell } from "#engine-links";
+
 import type {
 	GetCommonTableCellFromSelectionParams,
 	GetCommonTableCellFromSelectionResult,
@@ -20,11 +21,7 @@ export const getCommonTableCellFromSelection = ({
 	const fromTableCell = getClosestTableCell({ fromNode: fromText });
 	const toTableCell = getClosestTableCell({ fromNode: toText });
 
-	const hasSameTableCell = !!(
-		fromTableCell &&
-		toTableCell &&
-		fromTableCell === toTableCell
-	);
+	const hasSameTableCell = !!(fromTableCell && toTableCell && fromTableCell === toTableCell);
 
 	return hasSameTableCell ? fromTableCell : null;
 };

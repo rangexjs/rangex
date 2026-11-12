@@ -5,25 +5,19 @@ import {
 	tableRole,
 	tableSectionRole,
 } from "@rangex/core";
-import {
-	componentsName,
-	maxTableHeight,
-	resolveTableLimits,
-	tableDefinition,
-} from "#constants";
+
+import { componentsName, maxTableHeight, resolveTableLimits, tableDefinition } from "#constants";
 import { createTableAttrValidators, tableAttrsShape } from "#dom-attrs";
 import { tableStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
+
 import {
 	describeJSONMismatch,
 	formatNodePath,
 	resolveDraftDOMAttrs,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateTableValidatorParams,
 	CreateTableValidatorResult,
@@ -333,9 +327,7 @@ const validateTableNode = ({
 			continue;
 		}
 
-		throw new Error(
-			"Expected a TableColGroup or a TableSection inside the Table.",
-		);
+		throw new Error("Expected a TableColGroup or a TableSection inside the Table.");
 	}
 
 	return null;

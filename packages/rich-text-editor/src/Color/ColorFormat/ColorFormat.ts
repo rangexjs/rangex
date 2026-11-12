@@ -30,16 +30,7 @@ import type {
 } from "./ColorFormat-types";
 
 const isValidHsl = ({ h, s, l, a }: IsValidHslParams): IsValidHslResult => {
-	return (
-		h < 360 &&
-		h >= 0 &&
-		s <= 100 &&
-		s >= 0 &&
-		l <= 100 &&
-		l >= 0 &&
-		a <= 1 &&
-		a >= 0
-	);
+	return h < 360 && h >= 0 && s <= 100 && s >= 0 && l <= 100 && l >= 0 && a <= 1 && a >= 0;
 };
 
 const isValidRgb = ({ r, g, b, a }: IsValidRgbParams): IsValidRgbResult => {
@@ -108,8 +99,7 @@ const hslToRgb = ({ h, s, l, a = 1 }: HslToRgbParams): HslToRgbResult => {
 const hslToHex = ({ h, s, l, a }: HslToHexParams): HslToHexResult => {
 	const { r, g, b, a: alpha } = hslToRgb({ h, s, l, a });
 
-	const toHex = (value: number) =>
-		Math.round(value).toString(16).padStart(2, "0");
+	const toHex = (value: number) => Math.round(value).toString(16).padStart(2, "0");
 
 	const alphaHex = Math.round(alpha * 255)
 		.toString(16)
@@ -140,10 +130,7 @@ const rgbToHsl = ({ r, g, b, a = 1 }: RgbToHslParams): RgbToHslResult => {
 	const d = max - min;
 
 	if (d !== 0) {
-		sat =
-			light === 0 || light === 1
-				? 0
-				: (max - light) / Math.min(light, 1 - light);
+		sat = light === 0 || light === 1 ? 0 : (max - light) / Math.min(light, 1 - light);
 
 		switch (max) {
 			case r:

@@ -11,6 +11,7 @@ import type {
 	VideoAttrs,
 	VideoAttrValidators,
 } from "#dom-attrs";
+
 import type { mediaTypes } from "./AdapterBus";
 
 export type MediaType = (typeof mediaTypes)[number];

@@ -1,4 +1,5 @@
 import { embedAttrsShape, validateComponentAttrs } from "#dom-attrs";
+
 import type {
 	ValidateEmbedPlacementParams,
 	ValidateEmbedPlacementResult,

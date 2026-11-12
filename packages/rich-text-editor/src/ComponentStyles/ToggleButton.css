@@ -19,10 +19,7 @@
 		display: inline-block;
 		border-width: 1px;
 		border-style: solid;
-		border-color: light-dark(
-			var(--color-neutral-400),
-			var(--color-neutral-600)
-		);
+		border-color: light-dark(var(--color-neutral-400), var(--color-neutral-600));
 		border-radius: 100%;
 		background-color: light-dark(white, var(--color-neutral-200));
 		box-shadow: 0px 0px 8px 0px #0002;

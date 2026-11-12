@@ -1,7 +1,4 @@
-import type {
-	SelectParams,
-	ValidateDisplayTextResult,
-} from "#adapters/Mention";
+import type { SelectParams, ValidateDisplayTextResult } from "#adapters/Mention";
 
 export interface ValidateMentionDisplayTextParams {
 	displayText: string;

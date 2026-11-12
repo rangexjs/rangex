@@ -1,4 +1,5 @@
 import { assertNever } from "#utilities";
+
 import { validateElementAttrsPatch } from "../ValidateElementAttrsPatch";
 import type {
 	ValidateElementAttrsParams,
@@ -6,10 +7,8 @@ import type {
 } from "./ValidateElementAttrs-types";
 
 // Own keys only, so an attribute named like an Object.prototype member (e.g. "constructor") isn't found there
-const getOwn = <Value>(
-	record: Partial<Record<string, Value>>,
-	key: string,
-): Value | undefined => (Object.hasOwn(record, key) ? record[key] : undefined);
+const getOwn = <Value>(record: Partial<Record<string, Value>>, key: string): Value | undefined =>
+	Object.hasOwn(record, key) ? record[key] : undefined;
 
 /*
  * Validates an element's attributes by its shape and validators: the given ones as validateElementAttrsPatch does, then

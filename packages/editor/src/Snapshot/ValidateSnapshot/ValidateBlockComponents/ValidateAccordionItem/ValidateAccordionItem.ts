@@ -1,24 +1,16 @@
-import {
-	blockComponentRole,
-	htmlLayoutRole,
-	nestedEditableRole,
-} from "@rangex/core";
+import { blockComponentRole, htmlLayoutRole, nestedEditableRole } from "@rangex/core";
+
 import { accordionItemDefinition, componentsName } from "#constants";
-import {
-	accordionItemAttrsShape,
-	createAccordionItemAttrValidators,
-} from "#dom-attrs";
+import { accordionItemAttrsShape, createAccordionItemAttrValidators } from "#dom-attrs";
 import { accordionItemStoragePattern } from "#storage";
+
 import {
 	formatNodePath,
 	resolveDraftDOMAttrs,
 	validateHTMLLayoutState,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateAccordionItemValidatorParams,
 	CreateAccordionItemValidatorResult,
@@ -67,10 +59,7 @@ const validateSummary = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: htmlLayoutDraft,
@@ -235,10 +224,7 @@ const validateAccordionItem = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
@@ -266,8 +252,7 @@ const validateAccordionItem = ({
 export const createAccordionItemValidator = ({
 	attrValidators = {},
 }: CreateAccordionItemValidatorParams): CreateAccordionItemValidatorResult => {
-	const accordionItemAttrValidators =
-		createAccordionItemAttrValidators(attrValidators);
+	const accordionItemAttrValidators = createAccordionItemAttrValidators(attrValidators);
 
 	return {
 		name: componentsName.accordionItem,

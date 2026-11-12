@@ -1,4 +1,5 @@
 import { objectFitAttr } from "#constants";
+
 import type { ValidateAttrFn } from "../../DOMAttrs-types";
 
 export const validateObjectFit: ValidateAttrFn<string | null> = ({ value }) => {

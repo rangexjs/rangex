@@ -5,7 +5,9 @@ import type {
 	BlockComponentTextHolderDraft,
 	BlockComponentTextHolderSnapshot,
 } from "@rangex/core";
+
 import type { AnyElementAttrValidators, ElementAttrsShape } from "#dom-attrs";
+
 import type { ValidateComponentResult } from "../../../ValidateSnapshot-types";
 
 // Without domAttrs: they're resolved by the component's shape (see resolveDraftDOMAttrs)

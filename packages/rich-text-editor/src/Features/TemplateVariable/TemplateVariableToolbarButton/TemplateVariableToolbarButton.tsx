@@ -1,16 +1,14 @@
 import { ReadOnly, TemplateVariable } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
+
 import {
 	type TemplateVariableModalSettings,
 	useEditorContext,
 	useUIOptionsContext,
 } from "#context";
 import { Icon } from "#ui";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 import { TemplateVariableModal } from "./TemplateVariableModal";
 
 export const TemplateVariableToolbarButton = () => {
@@ -32,9 +30,7 @@ export const TemplateVariableToolbarButton = () => {
 
 	const [checked, setChecked] = createSignal(false);
 
-	const disabled = createMemo(
-		() => !$templateVariable.canInsert() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => !$templateVariable.canInsert() || !!$readOnly?.checked());
 
 	const popoverId = createUniqueId();
 
@@ -72,11 +68,7 @@ export const TemplateVariableToolbarButton = () => {
 				commandfor={popoverId}
 				command="toggle-popover"
 			>
-				<Icon
-					name="TemplateVariable"
-					title="Template variable"
-					class="size-4"
-				/>
+				<Icon name="TemplateVariable" title="Template variable" class="size-4" />
 			</ToolbarButton>
 
 			<ToolbarDropdown

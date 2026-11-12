@@ -1,4 +1,5 @@
 import { beamTextRole, contentLineRole } from "@rangex/core";
+
 import { getClosestBlockLevelLine } from "../../NodeQuery";
 import type {
 	InsertBlockLinesParams,
@@ -15,12 +16,7 @@ const replaceContentLineIfNeeded = ({
 	lines,
 	shouldReplaceContentLineIfEmpty,
 }: ReplaceContentLineIfNeededParams): ReplaceContentLineIfNeededResult => {
-	if (
-		!(
-			shouldReplaceContentLineIfEmpty &&
-			blockLevelLine.$$editorRole === contentLineRole
-		)
-	) {
+	if (!(shouldReplaceContentLineIfEmpty && blockLevelLine.$$editorRole === contentLineRole)) {
 		return { updatedLine: blockLevelLine, updatedLines: lines };
 	}
 

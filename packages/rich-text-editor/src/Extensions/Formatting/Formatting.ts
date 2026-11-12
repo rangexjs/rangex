@@ -1,4 +1,5 @@
 import { Formatting as FormattingFactory } from "@rangex/editor/formatting";
+
 import { toolbarButtonsName } from "#constants";
 import type { FontFamilyOption } from "#context";
 import {
@@ -21,6 +22,7 @@ import {
 	TextAlignToolbarButton,
 	UnderlineToolbarButton,
 } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { FormattingExtensionSettings } from "./Formatting-types";
 
@@ -38,11 +40,8 @@ const defaultFontFamilyOptions: FontFamilyOption[] = [
 	{ value: "monospace", group: "monospace" },
 ];
 
-export const Formatting = (
-	settings: FormattingExtensionSettings,
-): Extension => {
-	const { fontFamilyOptions = defaultFontFamilyOptions, ...adapterSettings } =
-		settings;
+export const Formatting = (settings: FormattingExtensionSettings): Extension => {
+	const { fontFamilyOptions = defaultFontFamilyOptions, ...adapterSettings } = settings;
 
 	return {
 		createAdapter: () => FormattingFactory(adapterSettings),

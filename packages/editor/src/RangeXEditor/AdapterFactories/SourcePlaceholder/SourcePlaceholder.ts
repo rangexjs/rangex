@@ -3,11 +3,10 @@ import {
 	type SourcePlaceholderSettings,
 } from "#adapters/SourcePlaceholder";
 import { configureSourcePlaceholder } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
-export const SourcePlaceholder: AdapterFactoryFn<SourcePlaceholderSettings> = (
-	settings,
-) => {
+export const SourcePlaceholder: AdapterFactoryFn<SourcePlaceholderSettings> = (settings) => {
 	return (options, { editor }) => {
 		const adapter = createSourcePlaceholderAdapter(settings, options);
 

@@ -1,7 +1,9 @@
 import { ReadOnly, RemoveFormat } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const RemoveFormatToolbarButton = () => {
@@ -15,9 +17,7 @@ export const RemoveFormatToolbarButton = () => {
 	const $removeFormat = RemoveFormat(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $removeFormat.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $removeFormat.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.removeLineFormat();

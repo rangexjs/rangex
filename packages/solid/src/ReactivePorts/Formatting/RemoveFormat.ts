@@ -1,18 +1,13 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveRemoveFormatPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveRemoveFormatPort } from "./_Utilities";
 
 export const RemoveFormat = <T extends FormattingPublicPort | undefined>(
 	formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveRemoveFormatPort> => {
 	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<
-			T,
-			ReactiveRemoveFormatPort
-		>;
+		return undefined as FromFormattingToReactivePort<T, ReactiveRemoveFormatPort>;
 	}
 
 	const [removeLine, setRemoveLine] = createSignal(formatting.removeLine);

@@ -4,8 +4,7 @@ import type {
 	ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
-export interface ValidateSourcePlaceholderParams
-	extends ValidateComponentParams {}
+export interface ValidateSourcePlaceholderParams extends ValidateComponentParams {}
 
 export type ValidateSourcePlaceholderResult = ValidateComponentResult;
 

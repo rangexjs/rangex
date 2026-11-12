@@ -1,4 +1,5 @@
 import { caretAnchorRoleSelector, EditorRange } from "@rangex/core";
+
 import type { PositionToSelectionParams } from "./PositionToSelection-types";
 
 /**
@@ -32,8 +33,7 @@ export const positionToSelection = ({
 
 	const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset, toText, toOffset } =
-		selection.getBoundaryPoints();
+	const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 	const range = new EditorRange({
 		fromNode: fromText,
@@ -43,9 +43,7 @@ export const positionToSelection = ({
 	});
 
 	if (range.isSinglePoint) {
-		const caretAnchor = editorAPI.shadowRoot.querySelector<HTMLElement>(
-			caretAnchorRoleSelector,
-		);
+		const caretAnchor = editorAPI.shadowRoot.querySelector<HTMLElement>(caretAnchorRoleSelector);
 
 		if (!caretAnchor) {
 			throw new Error("CaretAnchor can't be null.");

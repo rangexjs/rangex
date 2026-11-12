@@ -1,4 +1,5 @@
 import { blockComponentRole, xhtmlNamespaceURI } from "@rangex/core";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

@@ -25,5 +25,4 @@ export const rootDefinitions = {
 
 const rootTypeValues: unknown[] = Object.values(rootTypes);
 
-export const isRootType = (value: unknown): value is RootType =>
-	rootTypeValues.includes(value);
+export const isRootType = (value: unknown): value is RootType => rootTypeValues.includes(value);

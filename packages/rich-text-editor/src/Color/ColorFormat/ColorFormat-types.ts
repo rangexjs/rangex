@@ -30,8 +30,7 @@ export type IsValidHexResult = boolean;
 
 export interface HslToColorParams extends HslFormat {}
 
-export type HslToColorResult =
-	`hsl(${number}deg, ${number}%, ${number}%, ${number})`;
+export type HslToColorResult = `hsl(${number}deg, ${number}%, ${number}%, ${number})`;
 
 export interface HslToRgbParams extends HslFormat {}
 
@@ -111,5 +110,4 @@ export interface ColorFormatHexResult {
 }
 
 // color-rest
-export interface ColorFormatFromColorParams
-	extends GetHslFormatFromColorParams {}
+export interface ColorFormatFromColorParams extends GetHslFormatFromColorParams {}

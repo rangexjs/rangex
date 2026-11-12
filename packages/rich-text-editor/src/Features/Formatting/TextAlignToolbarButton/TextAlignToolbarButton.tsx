@@ -1,16 +1,13 @@
 import type { TextAlignValue } from "@rangex/editor/formatting";
 import { ReadOnly, TextAlign } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon, type IconName } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
-export const textAlignValues: TextAlignValue[] = [
-	"start",
-	"center",
-	"end",
-	"justify",
-];
+export const textAlignValues: TextAlignValue[] = ["start", "center", "end", "justify"];
 
 const iconNameOptions: Record<TextAlignValue, IconName> = {
 	start: "TextAlignLeft",
@@ -26,9 +23,7 @@ const labelOptions: Record<TextAlignValue, string> = {
 	justify: "Justify",
 };
 
-const getToolbarIconFromActiveValues = (
-	activeValues: Set<TextAlignValue>,
-): IconName => {
+const getToolbarIconFromActiveValues = (activeValues: Set<TextAlignValue>): IconName => {
 	if (activeValues.size === 0) {
 		return iconNameOptions.start;
 	}
@@ -55,9 +50,7 @@ export const TextAlignToolbarButton = () => {
 
 	const [checked, setChecked] = createSignal(false);
 
-	const toolbarIcon = createMemo(() =>
-		getToolbarIconFromActiveValues($textAlign.values()),
-	);
+	const toolbarIcon = createMemo(() => getToolbarIconFromActiveValues($textAlign.values()));
 
 	const popoverId = createUniqueId();
 
@@ -76,9 +69,7 @@ export const TextAlignToolbarButton = () => {
 		formatting.setTextAlign(textAlignValue === "start" ? null : textAlignValue);
 	};
 
-	const disabled = createMemo(
-		() => $textAlign.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $textAlign.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>
@@ -108,11 +99,7 @@ export const TextAlignToolbarButton = () => {
 								command="hide-popover"
 								onClick={() => onTextAlignClick(name)}
 							>
-								<Icon
-									name={iconNameOptions[name]}
-									title={labelOptions[name]}
-									class="size-4"
-								/>
+								<Icon name={iconNameOptions[name]} title={labelOptions[name]} class="size-4" />
 							</ToolbarButton>
 						)}
 					</For>

@@ -1,19 +1,11 @@
-import {
-	isEditorElement,
-	tableCellRole,
-	tableCellRoleSelector,
-} from "@rangex/core";
-import type {
-	GetClosestTableCellParams,
-	GetClosestTableCellResult,
-} from "./TableCell-types";
+import { isEditorElement, tableCellRole, tableCellRoleSelector } from "@rangex/core";
+
+import type { GetClosestTableCellParams, GetClosestTableCellResult } from "./TableCell-types";
 
 export const getClosestTableCell = ({
 	fromNode,
 }: GetClosestTableCellParams): GetClosestTableCellResult => {
-	const element = isEditorElement(fromNode)
-		? fromNode
-		: fromNode.$$parentElement;
+	const element = isEditorElement(fromNode) ? fromNode : fromNode.$$parentElement;
 
 	if (!element) {
 		return null;

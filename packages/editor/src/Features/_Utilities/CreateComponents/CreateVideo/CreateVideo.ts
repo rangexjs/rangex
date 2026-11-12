@@ -4,18 +4,18 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createVideoStorage } from "#storage";
+
 import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*
  * Builds a video block component wrapping a `figure`/`video` element, with the given attributes of its line, block and
  * `video`. They aren't validated here.
  */
-export const createVideo = ({
-	attrs,
-}: CreateVideoParams): CreateVideoResult => {
+export const createVideo = ({ attrs }: CreateVideoParams): CreateVideoResult => {
 	return createBlockComponentLine({
 		domAttrs: toDOMAttrs(attrs.line),
 		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),

@@ -1,9 +1,7 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveLineHeightPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveLineHeightPort } from "./_Utilities";
 
 export const LineHeight = <T extends FormattingPublicPort | undefined>(
 	formatting: T,

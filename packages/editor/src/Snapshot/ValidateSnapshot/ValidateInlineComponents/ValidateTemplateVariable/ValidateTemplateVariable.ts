@@ -4,13 +4,11 @@ import {
 	isFormattableTextDraft,
 	nestedEditableRole,
 } from "@rangex/core";
+
 import { componentsName, templateVariableDefinition } from "#constants";
 import { templateVariableStoragePattern } from "#storage";
-import {
-	formatNodePath,
-	resolveDraftStorage,
-	validateNestedEditableState,
-} from "../../_Utilities";
+
+import { formatNodePath, resolveDraftStorage, validateNestedEditableState } from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
 	CreateTemplateVariableValidatorParams,
@@ -70,10 +68,7 @@ const validateTemplateVariable = ({
 
 	const nestedEditableDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
+	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: componentDraft,
@@ -124,7 +119,6 @@ export const createTemplateVariableValidator = ({
 }: CreateTemplateVariableValidatorParams): CreateTemplateVariableValidatorResult => {
 	return {
 		name: componentsName.templateVariable,
-		validate: ({ componentDraft }) =>
-			validateTemplateVariable({ componentDraft, validateStorage }),
+		validate: ({ componentDraft }) => validateTemplateVariable({ componentDraft, validateStorage }),
 	};
 };

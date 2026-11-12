@@ -35,7 +35,6 @@ export interface SeparatorAdapter {
 
 export interface SeparatorSettings {}
 
-export interface CreateSeparatorAdapterParams
-	extends CreateAdapterParams<SeparatorSettings> {}
+export interface CreateSeparatorAdapterParams extends CreateAdapterParams<SeparatorSettings> {}
 
 export interface CreateSeparatorAdapterResult extends SeparatorAdapter {}

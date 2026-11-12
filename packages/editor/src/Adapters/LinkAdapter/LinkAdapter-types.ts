@@ -1,5 +1,7 @@
 import type { InlineComponent } from "@rangex/core";
+
 import type { LinkAttrs, LinkAttrsShape, LinkAttrValidators } from "#dom-attrs";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -59,9 +61,7 @@ export interface LinkState {
 export type OnCanInsertUpdateCallbackFn = (value: boolean) => void;
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
-export type OnChangeDisplayTextCallbackFn = (
-	params: ChangeDisplayTextParams,
-) => void;
+export type OnChangeDisplayTextCallbackFn = (params: ChangeDisplayTextParams) => void;
 export type OnLinkClickCallbackFn = () => void;
 export type OnLinkSelectionInCallbackFn = () => void;
 export type OnLinkMenuToggleCallbackFn = () => void;
@@ -87,7 +87,8 @@ export interface LinkConfigPortProps {
 }
 
 export interface LinkConfigPort
-	extends LinkConfigPortProps,
+	extends
+		LinkConfigPortProps,
 		UnwrapConfigPort,
 		CurrentComponentConfigPort<InlineComponent>,
 		DOMAttrsConfigPort<LinkAttrsShape> {}
@@ -110,7 +111,8 @@ export interface LinkPublicPortProps {
 }
 
 export interface LinkPublicPort
-	extends LinkPublicPortProps,
+	extends
+		LinkPublicPortProps,
 		UnwrapPublicPort,
 		CurrentComponentPublicPort,
 		DOMAttrsPublicPort<LinkAttrsShape> {}
@@ -128,7 +130,6 @@ export interface LinkSettings {
 	linkMenu?: LinkMenuSettings;
 }
 
-export interface CreateLinkAdapterParams
-	extends CreateAdapterParams<LinkSettings> {}
+export interface CreateLinkAdapterParams extends CreateAdapterParams<LinkSettings> {}
 
 export interface CreateLinkAdapterResult extends LinkAdapter {}

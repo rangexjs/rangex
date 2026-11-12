@@ -1,4 +1,5 @@
 import { audioAttrsShape, validateComponentAttrs } from "#dom-attrs";
+
 import type {
 	ValidateAudioPlacementParams,
 	ValidateAudioPlacementResult,

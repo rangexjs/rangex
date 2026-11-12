@@ -1,4 +1,5 @@
 import { createMemo, createSignal, flush } from "solid-js";
+
 import {
 	createTextFieldState,
 	FormField,
@@ -7,12 +8,10 @@ import {
 	SegmentedControl,
 	TextFieldWrapper,
 } from "#ui";
+
 import { detectMediaFileType } from "../../_Utilities";
 import { getMediaTabControls } from "./GetMediaTabControls";
-import type {
-	MediaSourcePickerProps,
-	MediaTab,
-} from "./MediaSourcePicker-types";
+import type { MediaSourcePickerProps, MediaTab } from "./MediaSourcePicker-types";
 
 /*
  * A SegmentedControl between an Upload tab (file picker) and a Link tab, whose media type is detected once it's
@@ -27,9 +26,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 		.map((type) => `${type}/*`)
 		.join(",");
 
-	const [activeTab, setActiveTab] = createSignal<MediaTab>(
-		mediaTabControls[0].id,
-	);
+	const [activeTab, setActiveTab] = createSignal<MediaTab>(mediaTabControls[0].id);
 
 	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
@@ -141,10 +138,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 				onChange={onTabChange}
 				label="Media source"
 				appearance="primary-outline"
-				class={[
-					"rounded-sm border-solid",
-					{ hidden: mediaTabControls.length < 2 },
-				]}
+				class={["rounded-sm border-solid", { hidden: mediaTabControls.length < 2 }]}
 				commonButtonClass="inline-flex items-center justify-center py-1.5 font-medium text-xs"
 			/>
 

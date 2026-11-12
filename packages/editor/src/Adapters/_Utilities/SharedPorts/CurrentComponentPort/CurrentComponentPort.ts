@@ -1,4 +1,5 @@
 import type { Component } from "@rangex/core";
+
 import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	CreateCurrentComponentPortResult,
@@ -36,17 +37,13 @@ export const createCurrentComponentPort = <
 		return null;
 	};
 
-	const resolveIsSelectionActive = () =>
-		!!internals.selectionComponent?.$$rootEditable;
+	const resolveIsSelectionActive = () => !!internals.selectionComponent?.$$rootEditable;
 
 	// States
 	const currentComponentState = createStateEmitter<TComponent | null>(null);
 	const isSelectionActiveState = createStateEmitter<boolean>(false);
 
-	const updateState = ({
-		hoverComponent,
-		selectionComponent,
-	}: UpdateStateParams<TComponent>) => {
+	const updateState = ({ hoverComponent, selectionComponent }: UpdateStateParams<TComponent>) => {
 		if (hoverComponent !== undefined) {
 			internals.hoverComponent = hoverComponent;
 		}

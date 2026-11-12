@@ -1,8 +1,10 @@
 import { FloatingPortal, Table } from "@rangex/solid";
 import { createUniqueId, For, onCleanup, Show } from "solid-js";
+
 import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
 import { assertNever } from "#utilities";
+
 import {
 	type ActionItem,
 	type ContextMenuItem,
@@ -73,11 +75,7 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
 					class="size-2 shrink-0 text-neutral-700 hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-200 dark:active:text-white dark:hover:text-neutral-100"
 				/>
 			</button>
-			<Menu
-				mainPopoverId={props.mainPopoverId}
-				popoverId={popoverId}
-				items={props.items}
-			/>
+			<Menu mainPopoverId={props.mainPopoverId} popoverId={popoverId} items={props.items} />
 		</div>
 	);
 };
@@ -100,15 +98,11 @@ const Menu = (props: MenuProps) => {
 			<For each={props.items}>
 				{(item) => {
 					if (item.type === "button") {
-						return (
-							<ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />
-						);
+						return <ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 					}
 
 					if (item.type === "submenu") {
-						return (
-							<SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />
-						);
+						return <SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 					}
 
 					return assertNever(item);
@@ -153,6 +147,7 @@ export const TableContextMenu = () => {
 		if (subMenu.matches(":popover-open")) {
 			// Force a synchronous reflow before hiding — otherwise the popover can
 			// briefly animate from a stale, not-yet-committed style.
+			// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
 			subMenu.offsetHeight;
 			subMenu.hidePopover();
 		}

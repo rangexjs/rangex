@@ -1,5 +1,6 @@
 import type { TablePublicPort } from "@rangex/editor/table";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveTablePort } from "./Table-types";
 
@@ -15,19 +16,11 @@ export const Table = <T extends TablePublicPort | undefined>(
 	const [mergeSplit, setMergeSplit] = createSignal(publicPort.mergeSplit);
 	const [insertDelete, setInsertDelete] = createSignal(publicPort.insertDelete);
 	const [cellType, setCellType] = createSignal(publicPort.cellType);
-	const [verticalAlignment, setVerticalAlignment] = createSignal(
-		publicPort.verticalAlignment,
-	);
+	const [verticalAlignment, setVerticalAlignment] = createSignal(publicPort.verticalAlignment);
 	const [cellResizing, setCellResizing] = createSignal(publicPort.cellResizing);
-	const [clearContents, setClearContents] = createSignal(
-		publicPort.clearContents,
-	);
-	const [currentComponent, setCurrentComponent] = createSignal(
-		publicPort.currentComponent,
-	);
-	const [isSelectionActive, setIsSelectionActive] = createSignal(
-		publicPort.isSelectionActive,
-	);
+	const [clearContents, setClearContents] = createSignal(publicPort.clearContents);
+	const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onSectionTypeUpdate(setSectionType));

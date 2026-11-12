@@ -1,7 +1,9 @@
 import { ReadOnly, Subscript } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const SubscriptToolbarButton = () => {
@@ -15,9 +17,7 @@ export const SubscriptToolbarButton = () => {
 	const $subscript = Subscript(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $subscript.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $subscript.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.toggleSubscript();

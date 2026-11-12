@@ -1,4 +1,5 @@
 import { omit } from "solid-js";
+
 import type { SVGProps } from "./_Utilities";
 
 export const FileImage = (props: SVGProps) => {

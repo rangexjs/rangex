@@ -1,4 +1,5 @@
 import { createBlockComponentPlacement } from "#engine-links";
+
 import type { ConfigureSourcePlaceholderParams } from "./ConfigureSourcePlaceholder-types";
 import { handleSourcePlaceholderInsertion } from "./HandleSourcePlaceholderInsertion";
 import { handleSourcePlaceholderPlacementState } from "./HandleSourcePlaceholderPlacementState";

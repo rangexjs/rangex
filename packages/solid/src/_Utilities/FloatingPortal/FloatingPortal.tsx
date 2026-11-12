@@ -1,5 +1,6 @@
 import { className, Portal } from "@solidjs/web";
 import { createRenderEffect } from "solid-js";
+
 import type { FloatingPortalProps } from "./FloatingPortal-types";
 
 export const FloatingPortal = (props: FloatingPortalProps) => {

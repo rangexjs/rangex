@@ -1,7 +1,5 @@
-import type {
-	CreateImageAttrValidatorsParams,
-	ImageAttrValidators,
-} from "#dom-attrs";
+import type { CreateImageAttrValidatorsParams, ImageAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

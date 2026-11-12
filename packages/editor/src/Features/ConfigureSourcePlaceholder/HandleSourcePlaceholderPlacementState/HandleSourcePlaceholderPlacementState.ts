@@ -1,5 +1,7 @@
 import { editorSelectionChangeEventType } from "@rangex/core";
+
 import { componentsName } from "#constants";
+
 import type { HandleSourcePlaceholderPlacementStateParams } from "./HandleSourcePlaceholderPlacementState-types";
 
 /*

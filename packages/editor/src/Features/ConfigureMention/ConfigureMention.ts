@@ -11,10 +11,7 @@ import { handleMentionSelect } from "./HandleMentionSelect";
  * Wires up the mention feature: handles mention selection and unwrapping, registers the displayText's validator, and
  * manages the caret menu's appearance while typing an @-query. Returns a cleanup function.
  */
-export const configureMention = ({
-	configPort,
-	editorAPI,
-}: ConfigureMentionParams) => {
+export const configureMention = ({ configPort, editorAPI }: ConfigureMentionParams) => {
 	configPort.registerValidateDisplayText((displayText) =>
 		validateMentionDisplayText({ displayText }),
 	);

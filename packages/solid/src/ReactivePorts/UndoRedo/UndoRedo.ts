@@ -1,5 +1,6 @@
 import type { UndoRedoPublicPort } from "@rangex/editor/undo-redo";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveUndoRedoPort } from "./UndoRedo-types";
 
@@ -11,9 +12,7 @@ export const UndoRedo = <T extends UndoRedoPublicPort | undefined>(
 	}
 
 	const [canStepBack, setCanStepBack] = createSignal(publicPort.canStepBack);
-	const [canStepForward, setCanStepForward] = createSignal(
-		publicPort.canStepForward,
-	);
+	const [canStepForward, setCanStepForward] = createSignal(publicPort.canStepForward);
 
 	onCleanup(publicPort.onCanStepBackUpdate(setCanStepBack));
 	onCleanup(publicPort.onCanStepForwardUpdate(setCanStepForward));

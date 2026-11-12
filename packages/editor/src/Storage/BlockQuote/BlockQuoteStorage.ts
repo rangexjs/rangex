@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { blockQuoteId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -24,17 +25,13 @@ export const matchBlockQuoteStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: blockQuoteStoragePattern });
 };
 
-export const isBlockQuoteStorage = (
-	storage: unknown,
-): storage is BlockQuoteStorage => {
+export const isBlockQuoteStorage = (storage: unknown): storage is BlockQuoteStorage => {
 	const mismatch = matchBlockQuoteStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateBlockQuoteStorage = (
-	storage: unknown,
-): storage is BlockQuoteStorage => {
+export const validateBlockQuoteStorage = (storage: unknown): storage is BlockQuoteStorage => {
 	return validateStorage(storage, isBlockQuoteStorage);
 };
 

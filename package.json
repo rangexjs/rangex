@@ -14,8 +14,8 @@
 	"scripts": {
 		"dev": "vp dev",
 		"build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"fix": "biome check index.ts src configs package.json tsconfig.json vite.config.ts --write && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"lint": "biome check index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor"
+		"fix": "vp check --fix index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+		"lint": "vp check index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor"
 	},
 	"dependencies": {
 		"@rangex/rich-text-editor": "1.0.0-beta.0",
@@ -28,7 +28,6 @@
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.4",
 		"@solidjs/vite-plugin": "3.0.0-next.47",
 		"typescript": "^7.0.2",
 		"vite-plus": "1.6.0"

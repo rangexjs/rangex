@@ -11,8 +11,10 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
+
 import {
 	createAccordionItem,
 	createBlockQuote,
@@ -43,9 +45,7 @@ import type {
 const getNestedEditableTarget = ({
 	blockComponentLine,
 }: GetNestedEditableTargetParams): GetNestedEditableTargetResult => {
-	const nestedEditable = blockComponentLine.$$querySelector(
-		nestedEditableRoleSelector,
-	);
+	const nestedEditable = blockComponentLine.$$querySelector(nestedEditableRoleSelector);
 
 	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
@@ -54,9 +54,7 @@ const getNestedEditableTarget = ({
 	return nestedEditable;
 };
 
-const getListTarget = ({
-	blockComponentLine,
-}: GetListTargetParams): GetListTargetResult => {
+const getListTarget = ({ blockComponentLine }: GetListTargetParams): GetListTargetResult => {
 	const list = blockComponentLine.$$querySelector(listRoleSelector);
 
 	if (list?.$$editorRole !== listRole) {
@@ -66,9 +64,7 @@ const getListTarget = ({
 	return list;
 };
 
-const createBlockComponent = (
-	params: CreateBlockComponentParams,
-): CreateBlockComponentResult => {
+const createBlockComponent = (params: CreateBlockComponentParams): CreateBlockComponentResult => {
 	const { childNodes } = params;
 
 	if (params.name === componentsName.accordionItem) {
@@ -76,9 +72,7 @@ const createBlockComponent = (
 			attrs: params.attrs,
 			childNodes,
 		});
-		const accordionItem = blockComponentLine.$$querySelector(
-			blockComponentRoleSelector,
-		);
+		const accordionItem = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
 		if (accordionItem?.$$editorRole !== blockComponentRole) {
 			throw new Error("AccordionItem's type is invalid.");
@@ -137,8 +131,7 @@ const wrapContentLine = ({
 	contentLine,
 	turnIntoParams,
 }: WrapContentLineParams) => {
-	const { blockComponentLine, wrapTarget } =
-		createBlockComponent(turnIntoParams);
+	const { blockComponentLine, wrapTarget } = createBlockComponent(turnIntoParams);
 
 	blockComponentPlacement.wrap({
 		blockComponentLine,
@@ -160,13 +153,9 @@ const shouldSkipFirstLine = ({
 	componentName,
 	extractedLines,
 }: ShouldSkipFirstLineParams): ShouldSkipFirstLineResult => {
-	const componentsWithSkippableFirstLine: BlockComponentName[] = [
-		componentsName.accordionItem,
-	];
+	const componentsWithSkippableFirstLine: BlockComponentName[] = [componentsName.accordionItem];
 
-	const isSkippable = componentsWithSkippableFirstLine.some(
-		(name) => name === componentName,
-	);
+	const isSkippable = componentsWithSkippableFirstLine.some((name) => name === componentName);
 
 	if (!isSkippable) {
 		return false;
@@ -194,9 +183,7 @@ const replaceBlockComponentLine = ({
 	blockComponentLine,
 	turnIntoParams,
 }: ReplaceBlockComponentLineParams) => {
-	const blockComponent = blockComponentLine.$$querySelector(
-		blockComponentRoleSelector,
-	);
+	const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
 	if (blockComponent?.$$editorRole !== blockComponentRole) {
 		throw new Error("BlockComponent's type is invalid.");

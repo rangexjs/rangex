@@ -1,12 +1,6 @@
-import type {
-	CodeBlockTheme,
-	ThemedCodeLine,
-	ThemedCodeLines,
-} from "@rangex/editor/code-block";
-import type {
-	TokenizeCodeParams,
-	TokenizeCodeResult,
-} from "./TokenizeCode-types";
+import type { CodeBlockTheme, ThemedCodeLine, ThemedCodeLines } from "@rangex/editor/code-block";
+
+import type { TokenizeCodeParams, TokenizeCodeResult } from "./TokenizeCode-types";
 
 /*
  * Tokenizes the code lines with both themes of a loaded highlighter. Throws when the language or a theme isn't loaded.

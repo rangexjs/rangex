@@ -17,9 +17,7 @@ export const wrapBlockComponent = ({
 	});
 
 	if (!blockWrappableSegment) {
-		throw new Error(
-			"RootEditable must be or contain a ScopedEditable with 'block multi-line'.",
-		);
+		throw new Error("RootEditable must be or contain a ScopedEditable with 'block multi-line'.");
 	}
 
 	blockWrappableSegment.wrapInto({ blockComponentLine, target });

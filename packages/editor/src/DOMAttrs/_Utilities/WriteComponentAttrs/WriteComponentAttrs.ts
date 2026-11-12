@@ -5,9 +5,7 @@ import type { WriteComponentAttrsParams } from "./WriteComponentAttrs-types";
 /*
  * Writes every element's attributes of a component (see writeElementAttrs).
  */
-export const writeComponentAttrs = <
-	TComponentAttrsShape extends ComponentAttrsShape,
->({
+export const writeComponentAttrs = <TComponentAttrsShape extends ComponentAttrsShape>({
 	componentElements,
 	componentAttrs,
 }: WriteComponentAttrsParams<TComponentAttrsShape>) => {

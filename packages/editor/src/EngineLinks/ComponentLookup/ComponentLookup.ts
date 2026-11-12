@@ -1,4 +1,5 @@
 import { type EditorElement, EditorRange, isComponent } from "@rangex/core";
+
 import type {
 	ComponentByName,
 	ComponentLookup,
@@ -51,8 +52,7 @@ export const createComponentLookup = ({
 		},
 
 		closestBySelection({ components }) {
-			const { fromText, fromOffset, toText, toOffset } =
-				selection.getBoundaryPoints();
+			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
 			return componentLookup.closest({
 				fromNode: fromText,

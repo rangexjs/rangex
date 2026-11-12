@@ -1,4 +1,5 @@
 import { createSignal, merge, onSettled } from "solid-js";
+
 import type { CheckboxControls, CheckboxStateHandle } from "./_Utilities";
 import {
 	type CreateCheckboxControllerParams,
@@ -53,11 +54,7 @@ export const createCheckboxState = (
 		const abortController = new AbortController();
 		const { signal } = abortController;
 
-		handle.element.addEventListener(
-			"change",
-			() => setChecked(handle.element.checked),
-			{ signal },
-		);
+		handle.element.addEventListener("change", () => setChecked(handle.element.checked), { signal });
 
 		return () => {
 			abortController.abort();

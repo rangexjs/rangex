@@ -1,10 +1,7 @@
-import type {
-	ComponentDraft,
-	HTMLLayoutDraft,
-	ListDraft,
-	ListItemDraft,
-} from "@rangex/core";
+import type { ComponentDraft, HTMLLayoutDraft, ListDraft, ListItemDraft } from "@rangex/core";
+
 import type { TodoListAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

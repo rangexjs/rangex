@@ -64,5 +64,4 @@ export interface CreateOverlayAppearanceHandlerParams {
 	editorAPI: EditorAPI;
 }
 
-export interface CreateOverlayAppearanceHandlerResult
-	extends OverlayAppearanceHandler {}
+export interface CreateOverlayAppearanceHandlerResult extends OverlayAppearanceHandler {}

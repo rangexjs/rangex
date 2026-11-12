@@ -1,4 +1,5 @@
 import { rootEditableRole, xhtmlNamespaceURI } from "@rangex/core";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

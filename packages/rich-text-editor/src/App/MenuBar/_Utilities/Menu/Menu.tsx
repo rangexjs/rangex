@@ -1,6 +1,8 @@
 import { createUniqueId, For } from "solid-js";
+
 import { Icon } from "#ui";
 import { assertNever } from "#utilities";
+
 import type { MenuButtonItem, MenuProps, MenuSubmenuItem } from "./Menu-types";
 
 interface ActionTriggerProps extends Omit<MenuButtonItem, "type"> {
@@ -37,16 +39,9 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
 				class="btn-menu-item flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm p-1 font-semibold text-xs"
 			>
 				<span>{props.label}</span>
-				<Icon
-					name="CaretRight"
-					class="size-2 shrink-0 text-neutral-700 dark:text-neutral-200"
-				/>
+				<Icon name="CaretRight" class="size-2 shrink-0 text-neutral-700 dark:text-neutral-200" />
 			</button>
-			<Submenu
-				mainPopoverId={props.mainPopoverId}
-				popoverId={popoverId}
-				items={props.items}
-			/>
+			<Submenu mainPopoverId={props.mainPopoverId} popoverId={popoverId} items={props.items} />
 		</div>
 	);
 };
@@ -68,15 +63,11 @@ const MenuBase = (props: MenuBaseProps) => (
 		<For each={props.items}>
 			{(item) => {
 				if (item.type === "button") {
-					return (
-						<ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />
-					);
+					return <ActionTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 				}
 
 				if (item.type === "submenu") {
-					return (
-						<SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />
-					);
+					return <SubmenuTrigger mainPopoverId={props.mainPopoverId} {...item} />;
 				}
 
 				return assertNever(item);

@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -28,9 +29,7 @@ export interface TodoListConfigPortProps {
 }
 
 export interface TodoListConfigPort
-	extends TodoListConfigPortProps,
-		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+	extends TodoListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TodoListPublicPortProps {
 	readonly canInsert: boolean;
@@ -44,9 +43,7 @@ export interface TodoListPublicPortProps {
 }
 
 export interface TodoListPublicPort
-	extends TodoListPublicPortProps,
-		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+	extends TodoListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface TodoListAdapter {
 	configPort: TodoListConfigPort;
@@ -55,7 +52,6 @@ export interface TodoListAdapter {
 
 export interface TodoListSettings {}
 
-export interface CreateTodoListAdapterParams
-	extends CreateAdapterParams<TodoListSettings> {}
+export interface CreateTodoListAdapterParams extends CreateAdapterParams<TodoListSettings> {}
 
 export interface CreateTodoListAdapterResult extends TodoListAdapter {}

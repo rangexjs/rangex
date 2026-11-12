@@ -1,8 +1,6 @@
 import { contentLineRole, isEditorElement } from "@rangex/core";
-import type {
-	GetClosestContentLineParams,
-	GetClosestContentLineResult,
-} from "./ContentLine-types";
+
+import type { GetClosestContentLineParams, GetClosestContentLineResult } from "./ContentLine-types";
 
 export const getClosestContentLine = ({
 	fromNode,

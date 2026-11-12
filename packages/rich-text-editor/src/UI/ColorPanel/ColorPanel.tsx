@@ -7,8 +7,10 @@ import {
 	For,
 	type Setter,
 } from "solid-js";
+
 import { ColorFormat, type HslFormat } from "#color";
 import { isDeepEqual } from "#utilities";
+
 import { SegmentedControl, type SegmentedControlControls } from "../_Utilities";
 import { ColorTypeControls } from "../ColorTypeControls";
 import { TransparentBackground } from "../ComplexSVGs";
@@ -119,9 +121,7 @@ interface ColorModeButtonsProps {
 
 const ColorModeButtons = (props: ColorModeButtonsProps) => {
 	const iconName = createMemo<IconName>(() =>
-		props.colorMode() === "common"
-			? "LinkSimpleHorizontal"
-			: "LinkSimpleHorizontalBreak",
+		props.colorMode() === "common" ? "LinkSimpleHorizontal" : "LinkSimpleHorizontalBreak",
 	);
 
 	const onMatchClick = () => {
@@ -239,10 +239,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
 	};
 
 	return (
-		<div
-			class={[props.class]}
-			style={{ "max-width": `${props.spectrumWidth}px` }}
-		>
+		<div class={[props.class]} style={{ "max-width": `${props.spectrumWidth}px` }}>
 			<SegmentedControl
 				id={contentId()}
 				controls={controls}

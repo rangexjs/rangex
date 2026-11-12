@@ -1,8 +1,4 @@
-import type {
-	EditorNode,
-	NestedEditable,
-	NestedEditableDisplay,
-} from "@rangex/core";
+import type { EditorNode, NestedEditable, NestedEditableDisplay } from "@rangex/core";
 
 export interface GetClosestNestedEditableParams {
 	fromNode: EditorNode;

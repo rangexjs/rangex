@@ -1,5 +1,6 @@
 import { dynamic } from "@solidjs/web";
 import { omit } from "solid-js";
+
 import {
 	AlignCenter,
 	AlignLeft,

@@ -6,9 +6,11 @@ import {
 	type HTMLLayout,
 	htmlLayoutRole,
 } from "@rangex/core";
+
 import type { CaptionPosition } from "#adapters";
 import { mediaCaptionDefinition } from "#constants";
 import { createTextAlignStructuredStyle } from "#structured-style";
+
 import { getEmbedElement } from "../GetEmbedElements";
 import type {
 	GetEmbedCaptionParams,
@@ -21,10 +23,7 @@ const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
 	for (const child of figure.$$children) {
-		if (
-			child.$$editorRole === htmlLayoutRole &&
-			child.$$localName === figcaptionLocalName
-		) {
+		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
 			return child;
 		}
 	}
@@ -36,9 +35,7 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * Reads whether a figure's caption is currently shown and, if so, whether it sits above or below
  * the embed — derived from the figcaption's presence and DOM order, not a stored flag.
  */
-export const getEmbedCaption = ({
-	figure,
-}: GetEmbedCaptionParams): GetEmbedCaptionResult => {
+export const getEmbedCaption = ({ figure }: GetEmbedCaptionParams): GetEmbedCaptionResult => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {
@@ -50,9 +47,7 @@ export const getEmbedCaption = ({
 	const { $$children } = figure;
 
 	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(embedElement)
-			? "above"
-			: "below";
+		$$children.indexOf(figcaption) < $$children.indexOf(embedElement) ? "above" : "below";
 
 	return { captionEnabled: true, captionPosition: position };
 };
@@ -106,10 +101,7 @@ export const setEmbedCaptionEnabled = ({
  * Moves the figcaption before or after the embed element, always repositioning relative to it
  * rather than checking the current order first. Throws if the figure has no figcaption.
  */
-export const setEmbedCaptionPosition = ({
-	figure,
-	position,
-}: SetEmbedCaptionPositionParams) => {
+export const setEmbedCaptionPosition = ({ figure, position }: SetEmbedCaptionPositionParams) => {
 	const figcaption = getFigcaption(figure);
 
 	if (!figcaption) {

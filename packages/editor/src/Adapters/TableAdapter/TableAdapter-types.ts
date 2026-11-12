@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { TableLimits } from "#constants";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -92,25 +94,13 @@ export interface TableState {
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
-export type OnSectionTypeUpdateCallbackFn = (
-	value: TableSectionTypeState,
-) => void;
-export type OnMergeSplitUpdateCallbackFn = (
-	value: TableMergeSplitState,
-) => void;
-export type OnInsertDeleteUpdateCallbackFn = (
-	value: TableInsertDeleteState,
-) => void;
+export type OnSectionTypeUpdateCallbackFn = (value: TableSectionTypeState) => void;
+export type OnMergeSplitUpdateCallbackFn = (value: TableMergeSplitState) => void;
+export type OnInsertDeleteUpdateCallbackFn = (value: TableInsertDeleteState) => void;
 export type OnCellTypeUpdateCallbackFn = (value: TableCellTypeState) => void;
-export type OnVerticalAlignmentUpdateCallbackFn = (
-	value: TableVerticalAlignmentState,
-) => void;
-export type OnCellResizingUpdateCallbackFn = (
-	value: TableCellResizingState,
-) => void;
-export type OnClearContentsUpdateCallbackFn = (
-	value: TableClearContentsState,
-) => void;
+export type OnVerticalAlignmentUpdateCallbackFn = (value: TableVerticalAlignmentState) => void;
+export type OnCellResizingUpdateCallbackFn = (value: TableCellResizingState) => void;
+export type OnClearContentsUpdateCallbackFn = (value: TableClearContentsState) => void;
 export type OnContextMenuToggleCallbackFn = () => void;
 
 export interface InsertParams {
@@ -120,22 +110,12 @@ export interface InsertParams {
 
 export type OnInsertCallbackFn = (params: InsertParams) => void;
 
-export type OnChangeSectionTypeCallbackFn = (
-	action: TableSectionTypeAction,
-) => void;
-export type OnChangeMergeSplitCallbackFn = (
-	action: TableMergeSplitAction,
-) => void;
-export type OnChangeInsertDeleteCallbackFn = (
-	action: TableInsertDeleteAction,
-) => void;
+export type OnChangeSectionTypeCallbackFn = (action: TableSectionTypeAction) => void;
+export type OnChangeMergeSplitCallbackFn = (action: TableMergeSplitAction) => void;
+export type OnChangeInsertDeleteCallbackFn = (action: TableInsertDeleteAction) => void;
 export type OnChangeCellTypeCallbackFn = (action: TableCellTypeAction) => void;
-export type OnChangeVerticalAlignmentCallbackFn = (
-	action: TableVerticalAlignmentAction,
-) => void;
-export type OnChangeCellResizingCallbackFn = (
-	action: TableCellResizingAction,
-) => void;
+export type OnChangeVerticalAlignmentCallbackFn = (action: TableVerticalAlignmentAction) => void;
+export type OnChangeCellResizingCallbackFn = (action: TableCellResizingAction) => void;
 export type OnClearContentsCallbackFn = () => void;
 
 export interface UpdateStateParams extends TableState {}
@@ -152,17 +132,13 @@ export interface TableConfigPortProps {
 	onChangeMergeSplit(callback: OnChangeMergeSplitCallbackFn): () => void;
 	onChangeInsertDelete(callback: OnChangeInsertDeleteCallbackFn): () => void;
 	onChangeCellType(callback: OnChangeCellTypeCallbackFn): () => void;
-	onChangeVerticalAlignment(
-		callback: OnChangeVerticalAlignmentCallbackFn,
-	): () => void;
+	onChangeVerticalAlignment(callback: OnChangeVerticalAlignmentCallbackFn): () => void;
 	onChangeCellResizing(callback: OnChangeCellResizingCallbackFn): () => void;
 	onClear(callback: OnClearContentsCallbackFn): () => void;
 }
 
 export interface TableConfigPort
-	extends TableConfigPortProps,
-		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+	extends TableConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TablePublicPortProps {
 	readonly limits: TableLimits;
@@ -183,9 +159,7 @@ export interface TablePublicPortProps {
 	onMergeSplitUpdate(callback: OnMergeSplitUpdateCallbackFn): () => void;
 	onInsertDeleteUpdate(callback: OnInsertDeleteUpdateCallbackFn): () => void;
 	onCellTypeUpdate(callback: OnCellTypeUpdateCallbackFn): () => void;
-	onVerticalAlignmentUpdate(
-		callback: OnVerticalAlignmentUpdateCallbackFn,
-	): () => void;
+	onVerticalAlignmentUpdate(callback: OnVerticalAlignmentUpdateCallbackFn): () => void;
 	onCellResizingUpdate(callback: OnCellResizingUpdateCallbackFn): () => void;
 	onClearContentsUpdate(callback: OnClearContentsUpdateCallbackFn): () => void;
 	onContextMenuToggle(callback: OnContextMenuToggleCallbackFn): () => void;
@@ -201,9 +175,7 @@ export interface TablePublicPortProps {
 }
 
 export interface TablePublicPort
-	extends TablePublicPortProps,
-		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+	extends TablePublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface TableInternals {
 	contextMenuOpen: boolean;
@@ -216,7 +188,6 @@ export interface TableAdapter {
 
 export interface TableSettings {}
 
-export interface CreateTableAdapterParams
-	extends CreateAdapterParams<TableSettings> {}
+export interface CreateTableAdapterParams extends CreateAdapterParams<TableSettings> {}
 
 export interface CreateTableAdapterResult extends TableAdapter {}

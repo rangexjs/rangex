@@ -17,13 +17,11 @@ export interface ValidateCodeBlockThemeParams {
 
 export type ValidateCodeBlockThemeResult = ValidateThemeResult;
 
-export interface ValidateCodeBlockPlacementParams
-	extends CodeBlockPlacementOption {}
+export interface ValidateCodeBlockPlacementParams extends CodeBlockPlacementOption {}
 
 export interface CodeBlockPlacementMismatch {
 	field: "language" | "theme";
 	reason: string;
 }
 
-export type ValidateCodeBlockPlacementResult =
-	CodeBlockPlacementMismatch | null;
+export type ValidateCodeBlockPlacementResult = CodeBlockPlacementMismatch | null;

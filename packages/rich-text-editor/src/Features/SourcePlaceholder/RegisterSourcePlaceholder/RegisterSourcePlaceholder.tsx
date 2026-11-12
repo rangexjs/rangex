@@ -1,4 +1,5 @@
 import { render } from "@solidjs/web";
+
 import { SourcePlaceholderSlot } from "../SourcePlaceholderSlot";
 import type { RegisterSourcePlaceholderParams } from "./RegisterSourcePlaceholder-types";
 
@@ -15,13 +16,7 @@ export const registerSourcePlaceholder = ({
 
 	editor.sourcePlaceholder.registerSlottedElement((container) => {
 		const dispose = render(
-			() => (
-				<SourcePlaceholderSlot
-					editor={editor}
-					container={container}
-					settings={settings}
-				/>
-			),
+			() => <SourcePlaceholderSlot editor={editor} container={container} settings={settings} />,
 			container,
 		);
 

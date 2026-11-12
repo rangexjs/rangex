@@ -1,9 +1,11 @@
 import type { RangeXEditor } from "@rangex/editor";
 import { type Component, For } from "solid-js";
+
 import type { ToolbarButtonsLayout } from "#constants";
 import type { UIOptions } from "#context";
 import { EditorContext, UIOptionsContext } from "#context";
 import type { ExtensionComponents } from "#extensions";
+
 import { EditorContainer } from "./EditorContainer";
 import { EditorToolbar } from "./EditorToolbar";
 

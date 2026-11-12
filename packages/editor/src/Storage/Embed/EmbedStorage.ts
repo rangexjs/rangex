@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { embedId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -30,9 +31,7 @@ export const isEmbedStorage = (storage: unknown): storage is EmbedStorage => {
 	return !mismatch;
 };
 
-export const validateEmbedStorage = (
-	storage: unknown,
-): storage is EmbedStorage => {
+export const validateEmbedStorage = (storage: unknown): storage is EmbedStorage => {
 	return validateStorage(storage, isEmbedStorage);
 };
 

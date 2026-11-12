@@ -8,12 +8,7 @@ import type {
 	ResizeMoveFn,
 } from "./CreateBlockResize-types";
 
-const createHandle = ({
-	side,
-	xPos,
-	resizeMoveEmitter,
-	resizeEndEmitter,
-}: HandleParams) => {
+const createHandle = ({ side, xPos, resizeMoveEmitter, resizeEndEmitter }: HandleParams) => {
 	const handle = document.createElement("span");
 	handle.style[side] = `${xPos}px`;
 

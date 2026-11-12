@@ -7,6 +7,7 @@ import type {
 	TextFormatInlineTags,
 	TextFormatStyles,
 } from "@rangex/core";
+
 import type {
 	FormattingBackgroundColorState,
 	FormattingColorState,
@@ -51,69 +52,60 @@ export interface GetLineHeightToolbarButtonStateParams {
 	contentLineStructuredStyle: RangeFormatContentLineStructuredStyle;
 }
 
-export interface GetLineHeightToolbarButtonStateResult
-	extends FormattingLineHeightState {}
+export interface GetLineHeightToolbarButtonStateResult extends FormattingLineHeightState {}
 
 export interface GetLineSpacingToolbarButtonStateParams {
 	contentLineStructuredStyle: RangeFormatContentLineStructuredStyle;
 }
 
-export interface GetLineSpacingToolbarButtonStateResult
-	extends FormattingLineSpacingState {}
+export interface GetLineSpacingToolbarButtonStateResult extends FormattingLineSpacingState {}
 
 export interface GetIndentationToolbarButtonStateParams {
 	contentLineStructuredStyle: RangeFormatContentLineStructuredStyle;
 }
 
-export interface GetIndentationToolbarButtonStateResult
-	extends FormattingIndentationState {}
+export interface GetIndentationToolbarButtonStateResult extends FormattingIndentationState {}
 
 export interface GetTextAlignToolbarButtonStateParams {
 	contentLineStructuredStyle: RangeFormatContentLineStructuredStyle;
 }
 
-export interface GetTextAlignToolbarButtonStateResult
-	extends FormattingTextAlignState {}
+export interface GetTextAlignToolbarButtonStateResult extends FormattingTextAlignState {}
 
 export interface GetBackgroundColorToolbarButtonStateParams {
 	glyphFormatterStructuredStyle: RangeFormatGlyphFormatterStructuredStyle;
 	textFormatStylesState: TextFormatStyles;
 }
 
-export interface GetBackgroundColorToolbarButtonStateResult
-	extends FormattingBackgroundColorState {}
+export interface GetBackgroundColorToolbarButtonStateResult extends FormattingBackgroundColorState {}
 
 export interface GetColorToolbarButtonStateParams {
 	glyphFormatterStructuredStyle: RangeFormatGlyphFormatterStructuredStyle;
 	textFormatStylesState: TextFormatStyles;
 }
 
-export interface GetColorToolbarButtonStateResult
-	extends FormattingColorState {}
+export interface GetColorToolbarButtonStateResult extends FormattingColorState {}
 
 export interface GetFontFamilyToolbarButtonStateParams {
 	glyphFormatterStructuredStyle: RangeFormatGlyphFormatterStructuredStyle;
 	textFormatStylesState: TextFormatStyles;
 }
 
-export interface GetFontFamilyToolbarButtonStateResult
-	extends FormattingFontFamilyState {}
+export interface GetFontFamilyToolbarButtonStateResult extends FormattingFontFamilyState {}
 
 export interface GetFontSizeToolbarButtonStateParams {
 	glyphFormatterStructuredStyle: RangeFormatGlyphFormatterStructuredStyle;
 	textFormatStylesState: TextFormatStyles;
 }
 
-export interface GetFontSizeToolbarButtonStateResult
-	extends FormattingFontSizeState {}
+export interface GetFontSizeToolbarButtonStateResult extends FormattingFontSizeState {}
 
 export interface GetLetterSpacingToolbarButtonStateParams {
 	glyphFormatterStructuredStyle: RangeFormatGlyphFormatterStructuredStyle;
 	textFormatStylesState: TextFormatStyles;
 }
 
-export interface GetLetterSpacingToolbarButtonStateResult
-	extends FormattingLetterSpacingState {}
+export interface GetLetterSpacingToolbarButtonStateResult extends FormattingLetterSpacingState {}
 
 export interface GetFormattingButtonStateParams {
 	selectionFormatStyles: SelectionFormatStyles;

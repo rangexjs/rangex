@@ -1,18 +1,13 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveLetterSpacingPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveLetterSpacingPort } from "./_Utilities";
 
 export const LetterSpacing = <T extends FormattingPublicPort | undefined>(
 	formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveLetterSpacingPort> => {
 	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<
-			T,
-			ReactiveLetterSpacingPort
-		>;
+		return undefined as FromFormattingToReactivePort<T, ReactiveLetterSpacingPort>;
 	}
 
 	const [state, setState] = createSignal(formatting.letterSpacing);

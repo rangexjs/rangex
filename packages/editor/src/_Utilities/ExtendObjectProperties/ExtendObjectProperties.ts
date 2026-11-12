@@ -1,16 +1,4 @@
-export const extendObjectProperties = <
-	Obj extends object,
-	T1,
-	T2,
-	T3,
-	T4,
-	T5,
-	T6,
-	T7,
-	T8,
-	T9,
-	T10,
->(
+export const extendObjectProperties = <Obj extends object, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
 	obj: Obj,
 	props1: T1,
 	props2?: T2,
@@ -47,9 +35,7 @@ export const extendObjectProperties = <
 
 		for (const key of Object.getOwnPropertyNames(descriptors)) {
 			if (knownKeys.has(key)) {
-				throw new Error(
-					`extendObjectProperties: property "${key}" is already defined.`,
-				);
+				throw new Error(`extendObjectProperties: property "${key}" is already defined.`);
 			}
 
 			knownKeys.add(key);

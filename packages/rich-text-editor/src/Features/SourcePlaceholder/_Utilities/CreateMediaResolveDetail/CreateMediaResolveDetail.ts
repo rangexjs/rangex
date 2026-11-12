@@ -1,5 +1,7 @@
 import type { MediaResolveDetail } from "@rangex/editor/source-placeholder";
+
 import { assertNever } from "#utilities";
+
 import { createImageAltAttrs } from "../../../_Utilities";
 import type { CreateMediaResolveDetailParams } from "./CreateMediaResolveDetail-types";
 

@@ -1,7 +1,9 @@
 import { ReadOnly, Table } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 interface Cell {
@@ -115,8 +117,7 @@ export const TableToolbarButton = () => {
 				const row = clonedGrid[rowIndex];
 
 				for (let colIndex = 0; colIndex < row.length; colIndex++) {
-					row[colIndex].isActive =
-						rowIndex < cellPos.row && colIndex < cellPos.col;
+					row[colIndex].isActive = rowIndex < cellPos.row && colIndex < cellPos.col;
 				}
 			}
 
@@ -147,14 +148,8 @@ export const TableToolbarButton = () => {
 		event.preventDefault();
 
 		const cellPos = getCellPos(event);
-		const nextRowIndex = Math.min(
-			Math.max(cellPos.row - 1 + offset.row, 0),
-			rows - 1,
-		);
-		const nextColIndex = Math.min(
-			Math.max(cellPos.col - 1 + offset.col, 0),
-			cols - 1,
-		);
+		const nextRowIndex = Math.min(Math.max(cellPos.row - 1 + offset.row, 0), rows - 1);
+		const nextColIndex = Math.min(Math.max(cellPos.col - 1 + offset.col, 0), cols - 1);
 
 		const nextCell = gridElement?.querySelector<HTMLButtonElement>(
 			`[${dataRowIndex}="${nextRowIndex}"][${dataColIndex}="${nextColIndex}"]`,
@@ -163,9 +158,7 @@ export const TableToolbarButton = () => {
 		nextCell?.focus();
 	};
 
-	const disabled = createMemo(
-		() => !$table.canInsert() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => !$table.canInsert() || !!$readOnly?.checked());
 
 	return (
 		<span>
@@ -219,10 +212,8 @@ export const TableToolbarButton = () => {
 												class={[
 													"pointer-events-none inline-block h-full w-full rounded-xs border transition-colors",
 													{
-														"border-neutral-300 dark:border-neutral-600":
-															!cell().isActive,
-														"border-primary-500 bg-primary-500/20":
-															cell().isActive,
+														"border-neutral-300 dark:border-neutral-600": !cell().isActive,
+														"border-primary-500 bg-primary-500/20": cell().isActive,
 													},
 												]}
 											/>

@@ -1,9 +1,7 @@
-import {
-	contentLineRole,
-	contentLineRoleSelector,
-	nestedEditableRoleSelector,
-} from "@rangex/core";
+import { contentLineRole, contentLineRoleSelector, nestedEditableRoleSelector } from "@rangex/core";
+
 import { assertNever } from "#utilities";
+
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	GetDisplayTextFromLinkParams,
@@ -72,8 +70,7 @@ const getDisplayTextFromSelection = ({
 			throw new Error("Wrap mode is missing its segment.");
 		}
 
-		const { startText, startOffset, endText, endOffset } =
-			segment.getBoundaryPoints();
+		const { startText, startOffset, endText, endOffset } = segment.getBoundaryPoints();
 
 		const value = editorAPI.getPlainText({
 			fromNode: startText,

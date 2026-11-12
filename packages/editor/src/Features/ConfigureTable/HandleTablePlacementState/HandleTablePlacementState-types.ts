@@ -1,4 +1,5 @@
 import type { EditorAPI } from "@rangex/core";
+
 import type { TableConfigPort } from "#adapters/Table";
 import type { BlockComponentPlacement } from "#engine-links";
 

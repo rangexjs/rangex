@@ -1,4 +1,5 @@
 import type { MentionStorage } from "#storage";
+
 import type { ValidateStorageFn } from "../../_Utilities";
 import type {
 	ComponentValidator,

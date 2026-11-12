@@ -1,8 +1,4 @@
-import type {
-	EmbedAttrs,
-	EmbedAttrsMismatch,
-	EmbedAttrValidators,
-} from "#dom-attrs";
+import type { EmbedAttrs, EmbedAttrsMismatch, EmbedAttrValidators } from "#dom-attrs";
 
 export interface ValidateEmbedPlacementParams {
 	attrValidators: EmbedAttrValidators;

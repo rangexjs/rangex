@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { linkAttrsShape, normalizeLinkAttrs } from "#dom-attrs";
 import { createPopoverOverlayController } from "#engine-links";
+
 import {
 	getLinkParts,
 	handleComponentUnwrap,
@@ -22,23 +23,18 @@ import { handleSelectionMenuOpen } from "./HandleSelectionMenuOpen";
  * open/close, interaction tracking, insertion, display text change, and unwrap handling. Returns a
  * cleanup function that tears down all of it.
  */
-export const configureLink = ({
-	configPort,
-	editorAPI,
-}: ConfigureLinkParams) => {
+export const configureLink = ({ configPort, editorAPI }: ConfigureLinkParams) => {
 	const selectionComponentCleanup = handleSelectionComponent({
 		port: configPort,
 		editorAPI,
 		componentName: componentsName.link,
 	});
 
-	const {
-		selectionMenuPopoverController,
-		cleanup: selectionMenuInteractionCleanup,
-	} = handleSelectionMenuInteraction({
-		configPort: configPort.selectionMenu,
-		editorAPI,
-	});
+	const { selectionMenuPopoverController, cleanup: selectionMenuInteractionCleanup } =
+		handleSelectionMenuInteraction({
+			configPort: configPort.selectionMenu,
+			editorAPI,
+		});
 
 	const linkMenuPopoverController = createPopoverOverlayController({
 		element: configPort.linkMenuEl,

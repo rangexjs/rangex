@@ -6,14 +6,14 @@ import {
 	inlineComponentRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { componentsName, createComponentSelector } from "#constants";
 import { validateTemplateVariableStorage } from "#storage";
+
 import { validateTemplateVariablePlacement } from "../../../_Utilities";
 import type { UpdateAllTemplateVariableNodesParams } from "./UpdateAllTemplateVariableNodes-types";
 
-const templateVariableSelector = createComponentSelector(
-	componentsName.templateVariable,
-);
+const templateVariableSelector = createComponentSelector(componentsName.templateVariable);
 
 /*
  * Re-resolves the display text of every template variable node from the stored values. Nodes whose field can't be
@@ -52,9 +52,7 @@ export const updateAllTemplateVariableNodes = ({
 		const nestedEditable = node.$$querySelector(nestedEditableRoleSelector);
 
 		if (!nestedEditable) {
-			throw new Error(
-				"Expected a NestedEditable inside the template variable node.",
-			);
+			throw new Error("Expected a NestedEditable inside the template variable node.");
 		}
 
 		const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);

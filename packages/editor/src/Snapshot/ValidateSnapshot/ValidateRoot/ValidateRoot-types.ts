@@ -1,15 +1,14 @@
 import type { RootEditableDraft, RootEditableSnapshot } from "@rangex/core";
+
 import type { RootType } from "#constants";
 import type { CreateRootAttrValidatorsParams } from "#dom-attrs";
 import type { RootStorage } from "#storage";
+
 import type { ValidateStorageFn } from "../_Utilities";
 import type { ValidateComponentResult } from "../ValidateSnapshot-types";
 
 // Without domAttrs: they're resolved by the Root's shape (see resolveDraftDOMAttrs)
-export type RootState = Omit<
-	RootEditableSnapshot,
-	"uniqueId" | "childNodes" | "domAttrs"
->;
+export type RootState = Omit<RootEditableSnapshot, "uniqueId" | "childNodes" | "domAttrs">;
 
 // The first one is the type of a new root, when the editor loads no snapshot
 export type SnapshotRootTypes = [RootType, ...RootType[]];

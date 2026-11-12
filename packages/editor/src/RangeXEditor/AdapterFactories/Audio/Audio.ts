@@ -1,5 +1,6 @@
 import { type AudioSettings, createAudioAdapter } from "#adapters/Audio";
 import { configureAudio } from "#features";
+
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Audio: AdapterFactoryFn<AudioSettings> = (settings) => {

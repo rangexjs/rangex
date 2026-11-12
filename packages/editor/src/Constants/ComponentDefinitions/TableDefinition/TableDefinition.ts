@@ -58,15 +58,11 @@ export const resolveTableLimits = ({
 	}
 
 	if (maxCols > engineMaxTableCols) {
-		throw new Error(
-			`Table's maxCols can't be more than ${engineMaxTableCols}.`,
-		);
+		throw new Error(`Table's maxCols can't be more than ${engineMaxTableCols}.`);
 	}
 
 	if (maxRows * maxCols > engineMaxTableGridSize) {
-		throw new Error(
-			`Table's maxRows × maxCols can't be more than ${engineMaxTableGridSize}.`,
-		);
+		throw new Error(`Table's maxRows × maxCols can't be more than ${engineMaxTableGridSize}.`);
 	}
 
 	return { maxRows, maxCols };

@@ -1,13 +1,10 @@
-import {
-	blockComponentRole,
-	htmlLayoutRole,
-	listRole,
-	nestedEditableRole,
-} from "@rangex/core";
+import { blockComponentRole, htmlLayoutRole, listRole, nestedEditableRole } from "@rangex/core";
+
 import { componentsName, todoListDefinition } from "#constants";
 import { createTodoListAttrValidators, todoListAttrsShape } from "#dom-attrs";
 import { todoListStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
+
 import {
 	describeJSONMismatch,
 	formatNodePath,
@@ -15,10 +12,7 @@ import {
 	validateHTMLLayoutState,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateTodoListValidatorResult,
 	ValidateCheckboxParams,

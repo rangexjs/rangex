@@ -5,7 +5,9 @@ import {
 	tableRole,
 	tableRoleSelector,
 } from "@rangex/core";
+
 import { verticalAlignAttr } from "#constants";
+
 import {
 	getActiveTableCells,
 	getCommonTableCellFromSelection,
@@ -30,9 +32,7 @@ import type {
  * TableSelection (a table has $$isTableSelectionActive) or EditorSelection
  * (the cursor is inside a table cell). TableSelection takes priority.
  */
-const getActiveTable = ({
-	editorAPI,
-}: GetActiveTableParams): GetActiveTableResult => {
+const getActiveTable = ({ editorAPI }: GetActiveTableParams): GetActiveTableResult => {
 	const { rootEditable } = editorAPI;
 
 	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
@@ -50,10 +50,7 @@ const getActiveTable = ({
 	return getCommonTableFromSelection({ editorAPI });
 };
 
-const handleSelectionType = ({
-	configPort,
-	editorAPI,
-}: HandleSelectionTypeParams) => {
+const handleSelectionType = ({ configPort, editorAPI }: HandleSelectionTypeParams) => {
 	return configPort.onChangeSectionType((type) => {
 		const toSection: TableSectionLocalName = (
 			{
@@ -79,10 +76,7 @@ const handleSelectionType = ({
 	});
 };
 
-const handleMergeSplit = ({
-	configPort,
-	editorAPI,
-}: HandleMergeSplitParams) => {
+const handleMergeSplit = ({ configPort, editorAPI }: HandleMergeSplitParams) => {
 	return configPort.onChangeMergeSplit((action) => {
 		const table = getActiveTable({ editorAPI });
 
@@ -107,18 +101,12 @@ const handleMergeSplit = ({
 
 		({
 			mergeSelected: () => table.$$mergeCells({ type: "selection" }),
-			mergeLeft: () =>
-				table.$$mergeCellTo({ type: "selection", direction: "left" }),
-			mergeRight: () =>
-				table.$$mergeCellTo({ type: "selection", direction: "right" }),
-			mergeUp: () =>
-				table.$$mergeCellTo({ type: "selection", direction: "up" }),
-			mergeDown: () =>
-				table.$$mergeCellTo({ type: "selection", direction: "down" }),
-			splitHorizontally: () =>
-				table.$$splitCell({ type: "selection", direction: "horizontal" }),
-			splitVertically: () =>
-				table.$$splitCell({ type: "selection", direction: "vertical" }),
+			mergeLeft: () => table.$$mergeCellTo({ type: "selection", direction: "left" }),
+			mergeRight: () => table.$$mergeCellTo({ type: "selection", direction: "right" }),
+			mergeUp: () => table.$$mergeCellTo({ type: "selection", direction: "up" }),
+			mergeDown: () => table.$$mergeCellTo({ type: "selection", direction: "down" }),
+			splitHorizontally: () => table.$$splitCell({ type: "selection", direction: "horizontal" }),
+			splitVertically: () => table.$$splitCell({ type: "selection", direction: "vertical" }),
 			splitFully: () => table.$$splitSpannedCells({ type: "selection" }),
 		})[action]();
 
@@ -126,10 +114,7 @@ const handleMergeSplit = ({
 	});
 };
 
-const handleInsertDelete = ({
-	configPort,
-	editorAPI,
-}: HandleInsertDeleteParams) => {
+const handleInsertDelete = ({ configPort, editorAPI }: HandleInsertDeleteParams) => {
 	return configPort.onChangeInsertDelete((action) => {
 		const table = getActiveTable({ editorAPI });
 
@@ -143,13 +128,10 @@ const handleInsertDelete = ({
 			limits: configPort.limits,
 		});
 
-		const isRowInsert =
-			action === "insertRowAbove" || action === "insertRowBelow";
-		const isColInsert =
-			action === "insertColumnLeft" || action === "insertColumnRight";
+		const isRowInsert = action === "insertRowAbove" || action === "insertRowBelow";
+		const isColInsert = action === "insertColumnLeft" || action === "insertColumnRight";
 
-		const isWithinLimits =
-			(!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
+		const isWithinLimits = (!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
 
 		if (!isWithinLimits) {
 			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
@@ -157,14 +139,10 @@ const handleInsertDelete = ({
 		}
 
 		({
-			insertRowAbove: () =>
-				table.$$insertRow({ type: "selection", direction: "up" }),
-			insertRowBelow: () =>
-				table.$$insertRow({ type: "selection", direction: "down" }),
-			insertColumnLeft: () =>
-				table.$$insertCol({ type: "selection", direction: "left" }),
-			insertColumnRight: () =>
-				table.$$insertCol({ type: "selection", direction: "right" }),
+			insertRowAbove: () => table.$$insertRow({ type: "selection", direction: "up" }),
+			insertRowBelow: () => table.$$insertRow({ type: "selection", direction: "down" }),
+			insertColumnLeft: () => table.$$insertCol({ type: "selection", direction: "left" }),
+			insertColumnRight: () => table.$$insertCol({ type: "selection", direction: "right" }),
 			deleteRow: () => table.$$deleteRows({ type: "selection" }),
 			deleteColumn: () => table.$$deleteCols({ type: "selection" }),
 		})[action]();
@@ -198,10 +176,7 @@ const handleCellType = ({ configPort, editorAPI }: HandleCellTypeParams) => {
 	});
 };
 
-const handleVerticalAlignment = ({
-	configPort,
-	editorAPI,
-}: HandleVerticalAlignmentParams) => {
+const handleVerticalAlignment = ({ configPort, editorAPI }: HandleVerticalAlignmentParams) => {
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	return configPort.onChangeVerticalAlignment((action) => {
@@ -214,9 +189,7 @@ const handleVerticalAlignment = ({
 		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
-			const nestedEditable = tableCell.$$querySelector(
-				nestedEditableRoleSelector,
-			);
+			const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
 			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 				throw new Error("NestedEditable's type is invalid.");
@@ -231,10 +204,7 @@ const handleVerticalAlignment = ({
 	});
 };
 
-const handleCellResizing = ({
-	configPort,
-	editorAPI,
-}: HandleCellResizingParams) => {
+const handleCellResizing = ({ configPort, editorAPI }: HandleCellResizingParams) => {
 	return configPort.onChangeCellResizing((action) => {
 		const table = getActiveTable({ editorAPI });
 
@@ -281,10 +251,7 @@ const handleCellResizing = ({
 	});
 };
 
-const handleClearContents = ({
-	configPort,
-	editorAPI,
-}: HandleClearContentsParams) => {
+const handleClearContents = ({ configPort, editorAPI }: HandleClearContentsParams) => {
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
 	return configPort.onClear(() => {
@@ -297,9 +264,7 @@ const handleClearContents = ({
 		const tableCells = getActiveTableCells({ editorAPI, table });
 
 		for (const tableCell of tableCells) {
-			const nestedEditable = tableCell.$$querySelector(
-				nestedEditableRoleSelector,
-			);
+			const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
 			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 				throw new Error("NestedEditable's type is invalid.");

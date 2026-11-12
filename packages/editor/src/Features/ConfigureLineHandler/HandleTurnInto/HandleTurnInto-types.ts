@@ -6,11 +6,9 @@ import type {
 	List,
 	NestedEditable,
 } from "@rangex/core";
+
 import type { AdapterBus } from "#adapters";
-import type {
-	LineHandlerConfigPort,
-	TurnIntoPlacementOption,
-} from "#adapters/LineHandler";
+import type { LineHandlerConfigPort, TurnIntoPlacementOption } from "#adapters/LineHandler";
 import type { BlockComponentPlacement } from "#engine-links";
 
 export type GetCurrentLineFn = () => Line | null;

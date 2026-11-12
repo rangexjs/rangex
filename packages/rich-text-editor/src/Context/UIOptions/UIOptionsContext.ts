@@ -55,9 +55,7 @@ export interface GetMentionItemsParams {
 	signal: AbortSignal;
 }
 
-export type GetMentionItemsFn = (
-	params: GetMentionItemsParams,
-) => Promise<MentionItems>;
+export type GetMentionItemsFn = (params: GetMentionItemsParams) => Promise<MentionItems>;
 
 export interface MentionUIOptions {
 	getItems: GetMentionItemsFn;
@@ -74,9 +72,7 @@ export interface TemplateVariableModalInput<FieldName extends string = string> {
 	): string;
 }
 
-export interface TemplateVariableModalSettings<
-	FieldName extends string = string,
-> {
+export interface TemplateVariableModalSettings<FieldName extends string = string> {
 	title: string;
 	inputs: TemplateVariableModalInput<FieldName>[];
 	onUpdate(
@@ -85,9 +81,7 @@ export interface TemplateVariableModalSettings<
 	): Partial<TemplateVariableFields<FieldName>>;
 }
 
-export interface TemplateVariableDropdownItem<
-	FieldName extends string = string,
-> {
+export interface TemplateVariableDropdownItem<FieldName extends string = string> {
 	label: string;
 	fieldName: FieldName;
 	settings: TemplateVariableModalSettings<FieldName>;

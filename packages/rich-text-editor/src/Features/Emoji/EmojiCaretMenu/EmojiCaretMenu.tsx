@@ -1,11 +1,9 @@
 import { Emoji } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
-import {
-	type CaretItemFn,
-	CaretMenu,
-	filterCaretMenuItems,
-} from "../../_Utilities";
+
+import { type CaretItemFn, CaretMenu, filterCaretMenuItems } from "../../_Utilities";
 
 const MAX_RESULTS = 16;
 
@@ -40,9 +38,7 @@ export const EmojiCaretMenu = () => {
 					onClick={() => emoji.select(item)}
 				>
 					<span class="shrink-0 text-lg leading-none">{item.emoji}</span>
-					<span class="truncate text-neutral-600 text-sm dark:text-neutral-300">
-						:{item.name}:
-					</span>
+					<span class="truncate text-neutral-600 text-sm dark:text-neutral-300">:{item.name}:</span>
 				</button>
 			);
 		});

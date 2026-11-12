@@ -1,4 +1,5 @@
 import type { MarkdownExtensionSettings } from "@rangex/rich-text-editor/markdown";
+
 import { defaultTheme } from "../CodeBlock";
 
 const codeBlockTriggers = [

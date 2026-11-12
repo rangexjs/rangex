@@ -1,9 +1,7 @@
 import { listRole, listRoleSelector } from "@rangex/core";
+
 import { handleSelectionContextChange } from "../../_Utilities";
-import type {
-	GetComponentListParams,
-	HandleListStateParams,
-} from "./HandleListState-types";
+import type { GetComponentListParams, HandleListStateParams } from "./HandleListState-types";
 
 /*
  * Returns the list component's own List; nested lists sit in their own components after it.
@@ -22,10 +20,7 @@ const getComponentList = ({ blockComponent }: GetComponentListParams) => {
  * Keeps the port's localName in sync with the current list and wires localName changes to it,
  * converting the list in place and registering a snapshot boundary. Returns a cleanup function.
  */
-export const handleListState = ({
-	configPort,
-	editorAPI,
-}: HandleListStateParams) => {
+export const handleListState = ({ configPort, editorAPI }: HandleListStateParams) => {
 	// The List is replaced on conversion while its component stays, so structural changes must re-sync too.
 	const selectionContextCleanup = handleSelectionContextChange({
 		editorAPI,
@@ -43,30 +38,28 @@ export const handleListState = ({
 		},
 	});
 
-	const unsubscribeLocalNameChange = configPort.onChangeLocalName(
-		(localName) => {
-			const { currentComponent } = configPort;
+	const unsubscribeLocalNameChange = configPort.onChangeLocalName((localName) => {
+		const { currentComponent } = configPort;
 
-			if (!currentComponent) {
-				console.warn("handleListState: no list is currently active.");
-				return;
-			}
+		if (!currentComponent) {
+			console.warn("handleListState: no list is currently active.");
+			return;
+		}
 
-			const list = getComponentList({ blockComponent: currentComponent });
+		const list = getComponentList({ blockComponent: currentComponent });
 
-			if (list.$$localName === localName) {
-				return;
-			}
+		if (list.$$localName === localName) {
+			return;
+		}
 
-			list.$$changeLocalName({ toLocalName: localName });
+		list.$$changeLocalName({ toLocalName: localName });
 
-			const snapshotTimeline = editorAPI.getSnapshotTimeline();
+		const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-			snapshotTimeline.registerSnapshotBoundary();
+		snapshotTimeline.registerSnapshotBoundary();
 
-			editorAPI.focus();
-		},
-	);
+		editorAPI.focus();
+	});
 
 	return () => {
 		selectionContextCleanup();

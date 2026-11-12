@@ -1,9 +1,6 @@
 import type { List } from "@rangex/core";
 
-export type CodeBlockMap = WeakMap<
-	List,
-	{ highlight: Highlight; range: Range }[]
->;
+export type CodeBlockMap = WeakMap<List, { highlight: Highlight; range: Range }[]>;
 
 export interface CSSHighlightManagerConstructorParams {}
 

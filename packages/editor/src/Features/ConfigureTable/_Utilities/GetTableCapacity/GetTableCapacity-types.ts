@@ -1,4 +1,5 @@
 import type { Table, TableCell } from "@rangex/core";
+
 import type { TableLimits } from "#constants";
 
 export interface GetTableCapacityParams {

@@ -1,5 +1,7 @@
 import { Emoji as EmojiFactory } from "@rangex/editor/emoji";
+
 import { EmojiCaretMenu } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { EmojiExtensionSettings } from "./Emoji-types";
 

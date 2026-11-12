@@ -4,8 +4,10 @@ import {
 	createInlineComponent,
 	createNestedEditable,
 } from "@rangex/core";
+
 import { componentsName, templateVariableDefinition } from "#constants";
 import { createTemplateVariableStorage } from "#storage";
+
 import type {
 	CreateTemplateVariableParams,
 	CreateTemplateVariableResult,

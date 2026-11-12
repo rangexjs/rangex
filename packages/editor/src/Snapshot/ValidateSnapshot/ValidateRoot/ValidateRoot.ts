@@ -1,13 +1,11 @@
 import { rootEditableRole } from "@rangex/core";
+
 import { rootDefinitions } from "#constants";
 import { createRootAttrValidators, rootAttrsShape } from "#dom-attrs";
 import { rootStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
-import {
-	describeJSONMismatch,
-	resolveDraftDOMAttrs,
-	resolveDraftStorage,
-} from "../_Utilities";
+
+import { describeJSONMismatch, resolveDraftDOMAttrs, resolveDraftStorage } from "../_Utilities";
 import type {
 	ResolveRootTypeParams,
 	ResolveRootTypeResult,

@@ -1,20 +1,15 @@
-import {
-	type StoredSnapshot,
-	snapshotManager,
-	validateStoredSnapshot,
-} from "@rangex/core";
+import { type StoredSnapshot, snapshotManager, validateStoredSnapshot } from "@rangex/core";
+
 import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
+
 import { createComponentValidators } from "./CreateComponentValidators";
 import { resolveNodeStorages } from "./ResolveNodeStorages";
 import { resolveTemplateVariableTexts } from "./ResolveTemplateVariableTexts";
 import { validateComponents } from "./ValidateComponents";
 import { validateFormattingElements } from "./ValidateFormattingElements";
 import { validateRoot } from "./ValidateRoot";
-import type {
-	ValidateSnapshotParams,
-	ValidateSnapshotResult,
-} from "./ValidateSnapshot-types";
+import type { ValidateSnapshotParams, ValidateSnapshotResult } from "./ValidateSnapshot-types";
 
 /*
  * Validates a StoredSnapshot by the engine's rules (with the SanitizerPolicies set by configureSanitizer, the basePolicy
@@ -47,9 +42,7 @@ export const validateSnapshot = ({
 	// The engine's validation guarantees the StoredSnapshot's shape
 	const validStoredSnapshot = storedSnapshot as StoredSnapshot;
 
-	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(
-		validStoredSnapshot.snapshot,
-	);
+	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(validStoredSnapshot.snapshot);
 
 	resolveNodeStorages({ rootEditableDraft });
 
@@ -80,8 +73,7 @@ export const validateSnapshot = ({
 
 	resolveTemplateVariableTexts({ rootEditableDraft });
 
-	const resolvedSnapshot =
-		snapshotManager.createSnapshotFromDraft(rootEditableDraft);
+	const resolvedSnapshot = snapshotManager.createSnapshotFromDraft(rootEditableDraft);
 
 	return {
 		isValid: true,

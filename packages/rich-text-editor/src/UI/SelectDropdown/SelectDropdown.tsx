@@ -1,5 +1,6 @@
 import type { JSX } from "@solidjs/web";
 import { createUniqueId, For } from "solid-js";
+
 import { Icon } from "../Icon";
 
 export interface SelectDropdownOption<Option> {
@@ -19,9 +20,7 @@ export const SelectDropdown = <Option,>(props: SelectDropdownProps<Option>) => {
 	const popoverId = createUniqueId();
 
 	const selectedLabel = () => {
-		const selectedOption = props.options.find(
-			(option) => option.value === props.value,
-		);
+		const selectedOption = props.options.find((option) => option.value === props.value);
 
 		if (!selectedOption) {
 			return props.notFoundLabel;
@@ -43,10 +42,7 @@ export const SelectDropdown = <Option,>(props: SelectDropdownProps<Option>) => {
 				disabled={props.disabled}
 			>
 				<span class="truncate">{selectedLabel()}</span>
-				<Icon
-					name="CaretDown"
-					class="size-2 shrink-0 text-neutral-400 dark:text-neutral-500"
-				/>
+				<Icon name="CaretDown" class="size-2 shrink-0 text-neutral-400 dark:text-neutral-500" />
 			</button>
 			<div
 				id={popoverId}

@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { CodeBlockId } from "../_Constants";
 
 export type CodeBlockTheme = {
@@ -12,13 +13,11 @@ export type CodeBlockStorage = {
 	theme: CodeBlockTheme | null;
 };
 
-export interface CreateCodeBlockStorageParams
-	extends Omit<CodeBlockStorage, "id"> {}
+export interface CreateCodeBlockStorageParams extends Omit<CodeBlockStorage, "id"> {}
 
 export type CreateCodeBlockStorageResult = CodeBlockStorage;
 
-export interface CodeBlockStorageFallbacks
-	extends Omit<CodeBlockStorage, "id"> {}
+export interface CodeBlockStorageFallbacks extends Omit<CodeBlockStorage, "id"> {}
 
 export interface EnsureCodeBlockStorageParams {
 	storage: unknown;

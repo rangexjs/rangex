@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { imageAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	getMediaParts,
 	handleBlockAlignState,
@@ -24,11 +25,7 @@ import { handleImageInsertion } from "./HandleImageInsertion";
  * Wires up the image feature: insertion, quick-actions overlay, resize, alignment, caption, attributes and
  * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
-export const configureImage = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-}: ConfigureImageParams) => {
+export const configureImage = ({ adapterBus, configPort, editorAPI }: ConfigureImageParams) => {
 	const blockComponentPlacement = createBlockComponentPlacement({
 		editorAPI,
 		adapterBus,

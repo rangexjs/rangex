@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { listId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -30,9 +31,7 @@ export const isListStorage = (storage: unknown): storage is ListStorage => {
 	return !mismatch;
 };
 
-export const validateListStorage = (
-	storage: unknown,
-): storage is ListStorage => {
+export const validateListStorage = (storage: unknown): storage is ListStorage => {
 	return validateStorage(storage, isListStorage);
 };
 

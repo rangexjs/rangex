@@ -1,8 +1,10 @@
 import type { ComponentDraft, HTMLLayoutDraft } from "@rangex/core";
+
 import type {
 	AccordionItemAttrValidators,
 	CreateAccordionItemAttrValidatorsParams,
 } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

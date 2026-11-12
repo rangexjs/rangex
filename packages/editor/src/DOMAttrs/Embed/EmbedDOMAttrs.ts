@@ -4,7 +4,9 @@ import {
 	htmlLayoutRole,
 	xhtmlNamespaceURI,
 } from "@rangex/core";
+
 import { aspectRatioAttr, blockAlignAttr, blockWidthAttr } from "#constants";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,
@@ -148,8 +150,7 @@ const validateLoading: ValidateAttrFn<string | null> = ({ value }) => {
 const validateSrc: ValidateAttrFn<string> = () => {
 	return {
 		kind: "reject",
-		reason:
-			"isn't allowed: no site is allowed until the Embed's src validator is given",
+		reason: "isn't allowed: no site is allowed until the Embed's src validator is given",
 	};
 };
 

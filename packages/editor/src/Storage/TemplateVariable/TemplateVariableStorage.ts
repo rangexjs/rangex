@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { templateVariableId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -18,9 +19,7 @@ export const maxTemplateVariableFieldValueLength = 1000;
  */
 export const isTemplateVariableFieldName = (value: unknown) => {
 	return (
-		typeof value === "string" &&
-		value !== "" &&
-		value.length <= maxTemplateVariableFieldNameLength
+		typeof value === "string" && value !== "" && value.length <= maxTemplateVariableFieldNameLength
 	);
 };
 
@@ -28,10 +27,7 @@ export const isTemplateVariableFieldName = (value: unknown) => {
  * A stored field value is valid if it's at most maxTemplateVariableFieldValueLength characters long.
  */
 export const isTemplateVariableFieldValue = (value: unknown) => {
-	return (
-		typeof value === "string" &&
-		value.length <= maxTemplateVariableFieldValueLength
-	);
+	return typeof value === "string" && value.length <= maxTemplateVariableFieldValueLength;
 };
 
 /*
@@ -49,9 +45,7 @@ export const matchTemplateVariableStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: templateVariableStoragePattern });
 };
 
-export const isTemplateVariableStorage = (
-	storage: unknown,
-): storage is TemplateVariableStorage => {
+export const isTemplateVariableStorage = (storage: unknown): storage is TemplateVariableStorage => {
 	const mismatch = matchTemplateVariableStorage(storage);
 
 	return !mismatch;

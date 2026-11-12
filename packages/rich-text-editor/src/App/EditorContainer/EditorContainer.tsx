@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+
 import { MenuBar } from "../MenuBar";
 import type { EditorContainerProps, ThemeValue } from "./EditorContainer-types";
 

@@ -4,9 +4,7 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
  * An aspect ratio is valid if it's at most 32 characters long, and two positive numbers separated by " / " (e.g.
  * "16 / 9").
  */
-export const validateAspectRatio: ValidateAttrFn<string | null> = ({
-	value,
-}) => {
+export const validateAspectRatio: ValidateAttrFn<string | null> = ({ value }) => {
 	const maxAspectRatioLength = 32;
 
 	if (value.length > maxAspectRatioLength) {

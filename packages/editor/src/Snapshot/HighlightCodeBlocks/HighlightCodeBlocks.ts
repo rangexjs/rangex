@@ -5,7 +5,9 @@ import {
 	type NodeView,
 	type TextView,
 } from "@rangex/core";
+
 import { isCodeBlockStorage } from "#storage";
+
 import type {
 	CreateTokenViewParams,
 	GetContentLinesParams,
@@ -23,9 +25,7 @@ const isTextView = (nodeView: NodeView): nodeView is TextView => {
 /*
  * Collects the code block's ContentLines in document order, one per code line.
  */
-const getContentLines = ({
-	elementView,
-}: GetContentLinesParams): GetContentLinesResult => {
+const getContentLines = ({ elementView }: GetContentLinesParams): GetContentLinesResult => {
 	const contentLines: ElementView[] = [];
 
 	for (const childView of elementView.childNodes) {
@@ -132,9 +132,7 @@ const highlightCodeBlock = ({
 			continue;
 		}
 
-		contentLine.childNodes = codeLine.map((themedChars) =>
-			createTokenView({ themedChars }),
-		);
+		contentLine.childNodes = codeLine.map((themedChars) => createTokenView({ themedChars }));
 	}
 };
 
@@ -142,10 +140,7 @@ const highlightCodeBlock = ({
  * Applies syntax highlighting to every code block in the view tree, in place, so the tree can then be rendered to
  * HTML as usual.
  */
-export const highlightCodeBlocks = ({
-	nodeView,
-	highlightCode,
-}: HighlightCodeBlocksParams) => {
+export const highlightCodeBlocks = ({ nodeView, highlightCode }: HighlightCodeBlocksParams) => {
 	if (nodeView.type !== "element") {
 		return;
 	}

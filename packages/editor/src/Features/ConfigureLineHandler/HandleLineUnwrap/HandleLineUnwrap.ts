@@ -3,6 +3,7 @@ import {
 	blockComponentRole,
 	blockComponentRoleSelector,
 } from "@rangex/core";
+
 import { handleComponentUnwrap } from "../../_Utilities";
 import type { HandleLineUnwrapParams } from "./HandleLineUnwrap-types";
 
@@ -26,9 +27,7 @@ export const handleLineUnwrap = ({
 				return null;
 			}
 
-			const blockComponent = currentLine.$$querySelector(
-				blockComponentRoleSelector,
-			);
+			const blockComponent = currentLine.$$querySelector(blockComponentRoleSelector);
 
 			if (blockComponent?.$$editorRole !== blockComponentRole) {
 				return null;

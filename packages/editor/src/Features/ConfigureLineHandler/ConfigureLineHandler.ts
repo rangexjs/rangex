@@ -1,9 +1,6 @@
 import { createBlockComponentPlacement } from "#engine-links";
-import {
-	handleBlockLineDuplication,
-	handleInsertRootLine,
-	handleLineRemove,
-} from "../_Utilities";
+
+import { handleBlockLineDuplication, handleInsertRootLine, handleLineRemove } from "../_Utilities";
 import type { ConfigureLineHandlerParams } from "./ConfigureLineHandler-types";
 import { handleDragMenuState } from "./HandleDragMenuState";
 import { handleLineDragStart } from "./HandleLineDragStart";

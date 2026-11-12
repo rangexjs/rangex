@@ -58,15 +58,13 @@ export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
 	};
 
 	return (
-		// biome-ignore lint/a11y/noStaticElementInteractions: drag-and-drop dropzone container; the keydown/paste/copy/cut handlers only stop propagation into the editor underneath, they aren't a real interactive control
+		// oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- drag-and-drop dropzone container; the keydown/paste/copy/cut handlers only stop propagation into the editor underneath, they aren't a real interactive control
 		<div
 			class={[
 				"flex flex-col rounded-lg border border-dashed p-4",
 				{
-					"border-blue-400 bg-blue-50 dark:bg-blue-950":
-						fileDropzone.dragActive(),
-					"border-neutral-300 dark:border-neutral-700":
-						!fileDropzone.dragActive(),
+					"border-blue-400 bg-blue-50 dark:bg-blue-950": fileDropzone.dragActive(),
+					"border-neutral-300 dark:border-neutral-700": !fileDropzone.dragActive(),
 				},
 			]}
 			onDragEnter={fileDropzone.onDragEnter}

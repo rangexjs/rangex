@@ -13,9 +13,7 @@ export const getActiveTableCells = ({
 	table,
 }: GetActiveTableCellsParams): GetActiveTableCellsResult => {
 	if (table.$$isTableSelectionActive) {
-		return table.$$tableCells.filter(
-			(tableCell) => tableCell.$$isInMultiSelection,
-		);
+		return table.$$tableCells.filter((tableCell) => tableCell.$$isInMultiSelection);
 	}
 
 	const tableCell = getCommonTableCellFromSelection({ editorAPI });

@@ -1,5 +1,6 @@
 import { positionToSelection } from "#engine-links";
 import { assertNever } from "#utilities";
+
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
 	HandleSelectionMenuOpenParams,
@@ -11,10 +12,7 @@ import type {
  * Opens the popover anchored to the caret, for a collapsed selection with no range to
  * position against.
  */
-const openAtCaret = ({
-	editorAPI,
-	selectionMenuPopoverController,
-}: OpenAtCaretParams) => {
+const openAtCaret = ({ editorAPI, selectionMenuPopoverController }: OpenAtCaretParams) => {
 	positionToSelection({
 		editorAPI,
 		controller: selectionMenuPopoverController,
@@ -25,10 +23,7 @@ const openAtCaret = ({
 /*
  * Opens the popover positioned to a non-collapsed selection, with pre-filled display text.
  */
-const openForWrap = ({
-	editorAPI,
-	selectionMenuPopoverController,
-}: OpenForWrapParams) => {
+const openForWrap = ({ editorAPI, selectionMenuPopoverController }: OpenForWrapParams) => {
 	positionToSelection({
 		editorAPI,
 		controller: selectionMenuPopoverController,

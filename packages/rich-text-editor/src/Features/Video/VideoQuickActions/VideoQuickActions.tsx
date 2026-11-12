@@ -1,12 +1,8 @@
 import type { CaptionPosition } from "@rangex/editor";
 import type { VideoAttrsPatch } from "@rangex/editor/video";
 import { FloatingPortal, ReadOnly, Video } from "@rangex/solid";
-import {
-	createEffect,
-	createSignal,
-	createUniqueId,
-	onCleanup,
-} from "solid-js";
+import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js";
+
 import { useEditorContext } from "#context";
 import {
 	createTextFieldState,
@@ -17,6 +13,7 @@ import {
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
+
 import {
 	type AspectRatioValue,
 	aspectRatioAttrName,
@@ -74,9 +71,7 @@ export const VideoQuickActions = () => {
 		return isAspectRatioValue(value) ? value : null;
 	};
 
-	const hasVideoAttr = (
-		attrName: "controls" | "autoplay" | "loop" | "muted",
-	) => {
+	const hasVideoAttr = (attrName: "controls" | "autoplay" | "loop" | "muted") => {
 		const value = videoAttrs()?.[attrName] ?? null;
 
 		return value !== null;
@@ -87,11 +82,9 @@ export const VideoQuickActions = () => {
 	const loop = () => hasVideoAttr("loop");
 	const muted = () => hasVideoAttr("muted");
 
-	const [posterHandle, posterControls] = createTextFieldState<HTMLInputElement>(
-		{
-			defaultValue: "",
-		},
-	);
+	const [posterHandle, posterControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: "",
+	});
 
 	const [committedPoster, setCommittedPoster] = createSignal("");
 
@@ -216,11 +209,7 @@ export const VideoQuickActions = () => {
 	const optionsPopoverId = createUniqueId();
 
 	const closeNestedPopovers = () => {
-		const nestedPopovers = [
-			blockAlignPopover,
-			mediaSourcePopover,
-			optionsPopover,
-		];
+		const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
 
 		for (const nestedPopover of nestedPopovers) {
 			if (!nestedPopover) {
@@ -230,6 +219,7 @@ export const VideoQuickActions = () => {
 			if (nestedPopover.matches(":popover-open")) {
 				// Force a synchronous reflow before hiding — otherwise the popover can
 				// briefly animate from a stale, not-yet-committed style.
+				// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
 				nestedPopover.offsetHeight;
 				nestedPopover.hidePopover();
 			}
@@ -315,44 +305,24 @@ export const VideoQuickActions = () => {
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Controls
 							</span>
-							<ToggleButton
-								checked={controls()}
-								label="Controls"
-								onClick={onControlsToggle}
-							/>
+							<ToggleButton checked={controls()} label="Controls" onClick={onControlsToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
 							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
 								Autoplay
 							</span>
-							<ToggleButton
-								checked={autoplay()}
-								label="Autoplay"
-								onClick={onAutoplayToggle}
-							/>
+							<ToggleButton checked={autoplay()} label="Autoplay" onClick={onAutoplayToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Loop
-							</span>
-							<ToggleButton
-								checked={loop()}
-								label="Loop"
-								onClick={onLoopToggle}
-							/>
+							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Loop</span>
+							<ToggleButton checked={loop()} label="Loop" onClick={onLoopToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Muted
-							</span>
-							<ToggleButton
-								checked={muted()}
-								label="Muted"
-								onClick={onMutedToggle}
-							/>
+							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Muted</span>
+							<ToggleButton checked={muted()} label="Muted" onClick={onMutedToggle} />
 						</div>
 
 						<div class="flex items-center justify-between">
@@ -393,10 +363,7 @@ export const VideoQuickActions = () => {
 									Enter to save
 								</span>
 							</div>
-							<TextFieldWrapper
-								appearance="neutral-filled-underline"
-								size="small"
-							>
+							<TextFieldWrapper appearance="neutral-filled-underline" size="small">
 								<InputTextField
 									type="text"
 									placeholder="https://example.com/poster.png"
@@ -423,10 +390,7 @@ export const VideoQuickActions = () => {
 									Enter to save
 								</span>
 							</div>
-							<TextFieldWrapper
-								appearance="neutral-filled-underline"
-								size="small"
-							>
+							<TextFieldWrapper appearance="neutral-filled-underline" size="small">
 								<InputTextField
 									type="text"
 									placeholder="Describe the video"

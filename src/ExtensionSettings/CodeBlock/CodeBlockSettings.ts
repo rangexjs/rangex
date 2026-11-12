@@ -1,5 +1,6 @@
 import type { CodeBlockExtensionSettings } from "@rangex/rich-text-editor/code-block";
 import { createEditorHighlighter } from "@rangex/syntax-highlighter-shiki";
+
 import {
 	codeBlockLanguageDefinitions,
 	codeBlockThemeDefinitions,

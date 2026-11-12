@@ -1,9 +1,10 @@
 import { createEditor } from "@rangex/editor";
 import { render } from "@solidjs/web";
+
 import type { UIOptions } from "#context";
 import type { ExtensionComponents } from "#extensions";
+
 import { App } from "../App";
-import globalStyles from "../ComponentStyles/global.css?inline";
 import { getEditorStyles } from "../EngineStyles";
 import { defaultToolbarButtonsLayout } from "./_Utilities";
 import type {
@@ -11,6 +12,8 @@ import type {
 	CreateRichTextEditorResult,
 	RichTextEditor,
 } from "./CreateRichTextEditor-types";
+
+import globalStyles from "../ComponentStyles/global.css?inline";
 
 export const createRichTextEditor = ({
 	licenseKey,

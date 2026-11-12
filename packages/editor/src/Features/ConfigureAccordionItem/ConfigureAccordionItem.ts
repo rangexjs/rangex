@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { accordionItemAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
+
 import {
 	getAccordionItemParts,
 	handleComponentUnwrap,
@@ -56,8 +57,7 @@ export const configureAccordionItem = ({
 		editorAPI,
 		componentAttrsShape: accordionItemAttrsShape,
 		componentAttrValidators: configPort.attrValidators,
-		resolveElements: (accordionItem) =>
-			getAccordionItemParts({ blockComponent: accordionItem }),
+		resolveElements: (accordionItem) => getAccordionItemParts({ blockComponent: accordionItem }),
 	});
 
 	const summaryToggleCleanup = handleAccordionItemSummaryToggle({ editorAPI });

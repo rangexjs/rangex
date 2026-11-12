@@ -5,10 +5,12 @@ import {
 	listRole,
 	nestedEditableRole,
 } from "@rangex/core";
+
 import { codeBlockDefinition, componentsName } from "#constants";
 import { codeBlockAttrsShape, createCodeBlockAttrValidators } from "#dom-attrs";
 import { codeBlockStoragePattern } from "#storage";
 import { matchJSON } from "#utilities";
+
 import {
 	describeJSONMismatch,
 	formatNodePath,
@@ -17,10 +19,7 @@ import {
 	validateHTMLLayoutState,
 	validateNestedEditableState,
 } from "../../_Utilities";
-import {
-	validateBlockComponentLine,
-	validateBlockComponentState,
-} from "../_Utilities";
+import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
 	CreateCodeBlockValidatorParams,
 	CreateCodeBlockValidatorResult,
@@ -104,10 +103,7 @@ const validateListItem = ({
 
 	const htmlLayoutDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		htmlLayoutDraft?.editorRole !== htmlLayoutRole
-	) {
+	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
 		return {
 			sourceSnapshot: componentDraft,
 			failedSnapshot: listItemDraft,
@@ -187,10 +183,7 @@ const validateListItem = ({
 /*
  * Validates the List holding the code lines, then each of its ListItems.
  */
-const validateList = ({
-	componentDraft,
-	listDraft,
-}: ValidateListParams): ValidateListResult => {
+const validateList = ({ componentDraft, listDraft }: ValidateListParams): ValidateListResult => {
 	const { localName, lineType, editState, customStorage } = listDraft;
 
 	const listState = { localName, lineType, editState, customStorage };
@@ -302,10 +295,7 @@ const validateCode = ({
 /*
  * Validates the pre element and its only child, the code element.
  */
-const validatePre = ({
-	componentDraft,
-	htmlLayoutDraft,
-}: ValidatePreParams): ValidatePreResult => {
+const validatePre = ({ componentDraft, htmlLayoutDraft }: ValidatePreParams): ValidatePreResult => {
 	const stateFailed = validateHTMLLayoutState({
 		componentDraft,
 		htmlLayoutDraft,

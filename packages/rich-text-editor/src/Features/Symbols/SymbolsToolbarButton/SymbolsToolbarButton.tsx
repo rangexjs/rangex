@@ -1,7 +1,9 @@
 import { ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId, For } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const SymbolsToolbarButton = () => {

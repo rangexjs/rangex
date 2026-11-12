@@ -4,6 +4,7 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { createBlockQuote } from "../../_Utilities";
 import type { HandleBlockQuotePlacementParams } from "./HandleBlockQuotePlacement-types";
 
@@ -21,9 +22,7 @@ export const handleBlockQuotePlacement = ({
 
 	const unsubscribeInsert = configPort.onInsert(() => {
 		const blockQuoteLine = createBlockQuote({
-			childNodes: [
-				createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-			],
+			childNodes: [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 		});
 
 		blockComponentPlacement.insertBySelection({
@@ -31,9 +30,7 @@ export const handleBlockQuotePlacement = ({
 			shouldReplaceContentLineIfEmpty: true,
 		});
 
-		const nestedEditable = blockQuoteLine.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = blockQuoteLine.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");
@@ -54,9 +51,7 @@ export const handleBlockQuotePlacement = ({
 	const unsubscribeWrap = configPort.onWrap(() => {
 		const blockQuoteLine = createBlockQuote({});
 
-		const nestedEditable = blockQuoteLine.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = blockQuoteLine.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("NestedEditable's type is invalid.");

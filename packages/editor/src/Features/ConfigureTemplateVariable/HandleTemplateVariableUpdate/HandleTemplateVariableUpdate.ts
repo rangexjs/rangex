@@ -1,8 +1,6 @@
 import { getRootStorage } from "#storage";
-import {
-	updateAllTemplateVariableNodes,
-	validateTemplateVariableField,
-} from "../_Utilities";
+
+import { updateAllTemplateVariableNodes, validateTemplateVariableField } from "../_Utilities";
 import type { HandleTemplateVariableUpdateParams } from "./HandleTemplateVariableUpdate-types";
 
 /*

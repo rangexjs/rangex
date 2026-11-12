@@ -16,15 +16,10 @@ export const createCaptionPort = (): CreateCaptionPortResult => {
 	const captionPositionState = createStateEmitter<CaptionPosition>("below");
 
 	// CommandListeners
-	const changeCaptionEnabledEmitter =
-		createEmitter<OnChangeCaptionEnabledCallbackFn>();
-	const changeCaptionPositionEmitter =
-		createEmitter<OnChangeCaptionPositionCallbackFn>();
+	const changeCaptionEnabledEmitter = createEmitter<OnChangeCaptionEnabledCallbackFn>();
+	const changeCaptionPositionEmitter = createEmitter<OnChangeCaptionPositionCallbackFn>();
 
-	const updateState = ({
-		captionEnabled,
-		captionPosition,
-	}: UpdateStateParams) => {
+	const updateState = ({ captionEnabled, captionPosition }: UpdateStateParams) => {
 		if (captionEnabled !== undefined) {
 			captionEnabledState.set(captionEnabled);
 		}

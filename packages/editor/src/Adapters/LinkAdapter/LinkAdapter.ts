@@ -1,6 +1,8 @@
 import type { InlineComponent } from "@rangex/core";
+
 import type { LinkAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createDOMAttrsPort,
@@ -28,13 +30,8 @@ import type {
 	UpdateStateParams,
 } from "./LinkAdapter-types";
 
-export const createLinkAdapter = (
-	...params: CreateLinkAdapterParams
-): CreateLinkAdapterResult => {
-	const [
-		{ linkMenu = defaultLinkMenuSettings },
-		{ adapterBus, floatingContainer },
-	] = params;
+export const createLinkAdapter = (...params: CreateLinkAdapterParams): CreateLinkAdapterResult => {
+	const [{ linkMenu = defaultLinkMenuSettings }, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("link");
 
@@ -53,8 +50,7 @@ export const createLinkAdapter = (
 
 	// CommandListeners
 	const insertEmitter = createEmitter<OnInsertCallbackFn>();
-	const changeDisplayTextEmitter =
-		createEmitter<OnChangeDisplayTextCallbackFn>();
+	const changeDisplayTextEmitter = createEmitter<OnChangeDisplayTextCallbackFn>();
 	const linkClickEmitter = createEmitter<OnLinkClickCallbackFn>();
 	const linkSelectionInEmitter = createEmitter<OnLinkSelectionInCallbackFn>();
 	const linkMenuToggleEmitter = createEmitter<OnLinkMenuToggleCallbackFn>();

@@ -4,10 +4,8 @@ import type {
 } from "./ValidateElementAttrsPatch-types";
 
 // Own keys only, so an attribute named like an Object.prototype member (e.g. "constructor") isn't found there
-const getOwn = <Value>(
-	record: Partial<Record<string, Value>>,
-	key: string,
-): Value | undefined => (Object.hasOwn(record, key) ? record[key] : undefined);
+const getOwn = <Value>(record: Partial<Record<string, Value>>, key: string): Value | undefined =>
+	Object.hasOwn(record, key) ? record[key] : undefined;
 
 /*
  * Validates only the given attributes of an element by its shape and validators: every attribute must be in the shape,

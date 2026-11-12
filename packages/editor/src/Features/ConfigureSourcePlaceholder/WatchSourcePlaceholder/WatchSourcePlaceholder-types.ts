@@ -1,4 +1,5 @@
 import type { BlockComponent, EditorAPI } from "@rangex/core";
+
 import type { AdapterBus, MediaResolveDetail } from "#adapters";
 import type { SourcePlaceholderConfigPort } from "#adapters/SourcePlaceholder";
 import type {

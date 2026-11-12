@@ -17,7 +17,6 @@ export type ImageAttrValidators = ComponentAttrValidators<ImageAttrsShape>;
 
 export type ImageAttrsMismatch = ComponentAttrsMismatch<ImageAttrsShape>;
 
-export type CreateImageAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<ImageAttrsShape>;
+export type CreateImageAttrValidatorsParams = ComponentAttrValidatorOverrides<ImageAttrsShape>;
 
 export type CreateImageAttrValidatorsResult = ImageAttrValidators;

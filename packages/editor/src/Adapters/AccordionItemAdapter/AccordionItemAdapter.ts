@@ -1,6 +1,8 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { AccordionItemAttrsShape } from "#dom-attrs";
 import { extendObjectProperties } from "#utilities";
+
 import {
 	createCurrentComponentPort,
 	createDOMAttrsPort,
@@ -30,8 +32,7 @@ export const createAccordionItemAdapter = (
 
 	adapterBus.registerAdapter("accordionItem");
 
-	const accordionItemAttrValidators =
-		adapterBus.getAttrValidators("accordionItem");
+	const accordionItemAttrValidators = adapterBus.getAttrValidators("accordionItem");
 
 	// States
 	const canInsertState = createStateEmitter<boolean>(false);

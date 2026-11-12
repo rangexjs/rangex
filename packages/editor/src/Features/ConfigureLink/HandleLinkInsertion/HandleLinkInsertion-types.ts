@@ -4,6 +4,7 @@ import type {
 	GetInlineWrappableSegmentsResult,
 	InlineComponent,
 } from "@rangex/core";
+
 import type { LinkConfigPort } from "#adapters/Link";
 import type { LinkAttrs } from "#dom-attrs";
 import type { PopoverOverlayController } from "#engine-links";

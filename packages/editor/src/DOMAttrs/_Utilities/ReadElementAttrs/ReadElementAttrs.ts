@@ -1,8 +1,5 @@
 import type { ElementAttrsShape } from "../DOMAttrs-types";
-import type {
-	ReadElementAttrsParams,
-	ReadElementAttrsResult,
-} from "./ReadElementAttrs-types";
+import type { ReadElementAttrsParams, ReadElementAttrsResult } from "./ReadElementAttrs-types";
 
 /*
  * Reads the element's attributes that are in its shape. An attribute that isn't set is null.

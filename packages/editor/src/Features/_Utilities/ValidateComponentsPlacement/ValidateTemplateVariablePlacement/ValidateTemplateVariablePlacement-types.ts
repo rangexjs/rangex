@@ -28,5 +28,4 @@ export interface TemplateVariablePlacementMismatch {
 	reason: string;
 }
 
-export type ValidateTemplateVariablePlacementResult =
-	TemplateVariablePlacementMismatch | null;
+export type ValidateTemplateVariablePlacementResult = TemplateVariablePlacementMismatch | null;

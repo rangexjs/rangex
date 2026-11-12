@@ -1,8 +1,6 @@
 export type InsertRootLinePosition = "above" | "below";
 
-export type OnInsertRootLineCallbackFn = (
-	position: InsertRootLinePosition,
-) => void;
+export type OnInsertRootLineCallbackFn = (position: InsertRootLinePosition) => void;
 
 export interface InsertRootLineConfigPort {
 	onInsertRootLine(callback: OnInsertRootLineCallbackFn): () => void;

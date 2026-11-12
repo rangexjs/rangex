@@ -1,4 +1,5 @@
 import type { EditorAPI } from "@rangex/core";
+
 import type { SelectionMenuConfigPort } from "#adapters";
 import type { PopoverOverlayController } from "#engine-links";
 

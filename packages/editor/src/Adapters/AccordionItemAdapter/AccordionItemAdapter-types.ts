@@ -1,9 +1,11 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type {
 	AccordionItemAttrs,
 	AccordionItemAttrsShape,
 	AccordionItemAttrValidators,
 } from "#dom-attrs";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -47,7 +49,8 @@ export interface AccordionItemConfigPortProps {
 }
 
 export interface AccordionItemConfigPort
-	extends AccordionItemConfigPortProps,
+	extends
+		AccordionItemConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
 		CurrentComponentConfigPort<BlockComponent>,
@@ -65,7 +68,8 @@ export interface AccordionItemPublicPortProps {
 }
 
 export interface AccordionItemPublicPort
-	extends AccordionItemPublicPortProps,
+	extends
+		AccordionItemPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
 		CurrentComponentPublicPort,
@@ -78,8 +82,6 @@ export interface AccordionItemAdapter {
 
 export interface AccordionItemSettings {}
 
-export interface CreateAccordionItemAdapterParams
-	extends CreateAdapterParams<AccordionItemSettings> {}
+export interface CreateAccordionItemAdapterParams extends CreateAdapterParams<AccordionItemSettings> {}
 
-export interface CreateAccordionItemAdapterResult
-	extends AccordionItemAdapter {}
+export interface CreateAccordionItemAdapterResult extends AccordionItemAdapter {}

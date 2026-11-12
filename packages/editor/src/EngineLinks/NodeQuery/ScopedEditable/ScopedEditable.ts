@@ -1,4 +1,5 @@
 import { type EditorNode, isScopedEditable } from "@rangex/core";
+
 import type {
 	GetClosestCommonScopedEditableParams,
 	GetClosestCommonScopedEditableResult,
@@ -47,10 +48,7 @@ export const getClosestCommonScopedEditable = ({
 	let toCurrentNode: EditorNode | null = toNode;
 
 	while (toCurrentNode) {
-		if (
-			isScopedEditable(toCurrentNode) &&
-			fromScopedEditables.has(toCurrentNode)
-		) {
+		if (isScopedEditable(toCurrentNode) && fromScopedEditables.has(toCurrentNode)) {
 			return toCurrentNode;
 		}
 

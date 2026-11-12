@@ -1,8 +1,4 @@
-import type {
-	AudioAttrs,
-	AudioAttrsMismatch,
-	AudioAttrValidators,
-} from "#dom-attrs";
+import type { AudioAttrs, AudioAttrsMismatch, AudioAttrValidators } from "#dom-attrs";
 
 export interface ValidateAudioPlacementParams {
 	attrValidators: AudioAttrValidators;

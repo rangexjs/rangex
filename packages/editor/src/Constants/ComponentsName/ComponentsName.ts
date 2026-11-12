@@ -31,18 +31,15 @@ export const componentsName = {
 	...blockComponentsName,
 } as const;
 
-const inlineComponentNames: ComponentName[] =
-	Object.values(inlineComponentsName);
+const inlineComponentNames: ComponentName[] = Object.values(inlineComponentsName);
 
 const blockComponentNames: ComponentName[] = Object.values(blockComponentsName);
 
-export const isInlineComponentName = (
-	name: ComponentName,
-): name is InlineComponentName => inlineComponentNames.includes(name);
+export const isInlineComponentName = (name: ComponentName): name is InlineComponentName =>
+	inlineComponentNames.includes(name);
 
-export const isBlockComponentName = (
-	name: ComponentName,
-): name is BlockComponentName => blockComponentNames.includes(name);
+export const isBlockComponentName = (name: ComponentName): name is BlockComponentName =>
+	blockComponentNames.includes(name);
 
 export const dataPartName = `data-part-name`;
 

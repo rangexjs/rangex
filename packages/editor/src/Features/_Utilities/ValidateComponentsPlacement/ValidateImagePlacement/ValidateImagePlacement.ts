@@ -1,4 +1,5 @@
 import { imageAttrsShape, validateComponentAttrs } from "#dom-attrs";
+
 import type {
 	ValidateImagePlacementParams,
 	ValidateImagePlacementResult,

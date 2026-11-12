@@ -1,5 +1,6 @@
 import type { MediaType } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
+
 import {
 	createMediaResolveDetail,
 	detectMediaUrlType,
@@ -142,9 +143,7 @@ export const createMediaResolver = ({
 		if (detection.status === "unknown") {
 			setStatus({
 				status: "error",
-				message: createUnknownLinkMessage(
-					sourcePlaceholder.supportedMediaTypes,
-				),
+				message: createUnknownLinkMessage(sourcePlaceholder.supportedMediaTypes),
 			});
 			return;
 		}

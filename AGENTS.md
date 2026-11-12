@@ -69,8 +69,8 @@ npm run test:coverage               # with coverage
 
 **Lint / type-check:**
 ```bash
-npm run lint           # biome check + tsc (no emit) for the root, then each package's `fix` (biome --write + tsc)
-npm run fix            # same, with biome --write for the root too
+npm run lint           # vp check (oxfmt + oxlint) + tsc (no emit) for the root, then each package's `fix` (vp check --fix + tsc)
+npm run fix            # same, with vp check --fix for the root too
 ```
 
 **After any code change:** always run `npm run lint` from the repo root and fix all errors before finishing.

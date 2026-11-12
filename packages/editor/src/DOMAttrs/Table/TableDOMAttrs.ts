@@ -1,5 +1,7 @@
 import { nestedEditableRole, xhtmlNamespaceURI } from "@rangex/core";
+
 import { verticalAlignAttr } from "#constants";
+
 import {
 	type ComponentAttrsShape,
 	createComponentAttrValidators,

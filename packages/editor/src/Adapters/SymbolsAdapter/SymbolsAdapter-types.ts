@@ -27,7 +27,6 @@ export interface SymbolsSettings {
 	items?: SymbolsItems;
 }
 
-export interface CreateSymbolsAdapterParams
-	extends CreateAdapterParams<SymbolsSettings> {}
+export interface CreateSymbolsAdapterParams extends CreateAdapterParams<SymbolsSettings> {}
 
 export interface CreateSymbolsAdapterResult extends SymbolsAdapter {}

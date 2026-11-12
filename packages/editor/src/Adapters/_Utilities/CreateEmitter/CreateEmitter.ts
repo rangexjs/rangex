@@ -7,9 +7,7 @@ export interface Emitter<Fn extends (...params: never[]) => void> {
  * Creates a Set-backed emitter for one callback type: subscribe returns its own unsubscribe,
  * emit calls every subscribed callback.
  */
-export const createEmitter = <
-	Fn extends (...params: never[]) => void,
->(): Emitter<Fn> => {
+export const createEmitter = <Fn extends (...params: never[]) => void>(): Emitter<Fn> => {
 	const listeners = new Set<Fn>();
 
 	return {

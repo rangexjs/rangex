@@ -1,4 +1,5 @@
 import { beamTextRole, contentLineRole } from "@rangex/core";
+
 import type {
 	IsScopedEditableEmptyParams,
 	IsScopedEditableEmptyResult,

@@ -7,9 +7,11 @@ import {
 	nestedEditableRole,
 	nestedEditableRoleSelector,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
 import { assertNever } from "#utilities";
+
 import {
 	createBlockQuote,
 	createCodeBlock,
@@ -17,10 +19,7 @@ import {
 	createTodoList,
 	validateCodeBlockPlacement,
 } from "../../_Utilities";
-import {
-	getLineMarkdownPrefix,
-	isPrefixAtContentLineStart,
-} from "../_Utilities";
+import { getLineMarkdownPrefix, isPrefixAtContentLineStart } from "../_Utilities";
 import type {
 	ApplyBlockMarkdownConversionParams,
 	CanApplyBlockMarkdownConversionParams,
@@ -173,9 +172,7 @@ const wrapListShaped = ({
 		throw new Error("LastListItem can't be undefined.");
 	}
 
-	const nestedEditable = lastListItem.$$querySelector(
-		nestedEditableRoleSelector,
-	);
+	const nestedEditable = lastListItem.$$querySelector(nestedEditableRoleSelector);
 
 	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");
@@ -189,11 +186,7 @@ const wrapListShaped = ({
 	});
 };
 
-const convertToList = ({
-	editorAPI,
-	blockComponentPlacement,
-	localName,
-}: ConvertToListParams) => {
+const convertToList = ({ editorAPI, blockComponentPlacement, localName }: ConvertToListParams) => {
 	wrapListShaped({
 		editorAPI,
 		blockComponentPlacement,
@@ -201,10 +194,7 @@ const convertToList = ({
 	});
 };
 
-const convertToTodoList = ({
-	editorAPI,
-	blockComponentPlacement,
-}: ConvertToTodoListParams) => {
+const convertToTodoList = ({ editorAPI, blockComponentPlacement }: ConvertToTodoListParams) => {
 	wrapListShaped({
 		editorAPI,
 		blockComponentPlacement,
@@ -225,17 +215,12 @@ const convertToCodeBlock = ({
 	});
 };
 
-const convertToBlockQuote = ({
-	editorAPI,
-	blockComponentPlacement,
-}: ConvertToBlockQuoteParams) => {
+const convertToBlockQuote = ({ editorAPI, blockComponentPlacement }: ConvertToBlockQuoteParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const blockQuoteLine = createBlockQuote({});
 
-	const nestedEditable = blockQuoteLine.$$querySelector(
-		nestedEditableRoleSelector,
-	);
+	const nestedEditable = blockQuoteLine.$$querySelector(nestedEditableRoleSelector);
 
 	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 		throw new Error("NestedEditable's type is invalid.");

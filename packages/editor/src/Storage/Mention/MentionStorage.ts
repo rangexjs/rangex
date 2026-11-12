@@ -1,4 +1,5 @@
 import { type JSONPattern, matchJSON } from "#utilities";
+
 import { mentionId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
@@ -17,9 +18,7 @@ import type {
 export const isUserId = (value: unknown) => {
 	const maxUserIdLength = 1024;
 
-	return (
-		typeof value === "string" && value !== "" && value.length <= maxUserIdLength
-	);
+	return typeof value === "string" && value !== "" && value.length <= maxUserIdLength;
 };
 
 /*
@@ -37,17 +36,13 @@ export const matchMentionStorage = (storage: unknown) => {
 	return matchJSON({ value: storage, pattern: mentionStoragePattern });
 };
 
-export const isMentionStorage = (
-	storage: unknown,
-): storage is MentionStorage => {
+export const isMentionStorage = (storage: unknown): storage is MentionStorage => {
 	const mismatch = matchMentionStorage(storage);
 
 	return !mismatch;
 };
 
-export const validateMentionStorage = (
-	storage: unknown,
-): storage is MentionStorage => {
+export const validateMentionStorage = (storage: unknown): storage is MentionStorage => {
 	return validateStorage(storage, isMentionStorage);
 };
 

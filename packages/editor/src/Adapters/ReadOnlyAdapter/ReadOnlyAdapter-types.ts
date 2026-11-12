@@ -35,7 +35,6 @@ export interface ReadOnlyAdapter {
 
 export interface ReadOnlySettings {}
 
-export interface CreateReadOnlyAdapterParams
-	extends CreateAdapterParams<ReadOnlySettings> {}
+export interface CreateReadOnlyAdapterParams extends CreateAdapterParams<ReadOnlySettings> {}
 
 export interface CreateReadOnlyAdapterResult extends ReadOnlyAdapter {}

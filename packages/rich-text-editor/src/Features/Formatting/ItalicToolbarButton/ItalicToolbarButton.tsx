@@ -1,7 +1,9 @@
 import { Italic, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const ItalicToolbarButton = () => {
@@ -15,9 +17,7 @@ export const ItalicToolbarButton = () => {
 	const $italic = Italic(formatting);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => $italic.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $italic.disabled() || !!$readOnly?.checked());
 
 	const onClick = () => {
 		formatting.toggleItalic();

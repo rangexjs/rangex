@@ -28,7 +28,6 @@ export interface MarkdownSettings {
 	codeBlockTriggers?: CodeBlockMarkdownTrigger[];
 }
 
-export interface CreateMarkdownAdapterParams
-	extends CreateAdapterParams<MarkdownSettings> {}
+export interface CreateMarkdownAdapterParams extends CreateAdapterParams<MarkdownSettings> {}
 
 export interface CreateMarkdownAdapterResult extends MarkdownAdapter {}

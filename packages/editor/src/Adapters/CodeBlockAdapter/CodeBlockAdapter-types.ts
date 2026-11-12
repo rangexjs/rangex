@@ -1,5 +1,7 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { CodeBlockAttrValidators } from "#dom-attrs";
+
 import type {
 	CreateAdapterParams,
 	CurrentComponentConfigPort,
@@ -38,13 +40,9 @@ export interface HighlightInfo {
 	codeLines: ThemedCodeLines;
 }
 
-export type GetHighlightInfoFn = (
-	params: GetHighlightInfoParams,
-) => Promise<HighlightInfo | null>;
+export type GetHighlightInfoFn = (params: GetHighlightInfoParams) => Promise<HighlightInfo | null>;
 
-export type HighlightCodeFn = (
-	params: GetHighlightInfoParams,
-) => HighlightInfo | null;
+export type HighlightCodeFn = (params: GetHighlightInfoParams) => HighlightInfo | null;
 
 export interface CodeBlockState {
 	canInsert?: boolean;
@@ -83,12 +81,8 @@ export interface CodeBlockFieldMismatch {
 export type ValidateLanguageResult = CodeBlockFieldMismatch | null;
 export type ValidateThemeResult = CodeBlockFieldMismatch | null;
 
-export type ValidateLanguageProviderFn = (
-	language: string | null,
-) => ValidateLanguageResult;
-export type ValidateThemeProviderFn = (
-	theme: CodeBlockTheme | null,
-) => ValidateThemeResult;
+export type ValidateLanguageProviderFn = (language: string | null) => ValidateLanguageResult;
+export type ValidateThemeProviderFn = (theme: CodeBlockTheme | null) => ValidateThemeResult;
 
 export interface UpdateStateParams extends CodeBlockState {}
 
@@ -109,7 +103,8 @@ export interface CodeBlockConfigPortProps {
 }
 
 export interface CodeBlockConfigPort
-	extends CodeBlockConfigPortProps,
+	extends
+		CodeBlockConfigPortProps,
 		RemoveConfigPort,
 		UnwrapConfigPort,
 		CurrentComponentConfigPort<BlockComponent> {}
@@ -144,7 +139,8 @@ export interface CodeBlockPublicPortProps {
 }
 
 export interface CodeBlockPublicPort
-	extends CodeBlockPublicPortProps,
+	extends
+		CodeBlockPublicPortProps,
 		RemovePublicPort,
 		UnwrapPublicPort,
 		CurrentComponentPublicPort {}
@@ -165,7 +161,6 @@ export interface CodeBlockSettings {
 	getHighlightInfo?: GetHighlightInfoFn;
 }
 
-export interface CreateCodeBlockAdapterParams
-	extends CreateAdapterParams<CodeBlockSettings> {}
+export interface CreateCodeBlockAdapterParams extends CreateAdapterParams<CodeBlockSettings> {}
 
 export interface CreateCodeBlockAdapterResult extends CodeBlockAdapter {}

@@ -8,8 +8,7 @@
 			& blockquote {
 				margin: 0;
 				padding: 10px 14px;
-				border-left: 3px solid
-					light-dark(var(--color-neutral-300), var(--color-neutral-600));
+				border-left: 3px solid light-dark(var(--color-neutral-300), var(--color-neutral-600));
 				border-radius: 0 6px 6px 0;
 				background-color: light-dark(
 					color(from var(--color-black) srgb r g b / 0.03),

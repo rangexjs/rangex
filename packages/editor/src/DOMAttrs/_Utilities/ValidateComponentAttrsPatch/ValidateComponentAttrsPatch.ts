@@ -9,9 +9,7 @@ import type {
  * Validates only the given attributes of a component (see validateElementAttrsPatch): an element left out isn't checked.
  * Returns the first mismatch with its element's name, or null when the attributes are valid.
  */
-export const validateComponentAttrsPatch = <
-	TComponentAttrsShape extends ComponentAttrsShape,
->({
+export const validateComponentAttrsPatch = <TComponentAttrsShape extends ComponentAttrsShape>({
 	componentAttrsPatch,
 	componentAttrsShape,
 	componentAttrValidators,

@@ -1,7 +1,9 @@
 import { ReadOnly, UndoRedo } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const HistoryBackToolbarButton = () => {
@@ -15,9 +17,7 @@ export const HistoryBackToolbarButton = () => {
 	const $undoRedo = UndoRedo(undoRedo);
 	const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => !$undoRedo.canStepBack() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => !$undoRedo.canStepBack() || !!$readOnly?.checked());
 
 	return (
 		<span>

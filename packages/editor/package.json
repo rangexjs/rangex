@@ -222,11 +222,10 @@
 		"prepublishOnly": "npm run build",
 		"test": "vp test",
 		"test:coverage": "vp test --coverage",
-		"fix": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts --write && tsc -p ./tsconfig.json",
-		"pre:check": "biome check ./src ./package.json ./tsconfig.json ./tsconfig.base.json ./tsconfig.build.json ./vite.config.ts && tsc && vp test"
+		"fix": "vp check --fix && tsc -p ./tsconfig.json",
+		"pre:check": "vp check && tsc && vp test"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.4",
 		"@happy-dom/global-registrator": "^20.10.6",
 		"@vitest/coverage-v8": "5.1.0",
 		"typescript": "^7.0.2",

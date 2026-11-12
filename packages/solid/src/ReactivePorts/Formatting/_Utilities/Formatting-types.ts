@@ -14,8 +14,9 @@ import type {
 } from "@rangex/editor/formatting";
 import type { Accessor } from "solid-js";
 
-export type FromFormattingToReactivePort<T, TReactivePort> =
-	T extends FormattingPublicPort ? TReactivePort : undefined;
+export type FromFormattingToReactivePort<T, TReactivePort> = T extends FormattingPublicPort
+	? TReactivePort
+	: undefined;
 
 export interface ReactiveFormattingToggleButton {
 	checked: Accessor<boolean>;
@@ -28,45 +29,35 @@ export interface ReactiveFormattingValuePort<TValue> {
 	values: Accessor<Set<TValue>>;
 }
 
-export interface ReactiveBackgroundColorPort
-	extends ReactiveFormattingValuePort<BackgroundColorValue> {}
+export interface ReactiveBackgroundColorPort extends ReactiveFormattingValuePort<BackgroundColorValue> {}
 
-export interface ReactiveColorPort
-	extends ReactiveFormattingValuePort<ColorValue> {}
+export interface ReactiveColorPort extends ReactiveFormattingValuePort<ColorValue> {}
 
-export interface ReactiveFontFamilyPort
-	extends ReactiveFormattingValuePort<FontFamilyValue> {
+export interface ReactiveFontFamilyPort extends ReactiveFormattingValuePort<FontFamilyValue> {
 	hasUnset: Accessor<boolean>;
 }
 
-export interface ReactiveFontSizePort
-	extends ReactiveFormattingValuePort<FontSizeValue> {
+export interface ReactiveFontSizePort extends ReactiveFormattingValuePort<FontSizeValue> {
 	hasUnset: Accessor<boolean>;
 }
 
-export interface ReactiveIndentationPort
-	extends ReactiveFormattingValuePort<TextIndentValue> {
+export interface ReactiveIndentationPort extends ReactiveFormattingValuePort<TextIndentValue> {
 	hasUnset: Accessor<boolean>;
 }
 
-export interface ReactiveLetterSpacingPort
-	extends ReactiveFormattingValuePort<LetterSpacingValue> {}
+export interface ReactiveLetterSpacingPort extends ReactiveFormattingValuePort<LetterSpacingValue> {}
 
-export interface ReactiveLineHeightPort
-	extends ReactiveFormattingValuePort<LineHeightValue> {
+export interface ReactiveLineHeightPort extends ReactiveFormattingValuePort<LineHeightValue> {
 	hasUnset: Accessor<boolean>;
 }
 
-export interface ReactiveLineLocalNamePort
-	extends ReactiveFormattingValuePort<FormattingLineLocalNameValue> {}
+export interface ReactiveLineLocalNamePort extends ReactiveFormattingValuePort<FormattingLineLocalNameValue> {}
 
-export interface ReactiveLineSpacingPort
-	extends ReactiveFormattingValuePort<PaddingBlockValue> {
+export interface ReactiveLineSpacingPort extends ReactiveFormattingValuePort<PaddingBlockValue> {
 	hasUnset: Accessor<boolean>;
 }
 
-export interface ReactiveTextAlignPort
-	extends ReactiveFormattingValuePort<TextAlignValue> {
+export interface ReactiveTextAlignPort extends ReactiveFormattingValuePort<TextAlignValue> {
 	hasUnset: Accessor<boolean>;
 }
 

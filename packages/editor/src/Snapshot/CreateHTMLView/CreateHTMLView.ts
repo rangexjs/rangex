@@ -1,5 +1,6 @@
 import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
+
 import { buildViewStyleText } from "../../Styles";
 import { createSnapshotView } from "../CreateSnapshotView";
 import { highlightCodeBlocks } from "../HighlightCodeBlocks";
@@ -41,10 +42,7 @@ const generateId = (): CreateIdFn => {
 };
 
 const escapeText = (text: string) => {
-	return text
-		.replaceAll("&", "&amp;")
-		.replaceAll("<", "&lt;")
-		.replaceAll(">", "&gt;");
+	return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 };
 
 const escapeAttribute = (value: string) => {
@@ -57,12 +55,7 @@ const createText = ({ textView }: CreateTextParams) => {
 	return escapeText(data);
 };
 
-const createElement = ({
-	storage,
-	createId,
-	elementView,
-	childNodes,
-}: CreateElementParams) => {
+const createElement = ({ storage, createId, elementView, childNodes }: CreateElementParams) => {
 	const { customStorage, localName, attributes } = elementView;
 
 	const attrs = { ...attributes };
@@ -101,9 +94,7 @@ const createHTMLTree = ({
 
 	if (nodeView.type === "element") {
 		const childNodes = nodeView.childNodes
-			.map((childView) =>
-				createHTMLTree({ storage, createId, nodeView: childView }),
-			)
+			.map((childView) => createHTMLTree({ storage, createId, nodeView: childView }))
 			.join("");
 
 		return createElement({

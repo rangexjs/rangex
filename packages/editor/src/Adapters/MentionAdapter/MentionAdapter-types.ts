@@ -18,9 +18,7 @@ export interface DisplayTextMismatch {
 export type ValidateDisplayTextResult = DisplayTextMismatch | null;
 
 export type OnSelectCallbackFn = (params: SelectParams) => void;
-export type ValidateDisplayTextProviderFn = (
-	displayText: string,
-) => ValidateDisplayTextResult;
+export type ValidateDisplayTextProviderFn = (displayText: string) => ValidateDisplayTextResult;
 
 export interface MentionConfigPortProps {
 	readonly caretMenu: CaretMenuConfigPort;
@@ -30,9 +28,7 @@ export interface MentionConfigPortProps {
 	registerValidateDisplayText(provider: ValidateDisplayTextProviderFn): void;
 }
 
-export interface MentionConfigPort
-	extends MentionConfigPortProps,
-		UnwrapConfigPort {}
+export interface MentionConfigPort extends MentionConfigPortProps, UnwrapConfigPort {}
 
 export interface MentionPublicPortProps {
 	readonly caretMenu: CaretMenuPublicPort;
@@ -42,9 +38,7 @@ export interface MentionPublicPortProps {
 	validateDisplayText(displayText: string): ValidateDisplayTextResult;
 }
 
-export interface MentionPublicPort
-	extends MentionPublicPortProps,
-		UnwrapPublicPort {}
+export interface MentionPublicPort extends MentionPublicPortProps, UnwrapPublicPort {}
 
 export interface MentionInternals {
 	validateDisplayTextProvider: ValidateDisplayTextProviderFn | null;
@@ -57,7 +51,6 @@ export interface MentionAdapter {
 
 export interface MentionSettings {}
 
-export interface CreateMentionAdapterParams
-	extends CreateAdapterParams<MentionSettings> {}
+export interface CreateMentionAdapterParams extends CreateAdapterParams<MentionSettings> {}
 
 export interface CreateMentionAdapterResult extends MentionAdapter {}

@@ -1,4 +1,5 @@
 import type { Component, EditorAPI } from "@rangex/core";
+
 import type { CurrentComponentConfigPort, DOMAttrsConfigPort } from "#adapters";
 import type {
 	ComponentAttrs,
@@ -14,10 +15,9 @@ export type NormalizeDOMAttrsFn<TShape extends ComponentAttrsShape> = <
 	domAttrs: TDOMAttrs,
 ) => TDOMAttrs;
 
-export type ResolveElementsFn<
-	TComponent extends Component,
-	TShape extends ComponentAttrsShape,
-> = (component: TComponent) => ComponentElements<TShape>;
+export type ResolveElementsFn<TComponent extends Component, TShape extends ComponentAttrsShape> = (
+	component: TComponent,
+) => ComponentElements<TShape>;
 
 export interface HandleDOMAttrsParams<
 	TComponent extends Component,
@@ -32,10 +32,9 @@ export interface HandleDOMAttrsParams<
 	resolveElements: ResolveElementsFn<TComponent, TShape>;
 }
 
-export type ReadDOMAttrsFn<
-	TComponent extends Component,
-	TShape extends ComponentAttrsShape,
-> = (component: TComponent) => ComponentAttrs<TShape>;
+export type ReadDOMAttrsFn<TComponent extends Component, TShape extends ComponentAttrsShape> = (
+	component: TComponent,
+) => ComponentAttrs<TShape>;
 
 export interface CreateDOMAttrsObserverParams<
 	TComponent extends Component,

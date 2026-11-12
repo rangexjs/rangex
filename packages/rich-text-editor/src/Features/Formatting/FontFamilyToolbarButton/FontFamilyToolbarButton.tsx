@@ -1,13 +1,10 @@
 import type { FontFamilyValue } from "@rangex/editor/formatting";
 import { FontFamily, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
+
 import { useEditorContext, useUIOptionsContext } from "#context";
-import {
-	createTextFieldState,
-	Icon,
-	InputTextField,
-	TextFieldWrapper,
-} from "#ui";
+import { createTextFieldState, Icon, InputTextField, TextFieldWrapper } from "#ui";
+
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 const getInputValueFromActiveValues = (
@@ -55,10 +52,9 @@ export const FontFamilyToolbarButton = () => {
 		getInputValueFromActiveValues($fontFamily.values(), $fontFamily.hasUnset()),
 	);
 
-	const [fontFamilyHandle, fontFamilyControls] =
-		createTextFieldState<HTMLInputElement>({
-			defaultValue: untrack(() => activeInputValue()),
-		});
+	const [fontFamilyHandle, fontFamilyControls] = createTextFieldState<HTMLInputElement>({
+		defaultValue: untrack(() => activeInputValue()),
+	});
 
 	const popoverId = createUniqueId();
 
@@ -144,24 +140,20 @@ export const FontFamilyToolbarButton = () => {
 			},
 		};
 
-		const fontFamilyItems = fontFamilyValues.map<ToolbarDropdownList[number]>(
-			(fontFamilyItem) => {
-				return {
-					checked: activeValues.has(fontFamilyItem),
-					text: getText(fontFamilyItem),
-					button: {
-						onClick: () => formatting.setFontFamily(fontFamilyItem),
-					},
-				};
-			},
-		);
+		const fontFamilyItems = fontFamilyValues.map<ToolbarDropdownList[number]>((fontFamilyItem) => {
+			return {
+				checked: activeValues.has(fontFamilyItem),
+				text: getText(fontFamilyItem),
+				button: {
+					onClick: () => formatting.setFontFamily(fontFamilyItem),
+				},
+			};
+		});
 
 		return [defaultItem, ...fontFamilyItems];
 	});
 
-	const disabled = createMemo(
-		() => $fontFamily.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $fontFamily.disabled() || !!$readOnly?.checked());
 
 	const anchorName = "--font-family-anchor";
 
@@ -181,11 +173,7 @@ export const FontFamilyToolbarButton = () => {
 							class="absolute -top-1 -left-1 rounded-xs p-1 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
 							disabled={disabled()}
 						>
-							<Icon
-								name="CaretDown"
-								title="Show font families"
-								class="size-2"
-							/>
+							<Icon name="CaretDown" title="Show font families" class="size-2" />
 						</button>
 					</span>
 				}

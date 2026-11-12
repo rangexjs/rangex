@@ -1,4 +1,5 @@
 import type { BlockComponentLine } from "@rangex/core";
+
 import type { ImageAttrs } from "#dom-attrs";
 
 export interface CreateImageParams {

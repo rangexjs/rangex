@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import { createEmitter } from "../_Utilities";
 import { defaultSymbolsItems } from "./SymbolsAdapter-default";
 import type {

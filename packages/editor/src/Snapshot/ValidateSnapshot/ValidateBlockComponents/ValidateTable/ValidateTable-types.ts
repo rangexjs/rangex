@@ -6,8 +6,10 @@ import type {
 	TableRowDraft,
 	TableSectionDraft,
 } from "@rangex/core";
+
 import type { TableLimits, TableLimitsParams } from "#constants";
 import type { TableAttrValidators } from "#dom-attrs";
+
 import type {
 	ComponentValidator,
 	ValidateComponentParams,

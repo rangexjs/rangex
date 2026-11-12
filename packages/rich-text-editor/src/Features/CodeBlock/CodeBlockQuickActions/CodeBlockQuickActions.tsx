@@ -1,7 +1,9 @@
 import { CodeBlock, FloatingPortal, ReadOnly } from "@rangex/solid";
 import { createSignal } from "solid-js";
+
 import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
+
 import { CodeBlockHighlight } from "./CodeBlockHighlight";
 
 export const CodeBlockQuickActions = () => {

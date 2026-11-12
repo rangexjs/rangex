@@ -5,10 +5,7 @@ import { handleUndoRedoNavigation } from "./HandleUndoRedoNavigation";
 /*
  * Wires up undo/redo button state and step navigation handling, returning a cleanup function.
  */
-export const configureUndoRedo = ({
-	configPort,
-	editorAPI,
-}: ConfigureUndoRedoParams) => {
+export const configureUndoRedo = ({ configPort, editorAPI }: ConfigureUndoRedoParams) => {
 	const buttonStateCleanup = handleUndoRedoButtonState({
 		configPort,
 		editorAPI,

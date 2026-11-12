@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import { createCaretMenuPort, createEmitter } from "../_Utilities";
 import { defaultEmojiItems } from "./EmojiAdapter-default";
 import type {
@@ -16,8 +17,7 @@ import type {
 export const createEmojiAdapter = (
 	...params: CreateEmojiAdapterParams
 ): CreateEmojiAdapterResult => {
-	const [{ items = defaultEmojiItems }, { adapterBus, floatingContainer }] =
-		params;
+	const [{ items = defaultEmojiItems }, { adapterBus, floatingContainer }] = params;
 
 	adapterBus.registerAdapter("emoji");
 

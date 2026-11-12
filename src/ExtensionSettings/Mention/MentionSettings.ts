@@ -2,6 +2,7 @@ import type {
 	GetMentionItemsParams,
 	MentionExtensionSettings,
 } from "@rangex/rich-text-editor/mention";
+
 import { mentionItems } from "../../DemoData/MentionItems";
 
 /**

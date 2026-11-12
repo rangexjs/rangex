@@ -5,9 +5,7 @@ import type {
 	ComponentAttrValidators,
 } from "../DOMAttrs-types";
 
-export interface ValidateComponentAttrsParams<
-	TComponentAttrsShape extends ComponentAttrsShape,
-> {
+export interface ValidateComponentAttrsParams<TComponentAttrsShape extends ComponentAttrsShape> {
 	componentAttrs: ComponentAttrs<TComponentAttrsShape>;
 	componentAttrsShape: TComponentAttrsShape;
 	componentAttrValidators: ComponentAttrValidators<TComponentAttrsShape>;

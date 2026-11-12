@@ -29,10 +29,7 @@ const isSetDeepEqual = (a: Set<unknown>, b: Set<unknown>) => {
 	return isArrayDeepEqual(aValues, bValues);
 };
 
-const isObjectDeepEqual = (
-	a: Record<string, unknown>,
-	b: Record<string, unknown>,
-) => {
+const isObjectDeepEqual = (a: Record<string, unknown>, b: Record<string, unknown>) => {
 	const aKeys = Object.keys(a);
 	const bKeys = Object.keys(b);
 
@@ -61,12 +58,7 @@ export const isDeepEqual = (a: unknown, b: unknown): boolean => {
 		return true;
 	}
 
-	if (
-		typeof a !== "object" ||
-		typeof b !== "object" ||
-		a === null ||
-		b === null
-	) {
+	if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) {
 		return false;
 	}
 
@@ -83,10 +75,7 @@ export const isDeepEqual = (a: unknown, b: unknown): boolean => {
 	}
 
 	if (isPlainObject(a)) {
-		return isObjectDeepEqual(
-			a as Record<string, unknown>,
-			b as Record<string, unknown>,
-		);
+		return isObjectDeepEqual(a as Record<string, unknown>, b as Record<string, unknown>);
 	}
 
 	// Not plain data, and Object.is already failed.

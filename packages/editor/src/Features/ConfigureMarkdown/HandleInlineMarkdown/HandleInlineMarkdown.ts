@@ -1,10 +1,8 @@
-import {
-	createContentLine,
-	createFormattableTexts,
-	EditorRange,
-} from "@rangex/core";
+import { createContentLine, createFormattableTexts, EditorRange } from "@rangex/core";
+
 import { getClosestScopedEditable } from "#engine-links";
 import { assertNever } from "#utilities";
+
 import { scanMarkdownChars } from "../_Utilities";
 import type {
 	CanApplyInlineTagParams,
@@ -115,9 +113,7 @@ const canApplyInlineTag = ({ editorAPI, tag }: CanApplyInlineTagParams) => {
  * the matching inline tag, letting the keystroke insert natively first so a single undo
  * can restore the literal text.
  */
-export const handleInlineMarkdown = ({
-	editorAPI,
-}: HandleInlineMarkdownParams) => {
+export const handleInlineMarkdown = ({ editorAPI }: HandleInlineMarkdownParams) => {
 	const selection = editorAPI.getEditorSelection();
 
 	const snapshotTimeline = editorAPI.getSnapshotTimeline();
@@ -125,12 +121,7 @@ export const handleInlineMarkdown = ({
 	const unregister = editorAPI.registerEventInterceptor({
 		type: "beforeinput",
 		interceptor: (event) => {
-			if (
-				event.data !== "*" &&
-				event.data !== "_" &&
-				event.data !== "~" &&
-				event.data !== "`"
-			) {
+			if (event.data !== "*" && event.data !== "_" && event.data !== "~" && event.data !== "`") {
 				return false;
 			}
 
@@ -226,9 +217,7 @@ export const handleInlineMarkdown = ({
 				lines: [
 					createContentLine({
 						localName: "p",
-						childNodes: [
-							...createFormattableTexts({ data: match.contentText }),
-						],
+						childNodes: [...createFormattableTexts({ data: match.contentText })],
 					}),
 				],
 				breakBeforeInsert: false,
@@ -243,13 +232,8 @@ export const handleInlineMarkdown = ({
 				maxChars: match.contentText.length,
 			});
 
-			if (
-				!contentStart ||
-				contentStart.charsScanned !== match.contentText.length
-			) {
-				console.warn(
-					"handleInlineMarkdown: could not re-locate the reinserted content.",
-				);
+			if (!contentStart || contentStart.charsScanned !== match.contentText.length) {
+				console.warn("handleInlineMarkdown: could not re-locate the reinserted content.");
 				editorAPI.focus();
 				return true;
 			}

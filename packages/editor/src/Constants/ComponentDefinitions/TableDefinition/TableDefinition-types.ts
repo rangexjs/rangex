@@ -1,23 +1,18 @@
-import type {
+import type { CreateTableCellNestedEditableProps, CreateTableParams } from "@rangex/core";
+
+export interface TableCellNestedEditableDefinition extends Pick<
 	CreateTableCellNestedEditableProps,
+	| "allowedComponents"
+	| "allowedContentLineLocalNames"
+	| "allowedContentLineStyleAttrNames"
+	| "allowedGlyphFormatterStyleAttrNames"
+	| "allowedGlyphFormatterInlineTags"
+> {}
+
+export interface TableDefinition extends Pick<
 	CreateTableParams,
-} from "@rangex/core";
-
-export interface TableCellNestedEditableDefinition
-	extends Pick<
-		CreateTableCellNestedEditableProps,
-		| "allowedComponents"
-		| "allowedContentLineLocalNames"
-		| "allowedContentLineStyleAttrNames"
-		| "allowedGlyphFormatterStyleAttrNames"
-		| "allowedGlyphFormatterInlineTags"
-	> {}
-
-export interface TableDefinition
-	extends Pick<
-		CreateTableParams,
-		"minColWidth" | "minRowHeight" | "defaultRowHeight" | "tableCellsEditable"
-	> {
+	"minColWidth" | "minRowHeight" | "defaultRowHeight" | "tableCellsEditable"
+> {
 	cellNestedEditableProps: TableCellNestedEditableDefinition;
 }
 

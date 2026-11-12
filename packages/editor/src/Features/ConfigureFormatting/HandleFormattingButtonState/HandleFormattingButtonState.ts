@@ -1,5 +1,7 @@
 import { selectionStylesChangeEventType } from "@rangex/core";
+
 import { getFormattingButtonState } from "#engine-links";
+
 import type { HandleFormattingButtonStateParams } from "./HandleFormattingButtonState-types";
 
 /*

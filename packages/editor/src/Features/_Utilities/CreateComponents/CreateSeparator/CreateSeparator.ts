@@ -4,8 +4,10 @@ import {
 	createBlockComponentTextHolder,
 	createHTMLLayout,
 } from "@rangex/core";
+
 import { componentsName } from "#constants";
 import { createSeparatorStorage } from "#storage";
+
 import type { CreateSeparatorResult } from "./CreateSeparator-types";
 
 /*

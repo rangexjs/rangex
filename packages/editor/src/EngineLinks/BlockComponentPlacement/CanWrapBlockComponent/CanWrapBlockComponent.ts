@@ -1,4 +1,5 @@
 import { assertNever } from "#utilities";
+
 import { getClosestCommonScopedEditable } from "../../NodeQuery";
 import type {
 	CanWrapBlockComponentParams,

@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { createEmbedAttrValidators, embedAttrsShape } from "#dom-attrs";
 import { embedStoragePattern } from "#storage";
+
 import { validateMediaComponent } from "../_Utilities";
 import type {
 	CreateEmbedValidatorParams,

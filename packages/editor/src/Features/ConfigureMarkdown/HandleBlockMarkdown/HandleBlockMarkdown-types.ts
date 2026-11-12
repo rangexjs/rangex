@@ -4,6 +4,7 @@ import type {
 	EditorAPI,
 	ListLocalName,
 } from "@rangex/core";
+
 import type { MarkdownConfigPort } from "#adapters/Markdown";
 import type { BlockComponentPlacement } from "#engine-links";
 import type { CodeBlockTheme } from "#storage";

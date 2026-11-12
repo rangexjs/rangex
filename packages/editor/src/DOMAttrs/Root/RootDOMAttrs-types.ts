@@ -11,7 +11,6 @@ export type RootAttrs = ComponentAttrs<RootAttrsShape>;
 
 export type RootAttrValidators = ComponentAttrValidators<RootAttrsShape>;
 
-export type CreateRootAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<RootAttrsShape>;
+export type CreateRootAttrValidatorsParams = ComponentAttrValidatorOverrides<RootAttrsShape>;
 
 export type CreateRootAttrValidatorsResult = RootAttrValidators;

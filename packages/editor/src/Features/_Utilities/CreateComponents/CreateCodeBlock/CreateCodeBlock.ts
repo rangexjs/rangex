@@ -10,12 +10,11 @@ import {
 	createListItem,
 	createNestedEditable,
 } from "@rangex/core";
+
 import { codeBlockDefinition, componentsName } from "#constants";
 import { createCodeBlockStorage } from "#storage";
-import type {
-	CreateCodeBlockParams,
-	CreateCodeBlockResult,
-} from "./CreateCodeBlock-types";
+
+import type { CreateCodeBlockParams, CreateCodeBlockResult } from "./CreateCodeBlock-types";
 
 /*
  * Builds a code block component: a `pre`/`code` element containing a numbered line list
@@ -25,9 +24,7 @@ import type {
 export const createCodeBlock = ({
 	language,
 	theme,
-	childNodes = [
-		createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-	],
+	childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 }: CreateCodeBlockParams): CreateCodeBlockResult => {
 	const list = createList({
 		localName: "ol",

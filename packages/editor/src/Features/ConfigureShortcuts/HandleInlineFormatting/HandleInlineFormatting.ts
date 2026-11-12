@@ -4,6 +4,7 @@ import type {
 	TextFormatInlineTags,
 } from "@rangex/core";
 import { selectionStylesChangeEventType } from "@rangex/core";
+
 import type {
 	HandleInlineFormattingParams,
 	InlineFormattingShortcut,
@@ -17,9 +18,7 @@ const inlineFormattingShortcuts: InlineFormattingShortcut[] = [
 	{ code: "KeyE", shiftKey: false, tag: "code" },
 ];
 
-const matchInlineFormattingShortcut = (
-	event: KeyboardEvent,
-): GlyphFormatterInlineTag | null => {
+const matchInlineFormattingShortcut = (event: KeyboardEvent): GlyphFormatterInlineTag | null => {
 	if (!(event.ctrlKey || event.metaKey)) {
 		return null;
 	}
@@ -36,9 +35,7 @@ const matchInlineFormattingShortcut = (
  * selection's current formatting state. In caret mode, a pending toggle takes precedence over
  * that cached state until the next glyph is typed. Returns a cleanup function.
  */
-export const handleInlineFormatting = ({
-	editorAPI,
-}: HandleInlineFormattingParams) => {
+export const handleInlineFormatting = ({ editorAPI }: HandleInlineFormattingParams) => {
 	let rangeFormat: RangeFormatGlyphFormatterInlineTags | null = null;
 	let textFormatInlineTagsState: TextFormatInlineTags | null = null;
 
@@ -46,8 +43,7 @@ export const handleInlineFormatting = ({
 		type: selectionStylesChangeEventType,
 		callback: ({ selectionFormatStyles }) => {
 			rangeFormat = selectionFormatStyles.glyphFormatterInlineTags;
-			textFormatInlineTagsState =
-				selectionFormatStyles.textFormatInlineTagsState;
+			textFormatInlineTagsState = selectionFormatStyles.textFormatInlineTagsState;
 		},
 	});
 

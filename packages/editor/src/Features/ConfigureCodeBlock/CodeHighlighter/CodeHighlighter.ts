@@ -9,17 +9,12 @@ import {
 	listRoleSelector,
 	snapshotIndexChangeEventType,
 } from "@rangex/core";
+
 import { componentsName, createComponentSelector } from "#constants";
-import {
-	codeBlockAttrsShape,
-	resolveElementAttrs,
-	writeElementAttrs,
-} from "#dom-attrs";
+import { codeBlockAttrsShape, resolveElementAttrs, writeElementAttrs } from "#dom-attrs";
 import { getClosestBlockComponent } from "#engine-links";
-import {
-	codeBlockStorageFallbacks,
-	ensureNodeCodeBlockStorage,
-} from "#storage";
+import { codeBlockStorageFallbacks, ensureNodeCodeBlockStorage } from "#storage";
+
 import type {
 	ApplyTokenColorsParams,
 	ClearCodeBlockColorsParams,
@@ -90,14 +85,9 @@ const watchCodeBlocks = ({
 	});
 
 	const syncTrackedCodeBlocks = () => {
-		const queriedCodeBlocks =
-			rootEditable.$$querySelectorAll(codeBlockSelector);
+		const queriedCodeBlocks = rootEditable.$$querySelectorAll(codeBlockSelector);
 
-		if (
-			!queriedCodeBlocks.every(
-				(codeBlock) => codeBlock.$$editorRole === blockComponentRole,
-			)
-		) {
+		if (!queriedCodeBlocks.every((codeBlock) => codeBlock.$$editorRole === blockComponentRole)) {
 			throw new Error("CodeBlock's type is invalid.");
 		}
 
@@ -157,10 +147,7 @@ const getCodeBlockList = ({ blockComponent }: GetCodeBlockListParams) => {
  * Retrieves the full text content from the editable node and returns
  * an array of lines separated by "\n".
  */
-const getCodeLines = ({
-	editorAPI,
-	list,
-}: GetCodeLinesParams): GetCodeLinesResult => {
+const getCodeLines = ({ editorAPI, list }: GetCodeLinesParams): GetCodeLinesResult => {
 	const codeLines: string[] = [];
 
 	const contentLines = list.$$children.map((li) => {
@@ -372,10 +359,7 @@ const isSameHighlight = ({ source, target }: IsSameHighlightParams) => {
 		return sourceTheme === targetTheme;
 	}
 
-	return (
-		sourceTheme.light === targetTheme.light &&
-		sourceTheme.dark === targetTheme.dark
-	);
+	return sourceTheme.light === targetTheme.light && sourceTheme.dark === targetTheme.dark;
 };
 
 /*
@@ -422,11 +406,7 @@ export class CodeHighlighter {
 	#appliedHighlights = new WeakMap<BlockComponent, CodeBlockHighlight>();
 	#cleanups = new Set<() => void>();
 
-	constructor({
-		editorAPI,
-		getHighlightInfo,
-		attrValidators,
-	}: CodeHighlighterConstructorParams) {
+	constructor({ editorAPI, getHighlightInfo, attrValidators }: CodeHighlighterConstructorParams) {
 		this.#editorAPI = editorAPI;
 		this.#getHighlightInfo = getHighlightInfo;
 		this.#attrValidators = attrValidators;
@@ -452,21 +432,19 @@ export class CodeHighlighter {
 		});
 
 		// Undo/redo restores the language/theme in storage without touching the code, so the watcher misses it.
-		const unsubscribeSnapshotIndexChange = this.#editorAPI.subscribeEditorEvent(
-			{
-				type: snapshotIndexChangeEventType,
-				callback: () => {
-					const outdatedCodeBlocks = getOutdatedCodeBlocks({
-						rootEditable,
-						appliedHighlights: this.#appliedHighlights,
-					});
+		const unsubscribeSnapshotIndexChange = this.#editorAPI.subscribeEditorEvent({
+			type: snapshotIndexChangeEventType,
+			callback: () => {
+				const outdatedCodeBlocks = getOutdatedCodeBlocks({
+					rootEditable,
+					appliedHighlights: this.#appliedHighlights,
+				});
 
-					for (const codeBlock of outdatedCodeBlocks) {
-						this.#highlight(codeBlock);
-					}
-				},
+				for (const codeBlock of outdatedCodeBlocks) {
+					this.#highlight(codeBlock);
+				}
 			},
-		);
+		});
 
 		this.#cleanups.add(unwatchCodeBlocks);
 		this.#cleanups.add(unsubscribeSnapshotIndexChange);

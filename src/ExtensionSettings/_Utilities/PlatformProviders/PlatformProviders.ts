@@ -56,13 +56,9 @@ const spotifyProvider: PlatformProvider = {
 			return null;
 		}
 
-		const match = pathname.match(
-			/^\/(track|album|playlist|episode|show)\/(\w+)$/,
-		);
+		const match = pathname.match(/^\/(track|album|playlist|episode|show)\/(\w+)$/);
 
-		return match
-			? `https://open.spotify.com/embed/${match[1]}/${match[2]}`
-			: null;
+		return match ? `https://open.spotify.com/embed/${match[1]}/${match[2]}` : null;
 	},
 
 	isEmbedURL: ({ hostname, pathname }) =>
@@ -108,8 +104,7 @@ const dailymotionProvider: PlatformProvider = {
 	},
 
 	isEmbedURL: ({ hostname, pathname }) =>
-		hostname === "www.dailymotion.com" &&
-		/^\/embed\/video\/\w+$/.test(pathname),
+		hostname === "www.dailymotion.com" && /^\/embed\/video\/\w+$/.test(pathname),
 };
 
 const codePenProvider: PlatformProvider = {
@@ -156,9 +151,7 @@ export const parseAbsoluteURL = (url: string): URL | null => {
  */
 export const isEmbedURL = (url: URL) =>
 	url.protocol === "https:" &&
-	platformProviders.some((platformProvider) =>
-		platformProvider.isEmbedURL(url),
-	);
+	platformProviders.some((platformProvider) => platformProvider.isEmbedURL(url));
 
 /*
  * Returns the embed URL of a provider's share link (e.g. a YouTube watch link), or null if no provider knows it.

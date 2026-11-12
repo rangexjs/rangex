@@ -1,5 +1,7 @@
 import { Mention as MentionFactory } from "@rangex/editor/mention";
+
 import { MentionCaretMenu } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { MentionExtensionSettings } from "./Mention-types";
 

@@ -1,4 +1,5 @@
 import { accordionItemAttrsShape, validateComponentAttrs } from "#dom-attrs";
+
 import type {
 	ValidateAccordionItemPlacementParams,
 	ValidateAccordionItemPlacementResult,

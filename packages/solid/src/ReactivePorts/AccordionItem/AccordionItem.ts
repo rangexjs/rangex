@@ -1,5 +1,6 @@
 import type { AccordionItemPublicPort } from "@rangex/editor/accordion-item";
 import { createSignal, onCleanup } from "solid-js";
+
 import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveAccordionItemPort } from "./AccordionItem-types";
 
@@ -12,13 +13,9 @@ export const AccordionItem = <T extends AccordionItemPublicPort | undefined>(
 
 	const [canInsert, setCanInsert] = createSignal(publicPort.canInsert);
 	const [canWrap, setCanWrap] = createSignal(publicPort.canWrap);
-	const [currentComponent, setCurrentComponent] = createSignal(
-		publicPort.currentComponent,
-	);
+	const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
 	const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
-	const [isSelectionActive, setIsSelectionActive] = createSignal(
-		publicPort.isSelectionActive,
-	);
+	const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
 
 	onCleanup(publicPort.onCanInsertUpdate(setCanInsert));
 	onCleanup(publicPort.onCanWrapUpdate(setCanWrap));

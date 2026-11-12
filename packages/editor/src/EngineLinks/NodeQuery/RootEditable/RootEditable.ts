@@ -1,4 +1,5 @@
 import { isEditorElement, rootEditableRole } from "@rangex/core";
+
 import type {
 	GetClosestRootEditableParams,
 	GetClosestRootEditableResult,

@@ -1,6 +1,8 @@
 import { Separator as SeparatorFactory } from "@rangex/editor/separator";
+
 import { toolbarButtonsName } from "#constants";
 import { CustomComponentToolbarButton } from "#features";
+
 import type { Extension } from "../_Utilities";
 import type { SeparatorExtensionSettings } from "./Separator-types";
 

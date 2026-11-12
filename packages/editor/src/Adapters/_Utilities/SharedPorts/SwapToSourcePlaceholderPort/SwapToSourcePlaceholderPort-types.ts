@@ -24,5 +24,4 @@ export interface CreateSwapToSourcePlaceholderPortParams {
 	adapterBus: AdapterBus;
 }
 
-export interface CreateSwapToSourcePlaceholderPortResult
-	extends SwapToSourcePlaceholderPort {}
+export interface CreateSwapToSourcePlaceholderPortResult extends SwapToSourcePlaceholderPort {}

@@ -1,4 +1,5 @@
 import type { SnapshotSchema, StoredSnapshot } from "@rangex/editor";
+
 import type { ToolbarButtonsLayout } from "#constants";
 import type { Extension } from "#extensions";
 

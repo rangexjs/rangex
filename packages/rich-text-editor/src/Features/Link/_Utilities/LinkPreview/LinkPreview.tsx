@@ -1,4 +1,5 @@
 import type { JSX } from "@solidjs/web";
+
 import { Icon } from "#ui";
 
 interface LinkPreviewProps {
@@ -22,25 +23,13 @@ export const LinkPreview = (props: LinkPreviewProps) => {
 				<span class="sr-only"> (opens in new tab)</span>
 			</a>
 			<div class="space-x-2 justify-self-end whitespace-nowrap">
-				<button
-					type="button"
-					class="btn-neutral-solid rounded-sm p-1"
-					onClick={props.onEdit}
-				>
+				<button type="button" class="btn-neutral-solid rounded-sm p-1" onClick={props.onEdit}>
 					<Icon name="NotePencil" title="Edit link" class="size-4" />
 				</button>
-				<button
-					type="button"
-					class="btn-neutral-solid rounded-sm p-1"
-					onClick={props.onCopy}
-				>
+				<button type="button" class="btn-neutral-solid rounded-sm p-1" onClick={props.onCopy}>
 					<Icon name="CopySimple" title="Copy link" class="size-4" />
 				</button>
-				<button
-					type="button"
-					class="btn-neutral-solid rounded-sm p-1"
-					onClick={props.onUnwrap}
-				>
+				<button type="button" class="btn-neutral-solid rounded-sm p-1" onClick={props.onUnwrap}>
 					<Icon name="Trash" title="Remove link" class="size-4" />
 				</button>
 			</div>

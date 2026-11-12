@@ -1,5 +1,7 @@
 import { EditorRange, type PlainTextScanStep } from "@rangex/core";
+
 import { getClosestContentLine } from "#engine-links";
+
 import type {
 	GetLineMarkdownPrefixParams,
 	GetLineMarkdownPrefixResult,
@@ -49,9 +51,7 @@ export const getLineMarkdownPrefix = ({
  * Returns whether the given line prefix starts at the very beginning of its ContentLine,
  * with no range-sensitive nodes before it.
  */
-export const isPrefixAtContentLineStart = ({
-	prefix,
-}: IsPrefixAtContentLineStartParams) => {
+export const isPrefixAtContentLineStart = ({ prefix }: IsPrefixAtContentLineStartParams) => {
 	const contentLine = getClosestContentLine({ fromNode: prefix.toText });
 
 	if (!contentLine) {

@@ -15,11 +15,7 @@ import {
 	TodoList,
 	Video,
 } from "../Components";
-import {
-	ContentLine,
-	GlyphFormatterView,
-	RootEditable,
-} from "../EditorElements";
+import { ContentLine, GlyphFormatterView, RootEditable } from "../EditorElements";
 
 /*
  * Builds the style text for rendered snapshot output: shared component/base styles plus the view-only styles.

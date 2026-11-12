@@ -1,4 +1,5 @@
 import { useContext } from "solid-js";
+
 import { UIOptionsContext } from "./UIOptionsContext";
 
 export const useUIOptionsContext = () => {

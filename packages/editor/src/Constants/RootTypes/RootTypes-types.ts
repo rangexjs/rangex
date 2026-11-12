@@ -1,4 +1,5 @@
 import type { CreateRootEditableParams } from "@rangex/core";
+
 import type { rootTypes } from "./RootTypes";
 
 export type RootTypes = typeof rootTypes;

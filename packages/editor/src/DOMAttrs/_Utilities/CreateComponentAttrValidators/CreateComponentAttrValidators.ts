@@ -1,8 +1,6 @@
 import { canSetAttribute } from "@rangex/core";
-import type {
-	AnyElementAttrValidators,
-	ComponentAttrsShape,
-} from "../DOMAttrs-types";
+
+import type { AnyElementAttrValidators, ComponentAttrsShape } from "../DOMAttrs-types";
 import type {
 	CreateComponentAttrValidatorsParams,
 	CreateComponentAttrValidatorsResult,
@@ -46,9 +44,7 @@ const createSanitizedAttrValidator = <Value extends string | null>({
  * default, wrapped so the Sanitizer must allow the attribute on its element first (see createSanitizedAttrValidator).
  * Which attributes exist, and which of them are required, is decided by the shape.
  */
-export const createComponentAttrValidators = <
-	TComponentAttrsShape extends ComponentAttrsShape,
->({
+export const createComponentAttrValidators = <TComponentAttrsShape extends ComponentAttrsShape>({
 	componentAttrsShape,
 	elementDescriptors,
 	defaultValidators,
@@ -58,8 +54,7 @@ export const createComponentAttrValidators = <
 
 	for (const elementName in componentAttrsShape) {
 		const elementDescriptor = elementDescriptors[elementName];
-		const defaultElementValidators: AnyElementAttrValidators =
-			defaultValidators[elementName];
+		const defaultElementValidators: AnyElementAttrValidators = defaultValidators[elementName];
 		const elementValidatorOverrides: AnyElementAttrValidators =
 			validatorOverrides[elementName] ?? {};
 
@@ -67,8 +62,7 @@ export const createComponentAttrValidators = <
 
 		for (const attrName in componentAttrsShape[elementName]) {
 			const validateAttr =
-				elementValidatorOverrides[attrName] ??
-				defaultElementValidators[attrName];
+				elementValidatorOverrides[attrName] ?? defaultElementValidators[attrName];
 
 			if (!validateAttr) {
 				throw new Error(`Attribute "${attrName}" has no validator.`);

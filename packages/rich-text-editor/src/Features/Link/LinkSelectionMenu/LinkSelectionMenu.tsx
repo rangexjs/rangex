@@ -1,7 +1,9 @@
 import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
+
 import { useEditorContext } from "#context";
 import { createTextFieldState } from "#ui";
+
 import { getDisplayTextField, LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
@@ -12,8 +14,7 @@ export const LinkSelectionMenu = () => {
 		throw new Error("Link can't be undefined.");
 	}
 
-	const [displayTextHandle, displayTextControls] =
-		createTextFieldState<HTMLInputElement>({});
+	const [displayTextHandle, displayTextControls] = createTextFieldState<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
@@ -41,9 +42,7 @@ export const LinkSelectionMenu = () => {
 
 	const refreshFields = () => {
 		displayTextHandle.reset();
-		const { value, disabled, placeholder } = getDisplayTextField(
-			link.getDisplayText(),
-		);
+		const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
 		displayTextHandle.setValue(value);
 		setDisplayTextDisabled(disabled);
 		setDisplayTextPlaceholder(placeholder);
@@ -53,9 +52,7 @@ export const LinkSelectionMenu = () => {
 
 		flush();
 
-		const input = selectionMenuEl.querySelector<HTMLInputElement>(
-			`#${displayTextHandle.id}`,
-		);
+		const input = selectionMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
 
 		if (!input) {
 			throw new Error("Input wasn't found.");

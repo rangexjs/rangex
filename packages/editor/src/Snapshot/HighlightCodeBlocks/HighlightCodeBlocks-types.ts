@@ -1,4 +1,5 @@
 import type { ElementView, NodeView } from "@rangex/core";
+
 import type { HighlightCodeFn, ThemedChars } from "#adapters/CodeBlock";
 import type { CodeBlockStorage } from "#storage";
 

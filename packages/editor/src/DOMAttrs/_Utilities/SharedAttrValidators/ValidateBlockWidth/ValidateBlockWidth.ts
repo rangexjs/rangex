@@ -3,9 +3,7 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
 /*
  * A block width is valid if it's a whole number of px, without its unit, between 300 and 10000.
  */
-export const validateBlockWidth: ValidateAttrFn<string | null> = ({
-	value,
-}) => {
+export const validateBlockWidth: ValidateAttrFn<string | null> = ({ value }) => {
 	// The block resize's minimum width
 	const minBlockWidth = 300;
 	const maxBlockWidth = 10000;

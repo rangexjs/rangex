@@ -29,6 +29,7 @@ import { TemplateVariable } from "@rangex/rich-text-editor/template-variable";
 import { TodoList } from "@rangex/rich-text-editor/todo-list";
 import { UndoRedo } from "@rangex/rich-text-editor/undo-redo";
 import { Video } from "@rangex/rich-text-editor/video";
+
 import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
 	codeBlockSettings,

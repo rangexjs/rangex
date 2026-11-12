@@ -1,4 +1,5 @@
 import { initEditorHighlighterWorker } from "@rangex/syntax-highlighter-shiki";
+
 import {
 	codeBlockLanguageDefinitions,
 	codeBlockThemeDefinitions,

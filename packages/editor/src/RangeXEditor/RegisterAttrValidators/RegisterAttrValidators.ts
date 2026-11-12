@@ -7,6 +7,7 @@ import {
 	createLinkAttrValidators,
 	createVideoAttrValidators,
 } from "#dom-attrs";
+
 import type { RegisterAttrValidatorsParams } from "./RegisterAttrValidators-types";
 
 /*
@@ -17,8 +18,7 @@ export const registerAttrValidators = ({
 	adapterBus,
 	components,
 }: RegisterAttrValidatorsParams) => {
-	const { accordionItem, audio, codeBlock, embed, image, link, video } =
-		components;
+	const { accordionItem, audio, codeBlock, embed, image, link, video } = components;
 
 	if (accordionItem) {
 		const { attrValidators = {} } = accordionItem;
@@ -32,54 +32,36 @@ export const registerAttrValidators = ({
 	if (audio) {
 		const { attrValidators = {} } = audio;
 
-		adapterBus.registerAttrValidators(
-			"audio",
-			createAudioAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("audio", createAudioAttrValidators(attrValidators));
 	}
 
 	if (codeBlock) {
 		const { attrValidators = {} } = codeBlock;
 
-		adapterBus.registerAttrValidators(
-			"codeBlock",
-			createCodeBlockAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("codeBlock", createCodeBlockAttrValidators(attrValidators));
 	}
 
 	if (embed) {
 		const { attrValidators = {} } = embed;
 
-		adapterBus.registerAttrValidators(
-			"embed",
-			createEmbedAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("embed", createEmbedAttrValidators(attrValidators));
 	}
 
 	if (image) {
 		const { attrValidators = {} } = image;
 
-		adapterBus.registerAttrValidators(
-			"image",
-			createImageAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("image", createImageAttrValidators(attrValidators));
 	}
 
 	if (link) {
 		const { attrValidators = {} } = link;
 
-		adapterBus.registerAttrValidators(
-			"link",
-			createLinkAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("link", createLinkAttrValidators(attrValidators));
 	}
 
 	if (video) {
 		const { attrValidators = {} } = video;
 
-		adapterBus.registerAttrValidators(
-			"video",
-			createVideoAttrValidators(attrValidators),
-		);
+		adapterBus.registerAttrValidators("video", createVideoAttrValidators(attrValidators));
 	}
 };

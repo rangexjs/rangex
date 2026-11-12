@@ -1,4 +1,5 @@
 import type { ComponentAttrs, ComponentAttrsShape } from "#dom-attrs";
+
 import { createStateEmitter } from "../../CreateStateEmitter";
 import type {
 	CreateDOMAttrsPortResult,

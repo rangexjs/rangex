@@ -1,12 +1,10 @@
 import type { FormattingLineLocalNameValue } from "@rangex/editor/formatting";
 import { LineLocalName, ReadOnly } from "@rangex/solid";
 import { createMemo, createSignal, createUniqueId } from "solid-js";
+
 import { useEditorContext } from "#context";
-import {
-	ToolbarButton,
-	ToolbarDropdown,
-	type ToolbarDropdownList,
-} from "../../_Utilities";
+
+import { ToolbarButton, ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
 export const LineLocalNameToolbarButton = () => {
 	const editor = useEditorContext();
@@ -31,8 +29,7 @@ export const LineLocalNameToolbarButton = () => {
 		h6: "Heading 6",
 	};
 
-	const getTitle = (localName: FormattingLineLocalNameValue) =>
-		titles[localName];
+	const getTitle = (localName: FormattingLineLocalNameValue) => titles[localName];
 
 	const title = createMemo(() => {
 		const localNames = $lineLocalName.values();
@@ -61,15 +58,7 @@ export const LineLocalNameToolbarButton = () => {
 	const list = createMemo<ToolbarDropdownList>(() => {
 		const activeValues = $lineLocalName.values();
 
-		const localNames: FormattingLineLocalNameValue[] = [
-			"p",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-		];
+		const localNames: FormattingLineLocalNameValue[] = ["p", "h1", "h2", "h3", "h4", "h5", "h6"];
 
 		return localNames.map<ToolbarDropdownList[number]>((localName) => {
 			return {
@@ -85,9 +74,7 @@ export const LineLocalNameToolbarButton = () => {
 		});
 	});
 
-	const disabled = createMemo(
-		() => $lineLocalName.disabled() || !!$readOnly?.checked(),
-	);
+	const disabled = createMemo(() => $lineLocalName.disabled() || !!$readOnly?.checked());
 
 	return (
 		<span>

@@ -1,6 +1,7 @@
 import { componentsName } from "#constants";
 import { createImageAttrValidators, imageAttrsShape } from "#dom-attrs";
 import { imageStoragePattern } from "#storage";
+
 import { validateMediaComponent } from "../_Utilities";
 import type {
 	CreateImageValidatorParams,

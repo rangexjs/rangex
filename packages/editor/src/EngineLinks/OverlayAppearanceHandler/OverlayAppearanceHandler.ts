@@ -1,8 +1,5 @@
-import {
-	type BlockComponent,
-	blockComponentRole,
-	isEditorNode,
-} from "@rangex/core";
+import { type BlockComponent, blockComponentRole, isEditorNode } from "@rangex/core";
+
 import type {
 	CreateOverlayAppearanceHandlerParams,
 	CreateOverlayAppearanceHandlerResult,
@@ -68,10 +65,7 @@ export const createOverlayAppearanceHandler = ({
 		clearTimeout(registration.hideTimeoutId);
 	};
 
-	const showPopover = (
-		registration: OverlayRegistration,
-		blockComponent: BlockComponent,
-	) => {
+	const showPopover = (registration: OverlayRegistration, blockComponent: BlockComponent) => {
 		registration.pointerOver = true;
 		cancelHide(registration);
 
@@ -138,13 +132,7 @@ export const createOverlayAppearanceHandler = ({
 	});
 
 	const overlayAppearanceHandler: OverlayAppearanceHandler = {
-		registerComponent({
-			popover,
-			extraElements = [],
-			shouldShow,
-			onShow,
-			onClose,
-		}) {
+		registerComponent({ popover, extraElements = [], shouldShow, onShow, onClose }) {
 			const abortController = new AbortController();
 			const { signal } = abortController;
 

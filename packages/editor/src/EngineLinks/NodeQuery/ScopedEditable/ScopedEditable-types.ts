@@ -1,8 +1,4 @@
-import type {
-	EditorNode,
-	ScopedEditable,
-	ScopedEditableDisplay,
-} from "@rangex/core";
+import type { EditorNode, ScopedEditable, ScopedEditableDisplay } from "@rangex/core";
 
 export interface GetClosestScopedEditableParams {
 	fromNode: EditorNode;

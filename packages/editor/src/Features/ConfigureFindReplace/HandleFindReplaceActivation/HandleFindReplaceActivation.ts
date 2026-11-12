@@ -9,16 +9,14 @@ export const handleFindReplaceActivation = ({
 }: HandleFindReplaceActivationParams) => {
 	const findReplace = editorAPI.getFindReplace();
 
-	const openCleanup = configPort.onOpen(
-		({ pattern, includeNonEditableContent }) => {
-			findReplace.enable();
+	const openCleanup = configPort.onOpen(({ pattern, includeNonEditableContent }) => {
+		findReplace.enable();
 
-			findReplace.setCriteria({
-				pattern,
-				nonEditableIncluded: includeNonEditableContent,
-			});
-		},
-	);
+		findReplace.setCriteria({
+			pattern,
+			nonEditableIncluded: includeNonEditableContent,
+		});
+	});
 
 	const closedCleanup = configPort.onClose(() => {
 		findReplace.disable();

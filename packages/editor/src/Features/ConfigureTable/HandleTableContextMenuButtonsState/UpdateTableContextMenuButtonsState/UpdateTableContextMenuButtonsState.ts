@@ -1,6 +1,8 @@
 import { nestedEditableRole, nestedEditableRoleSelector } from "@rangex/core";
+
 import { verticalAlignAttr } from "#constants";
 import { isScopedEditableEmpty } from "#engine-links";
+
 import {
 	getActiveTableCells,
 	getCommonTableCellFromSelection,
@@ -23,8 +25,7 @@ import type {
  * Returns the first message whose corresponding validity flag is false, or undefined
  * when all checks pass. Used to surface the most-specific reason a button is disabled.
  */
-const resolveInfo = (checks: [boolean, string][]) =>
-	checks.find(([isValid]) => !isValid)?.[1];
+const resolveInfo = (checks: [boolean, string][]) => checks.find(([isValid]) => !isValid)?.[1];
 
 /**
  * Both header and data can be true at the same time when the active selection contains
@@ -62,9 +63,7 @@ const getVerticalAlignmentButtonsState = ({
 	};
 
 	for (const tableCell of activeTableCells) {
-		const nestedEditable = tableCell.$$querySelector(
-			nestedEditableRoleSelector,
-		);
+		const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
 		if (nestedEditable?.$$editorRole !== nestedEditableRole) {
 			throw new Error("nestedEditable's type is invalid.");
@@ -75,18 +74,14 @@ const getVerticalAlignmentButtonsState = ({
 		// Without the attribute, the cell is top-aligned
 		verticalAlignmentState.start ||=
 			verticalAlign === null || verticalAlign === verticalAlignAttr.value.start;
-		verticalAlignmentState.center ||=
-			verticalAlign === verticalAlignAttr.value.center;
-		verticalAlignmentState.end ||=
-			verticalAlign === verticalAlignAttr.value.end;
+		verticalAlignmentState.center ||= verticalAlign === verticalAlignAttr.value.center;
+		verticalAlignmentState.end ||= verticalAlign === verticalAlignAttr.value.end;
 	}
 
 	return verticalAlignmentState;
 };
 
-const isTableCellEmpty = ({
-	tableCell,
-}: IsTableCellEmptyParams): IsTableCellEmptyResult => {
+const isTableCellEmpty = ({ tableCell }: IsTableCellEmptyParams): IsTableCellEmptyResult => {
 	const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
 	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
@@ -104,9 +99,7 @@ const isClearContentsDisabled = ({
 }: IsClearContentsDisabledParams): IsClearContentsDisabledResult => {
 	const activeTableCells = getActiveTableCells({ editorAPI, table });
 
-	const everyCellEmpty = activeTableCells.every((tableCell) =>
-		isTableCellEmpty({ tableCell }),
-	);
+	const everyCellEmpty = activeTableCells.every((tableCell) => isTableCellEmpty({ tableCell }));
 
 	return everyCellEmpty;
 };
@@ -119,8 +112,9 @@ export const updateTableContextMenuButtonsState = ({
 	const mergeCellsValidityState = table.$$checkMergeCells({
 		type: "selection",
 	});
-	const { mergeLeft, mergeRight, mergeUp, mergeDown } =
-		table.$$checkMergeCellTo({ type: "selection" });
+	const { mergeLeft, mergeRight, mergeUp, mergeDown } = table.$$checkMergeCellTo({
+		type: "selection",
+	});
 	const splitValidityState = table.$$checkSplitCell({ type: "selection" });
 	const splitSpannedValidityState = table.$$checkSplitSpannedCells({
 		type: "selection",
@@ -149,57 +143,36 @@ export const updateTableContextMenuButtonsState = ({
 	const maxColsInfo = `A table can have at most ${limits.maxCols} columns.`;
 
 	const insertRowInfo = resolveInfo([
-		[
-			insertRowValidityState.canInsert,
-			"A row cannot be inserted in the current selection.",
-		],
+		[insertRowValidityState.canInsert, "A row cannot be inserted in the current selection."],
 		[tableCapacity.canAddRow, maxRowsInfo],
 	]);
 
 	const insertColInfo = resolveInfo([
-		[
-			insertColValidityState.canInsert,
-			"A column cannot be inserted in the current selection.",
-		],
+		[insertColValidityState.canInsert, "A column cannot be inserted in the current selection."],
 		[tableCapacity.canAddCol, maxColsInfo],
 	]);
 
 	const mergeCellsInfo = resolveInfo([
-		[
-			mergeCellsValidityState.hasMultipleCells,
-			"Multiple cells have to be selected.",
-		],
-		[
-			mergeCellsValidityState.isSameSection,
-			"Selected cells are in different sections.",
-		],
+		[mergeCellsValidityState.hasMultipleCells, "Multiple cells have to be selected."],
+		[mergeCellsValidityState.isSameSection, "Selected cells are in different sections."],
 	]);
 
 	const mergeLeftInfo = resolveInfo([
 		[mergeLeft.hasSingleCell, "A single cell must be selected."],
 		[mergeLeft.hasNeighbor, "There is no cell to the left."],
-		[
-			mergeLeft.isColSpanAligned,
-			"The cell and its left neighbor must have matching row spans.",
-		],
+		[mergeLeft.isColSpanAligned, "The cell and its left neighbor must have matching row spans."],
 	]);
 
 	const mergeRightInfo = resolveInfo([
 		[mergeRight.hasSingleCell, "A single cell must be selected."],
 		[mergeRight.hasNeighbor, "There is no cell to the right."],
-		[
-			mergeRight.isColSpanAligned,
-			"The cell and its right neighbor must have matching row spans.",
-		],
+		[mergeRight.isColSpanAligned, "The cell and its right neighbor must have matching row spans."],
 	]);
 
 	const mergeUpInfo = resolveInfo([
 		[mergeUp.hasSingleCell, "A single cell must be selected."],
 		[mergeUp.hasNeighbor, "There is no cell above."],
-		[
-			mergeUp.isRowSpanAligned,
-			"The cell and its upper neighbor must have matching column spans.",
-		],
+		[mergeUp.isRowSpanAligned, "The cell and its upper neighbor must have matching column spans."],
 		[mergeUp.isSameSection, "The cells are in different table sections."],
 	]);
 
@@ -214,26 +187,17 @@ export const updateTableContextMenuButtonsState = ({
 	]);
 
 	const splitHorizontallyInfo = resolveInfo([
-		[
-			splitValidityState.horizontal.hasSingleCell,
-			"A single cell must be selected.",
-		],
+		[splitValidityState.horizontal.hasSingleCell, "A single cell must be selected."],
 		[tableCapacity.canSplitHorizontally, maxColsInfo],
 	]);
 
 	const splitVerticallyInfo = resolveInfo([
-		[
-			splitValidityState.vertical.hasSingleCell,
-			"A single cell must be selected.",
-		],
+		[splitValidityState.vertical.hasSingleCell, "A single cell must be selected."],
 		[tableCapacity.canSplitVertically, maxRowsInfo],
 	]);
 
 	const splitFullyInfo = resolveInfo([
-		[
-			splitSpannedValidityState.isSpanned,
-			"None of the selected cells are spanned.",
-		],
+		[splitSpannedValidityState.isSpanned, "None of the selected cells are spanned."],
 	]);
 
 	const cellTypeState = getCellTypeButtonsState({ editorAPI, table });
@@ -270,17 +234,11 @@ export const updateTableContextMenuButtonsState = ({
 			mergeUp: { disabled: !mergeUp.canMerge, info: mergeUpInfo },
 			mergeDown: { disabled: !mergeDown.canMerge, info: mergeDownInfo },
 			splitHorizontally: {
-				disabled: !(
-					splitValidityState.horizontal.canSplit &&
-					tableCapacity.canSplitHorizontally
-				),
+				disabled: !(splitValidityState.horizontal.canSplit && tableCapacity.canSplitHorizontally),
 				info: splitHorizontallyInfo,
 			},
 			splitVertically: {
-				disabled: !(
-					splitValidityState.vertical.canSplit &&
-					tableCapacity.canSplitVertically
-				),
+				disabled: !(splitValidityState.vertical.canSplit && tableCapacity.canSplitVertically),
 				info: splitVerticallyInfo,
 			},
 			splitFully: {
@@ -290,27 +248,19 @@ export const updateTableContextMenuButtonsState = ({
 		},
 		insertDelete: {
 			insertRowAbove: {
-				disabled: !(
-					insertRowValidityState.canInsert && tableCapacity.canAddRow
-				),
+				disabled: !(insertRowValidityState.canInsert && tableCapacity.canAddRow),
 				info: insertRowInfo,
 			},
 			insertRowBelow: {
-				disabled: !(
-					insertRowValidityState.canInsert && tableCapacity.canAddRow
-				),
+				disabled: !(insertRowValidityState.canInsert && tableCapacity.canAddRow),
 				info: insertRowInfo,
 			},
 			insertColumnLeft: {
-				disabled: !(
-					insertColValidityState.canInsert && tableCapacity.canAddCol
-				),
+				disabled: !(insertColValidityState.canInsert && tableCapacity.canAddCol),
 				info: insertColInfo,
 			},
 			insertColumnRight: {
-				disabled: !(
-					insertColValidityState.canInsert && tableCapacity.canAddCol
-				),
+				disabled: !(insertColValidityState.canInsert && tableCapacity.canAddCol),
 				info: insertColInfo,
 			},
 			deleteRow: {

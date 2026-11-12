@@ -25,9 +25,7 @@ export const configureTemplateVariable = ({
 		validateTemplateVariableFieldName({ fieldName }),
 	);
 
-	configPort.registerValidateFieldValue((value) =>
-		validateTemplateVariableFieldValue({ value }),
-	);
+	configPort.registerValidateFieldValue((value) => validateTemplateVariableFieldValue({ value }));
 
 	handleTemplateVariableInitialization({ configPort, editorAPI });
 

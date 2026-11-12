@@ -1,11 +1,9 @@
-import {
-	createBeamText,
-	createContentLine,
-	createRootEditable,
-} from "@rangex/core";
+import { createBeamText, createContentLine, createRootEditable } from "@rangex/core";
+
 import { rootDefinitions } from "#constants";
 import { toDOMAttrs } from "#dom-attrs";
 import { createRootStorage } from "#storage";
+
 import type { CreateRootParams, CreateRootResult } from "./CreateRoot-types";
 
 const createEmptyLines = () => [

@@ -1,12 +1,6 @@
 import { FindReplace, ReadOnly } from "@rangex/solid";
-import {
-	createEffect,
-	createMemo,
-	createSignal,
-	createUniqueId,
-	For,
-	Show,
-} from "solid-js";
+import { createEffect, createMemo, createSignal, createUniqueId, For, Show } from "solid-js";
+
 import { useEditorContext } from "#context";
 import {
 	Checkbox,
@@ -21,6 +15,7 @@ import {
 	TextFieldWrapper,
 } from "#ui";
 import { createDebouncer } from "#utilities";
+
 import { ToolbarButton } from "../../_Utilities";
 import { buildFindReplacePattern } from "./_Utilities";
 import { FindReplaceResults } from "./FindReplaceResults";
@@ -42,9 +37,7 @@ export const FindReplaceToolbarButton = () => {
 
 	const resultsCount = createMemo(() => $findReplace.results().length);
 
-	const displayIndex = createMemo(() =>
-		resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0,
-	);
+	const displayIndex = createMemo(() => (resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0));
 
 	const popoverId = createUniqueId();
 	const headingId = createUniqueId();
@@ -77,9 +70,7 @@ export const FindReplaceToolbarButton = () => {
 	const getSafePattern = () => {
 		findHandle.validate();
 
-		const findText = isValidPattern(findHandle.value())
-			? findHandle.value()
-			: "";
+		const findText = isValidPattern(findHandle.value()) ? findHandle.value() : "";
 
 		return getPattern(findText);
 	};
@@ -93,10 +84,10 @@ export const FindReplaceToolbarButton = () => {
 		},
 		validateOn: ["blur:changed", "input:dirty"],
 	});
-	const [replaceHandle, replaceControls] =
-		createTextFieldState<HTMLInputElement>({});
-	const [includeNonEditableContentHandle, includeNonEditableContentControls] =
-		createCheckboxState({});
+	const [replaceHandle, replaceControls] = createTextFieldState<HTMLInputElement>({});
+	const [includeNonEditableContentHandle, includeNonEditableContentControls] = createCheckboxState(
+		{},
+	);
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
 	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
@@ -108,9 +99,7 @@ export const FindReplaceToolbarButton = () => {
 		},
 	);
 
-	const replaceDisabled = createMemo(
-		() => replaceButtonDisabled() || !!$readOnly?.checked(),
-	);
+	const replaceDisabled = createMemo(() => replaceButtonDisabled() || !!$readOnly?.checked());
 
 	const findInputAnchorName = "--find-input-anchor-name";
 
@@ -157,8 +146,7 @@ export const FindReplaceToolbarButton = () => {
 
 		const { left, right, top, bottom } = currentTarget.getBoundingClientRect();
 
-		const isOutOfViewport =
-			left < 0 || right > innerWidth || top < 0 || bottom > innerHeight;
+		const isOutOfViewport = left < 0 || right > innerWidth || top < 0 || bottom > innerHeight;
 
 		if (!isOutOfViewport) {
 			return;
@@ -265,11 +253,7 @@ export const FindReplaceToolbarButton = () => {
 		defer: true,
 	});
 
-	createEffect(
-		includeNonEditableContentHandle.checked,
-		() => emitSearchChange(),
-		{ defer: true },
-	);
+	createEffect(includeNonEditableContentHandle.checked, () => emitSearchChange(), { defer: true });
 
 	const navigateToIndex = (index: number) => {
 		findReplace.navigateToIndex({ index });
@@ -299,11 +283,7 @@ export const FindReplaceToolbarButton = () => {
 
 	return (
 		<span>
-			<ToolbarButton
-				checked={checked()}
-				commandfor={popoverId}
-				command="toggle-popover"
-			>
+			<ToolbarButton checked={checked()} commandfor={popoverId} command="toggle-popover">
 				<Icon name="FindReplace" title="Find and replace" class="size-4" />
 			</ToolbarButton>
 			<div
@@ -315,14 +295,8 @@ export const FindReplaceToolbarButton = () => {
 				onToggle={onPopoverToggle}
 				onBeforeToggle={setPopoverInitialPosition}
 			>
-				<div
-					class="mb-2 flex cursor-grab items-center justify-between"
-					onPointerDown={movePopover}
-				>
-					<h2
-						id={headingId}
-						class="font-bold text-neutral-700 text-sm dark:text-neutral-200"
-					>
+				<div class="mb-2 flex cursor-grab items-center justify-between" onPointerDown={movePopover}>
+					<h2 id={headingId} class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
 						Find & Replace
 					</h2>
 					<button
@@ -374,9 +348,7 @@ export const FindReplaceToolbarButton = () => {
 							<div
 								role="alert"
 								class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
-								hidden={
-									!(showInputFieldError(findHandle.state()) && hasFindFocus())
-								}
+								hidden={!(showInputFieldError(findHandle.state()) && hasFindFocus())}
 								style={{
 									"position-anchor": findInputAnchorName,
 								}}
@@ -406,11 +378,7 @@ export const FindReplaceToolbarButton = () => {
 									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
 									onClick={() => findPreviousMatch()}
 								>
-									<Icon
-										name="ArrowLeft"
-										title="Previous match"
-										class="size-3"
-									/>
+									<Icon name="ArrowLeft" title="Previous match" class="size-3" />
 								</button>
 								<button
 									type="button"

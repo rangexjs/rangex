@@ -1,4 +1,5 @@
 import { extendObjectProperties } from "#utilities";
+
 import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
 	CreateReadOnlyAdapterParams,

@@ -1,4 +1,5 @@
 import type { MediaType, RangeXEditor } from "@rangex/editor";
+
 import type { MediaResolveDetailSettings } from "../CreateMediaResolveDetail";
 
 export interface DetectMediaUrlTypeSettings extends MediaResolveDetailSettings {

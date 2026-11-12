@@ -11,5 +11,4 @@ export interface TemplateVariableFieldMismatch {
 	reason: string;
 }
 
-export type ValidateTemplateVariableFieldResult =
-	TemplateVariableFieldMismatch | null;
+export type ValidateTemplateVariableFieldResult = TemplateVariableFieldMismatch | null;

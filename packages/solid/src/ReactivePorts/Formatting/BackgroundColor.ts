@@ -1,18 +1,13 @@
 import type { FormattingPublicPort } from "@rangex/editor/formatting";
 import { createSignal, onCleanup } from "solid-js";
-import type {
-	FromFormattingToReactivePort,
-	ReactiveBackgroundColorPort,
-} from "./_Utilities";
+
+import type { FromFormattingToReactivePort, ReactiveBackgroundColorPort } from "./_Utilities";
 
 export const BackgroundColor = <T extends FormattingPublicPort | undefined>(
 	formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveBackgroundColorPort> => {
 	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<
-			T,
-			ReactiveBackgroundColorPort
-		>;
+		return undefined as FromFormattingToReactivePort<T, ReactiveBackgroundColorPort>;
 	}
 
 	const [state, setState] = createSignal(formatting.backgroundColor);

@@ -1,7 +1,9 @@
 import { CodeBlock, ReadOnly } from "@rangex/solid";
 import { createMemo } from "solid-js";
+
 import { useEditorContext, useUIOptionsContext } from "#context";
 import { Icon } from "#ui";
+
 import { ToolbarButton } from "../../_Utilities";
 
 export const CodeBlockToolbarButton = () => {
@@ -25,9 +27,7 @@ export const CodeBlockToolbarButton = () => {
 	const $readOnly = ReadOnly(readOnly);
 
 	const disabled = createMemo(
-		() =>
-			!($codeBlock.isSelectionActive() || $codeBlock.canWrap()) ||
-			!!$readOnly?.checked(),
+		() => !($codeBlock.isSelectionActive() || $codeBlock.canWrap()) || !!$readOnly?.checked(),
 	);
 
 	const onClick = () => {

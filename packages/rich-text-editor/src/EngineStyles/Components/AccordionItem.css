@@ -7,8 +7,7 @@
 		details {
 			--accordion-padding: 12px;
 
-			border: 1px solid
-				light-dark(var(--color-neutral-200), var(--color-neutral-800));
+			border: 1px solid light-dark(var(--color-neutral-200), var(--color-neutral-800));
 			border-radius: 12px;
 			background-color: light-dark(
 				color(from var(--color-neutral-300) srgb r g b / 0.1),
@@ -28,8 +27,7 @@
 			}
 
 			& > [data-rx-editor-role="nested-editable"] {
-				padding: 0px var(--accordion-padding) var(--accordion-padding)
-					var(--accordion-padding);
+				padding: 0px var(--accordion-padding) var(--accordion-padding) var(--accordion-padding);
 			}
 
 			&[open] > summary::after {
@@ -55,10 +53,7 @@
 					height: 20px;
 					width: 20px;
 					margin-left: 8px;
-					background-color: light-dark(
-						var(--color-primary-400),
-						var(--color-primary-600)
-					);
+					background-color: light-dark(var(--color-primary-400), var(--color-primary-600));
 					mask: url("./Icons/CaretCircleLeft.svg") center / contain no-repeat;
 					transition: rotate 300ms;
 				}

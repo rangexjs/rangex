@@ -1,4 +1,5 @@
 import type { BlockComponent } from "@rangex/core";
+
 import type { TableId } from "../_Constants";
 
 export type TableStorage = {
