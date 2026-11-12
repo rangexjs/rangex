@@ -1,7 +1,4 @@
 **/node_modules
 
-packages/core/
-packages/rich-text-area/
-
 **/dist
 AGENTS.local.md
