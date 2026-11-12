@@ -12,12 +12,11 @@ export default defineConfig(() => ({
 		useTabs: true,
 		sortImports: {},
 		sortPackageJson: false,
-		ignorePatterns: ["**/*.md", "packages/core/**"],
+		ignorePatterns: ["**/*.md"],
 	},
 	lint: {
 		plugins: ["eslint", "typescript", "unicorn", "oxc", "import", "jsx-a11y"],
 		categories: { correctness: "error" },
-		ignorePatterns: ["packages/core/**"],
 		rules: {
 			"import/no-default-export": "warn",
 			"no-negated-condition": "warn",

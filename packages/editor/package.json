@@ -10,7 +10,7 @@
 		"contenteditable",
 		"framework-agnostic"
 	],
-	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
+	"author": "Mozes Stumpf",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:rangexjs/rangex.git",
@@ -213,8 +213,7 @@
 		"dist"
 	],
 	"publishConfig": {
-		"access": "public",
-		"tag": "beta"
+		"access": "public"
 	},
 	"scripts": {
 		"dev": "vp dev",
@@ -226,12 +225,12 @@
 		"pre:check": "vp check && tsc && vp test"
 	},
 	"devDependencies": {
-		"@happy-dom/global-registrator": "^20.10.6",
+		"@happy-dom/global-registrator": "^21.0.4",
 		"@vitest/coverage-v8": "5.1.0",
 		"typescript": "^7.0.2",
 		"vite-plus": "1.6.0"
 	},
 	"dependencies": {
-		"@rangex/core": "1.0.0-beta.0"
+		"@rangex/core": "1.0.0-beta.1"
 	}
 }

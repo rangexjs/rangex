@@ -119,4 +119,4 @@ If a code block asks for a language or theme that wasn't loaded, both highlighte
 
 ## License
 
-MIT. RangeX depends on `@rangex/core`, which is licensed separately. See [LICENSE.md](https://github.com/rangexjs/rangex/blob/main/LICENSE.md).
+MIT. RangeX depends on `@rangex/core`, which is licensed separately: [rangex.dev/license](https://rangex.dev/license).

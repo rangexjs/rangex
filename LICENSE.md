@@ -1,14 +1,14 @@
 ## Important Notice
 
-This repository depends on **@rangex/core**, the RangeX editor engine, which is licensed separately under a commercial subscription license and is **not** covered by the MIT License below.
+This repository depends on **@rangex/core**, the RangeX editor engine, which is licensed separately under the RangeX Core License (included in the `@rangex/core` package) and is **not** covered by the MIT License below.
 
-Use of this repository requires a valid license for @rangex/core. See [rangex.dev](https://rangex.dev) for pricing and licensing details.
+Development, testing and evaluation with @rangex/core are free. Production use is not permitted before the final `1.0.0` release of `@rangex/editor`; after that release, it requires a valid license key for @rangex/core. See [rangex.dev/license](https://rangex.dev/license) for pricing and licensing details.
 
 ---
 
 MIT License
 
-Copyright (c) 2025 RangeX
+Copyright (c) 2025–2026 Mozes Stumpf
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
