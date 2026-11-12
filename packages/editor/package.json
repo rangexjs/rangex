@@ -18,7 +18,6 @@
 	},
 	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/editor#readme",
 	"bugs": "https://github.com/rangexjs/rangex/issues",
-	"private": true,
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,

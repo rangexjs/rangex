@@ -20,7 +20,6 @@
 	},
 	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
 	"bugs": "https://github.com/rangexjs/rangex/issues",
-	"private": true,
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -48,7 +47,7 @@
 		"vite-plus": "1.6.0"
 	},
 	"peerDependencies": {
-		"@rangex/editor": "^1.0.0-beta.0",
+		"@rangex/editor": "1.0.0-beta.0",
 		"shiki": "^4.3.1"
 	}
 }

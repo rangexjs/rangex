@@ -14,7 +14,8 @@
 		"dev": "vp dev",
 		"build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
 		"fix": "vp check --fix index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"lint": "vp check index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor"
+		"lint": "vp check index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+		"publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag beta"
 	},
 	"dependencies": {
 		"@rangex/rich-text-editor": "1.0.0-beta.0",
