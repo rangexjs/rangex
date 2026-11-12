@@ -14,11 +14,21 @@ Its architecture is extension-based: features such as links, tables or code bloc
 
 - **[`@rangex/rich-text-editor`](packages/rich-text-editor)**: a complete, ready-to-use rich text editor with a predefined UI: toolbar, menus and popovers. Built on `@rangex/editor` and `@rangex/solid` and written in SolidJS, but works in any app, whatever framework it uses.
 
-> RangeX is in **beta** and is not ready for production use. Stored snapshots (the saved documents) are **not** backward compatible until the final `1.0.0` release: a snapshot saved with one beta will not load in a later one.
+> RangeX is in **beta**, and production use is not permitted before the final `1.0.0` release of `@rangex/editor` (see [License](#license)). Stored snapshots (the saved documents) are **not** backward compatible until the final `1.0.0` release: a snapshot saved with one beta will not load in a later one.
 
 ### This repository is:
 
 - **A demo** of what the engine can do, so you can evaluate RangeX before building on it.
 - **A reference implementation**: the ready-made editor shows how to wire the engine into a complete editor, so you can follow it when building your own.
 
-Everything here is open source except the engine (`@rangex/core`), which is currently closed-source. It's planned to become open source with the final `1.0.0` release.
+Everything here is open source except the engine (`@rangex/core`). Its source code stays closed until its own final `1.0.0` release; after that, it becomes source-available.
+
+## License
+
+The packages in this repository are MIT licensed. They depend on the engine, `@rangex/core`, which is licensed separately under the RangeX Core License:
+
+- Development, testing and evaluation are free, with or without a license key.
+- Production use is **not permitted** before the final `1.0.0` release of `@rangex/editor`.
+- After that release, production use requires a valid RangeX license key, for a plan based on your company's annual revenue.
+
+See [LICENSE.md](LICENSE.md) and [rangex.dev/license](https://rangex.dev/license) for details.

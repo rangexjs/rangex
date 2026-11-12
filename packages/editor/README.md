@@ -82,4 +82,4 @@ To highlight code blocks, pass `highlightCode`, e.g. from [`@rangex/syntax-highl
 
 ## License
 
-MIT. RangeX depends on `@rangex/core`, which is licensed separately. See [LICENSE.md](https://github.com/rangexjs/rangex/blob/main/LICENSE.md).
+MIT. RangeX depends on `@rangex/core`, which is licensed separately: [rangex.dev/license](https://rangex.dev/license).

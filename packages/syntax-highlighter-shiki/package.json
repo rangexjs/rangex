@@ -12,7 +12,7 @@
 		"syntax-highlighting",
 		"code-block"
 	],
-	"author": "Mozes Stumpf <mozesstumpf@gmail.com>",
+	"author": "Mozes Stumpf",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:rangexjs/rangex.git",
@@ -35,8 +35,7 @@
 		"dist"
 	],
 	"publishConfig": {
-		"access": "public",
-		"tag": "beta"
+		"access": "public"
 	},
 	"scripts": {
 		"dev": "vp dev",

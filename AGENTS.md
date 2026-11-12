@@ -10,7 +10,7 @@ RangeX is currently in **beta** (`1.0.0-beta.N`). APIs, types, and engine behavi
 
 RangeX is a rich text editor engine that manages all editor logic: text manipulation, formatting, and embedded components (mentions, links, code blocks, tables, etc.). It is designed to be fully customizable — developers can build any editor-like product on top of it (blog/CMS, chat, forums, real-time collaboration, etc.).
 
-**Engine types** are in `packages/core/src/PublicTypes/index.ts` (all public types re-exported from a single entry point). In development, packages resolve the engine's types there through the `@rangex/source` condition, so type changes apply without rebuilding the engine. This is a workspace package, not a node_modules dep — check here first rather than inferring types from call sites.
+**Engine types** are in `node_modules/@rangex/core/src/PublicTypes/index.ts` (all public types re-exported from a single entry point). In development, the engine is a separate repo (`../core`, sibling of this one) linked into `node_modules` with `npm link`, and packages resolve the engine's types there through the `@rangex/source` condition, so type changes apply without rebuilding the engine — check here first rather than inferring types from call sites.
 
 **Engine docs:** before any engine-related task, read `packages/editor/AGENTS.local.md` (local and gitignored, so it may be missing). It gives the path to the engine's handbook, the authoritative reference for engine behavior. When the handbook is available, read it instead of guessing behavior from the engine's code or usage patterns.
 
@@ -19,7 +19,7 @@ This repo (`rangex`) serves three purposes:
 2. **Demo** — showcases the engine's capabilities (formatting, components, etc.) so developers can evaluate RangeX before building on it
 3. **Reference implementation** — shows developers how to wire the engine to build a custom editor
 
-The engine itself (`@rangex/core`, the "core" package) is closed-source. Most editor features live in this repo, layered on top of it.
+The engine itself (`@rangex/core`, the "core" package) is closed-source until its own final `1.0.0` release; after that, it becomes source-available. Most editor features live in this repo, layered on top of it.
 
 ## Repository structure
 
@@ -27,18 +27,23 @@ This is a monorepo (npm workspaces) for the RangeX rich text editor project:
 
 | Package | Path | Notes |
 |---|---|---|
-| `@rangex/core` | `packages/core/` | Closed-source engine — separate private repo, gitignored here, must be cloned separately |
 | `@rangex/editor` | `packages/editor/` | Framework-agnostic layer over the engine: adapters, `createEditor`, snapshot/HTML views. The only package that depends on the engine directly; re-exports the engine types other packages need. |
 | `@rangex/solid` | `packages/solid/` | SolidJS bindings for `@rangex/editor`: per-extension reactive ports (`ReactivePorts/`) plus shared Solid utilities such as `FloatingPortal`. |
 | `@rangex/syntax-highlighter-shiki` | `packages/syntax-highlighter-shiki/` | Shiki-based code block highlighting for the editor (worker) and the HTML view (sync). |
 | `@rangex/rich-text-editor` | `packages/rich-text-editor/` | Zero-config editor built on `@rangex/editor` and `@rangex/solid`: extensions, toolbar and floating UI. |
 
+The engine, `@rangex/core`, is not part of this monorepo: it is a closed-source, separate private repo. Clone it next to this repo (`../core`) and link it in for development:
+
+```bash
+cd ../core && npm link             # once: register the engine globally
+cd ../rangex && npm link @rangex/core   # after every `npm install` in this repo
+```
+
 Dependencies are one-way. `@rangex/core` is used only by `@rangex/editor`. `@rangex/solid` extends `@rangex/editor` with Solid bindings — it does not replace it. `@rangex/rich-text-editor` uses both `@rangex/editor` and `@rangex/solid`, and `@rangex/syntax-highlighter-shiki` builds on `@rangex/editor`. Packages built on `@rangex/editor` take it (and Solid, where used) as a peer dependency.
 
 `@rangex/editor` and `@rangex/rich-text-editor` have one entry point per feature (`@rangex/editor/link`, `@rangex/rich-text-editor/code-block`…), defined in each package's `src/Exports/`; the package root only exports what isn't specific to one feature. Import feature exports from their subpath. See `packages/editor/AGENTS.md` for how the entries are set up. All packages are currently `private: true` (pre-release).
 
-The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/DemoData`. The engine is gitignored at the root (see `.gitignore`) and has its own `.git`.
-
+The root `index.ts` is a dev harness only — it mounts a `createDevelopmentView()` from the root's own `src/CreateDevelopmentView` (not the package) to preview the full editor, using fixture data from `src/DemoData`.
 Some packages have their own `AGENTS.md` / `CLAUDE.md` with package-specific guidance — read it before working in that package.
 
 ## Commands
@@ -55,17 +60,12 @@ npm run dev
 **Build:**
 ```bash
 npm run build           # root: editor, solid, syntax-highlighter-shiki, rich-text-editor, in that order
-npm run build           # inside any package directory: that package only (the engine is built this way)
+npm run build           # inside any package directory: that package only
 ```
 
 Development doesn't need builds: the dev server, lint and type-check read every package's source through the `@rangex/source` condition. Build only to check the published output (`dist/`). Publishing (`npm publish`) builds automatically through `prepublishOnly`.
 
-**Tests** (only the engine has test files; run inside `packages/core`):
-```bash
-npm run test                        # all tests
-npm run test -- <pattern>           # single file by name/path
-npm run test:coverage               # with coverage
-```
+**Tests:** only the engine has test files; they live in the engine repo (`../core`) and run there.
 
 **Lint / type-check:**
 ```bash
