@@ -27,6 +27,7 @@ export default defineConfig({
 		conditions: [...tsconfig.compilerOptions.customConditions, ...defaultClientConditions],
 	},
 	build: {
+		target: ["chrome159", "firefox159", "safari27.3"],
 		outDir: "dist",
 		sourcemap: false,
 		lib: {
