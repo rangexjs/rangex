@@ -13,13 +13,14 @@
 	"scripts": {
 		"dev": "vp dev",
 		"build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"fix": "vp check --fix index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"lint": "vp check index.ts src configs package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+		"fix": "vp check --fix index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+		"lint": "vp check index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+		"set-version": "node scripts/set-version.js",
 		"publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag beta"
 	},
 	"dependencies": {
-		"@rangex/rich-text-editor": "1.0.0-beta.0",
-		"@rangex/syntax-highlighter-shiki": "1.0.0-beta.0",
+		"@rangex/rich-text-editor": "*",
+		"@rangex/syntax-highlighter-shiki": "*",
 		"@shikijs/langs": "^4.3.1",
 		"@shikijs/themes": "^4.3.1",
 		"@solidjs/web": "2.0.0-rc.13",
