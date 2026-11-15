@@ -25,4 +25,5 @@ export type {
 	RichTextEditor,
 } from "../CreateRichTextEditor";
 export { createRichTextEditor } from "../CreateRichTextEditor";
+export type { ThemeValue } from "../App";
 export { createRichTextHTMLView, createRichTextSnapshotView } from "../Snapshot";

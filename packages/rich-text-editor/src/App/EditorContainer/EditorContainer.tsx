@@ -1,5 +1,3 @@
-import { createSignal } from "solid-js";
-
 import { MenuBar } from "../MenuBar";
 import type { EditorContainerProps, ThemeValue } from "./EditorContainer-types";
 
@@ -10,17 +8,15 @@ const colorSchemeMap: Record<ThemeValue, string> = {
 };
 
 export const EditorContainer = (props: EditorContainerProps) => {
-	const [theme, setTheme] = createSignal<ThemeValue>("system");
-
-	const colorScheme = () => colorSchemeMap[theme()];
+	const colorScheme = () => colorSchemeMap[props.theme()];
 
 	return (
 		<div
 			class="overflow-clip rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
-			data-color-scheme={theme()}
+			data-color-scheme={props.theme()}
 			style={{ "color-scheme": colorScheme() }}
 		>
-			<MenuBar theme={theme} onThemeChange={setTheme} />
+			<MenuBar theme={props.theme} onThemeChange={props.onThemeChange} />
 			{props.children}
 		</div>
 	);
