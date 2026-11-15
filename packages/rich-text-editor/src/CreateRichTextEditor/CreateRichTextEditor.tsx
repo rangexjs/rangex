@@ -1,10 +1,12 @@
 import { createEditor } from "@rangex/editor";
 import { render } from "@solidjs/web";
+import { createSignal, flush } from "solid-js";
 
 import type { UIOptions } from "#context";
 import type { ExtensionComponents } from "#extensions";
 
 import { App } from "../App";
+import type { ThemeValue } from "../App/EditorContainer";
 import { getEditorStyles } from "../EngineStyles";
 import { defaultToolbarButtonsLayout } from "./_Utilities";
 import type {
@@ -21,7 +23,10 @@ export const createRichTextEditor = ({
 	snapshotSchema,
 	extensions,
 	toolbarButtonsLayout = defaultToolbarButtonsLayout,
+	theme: initialTheme = "system",
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
+	const [theme, setTheme] = createSignal<ThemeValue>(initialTheme);
+
 	const adapters = extensions.map(({ createAdapter }) => createAdapter());
 
 	const styles = getEditorStyles();
@@ -61,6 +66,8 @@ export const createRichTextEditor = ({
 	const dispose = render(
 		() => (
 			<App
+				theme={theme}
+				onThemeChange={setTheme}
 				components={components}
 				uiOptions={uiOptions}
 				toolbarButtonsLayout={toolbarButtonsLayout}
@@ -79,6 +86,15 @@ export const createRichTextEditor = ({
 
 		get editorStyle() {
 			return editorStyle;
+		},
+
+		get theme() {
+			return theme();
+		},
+
+		set theme(value) {
+			setTheme(value);
+			flush();
 		},
 
 		createStoredSnapshot() {
