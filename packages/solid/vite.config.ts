@@ -13,6 +13,7 @@ export default defineConfig({
 	base: "./",
 	plugins: [solid()],
 	build: {
+		target: ["chrome159", "firefox159", "safari27.3"],
 		outDir: "dist",
 		sourcemap: false,
 		lib: {

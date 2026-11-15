@@ -23,6 +23,11 @@
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
+	"browserslist": [
+		"chrome >= 159",
+		"firefox >= 159",
+		"safari >= 27.3"
+	],
 	"exports": {
 		".": {
 			"@rangex/source": "./src/index.ts",
