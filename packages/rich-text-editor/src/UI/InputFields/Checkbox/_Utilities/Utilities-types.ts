@@ -22,7 +22,7 @@ export interface CheckboxHandle {
 	checked: Accessor<boolean>;
 	setChecked: (checked: boolean) => void;
 	state: Accessor<CheckboxState>;
-	validate: () => void;
+	validate: () => CheckboxState;
 	reset: (checked?: boolean) => void;
 	checkValidity: () => CheckboxState;
 }

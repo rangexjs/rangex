@@ -1,4 +1,4 @@
-import { createSignal, createUniqueId, flush, merge, onSettled } from "solid-js";
+import { createSignal, createUniqueId, merge, onSettled } from "solid-js";
 
 import { showInputFieldError } from "../_Utilities";
 import {
@@ -56,10 +56,14 @@ export const createCheckboxController = (
 	};
 
 	const commitValidation = (nextChecked: boolean) => {
-		commitState({
+		const nextState: CheckboxState = {
 			isDirty: true,
 			...getErrorState(nextChecked, finalProps.error),
-		});
+		};
+
+		commitState(nextState);
+
+		return nextState;
 	};
 
 	const checkboxHandle: CheckboxHandle = {
@@ -79,11 +83,9 @@ export const createCheckboxController = (
 		state,
 
 		validate() {
-			flush();
+			const nextState = commitValidation(checked());
 
-			commitValidation(checked());
-
-			flush();
+			return nextState;
 		},
 
 		reset(nextChecked = finalProps.defaultChecked) {
@@ -99,8 +101,6 @@ export const createCheckboxController = (
 		},
 
 		checkValidity() {
-			flush();
-
 			const { hasError, message } = getErrorState(checked(), finalProps.error);
 
 			return { hasError, message, isDirty: state().isDirty };

@@ -41,7 +41,7 @@ export interface TextFieldHandle {
 	value: Accessor<string>;
 	setValue: (value: string) => void;
 	state: Accessor<TextFieldState>;
-	validate: () => void;
+	validate: () => TextFieldState;
 	reset: (value?: string) => void;
 	checkValidity: () => TextFieldState;
 }

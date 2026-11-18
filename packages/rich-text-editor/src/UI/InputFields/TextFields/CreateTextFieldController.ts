@@ -1,4 +1,4 @@
-import { createSignal, createUniqueId, flush, merge, onSettled } from "solid-js";
+import { createSignal, createUniqueId, merge, onSettled } from "solid-js";
 
 import { showInputFieldError } from "../_Utilities";
 import {
@@ -67,10 +67,14 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 	};
 
 	const commitValidation = (nextValue: string) => {
-		commitState({
+		const nextState: TextFieldState = {
 			isDirty: true,
 			...getErrorState(nextValue, finalProps.error),
-		});
+		};
+
+		commitState(nextState);
+
+		return nextState;
 	};
 
 	const textFieldHandle: TextFieldHandle = {
@@ -90,11 +94,9 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 		state,
 
 		validate() {
-			flush();
+			const nextState = commitValidation(value());
 
-			commitValidation(value());
-
-			flush();
+			return nextState;
 		},
 
 		reset(nextValue = finalProps.defaultValue) {
@@ -110,8 +112,6 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 		},
 
 		checkValidity() {
-			flush();
-
 			const { hasError, message } = getErrorState(value(), finalProps.error);
 
 			return { hasError, message, isDirty: state().isDirty };

@@ -64,11 +64,9 @@ export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 	};
 
 	const updateTemplateVariable = (event: MouseEvent) => {
-		for (const { handle } of inputs) {
-			handle.validate();
-		}
+		const validatedStates = inputs.map(({ handle }) => handle.validate());
 
-		const hasError = inputs.some(({ handle }) => handle.state().hasError);
+		const hasError = validatedStates.some((validatedState) => validatedState.hasError);
 
 		if (hasError) {
 			event.preventDefault();

@@ -124,9 +124,9 @@ export const LinkMenu = () => {
 	};
 
 	const onChangeDisplayText = () => {
-		urlHandle.validate();
+		const urlState = urlHandle.validate();
 
-		if (urlHandle.state().hasError) {
+		if (urlState.hasError) {
 			return;
 		}
 

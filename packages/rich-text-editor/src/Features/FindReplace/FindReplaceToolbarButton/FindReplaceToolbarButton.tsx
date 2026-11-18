@@ -1,5 +1,13 @@
 import { FindReplace, ReadOnly } from "@rangex/solid";
-import { createEffect, createMemo, createSignal, createUniqueId, For, Show } from "solid-js";
+import {
+	createEffect,
+	createMemo,
+	createSignal,
+	createUniqueId,
+	For,
+	Show,
+	untrack,
+} from "solid-js";
 
 import { useEditorContext } from "#context";
 import {
@@ -46,13 +54,13 @@ export const FindReplaceToolbarButton = () => {
 	const [matchCaseHandle, matchCaseControls] = createCheckboxController({});
 	const [wholeWordHandle, wholeWordControls] = createCheckboxController({});
 
-	const getPattern = (findText: string) =>
-		buildFindReplacePattern({
-			findText,
-			matchCase: matchCaseHandle.checked(),
-			useRegex: useRegexHandle.checked(),
-			wholeWord: wholeWordHandle.checked(),
-		});
+	const getPattern = (findText: string) => {
+		const matchCase = untrack(() => matchCaseHandle.checked());
+		const useRegex = untrack(() => useRegexHandle.checked());
+		const wholeWord = untrack(() => wholeWordHandle.checked());
+
+		return buildFindReplacePattern({ findText, matchCase, useRegex, wholeWord });
+	};
 
 	const isValidPattern = (value: string) => {
 		try {
@@ -69,8 +77,9 @@ export const FindReplaceToolbarButton = () => {
 	/** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
 	const getSafePattern = () => {
 		findHandle.validate();
+		const value = untrack(() => findHandle.value());
 
-		const findText = isValidPattern(findHandle.value()) ? findHandle.value() : "";
+		const findText = isValidPattern(value) ? value : "";
 
 		return getPattern(findText);
 	};
@@ -217,11 +226,9 @@ export const FindReplaceToolbarButton = () => {
 
 	const emitSearchChange = () => {
 		const pattern = getSafePattern();
+		const includeNonEditableContent = untrack(() => includeNonEditableContentHandle.checked());
 
-		findReplace.search({
-			pattern,
-			includeNonEditableContent: includeNonEditableContentHandle.checked(),
-		});
+		findReplace.search({ pattern, includeNonEditableContent });
 	};
 
 	const findPreviousMatch = () => {
