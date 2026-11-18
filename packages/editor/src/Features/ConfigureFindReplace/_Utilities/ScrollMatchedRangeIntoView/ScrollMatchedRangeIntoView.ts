@@ -6,20 +6,20 @@ import type { ScrollMatchedRangeIntoViewParams } from "./ScrollMatchedRangeIntoV
  * Scrolls the current find-replace match into view.
  */
 export const scrollMatchedRangeIntoView = ({ findReplace }: ScrollMatchedRangeIntoViewParams) => {
-	const matchedRange = findReplace.matchedRanges.at(findReplace.currentIndex);
+  const matchedRange = findReplace.matchedRanges.at(findReplace.currentIndex);
 
-	if (!matchedRange) {
-		return;
-	}
+  if (!matchedRange) {
+    return;
+  }
 
-	const { fromText, fromOffset, toText, toOffset } = matchedRange;
+  const { fromText, fromOffset, toText, toOffset } = matchedRange;
 
-	const range = new EditorRange({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+  const range = new EditorRange({
+    fromNode: fromText,
+    fromOffset,
+    toNode: toText,
+    toOffset,
+  });
 
-	range.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  range.scrollIntoView({ block: "nearest", behavior: "smooth" });
 };

@@ -5,13 +5,13 @@ import type { TemplateVariableDefinition } from "./TemplateVariableDefinition-ty
  * template variable must match it. Its text is plain: no component, line tag, style or inline tag is allowed in it.
  */
 export const templateVariableDefinition = {
-	nestedEditableProps: {
-		display: "inline",
-		editState: "inherit",
-		allowedComponents: [],
-		allowedContentLineLocalNames: [],
-		allowedContentLineStyleAttrNames: [],
-		allowedGlyphFormatterStyleAttrNames: [],
-		allowedGlyphFormatterInlineTags: [],
-	},
+  nestedEditableProps: {
+    display: "inline",
+    editState: "inherit",
+    allowedComponents: [],
+    allowedContentLineLocalNames: [],
+    allowedContentLineStyleAttrNames: [],
+    allowedGlyphFormatterStyleAttrNames: [],
+    allowedGlyphFormatterInlineTags: [],
+  },
 } satisfies TemplateVariableDefinition;

@@ -1,8 +1,8 @@
 import { createSignal } from "solid-js";
 
 import type {
-	CreateFileDropzoneParams,
-	CreateFileDropzoneResult,
+  CreateFileDropzoneParams,
+  CreateFileDropzoneResult,
 } from "./CreateFileDropzone-types";
 
 const isFileDrag = (event: DragEvent) => !!event.dataTransfer?.types.includes("Files");
@@ -11,70 +11,70 @@ const isFileDrag = (event: DragEvent) => !!event.dataTransfer?.types.includes("F
  * Tracks a file being dragged over an element and passes on the dropped one. The returned handlers go on that element.
  */
 export const createFileDropzone = ({
-	onFile,
+  onFile,
 }: CreateFileDropzoneParams): CreateFileDropzoneResult => {
-	const [dragActive, setDragActive] = createSignal(false);
-	// dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
-	// needed to tell "left a child" apart from "left the dropzone entirely".
-	let dragDepth = 0;
+  const [dragActive, setDragActive] = createSignal(false);
+  // dragenter/dragleave fire on every child crossed too, bubbling — a depth counter is
+  // needed to tell "left a child" apart from "left the dropzone entirely".
+  let dragDepth = 0;
 
-	const onDragEnter = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
+  const onDragEnter = (event: DragEvent) => {
+    if (!isFileDrag(event)) {
+      return;
+    }
 
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth += 1;
-		setDragActive(true);
-	};
+    event.preventDefault();
+    event.stopPropagation();
+    dragDepth += 1;
+    setDragActive(true);
+  };
 
-	const onDragOver = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
+  const onDragOver = (event: DragEvent) => {
+    if (!isFileDrag(event)) {
+      return;
+    }
 
-		event.preventDefault();
-		event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
 
-		if (event.dataTransfer) {
-			event.dataTransfer.dropEffect = "copy";
-		}
-	};
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = "copy";
+    }
+  };
 
-	const onDragLeave = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
+  const onDragLeave = (event: DragEvent) => {
+    if (!isFileDrag(event)) {
+      return;
+    }
 
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth -= 1;
+    event.preventDefault();
+    event.stopPropagation();
+    dragDepth -= 1;
 
-		if (dragDepth <= 0) {
-			dragDepth = 0;
-			setDragActive(false);
-		}
-	};
+    if (dragDepth <= 0) {
+      dragDepth = 0;
+      setDragActive(false);
+    }
+  };
 
-	const onDrop = (event: DragEvent) => {
-		if (!isFileDrag(event)) {
-			return;
-		}
+  const onDrop = (event: DragEvent) => {
+    if (!isFileDrag(event)) {
+      return;
+    }
 
-		event.preventDefault();
-		event.stopPropagation();
-		dragDepth = 0;
-		setDragActive(false);
+    event.preventDefault();
+    event.stopPropagation();
+    dragDepth = 0;
+    setDragActive(false);
 
-		const [file] = event.dataTransfer?.files ?? [];
+    const [file] = event.dataTransfer?.files ?? [];
 
-		if (!file) {
-			return;
-		}
+    if (!file) {
+      return;
+    }
 
-		onFile(file);
-	};
+    onFile(file);
+  };
 
-	return { dragActive, onDragEnter, onDragOver, onDragLeave, onDrop };
+  return { dragActive, onDragEnter, onDragOver, onDragLeave, onDrop };
 };

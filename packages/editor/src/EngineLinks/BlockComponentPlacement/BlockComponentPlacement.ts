@@ -1,8 +1,8 @@
 import { getSelectionForwardText } from "./_Utilities";
 import type {
-	BlockComponentPlacement,
-	CreateBlockComponentPlacementParams,
-	CreateBlockComponentPlacementResult,
+  BlockComponentPlacement,
+  CreateBlockComponentPlacementParams,
+  CreateBlockComponentPlacementResult,
 } from "./BlockComponentPlacement-types";
 import { canInsertBlockLines } from "./CanInsertBlockLines";
 import { canWrapBlockComponent } from "./CanWrapBlockComponent";
@@ -25,110 +25,110 @@ import { wrapBlockComponent } from "./WrapBlockComponent";
  * the AdapterBus, so nothing offers a component the editor wasn't built with.
  */
 export const createBlockComponentPlacement = ({
-	editorAPI,
-	adapterBus,
+  editorAPI,
+  adapterBus,
 }: CreateBlockComponentPlacementParams): CreateBlockComponentPlacementResult => {
-	const blockComponentPlacement: BlockComponentPlacement = {
-		canInsert({ fromNode, scope, allowedComponents }) {
-			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
-				return false;
-			}
+  const blockComponentPlacement: BlockComponentPlacement = {
+    canInsert({ fromNode, scope, allowedComponents }) {
+      if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+        return false;
+      }
 
-			return canInsertBlockLines({ fromNode, scope, allowedComponents });
-		},
+      return canInsertBlockLines({ fromNode, scope, allowedComponents });
+    },
 
-		insert({ fromNode, lines, shouldReplaceContentLineIfEmpty = false }) {
-			insertBlockLines({
-				fromNode,
-				lines,
-				shouldReplaceContentLineIfEmpty,
-			});
-		},
+    insert({ fromNode, lines, shouldReplaceContentLineIfEmpty = false }) {
+      insertBlockLines({
+        fromNode,
+        lines,
+        shouldReplaceContentLineIfEmpty,
+      });
+    },
 
-		canInsertBySelection({ scope, allowedComponents }) {
-			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
-				return false;
-			}
+    canInsertBySelection({ scope, allowedComponents }) {
+      if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+        return false;
+      }
 
-			const fromNode = getSelectionForwardText({ editorAPI });
+      const fromNode = getSelectionForwardText({ editorAPI });
 
-			return canInsertBlockLines({ fromNode, scope, allowedComponents });
-		},
+      return canInsertBlockLines({ fromNode, scope, allowedComponents });
+    },
 
-		insertBySelection({ lines, shouldReplaceContentLineIfEmpty = false }) {
-			const fromNode = getSelectionForwardText({ editorAPI });
+    insertBySelection({ lines, shouldReplaceContentLineIfEmpty = false }) {
+      const fromNode = getSelectionForwardText({ editorAPI });
 
-			insertBlockLines({
-				fromNode,
-				lines,
-				shouldReplaceContentLineIfEmpty,
-			});
-		},
+      insertBlockLines({
+        fromNode,
+        lines,
+        shouldReplaceContentLineIfEmpty,
+      });
+    },
 
-		canWrap({ fromNode, fromOffset, toNode, toOffset, scope, allowedComponents }) {
-			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
-				return false;
-			}
+    canWrap({ fromNode, fromOffset, toNode, toOffset, scope, allowedComponents }) {
+      if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+        return false;
+      }
 
-			return canWrapBlockComponent({
-				editorAPI,
-				fromNode,
-				fromOffset,
-				toNode,
-				toOffset,
-				scope,
-				allowedComponents,
-			});
-		},
+      return canWrapBlockComponent({
+        editorAPI,
+        fromNode,
+        fromOffset,
+        toNode,
+        toOffset,
+        scope,
+        allowedComponents,
+      });
+    },
 
-		wrap({ fromNode, fromOffset, toNode, toOffset, blockComponentLine, target }) {
-			wrapBlockComponent({
-				editorAPI,
-				fromNode,
-				fromOffset,
-				toNode,
-				toOffset,
-				blockComponentLine,
-				target,
-			});
-		},
+    wrap({ fromNode, fromOffset, toNode, toOffset, blockComponentLine, target }) {
+      wrapBlockComponent({
+        editorAPI,
+        fromNode,
+        fromOffset,
+        toNode,
+        toOffset,
+        blockComponentLine,
+        target,
+      });
+    },
 
-		canWrapBySelection({ scope, allowedComponents }) {
-			if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
-				return false;
-			}
+    canWrapBySelection({ scope, allowedComponents }) {
+      if (!hasComponentAdapters({ adapterBus, allowedComponents })) {
+        return false;
+      }
 
-			const selection = editorAPI.getEditorSelection();
+      const selection = editorAPI.getEditorSelection();
 
-			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+      const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-			return canWrapBlockComponent({
-				editorAPI,
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-				scope,
-				allowedComponents,
-			});
-		},
+      return canWrapBlockComponent({
+        editorAPI,
+        fromNode: fromText,
+        fromOffset,
+        toNode: toText,
+        toOffset,
+        scope,
+        allowedComponents,
+      });
+    },
 
-		wrapBySelection({ blockComponentLine, target }) {
-			const selection = editorAPI.getEditorSelection();
+    wrapBySelection({ blockComponentLine, target }) {
+      const selection = editorAPI.getEditorSelection();
 
-			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+      const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-			wrapBlockComponent({
-				editorAPI,
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-				blockComponentLine,
-				target,
-			});
-		},
-	};
+      wrapBlockComponent({
+        editorAPI,
+        fromNode: fromText,
+        fromOffset,
+        toNode: toText,
+        toOffset,
+        blockComponentLine,
+        target,
+      });
+    },
+  };
 
-	return blockComponentPlacement;
+  return blockComponentPlacement;
 };

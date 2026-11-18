@@ -1,57 +1,57 @@
 import {
-	contentLineAttrName,
-	contentLineRole,
-	type ElementView,
-	type NodeView,
-	type TextView,
+  contentLineAttrName,
+  contentLineRole,
+  type ElementView,
+  type NodeView,
+  type TextView,
 } from "@rangex/core";
 
 import { isCodeBlockStorage } from "#storage";
 
 import type {
-	CreateTokenViewParams,
-	GetContentLinesParams,
-	GetContentLinesResult,
-	GetLineTextParams,
-	GetLineTextResult,
-	HighlightCodeBlockParams,
-	HighlightCodeBlocksParams,
+  CreateTokenViewParams,
+  GetContentLinesParams,
+  GetContentLinesResult,
+  GetLineTextParams,
+  GetLineTextResult,
+  HighlightCodeBlockParams,
+  HighlightCodeBlocksParams,
 } from "./HighlightCodeBlocks-types";
 
 const isTextView = (nodeView: NodeView): nodeView is TextView => {
-	return nodeView.type === "text";
+  return nodeView.type === "text";
 };
 
 /*
  * Collects the code block's ContentLines in document order, one per code line.
  */
 const getContentLines = ({ elementView }: GetContentLinesParams): GetContentLinesResult => {
-	const contentLines: ElementView[] = [];
+  const contentLines: ElementView[] = [];
 
-	for (const childView of elementView.childNodes) {
-		if (childView.type !== "element") {
-			continue;
-		}
+  for (const childView of elementView.childNodes) {
+    if (childView.type !== "element") {
+      continue;
+    }
 
-		const role = childView.attributes[contentLineAttrName.dataEditorRole];
+    const role = childView.attributes[contentLineAttrName.dataEditorRole];
 
-		if (role === contentLineRole) {
-			contentLines.push(childView);
-			continue;
-		}
+    if (role === contentLineRole) {
+      contentLines.push(childView);
+      continue;
+    }
 
-		const nestedContentLines = getContentLines({ elementView: childView });
-		contentLines.push(...nestedContentLines);
-	}
+    const nestedContentLines = getContentLines({ elementView: childView });
+    contentLines.push(...nestedContentLines);
+  }
 
-	return contentLines;
+  return contentLines;
 };
 
 const getLineText = ({ contentLine }: GetLineTextParams): GetLineTextResult => {
-	const textViews = contentLine.childNodes.filter(isTextView);
-	const texts = textViews.map((textView) => textView.data);
+  const textViews = contentLine.childNodes.filter(isTextView);
+  const texts = textViews.map((textView) => textView.data);
 
-	return texts.join("");
+  return texts.join("");
 };
 
 /*
@@ -59,33 +59,33 @@ const getLineText = ({ contentLine }: GetLineTextParams): GetLineTextResult => {
  * attr(). A scheme the theme leaves uncolored has no attribute, so it keeps the inherited color.
  */
 const createTokenView = ({ themedChars }: CreateTokenViewParams) => {
-	const { colors, content } = themedChars;
+  const { colors, content } = themedChars;
 
-	const textView: TextView = {
-		customStorage: null,
-		type: "text",
-		data: content,
-	};
+  const textView: TextView = {
+    customStorage: null,
+    type: "text",
+    data: content,
+  };
 
-	const attributes: ElementView["attributes"] = {};
+  const attributes: ElementView["attributes"] = {};
 
-	if (colors.light) {
-		attributes["data-token-light"] = colors.light;
-	}
+  if (colors.light) {
+    attributes["data-token-light"] = colors.light;
+  }
 
-	if (colors.dark) {
-		attributes["data-token-dark"] = colors.dark;
-	}
+  if (colors.dark) {
+    attributes["data-token-dark"] = colors.dark;
+  }
 
-	const tokenView: ElementView = {
-		customStorage: null,
-		type: "element",
-		localName: "span",
-		attributes,
-		childNodes: [textView],
-	};
+  const tokenView: ElementView = {
+    customStorage: null,
+    type: "element",
+    localName: "span",
+    attributes,
+    childNodes: [textView],
+  };
 
-	return tokenView;
+  return tokenView;
 };
 
 /*
@@ -93,47 +93,47 @@ const createTokenView = ({ themedChars }: CreateTokenViewParams) => {
  * holding anything other than text are left as they are.
  */
 const highlightCodeBlock = ({
-	elementView,
-	codeBlockStorage,
-	highlightCode,
+  elementView,
+  codeBlockStorage,
+  highlightCode,
 }: HighlightCodeBlockParams) => {
-	const { language, theme } = codeBlockStorage;
+  const { language, theme } = codeBlockStorage;
 
-	if (language === null || theme === null) {
-		return;
-	}
+  if (language === null || theme === null) {
+    return;
+  }
 
-	const contentLines = getContentLines({ elementView });
-	const lines = contentLines.map((contentLine) => getLineText({ contentLine }));
+  const contentLines = getContentLines({ elementView });
+  const lines = contentLines.map((contentLine) => getLineText({ contentLine }));
 
-	const highlightInfo = highlightCode({ lines, language, theme });
+  const highlightInfo = highlightCode({ lines, language, theme });
 
-	if (!highlightInfo) {
-		return;
-	}
+  if (!highlightInfo) {
+    return;
+  }
 
-	const { backgrounds, foregrounds, codeLines } = highlightInfo;
+  const { backgrounds, foregrounds, codeLines } = highlightInfo;
 
-	elementView.attributes = {
-		...elementView.attributes,
-		"data-bg-light": backgrounds.light,
-		"data-bg-dark": backgrounds.dark,
-		"data-fg-light": foregrounds.light,
-		"data-fg-dark": foregrounds.dark,
-	};
+  elementView.attributes = {
+    ...elementView.attributes,
+    "data-bg-light": backgrounds.light,
+    "data-bg-dark": backgrounds.dark,
+    "data-fg-light": foregrounds.light,
+    "data-fg-dark": foregrounds.dark,
+  };
 
-	for (let i = 0; i < contentLines.length; i++) {
-		const contentLine = contentLines[i];
-		const codeLine = codeLines[i];
+  for (let i = 0; i < contentLines.length; i++) {
+    const contentLine = contentLines[i];
+    const codeLine = codeLines[i];
 
-		const isTextOnly = contentLine.childNodes.every(isTextView);
+    const isTextOnly = contentLine.childNodes.every(isTextView);
 
-		if (!(codeLine && codeLine.length > 0 && isTextOnly)) {
-			continue;
-		}
+    if (!(codeLine && codeLine.length > 0 && isTextOnly)) {
+      continue;
+    }
 
-		contentLine.childNodes = codeLine.map((themedChars) => createTokenView({ themedChars }));
-	}
+    contentLine.childNodes = codeLine.map((themedChars) => createTokenView({ themedChars }));
+  }
 };
 
 /*
@@ -141,22 +141,22 @@ const highlightCodeBlock = ({
  * HTML as usual.
  */
 export const highlightCodeBlocks = ({ nodeView, highlightCode }: HighlightCodeBlocksParams) => {
-	if (nodeView.type !== "element") {
-		return;
-	}
+  if (nodeView.type !== "element") {
+    return;
+  }
 
-	const { customStorage } = nodeView;
+  const { customStorage } = nodeView;
 
-	if (isCodeBlockStorage(customStorage)) {
-		highlightCodeBlock({
-			elementView: nodeView,
-			codeBlockStorage: customStorage,
-			highlightCode,
-		});
-		return;
-	}
+  if (isCodeBlockStorage(customStorage)) {
+    highlightCodeBlock({
+      elementView: nodeView,
+      codeBlockStorage: customStorage,
+      highlightCode,
+    });
+    return;
+  }
 
-	for (const childView of nodeView.childNodes) {
-		highlightCodeBlocks({ nodeView: childView, highlightCode });
-	}
+  for (const childView of nodeView.childNodes) {
+    highlightCodeBlocks({ nodeView: childView, highlightCode });
+  }
 };

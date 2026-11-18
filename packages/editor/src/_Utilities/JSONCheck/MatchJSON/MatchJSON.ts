@@ -1,13 +1,13 @@
 import { isJSONEqual, isJSONObject } from "../IsJSONEqual";
 import type {
-	JSONPredicate,
-	MatchJSONArrayParams,
-	MatchJSONAtParams,
-	MatchJSONAtResult,
-	MatchJSONObjectParams,
-	MatchJSONParams,
-	MatchJSONResult,
-	OptionalKeyPattern,
+  JSONPredicate,
+  MatchJSONArrayParams,
+  MatchJSONAtParams,
+  MatchJSONAtResult,
+  MatchJSONObjectParams,
+  MatchJSONParams,
+  MatchJSONResult,
+  OptionalKeyPattern,
 } from "./MatchJSON-types";
 
 /*
@@ -18,87 +18,87 @@ import type {
 export const optional = Symbol("optional");
 
 const isOptionalKeyPattern = (pattern: unknown): pattern is OptionalKeyPattern<unknown> => {
-	return typeof pattern === "object" && pattern !== null && optional in pattern;
+  return typeof pattern === "object" && pattern !== null && optional in pattern;
 };
 
 const matchJSONArray = ({ value, pattern, path }: MatchJSONArrayParams): MatchJSONAtResult => {
-	if (!Array.isArray(value) || value.length !== pattern.length) {
-		return { path, kind: "invalid-value" };
-	}
+  if (!Array.isArray(value) || value.length !== pattern.length) {
+    return { path, kind: "invalid-value" };
+  }
 
-	for (let i = 0; i < pattern.length; i++) {
-		const itemFailed = matchJSONAt({
-			value: value[i],
-			pattern: pattern[i],
-			path: [...path, i],
-		});
+  for (let i = 0; i < pattern.length; i++) {
+    const itemFailed = matchJSONAt({
+      value: value[i],
+      pattern: pattern[i],
+      path: [...path, i],
+    });
 
-		if (itemFailed) {
-			return itemFailed;
-		}
-	}
+    if (itemFailed) {
+      return itemFailed;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 const matchJSONObject = ({ value, pattern, path }: MatchJSONObjectParams): MatchJSONAtResult => {
-	if (!isJSONObject(value)) {
-		return { path, kind: "invalid-value" };
-	}
+  if (!isJSONObject(value)) {
+    return { path, kind: "invalid-value" };
+  }
 
-	const valueKeys = Object.keys(value);
+  const valueKeys = Object.keys(value);
 
-	const unknownKey = valueKeys.find((key) => !Object.hasOwn(pattern, key));
+  const unknownKey = valueKeys.find((key) => !Object.hasOwn(pattern, key));
 
-	if (unknownKey !== undefined) {
-		return { path: [...path, unknownKey], kind: "unknown-key" };
-	}
+  if (unknownKey !== undefined) {
+    return { path: [...path, unknownKey], kind: "unknown-key" };
+  }
 
-	for (const [key, keyPattern] of Object.entries(pattern)) {
-		const keyPath = [...path, key];
+  for (const [key, keyPattern] of Object.entries(pattern)) {
+    const keyPath = [...path, key];
 
-		const isOptional = isOptionalKeyPattern(keyPattern);
+    const isOptional = isOptionalKeyPattern(keyPattern);
 
-		if (!Object.hasOwn(value, key)) {
-			if (isOptional) {
-				continue;
-			}
+    if (!Object.hasOwn(value, key)) {
+      if (isOptional) {
+        continue;
+      }
 
-			return { path: keyPath, kind: "missing-key" };
-		}
+      return { path: keyPath, kind: "missing-key" };
+    }
 
-		const valuePattern = isOptional ? keyPattern[optional] : keyPattern;
+    const valuePattern = isOptional ? keyPattern[optional] : keyPattern;
 
-		const keyFailed = matchJSONAt({
-			value: value[key],
-			pattern: valuePattern,
-			path: keyPath,
-		});
+    const keyFailed = matchJSONAt({
+      value: value[key],
+      pattern: valuePattern,
+      path: keyPath,
+    });
 
-		if (keyFailed) {
-			return keyFailed;
-		}
-	}
+    if (keyFailed) {
+      return keyFailed;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 const matchJSONAt = ({ value, pattern, path }: MatchJSONAtParams): MatchJSONAtResult => {
-	if (typeof pattern === "function") {
-		const predicate = pattern as JSONPredicate<unknown>;
+  if (typeof pattern === "function") {
+    const predicate = pattern as JSONPredicate<unknown>;
 
-		return predicate(value) ? null : { path, kind: "invalid-value" };
-	}
+    return predicate(value) ? null : { path, kind: "invalid-value" };
+  }
 
-	if (Array.isArray(pattern)) {
-		return matchJSONArray({ value, pattern, path });
-	}
+  if (Array.isArray(pattern)) {
+    return matchJSONArray({ value, pattern, path });
+  }
 
-	if (isJSONObject(pattern)) {
-		return matchJSONObject({ value, pattern, path });
-	}
+  if (isJSONObject(pattern)) {
+    return matchJSONObject({ value, pattern, path });
+  }
 
-	return isJSONEqual(value, pattern) ? null : { path, kind: "invalid-value" };
+  return isJSONEqual(value, pattern) ? null : { path, kind: "invalid-value" };
 };
 
 /*
@@ -110,5 +110,5 @@ const matchJSONAt = ({ value, pattern, path }: MatchJSONAtParams): MatchJSONAtRe
  * - any other value must be JSON-equal to the value (see isJSONEqual).
  */
 export const matchJSON = <Value>({ value, pattern }: MatchJSONParams<Value>): MatchJSONResult => {
-	return matchJSONAt({ value, pattern, path: [] });
+  return matchJSONAt({ value, pattern, path: [] });
 };

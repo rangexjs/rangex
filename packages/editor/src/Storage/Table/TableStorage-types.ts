@@ -3,19 +3,19 @@ import type { BlockComponent } from "@rangex/core";
 import type { TableId } from "../_Constants";
 
 export type TableStorage = {
-	id: TableId;
+  id: TableId;
 };
 
 export type CreateTableStorageResult = TableStorage;
 
 export interface EnsureTableStorageParams {
-	storage: unknown;
+  storage: unknown;
 }
 
 export type EnsureTableStorageResult = TableStorage;
 
 export interface EnsureNodeTableStorageParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 export type EnsureNodeTableStorageResult = TableStorage;

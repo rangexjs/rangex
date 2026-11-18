@@ -8,23 +8,23 @@ import type { HandleCodeBlockPlacementStateParams } from "./HandleCodeBlockPlace
  * the current selection and the editor content. Returns a cleanup function.
  */
 export const handleCodeBlockPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleCodeBlockPlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.codeBlock],
-			});
-			const canWrap = blockComponentPlacement.canWrapBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.codeBlock],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.codeBlock],
+      });
+      const canWrap = blockComponentPlacement.canWrapBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.codeBlock],
+      });
 
-			configPort.updateState({ canInsert, canWrap });
-		},
-	});
+      configPort.updateState({ canInsert, canWrap });
+    },
+  });
 };

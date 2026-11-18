@@ -1,31 +1,31 @@
 import { isEditorElement, rootEditableRole } from "@rangex/core";
 
 import type {
-	GetClosestRootEditableParams,
-	GetClosestRootEditableResult,
+  GetClosestRootEditableParams,
+  GetClosestRootEditableResult,
 } from "./RootEditable-types";
 
 export const getClosestRootEditable = ({
-	fromNode,
-	display,
+  fromNode,
+  display,
 }: GetClosestRootEditableParams): GetClosestRootEditableResult => {
-	const { $$parentElement } = fromNode;
+  const { $$parentElement } = fromNode;
 
-	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
+  let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
-	while (parent) {
-		if (parent.$$editorRole === rootEditableRole) {
-			if (!display) {
-				return parent;
-			}
+  while (parent) {
+    if (parent.$$editorRole === rootEditableRole) {
+      if (!display) {
+        return parent;
+      }
 
-			if (parent.$$display === display) {
-				return parent;
-			}
-		}
+      if (parent.$$display === display) {
+        return parent;
+      }
+    }
 
-		parent = parent.$$parentElement;
-	}
+    parent = parent.$$parentElement;
+  }
 
-	return null;
+  return null;
 };

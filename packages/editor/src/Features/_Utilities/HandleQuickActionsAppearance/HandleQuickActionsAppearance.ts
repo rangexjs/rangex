@@ -3,8 +3,8 @@ import { createAnchoredOverlayController, createOverlayAppearanceHandler } from 
 import type { HandleQuickActionsAppearanceParams } from "./HandleQuickActionsAppearance-types";
 
 const defaultAnchorStyle = {
-	top: "calc(anchor(top) + 4px)",
-	right: "calc(anchor(right) + 4px)",
+  top: "calc(anchor(top) + 4px)",
+  right: "calc(anchor(right) + 4px)",
 };
 
 /*
@@ -13,51 +13,51 @@ const defaultAnchorStyle = {
  * Returns a cleanup function.
  */
 export const handleQuickActionsAppearance = ({
-	port,
-	quickActionsPort,
-	editorAPI,
-	componentName,
-	anchorStyle = defaultAnchorStyle,
+  port,
+  quickActionsPort,
+  editorAPI,
+  componentName,
+  anchorStyle = defaultAnchorStyle,
 }: HandleQuickActionsAppearanceParams) => {
-	const overlayAppearanceHandler = createOverlayAppearanceHandler({
-		editorAPI,
-	});
+  const overlayAppearanceHandler = createOverlayAppearanceHandler({
+    editorAPI,
+  });
 
-	const anchorController = createAnchoredOverlayController({
-		element: quickActionsPort.element,
-		options: {
-			lightDismiss: false,
-			closeOnEscape: false,
-			onToggle: (isOpen) => quickActionsPort.updateQuickActions({ isOpen }),
-		},
-	});
+  const anchorController = createAnchoredOverlayController({
+    element: quickActionsPort.element,
+    options: {
+      lightDismiss: false,
+      closeOnEscape: false,
+      onToggle: (isOpen) => quickActionsPort.updateQuickActions({ isOpen }),
+    },
+  });
 
-	const { cleanup: registrationCleanup } = overlayAppearanceHandler.registerComponent({
-		popover: anchorController.element,
-		shouldShow({ blockComponent }) {
-			return blockComponent.$$name === componentName;
-		},
-		onShow({ blockComponent }) {
-			anchorController.hide({});
+  const { cleanup: registrationCleanup } = overlayAppearanceHandler.registerComponent({
+    popover: anchorController.element,
+    shouldShow({ blockComponent }) {
+      return blockComponent.$$name === componentName;
+    },
+    onShow({ blockComponent }) {
+      anchorController.hide({});
 
-			port.updateCurrentComponent({ hoverComponent: blockComponent });
+      port.updateCurrentComponent({ hoverComponent: blockComponent });
 
-			anchorController.show(blockComponent, {
-				clear: true,
-				position: "absolute",
-				...anchorStyle,
-			});
-		},
-		onClose() {
-			anchorController.hide({});
+      anchorController.show(blockComponent, {
+        clear: true,
+        position: "absolute",
+        ...anchorStyle,
+      });
+    },
+    onClose() {
+      anchorController.hide({});
 
-			port.updateCurrentComponent({ hoverComponent: null });
-		},
-	});
+      port.updateCurrentComponent({ hoverComponent: null });
+    },
+  });
 
-	return () => {
-		overlayAppearanceHandler.cleanup();
-		registrationCleanup();
-		anchorController.cleanup();
-	};
+  return () => {
+    overlayAppearanceHandler.cleanup();
+    registrationCleanup();
+    anchorController.cleanup();
+  };
 };

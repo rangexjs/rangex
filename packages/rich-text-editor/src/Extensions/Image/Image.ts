@@ -6,11 +6,11 @@ import type { Extension } from "../_Utilities";
 import type { ImageExtensionSettings } from "./Image-types";
 
 export const Image = (settings: ImageExtensionSettings): Extension => {
-	return {
-		createAdapter: () => ImageFactory(settings),
-		components: {
-			toolbarButtons: {},
-			floatingComponents: [ImageQuickActions],
-		},
-	};
+  return {
+    createAdapter: () => ImageFactory(settings),
+    components: {
+      toolbarButtons: {},
+      floatingComponents: [ImageQuickActions],
+    },
+  };
 };

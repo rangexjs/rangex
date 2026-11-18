@@ -1,10 +1,10 @@
 import { getClosestTable, getClosestTableCell } from "#engine-links";
 
 import type {
-	GetCommonTableCellFromSelectionParams,
-	GetCommonTableCellFromSelectionResult,
-	GetCommonTableFromSelectionParams,
-	GetCommonTableFromSelectionResult,
+  GetCommonTableCellFromSelectionParams,
+  GetCommonTableCellFromSelectionResult,
+  GetCommonTableFromSelectionParams,
+  GetCommonTableFromSelectionResult,
 } from "./GetCommonTable-types";
 
 /*
@@ -12,18 +12,18 @@ import type {
  * if they are in different cells.
  */
 export const getCommonTableCellFromSelection = ({
-	editorAPI,
+  editorAPI,
 }: GetCommonTableCellFromSelectionParams): GetCommonTableCellFromSelectionResult => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const { fromText, toText } = selection.getBoundaryPoints();
+  const { fromText, toText } = selection.getBoundaryPoints();
 
-	const fromTableCell = getClosestTableCell({ fromNode: fromText });
-	const toTableCell = getClosestTableCell({ fromNode: toText });
+  const fromTableCell = getClosestTableCell({ fromNode: fromText });
+  const toTableCell = getClosestTableCell({ fromNode: toText });
 
-	const hasSameTableCell = !!(fromTableCell && toTableCell && fromTableCell === toTableCell);
+  const hasSameTableCell = !!(fromTableCell && toTableCell && fromTableCell === toTableCell);
 
-	return hasSameTableCell ? fromTableCell : null;
+  return hasSameTableCell ? fromTableCell : null;
 };
 
 /*
@@ -31,16 +31,16 @@ export const getCommonTableCellFromSelection = ({
  * if they are in different tables.
  */
 export const getCommonTableFromSelection = ({
-	editorAPI,
+  editorAPI,
 }: GetCommonTableFromSelectionParams): GetCommonTableFromSelectionResult => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const { fromText, toText } = selection.getBoundaryPoints();
+  const { fromText, toText } = selection.getBoundaryPoints();
 
-	const fromTable = getClosestTable({ fromNode: fromText });
-	const toTable = getClosestTable({ fromNode: toText });
+  const fromTable = getClosestTable({ fromNode: fromText });
+  const toTable = getClosestTable({ fromNode: toText });
 
-	const hasSameTable = !!(fromTable && toTable && fromTable === toTable);
+  const hasSameTable = !!(fromTable && toTable && fromTable === toTable);
 
-	return hasSameTable ? fromTable : null;
+  return hasSameTable ? fromTable : null;
 };

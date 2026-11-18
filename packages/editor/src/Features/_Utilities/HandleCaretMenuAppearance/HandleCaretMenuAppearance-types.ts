@@ -3,21 +3,21 @@ import type { EditorAPI, EditorText } from "@rangex/core";
 import type { CaretMenuConfigPort } from "#adapters";
 
 export interface GetCaretMenuQueryParams {
-	editorAPI: EditorAPI;
-	fromText: EditorText;
-	fromOffset: number;
+  editorAPI: EditorAPI;
+  fromText: EditorText;
+  fromOffset: number;
 }
 
 export type GetCaretMenuQueryResult = {
-	toText: EditorText;
-	toOffset: number;
-	query: string;
+  toText: EditorText;
+  toOffset: number;
+  query: string;
 } | null;
 
 export type GetCaretMenuQueryFn = (params: GetCaretMenuQueryParams) => GetCaretMenuQueryResult;
 
 export interface HandleCaretMenuAppearanceParams {
-	port: CaretMenuConfigPort;
-	editorAPI: EditorAPI;
-	getQuery: GetCaretMenuQueryFn;
+  port: CaretMenuConfigPort;
+  editorAPI: EditorAPI;
+  getQuery: GetCaretMenuQueryFn;
 }

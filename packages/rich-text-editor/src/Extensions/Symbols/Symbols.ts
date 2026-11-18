@@ -7,13 +7,13 @@ import type { Extension } from "../_Utilities";
 import type { SymbolsExtensionSettings } from "./Symbols-types";
 
 export const Symbols = (settings: SymbolsExtensionSettings): Extension => {
-	return {
-		createAdapter: () => SymbolsFactory(settings),
-		components: {
-			toolbarButtons: {
-				[toolbarButtonsName.symbols]: SymbolsToolbarButton,
-			},
-			floatingComponents: [],
-		},
-	};
+  return {
+    createAdapter: () => SymbolsFactory(settings),
+    components: {
+      toolbarButtons: {
+        [toolbarButtonsName.symbols]: SymbolsToolbarButton,
+      },
+      floatingComponents: [],
+    },
+  };
 };

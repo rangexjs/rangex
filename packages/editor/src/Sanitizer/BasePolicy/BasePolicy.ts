@@ -13,16 +13,16 @@ const isSafeURLValue: AttributeRuleFn = ({ value }) => isSafeURL(value);
 
 // "data:image/*" URLs are only safe where the browser renders them as an image
 const isSafeImageURLValue: AttributeRuleFn = ({ value }) =>
-	isSafeURL(value) || isDataImageURL(value);
+  isSafeURL(value) || isDataImageURL(value);
 
 const isSafeAnimationTarget: AttributeRuleFn = ({ value }) => {
-	const attrName = value.trim().toLowerCase();
+  const attrName = value.trim().toLowerCase();
 
-	if (attrName.startsWith("on")) {
-		return false;
-	}
+  if (attrName.startsWith("on")) {
+    return false;
+  }
 
-	return !blockedAnimationTargets.has(attrName);
+  return !blockedAnimationTargets.has(attrName);
 };
 
 /*
@@ -33,49 +33,49 @@ const isSafeAnimationTarget: AttributeRuleFn = ({ value }) => {
  * the attribute that names it.
  */
 export const basePolicy: SanitizerPolicy = {
-	"*": {
-		"*": isAllowed,
-	},
-	html: {
-		"*": {
-			href: isSafeURLValue,
-			src: isSafeURLValue,
-			action: isSafeURLValue,
-			formaction: isSafeURLValue,
-			data: isSafeURLValue,
-			poster: isSafeURLValue,
-		},
-		script: {
-			"*": isBlocked,
-		},
-		iframe: {
-			srcdoc: isBlocked,
-		},
-		meta: {
-			// A refresh redirects the page
-			"http-equiv": isBlocked,
-		},
-		img: {
-			src: isSafeImageURLValue,
-		},
-		video: {
-			poster: isSafeImageURLValue,
-		},
-	},
-	svg: {
-		"*": {
-			href: isSafeURLValue,
-			"xlink:href": isSafeURLValue,
-			attributeName: isSafeAnimationTarget,
-		},
-		script: {
-			"*": isBlocked,
-		},
-	},
-	mathml: {
-		"*": {
-			href: isSafeURLValue,
-			"xlink:href": isSafeURLValue,
-		},
-	},
+  "*": {
+    "*": isAllowed,
+  },
+  html: {
+    "*": {
+      href: isSafeURLValue,
+      src: isSafeURLValue,
+      action: isSafeURLValue,
+      formaction: isSafeURLValue,
+      data: isSafeURLValue,
+      poster: isSafeURLValue,
+    },
+    script: {
+      "*": isBlocked,
+    },
+    iframe: {
+      srcdoc: isBlocked,
+    },
+    meta: {
+      // A refresh redirects the page
+      "http-equiv": isBlocked,
+    },
+    img: {
+      src: isSafeImageURLValue,
+    },
+    video: {
+      poster: isSafeImageURLValue,
+    },
+  },
+  svg: {
+    "*": {
+      href: isSafeURLValue,
+      "xlink:href": isSafeURLValue,
+      attributeName: isSafeAnimationTarget,
+    },
+    script: {
+      "*": isBlocked,
+    },
+  },
+  mathml: {
+    "*": {
+      href: isSafeURLValue,
+      "xlink:href": isSafeURLValue,
+    },
+  },
 };

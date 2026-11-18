@@ -1,8 +1,8 @@
 import { linkAttrsShape, normalizeLinkAttrs, validateComponentAttrs } from "#dom-attrs";
 
 import type {
-	ValidateLinkPlacementParams,
-	ValidateLinkPlacementResult,
+  ValidateLinkPlacementParams,
+  ValidateLinkPlacementResult,
 } from "./ValidateLinkPlacement-types";
 
 /*
@@ -10,20 +10,20 @@ import type {
  * checked by the link's attribute validators. Returns the mismatch, or null when they're valid.
  */
 export const validateLinkPlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateLinkPlacementParams): ValidateLinkPlacementResult => {
-	const normalizedAttrs = normalizeLinkAttrs(attrs);
+  const normalizedAttrs = normalizeLinkAttrs(attrs);
 
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: normalizedAttrs,
-		componentAttrsShape: linkAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: normalizedAttrs,
+    componentAttrsShape: linkAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

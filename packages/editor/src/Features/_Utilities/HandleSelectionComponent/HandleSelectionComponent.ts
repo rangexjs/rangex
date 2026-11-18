@@ -8,20 +8,20 @@ import type { HandleSelectionComponentParams } from "./HandleSelectionComponent-
  * keeping it in sync on every selection change and structural change. Returns a cleanup function.
  */
 export const handleSelectionComponent = ({
-	port,
-	editorAPI,
-	componentName,
+  port,
+  editorAPI,
+  componentName,
 }: HandleSelectionComponentParams) => {
-	const componentLookup = createComponentLookup({ editorAPI });
+  const componentLookup = createComponentLookup({ editorAPI });
 
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const selectionComponent = componentLookup.closestBySelection({
-				components: [componentName],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const selectionComponent = componentLookup.closestBySelection({
+        components: [componentName],
+      });
 
-			port.updateCurrentComponent({ selectionComponent });
-		},
-	});
+      port.updateCurrentComponent({ selectionComponent });
+    },
+  });
 };

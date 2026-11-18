@@ -1,30 +1,30 @@
 import {
-	nestedEditableRole,
-	nestedEditableRoleSelector,
-	type TableSectionLocalName,
-	tableRole,
-	tableRoleSelector,
+  nestedEditableRole,
+  nestedEditableRoleSelector,
+  type TableSectionLocalName,
+  tableRole,
+  tableRoleSelector,
 } from "@rangex/core";
 
 import { verticalAlignAttr } from "#constants";
 
 import {
-	getActiveTableCells,
-	getCommonTableCellFromSelection,
-	getCommonTableFromSelection,
-	getTableCapacity,
+  getActiveTableCells,
+  getCommonTableCellFromSelection,
+  getCommonTableFromSelection,
+  getTableCapacity,
 } from "../_Utilities";
 import type {
-	GetActiveTableParams,
-	GetActiveTableResult,
-	HandleCellResizingParams,
-	HandleCellTypeParams,
-	HandleClearContentsParams,
-	HandleInsertDeleteParams,
-	HandleMergeSplitParams,
-	HandleSelectionTypeParams,
-	HandleTableContextMenuButtonsInteractionParams,
-	HandleVerticalAlignmentParams,
+  GetActiveTableParams,
+  GetActiveTableResult,
+  HandleCellResizingParams,
+  HandleCellTypeParams,
+  HandleClearContentsParams,
+  HandleInsertDeleteParams,
+  HandleMergeSplitParams,
+  HandleSelectionTypeParams,
+  HandleTableContextMenuButtonsInteractionParams,
+  HandleVerticalAlignmentParams,
 } from "./HandleTableContextMenuButtonsInteraction-types";
 
 /**
@@ -33,256 +33,256 @@ import type {
  * (the cursor is inside a table cell). TableSelection takes priority.
  */
 const getActiveTable = ({ editorAPI }: GetActiveTableParams): GetActiveTableResult => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
+  const tables = rootEditable.$$querySelectorAll(tableRoleSelector);
 
-	for (const table of tables) {
-		if (table.$$editorRole !== tableRole) {
-			throw new Error("Table's type is invalid.");
-		}
+  for (const table of tables) {
+    if (table.$$editorRole !== tableRole) {
+      throw new Error("Table's type is invalid.");
+    }
 
-		if (table.$$isTableSelectionActive) {
-			return table;
-		}
-	}
+    if (table.$$isTableSelectionActive) {
+      return table;
+    }
+  }
 
-	return getCommonTableFromSelection({ editorAPI });
+  return getCommonTableFromSelection({ editorAPI });
 };
 
 const handleSelectionType = ({ configPort, editorAPI }: HandleSelectionTypeParams) => {
-	return configPort.onChangeSectionType((type) => {
-		const toSection: TableSectionLocalName = (
-			{
-				header: "thead",
-				body: "tbody",
-				footer: "tfoot",
-			} as const
-		)[type];
+  return configPort.onChangeSectionType((type) => {
+    const toSection: TableSectionLocalName = (
+      {
+        header: "thead",
+        body: "tbody",
+        footer: "tfoot",
+      } as const
+    )[type];
 
-		const table = getActiveTable({ editorAPI });
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		table.$$moveRowsToSection({
-			type: "selection",
-			toSection,
-			tableCellTagMode: "section",
-		});
+    table.$$moveRowsToSection({
+      type: "selection",
+      toSection,
+      tableCellTagMode: "section",
+    });
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleMergeSplit = ({ configPort, editorAPI }: HandleMergeSplitParams) => {
-	return configPort.onChangeMergeSplit((action) => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onChangeMergeSplit((action) => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		const { canSplitHorizontally, canSplitVertically } = getTableCapacity({
-			table,
-			tableCell: getCommonTableCellFromSelection({ editorAPI }),
-			limits: configPort.limits,
-		});
+    const { canSplitHorizontally, canSplitVertically } = getTableCapacity({
+      table,
+      tableCell: getCommonTableCellFromSelection({ editorAPI }),
+      limits: configPort.limits,
+    });
 
-		const isWithinLimits =
-			(action !== "splitHorizontally" || canSplitHorizontally) &&
-			(action !== "splitVertically" || canSplitVertically);
+    const isWithinLimits =
+      (action !== "splitHorizontally" || canSplitHorizontally) &&
+      (action !== "splitVertically" || canSplitVertically);
 
-		if (!isWithinLimits) {
-			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
-			return;
-		}
+    if (!isWithinLimits) {
+      console.warn(`Table can't grow past its limits: ${action} was ignored.`);
+      return;
+    }
 
-		({
-			mergeSelected: () => table.$$mergeCells({ type: "selection" }),
-			mergeLeft: () => table.$$mergeCellTo({ type: "selection", direction: "left" }),
-			mergeRight: () => table.$$mergeCellTo({ type: "selection", direction: "right" }),
-			mergeUp: () => table.$$mergeCellTo({ type: "selection", direction: "up" }),
-			mergeDown: () => table.$$mergeCellTo({ type: "selection", direction: "down" }),
-			splitHorizontally: () => table.$$splitCell({ type: "selection", direction: "horizontal" }),
-			splitVertically: () => table.$$splitCell({ type: "selection", direction: "vertical" }),
-			splitFully: () => table.$$splitSpannedCells({ type: "selection" }),
-		})[action]();
+    ({
+      mergeSelected: () => table.$$mergeCells({ type: "selection" }),
+      mergeLeft: () => table.$$mergeCellTo({ type: "selection", direction: "left" }),
+      mergeRight: () => table.$$mergeCellTo({ type: "selection", direction: "right" }),
+      mergeUp: () => table.$$mergeCellTo({ type: "selection", direction: "up" }),
+      mergeDown: () => table.$$mergeCellTo({ type: "selection", direction: "down" }),
+      splitHorizontally: () => table.$$splitCell({ type: "selection", direction: "horizontal" }),
+      splitVertically: () => table.$$splitCell({ type: "selection", direction: "vertical" }),
+      splitFully: () => table.$$splitSpannedCells({ type: "selection" }),
+    })[action]();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleInsertDelete = ({ configPort, editorAPI }: HandleInsertDeleteParams) => {
-	return configPort.onChangeInsertDelete((action) => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onChangeInsertDelete((action) => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		const { canAddRow, canAddCol } = getTableCapacity({
-			table,
-			tableCell: getCommonTableCellFromSelection({ editorAPI }),
-			limits: configPort.limits,
-		});
+    const { canAddRow, canAddCol } = getTableCapacity({
+      table,
+      tableCell: getCommonTableCellFromSelection({ editorAPI }),
+      limits: configPort.limits,
+    });
 
-		const isRowInsert = action === "insertRowAbove" || action === "insertRowBelow";
-		const isColInsert = action === "insertColumnLeft" || action === "insertColumnRight";
+    const isRowInsert = action === "insertRowAbove" || action === "insertRowBelow";
+    const isColInsert = action === "insertColumnLeft" || action === "insertColumnRight";
 
-		const isWithinLimits = (!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
+    const isWithinLimits = (!isRowInsert || canAddRow) && (!isColInsert || canAddCol);
 
-		if (!isWithinLimits) {
-			console.warn(`Table can't grow past its limits: ${action} was ignored.`);
-			return;
-		}
+    if (!isWithinLimits) {
+      console.warn(`Table can't grow past its limits: ${action} was ignored.`);
+      return;
+    }
 
-		({
-			insertRowAbove: () => table.$$insertRow({ type: "selection", direction: "up" }),
-			insertRowBelow: () => table.$$insertRow({ type: "selection", direction: "down" }),
-			insertColumnLeft: () => table.$$insertCol({ type: "selection", direction: "left" }),
-			insertColumnRight: () => table.$$insertCol({ type: "selection", direction: "right" }),
-			deleteRow: () => table.$$deleteRows({ type: "selection" }),
-			deleteColumn: () => table.$$deleteCols({ type: "selection" }),
-		})[action]();
+    ({
+      insertRowAbove: () => table.$$insertRow({ type: "selection", direction: "up" }),
+      insertRowBelow: () => table.$$insertRow({ type: "selection", direction: "down" }),
+      insertColumnLeft: () => table.$$insertCol({ type: "selection", direction: "left" }),
+      insertColumnRight: () => table.$$insertCol({ type: "selection", direction: "right" }),
+      deleteRow: () => table.$$deleteRows({ type: "selection" }),
+      deleteColumn: () => table.$$deleteCols({ type: "selection" }),
+    })[action]();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleCellType = ({ configPort, editorAPI }: HandleCellTypeParams) => {
-	return configPort.onChangeCellType((action) => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onChangeCellType((action) => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		({
-			header: () =>
-				table.$$changeTableCellsLocalName({
-					type: "selection",
-					toLocalName: "th",
-				}),
-			data: () =>
-				table.$$changeTableCellsLocalName({
-					type: "selection",
-					toLocalName: "td",
-				}),
-		})[action]();
+    ({
+      header: () =>
+        table.$$changeTableCellsLocalName({
+          type: "selection",
+          toLocalName: "th",
+        }),
+      data: () =>
+        table.$$changeTableCellsLocalName({
+          type: "selection",
+          toLocalName: "td",
+        }),
+    })[action]();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleVerticalAlignment = ({ configPort, editorAPI }: HandleVerticalAlignmentParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	return configPort.onChangeVerticalAlignment((action) => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onChangeVerticalAlignment((action) => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		const tableCells = getActiveTableCells({ editorAPI, table });
+    const tableCells = getActiveTableCells({ editorAPI, table });
 
-		for (const tableCell of tableCells) {
-			const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
+    for (const tableCell of tableCells) {
+      const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
-			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
-				throw new Error("NestedEditable's type is invalid.");
-			}
+      if (nestedEditable?.$$editorRole !== nestedEditableRole) {
+        throw new Error("NestedEditable's type is invalid.");
+      }
 
-			nestedEditable.$$setAttribute(verticalAlignAttr.name, action);
-		}
+      nestedEditable.$$setAttribute(verticalAlignAttr.name, action);
+    }
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleCellResizing = ({ configPort, editorAPI }: HandleCellResizingParams) => {
-	return configPort.onChangeCellResizing((action) => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onChangeCellResizing((action) => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		const { gridAreaBounds } = table.$$getTableCellsGridArea({
-			type: "selection",
-		});
+    const { gridAreaBounds } = table.$$getTableCellsGridArea({
+      type: "selection",
+    });
 
-		const equalizeColumns = () => {
-			const { startColIndex, endColIndex } = gridAreaBounds;
-			const colGroups = [...table.$$colGroups];
-			const count = endColIndex - startColIndex + 1;
-			const totalSelectedWidth = colGroups
-				.slice(startColIndex, endColIndex + 1)
-				.reduce((sum, w) => sum + w, 0);
-			const equalWidth = Math.round(totalSelectedWidth / count);
+    const equalizeColumns = () => {
+      const { startColIndex, endColIndex } = gridAreaBounds;
+      const colGroups = [...table.$$colGroups];
+      const count = endColIndex - startColIndex + 1;
+      const totalSelectedWidth = colGroups
+        .slice(startColIndex, endColIndex + 1)
+        .reduce((sum, w) => sum + w, 0);
+      const equalWidth = Math.round(totalSelectedWidth / count);
 
-			for (let i = startColIndex; i <= endColIndex; i++) {
-				colGroups[i] = equalWidth;
-			}
-			/** Last column absorbs the rounding remainder to keep the sum exactly 1000. */
-			colGroups[endColIndex] = totalSelectedWidth - equalWidth * (count - 1);
+      for (let i = startColIndex; i <= endColIndex; i++) {
+        colGroups[i] = equalWidth;
+      }
+      /** Last column absorbs the rounding remainder to keep the sum exactly 1000. */
+      colGroups[endColIndex] = totalSelectedWidth - equalWidth * (count - 1);
 
-			table.$$resizeCols({ colGroups });
-		};
+      table.$$resizeCols({ colGroups });
+    };
 
-		const minimizeRows = () => {
-			const { startRowIndex, endRowIndex } = gridAreaBounds;
-			const rowGroups = [...table.$$rowGroups];
+    const minimizeRows = () => {
+      const { startRowIndex, endRowIndex } = gridAreaBounds;
+      const rowGroups = [...table.$$rowGroups];
 
-			for (let i = startRowIndex; i <= endRowIndex; i++) {
-				rowGroups[i] = table.$$defaultRowHeight;
-			}
+      for (let i = startRowIndex; i <= endRowIndex; i++) {
+        rowGroups[i] = table.$$defaultRowHeight;
+      }
 
-			table.$$resizeRows({ rowGroups });
-		};
+      table.$$resizeRows({ rowGroups });
+    };
 
-		({ equalizeColumns, minimizeRows })[action]();
+    ({ equalizeColumns, minimizeRows })[action]();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 const handleClearContents = ({ configPort, editorAPI }: HandleClearContentsParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	return configPort.onClear(() => {
-		const table = getActiveTable({ editorAPI });
+  return configPort.onClear(() => {
+    const table = getActiveTable({ editorAPI });
 
-		if (!table) {
-			return;
-		}
+    if (!table) {
+      return;
+    }
 
-		const tableCells = getActiveTableCells({ editorAPI, table });
+    const tableCells = getActiveTableCells({ editorAPI, table });
 
-		for (const tableCell of tableCells) {
-			const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
+    for (const tableCell of tableCells) {
+      const nestedEditable = tableCell.$$querySelector(nestedEditableRoleSelector);
 
-			if (nestedEditable?.$$editorRole !== nestedEditableRole) {
-				throw new Error("NestedEditable's type is invalid.");
-			}
+      if (nestedEditable?.$$editorRole !== nestedEditableRole) {
+        throw new Error("NestedEditable's type is invalid.");
+      }
 
-			/** NestedEditable qualifies as a ContentFlowNode, making it a valid range boundary. */
-			editorAPI.removeNodesInRange({
-				fromNode: nestedEditable,
-				fromOffset: 0,
-				toNode: nestedEditable,
-				toOffset: nestedEditable.$$childNodes.length,
-			});
-		}
+      /** NestedEditable qualifies as a ContentFlowNode, making it a valid range boundary. */
+      editorAPI.removeNodesInRange({
+        fromNode: nestedEditable,
+        fromOffset: 0,
+        toNode: nestedEditable,
+        toOffset: nestedEditable.$$childNodes.length,
+      });
+    }
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 };
 
 /*
@@ -290,45 +290,45 @@ const handleClearContents = ({ configPort, editorAPI }: HandleClearContentsParam
  * insert/delete, cell type, vertical alignment, cell resizing, clear contents).
  */
 export const handleTableContextMenuButtonsInteraction = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTableContextMenuButtonsInteractionParams) => {
-	const sectionTypeCleanup = handleSelectionType({
-		configPort,
-		editorAPI,
-	});
-	const mergeSplitCleanup = handleMergeSplit({
-		configPort,
-		editorAPI,
-	});
-	const insertDeleteCleanup = handleInsertDelete({
-		configPort,
-		editorAPI,
-	});
-	const cellTypeCleanup = handleCellType({
-		configPort,
-		editorAPI,
-	});
-	const verticalAlignmentCleanup = handleVerticalAlignment({
-		configPort,
-		editorAPI,
-	});
-	const cellResizingCleanup = handleCellResizing({
-		configPort,
-		editorAPI,
-	});
-	const clearContentsCleanup = handleClearContents({
-		configPort,
-		editorAPI,
-	});
+  const sectionTypeCleanup = handleSelectionType({
+    configPort,
+    editorAPI,
+  });
+  const mergeSplitCleanup = handleMergeSplit({
+    configPort,
+    editorAPI,
+  });
+  const insertDeleteCleanup = handleInsertDelete({
+    configPort,
+    editorAPI,
+  });
+  const cellTypeCleanup = handleCellType({
+    configPort,
+    editorAPI,
+  });
+  const verticalAlignmentCleanup = handleVerticalAlignment({
+    configPort,
+    editorAPI,
+  });
+  const cellResizingCleanup = handleCellResizing({
+    configPort,
+    editorAPI,
+  });
+  const clearContentsCleanup = handleClearContents({
+    configPort,
+    editorAPI,
+  });
 
-	return () => {
-		sectionTypeCleanup();
-		mergeSplitCleanup();
-		insertDeleteCleanup();
-		cellTypeCleanup();
-		verticalAlignmentCleanup();
-		cellResizingCleanup();
-		clearContentsCleanup();
-	};
+  return () => {
+    sectionTypeCleanup();
+    mergeSplitCleanup();
+    insertDeleteCleanup();
+    cellTypeCleanup();
+    verticalAlignmentCleanup();
+    cellResizingCleanup();
+    clearContentsCleanup();
+  };
 };

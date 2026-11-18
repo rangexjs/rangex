@@ -2,9 +2,9 @@ import { assertNever, matchJSON } from "#utilities";
 
 import { describeJSONMismatch, formatNodePath } from "../Utilities";
 import type {
-	DraftStorage,
-	ResolveDraftStorageParams,
-	ResolveDraftStorageResult,
+  DraftStorage,
+  ResolveDraftStorageParams,
+  ResolveDraftStorageResult,
 } from "./ResolveDraftStorage-types";
 
 /*
@@ -13,61 +13,61 @@ import type {
  * then it replaces the storage. Fails on a reject, or on a fallback that doesn't match.
  */
 export const resolveDraftStorage = <TStorage extends DraftStorage>({
-	nodeDraft,
-	storagePattern,
-	validateStorage,
+  nodeDraft,
+  storagePattern,
+  validateStorage,
 }: ResolveDraftStorageParams<TStorage>): ResolveDraftStorageResult => {
-	if (!validateStorage) {
-		return null;
-	}
+  if (!validateStorage) {
+    return null;
+  }
 
-	const storage = structuredClone(nodeDraft.customStorage);
+  const storage = structuredClone(nodeDraft.customStorage);
 
-	// The node's state check guarantees the storage's shape
-	const validationFailed = validateStorage({ storage: storage as TStorage });
+  // The node's state check guarantees the storage's shape
+  const validationFailed = validateStorage({ storage: storage as TStorage });
 
-	if (!validationFailed) {
-		return null;
-	}
+  if (!validationFailed) {
+    return null;
+  }
 
-	if (validationFailed.kind === "reject") {
-		const nodePath = formatNodePath({
-			rootDraft: nodeDraft,
-			nodeDraft,
-		});
+  if (validationFailed.kind === "reject") {
+    const nodePath = formatNodePath({
+      rootDraft: nodeDraft,
+      nodeDraft,
+    });
 
-		return {
-			sourceSnapshot: nodeDraft,
-			failedSnapshot: nodeDraft,
-			reason: `${nodePath}: invalid customStorage (${validationFailed.reason}).`,
-		};
-	}
+    return {
+      sourceSnapshot: nodeDraft,
+      failedSnapshot: nodeDraft,
+      reason: `${nodePath}: invalid customStorage (${validationFailed.reason}).`,
+    };
+  }
 
-	if (validationFailed.kind === "fallback") {
-		const { value } = validationFailed;
+  if (validationFailed.kind === "fallback") {
+    const { value } = validationFailed;
 
-		const mismatch = matchJSON({ value, pattern: storagePattern });
+    const mismatch = matchJSON({ value, pattern: storagePattern });
 
-		if (mismatch) {
-			return {
-				sourceSnapshot: nodeDraft,
-				failedSnapshot: nodeDraft,
-				reason: describeJSONMismatch({
-					rootDraft: nodeDraft,
-					nodeDraft,
-					value: { customStorage: value },
-					mismatch: {
-						...mismatch,
-						path: ["customStorage", ...mismatch.path],
-					},
-				}),
-			};
-		}
+    if (mismatch) {
+      return {
+        sourceSnapshot: nodeDraft,
+        failedSnapshot: nodeDraft,
+        reason: describeJSONMismatch({
+          rootDraft: nodeDraft,
+          nodeDraft,
+          value: { customStorage: value },
+          mismatch: {
+            ...mismatch,
+            path: ["customStorage", ...mismatch.path],
+          },
+        }),
+      };
+    }
 
-		nodeDraft.customStorage = value;
+    nodeDraft.customStorage = value;
 
-		return null;
-	}
+    return null;
+  }
 
-	return assertNever(validationFailed);
+  return assertNever(validationFailed);
 };

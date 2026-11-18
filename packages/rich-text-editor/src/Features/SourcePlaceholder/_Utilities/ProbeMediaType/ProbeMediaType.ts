@@ -1,7 +1,7 @@
 import type {
-	ProbeableMediaType,
-	ProbeMediaTypeParams,
-	ProbeMediaTypeResult,
+  ProbeableMediaType,
+  ProbeMediaTypeParams,
+  ProbeMediaTypeResult,
 } from "./ProbeMediaType-types";
 
 type MediaElementType = Exclude<ProbeableMediaType, "image">;
@@ -12,36 +12,36 @@ const defaultTimeoutMs = 15_000;
  * A signal that aborts once any of `signals` does, or once `timeoutMs` elapses.
  */
 const createProbeSignal = (signals: (AbortSignal | undefined)[], timeoutMs: number) => {
-	const definedSignals = signals.filter((signal) => signal !== undefined);
+  const definedSignals = signals.filter((signal) => signal !== undefined);
 
-	return AbortSignal.any([...definedSignals, AbortSignal.timeout(timeoutMs)]);
+  return AbortSignal.any([...definedSignals, AbortSignal.timeout(timeoutMs)]);
 };
 
 /*
  * Resolves whether `src` loads as an image. Gives up once `probeSignal` aborts.
  */
 const loadImage = (src: string, probeSignal: AbortSignal): Promise<boolean> =>
-	new Promise((resolve) => {
-		if (probeSignal.aborted) {
-			resolve(false);
-			return;
-		}
+  new Promise((resolve) => {
+    if (probeSignal.aborted) {
+      resolve(false);
+      return;
+    }
 
-		const image = document.createElement("img");
-		const listenersController = new AbortController();
-		const { signal } = listenersController;
+    const image = document.createElement("img");
+    const listenersController = new AbortController();
+    const { signal } = listenersController;
 
-		const settle = (loaded: boolean) => {
-			listenersController.abort();
-			resolve(loaded);
-		};
+    const settle = (loaded: boolean) => {
+      listenersController.abort();
+      resolve(loaded);
+    };
 
-		probeSignal.addEventListener("abort", () => settle(false), { signal });
-		image.addEventListener("load", () => settle(true), { signal });
-		image.addEventListener("error", () => settle(false), { signal });
+    probeSignal.addEventListener("abort", () => settle(false), { signal });
+    image.addEventListener("load", () => settle(true), { signal });
+    image.addEventListener("error", () => settle(false), { signal });
 
-		image.src = src;
-	});
+    image.src = src;
+  });
 
 /*
  * Loads the metadata of `src` in a <video>, which plays a file with sound only too. Resolves "video" if it has a
@@ -49,71 +49,71 @@ const loadImage = (src: string, probeSignal: AbortSignal): Promise<boolean> =>
  * once it settles.
  */
 const loadMediaElement = (
-	src: string,
-	probeSignal: AbortSignal,
+  src: string,
+  probeSignal: AbortSignal,
 ): Promise<MediaElementType | null> =>
-	new Promise((resolve) => {
-		if (probeSignal.aborted) {
-			resolve(null);
-			return;
-		}
+  new Promise((resolve) => {
+    if (probeSignal.aborted) {
+      resolve(null);
+      return;
+    }
 
-		const video = document.createElement("video");
-		const listenersController = new AbortController();
-		const { signal } = listenersController;
+    const video = document.createElement("video");
+    const listenersController = new AbortController();
+    const { signal } = listenersController;
 
-		/*
-		 * A media element isn't garbage collected while it's loading, and it can keep buffering past its metadata:
-		 * removing its src and reloading it is what stops the download.
-		 */
-		const settle = (type: MediaElementType | null) => {
-			listenersController.abort();
-			video.removeAttribute("src");
-			video.load();
-			resolve(type);
-		};
+    /*
+     * A media element isn't garbage collected while it's loading, and it can keep buffering past its metadata:
+     * removing its src and reloading it is what stops the download.
+     */
+    const settle = (type: MediaElementType | null) => {
+      listenersController.abort();
+      video.removeAttribute("src");
+      video.load();
+      resolve(type);
+    };
 
-		const onLoadedMetadata = () => {
-			settle(video.videoWidth > 0 ? "video" : "audio");
-		};
+    const onLoadedMetadata = () => {
+      settle(video.videoWidth > 0 ? "video" : "audio");
+    };
 
-		probeSignal.addEventListener("abort", () => settle(null), { signal });
-		video.addEventListener("loadedmetadata", onLoadedMetadata, { signal });
-		video.addEventListener("error", () => settle(null), { signal });
+    probeSignal.addEventListener("abort", () => settle(null), { signal });
+    video.addEventListener("loadedmetadata", onLoadedMetadata, { signal });
+    video.addEventListener("error", () => settle(null), { signal });
 
-		video.preload = "metadata";
-		video.src = src;
-	});
+    video.preload = "metadata";
+    video.src = src;
+  });
 
 /*
  * Resolves the first probe's type that isn't null, or null once every probe resolved null.
  */
 const findFirstType = (
-	probes: Promise<ProbeableMediaType | null>[],
+  probes: Promise<ProbeableMediaType | null>[],
 ): Promise<ProbeableMediaType | null> =>
-	new Promise((resolve) => {
-		let pendingCount = probes.length;
+  new Promise((resolve) => {
+    let pendingCount = probes.length;
 
-		if (!pendingCount) {
-			resolve(null);
-			return;
-		}
+    if (!pendingCount) {
+      resolve(null);
+      return;
+    }
 
-		for (const probe of probes) {
-			probe.then((type) => {
-				pendingCount -= 1;
+    for (const probe of probes) {
+      probe.then((type) => {
+        pendingCount -= 1;
 
-				if (type !== null) {
-					resolve(type);
-					return;
-				}
+        if (type !== null) {
+          resolve(type);
+          return;
+        }
 
-				if (!pendingCount) {
-					resolve(null);
-				}
-			});
-		}
-	});
+        if (!pendingCount) {
+          resolve(null);
+        }
+      });
+    }
+  });
 
 /**
  * Finds which of the supported media types `src` loads as: it's loaded as an image and in a <video> at once, and the
@@ -121,37 +121,37 @@ const findFirstType = (
  * `timeoutMs` elapses first. The other probe is stopped once one of them finds the type.
  */
 export const probeMediaType = async ({
-	src,
-	supportedMediaTypes,
-	signal,
-	timeoutMs = defaultTimeoutMs,
+  src,
+  supportedMediaTypes,
+  signal,
+  timeoutMs = defaultTimeoutMs,
 }: ProbeMediaTypeParams): ProbeMediaTypeResult => {
-	const settledController = new AbortController();
-	const probeSignal = createProbeSignal([signal, settledController.signal], timeoutMs);
+  const settledController = new AbortController();
+  const probeSignal = createProbeSignal([signal, settledController.signal], timeoutMs);
 
-	const probes: Promise<ProbeableMediaType | null>[] = [];
+  const probes: Promise<ProbeableMediaType | null>[] = [];
 
-	if (supportedMediaTypes.includes("image")) {
-		const imageProbe = loadImage(src, probeSignal).then((loaded) => (loaded ? "image" : null));
+  if (supportedMediaTypes.includes("image")) {
+    const imageProbe = loadImage(src, probeSignal).then((loaded) => (loaded ? "image" : null));
 
-		probes.push(imageProbe);
-	}
+    probes.push(imageProbe);
+  }
 
-	if (supportedMediaTypes.includes("video") || supportedMediaTypes.includes("audio")) {
-		const mediaElementProbe = loadMediaElement(src, probeSignal).then((type) => {
-			if (type === null) {
-				return null;
-			}
+  if (supportedMediaTypes.includes("video") || supportedMediaTypes.includes("audio")) {
+    const mediaElementProbe = loadMediaElement(src, probeSignal).then((type) => {
+      if (type === null) {
+        return null;
+      }
 
-			return supportedMediaTypes.includes(type) ? type : null;
-		});
+      return supportedMediaTypes.includes(type) ? type : null;
+    });
 
-		probes.push(mediaElementProbe);
-	}
+    probes.push(mediaElementProbe);
+  }
 
-	const type = await findFirstType(probes);
+  const type = await findFirstType(probes);
 
-	settledController.abort();
+  settledController.abort();
 
-	return type;
+  return type;
 };

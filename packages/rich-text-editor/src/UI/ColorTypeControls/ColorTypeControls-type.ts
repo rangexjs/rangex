@@ -6,20 +6,20 @@ import type { HslFormat } from "#color";
 export type ColorType = "HSL" | "RGB" | "Hex";
 
 export interface ColorFormatButtonProps {
-	colorFormat: Accessor<ColorType>;
-	setColorFormat: Setter<ColorType>;
-	class?: JSX.ClassValue;
+  colorFormat: Accessor<ColorType>;
+  setColorFormat: Setter<ColorType>;
+  class?: JSX.ClassValue;
 }
 
 export interface OnColorChangeParams {
-	hsl: HslFormat;
+  hsl: HslFormat;
 }
 
 export type OnColorChangeFn = (params: OnColorChangeParams) => void;
 
 export interface ColorTypeControlsParams {
-	hsl: HslFormat;
-	onColorChange: OnColorChangeFn;
-	buttonContainerClass?: JSX.ClassValue;
-	colorContainerClass?: JSX.ClassValue;
+  hsl: HslFormat;
+  onColorChange: OnColorChangeFn;
+  buttonContainerClass?: JSX.ClassValue;
+  colorContainerClass?: JSX.ClassValue;
 }

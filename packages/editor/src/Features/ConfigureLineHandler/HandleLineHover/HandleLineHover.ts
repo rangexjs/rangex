@@ -3,38 +3,38 @@ import type { Line } from "@rangex/core";
 import { createAnchoredOverlayController, observeEditorNodeAttachment } from "#engine-links";
 
 import type {
-	CollectShadowRootsParams,
-	CollectShadowRootsResult,
-	FindLineAtPointParams,
-	FindLineAtPointResult,
-	HandleLineHoverParams,
-	HandleLineHoverResult,
-	IsPointInsideElementParams,
-	IsPointInsideElementResult,
+  CollectShadowRootsParams,
+  CollectShadowRootsResult,
+  FindLineAtPointParams,
+  FindLineAtPointResult,
+  HandleLineHoverParams,
+  HandleLineHoverResult,
+  IsPointInsideElementParams,
+  IsPointInsideElementResult,
 } from "./HandleLineHover-types";
 
 /*
  * Collects ShadowRoots upwards from editorAPI's ShadowRoot.
  */
 const collectShadowRoots = ({ editorAPI }: CollectShadowRootsParams): CollectShadowRootsResult => {
-	const shadowRoots: ShadowRoot[] = [];
+  const shadowRoots: ShadowRoot[] = [];
 
-	let current = editorAPI.shadowRoot;
+  let current = editorAPI.shadowRoot;
 
-	while (true) {
-		shadowRoots.push(current);
+  while (true) {
+    shadowRoots.push(current);
 
-		const root = current.host.getRootNode();
+    const root = current.host.getRootNode();
 
-		if (root instanceof ShadowRoot) {
-			current = root;
-			continue;
-		}
+    if (root instanceof ShadowRoot) {
+      current = root;
+      continue;
+    }
 
-		break;
-	}
+    break;
+  }
 
-	return shadowRoots;
+  return shadowRoots;
 };
 
 /*
@@ -42,64 +42,64 @@ const collectShadowRoots = ({ editorAPI }: CollectShadowRootsParams): CollectSha
  * inside element.
  */
 const isPointInsideElement = ({
-	editorAPI,
-	element,
-	clientX,
-	clientY,
+  editorAPI,
+  element,
+  clientX,
+  clientY,
 }: IsPointInsideElementParams): IsPointInsideElementResult => {
-	const shadowRoots = collectShadowRoots({ editorAPI });
+  const shadowRoots = collectShadowRoots({ editorAPI });
 
-	const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
-		shadowRoots,
-	});
+  const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
+    shadowRoots,
+  });
 
-	if (!caretPosition) {
-		return false;
-	}
+  if (!caretPosition) {
+    return false;
+  }
 
-	return element.contains(caretPosition.offsetNode);
+  return element.contains(caretPosition.offsetNode);
 };
 
 /*
  * Finds the Line based on clientX/clientY.
  */
 const findLineAtPoint = ({
-	editorAPI,
-	clientX,
-	clientY,
+  editorAPI,
+  clientX,
+  clientY,
 }: FindLineAtPointParams): FindLineAtPointResult => {
-	const { shadowRoot, rootEditable } = editorAPI;
-	const editorHost = shadowRoot.host;
+  const { shadowRoot, rootEditable } = editorAPI;
+  const editorHost = shadowRoot.host;
 
-	const shadowRoots = collectShadowRoots({ editorAPI });
+  const shadowRoots = collectShadowRoots({ editorAPI });
 
-	const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
-		shadowRoots,
-	});
+  const caretPosition = document.caretPositionFromPoint(clientX, clientY, {
+    shadowRoots,
+  });
 
-	if (!caretPosition) {
-		return null;
-	}
+  if (!caretPosition) {
+    return null;
+  }
 
-	const { offsetNode } = caretPosition;
+  const { offsetNode } = caretPosition;
 
-	const line = rootEditable.$$childNodes.find((line) => line.contains(offsetNode));
+  const line = rootEditable.$$childNodes.find((line) => line.contains(offsetNode));
 
-	if (line) {
-		return line;
-	}
+  if (line) {
+    return line;
+  }
 
-	const slottedElement = [...editorHost.children].find((child) => child.contains(offsetNode));
+  const slottedElement = [...editorHost.children].find((child) => child.contains(offsetNode));
 
-	const assignedSlot = slottedElement?.assignedSlot;
+  const assignedSlot = slottedElement?.assignedSlot;
 
-	if (!assignedSlot) {
-		return null;
-	}
+  if (!assignedSlot) {
+    return null;
+  }
 
-	const assignedLine = rootEditable.$$childNodes.find((line) => line.contains(assignedSlot));
+  const assignedLine = rootEditable.$$childNodes.find((line) => line.contains(assignedSlot));
 
-	return assignedLine ?? null;
+  return assignedLine ?? null;
 };
 
 /*
@@ -108,161 +108,161 @@ const findLineAtPoint = ({
  * BlockComponent never gets one.
  */
 export const handleLineHover = ({
-	configPort,
-	editorAPI,
-	onLineChange,
+  configPort,
+  editorAPI,
+  onLineChange,
 }: HandleLineHoverParams): HandleLineHoverResult => {
-	const anchoredOverlay = configPort.element;
+  const anchoredOverlay = configPort.element;
 
-	const overlayController = createAnchoredOverlayController({
-		element: anchoredOverlay,
-		options: { lightDismiss: false, closeOnEscape: false },
-	});
+  const overlayController = createAnchoredOverlayController({
+    element: anchoredOverlay,
+    options: { lightDismiss: false, closeOnEscape: false },
+  });
 
-	let currentLine: Line | null = null;
-	let lastPointerPosition: { clientX: number; clientY: number } | null = null;
-	let hideTimeoutId: ReturnType<typeof setTimeout>;
+  let currentLine: Line | null = null;
+  let lastPointerPosition: { clientX: number; clientY: number } | null = null;
+  let hideTimeoutId: ReturnType<typeof setTimeout>;
 
-	const cancelHide = () => {
-		clearTimeout(hideTimeoutId);
-	};
+  const cancelHide = () => {
+    clearTimeout(hideTimeoutId);
+  };
 
-	const hide = () => {
-		currentLine = null;
-		lastPointerPosition = null;
-		onLineChange(null);
-		overlayController.hide({});
-	};
+  const hide = () => {
+    currentLine = null;
+    lastPointerPosition = null;
+    onLineChange(null);
+    overlayController.hide({});
+  };
 
-	const scheduleHide = () => {
-		cancelHide();
+  const scheduleHide = () => {
+    cancelHide();
 
-		hideTimeoutId = setTimeout(() => {
-			if (anchoredOverlay.querySelector(":popover-open")) {
-				return;
-			}
+    hideTimeoutId = setTimeout(() => {
+      if (anchoredOverlay.querySelector(":popover-open")) {
+        return;
+      }
 
-			hide();
-		}, 100);
-	};
+      hide();
+    }, 100);
+  };
 
-	const hideNestedPopovers = () => {
-		const openPopovers = anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
+  const hideNestedPopovers = () => {
+    const openPopovers = anchoredOverlay.querySelectorAll<HTMLElement>(":popover-open");
 
-		for (const openPopover of openPopovers) {
-			openPopover.hidePopover();
-		}
-	};
+    for (const openPopover of openPopovers) {
+      openPopover.hidePopover();
+    }
+  };
 
-	const relocateTo = (line: Line) => {
-		currentLine = line;
-		onLineChange(line);
+  const relocateTo = (line: Line) => {
+    currentLine = line;
+    onLineChange(line);
 
-		hideNestedPopovers();
+    hideNestedPopovers();
 
-		overlayController.show(line, {
-			position: "absolute",
-			top: "anchor(top)",
-			right: "calc(anchor(left) + 8px)",
-		});
-	};
+    overlayController.show(line, {
+      position: "absolute",
+      top: "anchor(top)",
+      right: "calc(anchor(left) + 8px)",
+    });
+  };
 
-	const updateLineAtPoint = (clientX: number, clientY: number) => {
-		const line = findLineAtPoint({ editorAPI, clientX, clientY });
-		const hasOpenPopover = anchoredOverlay.querySelector(":popover-open") !== null;
+  const updateLineAtPoint = (clientX: number, clientY: number) => {
+    const line = findLineAtPoint({ editorAPI, clientX, clientY });
+    const hasOpenPopover = anchoredOverlay.querySelector(":popover-open") !== null;
 
-		if (line && currentLine !== line && !hasOpenPopover) {
-			relocateTo(line);
-		}
+    if (line && currentLine !== line && !hasOpenPopover) {
+      relocateTo(line);
+    }
 
-		const insideRootEditable = line !== null;
-		const insideLineHandler = isPointInsideElement({
-			editorAPI,
-			element: anchoredOverlay,
-			clientX,
-			clientY,
-		});
+    const insideRootEditable = line !== null;
+    const insideLineHandler = isPointInsideElement({
+      editorAPI,
+      element: anchoredOverlay,
+      clientX,
+      clientY,
+    });
 
-		const keepOpen = insideRootEditable || insideLineHandler || hasOpenPopover;
+    const keepOpen = insideRootEditable || insideLineHandler || hasOpenPopover;
 
-		if (keepOpen) {
-			cancelHide();
-		} else {
-			scheduleHide();
-		}
-	};
+    if (keepOpen) {
+      cancelHide();
+    } else {
+      scheduleHide();
+    }
+  };
 
-	const abortController = new AbortController();
-	const { signal } = abortController;
+  const abortController = new AbortController();
+  const { signal } = abortController;
 
-	const watchPopoverClose = () => {
-		anchoredOverlay.addEventListener(
-			"toggle",
-			(event) => {
-				if (!(event instanceof ToggleEvent) || event.newState !== "closed") {
-					return;
-				}
+  const watchPopoverClose = () => {
+    anchoredOverlay.addEventListener(
+      "toggle",
+      (event) => {
+        if (!(event instanceof ToggleEvent) || event.newState !== "closed") {
+          return;
+        }
 
-				if (!lastPointerPosition) {
-					return;
-				}
+        if (!lastPointerPosition) {
+          return;
+        }
 
-				updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
-			},
-			{ capture: true, signal },
-		);
-	};
+        updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
+      },
+      { capture: true, signal },
+    );
+  };
 
-	watchPopoverClose();
+  watchPopoverClose();
 
-	document.addEventListener(
-		"pointermove",
-		(event) => {
-			const { clientX, clientY } = event;
+  document.addEventListener(
+    "pointermove",
+    (event) => {
+      const { clientX, clientY } = event;
 
-			lastPointerPosition = { clientX, clientY };
+      lastPointerPosition = { clientX, clientY };
 
-			updateLineAtPoint(clientX, clientY);
-		},
-		{ capture: true, signal },
-	);
+      updateLineAtPoint(clientX, clientY);
+    },
+    { capture: true, signal },
+  );
 
-	const onScroll = () => {
-		if (!lastPointerPosition) {
-			return;
-		}
+  const onScroll = () => {
+    if (!lastPointerPosition) {
+      return;
+    }
 
-		updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
-	};
+    updateLineAtPoint(lastPointerPosition.clientX, lastPointerPosition.clientY);
+  };
 
-	const shadowRoots = collectShadowRoots({ editorAPI });
+  const shadowRoots = collectShadowRoots({ editorAPI });
 
-	const roots = [document, ...shadowRoots];
+  const roots = [document, ...shadowRoots];
 
-	for (const root of roots) {
-		root.addEventListener("scroll", onScroll, { capture: true, signal });
-	}
+  for (const root of roots) {
+    root.addEventListener("scroll", onScroll, { capture: true, signal });
+  }
 
-	// The overlay can't be anchored to a detached Line, so close it (and its nested popovers) instead.
-	const unobserveLineRemoval = observeEditorNodeAttachment({
-		editorAPI,
-		onMutation: () => {
-			if (!currentLine || currentLine.isConnected) {
-				return;
-			}
+  // The overlay can't be anchored to a detached Line, so close it (and its nested popovers) instead.
+  const unobserveLineRemoval = observeEditorNodeAttachment({
+    editorAPI,
+    onMutation: () => {
+      if (!currentLine || currentLine.isConnected) {
+        return;
+      }
 
-			cancelHide();
-			hideNestedPopovers();
-			hide();
-		},
-	});
+      cancelHide();
+      hideNestedPopovers();
+      hide();
+    },
+  });
 
-	return {
-		getCurrentLine: () => currentLine,
-		cleanup: () => {
-			abortController.abort();
-			unobserveLineRemoval();
-			cancelHide();
-		},
-	};
+  return {
+    getCurrentLine: () => currentLine,
+    cleanup: () => {
+      abortController.abort();
+      unobserveLineRemoval();
+      cancelHide();
+    },
+  };
 };

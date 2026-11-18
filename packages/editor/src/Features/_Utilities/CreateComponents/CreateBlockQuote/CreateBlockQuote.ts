@@ -1,11 +1,11 @@
 import {
-	createBeamText,
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createContentLine,
-	createHTMLLayout,
-	createNestedEditable,
+  createBeamText,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createContentLine,
+  createHTMLLayout,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { blockQuoteDefinition, componentsName } from "#constants";
@@ -18,29 +18,29 @@ import type { CreateBlockQuoteParams, CreateBlockQuoteResult } from "./CreateBlo
  * blockQuoteDefinition), holding the given child lines or a single empty one.
  */
 export const createBlockQuote = ({
-	childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
+  childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 }: CreateBlockQuoteParams): CreateBlockQuoteResult => {
-	const nestedEditable = createNestedEditable({
-		...blockQuoteDefinition.nestedEditableProps,
-		childNodes,
-	});
+  const nestedEditable = createNestedEditable({
+    ...blockQuoteDefinition.nestedEditableProps,
+    childNodes,
+  });
 
-	return createBlockComponentLine({
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.blockQuote,
-			content: { type: "styled-block" },
-			customStorage: createBlockQuoteStorage(),
-			shouldSelectBeforeRemove: false,
-			shouldSelectOnNavigation: false,
-			editState: "inherit",
-			childNodes: [
-				createHTMLLayout({
-					localName: "blockquote",
-					childNodes: [nestedEditable],
-				}),
-			],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  return createBlockComponentLine({
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.blockQuote,
+      content: { type: "styled-block" },
+      customStorage: createBlockQuoteStorage(),
+      shouldSelectBeforeRemove: false,
+      shouldSelectOnNavigation: false,
+      editState: "inherit",
+      childNodes: [
+        createHTMLLayout({
+          localName: "blockquote",
+          childNodes: [nestedEditable],
+        }),
+      ],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 };

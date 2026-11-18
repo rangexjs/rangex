@@ -7,18 +7,18 @@ import type { MediaCaptionDefinition } from "./MediaCaptionDefinition-types";
  * out until it's added.
  */
 export const mediaCaptionDefinition = {
-	nestedEditableProps: {
-		display: "block single-line",
-		editState: "true",
-		allowedComponents: [
-			componentsName.link,
-			componentsName.mention,
-			componentsName.templateVariable,
-			componentsName.comment,
-		],
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  nestedEditableProps: {
+    display: "block single-line",
+    editState: "true",
+    allowedComponents: [
+      componentsName.link,
+      componentsName.mention,
+      componentsName.templateVariable,
+      componentsName.comment,
+    ],
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } satisfies MediaCaptionDefinition;

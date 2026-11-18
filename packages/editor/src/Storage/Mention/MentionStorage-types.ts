@@ -3,30 +3,30 @@ import type { InlineComponent } from "@rangex/core";
 import type { MentionId } from "../_Constants";
 
 export type MentionStorage = {
-	id: MentionId;
-	userId: string;
+  id: MentionId;
+  userId: string;
 };
 
 export interface CreateMentionStorageParams {
-	userId: string;
+  userId: string;
 }
 
 export type CreateMentionStorageResult = MentionStorage;
 
 export interface MentionStorageFallbacks {
-	userId: string;
+  userId: string;
 }
 
 export interface EnsureMentionStorageParams {
-	storage: unknown;
-	fallbacks: MentionStorageFallbacks;
+  storage: unknown;
+  fallbacks: MentionStorageFallbacks;
 }
 
 export type EnsureMentionStorageResult = MentionStorage;
 
 export interface EnsureNodeMentionStorageParams {
-	inlineComponent: InlineComponent;
-	fallbacks: MentionStorageFallbacks;
+  inlineComponent: InlineComponent;
+  fallbacks: MentionStorageFallbacks;
 }
 
 export type EnsureNodeMentionStorageResult = MentionStorage;

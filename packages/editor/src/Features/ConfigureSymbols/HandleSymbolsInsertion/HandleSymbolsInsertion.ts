@@ -7,30 +7,30 @@ import type { HandleSymbolsInsertionParams } from "./HandleSymbolsInsertion-type
  * selection's end (the later boundary point in the DOM), then refocuses the editor.
  */
 export const handleSymbolsInsertion = ({ configPort, editorAPI }: HandleSymbolsInsertionParams) => {
-	const selection = editorAPI.getEditorSelection();
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = configPort.onInsert((data) => {
-		const { toText, toOffset } = selection.getBoundaryPoints();
+  const unsubscribe = configPort.onInsert((data) => {
+    const { toText, toOffset } = selection.getBoundaryPoints();
 
-		editorAPI.insertNode({
-			fromNode: toText,
-			fromOffset: toOffset,
-			lines: [
-				createContentLine({
-					localName: "p",
-					childNodes: [...createFormattableTexts({ data })],
-				}),
-			],
-			breakBeforeInsert: false,
-		});
+    editorAPI.insertNode({
+      fromNode: toText,
+      fromOffset: toOffset,
+      lines: [
+        createContentLine({
+          localName: "p",
+          childNodes: [...createFormattableTexts({ data })],
+        }),
+      ],
+      breakBeforeInsert: false,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

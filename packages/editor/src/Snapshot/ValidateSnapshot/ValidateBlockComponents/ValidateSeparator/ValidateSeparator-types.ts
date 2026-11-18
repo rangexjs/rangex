@@ -1,7 +1,7 @@
 import type {
-	ComponentValidator,
-	ValidateComponentParams,
-	ValidateComponentResult,
+  ComponentValidator,
+  ValidateComponentParams,
+  ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
 export interface ValidateSeparatorParams extends ValidateComponentParams {}

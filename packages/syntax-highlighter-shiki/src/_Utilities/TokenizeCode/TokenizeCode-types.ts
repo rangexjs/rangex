@@ -2,7 +2,7 @@ import type { GetHighlightInfoParams, HighlightInfo } from "@rangex/editor/code-
 import type { HighlighterCore } from "shiki/core";
 
 export interface TokenizeCodeParams extends GetHighlightInfoParams {
-	highlighter: HighlighterCore;
+  highlighter: HighlighterCore;
 }
 
 export interface TokenizeCodeResult extends HighlightInfo {}

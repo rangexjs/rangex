@@ -9,181 +9,181 @@ import { getDisplayTextField, LinkEdit, LinkPreview } from "../_Utilities";
 type MenuView = "preview" | "edit";
 
 export const LinkMenu = () => {
-	const editor = useEditorContext();
-	const { link } = editor;
+  const editor = useEditorContext();
+  const { link } = editor;
 
-	if (!link) {
-		throw new Error("Link can't be undefined.");
-	}
+  if (!link) {
+    throw new Error("Link can't be undefined.");
+  }
 
-	const $link = Link(link);
+  const $link = Link(link);
 
-	const [view, setView] = createSignal<MenuView>("preview");
+  const [view, setView] = createSignal<MenuView>("preview");
 
-	const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
-	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
-	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
+  const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
+  const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
+  const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
-	const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
-		error: {
-			required: { value: true, message: "Field can't be empty." },
-			custom: {
-				isValid: (value) => {
-					const mismatch = link.validateDOMAttrs({
-						anchor: {
-							href: value,
-						},
-					});
+  const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
+    error: {
+      required: { value: true, message: "Field can't be empty." },
+      custom: {
+        isValid: (value) => {
+          const mismatch = link.validateDOMAttrs({
+            anchor: {
+              href: value,
+            },
+          });
 
-					return !mismatch;
-				},
-				message: "URL isn't allowed.",
-			},
-		},
-	});
+          return !mismatch;
+        },
+        message: "URL isn't allowed.",
+      },
+    },
+  });
 
-	const [isNewTab, setIsNewTab] = createSignal(false);
+  const [isNewTab, setIsNewTab] = createSignal(false);
 
-	const [isOpen, setIsOpen] = createSignal(false);
+  const [isOpen, setIsOpen] = createSignal(false);
 
-	const { linkMenuEl } = link;
+  const { linkMenuEl } = link;
 
-	const getDOMAttrs = () => {
-		const { domAttrs } = link;
+  const getDOMAttrs = () => {
+    const { domAttrs } = link;
 
-		if (!domAttrs) {
-			throw new Error("DOMAttrs not supposed to be null.");
-		}
+    if (!domAttrs) {
+      throw new Error("DOMAttrs not supposed to be null.");
+    }
 
-		return domAttrs;
-	};
+    return domAttrs;
+  };
 
-	const focusDisplayTextInput = () => {
-		const input = linkMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
+  const focusDisplayTextInput = () => {
+    const input = linkMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
 
-		if (!input) {
-			throw new Error("Input wasn't found.");
-		}
+    if (!input) {
+      throw new Error("Input wasn't found.");
+    }
 
-		input.focus();
-	};
+    input.focus();
+  };
 
-	createEffect(
-		() => ({ domAttrs: $link.domAttrs(), view: view(), isOpen: isOpen() }),
-		({ domAttrs, view, isOpen }) => {
-			if (!isOpen || view !== "preview" || !domAttrs) {
-				return;
-			}
+  createEffect(
+    () => ({ domAttrs: $link.domAttrs(), view: view(), isOpen: isOpen() }),
+    ({ domAttrs, view, isOpen }) => {
+      if (!isOpen || view !== "preview" || !domAttrs) {
+        return;
+      }
 
-			const { anchor } = domAttrs;
+      const { anchor } = domAttrs;
 
-			const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
+      const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
 
-			displayTextHandle.reset(value);
-			setDisplayTextDisabled(disabled);
-			setDisplayTextPlaceholder(placeholder);
+      displayTextHandle.reset(value);
+      setDisplayTextDisabled(disabled);
+      setDisplayTextPlaceholder(placeholder);
 
-			urlHandle.reset(anchor.href);
+      urlHandle.reset(anchor.href);
 
-			setIsNewTab(anchor.target === "_blank");
-		},
-	);
+      setIsNewTab(anchor.target === "_blank");
+    },
+  );
 
-	const linkMenuToggleCleanup = link.onLinkMenuToggle(() => {
-		setIsOpen(link.linkMenuOpen);
+  const linkMenuToggleCleanup = link.onLinkMenuToggle(() => {
+    setIsOpen(link.linkMenuOpen);
 
-		if (!link.linkMenuOpen) {
-			return;
-		}
+    if (!link.linkMenuOpen) {
+      return;
+    }
 
-		setView("preview");
-	});
+    setView("preview");
+  });
 
-	onCleanup(() => {
-		linkMenuToggleCleanup();
-	});
+  onCleanup(() => {
+    linkMenuToggleCleanup();
+  });
 
-	const onEdit = () => {
-		setView("edit");
-		flush();
-		focusDisplayTextInput();
-	};
+  const onEdit = () => {
+    setView("edit");
+    flush();
+    focusDisplayTextInput();
+  };
 
-	const onCopy = () => {
-		const { href } = getDOMAttrs().anchor;
+  const onCopy = () => {
+    const { href } = getDOMAttrs().anchor;
 
-		navigator.clipboard.writeText(href);
-	};
+    navigator.clipboard.writeText(href);
+  };
 
-	const onUnwrap = () => {
-		link.unwrap();
-	};
+  const onUnwrap = () => {
+    link.unwrap();
+  };
 
-	const onNewTabChange = () => {
-		setIsNewTab((prev) => !prev);
-	};
+  const onNewTabChange = () => {
+    setIsNewTab((prev) => !prev);
+  };
 
-	const onChangeDisplayText = () => {
-		const urlState = urlHandle.validate();
+  const onChangeDisplayText = () => {
+    const urlState = urlHandle.validate();
 
-		if (urlState.hasError) {
-			return;
-		}
+    if (urlState.hasError) {
+      return;
+    }
 
-		// The attributes first, so the text stays unchanged if they're rejected
-		const changeFailed = link.changeDOMAttrs({
-			anchor: {
-				href: urlHandle.value(),
-				target: isNewTab() ? "_blank" : null,
-			},
-		});
+    // The attributes first, so the text stays unchanged if they're rejected
+    const changeFailed = link.changeDOMAttrs({
+      anchor: {
+        href: urlHandle.value(),
+        target: isNewTab() ? "_blank" : null,
+      },
+    });
 
-		if (changeFailed) {
-			console.warn("Link's attributes were rejected.", changeFailed);
-			return;
-		}
+    if (changeFailed) {
+      console.warn("Link's attributes were rejected.", changeFailed);
+      return;
+    }
 
-		// The href as it was written (normalized)
-		const { href } = getDOMAttrs().anchor;
+    // The href as it was written (normalized)
+    const { href } = getDOMAttrs().anchor;
 
-		const displayText = displayTextHandle.value() || href;
+    const displayText = displayTextHandle.value() || href;
 
-		link.changeDisplayText({ displayText });
+    link.changeDisplayText({ displayText });
 
-		setView("preview");
-	};
+    setView("preview");
+  };
 
-	const onCancel = () => {
-		setView("preview");
-	};
+  const onCancel = () => {
+    setView("preview");
+  };
 
-	return (
-		<FloatingPortal
-			mount={linkMenuEl}
-			class="z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
-		>
-			<span class="absolute -top-1.5 left-1/2 inline-block size-3 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
-			<LinkPreview
-				url={$link.domAttrs()?.anchor.href ?? ""}
-				onEdit={onEdit}
-				onCopy={onCopy}
-				onUnwrap={onUnwrap}
-				class={{ hidden: view() !== "preview" }}
-			/>
-			<LinkEdit
-				mode="modify"
-				displayTextHandle={displayTextHandle}
-				displayTextControls={displayTextControls}
-				displayTextDisabled={displayTextDisabled()}
-				displayTextPlaceholder={displayTextPlaceholder()}
-				urlHandle={urlHandle}
-				urlControls={urlControls}
-				onNewTabChange={onNewTabChange}
-				isNewTab={isNewTab()}
-				onApply={onChangeDisplayText}
-				onCancel={onCancel}
-				class={{ hidden: view() !== "edit" }}
-			/>
-		</FloatingPortal>
-	);
+  return (
+    <FloatingPortal
+      mount={linkMenuEl}
+      class="z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+    >
+      <span class="absolute -top-1.5 left-1/2 inline-block size-3 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
+      <LinkPreview
+        url={$link.domAttrs()?.anchor.href ?? ""}
+        onEdit={onEdit}
+        onCopy={onCopy}
+        onUnwrap={onUnwrap}
+        class={{ hidden: view() !== "preview" }}
+      />
+      <LinkEdit
+        mode="modify"
+        displayTextHandle={displayTextHandle}
+        displayTextControls={displayTextControls}
+        displayTextDisabled={displayTextDisabled()}
+        displayTextPlaceholder={displayTextPlaceholder()}
+        urlHandle={urlHandle}
+        urlControls={urlControls}
+        onNewTabChange={onNewTabChange}
+        isNewTab={isNewTab()}
+        onApply={onChangeDisplayText}
+        onCancel={onCancel}
+        class={{ hidden: view() !== "edit" }}
+      />
+    </FloatingPortal>
+  );
 };

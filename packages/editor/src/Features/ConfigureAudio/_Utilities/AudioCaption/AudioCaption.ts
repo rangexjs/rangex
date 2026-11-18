@@ -1,10 +1,10 @@
 import {
-	createBeamText,
-	createContentLine,
-	createHTMLLayout,
-	createNestedEditable,
-	type HTMLLayout,
-	htmlLayoutRole,
+  createBeamText,
+  createContentLine,
+  createHTMLLayout,
+  createNestedEditable,
+  type HTMLLayout,
+  htmlLayoutRole,
 } from "@rangex/core";
 
 import type { CaptionPosition } from "#adapters";
@@ -13,22 +13,22 @@ import { createTextAlignStructuredStyle } from "#structured-style";
 
 import { getAudioElement } from "../GetAudioElements";
 import type {
-	GetAudioCaptionParams,
-	GetAudioCaptionResult,
-	SetAudioCaptionEnabledParams,
-	SetAudioCaptionPositionParams,
+  GetAudioCaptionParams,
+  GetAudioCaptionResult,
+  SetAudioCaptionEnabledParams,
+  SetAudioCaptionPositionParams,
 } from "./AudioCaption-types";
 
 const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
-	for (const child of figure.$$children) {
-		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
-			return child;
-		}
-	}
+  for (const child of figure.$$children) {
+    if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
+      return child;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -36,20 +36,20 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * the audio — derived from the figcaption's presence and DOM order, not a stored flag.
  */
 export const getAudioCaption = ({ figure }: GetAudioCaptionParams): GetAudioCaptionResult => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		return { captionEnabled: false, captionPosition: "below" };
-	}
+  if (!figcaption) {
+    return { captionEnabled: false, captionPosition: "below" };
+  }
 
-	const audio = getAudioElement({ figure });
+  const audio = getAudioElement({ figure });
 
-	const { $$children } = figure;
+  const { $$children } = figure;
 
-	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(audio) ? "above" : "below";
+  const position: CaptionPosition =
+    $$children.indexOf(figcaption) < $$children.indexOf(audio) ? "above" : "below";
 
-	return { captionEnabled: true, captionPosition: position };
+  return { captionEnabled: true, captionPosition: position };
 };
 
 /*
@@ -58,43 +58,43 @@ export const getAudioCaption = ({ figure }: GetAudioCaptionParams): GetAudioCapt
  * typed in it.
  */
 export const setAudioCaptionEnabled = ({
-	figure,
-	enabled,
-	position,
+  figure,
+  enabled,
+  position,
 }: SetAudioCaptionEnabledParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!enabled) {
-		figcaption?.$$remove();
-		return;
-	}
+  if (!enabled) {
+    figcaption?.$$remove();
+    return;
+  }
 
-	if (figcaption) {
-		return;
-	}
+  if (figcaption) {
+    return;
+  }
 
-	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
+  const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
-	const nestedEditable = createNestedEditable({
-		...mediaCaptionDefinition.nestedEditableProps,
-		childNodes: [
-			createContentLine({
-				localName: "p",
-				structuredStyle: { textAlign },
-				childNodes: [createBeamText({})],
-			}),
-		],
-	});
+  const nestedEditable = createNestedEditable({
+    ...mediaCaptionDefinition.nestedEditableProps,
+    childNodes: [
+      createContentLine({
+        localName: "p",
+        structuredStyle: { textAlign },
+        childNodes: [createBeamText({})],
+      }),
+    ],
+  });
 
-	const newFigcaption = createHTMLLayout({
-		localName: figcaptionLocalName,
-		childNodes: [nestedEditable],
-	});
+  const newFigcaption = createHTMLLayout({
+    localName: figcaptionLocalName,
+    childNodes: [nestedEditable],
+  });
 
-	({
-		above: () => figure.$$prepend(newFigcaption),
-		below: () => figure.$$append(newFigcaption),
-	})[position]();
+  ({
+    above: () => figure.$$prepend(newFigcaption),
+    below: () => figure.$$append(newFigcaption),
+  })[position]();
 };
 
 /*
@@ -102,18 +102,18 @@ export const setAudioCaptionEnabled = ({
  * rather than checking the current order first. Throws if the figure has no figcaption.
  */
 export const setAudioCaptionPosition = ({ figure, position }: SetAudioCaptionPositionParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		throw new Error("Figure must contain a figcaption to reposition.");
-	}
+  if (!figcaption) {
+    throw new Error("Figure must contain a figcaption to reposition.");
+  }
 
-	const audio = getAudioElement({ figure });
+  const audio = getAudioElement({ figure });
 
-	figcaption.$$remove();
+  figcaption.$$remove();
 
-	({
-		above: () => audio.$$before(figcaption),
-		below: () => audio.$$after(figcaption),
-	})[position]();
+  ({
+    above: () => audio.$$before(figcaption),
+    below: () => audio.$$after(figcaption),
+  })[position]();
 };

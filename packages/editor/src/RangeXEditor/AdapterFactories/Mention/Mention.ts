@@ -4,23 +4,23 @@ import { configureMention } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const Mention: AdapterFactoryFn<MentionSettings> = (settings) => {
-	return (options, { editor }) => {
-		const adapter = createMentionAdapter(settings, options);
+  return (options, { editor }) => {
+    const adapter = createMentionAdapter(settings, options);
 
-		editor.mention = adapter.publicPort;
+    editor.mention = adapter.publicPort;
 
-		return {
-			configure({ editorAPI }) {
-				const cleanup = configureMention({
-					adapterBus: options.adapterBus,
-					configPort: adapter.configPort,
-					editorAPI,
-				});
+    return {
+      configure({ editorAPI }) {
+        const cleanup = configureMention({
+          adapterBus: options.adapterBus,
+          configPort: adapter.configPort,
+          editorAPI,
+        });
 
-				return () => {
-					cleanup();
-				};
-			},
-		};
-	};
+        return () => {
+          cleanup();
+        };
+      },
+    };
+  };
 };

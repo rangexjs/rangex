@@ -1,7 +1,7 @@
 import type { RootEditableSnapshot } from "@rangex/core";
 
 export interface GetMediaSourcesParams {
-	rootEditableSnapshot: RootEditableSnapshot;
+  rootEditableSnapshot: RootEditableSnapshot;
 }
 
 export type GetMediaSourcesResult = string[];

@@ -5,15 +5,15 @@ import { dataAnchorName } from "@rangex/core";
 import { addERClass, forceReflowWithoutTransition, removeERClass } from "#utilities";
 
 import type {
-	AnchoredOverlayController,
-	ApplyAnchorPositionParams,
-	CreateAnchoredOverlayControllerParams,
-	CreateCloseWatcherParams,
-	CreatePopoverOverlayControllerParams,
-	HideParams,
-	PopoverOverlayController,
-	CreateLightDismissParams,
-	CreateLightDismissResult,
+  AnchoredOverlayController,
+  ApplyAnchorPositionParams,
+  CreateAnchoredOverlayControllerParams,
+  CreateCloseWatcherParams,
+  CreatePopoverOverlayControllerParams,
+  HideParams,
+  PopoverOverlayController,
+  CreateLightDismissParams,
+  CreateLightDismissResult,
 } from "./CreateOverlayController-types";
 
 const hideAnchoredClass = "hide-anchored";
@@ -21,17 +21,17 @@ const anchoredOverlayClass = "anchored-overlay";
 const popoverOverlayClass = "popover-overlay";
 
 export const anchorPositionFields = [
-	"position",
-	"position-area",
-	"top",
-	"right",
-	"bottom",
-	"left",
-	"width",
-	"height",
-	"align-self",
-	"justify-self",
-	"margin",
+  "position",
+  "position-area",
+  "top",
+  "right",
+  "bottom",
+  "left",
+  "width",
+  "height",
+  "align-self",
+  "justify-self",
+  "margin",
 ] as const;
 
 const toAnchorPositionAttr = (property: string) => `data-er-${property}`;
@@ -41,67 +41,67 @@ const toAnchorPositionAttr = (property: string) => `data-er-${property}`;
  * CSS properties via `attr()`. `clear` drops every previously set field first; otherwise unpassed fields persist.
  */
 const applyAnchorPosition = ({
-	element,
-	positionAnchor,
-	styleOptions,
+  element,
+  positionAnchor,
+  styleOptions,
 }: ApplyAnchorPositionParams) => {
-	const { clear, ...style } = styleOptions;
+  const { clear, ...style } = styleOptions;
 
-	if (clear) {
-		for (const field of anchorPositionFields) {
-			const attrName = toAnchorPositionAttr(field);
+  if (clear) {
+    for (const field of anchorPositionFields) {
+      const attrName = toAnchorPositionAttr(field);
 
-			element.removeAttribute(attrName);
-		}
-	}
+      element.removeAttribute(attrName);
+    }
+  }
 
-	for (const [property, value] of Object.entries(style)) {
-		const attrName = toAnchorPositionAttr(property);
+  for (const [property, value] of Object.entries(style)) {
+    const attrName = toAnchorPositionAttr(property);
 
-		element.setAttribute(attrName, value);
-	}
+    element.setAttribute(attrName, value);
+  }
 
-	const attrName = toAnchorPositionAttr("position-anchor");
+  const attrName = toAnchorPositionAttr("position-anchor");
 
-	element.setAttribute(attrName, positionAnchor);
+  element.setAttribute(attrName, positionAnchor);
 };
 
 /*
  * Hides the overlay on a pointerup outside `element` and the exempt nodes.
  */
 const createLightDismiss = ({
-	element,
-	isOpen,
-	hide,
-	signal,
+  element,
+  isOpen,
+  hide,
+  signal,
 }: CreateLightDismissParams): CreateLightDismissResult => {
-	const insideEvents = new WeakSet<Event>();
+  const insideEvents = new WeakSet<Event>();
 
-	const markInside = (event: PointerEvent) => {
-		insideEvents.add(event);
-	};
+  const markInside = (event: PointerEvent) => {
+    insideEvents.add(event);
+  };
 
-	element.addEventListener("pointerup", markInside, { capture: true, signal });
+  element.addEventListener("pointerup", markInside, { capture: true, signal });
 
-	const onPointerUp = (event: PointerEvent) => {
-		if (!isOpen() || insideEvents.has(event)) {
-			return;
-		}
+  const onPointerUp = (event: PointerEvent) => {
+    if (!isOpen() || insideEvents.has(event)) {
+      return;
+    }
 
-		hide({});
-	};
+    hide({});
+  };
 
-	document.addEventListener("pointerup", onPointerUp, { signal });
+  document.addEventListener("pointerup", onPointerUp, { signal });
 
-	return {
-		addExemptNode(node) {
-			node.addEventListener("pointerup", markInside, { capture: true, signal });
-		},
+  return {
+    addExemptNode(node) {
+      node.addEventListener("pointerup", markInside, { capture: true, signal });
+    },
 
-		removeExemptNode(node) {
-			node.removeEventListener("pointerup", markInside, { capture: true });
-		},
-	};
+    removeExemptNode(node) {
+      node.removeEventListener("pointerup", markInside, { capture: true });
+    },
+  };
 };
 
 /**
@@ -110,119 +110,119 @@ const createLightDismiss = ({
  * for the next open.
  */
 const createCloseWatcher = ({ hide, onEscape, signal }: CreateCloseWatcherParams) => {
-	const watcher = new CloseWatcher({ signal });
+  const watcher = new CloseWatcher({ signal });
 
-	watcher.addEventListener("close", () => {
-		hide({});
-		onEscape?.();
-	});
+  watcher.addEventListener("close", () => {
+    hide({});
+    onEscape?.();
+  });
 
-	return watcher;
+  return watcher;
 };
 
 /**
  * Sets `element` up as a CSS-anchor-positioned overlay and returns `show`/`hide` to toggle it.
  */
 export const createAnchoredOverlayController = ({
-	element,
-	options,
+  element,
+  options,
 }: CreateAnchoredOverlayControllerParams): AnchoredOverlayController => {
-	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
+  const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
-	addERClass(element, anchoredOverlayClass, hideAnchoredClass);
+  addERClass(element, anchoredOverlayClass, hideAnchoredClass);
 
-	let isOpen = false;
-	let closeWatcher: CloseWatcher | null = null;
-	let anchorElement: HTMLElement | null = null;
+  let isOpen = false;
+  let closeWatcher: CloseWatcher | null = null;
+  let anchorElement: HTMLElement | null = null;
 
-	const hide = ({ instant = false }: HideParams) => {
-		addERClass(element, hideAnchoredClass);
-		closeWatcher?.destroy();
-		closeWatcher = null;
-		isOpen = false;
-		onToggle?.(isOpen);
+  const hide = ({ instant = false }: HideParams) => {
+    addERClass(element, hideAnchoredClass);
+    closeWatcher?.destroy();
+    closeWatcher = null;
+    isOpen = false;
+    onToggle?.(isOpen);
 
-		// A detached anchor leaves nothing to transition from, so skip the animation.
-		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+    // A detached anchor leaves nothing to transition from, so skip the animation.
+    const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
 
-		anchorElement = null;
+    anchorElement = null;
 
-		if (instant || anchorDetached) {
-			forceReflowWithoutTransition(element);
-		}
-	};
+    if (instant || anchorDetached) {
+      forceReflowWithoutTransition(element);
+    }
+  };
 
-	const abortController = new AbortController();
+  const abortController = new AbortController();
 
-	const lightDismissController = lightDismiss
-		? createLightDismiss({
-				element,
-				isOpen: () => isOpen,
-				hide,
-				signal: abortController.signal,
-			})
-		: null;
+  const lightDismissController = lightDismiss
+    ? createLightDismiss({
+        element,
+        isOpen: () => isOpen,
+        hide,
+        signal: abortController.signal,
+      })
+    : null;
 
-	const controller: AnchoredOverlayController = {
-		get element() {
-			return element;
-		},
+  const controller: AnchoredOverlayController = {
+    get element() {
+      return element;
+    },
 
-		get isOpen() {
-			return isOpen;
-		},
+    get isOpen() {
+      return isOpen;
+    },
 
-		get anchorElement() {
-			return anchorElement;
-		},
+    get anchorElement() {
+      return anchorElement;
+    },
 
-		show(anchor, styleOptions) {
-			anchorElement = anchor;
+    show(anchor, styleOptions) {
+      anchorElement = anchor;
 
-			const anchorName = anchor.getAttribute(dataAnchorName);
+      const anchorName = anchor.getAttribute(dataAnchorName);
 
-			if (anchorName === null) {
-				throw new Error(`Anchor element is missing the "${dataAnchorName}" attribute.`);
-			}
+      if (anchorName === null) {
+        throw new Error(`Anchor element is missing the "${dataAnchorName}" attribute.`);
+      }
 
-			applyAnchorPosition({
-				element,
-				positionAnchor: anchorName,
-				styleOptions,
-			});
+      applyAnchorPosition({
+        element,
+        positionAnchor: anchorName,
+        styleOptions,
+      });
 
-			removeERClass(element, hideAnchoredClass);
+      removeERClass(element, hideAnchoredClass);
 
-			if (closeOnEscape) {
-				closeWatcher?.destroy();
+      if (closeOnEscape) {
+        closeWatcher?.destroy();
 
-				closeWatcher = createCloseWatcher({
-					hide,
-					onEscape,
-					signal: abortController.signal,
-				});
-			}
+        closeWatcher = createCloseWatcher({
+          hide,
+          onEscape,
+          signal: abortController.signal,
+        });
+      }
 
-			isOpen = true;
-			onToggle?.(isOpen);
-		},
+      isOpen = true;
+      onToggle?.(isOpen);
+    },
 
-		hide,
+    hide,
 
-		addExemptNode(node) {
-			lightDismissController?.addExemptNode(node);
-		},
+    addExemptNode(node) {
+      lightDismissController?.addExemptNode(node);
+    },
 
-		removeExemptNode(node) {
-			lightDismissController?.removeExemptNode(node);
-		},
+    removeExemptNode(node) {
+      lightDismissController?.removeExemptNode(node);
+    },
 
-		cleanup() {
-			abortController.abort();
-		},
-	};
+    cleanup() {
+      abortController.abort();
+    },
+  };
 
-	return controller;
+  return controller;
 };
 
 /**
@@ -232,107 +232,107 @@ export const createAnchoredOverlayController = ({
  * `show`/`hide` to toggle it.
  */
 export const createPopoverOverlayController = ({
-	element,
-	options,
+  element,
+  options,
 }: CreatePopoverOverlayControllerParams): PopoverOverlayController => {
-	const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
+  const { onToggle, lightDismiss, closeOnEscape, onEscape } = options;
 
-	element.setAttribute("popover", "manual");
-	addERClass(element, popoverOverlayClass);
+  element.setAttribute("popover", "manual");
+  addERClass(element, popoverOverlayClass);
 
-	let isOpen = false;
-	let closeWatcher: CloseWatcher | null = null;
-	let anchorElement: HTMLElement | null = null;
+  let isOpen = false;
+  let closeWatcher: CloseWatcher | null = null;
+  let anchorElement: HTMLElement | null = null;
 
-	const hide = ({ instant = false }: HideParams) => {
-		if (!isOpen) {
-			return;
-		}
+  const hide = ({ instant = false }: HideParams) => {
+    if (!isOpen) {
+      return;
+    }
 
-		element.hidePopover();
-		closeWatcher?.destroy();
-		closeWatcher = null;
-		isOpen = false;
-		onToggle?.(isOpen);
+    element.hidePopover();
+    closeWatcher?.destroy();
+    closeWatcher = null;
+    isOpen = false;
+    onToggle?.(isOpen);
 
-		// A detached anchor leaves nothing to transition from, so skip the animation.
-		const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
+    // A detached anchor leaves nothing to transition from, so skip the animation.
+    const anchorDetached = anchorElement !== null && !anchorElement.isConnected;
 
-		anchorElement = null;
+    anchorElement = null;
 
-		if (instant || anchorDetached) {
-			forceReflowWithoutTransition(element);
-		}
-	};
+    if (instant || anchorDetached) {
+      forceReflowWithoutTransition(element);
+    }
+  };
 
-	const abortController = new AbortController();
+  const abortController = new AbortController();
 
-	const lightDismissController = lightDismiss
-		? createLightDismiss({
-				element,
-				isOpen: () => isOpen,
-				hide,
-				signal: abortController.signal,
-			})
-		: null;
+  const lightDismissController = lightDismiss
+    ? createLightDismiss({
+        element,
+        isOpen: () => isOpen,
+        hide,
+        signal: abortController.signal,
+      })
+    : null;
 
-	const controller: PopoverOverlayController = {
-		get element() {
-			return element;
-		},
+  const controller: PopoverOverlayController = {
+    get element() {
+      return element;
+    },
 
-		get isOpen() {
-			return isOpen;
-		},
+    get isOpen() {
+      return isOpen;
+    },
 
-		get anchorElement() {
-			return anchorElement;
-		},
+    get anchorElement() {
+      return anchorElement;
+    },
 
-		show(anchor, styleOptions) {
-			anchorElement = anchor;
+    show(anchor, styleOptions) {
+      anchorElement = anchor;
 
-			applyAnchorPosition({
-				element,
-				positionAnchor: "auto",
-				styleOptions,
-			});
+      applyAnchorPosition({
+        element,
+        positionAnchor: "auto",
+        styleOptions,
+      });
 
-			// We must hide it before showing it again
-			if (isOpen) {
-				element.hidePopover();
-			}
+      // We must hide it before showing it again
+      if (isOpen) {
+        element.hidePopover();
+      }
 
-			element.showPopover({ source: anchor });
+      element.showPopover({ source: anchor });
 
-			if (closeOnEscape) {
-				closeWatcher?.destroy();
+      if (closeOnEscape) {
+        closeWatcher?.destroy();
 
-				closeWatcher = createCloseWatcher({
-					hide,
-					onEscape,
-					signal: abortController.signal,
-				});
-			}
+        closeWatcher = createCloseWatcher({
+          hide,
+          onEscape,
+          signal: abortController.signal,
+        });
+      }
 
-			isOpen = true;
-			onToggle?.(isOpen);
-		},
+      isOpen = true;
+      onToggle?.(isOpen);
+    },
 
-		hide,
+    hide,
 
-		addExemptNode(node) {
-			lightDismissController?.addExemptNode(node);
-		},
+    addExemptNode(node) {
+      lightDismissController?.addExemptNode(node);
+    },
 
-		removeExemptNode(node) {
-			lightDismissController?.removeExemptNode(node);
-		},
+    removeExemptNode(node) {
+      lightDismissController?.removeExemptNode(node);
+    },
 
-		cleanup() {
-			abortController.abort();
-		},
-	};
+    cleanup() {
+      abortController.abort();
+    },
+  };
 
-	return controller;
+  return controller;
 };

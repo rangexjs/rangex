@@ -2,8 +2,8 @@ import { resolveElementAttrs } from "#dom-attrs";
 
 import { describeElementAttrsMismatch } from "../Utilities";
 import type {
-	ResolveDraftDOMAttrsParams,
-	ResolveDraftDOMAttrsResult,
+  ResolveDraftDOMAttrsParams,
+  ResolveDraftDOMAttrsResult,
 } from "./ResolveDraftDOMAttrs-types";
 
 /*
@@ -12,33 +12,33 @@ import type {
  * Fails if they can't be resolved, naming the element by its path from the root (e.g. its component).
  */
 export const resolveDraftDOMAttrs = ({
-	rootDraft,
-	elementDraft,
-	elementAttrsShape,
-	elementAttrValidators,
+  rootDraft,
+  elementDraft,
+  elementAttrsShape,
+  elementAttrValidators,
 }: ResolveDraftDOMAttrsParams): ResolveDraftDOMAttrsResult => {
-	const { domAttrs } = elementDraft;
+  const { domAttrs } = elementDraft;
 
-	const resolvedDOMAttrs = resolveElementAttrs({
-		elementAttrs: domAttrs,
-		elementAttrsShape,
-		elementAttrValidators,
-	});
+  const resolvedDOMAttrs = resolveElementAttrs({
+    elementAttrs: domAttrs,
+    elementAttrsShape,
+    elementAttrValidators,
+  });
 
-	if (resolvedDOMAttrs.kind === "invalid") {
-		return {
-			sourceSnapshot: rootDraft,
-			failedSnapshot: elementDraft,
-			reason: describeElementAttrsMismatch({
-				rootDraft,
-				nodeDraft: elementDraft,
-				domAttrs,
-				mismatch: resolvedDOMAttrs.mismatch,
-			}),
-		};
-	}
+  if (resolvedDOMAttrs.kind === "invalid") {
+    return {
+      sourceSnapshot: rootDraft,
+      failedSnapshot: elementDraft,
+      reason: describeElementAttrsMismatch({
+        rootDraft,
+        nodeDraft: elementDraft,
+        domAttrs,
+        mismatch: resolvedDOMAttrs.mismatch,
+      }),
+    };
+  }
 
-	elementDraft.domAttrs = resolvedDOMAttrs.elementAttrs;
+  elementDraft.domAttrs = resolvedDOMAttrs.elementAttrs;
 
-	return null;
+  return null;
 };

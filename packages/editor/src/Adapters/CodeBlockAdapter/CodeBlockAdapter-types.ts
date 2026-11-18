@@ -3,31 +3,31 @@ import type { BlockComponent } from "@rangex/core";
 import type { CodeBlockAttrValidators } from "#dom-attrs";
 
 import type {
-	CreateAdapterParams,
-	CurrentComponentConfigPort,
-	CurrentComponentPublicPort,
-	QuickActionsConfigPort,
-	QuickActionsPublicPort,
-	RemoveConfigPort,
-	RemovePublicPort,
-	UnwrapConfigPort,
-	UnwrapPublicPort,
+  CreateAdapterParams,
+  CurrentComponentConfigPort,
+  CurrentComponentPublicPort,
+  QuickActionsConfigPort,
+  QuickActionsPublicPort,
+  RemoveConfigPort,
+  RemovePublicPort,
+  UnwrapConfigPort,
+  UnwrapPublicPort,
 } from "../_Utilities";
 
 export interface CodeBlockTheme {
-	light: string;
-	dark: string;
+  light: string;
+  dark: string;
 }
 
 export interface GetHighlightInfoParams {
-	lines: string[];
-	language: string;
-	theme: CodeBlockTheme;
+  lines: string[];
+  language: string;
+  theme: CodeBlockTheme;
 }
 
 export interface ThemedChars {
-	colors: CodeBlockTheme;
-	content: string;
+  colors: CodeBlockTheme;
+  content: string;
 }
 
 export type ThemedCodeLine = ThemedChars[];
@@ -35,9 +35,9 @@ export type ThemedCodeLine = ThemedChars[];
 export type ThemedCodeLines = ThemedCodeLine[];
 
 export interface HighlightInfo {
-	backgrounds: CodeBlockTheme;
-	foregrounds: CodeBlockTheme;
-	codeLines: ThemedCodeLines;
+  backgrounds: CodeBlockTheme;
+  foregrounds: CodeBlockTheme;
+  codeLines: ThemedCodeLines;
 }
 
 export type GetHighlightInfoFn = (params: GetHighlightInfoParams) => Promise<HighlightInfo | null>;
@@ -45,10 +45,10 @@ export type GetHighlightInfoFn = (params: GetHighlightInfoParams) => Promise<Hig
 export type HighlightCodeFn = (params: GetHighlightInfoParams) => HighlightInfo | null;
 
 export interface CodeBlockState {
-	canInsert?: boolean;
-	canWrap?: boolean;
-	language?: string | null;
-	theme?: CodeBlockTheme | null;
+  canInsert?: boolean;
+  canWrap?: boolean;
+  language?: string | null;
+  theme?: CodeBlockTheme | null;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
@@ -57,8 +57,8 @@ export type OnLanguageUpdateCallbackFn = (value: string | null) => void;
 export type OnThemeUpdateCallbackFn = (value: CodeBlockTheme | null) => void;
 
 export interface CodeBlockPlacementOption {
-	language: string | null;
-	theme: CodeBlockTheme | null;
+  language: string | null;
+  theme: CodeBlockTheme | null;
 }
 
 export interface OnInsertCallbackParams extends CodeBlockPlacementOption {}
@@ -75,7 +75,7 @@ export type OnChangeThemeCallbackFn = (theme: CodeBlockTheme | null) => void;
 export type PlainTextProviderFn = () => string[];
 
 export interface CodeBlockFieldMismatch {
-	reason: string;
+  reason: string;
 }
 
 export type ValidateLanguageResult = CodeBlockFieldMismatch | null;
@@ -87,78 +87,78 @@ export type ValidateThemeProviderFn = (theme: CodeBlockTheme | null) => Validate
 export interface UpdateStateParams extends CodeBlockState {}
 
 export interface CodeBlockConfigPortProps {
-	readonly quickActions: QuickActionsConfigPort;
-	readonly getHighlightInfo: GetHighlightInfoFn | null;
-	readonly attrValidators: CodeBlockAttrValidators;
+  readonly quickActions: QuickActionsConfigPort;
+  readonly getHighlightInfo: GetHighlightInfoFn | null;
+  readonly attrValidators: CodeBlockAttrValidators;
 
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onInsert(callback: OnInsertCallbackFn): () => void;
-	onWrap(callback: OnWrapCallbackFn): () => void;
-	onChangeLanguage(callback: OnChangeLanguageCallbackFn): () => void;
-	onChangeTheme(callback: OnChangeThemeCallbackFn): () => void;
-	registerPlainTextProvider(provider: PlainTextProviderFn): void;
-	registerValidateLanguage(provider: ValidateLanguageProviderFn): void;
-	registerValidateTheme(provider: ValidateThemeProviderFn): void;
+  onInsert(callback: OnInsertCallbackFn): () => void;
+  onWrap(callback: OnWrapCallbackFn): () => void;
+  onChangeLanguage(callback: OnChangeLanguageCallbackFn): () => void;
+  onChangeTheme(callback: OnChangeThemeCallbackFn): () => void;
+  registerPlainTextProvider(provider: PlainTextProviderFn): void;
+  registerValidateLanguage(provider: ValidateLanguageProviderFn): void;
+  registerValidateTheme(provider: ValidateThemeProviderFn): void;
 }
 
 export interface CodeBlockConfigPort
-	extends
-		CodeBlockConfigPortProps,
-		RemoveConfigPort,
-		UnwrapConfigPort,
-		CurrentComponentConfigPort<BlockComponent> {}
+  extends
+    CodeBlockConfigPortProps,
+    RemoveConfigPort,
+    UnwrapConfigPort,
+    CurrentComponentConfigPort<BlockComponent> {}
 
 export interface InsertParams extends CodeBlockPlacementOption {}
 
 export interface WrapParams extends CodeBlockPlacementOption {}
 
 export interface CodeBlockPublicPortProps {
-	readonly quickActions: QuickActionsPublicPort;
+  readonly quickActions: QuickActionsPublicPort;
 
-	readonly canHighlight: boolean;
-	readonly canInsert: boolean;
-	readonly canWrap: boolean;
-	readonly language: string | null;
-	readonly theme: CodeBlockTheme | null;
+  readonly canHighlight: boolean;
+  readonly canInsert: boolean;
+  readonly canWrap: boolean;
+  readonly language: string | null;
+  readonly theme: CodeBlockTheme | null;
 
-	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
-	onThemeUpdate(callback: OnThemeUpdateCallbackFn): () => void;
+  onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+  onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+  onLanguageUpdate(callback: OnLanguageUpdateCallbackFn): () => void;
+  onThemeUpdate(callback: OnThemeUpdateCallbackFn): () => void;
 
-	insert(params: InsertParams): void;
-	wrap(params: WrapParams): void;
-	changeLanguage(language: string | null): void;
-	changeTheme(theme: CodeBlockTheme | null): void;
+  insert(params: InsertParams): void;
+  wrap(params: WrapParams): void;
+  changeLanguage(language: string | null): void;
+  changeTheme(theme: CodeBlockTheme | null): void;
 
-	getPlainText(): string[];
+  getPlainText(): string[];
 
-	validateLanguage(language: string | null): ValidateLanguageResult;
-	validateTheme(theme: CodeBlockTheme | null): ValidateThemeResult;
+  validateLanguage(language: string | null): ValidateLanguageResult;
+  validateTheme(theme: CodeBlockTheme | null): ValidateThemeResult;
 }
 
 export interface CodeBlockPublicPort
-	extends
-		CodeBlockPublicPortProps,
-		RemovePublicPort,
-		UnwrapPublicPort,
-		CurrentComponentPublicPort {}
+  extends
+    CodeBlockPublicPortProps,
+    RemovePublicPort,
+    UnwrapPublicPort,
+    CurrentComponentPublicPort {}
 
 export interface CodeBlockInternals {
-	getHighlightInfo: GetHighlightInfoFn | null;
-	plainTextProvider: PlainTextProviderFn | null;
-	validateLanguageProvider: ValidateLanguageProviderFn | null;
-	validateThemeProvider: ValidateThemeProviderFn | null;
+  getHighlightInfo: GetHighlightInfoFn | null;
+  plainTextProvider: PlainTextProviderFn | null;
+  validateLanguageProvider: ValidateLanguageProviderFn | null;
+  validateThemeProvider: ValidateThemeProviderFn | null;
 }
 
 export interface CodeBlockAdapter {
-	configPort: CodeBlockConfigPort;
-	publicPort: CodeBlockPublicPort;
+  configPort: CodeBlockConfigPort;
+  publicPort: CodeBlockPublicPort;
 }
 
 export interface CodeBlockSettings {
-	getHighlightInfo?: GetHighlightInfoFn;
+  getHighlightInfo?: GetHighlightInfoFn;
 }
 
 export interface CreateCodeBlockAdapterParams extends CreateAdapterParams<CodeBlockSettings> {}

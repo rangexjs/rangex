@@ -1,8 +1,8 @@
 import { embedAttrsShape, validateComponentAttrs } from "#dom-attrs";
 
 import type {
-	ValidateEmbedPlacementParams,
-	ValidateEmbedPlacementResult,
+  ValidateEmbedPlacementParams,
+  ValidateEmbedPlacementResult,
 } from "./ValidateEmbedPlacement-types";
 
 /*
@@ -10,18 +10,18 @@ import type {
  * valid.
  */
 export const validateEmbedPlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateEmbedPlacementParams): ValidateEmbedPlacementResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: embedAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: attrs,
+    componentAttrsShape: embedAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

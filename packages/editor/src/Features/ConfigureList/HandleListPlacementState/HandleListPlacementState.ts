@@ -8,23 +8,23 @@ import type { HandleListPlacementStateParams } from "./HandleListPlacementState-
  * content. Returns a cleanup function.
  */
 export const handleListPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleListPlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.list],
-			});
-			const canWrap = blockComponentPlacement.canWrapBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.list],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.list],
+      });
+      const canWrap = blockComponentPlacement.canWrapBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.list],
+      });
 
-			configPort.updateState({ canInsert, canWrap });
-		},
-	});
+      configPort.updateState({ canInsert, canWrap });
+    },
+  });
 };

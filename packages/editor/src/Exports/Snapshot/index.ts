@@ -4,24 +4,24 @@ export type { RootType } from "#constants";
 export type { CreateRootAttrValidatorsParams } from "#dom-attrs";
 export { configureSanitizer } from "#sanitizer";
 export type {
-	SnapshotComponents,
-	SnapshotRoot,
-	SnapshotSchema,
-	StorageValidationFailed,
-	StorageValidationFailedFallback,
-	StorageValidationFailedReject,
-	ValidateSnapshotFailed,
-	ValidateSnapshotParams,
-	ValidateSnapshotResult,
-	ValidateSnapshotSucceeded,
-	ValidateStorageFn,
-	ValidateStorageParams,
-	ValidateStorageResult,
+  SnapshotComponents,
+  SnapshotRoot,
+  SnapshotSchema,
+  StorageValidationFailed,
+  StorageValidationFailedFallback,
+  StorageValidationFailedReject,
+  ValidateSnapshotFailed,
+  ValidateSnapshotParams,
+  ValidateSnapshotResult,
+  ValidateSnapshotSucceeded,
+  ValidateStorageFn,
+  ValidateStorageParams,
+  ValidateStorageResult,
 } from "#snapshot";
 export { validateSnapshot } from "#snapshot";
 export type {
-	CodeBlockStorage,
-	MentionStorage,
-	RootStorage,
-	TemplateVariableStorage,
+  CodeBlockStorage,
+  MentionStorage,
+  RootStorage,
+  TemplateVariableStorage,
 } from "#storage";

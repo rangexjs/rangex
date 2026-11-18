@@ -4,7 +4,7 @@ import type { ListConfigPort } from "#adapters/List";
 import type { BlockComponentPlacement } from "#engine-links";
 
 export interface HandleListPlacementStateParams {
-	configPort: ListConfigPort;
-	editorAPI: EditorAPI;
-	blockComponentPlacement: BlockComponentPlacement;
+  configPort: ListConfigPort;
+  editorAPI: EditorAPI;
+  blockComponentPlacement: BlockComponentPlacement;
 }

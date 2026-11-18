@@ -4,11 +4,11 @@ import type { Extension } from "../_Utilities";
 import type { MarkdownExtensionSettings } from "./Markdown-types";
 
 export const Markdown = (settings: MarkdownExtensionSettings): Extension => {
-	return {
-		createAdapter: () => MarkdownFactory(settings),
-		components: {
-			toolbarButtons: {},
-			floatingComponents: [],
-		},
-	};
+  return {
+    createAdapter: () => MarkdownFactory(settings),
+    components: {
+      toolbarButtons: {},
+      floatingComponents: [],
+    },
+  };
 };

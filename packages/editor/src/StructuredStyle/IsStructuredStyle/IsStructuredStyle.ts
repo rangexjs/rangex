@@ -3,35 +3,35 @@ import type { StructuredStyleValue } from "@rangex/core";
 import { type JSONPattern, matchJSON } from "#utilities";
 
 import {
-	createBackgroundColorStructuredStyle,
-	createColorStructuredStyle,
-	createFontFamilyStructuredStyle,
-	createFontSizeStructuredStyle,
-	createLetterSpacingStructuredStyle,
-	createLineHeightStructuredStyle,
-	createPaddingBlockStructuredStyle,
-	createPaddingInlineStructuredStyle,
-	createTextAlignStructuredStyle,
-	createTextIndentStructuredStyle,
+  createBackgroundColorStructuredStyle,
+  createColorStructuredStyle,
+  createFontFamilyStructuredStyle,
+  createFontSizeStructuredStyle,
+  createLetterSpacingStructuredStyle,
+  createLineHeightStructuredStyle,
+  createPaddingBlockStructuredStyle,
+  createPaddingInlineStructuredStyle,
+  createTextAlignStructuredStyle,
+  createTextIndentStructuredStyle,
 } from "../CreateStructuredStyle";
 import type {
-	BackgroundColorStructuredStyleValue,
-	ColorStructuredStyleValue,
-	FontFamilyStructuredStyleValue,
-	FontSizeStructuredStyleValue,
-	LetterSpacingStructuredStyleValue,
-	LightDarkColor,
-	LineHeightStructuredStyleValue,
-	PaddingBlockStructuredStyleValue,
-	PaddingInlineStructuredStyleValue,
-	SolidColor,
-	TextAlignStructuredStyleValue,
-	TextAlignValue,
-	TextIndentStructuredStyleValue,
+  BackgroundColorStructuredStyleValue,
+  ColorStructuredStyleValue,
+  FontFamilyStructuredStyleValue,
+  FontSizeStructuredStyleValue,
+  LetterSpacingStructuredStyleValue,
+  LightDarkColor,
+  LineHeightStructuredStyleValue,
+  PaddingBlockStructuredStyleValue,
+  PaddingInlineStructuredStyleValue,
+  SolidColor,
+  TextAlignStructuredStyleValue,
+  TextAlignValue,
+  TextIndentStructuredStyleValue,
 } from "../StructuredStyleValues";
 import type {
-	IsStructuredStyleOfParams,
-	IsStructuredStyleOfResult,
+  IsStructuredStyleOfParams,
+  IsStructuredStyleOfResult,
 } from "./IsStructuredStyle-types";
 
 const hexColorPattern = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
@@ -48,84 +48,84 @@ const textAligns: unknown[] = ["start", "center", "justify", "end"] satisfies Te
  * exactly.
  */
 const isHexColor = (value: unknown) => {
-	return typeof value === "string" && hexColorPattern.test(value);
+  return typeof value === "string" && hexColorPattern.test(value);
 };
 
 const isFontFamily = (value: unknown) => {
-	return (
-		typeof value === "string" &&
-		value.length <= maxFontFamilyLength &&
-		fontFamilyPattern.test(value)
-	);
+  return (
+    typeof value === "string" &&
+    value.length <= maxFontFamilyLength &&
+    fontFamilyPattern.test(value)
+  );
 };
 
 const isTextAlign = (value: unknown) => {
-	return textAligns.includes(value);
+  return textAligns.includes(value);
 };
 
 /*
  * A predicate for a finite number from min to max
  */
 const isNumberBetween = (min: number, max: number) => {
-	return (value: unknown) =>
-		typeof value === "number" && Number.isFinite(value) && value >= min && value <= max;
+  return (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) && value >= min && value <= max;
 };
 
 /*
  * A predicate for an integer from min to max
  */
 const isIntegerBetween = (min: number, max: number) => {
-	return (value: unknown) => Number.isInteger(value) && isNumberBetween(min, max)(value);
+  return (value: unknown) => Number.isInteger(value) && isNumberBetween(min, max)(value);
 };
 
 const solidColorPattern = {
-	type: "solid",
-	value: isHexColor,
+  type: "solid",
+  value: isHexColor,
 } satisfies JSONPattern<SolidColor>;
 
 const lightDarkColorPattern = {
-	light: solidColorPattern,
-	dark: solidColorPattern,
+  light: solidColorPattern,
+  dark: solidColorPattern,
 } satisfies JSONPattern<LightDarkColor>;
 
 const backgroundColorValuesPattern = {
-	backgroundColor: lightDarkColorPattern,
+  backgroundColor: lightDarkColorPattern,
 } satisfies JSONPattern<BackgroundColorStructuredStyleValue["values"]>;
 
 const colorValuesPattern = {
-	color: lightDarkColorPattern,
+  color: lightDarkColorPattern,
 } satisfies JSONPattern<ColorStructuredStyleValue["values"]>;
 
 const fontFamilyValuesPattern = {
-	fontFamily: isFontFamily,
+  fontFamily: isFontFamily,
 } satisfies JSONPattern<FontFamilyStructuredStyleValue["values"]>;
 
 const fontSizeValuesPattern = {
-	fontSize: { type: "px", value: isIntegerBetween(1, 400) },
+  fontSize: { type: "px", value: isIntegerBetween(1, 400) },
 } satisfies JSONPattern<FontSizeStructuredStyleValue["values"]>;
 
 const letterSpacingValuesPattern = {
-	letterSpacing: { type: "px", value: isNumberBetween(-50, 50) },
+  letterSpacing: { type: "px", value: isNumberBetween(-50, 50) },
 } satisfies JSONPattern<LetterSpacingStructuredStyleValue["values"]>;
 
 const lineHeightValuesPattern = {
-	lineHeight: { type: "number", value: isNumberBetween(0.1, 10) },
+  lineHeight: { type: "number", value: isNumberBetween(0.1, 10) },
 } satisfies JSONPattern<LineHeightStructuredStyleValue["values"]>;
 
 const paddingBlockValuesPattern = {
-	paddingBlock: { type: "px", value: isNumberBetween(0, 200) },
+  paddingBlock: { type: "px", value: isNumberBetween(0, 200) },
 } satisfies JSONPattern<PaddingBlockStructuredStyleValue["values"]>;
 
 const paddingInlineValuesPattern = {
-	paddingInline: { type: "px", value: isNumberBetween(0, 200) },
+  paddingInline: { type: "px", value: isNumberBetween(0, 200) },
 } satisfies JSONPattern<PaddingInlineStructuredStyleValue["values"]>;
 
 const textAlignValuesPattern = {
-	textAlign: isTextAlign,
+  textAlign: isTextAlign,
 } satisfies JSONPattern<TextAlignStructuredStyleValue["values"]>;
 
 const textIndentValuesPattern = {
-	textIndent: { type: "px", value: isNumberBetween(0, 500) },
+  textIndent: { type: "px", value: isNumberBetween(0, 500) },
 } satisfies JSONPattern<TextIndentStructuredStyleValue["values"]>;
 
 /*
@@ -133,140 +133,140 @@ const textIndentValuesPattern = {
  * declarationValue the one its values resolve to, so the rendered CSS can't be anything else.
  */
 const isStructuredStyleOf = <TStructuredStyle extends StructuredStyleValue>({
-	structuredStyle,
-	type,
-	valuesPattern,
-	createStructuredStyle,
+  structuredStyle,
+  type,
+  valuesPattern,
+  createStructuredStyle,
 }: IsStructuredStyleOfParams<TStructuredStyle>): IsStructuredStyleOfResult => {
-	const { values, declarationValue } = structuredStyle;
+  const { values, declarationValue } = structuredStyle;
 
-	if (structuredStyle.type !== type) {
-		return false;
-	}
+  if (structuredStyle.type !== type) {
+    return false;
+  }
 
-	const valuesMismatch = matchJSON<unknown>({
-		value: values,
-		pattern: valuesPattern,
-	});
+  const valuesMismatch = matchJSON<unknown>({
+    value: values,
+    pattern: valuesPattern,
+  });
 
-	if (valuesMismatch) {
-		return false;
-	}
+  if (valuesMismatch) {
+    return false;
+  }
 
-	// Matched above
-	const matchedValues = values as TStructuredStyle["values"];
+  // Matched above
+  const matchedValues = values as TStructuredStyle["values"];
 
-	const resolvedStructuredStyle = createStructuredStyle(matchedValues);
+  const resolvedStructuredStyle = createStructuredStyle(matchedValues);
 
-	return declarationValue === resolvedStructuredStyle.declarationValue;
+  return declarationValue === resolvedStructuredStyle.declarationValue;
 };
 
 export const isBackgroundColorStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is BackgroundColorStructuredStyleValue => {
-	return isStructuredStyleOf<BackgroundColorStructuredStyleValue>({
-		structuredStyle,
-		type: "background-color",
-		valuesPattern: backgroundColorValuesPattern,
-		createStructuredStyle: createBackgroundColorStructuredStyle,
-	});
+  return isStructuredStyleOf<BackgroundColorStructuredStyleValue>({
+    structuredStyle,
+    type: "background-color",
+    valuesPattern: backgroundColorValuesPattern,
+    createStructuredStyle: createBackgroundColorStructuredStyle,
+  });
 };
 
 export const isColorStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is ColorStructuredStyleValue => {
-	return isStructuredStyleOf<ColorStructuredStyleValue>({
-		structuredStyle,
-		type: "color",
-		valuesPattern: colorValuesPattern,
-		createStructuredStyle: createColorStructuredStyle,
-	});
+  return isStructuredStyleOf<ColorStructuredStyleValue>({
+    structuredStyle,
+    type: "color",
+    valuesPattern: colorValuesPattern,
+    createStructuredStyle: createColorStructuredStyle,
+  });
 };
 
 export const isFontFamilyStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is FontFamilyStructuredStyleValue => {
-	return isStructuredStyleOf<FontFamilyStructuredStyleValue>({
-		structuredStyle,
-		type: "font-family",
-		valuesPattern: fontFamilyValuesPattern,
-		createStructuredStyle: createFontFamilyStructuredStyle,
-	});
+  return isStructuredStyleOf<FontFamilyStructuredStyleValue>({
+    structuredStyle,
+    type: "font-family",
+    valuesPattern: fontFamilyValuesPattern,
+    createStructuredStyle: createFontFamilyStructuredStyle,
+  });
 };
 
 export const isFontSizeStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is FontSizeStructuredStyleValue => {
-	return isStructuredStyleOf<FontSizeStructuredStyleValue>({
-		structuredStyle,
-		type: "font-size",
-		valuesPattern: fontSizeValuesPattern,
-		createStructuredStyle: createFontSizeStructuredStyle,
-	});
+  return isStructuredStyleOf<FontSizeStructuredStyleValue>({
+    structuredStyle,
+    type: "font-size",
+    valuesPattern: fontSizeValuesPattern,
+    createStructuredStyle: createFontSizeStructuredStyle,
+  });
 };
 
 export const isLetterSpacingStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is LetterSpacingStructuredStyleValue => {
-	return isStructuredStyleOf<LetterSpacingStructuredStyleValue>({
-		structuredStyle,
-		type: "letter-spacing",
-		valuesPattern: letterSpacingValuesPattern,
-		createStructuredStyle: createLetterSpacingStructuredStyle,
-	});
+  return isStructuredStyleOf<LetterSpacingStructuredStyleValue>({
+    structuredStyle,
+    type: "letter-spacing",
+    valuesPattern: letterSpacingValuesPattern,
+    createStructuredStyle: createLetterSpacingStructuredStyle,
+  });
 };
 
 export const isLineHeightStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is LineHeightStructuredStyleValue => {
-	return isStructuredStyleOf<LineHeightStructuredStyleValue>({
-		structuredStyle,
-		type: "line-height",
-		valuesPattern: lineHeightValuesPattern,
-		createStructuredStyle: createLineHeightStructuredStyle,
-	});
+  return isStructuredStyleOf<LineHeightStructuredStyleValue>({
+    structuredStyle,
+    type: "line-height",
+    valuesPattern: lineHeightValuesPattern,
+    createStructuredStyle: createLineHeightStructuredStyle,
+  });
 };
 
 export const isPaddingBlockStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is PaddingBlockStructuredStyleValue => {
-	return isStructuredStyleOf<PaddingBlockStructuredStyleValue>({
-		structuredStyle,
-		type: "padding-block",
-		valuesPattern: paddingBlockValuesPattern,
-		createStructuredStyle: createPaddingBlockStructuredStyle,
-	});
+  return isStructuredStyleOf<PaddingBlockStructuredStyleValue>({
+    structuredStyle,
+    type: "padding-block",
+    valuesPattern: paddingBlockValuesPattern,
+    createStructuredStyle: createPaddingBlockStructuredStyle,
+  });
 };
 
 export const isPaddingInlineStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is PaddingInlineStructuredStyleValue => {
-	return isStructuredStyleOf<PaddingInlineStructuredStyleValue>({
-		structuredStyle,
-		type: "padding-inline",
-		valuesPattern: paddingInlineValuesPattern,
-		createStructuredStyle: createPaddingInlineStructuredStyle,
-	});
+  return isStructuredStyleOf<PaddingInlineStructuredStyleValue>({
+    structuredStyle,
+    type: "padding-inline",
+    valuesPattern: paddingInlineValuesPattern,
+    createStructuredStyle: createPaddingInlineStructuredStyle,
+  });
 };
 
 export const isTextAlignStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is TextAlignStructuredStyleValue => {
-	return isStructuredStyleOf<TextAlignStructuredStyleValue>({
-		structuredStyle,
-		type: "text-align",
-		valuesPattern: textAlignValuesPattern,
-		createStructuredStyle: createTextAlignStructuredStyle,
-	});
+  return isStructuredStyleOf<TextAlignStructuredStyleValue>({
+    structuredStyle,
+    type: "text-align",
+    valuesPattern: textAlignValuesPattern,
+    createStructuredStyle: createTextAlignStructuredStyle,
+  });
 };
 
 export const isTextIndentStructuredStyle = (
-	structuredStyle: StructuredStyleValue,
+  structuredStyle: StructuredStyleValue,
 ): structuredStyle is TextIndentStructuredStyleValue => {
-	return isStructuredStyleOf<TextIndentStructuredStyleValue>({
-		structuredStyle,
-		type: "text-indent",
-		valuesPattern: textIndentValuesPattern,
-		createStructuredStyle: createTextIndentStructuredStyle,
-	});
+  return isStructuredStyleOf<TextIndentStructuredStyleValue>({
+    structuredStyle,
+    type: "text-indent",
+    valuesPattern: textIndentValuesPattern,
+    createStructuredStyle: createTextIndentStructuredStyle,
+  });
 };

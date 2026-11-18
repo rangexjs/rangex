@@ -6,11 +6,11 @@ import type { Extension } from "../_Utilities";
 import type { VideoExtensionSettings } from "./Video-types";
 
 export const Video = (settings: VideoExtensionSettings): Extension => {
-	return {
-		createAdapter: () => VideoFactory(settings),
-		components: {
-			toolbarButtons: {},
-			floatingComponents: [VideoQuickActions],
-		},
-	};
+  return {
+    createAdapter: () => VideoFactory(settings),
+    components: {
+      toolbarButtons: {},
+      floatingComponents: [VideoQuickActions],
+    },
+  };
 };

@@ -1,7 +1,7 @@
 import {
-	type CreateFallbackRootEditable,
-	createEditorAPI,
-	migrateStoredSnapshot,
+  type CreateFallbackRootEditable,
+  createEditorAPI,
+  migrateStoredSnapshot,
 } from "@rangex/core";
 
 import { glyphFormatterInlineTagsOrder } from "#constants";
@@ -9,9 +9,9 @@ import { ensureSanitizerConfigured } from "#sanitizer";
 import { validateSnapshot } from "#snapshot";
 
 import type {
-	CreateCoreParams,
-	ResolveStoredSnapshotParams,
-	ResolveStoredSnapshotResult,
+  CreateCoreParams,
+  ResolveStoredSnapshotParams,
+  ResolveStoredSnapshotResult,
 } from "./CreateCore-types";
 import { createRoot } from "./CreateRoot";
 
@@ -20,74 +20,74 @@ import { createRoot } from "./CreateRoot";
  * can't be loaded, which makes the editor start from a new root instead.
  */
 const resolveStoredSnapshot = ({
-	storedSnapshot,
-	snapshotSchema,
+  storedSnapshot,
+  snapshotSchema,
 }: ResolveStoredSnapshotParams): ResolveStoredSnapshotResult => {
-	if (!storedSnapshot) {
-		return null;
-	}
+  if (!storedSnapshot) {
+    return null;
+  }
 
-	const migrationResult = migrateStoredSnapshot({
-		storedSnapshot,
-		limits: snapshotSchema.limits,
-	});
+  const migrationResult = migrateStoredSnapshot({
+    storedSnapshot,
+    limits: snapshotSchema.limits,
+  });
 
-	if (!migrationResult.isValid) {
-		console.warn("Snapshot migration failed.", migrationResult.reason);
+  if (!migrationResult.isValid) {
+    console.warn("Snapshot migration failed.", migrationResult.reason);
 
-		return null;
-	}
+    return null;
+  }
 
-	const validationResult = validateSnapshot({
-		...snapshotSchema,
-		storedSnapshot: migrationResult.storedSnapshot,
-	});
+  const validationResult = validateSnapshot({
+    ...snapshotSchema,
+    storedSnapshot: migrationResult.storedSnapshot,
+  });
 
-	if (!validationResult.isValid) {
-		console.warn("Snapshot validation failed.", validationResult.reason);
+  if (!validationResult.isValid) {
+    console.warn("Snapshot validation failed.", validationResult.reason);
 
-		return null;
-	}
+    return null;
+  }
 
-	return validationResult.storedSnapshot;
+  return validationResult.storedSnapshot;
 };
 
 export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: CreateCoreParams) => {
-	ensureSanitizerConfigured();
+  ensureSanitizerConfigured();
 
-	const resolvedStoredSnapshot = resolveStoredSnapshot({
-		storedSnapshot,
-		snapshotSchema,
-	});
+  const resolvedStoredSnapshot = resolveStoredSnapshot({
+    storedSnapshot,
+    snapshotSchema,
+  });
 
-	const createFallbackRootEditable: CreateFallbackRootEditable = ({ storedSnapshotFailed }) => {
-		if (storedSnapshotFailed) {
-			console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
-		}
+  const createFallbackRootEditable: CreateFallbackRootEditable = ({ storedSnapshotFailed }) => {
+    if (storedSnapshotFailed) {
+      console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
+    }
 
-		const [type] = snapshotSchema.root.types;
+    const [type] = snapshotSchema.root.types;
 
-		const rootEditable = createRoot({ type });
+    const rootEditable = createRoot({ type });
 
-		return {
-			rootEditable,
-			glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
-		};
-	};
+    return {
+      rootEditable,
+      glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
+    };
+  };
 
-	const { editorAPI } = createEditorAPI({
-		licenseKey,
-		storedSnapshot: resolvedStoredSnapshot,
-		limits: snapshotSchema.limits,
-		createFallbackRootEditable,
-		shadowRootOptions: {
-			mode: "open",
-			serializable: true,
-			slotAssignment: "manual",
-		},
-	});
+  const { editorAPI } = createEditorAPI({
+    licenseKey,
+    storedSnapshot: resolvedStoredSnapshot,
+    limits: snapshotSchema.limits,
+    createFallbackRootEditable,
+    shadowRootOptions: {
+      mode: "open",
+      serializable: true,
+      slotAssignment: "manual",
+    },
+  });
 
-	editorAPI.host.classList.add("editor-host");
+  editorAPI.host.classList.add("editor-host");
 
-	return { editorAPI };
+  return { editorAPI };
 };

@@ -4,7 +4,7 @@ import type { CurrentComponentConfigPort } from "#adapters";
 import type { ComponentName } from "#constants";
 
 export interface HandleSelectionComponentParams {
-	port: CurrentComponentConfigPort<Component>;
-	editorAPI: EditorAPI;
-	componentName: ComponentName;
+  port: CurrentComponentConfigPort<Component>;
+  editorAPI: EditorAPI;
+  componentName: ComponentName;
 }

@@ -1,38 +1,38 @@
 const isPlainObject = (value: object) => {
-	const prototype = Object.getPrototypeOf(value);
+  const prototype = Object.getPrototypeOf(value);
 
-	return prototype === Object.prototype || prototype === null;
+  return prototype === Object.prototype || prototype === null;
 };
 
 const isArrayDeepEqual = (a: unknown[], b: unknown[]) => {
-	if (a.length !== b.length) {
-		return false;
-	}
+  if (a.length !== b.length) {
+    return false;
+  }
 
-	for (let i = 0; i < a.length; i++) {
-		if (!isDeepEqual(a[i], b[i])) {
-			return false;
-		}
-	}
+  for (let i = 0; i < a.length; i++) {
+    if (!isDeepEqual(a[i], b[i])) {
+      return false;
+    }
+  }
 
-	return true;
+  return true;
 };
 
 const isObjectDeepEqual = (a: Record<string, unknown>, b: Record<string, unknown>) => {
-	const aKeys = Object.keys(a);
-	const bKeys = Object.keys(b);
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
 
-	if (aKeys.length !== bKeys.length) {
-		return false;
-	}
+  if (aKeys.length !== bKeys.length) {
+    return false;
+  }
 
-	for (const key of aKeys) {
-		if (!(Object.hasOwn(b, key) && isDeepEqual(a[key], b[key]))) {
-			return false;
-		}
-	}
+  for (const key of aKeys) {
+    if (!(Object.hasOwn(b, key) && isDeepEqual(a[key], b[key]))) {
+      return false;
+    }
+  }
 
-	return true;
+  return true;
 };
 
 /*
@@ -43,26 +43,26 @@ const isObjectDeepEqual = (a: Record<string, unknown>, b: Record<string, unknown
  * Any other object (DOM Nodes, Set, Map, Date, class instances…) compares by identity only.
  */
 export const isDeepEqual = (a: unknown, b: unknown): boolean => {
-	if (Object.is(a, b)) {
-		return true;
-	}
+  if (Object.is(a, b)) {
+    return true;
+  }
 
-	if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) {
-		return false;
-	}
+  if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) {
+    return false;
+  }
 
-	if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
-		return false;
-	}
+  if (Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) {
+    return false;
+  }
 
-	if (Array.isArray(a)) {
-		return isArrayDeepEqual(a, b as unknown[]);
-	}
+  if (Array.isArray(a)) {
+    return isArrayDeepEqual(a, b as unknown[]);
+  }
 
-	if (isPlainObject(a)) {
-		return isObjectDeepEqual(a as Record<string, unknown>, b as Record<string, unknown>);
-	}
+  if (isPlainObject(a)) {
+    return isObjectDeepEqual(a as Record<string, unknown>, b as Record<string, unknown>);
+  }
 
-	// Not plain data, and Object.is already failed.
-	return false;
+  // Not plain data, and Object.is already failed.
+  return false;
 };

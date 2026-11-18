@@ -4,37 +4,37 @@ import { imageStoragePattern } from "#storage";
 
 import { validateMediaComponent } from "../_Utilities";
 import type {
-	CreateImageValidatorParams,
-	CreateImageValidatorResult,
-	ValidateImageParams,
-	ValidateImageResult,
+  CreateImageValidatorParams,
+  CreateImageValidatorResult,
+  ValidateImageParams,
+  ValidateImageResult,
 } from "./ValidateImage-types";
 
 /*
  * Validates an Image as a media component (see validateMediaComponent), with `img` as its media element.
  */
 const validateImage = ({
-	componentDraft,
-	attrValidators,
+  componentDraft,
+  attrValidators,
 }: ValidateImageParams): ValidateImageResult => {
-	const imageFailed = validateMediaComponent({
-		componentDraft,
-		name: componentsName.image,
-		customStorage: imageStoragePattern,
-		mediaLocalName: "img",
-		lineAttrsShape: imageAttrsShape.line,
-		lineAttrValidators: attrValidators.line,
-		blockAttrsShape: imageAttrsShape.block,
-		blockAttrValidators: attrValidators.block,
-		mediaAttrsShape: imageAttrsShape.img,
-		mediaAttrValidators: attrValidators.img,
-	});
+  const imageFailed = validateMediaComponent({
+    componentDraft,
+    name: componentsName.image,
+    customStorage: imageStoragePattern,
+    mediaLocalName: "img",
+    lineAttrsShape: imageAttrsShape.line,
+    lineAttrValidators: attrValidators.line,
+    blockAttrsShape: imageAttrsShape.block,
+    blockAttrValidators: attrValidators.block,
+    mediaAttrsShape: imageAttrsShape.img,
+    mediaAttrValidators: attrValidators.img,
+  });
 
-	if (imageFailed) {
-		return imageFailed;
-	}
+  if (imageFailed) {
+    return imageFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -42,13 +42,13 @@ const validateImage = ({
  * the given ones (see createImageAttrValidators).
  */
 export const createImageValidator = ({
-	attrValidators = {},
+  attrValidators = {},
 }: CreateImageValidatorParams): CreateImageValidatorResult => {
-	const imageAttrValidators = createImageAttrValidators(attrValidators);
+  const imageAttrValidators = createImageAttrValidators(attrValidators);
 
-	return {
-		name: componentsName.image,
-		validate: ({ componentDraft }) =>
-			validateImage({ componentDraft, attrValidators: imageAttrValidators }),
-	};
+  return {
+    name: componentsName.image,
+    validate: ({ componentDraft }) =>
+      validateImage({ componentDraft, attrValidators: imageAttrValidators }),
+  };
 };

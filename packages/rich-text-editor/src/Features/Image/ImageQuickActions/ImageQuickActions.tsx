@@ -5,285 +5,285 @@ import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js"
 
 import { useEditorContext } from "#context";
 import {
-	createTextFieldController,
-	Icon,
-	InputTextField,
-	SegmentedControl,
-	type SegmentedControlControls,
-	TextFieldWrapper,
-	ToggleButton,
+  createTextFieldController,
+  Icon,
+  InputTextField,
+  SegmentedControl,
+  type SegmentedControlControls,
+  TextFieldWrapper,
+  ToggleButton,
 } from "#ui";
 
 import {
-	type AspectRatioValue,
-	aspectRatioAttrName,
-	BlockAlign,
-	createImageAltAttrs,
-	getImageAltText,
-	isAspectRatioValue,
-	isObjectFitValue,
-	MediaSource,
-	type ObjectFitValue,
-	OptionDropdown,
-	type OptionDropdownOption,
-	objectFitAttrName,
+  type AspectRatioValue,
+  aspectRatioAttrName,
+  BlockAlign,
+  createImageAltAttrs,
+  getImageAltText,
+  isAspectRatioValue,
+  isObjectFitValue,
+  MediaSource,
+  type ObjectFitValue,
+  OptionDropdown,
+  type OptionDropdownOption,
+  objectFitAttrName,
 } from "../../_Utilities";
 
 const objectFitOptions: OptionDropdownOption<ObjectFitValue>[] = [
-	{ label: "Cover", value: "cover" },
-	{ label: "Contain", value: "contain" },
-	{ label: "Fill", value: "fill" },
+  { label: "Cover", value: "cover" },
+  { label: "Contain", value: "contain" },
+  { label: "Fill", value: "fill" },
 ];
 
 const aspectRatioOptions: OptionDropdownOption<AspectRatioValue | null>[] = [
-	{ label: "Auto", value: null },
-	{ label: "1:1", value: "1 / 1" },
-	{ label: "4:3", value: "4 / 3" },
-	{ label: "16:9", value: "16 / 9" },
+  { label: "Auto", value: null },
+  { label: "1:1", value: "1 / 1" },
+  { label: "4:3", value: "4 / 3" },
+  { label: "16:9", value: "16 / 9" },
 ];
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
-	{ id: "above", node: "Above" },
-	{ id: "below", node: "Below" },
+  { id: "above", node: "Above" },
+  { id: "below", node: "Below" },
 ];
 
 export const ImageQuickActions = () => {
-	const editor = useEditorContext();
-	const { image, readOnly } = editor;
+  const editor = useEditorContext();
+  const { image, readOnly } = editor;
 
-	if (!image) {
-		throw new Error("Image can't be undefined.");
-	}
+  if (!image) {
+    throw new Error("Image can't be undefined.");
+  }
 
-	const $image = Image(image);
-	const $readOnly = ReadOnly(readOnly);
+  const $image = Image(image);
+  const $readOnly = ReadOnly(readOnly);
 
-	const imgAttrs = () => $image.domAttrs()?.img ?? null;
+  const imgAttrs = () => $image.domAttrs()?.img ?? null;
 
-	const objectFit = (): ObjectFitValue => {
-		const value = imgAttrs()?.[objectFitAttrName] ?? null;
+  const objectFit = (): ObjectFitValue => {
+    const value = imgAttrs()?.[objectFitAttrName] ?? null;
 
-		return isObjectFitValue(value) ? value : "cover";
-	};
+    return isObjectFitValue(value) ? value : "cover";
+  };
 
-	// An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
-	const aspectRatio = (): AspectRatioValue | null => {
-		const value = imgAttrs()?.[aspectRatioAttrName] ?? null;
+  // An invalid aspect ratio (e.g. from an old snapshot) is shown as "Auto"
+  const aspectRatio = (): AspectRatioValue | null => {
+    const value = imgAttrs()?.[aspectRatioAttrName] ?? null;
 
-		return isAspectRatioValue(value) ? value : null;
-	};
+    return isAspectRatioValue(value) ? value : null;
+  };
 
-	const [altHandle, altControls] = createTextFieldController<HTMLInputElement>({
-		defaultValue: "",
-	});
+  const [altHandle, altControls] = createTextFieldController<HTMLInputElement>({
+    defaultValue: "",
+  });
 
-	const [committedAltText, setCommittedAltText] = createSignal("");
+  const [committedAltText, setCommittedAltText] = createSignal("");
 
-	const isAltTextDirty = () => altHandle.value() !== committedAltText();
+  const isAltTextDirty = () => altHandle.value() !== committedAltText();
 
-	createEffect(
-		() => getImageAltText(imgAttrs()),
-		(altText) => {
-			altHandle.setValue(altText);
-			setCommittedAltText(altText);
-		},
-	);
+  createEffect(
+    () => getImageAltText(imgAttrs()),
+    (altText) => {
+      altHandle.setValue(altText);
+      setCommittedAltText(altText);
+    },
+  );
 
-	const changeImgAttrs = (imgAttrsPatch: ImageAttrsPatch["img"]) => {
-		if (!image.domAttrs) {
-			return;
-		}
+  const changeImgAttrs = (imgAttrsPatch: ImageAttrsPatch["img"]) => {
+    if (!image.domAttrs) {
+      return;
+    }
 
-		const changeFailed = image.changeDOMAttrs({ img: imgAttrsPatch });
+    const changeFailed = image.changeDOMAttrs({ img: imgAttrsPatch });
 
-		if (changeFailed) {
-			console.warn("Image's attributes were rejected.", changeFailed);
-		}
-	};
+    if (changeFailed) {
+      console.warn("Image's attributes were rejected.", changeFailed);
+    }
+  };
 
-	const onObjectFitSelect = (value: ObjectFitValue) => {
-		changeImgAttrs({ [objectFitAttrName]: value });
-	};
+  const onObjectFitSelect = (value: ObjectFitValue) => {
+    changeImgAttrs({ [objectFitAttrName]: value });
+  };
 
-	const onAspectRatioSelect = (value: AspectRatioValue | null) => {
-		changeImgAttrs({ [aspectRatioAttrName]: value });
-	};
+  const onAspectRatioSelect = (value: AspectRatioValue | null) => {
+    changeImgAttrs({ [aspectRatioAttrName]: value });
+  };
 
-	const onAltTextCommit = () => {
-		if (!isAltTextDirty()) {
-			return;
-		}
+  const onAltTextCommit = () => {
+    if (!isAltTextDirty()) {
+      return;
+    }
 
-		changeImgAttrs(createImageAltAttrs(altHandle.value()));
-	};
+    changeImgAttrs(createImageAltAttrs(altHandle.value()));
+  };
 
-	const onAltTextKeyDown = (event: KeyboardEvent) => {
-		if (event.key !== "Enter") {
-			return;
-		}
+  const onAltTextKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== "Enter") {
+      return;
+    }
 
-		onAltTextCommit();
-	};
+    onAltTextCommit();
+  };
 
-	const onSwapClick = () => {
-		image.swap();
-	};
+  const onSwapClick = () => {
+    image.swap();
+  };
 
-	const onCaptionToggle = () => {
-		image.changeCaptionEnabled(!$image.captionEnabled());
-	};
+  const onCaptionToggle = () => {
+    image.changeCaptionEnabled(!$image.captionEnabled());
+  };
 
-	let blockAlignPopover: HTMLDivElement | undefined;
-	let optionsPopover: HTMLDivElement | undefined;
-	let mediaSourcePopover: HTMLDivElement | undefined;
+  let blockAlignPopover: HTMLDivElement | undefined;
+  let optionsPopover: HTMLDivElement | undefined;
+  let mediaSourcePopover: HTMLDivElement | undefined;
 
-	const optionsPopoverId = createUniqueId();
+  const optionsPopoverId = createUniqueId();
 
-	const closeNestedPopovers = () => {
-		const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
+  const closeNestedPopovers = () => {
+    const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
 
-		for (const nestedPopover of nestedPopovers) {
-			if (!nestedPopover) {
-				throw new Error("Nested popover shouldn't be undefined.");
-			}
+    for (const nestedPopover of nestedPopovers) {
+      if (!nestedPopover) {
+        throw new Error("Nested popover shouldn't be undefined.");
+      }
 
-			if (nestedPopover.matches(":popover-open")) {
-				// Force a synchronous reflow before hiding — otherwise the popover can
-				// briefly animate from a stale, not-yet-committed style.
-				// oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
-				nestedPopover.offsetHeight;
-				nestedPopover.hidePopover();
-			}
-		}
-	};
+      if (nestedPopover.matches(":popover-open")) {
+        // Force a synchronous reflow before hiding — otherwise the popover can
+        // briefly animate from a stale, not-yet-committed style.
+        // oxlint-disable-next-line no-unused-expressions -- Reading offsetHeight forces a synchronous reflow
+        nestedPopover.offsetHeight;
+        nestedPopover.hidePopover();
+      }
+    }
+  };
 
-	const unsubscribeIsOpen = image.quickActions.onToggle(() => {
-		if (!image.quickActions.isOpen) {
-			closeNestedPopovers();
-		}
-	});
+  const unsubscribeIsOpen = image.quickActions.onToggle(() => {
+    if (!image.quickActions.isOpen) {
+      closeNestedPopovers();
+    }
+  });
 
-	onCleanup(() => {
-		unsubscribeIsOpen();
-	});
+  onCleanup(() => {
+    unsubscribeIsOpen();
+  });
 
-	return (
-		<FloatingPortal mount={image.quickActions.element}>
-			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
-				<BlockAlign
-					value={$image.align()}
-					disabled={$readOnly?.checked()}
-					onChange={(value) => image.changeAlign(value)}
-					popoverRef={(el) => {
-						blockAlignPopover = el;
-					}}
-				/>
+  return (
+    <FloatingPortal mount={image.quickActions.element}>
+      <div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
+        <BlockAlign
+          value={$image.align()}
+          disabled={$readOnly?.checked()}
+          onChange={(value) => image.changeAlign(value)}
+          popoverRef={(el) => {
+            blockAlignPopover = el;
+          }}
+        />
 
-				<button
-					type="button"
-					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					aria-label="Swap image"
-					disabled={!image.canSwap || $readOnly?.checked()}
-					onClick={onSwapClick}
-				>
-					<Icon name="Swap" class="size-4" />
-				</button>
+        <button
+          type="button"
+          class="btn-menu-trigger flex items-center justify-center rounded p-1"
+          aria-label="Swap image"
+          disabled={!image.canSwap || $readOnly?.checked()}
+          onClick={onSwapClick}
+        >
+          <Icon name="Swap" class="size-4" />
+        </button>
 
-				<MediaSource
-					src={$image.domAttrs()?.img.src ?? null}
-					label="Image source"
-					popoverRef={(el) => {
-						mediaSourcePopover = el;
-					}}
-				/>
+        <MediaSource
+          src={$image.domAttrs()?.img.src ?? null}
+          label="Image source"
+          popoverRef={(el) => {
+            mediaSourcePopover = el;
+          }}
+        />
 
-				<span>
-					<button
-						type="button"
-						commandfor={optionsPopoverId}
-						command="toggle-popover"
-						class="btn-menu-trigger flex items-center justify-center rounded p-1"
-						aria-label="Image options"
-						disabled={$readOnly?.checked()}
-					>
-						<Icon name="DotsThreeHorizontal" class="size-4" />
-					</button>
+        <span>
+          <button
+            type="button"
+            commandfor={optionsPopoverId}
+            command="toggle-popover"
+            class="btn-menu-trigger flex items-center justify-center rounded p-1"
+            aria-label="Image options"
+            disabled={$readOnly?.checked()}
+          >
+            <Icon name="DotsThreeHorizontal" class="size-4" />
+          </button>
 
-					<div
-						ref={(el) => {
-							optionsPopover = el;
-						}}
-						id={optionsPopoverId}
-						popover="auto"
-						class="w-44 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
-					>
-						<OptionDropdown
-							label="Object fit"
-							value={objectFit()}
-							options={objectFitOptions}
-							onSelect={onObjectFitSelect}
-						/>
+          <div
+            ref={(el) => {
+              optionsPopover = el;
+            }}
+            id={optionsPopoverId}
+            popover="auto"
+            class="w-44 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
+          >
+            <OptionDropdown
+              label="Object fit"
+              value={objectFit()}
+              options={objectFitOptions}
+              onSelect={onObjectFitSelect}
+            />
 
-						<OptionDropdown
-							label="Aspect ratio"
-							value={aspectRatio()}
-							options={aspectRatioOptions}
-							notFoundLabel="Custom"
-							onSelect={onAspectRatioSelect}
-						/>
+            <OptionDropdown
+              label="Aspect ratio"
+              value={aspectRatio()}
+              options={aspectRatioOptions}
+              notFoundLabel="Custom"
+              onSelect={onAspectRatioSelect}
+            />
 
-						<div class="flex items-center justify-between">
-							<span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
-								Caption
-							</span>
-							<ToggleButton
-								checked={$image.captionEnabled()}
-								label="Caption"
-								onClick={onCaptionToggle}
-							/>
-						</div>
+            <div class="flex items-center justify-between">
+              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+                Caption
+              </span>
+              <ToggleButton
+                checked={$image.captionEnabled()}
+                label="Caption"
+                onClick={onCaptionToggle}
+              />
+            </div>
 
-						<div hidden={!$image.captionEnabled()}>
-							<SegmentedControl
-								id={$image.captionPosition()}
-								controls={captionPositionControls}
-								label="Caption position"
-								onChange={(value) => image.changeCaptionPosition(value)}
-								appearance="primary-outline"
-								class="rounded-sm"
-								commonButtonClass="rounded-sm py-1 font-medium text-xs"
-							/>
-						</div>
+            <div hidden={!$image.captionEnabled()}>
+              <SegmentedControl
+                id={$image.captionPosition()}
+                controls={captionPositionControls}
+                label="Caption position"
+                onChange={(value) => image.changeCaptionPosition(value)}
+                appearance="primary-outline"
+                class="rounded-sm"
+                commonButtonClass="rounded-sm py-1 font-medium text-xs"
+              />
+            </div>
 
-						<div class="flex flex-col gap-1">
-							<div class="flex items-center justify-between">
-								<label
-									for={altHandle.id}
-									class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
-								>
-									Alt text
-								</label>
-								<span
-									class="text-neutral-500 text-xs dark:text-neutral-400"
-									hidden={!isAltTextDirty()}
-								>
-									Enter to save
-								</span>
-							</div>
-							<TextFieldWrapper appearance="neutral-filled-underline" size="small">
-								<InputTextField
-									type="text"
-									placeholder="Describe the image"
-									spellcheck={false}
-									{...altControls}
-									onBlur={onAltTextCommit}
-									onKeyDown={onAltTextKeyDown}
-								/>
-							</TextFieldWrapper>
-						</div>
-					</div>
-				</span>
-			</div>
-		</FloatingPortal>
-	);
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <label
+                  for={altHandle.id}
+                  class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
+                >
+                  Alt text
+                </label>
+                <span
+                  class="text-neutral-500 text-xs dark:text-neutral-400"
+                  hidden={!isAltTextDirty()}
+                >
+                  Enter to save
+                </span>
+              </div>
+              <TextFieldWrapper appearance="neutral-filled-underline" size="small">
+                <InputTextField
+                  type="text"
+                  placeholder="Describe the image"
+                  spellcheck={false}
+                  {...altControls}
+                  onBlur={onAltTextCommit}
+                  onKeyDown={onAltTextKeyDown}
+                />
+              </TextFieldWrapper>
+            </div>
+          </div>
+        </span>
+      </div>
+    </FloatingPortal>
+  );
 };

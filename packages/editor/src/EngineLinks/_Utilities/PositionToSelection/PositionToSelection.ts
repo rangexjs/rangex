@@ -6,18 +6,18 @@ import type { PositionToSelectionParams } from "./PositionToSelection-types";
  * Returns the bottom y-coordinate of the character.
  */
 const getEndCharBottom = (node: Text, offset: number) => {
-	const range = document.createRange();
-	if (offset > 0) {
-		range.setStart(node, offset - 1);
-		range.setEnd(node, offset);
-	} else {
-		range.setStart(node, offset);
-		range.setEnd(node, offset + 1);
-	}
+  const range = document.createRange();
+  if (offset > 0) {
+    range.setStart(node, offset - 1);
+    range.setEnd(node, offset);
+  } else {
+    range.setStart(node, offset);
+    range.setEnd(node, offset + 1);
+  }
 
-	const { bottom } = range.getBoundingClientRect();
+  const { bottom } = range.getBoundingClientRect();
 
-	return bottom;
+  return bottom;
 };
 
 /**
@@ -25,55 +25,55 @@ const getEndCharBottom = (node: Text, offset: number) => {
  * Manually offsets it to center below the selection.
  */
 export const positionToSelection = ({
-	editorAPI,
-	controller,
-	topMargin,
+  editorAPI,
+  controller,
+  topMargin,
 }: PositionToSelectionParams) => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+  const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-	const range = new EditorRange({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+  const range = new EditorRange({
+    fromNode: fromText,
+    fromOffset,
+    toNode: toText,
+    toOffset,
+  });
 
-	if (range.isSinglePoint) {
-		const caretAnchor = editorAPI.shadowRoot.querySelector<HTMLElement>(caretAnchorRoleSelector);
+  if (range.isSinglePoint) {
+    const caretAnchor = editorAPI.shadowRoot.querySelector<HTMLElement>(caretAnchorRoleSelector);
 
-		if (!caretAnchor) {
-			throw new Error("CaretAnchor can't be null.");
-		}
+    if (!caretAnchor) {
+      throw new Error("CaretAnchor can't be null.");
+    }
 
-		controller.show(caretAnchor, {
-			clear: true,
-			position: "fixed",
-			margin: `${topMargin}px 0px 0px 0px`,
-			"position-area": "center bottom",
-		});
-		return;
-	}
+    controller.show(caretAnchor, {
+      clear: true,
+      position: "fixed",
+      margin: `${topMargin}px 0px 0px 0px`,
+      "position-area": "center bottom",
+    });
+    return;
+  }
 
-	controller.show(rootEditable, { clear: true, position: "fixed" });
+  controller.show(rootEditable, { clear: true, position: "fixed" });
 
-	const rootEditableRect = rootEditable.getBoundingClientRect();
-	const rangeRect = range.getBoundingClientRect();
+  const rootEditableRect = rootEditable.getBoundingClientRect();
+  const rangeRect = range.getBoundingClientRect();
 
-	const selectionBottom = getEndCharBottom(toText, toOffset);
+  const selectionBottom = getEndCharBottom(toText, toOffset);
 
-	const topDistance = selectionBottom - rootEditableRect.top + topMargin;
-	const leftDistance =
-		rangeRect.left -
-		rootEditableRect.left +
-		rangeRect.width / 2 -
-		controller.element.offsetWidth / 2;
+  const topDistance = selectionBottom - rootEditableRect.top + topMargin;
+  const leftDistance =
+    rangeRect.left -
+    rootEditableRect.left +
+    rangeRect.width / 2 -
+    controller.element.offsetWidth / 2;
 
-	controller.show(rootEditable, {
-		top: `calc(anchor(top) + ${topDistance}px)`,
-		left: `calc(anchor(left) + ${leftDistance}px)`,
-	});
+  controller.show(rootEditable, {
+    top: `calc(anchor(top) + ${topDistance}px)`,
+    left: `calc(anchor(left) + ${leftDistance}px)`,
+  });
 };

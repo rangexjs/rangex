@@ -1,26 +1,26 @@
 import { FindReplace, ReadOnly } from "@rangex/solid";
 import {
-	createEffect,
-	createMemo,
-	createSignal,
-	createUniqueId,
-	For,
-	Show,
-	untrack,
+  createEffect,
+  createMemo,
+  createSignal,
+  createUniqueId,
+  For,
+  Show,
+  untrack,
 } from "solid-js";
 
 import { useEditorContext } from "#context";
 import {
-	Checkbox,
-	type CheckboxControls,
-	createCheckboxController,
-	createTextFieldController,
-	FormField,
-	Icon,
-	InputTextField,
-	Spinning,
-	showInputFieldError,
-	TextFieldWrapper,
+  Checkbox,
+  type CheckboxControls,
+  createCheckboxController,
+  createTextFieldController,
+  FormField,
+  Icon,
+  InputTextField,
+  Spinning,
+  showInputFieldError,
+  TextFieldWrapper,
 } from "#ui";
 import { createDebouncer } from "#utilities";
 
@@ -31,443 +31,443 @@ import { FindReplaceResults } from "./FindReplaceResults";
 type CheckboxFilterList = { controls: CheckboxControls; text: string }[][];
 
 export const FindReplaceToolbarButton = () => {
-	const editor = useEditorContext();
-	const { findReplace, readOnly } = editor;
+  const editor = useEditorContext();
+  const { findReplace, readOnly } = editor;
 
-	if (!findReplace) {
-		throw new Error("FindReplace can't be undefined.");
-	}
+  if (!findReplace) {
+    throw new Error("FindReplace can't be undefined.");
+  }
 
-	const $findReplace = FindReplace(findReplace);
-	const $readOnly = ReadOnly(readOnly);
+  const $findReplace = FindReplace(findReplace);
+  const $readOnly = ReadOnly(readOnly);
 
-	const [checked, setChecked] = createSignal(false);
+  const [checked, setChecked] = createSignal(false);
 
-	const resultsCount = createMemo(() => $findReplace.results().length);
+  const resultsCount = createMemo(() => $findReplace.results().length);
 
-	const displayIndex = createMemo(() => (resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0));
+  const displayIndex = createMemo(() => (resultsCount() > 0 ? $findReplace.currentIndex() + 1 : 0));
 
-	const popoverId = createUniqueId();
-	const headingId = createUniqueId();
+  const popoverId = createUniqueId();
+  const headingId = createUniqueId();
 
-	const [useRegexHandle, useRegexControls] = createCheckboxController({});
-	const [matchCaseHandle, matchCaseControls] = createCheckboxController({});
-	const [wholeWordHandle, wholeWordControls] = createCheckboxController({});
+  const [useRegexHandle, useRegexControls] = createCheckboxController({});
+  const [matchCaseHandle, matchCaseControls] = createCheckboxController({});
+  const [wholeWordHandle, wholeWordControls] = createCheckboxController({});
 
-	const getPattern = (findText: string) => {
-		const matchCase = untrack(() => matchCaseHandle.checked());
-		const useRegex = untrack(() => useRegexHandle.checked());
-		const wholeWord = untrack(() => wholeWordHandle.checked());
+  const getPattern = (findText: string) => {
+    const matchCase = untrack(() => matchCaseHandle.checked());
+    const useRegex = untrack(() => useRegexHandle.checked());
+    const wholeWord = untrack(() => wholeWordHandle.checked());
 
-		return buildFindReplacePattern({ findText, matchCase, useRegex, wholeWord });
-	};
+    return buildFindReplacePattern({ findText, matchCase, useRegex, wholeWord });
+  };
 
-	const isValidPattern = (value: string) => {
-		try {
-			const { source, flags } = getPattern(value);
+  const isValidPattern = (value: string) => {
+    try {
+      const { source, flags } = getPattern(value);
 
-			new RegExp(source, flags);
+      new RegExp(source, flags);
 
-			return true;
-		} catch {
-			return false;
-		}
-	};
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
-	/** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
-	const getSafePattern = () => {
-		findHandle.validate();
-		const value = untrack(() => findHandle.value());
+  /** Falls back to an empty search so an invalid regex clears highlights instead of crashing the engine. */
+  const getSafePattern = () => {
+    findHandle.validate();
+    const value = untrack(() => findHandle.value());
 
-		const findText = isValidPattern(value) ? value : "";
+    const findText = isValidPattern(value) ? value : "";
 
-		return getPattern(findText);
-	};
+    return getPattern(findText);
+  };
 
-	const [findHandle, findControls] = createTextFieldController<HTMLInputElement>({
-		error: {
-			custom: {
-				isValid: (value) => isValidPattern(value),
-				message: "Invalid regular expression.",
-			},
-		},
-		validateOn: ["blur:changed", "input:dirty"],
-	});
-	const [replaceHandle, replaceControls] = createTextFieldController<HTMLInputElement>({});
-	const [includeNonEditableContentHandle, includeNonEditableContentControls] =
-		createCheckboxController({});
-	const [hasFindFocus, setHasFindFocus] = createSignal(false);
-	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
-	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
+  const [findHandle, findControls] = createTextFieldController<HTMLInputElement>({
+    error: {
+      custom: {
+        isValid: (value) => isValidPattern(value),
+        message: "Invalid regular expression.",
+      },
+    },
+    validateOn: ["blur:changed", "input:dirty"],
+  });
+  const [replaceHandle, replaceControls] = createTextFieldController<HTMLInputElement>({});
+  const [includeNonEditableContentHandle, includeNonEditableContentControls] =
+    createCheckboxController({});
+  const [hasFindFocus, setHasFindFocus] = createSignal(false);
+  const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
+  const [isFirstOpening, setIsFirstOpening] = createSignal(true);
 
-	createEffect(
-		() => resultsCount() === 0 || showInputFieldError(findHandle.state()),
-		(disabled) => {
-			setReplaceButtonDisabled(disabled);
-		},
-	);
+  createEffect(
+    () => resultsCount() === 0 || showInputFieldError(findHandle.state()),
+    (disabled) => {
+      setReplaceButtonDisabled(disabled);
+    },
+  );
 
-	const replaceDisabled = createMemo(() => replaceButtonDisabled() || !!$readOnly?.checked());
+  const replaceDisabled = createMemo(() => replaceButtonDisabled() || !!$readOnly?.checked());
 
-	const findInputAnchorName = "--find-input-anchor-name";
+  const findInputAnchorName = "--find-input-anchor-name";
 
-	const setPopoverInitialPosition = (event: ToggleEvent) => {
-		const { newState, currentTarget } = event;
+  const setPopoverInitialPosition = (event: ToggleEvent) => {
+    const { newState, currentTarget } = event;
 
-		if (newState === "closed" || !isFirstOpening()) {
-			return;
-		}
+    if (newState === "closed" || !isFirstOpening()) {
+      return;
+    }
 
-		setIsFirstOpening(false);
+    setIsFirstOpening(false);
 
-		if (!(currentTarget instanceof HTMLElement)) {
-			throw new Error("CurrentTarget's type is invalid.");
-		}
+    if (!(currentTarget instanceof HTMLElement)) {
+      throw new Error("CurrentTarget's type is invalid.");
+    }
 
-		Object.assign(currentTarget.style, {
-			top: "50%",
-			left: "50%",
-			translate: "-50% -50%",
-		});
-	};
+    Object.assign(currentTarget.style, {
+      top: "50%",
+      left: "50%",
+      translate: "-50% -50%",
+    });
+  };
 
-	const onPopoverToggle = (event: ToggleEvent) => {
-		const { newState, currentTarget } = event;
+  const onPopoverToggle = (event: ToggleEvent) => {
+    const { newState, currentTarget } = event;
 
-		setChecked(newState === "open");
+    setChecked(newState === "open");
 
-		const pattern = getSafePattern();
-		const criteria = {
-			pattern,
-			includeNonEditableContent: includeNonEditableContentHandle.checked(),
-		};
+    const pattern = getSafePattern();
+    const criteria = {
+      pattern,
+      includeNonEditableContent: includeNonEditableContentHandle.checked(),
+    };
 
-		if (newState === "open") {
-			findReplace.open(criteria);
-		} else {
-			findReplace.close();
-		}
+    if (newState === "open") {
+      findReplace.open(criteria);
+    } else {
+      findReplace.close();
+    }
 
-		if (!(currentTarget instanceof HTMLElement)) {
-			throw new Error("CurrentTarget's type is invalid.");
-		}
+    if (!(currentTarget instanceof HTMLElement)) {
+      throw new Error("CurrentTarget's type is invalid.");
+    }
 
-		const { left, right, top, bottom } = currentTarget.getBoundingClientRect();
+    const { left, right, top, bottom } = currentTarget.getBoundingClientRect();
 
-		const isOutOfViewport = left < 0 || right > innerWidth || top < 0 || bottom > innerHeight;
+    const isOutOfViewport = left < 0 || right > innerWidth || top < 0 || bottom > innerHeight;
 
-		if (!isOutOfViewport) {
-			return;
-		}
+    if (!isOutOfViewport) {
+      return;
+    }
 
-		Object.assign(currentTarget.style, {
-			top: "50%",
-			left: "50%",
-			translate: "-50% -50%",
-		});
-	};
+    Object.assign(currentTarget.style, {
+      top: "50%",
+      left: "50%",
+      translate: "-50% -50%",
+    });
+  };
 
-	const movePopover = (pointerDownEvent: PointerEvent) => {
-		pointerDownEvent.preventDefault();
-		const { pointerId, currentTarget, clientX, clientY } = pointerDownEvent;
+  const movePopover = (pointerDownEvent: PointerEvent) => {
+    pointerDownEvent.preventDefault();
+    const { pointerId, currentTarget, clientX, clientY } = pointerDownEvent;
 
-		if (!(currentTarget instanceof HTMLElement)) {
-			throw new Error("CurrentTarget's type is invalid.");
-		}
+    if (!(currentTarget instanceof HTMLElement)) {
+      throw new Error("CurrentTarget's type is invalid.");
+    }
 
-		const popover = currentTarget.closest<HTMLElement>(`#${popoverId}`);
+    const popover = currentTarget.closest<HTMLElement>(`#${popoverId}`);
 
-		if (!popover) {
-			throw new Error("Popover can't be null.");
-		}
+    if (!popover) {
+      throw new Error("Popover can't be null.");
+    }
 
-		const popoverRect = popover.getBoundingClientRect();
+    const popoverRect = popover.getBoundingClientRect();
 
-		const xDiff = clientX - popoverRect.x;
-		const yDiff = clientY - popoverRect.y;
+    const xDiff = clientX - popoverRect.x;
+    const yDiff = clientY - popoverRect.y;
 
-		const controller = new AbortController();
-		const { signal } = controller;
+    const controller = new AbortController();
+    const { signal } = controller;
 
-		currentTarget.setPointerCapture(pointerId);
+    currentTarget.setPointerCapture(pointerId);
 
-		currentTarget.addEventListener(
-			"pointermove",
-			(pointerMoveEvent) => {
-				const numX = Math.min(
-					Math.max(0, pointerMoveEvent.clientX - xDiff),
-					innerWidth - popoverRect.width,
-				);
-				const numY = Math.min(
-					Math.max(0, pointerMoveEvent.clientY - yDiff),
-					innerHeight - popoverRect.height,
-				);
+    currentTarget.addEventListener(
+      "pointermove",
+      (pointerMoveEvent) => {
+        const numX = Math.min(
+          Math.max(0, pointerMoveEvent.clientX - xDiff),
+          innerWidth - popoverRect.width,
+        );
+        const numY = Math.min(
+          Math.max(0, pointerMoveEvent.clientY - yDiff),
+          innerHeight - popoverRect.height,
+        );
 
-				Object.assign(popover.style, {
-					top: "",
-					left: "",
-					translate: `${numX}px ${numY}px`,
-				});
-			},
-			{ signal },
-		);
+        Object.assign(popover.style, {
+          top: "",
+          left: "",
+          translate: `${numX}px ${numY}px`,
+        });
+      },
+      { signal },
+    );
 
-		currentTarget.addEventListener(
-			"pointerup",
-			() => {
-				currentTarget.releasePointerCapture(pointerId);
-				controller.abort();
-			},
-			{ once: true },
-		);
-	};
+    currentTarget.addEventListener(
+      "pointerup",
+      () => {
+        currentTarget.releasePointerCapture(pointerId);
+        controller.abort();
+      },
+      { once: true },
+    );
+  };
 
-	const searchDebouncer = createDebouncer({ delayInMs: 250 });
+  const searchDebouncer = createDebouncer({ delayInMs: 250 });
 
-	const emitSearchChange = () => {
-		const pattern = getSafePattern();
-		const includeNonEditableContent = untrack(() => includeNonEditableContentHandle.checked());
+  const emitSearchChange = () => {
+    const pattern = getSafePattern();
+    const includeNonEditableContent = untrack(() => includeNonEditableContentHandle.checked());
 
-		findReplace.search({ pattern, includeNonEditableContent });
-	};
+    findReplace.search({ pattern, includeNonEditableContent });
+  };
 
-	const findPreviousMatch = () => {
-		findReplace.stepBack();
-	};
+  const findPreviousMatch = () => {
+    findReplace.stepBack();
+  };
 
-	const findNextMatch = () => {
-		findReplace.stepForward();
-	};
+  const findNextMatch = () => {
+    findReplace.stepForward();
+  };
 
-	createEffect(
-		() => findHandle.value(),
-		() => {
-			searchDebouncer.schedule(() => emitSearchChange());
-		},
-		{ defer: true },
-	);
+  createEffect(
+    () => findHandle.value(),
+    () => {
+      searchDebouncer.schedule(() => emitSearchChange());
+    },
+    { defer: true },
+  );
 
-	createEffect(
-		() => matchCaseHandle.checked(),
-		() => emitSearchChange(),
-		{ defer: true },
-	);
+  createEffect(
+    () => matchCaseHandle.checked(),
+    () => emitSearchChange(),
+    { defer: true },
+  );
 
-	createEffect(
-		() => wholeWordHandle.checked(),
-		() => emitSearchChange(),
-		{ defer: true },
-	);
+  createEffect(
+    () => wholeWordHandle.checked(),
+    () => emitSearchChange(),
+    { defer: true },
+  );
 
-	createEffect(
-		() => useRegexHandle.checked(),
-		() => emitSearchChange(),
-		{ defer: true },
-	);
+  createEffect(
+    () => useRegexHandle.checked(),
+    () => emitSearchChange(),
+    { defer: true },
+  );
 
-	createEffect(
-		() => includeNonEditableContentHandle.checked(),
-		() => emitSearchChange(),
-		{ defer: true },
-	);
+  createEffect(
+    () => includeNonEditableContentHandle.checked(),
+    () => emitSearchChange(),
+    { defer: true },
+  );
 
-	const navigateToIndex = (index: number) => {
-		findReplace.navigateToIndex({ index });
-	};
+  const navigateToIndex = (index: number) => {
+    findReplace.navigateToIndex({ index });
+  };
 
-	const replaceText = () => {
-		findReplace.replace({ replaceText: replaceHandle.value() });
-	};
+  const replaceText = () => {
+    findReplace.replace({ replaceText: replaceHandle.value() });
+  };
 
-	const replaceAllText = () => {
-		findReplace.replaceAll({ replaceText: replaceHandle.value() });
-	};
+  const replaceAllText = () => {
+    findReplace.replaceAll({ replaceText: replaceHandle.value() });
+  };
 
-	const checkboxFilterList: CheckboxFilterList = [
-		[
-			{ controls: matchCaseControls, text: "Match case" },
-			{ controls: wholeWordControls, text: "Whole word" },
-			{ controls: useRegexControls, text: "Use regex" },
-		],
-		[
-			{
-				controls: includeNonEditableContentControls,
-				text: "Include non-editable content",
-			},
-		],
-	];
+  const checkboxFilterList: CheckboxFilterList = [
+    [
+      { controls: matchCaseControls, text: "Match case" },
+      { controls: wholeWordControls, text: "Whole word" },
+      { controls: useRegexControls, text: "Use regex" },
+    ],
+    [
+      {
+        controls: includeNonEditableContentControls,
+        text: "Include non-editable content",
+      },
+    ],
+  ];
 
-	return (
-		<span>
-			<ToolbarButton checked={checked()} commandfor={popoverId} command="toggle-popover">
-				<Icon name="FindReplace" title="Find and replace" class="size-4" />
-			</ToolbarButton>
-			<div
-				id={popoverId}
-				popover="manual"
-				role="dialog"
-				aria-labelledby={headingId}
-				class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
-				onToggle={onPopoverToggle}
-				onBeforeToggle={setPopoverInitialPosition}
-			>
-				<div class="mb-2 flex cursor-grab items-center justify-between" onPointerDown={movePopover}>
-					<h2 id={headingId} class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
-						Find & Replace
-					</h2>
-					<button
-						type="button"
-						commandfor={popoverId}
-						onPointerDown={(event) => {
-							event.stopPropagation();
-						}}
-						command="hide-popover"
-						class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
-					>
-						<Icon name="X" title="Close" class="size-3" />
-					</button>
-				</div>
-				<hr class="mb-3 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
-				<div>
-					<div
-						class="mb-3 space-y-2"
-						style={{
-							"anchor-scope": findInputAnchorName,
-						}}
-					>
-						<div class="flex items-center justify-between">
-							<FormField
-								for={findHandle.id}
-								class="max-w-48 grow"
-								style={{
-									"anchor-name": findInputAnchorName,
-								}}
-							>
-								<TextFieldWrapper
-									appearance="neutral-filled-underline"
-									size="medium"
-									postfix={<Icon name="MagnifyingGlass" class="size-3" />}
-								>
-									<InputTextField
-										type="text"
-										placeholder="Find..."
-										aria-label="Find"
-										autocomplete="off"
-										class="font-mono"
-										onFocus={() => setHasFindFocus(true)}
-										onBlur={() => setHasFindFocus(false)}
-										spellcheck={false}
-										{...findControls}
-									/>
-								</TextFieldWrapper>
-							</FormField>
-							<div
-								role="alert"
-								class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
-								hidden={!(showInputFieldError(findHandle.state()) && hasFindFocus())}
-								style={{
-									"position-anchor": findInputAnchorName,
-								}}
-							>
-								{findHandle.state().message}
-							</div>
-							<span role="status" class="contents">
-								<Show
-									when={!searchDebouncer.isScheduled()}
-									fallback={
-										<Spinning
-											class="size-4"
-											blueprintColor="var(--color-neutral-300)"
-											loadingColor="var(--color-primary-500)"
-											strokeWidth={3}
-										/>
-									}
-								>
-									<span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
-										{displayIndex()} of {resultsCount()}
-									</span>
-								</Show>
-							</span>
-							<span class="inline-flex gap-1.5">
-								<button
-									type="button"
-									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
-									onClick={() => findPreviousMatch()}
-								>
-									<Icon name="ArrowLeft" title="Previous match" class="size-3" />
-								</button>
-								<button
-									type="button"
-									class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
-									onClick={() => findNextMatch()}
-								>
-									<Icon name="ArrowRight" title="Next match" class="size-3" />
-								</button>
-							</span>
-						</div>
-						<div>
-							<FormField for={replaceHandle.id} class="max-w-48 grow">
-								<TextFieldWrapper
-									appearance="neutral-filled-underline"
-									size="medium"
-									postfix={<Icon name="Swap" class="size-3" />}
-								>
-									<InputTextField
-										type="text"
-										placeholder="Replace..."
-										aria-label="Replace"
-										autocomplete="off"
-										class="font-mono"
-										spellcheck={false}
-										{...replaceControls}
-									/>
-								</TextFieldWrapper>
-							</FormField>
-						</div>
-					</div>
-					<div class="mb-3 space-y-4">
-						<For each={checkboxFilterList} keyed={false}>
-							{(group) => (
-								<div class="flex flex-col items-start gap-2">
-									<For each={group()} keyed={false}>
-										{(item) => (
-											<label class="inline-flex cursor-pointer items-center gap-2">
-												<Checkbox {...item().controls} />
-												<span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
-													{item().text}
-												</span>
-											</label>
-										)}
-									</For>
-								</div>
-							)}
-						</For>
-					</div>
-					<FindReplaceResults
-						currentIndex={$findReplace.currentIndex}
-						results={$findReplace.results}
-						onClick={(index) => navigateToIndex(index)}
-					/>
-					<div class="flex justify-end gap-3">
-						<button
-							type="button"
-							class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-sm"
-							onClick={() => replaceText()}
-							disabled={replaceDisabled()}
-						>
-							Replace
-						</button>
-						<button
-							type="button"
-							class="btn-primary-outline rounded-sm px-3 py-1 font-medium text-sm"
-							onClick={() => replaceAllText()}
-							disabled={replaceDisabled()}
-						>
-							Replace All
-						</button>
-					</div>
-				</div>
-			</div>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton checked={checked()} commandfor={popoverId} command="toggle-popover">
+        <Icon name="FindReplace" title="Find and replace" class="size-4" />
+      </ToolbarButton>
+      <div
+        id={popoverId}
+        popover="manual"
+        role="dialog"
+        aria-labelledby={headingId}
+        class="max-h-dvh w-full max-w-80 rounded-lg border border-neutral-200 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+        onToggle={onPopoverToggle}
+        onBeforeToggle={setPopoverInitialPosition}
+      >
+        <div class="mb-2 flex cursor-grab items-center justify-between" onPointerDown={movePopover}>
+          <h2 id={headingId} class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+            Find & Replace
+          </h2>
+          <button
+            type="button"
+            commandfor={popoverId}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+            }}
+            command="hide-popover"
+            class="p-1 text-neutral-700 hover:text-neutral-900 dark:text-neutral-200 dark:hover:text-white"
+          >
+            <Icon name="X" title="Close" class="size-3" />
+          </button>
+        </div>
+        <hr class="mb-3 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
+        <div>
+          <div
+            class="mb-3 space-y-2"
+            style={{
+              "anchor-scope": findInputAnchorName,
+            }}
+          >
+            <div class="flex items-center justify-between">
+              <FormField
+                for={findHandle.id}
+                class="max-w-48 grow"
+                style={{
+                  "anchor-name": findInputAnchorName,
+                }}
+              >
+                <TextFieldWrapper
+                  appearance="neutral-filled-underline"
+                  size="medium"
+                  postfix={<Icon name="MagnifyingGlass" class="size-3" />}
+                >
+                  <InputTextField
+                    type="text"
+                    placeholder="Find..."
+                    aria-label="Find"
+                    autocomplete="off"
+                    class="font-mono"
+                    onFocus={() => setHasFindFocus(true)}
+                    onBlur={() => setHasFindFocus(false)}
+                    spellcheck={false}
+                    {...findControls}
+                  />
+                </TextFieldWrapper>
+              </FormField>
+              <div
+                role="alert"
+                class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
+                hidden={!(showInputFieldError(findHandle.state()) && hasFindFocus())}
+                style={{
+                  "position-anchor": findInputAnchorName,
+                }}
+              >
+                {findHandle.state().message}
+              </div>
+              <span role="status" class="contents">
+                <Show
+                  when={!searchDebouncer.isScheduled()}
+                  fallback={
+                    <Spinning
+                      class="size-4"
+                      blueprintColor="var(--color-neutral-300)"
+                      loadingColor="var(--color-primary-500)"
+                      strokeWidth={3}
+                    />
+                  }
+                >
+                  <span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
+                    {displayIndex()} of {resultsCount()}
+                  </span>
+                </Show>
+              </span>
+              <span class="inline-flex gap-1.5">
+                <button
+                  type="button"
+                  class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
+                  onClick={() => findPreviousMatch()}
+                >
+                  <Icon name="ArrowLeft" title="Previous match" class="size-3" />
+                </button>
+                <button
+                  type="button"
+                  class="btn-neutral-solid inline-flex size-6 items-center justify-center rounded-sm"
+                  onClick={() => findNextMatch()}
+                >
+                  <Icon name="ArrowRight" title="Next match" class="size-3" />
+                </button>
+              </span>
+            </div>
+            <div>
+              <FormField for={replaceHandle.id} class="max-w-48 grow">
+                <TextFieldWrapper
+                  appearance="neutral-filled-underline"
+                  size="medium"
+                  postfix={<Icon name="Swap" class="size-3" />}
+                >
+                  <InputTextField
+                    type="text"
+                    placeholder="Replace..."
+                    aria-label="Replace"
+                    autocomplete="off"
+                    class="font-mono"
+                    spellcheck={false}
+                    {...replaceControls}
+                  />
+                </TextFieldWrapper>
+              </FormField>
+            </div>
+          </div>
+          <div class="mb-3 space-y-4">
+            <For each={checkboxFilterList} keyed={false}>
+              {(group) => (
+                <div class="flex flex-col items-start gap-2">
+                  <For each={group()} keyed={false}>
+                    {(item) => (
+                      <label class="inline-flex cursor-pointer items-center gap-2">
+                        <Checkbox {...item().controls} />
+                        <span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
+                          {item().text}
+                        </span>
+                      </label>
+                    )}
+                  </For>
+                </div>
+              )}
+            </For>
+          </div>
+          <FindReplaceResults
+            currentIndex={$findReplace.currentIndex}
+            results={$findReplace.results}
+            onClick={(index) => navigateToIndex(index)}
+          />
+          <div class="flex justify-end gap-3">
+            <button
+              type="button"
+              class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-sm"
+              onClick={() => replaceText()}
+              disabled={replaceDisabled()}
+            >
+              Replace
+            </button>
+            <button
+              type="button"
+              class="btn-primary-outline rounded-sm px-3 py-1 font-medium text-sm"
+              onClick={() => replaceAllText()}
+              disabled={replaceDisabled()}
+            >
+              Replace All
+            </button>
+          </div>
+        </div>
+      </div>
+    </span>
+  );
 };

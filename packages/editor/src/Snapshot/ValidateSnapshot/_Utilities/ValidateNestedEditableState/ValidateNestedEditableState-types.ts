@@ -7,9 +7,9 @@ import type { ValidateComponentResult } from "../../ValidateSnapshot-types";
 export type NestedEditableState = Omit<NestedEditableSnapshot, "uniqueId" | "childNodes">;
 
 export interface ValidateNestedEditableStateParams {
-	componentDraft: ComponentDraft;
-	nestedEditableDraft: NestedEditableDraft;
-	expectedState: JSONPattern<NestedEditableState>;
+  componentDraft: ComponentDraft;
+  nestedEditableDraft: NestedEditableDraft;
+  expectedState: JSONPattern<NestedEditableState>;
 }
 
 export type ValidateNestedEditableStateResult = ValidateComponentResult;

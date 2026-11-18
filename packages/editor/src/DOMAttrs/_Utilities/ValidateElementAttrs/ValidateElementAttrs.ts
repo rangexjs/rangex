@@ -2,13 +2,13 @@ import { assertNever } from "#utilities";
 
 import { validateElementAttrsPatch } from "../ValidateElementAttrsPatch";
 import type {
-	ValidateElementAttrsParams,
-	ValidateElementAttrsResult,
+  ValidateElementAttrsParams,
+  ValidateElementAttrsResult,
 } from "./ValidateElementAttrs-types";
 
 // Own keys only, so an attribute named like an Object.prototype member (e.g. "constructor") isn't found there
 const getOwn = <Value>(record: Partial<Record<string, Value>>, key: string): Value | undefined =>
-	Object.hasOwn(record, key) ? record[key] : undefined;
+  Object.hasOwn(record, key) ? record[key] : undefined;
 
 /*
  * Validates an element's attributes by its shape and validators: the given ones as validateElementAttrsPatch does, then
@@ -16,37 +16,37 @@ const getOwn = <Value>(record: Partial<Record<string, Value>>, key: string): Val
  * when the attributes are valid.
  */
 export const validateElementAttrs = ({
-	elementAttrs,
-	elementAttrsShape,
-	elementAttrValidators,
+  elementAttrs,
+  elementAttrsShape,
+  elementAttrValidators,
 }: ValidateElementAttrsParams): ValidateElementAttrsResult => {
-	const patchMismatch = validateElementAttrsPatch({
-		elementAttrsPatch: elementAttrs,
-		elementAttrsShape,
-		elementAttrValidators,
-	});
+  const patchMismatch = validateElementAttrsPatch({
+    elementAttrsPatch: elementAttrs,
+    elementAttrsShape,
+    elementAttrValidators,
+  });
 
-	if (patchMismatch) {
-		return patchMismatch;
-	}
+  if (patchMismatch) {
+    return patchMismatch;
+  }
 
-	for (const [attrName, requirement] of Object.entries(elementAttrsShape)) {
-		if (requirement === "optional") {
-			continue;
-		}
+  for (const [attrName, requirement] of Object.entries(elementAttrsShape)) {
+    if (requirement === "optional") {
+      continue;
+    }
 
-		if (requirement === "required") {
-			const value = getOwn(elementAttrs, attrName);
+    if (requirement === "required") {
+      const value = getOwn(elementAttrs, attrName);
 
-			if (value === undefined || value === null) {
-				return { kind: "missing-attr", attrName };
-			}
+      if (value === undefined || value === null) {
+        return { kind: "missing-attr", attrName };
+      }
 
-			continue;
-		}
+      continue;
+    }
 
-		assertNever(requirement);
-	}
+    assertNever(requirement);
+  }
 
-	return null;
+  return null;
 };

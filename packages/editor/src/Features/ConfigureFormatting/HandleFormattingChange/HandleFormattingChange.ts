@@ -6,18 +6,18 @@ import type { HandleFormattingChangeParams } from "./HandleFormattingChange-type
  * Applies a requested formatting change to the current selection's styles and refocuses the editor.
  */
 export const handleFormattingChange = ({ configPort, editorAPI }: HandleFormattingChangeParams) => {
-	const unsubscribe = configPort.onFormattingChange((formattingActionState) => {
-		const selectionStylesData = getSelectionStylesData({
-			formattingActionState,
-			whenMixed: configPort.whenMixed,
-		});
+  const unsubscribe = configPort.onFormattingChange((formattingActionState) => {
+    const selectionStylesData = getSelectionStylesData({
+      formattingActionState,
+      whenMixed: configPort.whenMixed,
+    });
 
-		editorAPI.updateSelectionStyles(selectionStylesData);
+    editorAPI.updateSelectionStyles(selectionStylesData);
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

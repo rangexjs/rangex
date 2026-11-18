@@ -1,9 +1,9 @@
 import {
-	createContentLine,
-	createFormattableTexts,
-	createHTMLLayout,
-	createInlineComponent,
-	createNestedEditable,
+  createContentLine,
+  createFormattableTexts,
+  createHTMLLayout,
+  createInlineComponent,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { componentsName, linkDefinition } from "#constants";
@@ -17,29 +17,29 @@ import type { CreateLinkParams, CreateLinkResult } from "./CreateLink-types";
  * attrs are validated here.
  */
 export const createLink = ({ text, attrs }: CreateLinkParams): CreateLinkResult => {
-	return createInlineComponent({
-		name: componentsName.link,
-		content: { type: "bound-text", unwrap: "if-empty" },
-		customStorage: createLinkStorage(),
-		shouldSelectBeforeRemove: false,
-		shouldSelectOnNavigation: false,
-		editState: "inherit",
-		childNodes: [
-			createHTMLLayout({
-				localName: "a",
-				domAttrs: toDOMAttrs(attrs.anchor),
-				childNodes: [
-					createNestedEditable({
-						...linkDefinition.nestedEditableProps,
-						childNodes: [
-							createContentLine({
-								localName: "span",
-								childNodes: [...createFormattableTexts({ data: text })],
-							}),
-						],
-					}),
-				],
-			}),
-		],
-	});
+  return createInlineComponent({
+    name: componentsName.link,
+    content: { type: "bound-text", unwrap: "if-empty" },
+    customStorage: createLinkStorage(),
+    shouldSelectBeforeRemove: false,
+    shouldSelectOnNavigation: false,
+    editState: "inherit",
+    childNodes: [
+      createHTMLLayout({
+        localName: "a",
+        domAttrs: toDOMAttrs(attrs.anchor),
+        childNodes: [
+          createNestedEditable({
+            ...linkDefinition.nestedEditableProps,
+            childNodes: [
+              createContentLine({
+                localName: "span",
+                childNodes: [...createFormattableTexts({ data: text })],
+              }),
+            ],
+          }),
+        ],
+      }),
+    ],
+  });
 };

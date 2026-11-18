@@ -4,9 +4,9 @@ import { createMediaResolveDetail } from "../CreateMediaResolveDetail";
 import { type ProbeableMediaType, probeMediaType } from "../ProbeMediaType";
 import { validateMediaAttrs } from "../ValidateMediaAttrs";
 import type {
-	DetectMediaUrlTypeParams,
-	DetectMediaUrlTypeResult,
-	DetectMediaUrlTypeSettings,
+  DetectMediaUrlTypeParams,
+  DetectMediaUrlTypeResult,
+  DetectMediaUrlTypeSettings,
 } from "./DetectMediaUrlType-types";
 
 /*
@@ -14,9 +14,9 @@ import type {
  * listed: the link is probed instead.
  */
 const extensionsByMediaType: Record<ProbeableMediaType, string[]> = {
-	image: ["apng", "avif", "bmp", "gif", "ico", "jpeg", "jpg", "png", "svg", "webp"],
-	video: ["m4v", "mov", "mp4", "ogv", "webm"],
-	audio: ["aac", "flac", "m4a", "mp3", "oga", "opus", "wav"],
+  image: ["apng", "avif", "bmp", "gif", "ico", "jpeg", "jpg", "png", "svg", "webp"],
+  video: ["m4v", "mov", "mp4", "ogv", "webm"],
+  audio: ["aac", "flac", "m4a", "mp3", "oga", "opus", "wav"],
 };
 
 const mediaTypeEntries = Object.entries(extensionsByMediaType) as [ProbeableMediaType, string[]][];
@@ -24,9 +24,9 @@ const mediaTypeEntries = Object.entries(extensionsByMediaType) as [ProbeableMedi
 const mediaTypeByExtension = new Map<string, ProbeableMediaType>();
 
 for (const [type, extensions] of mediaTypeEntries) {
-	for (const extension of extensions) {
-		mediaTypeByExtension.set(extension, type);
-	}
+  for (const extension of extensions) {
+    mediaTypeByExtension.set(extension, type);
+  }
 }
 
 /*
@@ -39,40 +39,40 @@ for (const [type, extensions] of mediaTypeEntries) {
  * - `https://www.youtube.com/watch?v=abc` → null (no extension)
  */
 const getMediaTypeByExtension = (url: string): ProbeableMediaType | null => {
-	const parsedUrl = URL.parse(url);
+  const parsedUrl = URL.parse(url);
 
-	if (!parsedUrl) {
-		return null;
-	}
+  if (!parsedUrl) {
+    return null;
+  }
 
-	const fileName = parsedUrl.pathname.split("/").at(-1) ?? "";
-	const dotIndex = fileName.lastIndexOf(".");
+  const fileName = parsedUrl.pathname.split("/").at(-1) ?? "";
+  const dotIndex = fileName.lastIndexOf(".");
 
-	if (dotIndex === -1) {
-		return null;
-	}
+  if (dotIndex === -1) {
+    return null;
+  }
 
-	const extension = fileName.slice(dotIndex + 1).toLowerCase();
+  const extension = fileName.slice(dotIndex + 1).toLowerCase();
 
-	return mediaTypeByExtension.get(extension) ?? null;
+  return mediaTypeByExtension.get(extension) ?? null;
 };
 
 interface GetEmbedSrcParams {
-	editor: RangeXEditor;
-	url: string;
-	settings: DetectMediaUrlTypeSettings;
+  editor: RangeXEditor;
+  url: string;
+  settings: DetectMediaUrlTypeSettings;
 }
 
 /*
  * Returns the URL to frame if the link is one Embed accepts (after transformEmbedURL), by its validators, or null.
  */
 const getEmbedSrc = ({ editor, url, settings }: GetEmbedSrcParams) => {
-	const { transformEmbedURL = (value) => value } = settings;
+  const { transformEmbedURL = (value) => value } = settings;
 
-	const src = transformEmbedURL(url);
-	const detail = createMediaResolveDetail({ type: "embed", src, settings });
+  const src = transformEmbedURL(url);
+  const detail = createMediaResolveDetail({ type: "embed", src, settings });
 
-	return validateMediaAttrs({ editor, detail }) ? src : null;
+  return validateMediaAttrs({ editor, detail }) ? src : null;
 };
 
 /**
@@ -84,35 +84,35 @@ const getEmbedSrc = ({ editor, url, settings }: GetEmbedSrcParams) => {
  * The link is unknown if it's none of them.
  */
 export const detectMediaUrlType = async ({
-	editor,
-	url,
-	supportedMediaTypes,
-	settings,
-	signal,
+  editor,
+  url,
+  supportedMediaTypes,
+  settings,
+  signal,
 }: DetectMediaUrlTypeParams): DetectMediaUrlTypeResult => {
-	const extensionType = getMediaTypeByExtension(url);
+  const extensionType = getMediaTypeByExtension(url);
 
-	if (extensionType && supportedMediaTypes.includes(extensionType)) {
-		return { status: "found", type: extensionType, src: url };
-	}
+  if (extensionType && supportedMediaTypes.includes(extensionType)) {
+    return { status: "found", type: extensionType, src: url };
+  }
 
-	if (supportedMediaTypes.includes("embed")) {
-		const embedSrc = getEmbedSrc({ editor, url, settings });
+  if (supportedMediaTypes.includes("embed")) {
+    const embedSrc = getEmbedSrc({ editor, url, settings });
 
-		if (embedSrc !== null) {
-			return { status: "found", type: "embed", src: embedSrc };
-		}
-	}
+    if (embedSrc !== null) {
+      return { status: "found", type: "embed", src: embedSrc };
+    }
+  }
 
-	const probedType = await probeMediaType({
-		src: url,
-		supportedMediaTypes,
-		signal,
-	});
+  const probedType = await probeMediaType({
+    src: url,
+    supportedMediaTypes,
+    signal,
+  });
 
-	if (probedType === null) {
-		return { status: "unknown" };
-	}
+  if (probedType === null) {
+    return { status: "unknown" };
+  }
 
-	return { status: "found", type: probedType, src: url };
+  return { status: "found", type: probedType, src: url };
 };

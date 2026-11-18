@@ -1,9 +1,9 @@
 import type {
-	ComponentAttrs,
-	ComponentAttrsMismatch,
-	ComponentAttrsPatch,
-	ComponentAttrValidatorOverrides,
-	ComponentAttrValidators,
+  ComponentAttrs,
+  ComponentAttrsMismatch,
+  ComponentAttrsPatch,
+  ComponentAttrValidatorOverrides,
+  ComponentAttrValidators,
 } from "../_Utilities";
 import type { videoAttrsShape } from "./VideoDOMAttrs";
 

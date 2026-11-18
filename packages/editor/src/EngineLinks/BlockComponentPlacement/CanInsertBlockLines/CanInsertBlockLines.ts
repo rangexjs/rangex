@@ -2,8 +2,8 @@ import { assertNever } from "#utilities";
 
 import { getClosestScopedEditable } from "../../NodeQuery";
 import type {
-	CanInsertBlockLinesParams,
-	CanInsertBlockLinesResult,
+  CanInsertBlockLinesParams,
+  CanInsertBlockLinesResult,
 } from "./CanInsertBlockLines-types";
 
 /**
@@ -11,46 +11,46 @@ import type {
  * ScopedEditable the `scope` resolves to.
  */
 export const canInsertBlockLines = ({
-	fromNode,
-	scope,
-	allowedComponents,
+  fromNode,
+  scope,
+  allowedComponents,
 }: CanInsertBlockLinesParams): CanInsertBlockLinesResult => {
-	const scopedEditable = (() => {
-		if (scope === "current") {
-			const scopedEditable = getClosestScopedEditable({ fromNode });
+  const scopedEditable = (() => {
+    if (scope === "current") {
+      const scopedEditable = getClosestScopedEditable({ fromNode });
 
-			if (scopedEditable?.$$display !== "block multi-line") {
-				return null;
-			}
+      if (scopedEditable?.$$display !== "block multi-line") {
+        return null;
+      }
 
-			return scopedEditable;
-		}
+      return scopedEditable;
+    }
 
-		if (scope === "nearest-multi-line") {
-			const scopedEditable = getClosestScopedEditable({
-				fromNode,
-				display: "block multi-line",
-			});
+    if (scope === "nearest-multi-line") {
+      const scopedEditable = getClosestScopedEditable({
+        fromNode,
+        display: "block multi-line",
+      });
 
-			return scopedEditable;
-		}
+      return scopedEditable;
+    }
 
-		return assertNever(scope);
-	})();
+    return assertNever(scope);
+  })();
 
-	if (!scopedEditable) {
-		return false;
-	}
+  if (!scopedEditable) {
+    return false;
+  }
 
-	const { $$allowedComponents } = scopedEditable;
+  const { $$allowedComponents } = scopedEditable;
 
-	if ($$allowedComponents === null) {
-		return true;
-	}
+  if ($$allowedComponents === null) {
+    return true;
+  }
 
-	const isAllowed = allowedComponents.every((componentName) =>
-		$$allowedComponents.includes(componentName),
-	);
+  const isAllowed = allowedComponents.every((componentName) =>
+    $$allowedComponents.includes(componentName),
+  );
 
-	return isAllowed;
+  return isAllowed;
 };

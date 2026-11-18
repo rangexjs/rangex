@@ -1,7 +1,7 @@
 import {
-	type CreateSnapshotViewParams,
-	type CreateSnapshotViewResult,
-	createSnapshotView as createEngineSnapshotView,
+  type CreateSnapshotViewParams,
+  type CreateSnapshotViewResult,
+  createSnapshotView as createEngineSnapshotView,
 } from "@rangex/core";
 
 import { ensureSanitizerConfigured } from "#sanitizer";
@@ -11,7 +11,7 @@ import { ensureSanitizerConfigured } from "#sanitizer";
  * if it hasn't been called).
  */
 export const createSnapshotView = (params: CreateSnapshotViewParams): CreateSnapshotViewResult => {
-	ensureSanitizerConfigured();
+  ensureSanitizerConfigured();
 
-	return createEngineSnapshotView(params);
+  return createEngineSnapshotView(params);
 };

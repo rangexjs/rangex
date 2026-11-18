@@ -26,38 +26,38 @@ import type { VideoAdapter } from "../VideoAdapter";
 import type { AdapterBus } from "./AdapterBus";
 
 export interface AdapterOptions {
-	adapterBus: AdapterBus;
-	floatingContainer: HTMLDivElement;
+  adapterBus: AdapterBus;
+  floatingContainer: HTMLDivElement;
 }
 
 export type CreateAdapterParams<Settings extends object> = [Settings, AdapterOptions];
 
 export interface AdapterMap {
-	accordionItem: AccordionItemAdapter;
-	audio: AudioAdapter;
-	blockQuote: BlockQuoteAdapter;
-	codeBlock: CodeBlockAdapter;
-	commandMenu: CommandMenuAdapter;
-	embed: EmbedAdapter;
-	emoji: EmojiAdapter;
-	sourcePlaceholder: SourcePlaceholderAdapter;
-	findReplace: FindReplaceAdapter;
-	formatting: FormattingAdapter;
-	image: ImageAdapter;
-	lineHandler: LineHandlerAdapter;
-	link: LinkAdapter;
-	list: ListAdapter;
-	markdown: MarkdownAdapter;
-	mention: MentionAdapter;
-	readOnly: ReadOnlyAdapter;
-	separator: SeparatorAdapter;
-	shortcuts: ShortcutsAdapter;
-	symbols: SymbolsAdapter;
-	table: TableAdapter;
-	templateVariable: TemplateVariableAdapter;
-	todoList: TodoListAdapter;
-	undoRedo: UndoRedoAdapter;
-	video: VideoAdapter;
+  accordionItem: AccordionItemAdapter;
+  audio: AudioAdapter;
+  blockQuote: BlockQuoteAdapter;
+  codeBlock: CodeBlockAdapter;
+  commandMenu: CommandMenuAdapter;
+  embed: EmbedAdapter;
+  emoji: EmojiAdapter;
+  sourcePlaceholder: SourcePlaceholderAdapter;
+  findReplace: FindReplaceAdapter;
+  formatting: FormattingAdapter;
+  image: ImageAdapter;
+  lineHandler: LineHandlerAdapter;
+  link: LinkAdapter;
+  list: ListAdapter;
+  markdown: MarkdownAdapter;
+  mention: MentionAdapter;
+  readOnly: ReadOnlyAdapter;
+  separator: SeparatorAdapter;
+  shortcuts: ShortcutsAdapter;
+  symbols: SymbolsAdapter;
+  table: TableAdapter;
+  templateVariable: TemplateVariableAdapter;
+  todoList: TodoListAdapter;
+  undoRedo: UndoRedoAdapter;
+  video: VideoAdapter;
 }
 
 export type AdapterName = keyof AdapterMap;
@@ -65,5 +65,5 @@ export type AdapterName = keyof AdapterMap;
 export type Adapter = AdapterMap[AdapterName];
 
 export type AdapterPublicPorts = {
-	[Name in AdapterName]: AdapterMap[Name]["publicPort"];
+  [Name in AdapterName]: AdapterMap[Name]["publicPort"];
 };

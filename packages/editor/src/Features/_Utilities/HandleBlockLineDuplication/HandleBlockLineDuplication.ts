@@ -1,6 +1,6 @@
 import type {
-	HandleBlockLineDuplicationParams,
-	HandleBlockLineDuplicationResult,
+  HandleBlockLineDuplicationParams,
+  HandleBlockLineDuplicationResult,
 } from "./HandleBlockLineDuplication-types";
 
 /*
@@ -8,49 +8,49 @@ import type {
  * clone right after it, and moving the selection into it. Returns a cleanup function.
  */
 export const handleBlockLineDuplication = ({
-	port: editorPort,
-	editorAPI,
-	getBlockLine,
+  port: editorPort,
+  editorAPI,
+  getBlockLine,
 }: HandleBlockLineDuplicationParams): HandleBlockLineDuplicationResult => {
-	const selection = editorAPI.getEditorSelection();
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = editorPort.onDuplicate(() => {
-		const blockLine = getBlockLine();
+  const unsubscribe = editorPort.onDuplicate(() => {
+    const blockLine = getBlockLine();
 
-		if (!blockLine) {
-			return;
-		}
+    if (!blockLine) {
+      return;
+    }
 
-		const { clonedLines } = editorAPI.cloneNodesInRange({
-			fromNode: blockLine,
-			fromOffset: 0,
-			toNode: blockLine,
-			toOffset: blockLine.$$childNodes.length,
-		});
+    const { clonedLines } = editorAPI.cloneNodesInRange({
+      fromNode: blockLine,
+      fromOffset: 0,
+      toNode: blockLine,
+      toOffset: blockLine.$$childNodes.length,
+    });
 
-		const clonedLine = clonedLines.at(0);
+    const clonedLine = clonedLines.at(0);
 
-		if (!clonedLine) {
-			console.warn("Line couldn't be duplicated.");
-			return;
-		}
+    if (!clonedLine) {
+      console.warn("Line couldn't be duplicated.");
+      return;
+    }
 
-		blockLine.$$after(clonedLine);
+    blockLine.$$after(clonedLine);
 
-		selection.setBoundaryPoints({
-			fromNode: clonedLine,
-			fromOffset: clonedLine.$$childNodes.length,
-			toNode: clonedLine,
-			toOffset: clonedLine.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: clonedLine,
+      fromOffset: clonedLine.$$childNodes.length,
+      toNode: clonedLine,
+      toOffset: clonedLine.$$childNodes.length,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

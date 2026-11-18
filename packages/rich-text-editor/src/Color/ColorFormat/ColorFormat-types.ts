@@ -1,19 +1,19 @@
 export interface HslFormat {
-	h: number;
-	s: number;
-	l: number;
-	a: number;
+  h: number;
+  s: number;
+  l: number;
+  a: number;
 }
 
 export interface RgbFormat {
-	r: number;
-	g: number;
-	b: number;
-	a: number;
+  r: number;
+  g: number;
+  b: number;
+  a: number;
 }
 
 export interface HexFormat {
-	hex: string;
+  hex: string;
 }
 
 export interface IsValidHslParams extends HslFormat {}
@@ -49,7 +49,7 @@ export interface HexToHslParams extends HexFormat {}
 export interface HexToHslResult extends HslFormat {}
 
 export interface GetHslFormatFromColorParams {
-	color: string;
+  color: string;
 }
 
 export interface GetHslFormatFromColorResult extends HslFormat {}
@@ -61,7 +61,7 @@ export type ColorFormatHslIsValidResult = IsValidHslResult;
 export type ColorFormatHslColorResult = HslToColorResult;
 
 export interface ColorFormatHslRgbParams {
-	round: boolean;
+  round: boolean;
 }
 
 export interface ColorFormatHslRgbResult extends RgbFormat {}
@@ -71,17 +71,17 @@ export interface ColorFormatHslHexResult extends HslToHexResult {}
 export interface ColorFormatHslParams extends HslFormat {}
 
 export interface ColorFormatHslResult {
-	isValid: () => ColorFormatHslIsValidResult;
-	color: () => ColorFormatHslColorResult;
-	rgb: (params: ColorFormatHslRgbParams) => ColorFormatHslRgbResult;
-	hex: () => ColorFormatHslHexResult;
+  isValid: () => ColorFormatHslIsValidResult;
+  color: () => ColorFormatHslColorResult;
+  rgb: (params: ColorFormatHslRgbParams) => ColorFormatHslRgbResult;
+  hex: () => ColorFormatHslHexResult;
 }
 
 // color-rgb
 export type ColorFormatRgbIsValidResult = IsValidHexResult;
 
 export interface ColorFormatRgbHslParams {
-	round?: boolean;
+  round?: boolean;
 }
 
 export interface ColorFormatRgbHslResult extends HslFormat {}
@@ -89,15 +89,15 @@ export interface ColorFormatRgbHslResult extends HslFormat {}
 export interface ColorFormatRgbParams extends RgbFormat {}
 
 export interface ColorFormatRgbResult {
-	isValid: () => ColorFormatRgbIsValidResult;
-	hsl: (params: ColorFormatRgbHslParams) => ColorFormatRgbHslResult;
+  isValid: () => ColorFormatRgbIsValidResult;
+  hsl: (params: ColorFormatRgbHslParams) => ColorFormatRgbHslResult;
 }
 
 // color-hex
 export type ColorFormatHexIsValidResult = IsValidHexResult;
 
 export interface ColorFormatHexHslParams {
-	round?: boolean;
+  round?: boolean;
 }
 
 export interface ColorFormatHexHslResult extends HexToHslResult {}
@@ -105,8 +105,8 @@ export interface ColorFormatHexHslResult extends HexToHslResult {}
 export interface ColorFormatHexParams extends HexFormat {}
 
 export interface ColorFormatHexResult {
-	isValid: () => ColorFormatHexIsValidResult;
-	hsl: (params: ColorFormatHexHslParams) => ColorFormatHexHslResult;
+  isValid: () => ColorFormatHexIsValidResult;
+  hsl: (params: ColorFormatHexHslParams) => ColorFormatHexHslResult;
 }
 
 // color-rest

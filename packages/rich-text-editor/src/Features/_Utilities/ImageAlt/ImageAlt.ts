@@ -15,11 +15,11 @@ const placeholderAlt = "Image";
  * Returns the image's alt text: empty if it's hidden from screen readers, as its alt is then the placeholder.
  */
 export const getImageAltText = (imgAttrs: ImgAttrs | null) => {
-	if (!imgAttrs || imgAttrs["aria-hidden"] === "true") {
-		return "";
-	}
+  if (!imgAttrs || imgAttrs["aria-hidden"] === "true") {
+    return "";
+  }
 
-	return imgAttrs.alt ?? "";
+  return imgAttrs.alt ?? "";
 };
 
 /**
@@ -27,9 +27,9 @@ export const getImageAltText = (imgAttrs: ImgAttrs | null) => {
  * whitespace only).
  */
 export const createImageAltAttrs = (altText: string): ImgAltAttrs => {
-	if (altText.trim() === "") {
-		return { alt: placeholderAlt, "aria-hidden": "true" };
-	}
+  if (altText.trim() === "") {
+    return { alt: placeholderAlt, "aria-hidden": "true" };
+  }
 
-	return { alt: altText, "aria-hidden": null };
+  return { alt: altText, "aria-hidden": null };
 };

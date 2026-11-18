@@ -1,245 +1,245 @@
 import type { FormattingTogglePressed } from "#adapters/Formatting";
 import {
-	createBackgroundColorStructuredStyle,
-	createColorStructuredStyle,
-	createFontFamilyStructuredStyle,
-	createFontSizeStructuredStyle,
-	createLetterSpacingStructuredStyle,
-	createLineHeightStructuredStyle,
-	createPaddingBlockStructuredStyle,
-	createTextAlignStructuredStyle,
-	createTextIndentStructuredStyle,
+  createBackgroundColorStructuredStyle,
+  createColorStructuredStyle,
+  createFontFamilyStructuredStyle,
+  createFontSizeStructuredStyle,
+  createLetterSpacingStructuredStyle,
+  createLineHeightStructuredStyle,
+  createPaddingBlockStructuredStyle,
+  createTextAlignStructuredStyle,
+  createTextIndentStructuredStyle,
 } from "#structured-style";
 
 import type {
-	GetBackgroundColorStylesParams,
-	GetBackgroundColorStylesResult,
-	GetColorStylesParams,
-	GetColorStylesResult,
-	GetFontFamilyStylesParams,
-	GetFontFamilyStylesResult,
-	GetFontSizeStylesParams,
-	GetFontSizeStylesResult,
-	GetInlineTagsParams,
-	GetInlineTagsResult,
-	GetLetterSpacingStylesParams,
-	GetLetterSpacingStylesResult,
-	GetLineHeightStylesParams,
-	GetLineHeightStylesResult,
-	GetPaddingBlockStylesParams,
-	GetPaddingBlockStylesResult,
-	GetSelectionStylesDataParams,
-	GetSelectionStylesDataResult,
-	GetStylesParams,
-	GetStylesResult,
-	GetTextAlignStylesParams,
-	GetTextAlignStylesResult,
-	GetTextIndentStylesParams,
-	GetTextIndentStylesResult,
+  GetBackgroundColorStylesParams,
+  GetBackgroundColorStylesResult,
+  GetColorStylesParams,
+  GetColorStylesResult,
+  GetFontFamilyStylesParams,
+  GetFontFamilyStylesResult,
+  GetFontSizeStylesParams,
+  GetFontSizeStylesResult,
+  GetInlineTagsParams,
+  GetInlineTagsResult,
+  GetLetterSpacingStylesParams,
+  GetLetterSpacingStylesResult,
+  GetLineHeightStylesParams,
+  GetLineHeightStylesResult,
+  GetPaddingBlockStylesParams,
+  GetPaddingBlockStylesResult,
+  GetSelectionStylesDataParams,
+  GetSelectionStylesDataResult,
+  GetStylesParams,
+  GetStylesResult,
+  GetTextAlignStylesParams,
+  GetTextAlignStylesResult,
+  GetTextIndentStylesParams,
+  GetTextIndentStylesResult,
 } from "./GetSelectionStylesData-types";
 
 const getBackgroundColorStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetBackgroundColorStylesParams): GetBackgroundColorStylesResult => {
-	const { backgroundColor } = formattingActionState;
+  const { backgroundColor } = formattingActionState;
 
-	if (backgroundColor === undefined) {
-		return undefined;
-	}
+  if (backgroundColor === undefined) {
+    return undefined;
+  }
 
-	if (backgroundColor === null) {
-		return null;
-	}
+  if (backgroundColor === null) {
+    return null;
+  }
 
-	return createBackgroundColorStructuredStyle({ backgroundColor });
+  return createBackgroundColorStructuredStyle({ backgroundColor });
 };
 
 const getColorStyles = ({ formattingActionState }: GetColorStylesParams): GetColorStylesResult => {
-	const { color } = formattingActionState;
+  const { color } = formattingActionState;
 
-	if (color === undefined) {
-		return undefined;
-	}
+  if (color === undefined) {
+    return undefined;
+  }
 
-	if (color === null) {
-		return null;
-	}
+  if (color === null) {
+    return null;
+  }
 
-	return createColorStructuredStyle({ color });
+  return createColorStructuredStyle({ color });
 };
 
 const getFontFamilyStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetFontFamilyStylesParams): GetFontFamilyStylesResult => {
-	const { fontFamily } = formattingActionState;
+  const { fontFamily } = formattingActionState;
 
-	if (fontFamily === undefined) {
-		return undefined;
-	}
+  if (fontFamily === undefined) {
+    return undefined;
+  }
 
-	if (fontFamily === null) {
-		return null;
-	}
+  if (fontFamily === null) {
+    return null;
+  }
 
-	return createFontFamilyStructuredStyle({ fontFamily });
+  return createFontFamilyStructuredStyle({ fontFamily });
 };
 
 const getFontSizeStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetFontSizeStylesParams): GetFontSizeStylesResult => {
-	const { fontSize } = formattingActionState;
+  const { fontSize } = formattingActionState;
 
-	if (fontSize === undefined) {
-		return undefined;
-	}
+  if (fontSize === undefined) {
+    return undefined;
+  }
 
-	if (fontSize === null) {
-		return null;
-	}
+  if (fontSize === null) {
+    return null;
+  }
 
-	return createFontSizeStructuredStyle({ fontSize });
+  return createFontSizeStructuredStyle({ fontSize });
 };
 
 const getLetterSpacingStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetLetterSpacingStylesParams): GetLetterSpacingStylesResult => {
-	const { letterSpacing } = formattingActionState;
+  const { letterSpacing } = formattingActionState;
 
-	if (letterSpacing === undefined) {
-		return undefined;
-	}
+  if (letterSpacing === undefined) {
+    return undefined;
+  }
 
-	if (letterSpacing === null) {
-		return null;
-	}
+  if (letterSpacing === null) {
+    return null;
+  }
 
-	return createLetterSpacingStructuredStyle({ letterSpacing });
+  return createLetterSpacingStructuredStyle({ letterSpacing });
 };
 
 const getLineHeightStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetLineHeightStylesParams): GetLineHeightStylesResult => {
-	const { lineHeight } = formattingActionState;
+  const { lineHeight } = formattingActionState;
 
-	if (lineHeight === undefined) {
-		return undefined;
-	}
+  if (lineHeight === undefined) {
+    return undefined;
+  }
 
-	if (lineHeight === null) {
-		return null;
-	}
+  if (lineHeight === null) {
+    return null;
+  }
 
-	return createLineHeightStructuredStyle({ lineHeight });
+  return createLineHeightStructuredStyle({ lineHeight });
 };
 
 const getPaddingBlockStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetPaddingBlockStylesParams): GetPaddingBlockStylesResult => {
-	const { lineSpacing } = formattingActionState;
+  const { lineSpacing } = formattingActionState;
 
-	if (lineSpacing === undefined) {
-		return undefined;
-	}
+  if (lineSpacing === undefined) {
+    return undefined;
+  }
 
-	if (lineSpacing === null) {
-		return null;
-	}
+  if (lineSpacing === null) {
+    return null;
+  }
 
-	return createPaddingBlockStructuredStyle({ paddingBlock: lineSpacing });
+  return createPaddingBlockStructuredStyle({ paddingBlock: lineSpacing });
 };
 
 const getTextAlignStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetTextAlignStylesParams): GetTextAlignStylesResult => {
-	const { textAlign } = formattingActionState;
+  const { textAlign } = formattingActionState;
 
-	if (textAlign === undefined) {
-		return undefined;
-	}
+  if (textAlign === undefined) {
+    return undefined;
+  }
 
-	if (textAlign === null) {
-		return null;
-	}
+  if (textAlign === null) {
+    return null;
+  }
 
-	return createTextAlignStructuredStyle({ textAlign });
+  return createTextAlignStructuredStyle({ textAlign });
 };
 
 const getTextIndentStyles = ({
-	formattingActionState,
+  formattingActionState,
 }: GetTextIndentStylesParams): GetTextIndentStylesResult => {
-	const { indentation } = formattingActionState;
+  const { indentation } = formattingActionState;
 
-	if (indentation === undefined) {
-		return undefined;
-	}
+  if (indentation === undefined) {
+    return undefined;
+  }
 
-	if (indentation === null) {
-		return null;
-	}
+  if (indentation === null) {
+    return null;
+  }
 
-	return createTextIndentStructuredStyle({ textIndent: indentation });
+  return createTextIndentStructuredStyle({ textIndent: indentation });
 };
 
 const getStyles = ({ formattingActionState }: GetStylesParams): GetStylesResult => {
-	const backgroundColor = getBackgroundColorStyles({ formattingActionState });
-	const color = getColorStyles({ formattingActionState });
-	const fontFamily = getFontFamilyStyles({ formattingActionState });
-	const fontSize = getFontSizeStyles({ formattingActionState });
-	const letterSpacing = getLetterSpacingStyles({ formattingActionState });
-	const lineHeight = getLineHeightStyles({ formattingActionState });
-	const paddingBlock = getPaddingBlockStyles({ formattingActionState });
-	const textAlign = getTextAlignStyles({ formattingActionState });
-	const textIndent = getTextIndentStyles({ formattingActionState });
+  const backgroundColor = getBackgroundColorStyles({ formattingActionState });
+  const color = getColorStyles({ formattingActionState });
+  const fontFamily = getFontFamilyStyles({ formattingActionState });
+  const fontSize = getFontSizeStyles({ formattingActionState });
+  const letterSpacing = getLetterSpacingStyles({ formattingActionState });
+  const lineHeight = getLineHeightStyles({ formattingActionState });
+  const paddingBlock = getPaddingBlockStyles({ formattingActionState });
+  const textAlign = getTextAlignStyles({ formattingActionState });
+  const textIndent = getTextIndentStyles({ formattingActionState });
 
-	return {
-		backgroundColor,
-		color,
-		fontFamily,
-		fontSize,
-		textIndent,
-		letterSpacing,
-		lineHeight,
-		paddingBlock,
-		textAlign,
-	};
+  return {
+    backgroundColor,
+    color,
+    fontFamily,
+    fontSize,
+    textIndent,
+    letterSpacing,
+    lineHeight,
+    paddingBlock,
+    textAlign,
+  };
 };
 
 const getInlineTags = ({
-	formattingActionState,
-	whenMixed,
+  formattingActionState,
+  whenMixed,
 }: GetInlineTagsParams): GetInlineTagsResult => {
-	const getValue = (pressed: FormattingTogglePressed | undefined) => {
-		if (pressed === undefined) {
-			return undefined;
-		}
+  const getValue = (pressed: FormattingTogglePressed | undefined) => {
+    if (pressed === undefined) {
+      return undefined;
+    }
 
-		return {
-			true: false,
-			false: true,
-			mixed: { apply: true, remove: false }[whenMixed],
-		}[pressed];
-	};
+    return {
+      true: false,
+      false: true,
+      mixed: { apply: true, remove: false }[whenMixed],
+    }[pressed];
+  };
 
-	const b = getValue(formattingActionState.bold);
-	const code = getValue(formattingActionState.code);
-	const i = getValue(formattingActionState.italic);
-	const s = getValue(formattingActionState.strikethrough);
-	const sub = getValue(formattingActionState.subscript);
-	const sup = getValue(formattingActionState.superscript);
-	const u = getValue(formattingActionState.underline);
+  const b = getValue(formattingActionState.bold);
+  const code = getValue(formattingActionState.code);
+  const i = getValue(formattingActionState.italic);
+  const s = getValue(formattingActionState.strikethrough);
+  const sub = getValue(formattingActionState.subscript);
+  const sup = getValue(formattingActionState.superscript);
+  const u = getValue(formattingActionState.underline);
 
-	return { b, code, i, s, sub, sup, u };
+  return { b, code, i, s, sub, sup, u };
 };
 
 export const getSelectionStylesData = ({
-	formattingActionState,
-	whenMixed,
+  formattingActionState,
+  whenMixed,
 }: GetSelectionStylesDataParams): GetSelectionStylesDataResult => {
-	const { lineLocalName } = formattingActionState;
+  const { lineLocalName } = formattingActionState;
 
-	const inlineTags = getInlineTags({ formattingActionState, whenMixed });
+  const inlineTags = getInlineTags({ formattingActionState, whenMixed });
 
-	const styles = getStyles({ formattingActionState });
+  const styles = getStyles({ formattingActionState });
 
-	return { localName: lineLocalName, inlineTags, styles };
+  return { localName: lineLocalName, inlineTags, styles };
 };

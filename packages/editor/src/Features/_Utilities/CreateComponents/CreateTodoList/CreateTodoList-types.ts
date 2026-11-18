@@ -1,7 +1,7 @@
 import type { BlockComponentLine, Line } from "@rangex/core";
 
 export interface CreateTodoListParams {
-	childNodes?: Line[];
+  childNodes?: Line[];
 }
 
 export type CreateTodoListResult = BlockComponentLine;

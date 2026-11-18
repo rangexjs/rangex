@@ -6,37 +6,37 @@ import { getClosestScopedEditable } from "#engine-links";
 
 import { handleSelectionContextChange } from "../../_Utilities";
 import type {
-	BlockComponentItems,
-	HandleCommandMenuAvailableItemsParams,
-	IsItemAvailableParams,
-	IsItemAvailableResult,
+  BlockComponentItems,
+  HandleCommandMenuAvailableItemsParams,
+  IsItemAvailableParams,
+  IsItemAvailableResult,
 } from "./HandleCommandMenuAvailableItems-types";
 
 const lineLocalNameItems: CommandMenuItemValue[] = [
-	"p",
-	"h1",
-	"h2",
-	"h3",
-	"h4",
-	"h5",
-	"h6",
+  "p",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
 ] satisfies BlockContentLineLocalName[];
 
 // The component each item inserts
 const blockComponentItems: BlockComponentItems = {
-	"unordered-list": componentsName.list,
-	"ordered-list": componentsName.list,
-	"todo-list": componentsName.todoList,
-	"block-quote": componentsName.blockQuote,
-	"code-block": componentsName.codeBlock,
-	table: componentsName.table,
-	media: componentsName.sourcePlaceholder,
-	"accordion-item": componentsName.accordionItem,
-	separator: componentsName.separator,
+  "unordered-list": componentsName.list,
+  "ordered-list": componentsName.list,
+  "todo-list": componentsName.todoList,
+  "block-quote": componentsName.blockQuote,
+  "code-block": componentsName.codeBlock,
+  table: componentsName.table,
+  media: componentsName.sourcePlaceholder,
+  "accordion-item": componentsName.accordionItem,
+  separator: componentsName.separator,
 };
 
 const isLineLocalNameItem = (value: CommandMenuItemValue): value is BlockContentLineLocalName => {
-	return lineLocalNameItems.includes(value);
+  return lineLocalNameItems.includes(value);
 };
 
 /*
@@ -46,42 +46,42 @@ const isLineLocalNameItem = (value: CommandMenuItemValue): value is BlockContent
  * code block's line or a caption.
  */
 const isItemAvailable = ({
-	value,
-	adapterBus,
-	editorAPI,
-	blockComponentPlacement,
+  value,
+  adapterBus,
+  editorAPI,
+  blockComponentPlacement,
 }: IsItemAvailableParams): IsItemAvailableResult => {
-	if (isLineLocalNameItem(value)) {
-		if (!adapterBus.hasAdapter("formatting")) {
-			return false;
-		}
+  if (isLineLocalNameItem(value)) {
+    if (!adapterBus.hasAdapter("formatting")) {
+      return false;
+    }
 
-		const selection = editorAPI.getEditorSelection();
+    const selection = editorAPI.getEditorSelection();
 
-		const { toText } = selection.getBoundaryPoints();
+    const { toText } = selection.getBoundaryPoints();
 
-		const scopedEditable = getClosestScopedEditable({ fromNode: toText });
+    const scopedEditable = getClosestScopedEditable({ fromNode: toText });
 
-		if (!scopedEditable) {
-			return false;
-		}
+    if (!scopedEditable) {
+      return false;
+    }
 
-		const { $$allowedContentLineLocalNames } = scopedEditable;
+    const { $$allowedContentLineLocalNames } = scopedEditable;
 
-		if ($$allowedContentLineLocalNames === null) {
-			return true;
-		}
+    if ($$allowedContentLineLocalNames === null) {
+      return true;
+    }
 
-		// With a single allowed tag, every line already has it: there's nothing to switch to
-		return (
-			$$allowedContentLineLocalNames.length >= 2 && $$allowedContentLineLocalNames.includes(value)
-		);
-	}
+    // With a single allowed tag, every line already has it: there's nothing to switch to
+    return (
+      $$allowedContentLineLocalNames.length >= 2 && $$allowedContentLineLocalNames.includes(value)
+    );
+  }
 
-	return blockComponentPlacement.canInsertBySelection({
-		scope: "current",
-		allowedComponents: [blockComponentItems[value]],
-	});
+  return blockComponentPlacement.canInsertBySelection({
+    scope: "current",
+    allowedComponents: [blockComponentItems[value]],
+  });
 };
 
 /*
@@ -89,24 +89,24 @@ const isItemAvailable = ({
  * function.
  */
 export const handleCommandMenuAvailableItems = ({
-	configPort,
-	adapterBus,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  adapterBus,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleCommandMenuAvailableItemsParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const availableItems = commandMenuItemValues.filter((value) =>
-				isItemAvailable({
-					value,
-					adapterBus,
-					editorAPI,
-					blockComponentPlacement,
-				}),
-			);
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const availableItems = commandMenuItemValues.filter((value) =>
+        isItemAvailable({
+          value,
+          adapterBus,
+          editorAPI,
+          blockComponentPlacement,
+        }),
+      );
 
-			configPort.updateState({ availableItems });
-		},
-	});
+      configPort.updateState({ availableItems });
+    },
+  });
 };

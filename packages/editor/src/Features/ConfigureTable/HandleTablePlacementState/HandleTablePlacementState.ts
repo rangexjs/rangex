@@ -8,19 +8,19 @@ import type { HandleTablePlacementStateParams } from "./HandleTablePlacementStat
  * content. Returns a cleanup function.
  */
 export const handleTablePlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleTablePlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.table],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.table],
+      });
 
-			configPort.updateState({ canInsert });
-		},
-	});
+      configPort.updateState({ canInsert });
+    },
+  });
 };

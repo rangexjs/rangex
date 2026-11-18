@@ -23,64 +23,64 @@ import type { ValidateSnapshotParams, ValidateSnapshotResult } from "./ValidateS
  * snapshot.
  */
 export const validateSnapshot = ({
-	storedSnapshot,
-	limits,
-	root,
-	components,
+  storedSnapshot,
+  limits,
+  root,
+  components,
 }: ValidateSnapshotParams): ValidateSnapshotResult => {
-	ensureSanitizerConfigured();
+  ensureSanitizerConfigured();
 
-	const engineValidationFailed = validateStoredSnapshot({
-		storedSnapshot,
-		limits,
-	});
+  const engineValidationFailed = validateStoredSnapshot({
+    storedSnapshot,
+    limits,
+  });
 
-	if (engineValidationFailed) {
-		return { isValid: false, ...engineValidationFailed };
-	}
+  if (engineValidationFailed) {
+    return { isValid: false, ...engineValidationFailed };
+  }
 
-	// The engine's validation guarantees the StoredSnapshot's shape
-	const validStoredSnapshot = storedSnapshot as StoredSnapshot;
+  // The engine's validation guarantees the StoredSnapshot's shape
+  const validStoredSnapshot = storedSnapshot as StoredSnapshot;
 
-	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(validStoredSnapshot.snapshot);
+  const rootEditableDraft = snapshotManager.createDraftFromSnapshot(validStoredSnapshot.snapshot);
 
-	resolveNodeStorages({ rootEditableDraft });
+  resolveNodeStorages({ rootEditableDraft });
 
-	const rootFailed = validateRoot({ rootEditableDraft, ...root });
+  const rootFailed = validateRoot({ rootEditableDraft, ...root });
 
-	if (rootFailed) {
-		return { isValid: false, ...rootFailed };
-	}
+  if (rootFailed) {
+    return { isValid: false, ...rootFailed };
+  }
 
-	const componentValidators = createComponentValidators({ components });
+  const componentValidators = createComponentValidators({ components });
 
-	const componentsFailed = validateComponents({
-		rootEditableDraft,
-		componentValidators,
-	});
+  const componentsFailed = validateComponents({
+    rootEditableDraft,
+    componentValidators,
+  });
 
-	if (componentsFailed) {
-		return { isValid: false, ...componentsFailed };
-	}
+  if (componentsFailed) {
+    return { isValid: false, ...componentsFailed };
+  }
 
-	const formattingElementsFailed = validateFormattingElements({
-		rootEditableDraft,
-	});
+  const formattingElementsFailed = validateFormattingElements({
+    rootEditableDraft,
+  });
 
-	if (formattingElementsFailed) {
-		return { isValid: false, ...formattingElementsFailed };
-	}
+  if (formattingElementsFailed) {
+    return { isValid: false, ...formattingElementsFailed };
+  }
 
-	resolveTemplateVariableTexts({ rootEditableDraft });
+  resolveTemplateVariableTexts({ rootEditableDraft });
 
-	const resolvedSnapshot = snapshotManager.createSnapshotFromDraft(rootEditableDraft);
+  const resolvedSnapshot = snapshotManager.createSnapshotFromDraft(rootEditableDraft);
 
-	return {
-		isValid: true,
-		storedSnapshot: {
-			...validStoredSnapshot,
-			snapshot: resolvedSnapshot,
-			glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
-		},
-	};
+  return {
+    isValid: true,
+    storedSnapshot: {
+      ...validStoredSnapshot,
+      snapshot: resolvedSnapshot,
+      glyphFormatterInlineTagsOrder: [...glyphFormatterInlineTagsOrder],
+    },
+  };
 };

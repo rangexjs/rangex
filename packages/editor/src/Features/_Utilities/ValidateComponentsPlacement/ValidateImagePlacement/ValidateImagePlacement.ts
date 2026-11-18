@@ -1,8 +1,8 @@
 import { imageAttrsShape, validateComponentAttrs } from "#dom-attrs";
 
 import type {
-	ValidateImagePlacementParams,
-	ValidateImagePlacementResult,
+  ValidateImagePlacementParams,
+  ValidateImagePlacementResult,
 } from "./ValidateImagePlacement-types";
 
 /*
@@ -10,18 +10,18 @@ import type {
  * valid.
  */
 export const validateImagePlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateImagePlacementParams): ValidateImagePlacementResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: imageAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: attrs,
+    componentAttrsShape: imageAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

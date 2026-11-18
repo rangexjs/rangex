@@ -1,6 +1,6 @@
 import type {
-	SourcePlaceholderExtensionSettings,
-	UploadMediaFileFn,
+  SourcePlaceholderExtensionSettings,
+  UploadMediaFileFn,
 } from "@rangex/rich-text-editor/source-placeholder";
 
 import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
@@ -14,35 +14,35 @@ const devUploadsPath = "/__dev-uploads";
  * resulting URL. It's an XMLHttpRequest, as fetch can't report an upload's progress.
  */
 const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
-	return new Promise((resolve) => {
-		const request = new XMLHttpRequest();
+  return new Promise((resolve) => {
+    const request = new XMLHttpRequest();
 
-		request.upload.addEventListener("progress", (event) => {
-			if (event.lengthComputable) {
-				onProgress(event.loaded / event.total);
-			}
-		});
+    request.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        onProgress(event.loaded / event.total);
+      }
+    });
 
-		request.addEventListener("load", () => {
-			resolve(request.status === 201 ? request.responseText : null);
-		});
+    request.addEventListener("load", () => {
+      resolve(request.status === 201 ? request.responseText : null);
+    });
 
-		request.addEventListener("error", () => {
-			resolve(null);
-		});
+    request.addEventListener("error", () => {
+      resolve(null);
+    });
 
-		request.addEventListener("abort", () => {
-			resolve(null);
-		});
+    request.addEventListener("abort", () => {
+      resolve(null);
+    });
 
-		signal.addEventListener("abort", () => {
-			request.abort();
-		});
+    signal.addEventListener("abort", () => {
+      request.abort();
+    });
 
-		request.open("POST", devUploadsPath);
-		request.setRequestHeader("Content-Type", file.type || "application/octet-stream");
-		request.send(file);
-	});
+    request.open("POST", devUploadsPath);
+    request.setRequestHeader("Content-Type", file.type || "application/octet-stream");
+    request.send(file);
+  });
 };
 
 /*
@@ -51,28 +51,28 @@ const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
  * decides.
  */
 const transformEmbedURL = (url: string) => {
-	const parsedURL = parseAbsoluteURL(url);
+  const parsedURL = parseAbsoluteURL(url);
 
-	if (!parsedURL || isEmbedURL(parsedURL)) {
-		return url;
-	}
+  if (!parsedURL || isEmbedURL(parsedURL)) {
+    return url;
+  }
 
-	return toEmbedURL(parsedURL) ?? url;
+  return toEmbedURL(parsedURL) ?? url;
 };
 
 /*
  * Demo-only policy every Embed is inserted with: the sandbox and the browser features its iframe may use.
  */
 const embedIframeAttrs: SourcePlaceholderExtensionSettings["embedIframeAttrs"] = {
-	title: "Embedded content",
-	sandbox:
-		"allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation",
-	allow: "fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write",
-	loading: "lazy",
+  title: "Embedded content",
+  sandbox:
+    "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation",
+  allow: "fullscreen; autoplay; encrypted-media; picture-in-picture; clipboard-write",
+  loading: "lazy",
 };
 
 export const sourcePlaceholderSettings: SourcePlaceholderExtensionSettings = {
-	uploadFile,
-	transformEmbedURL,
-	embedIframeAttrs,
+  uploadFile,
+  transformEmbedURL,
+  embedIframeAttrs,
 };

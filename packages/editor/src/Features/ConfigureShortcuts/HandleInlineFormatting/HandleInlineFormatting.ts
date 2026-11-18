@@ -1,33 +1,33 @@
 import type {
-	GlyphFormatterInlineTag,
-	RangeFormatGlyphFormatterInlineTags,
-	TextFormatInlineTags,
+  GlyphFormatterInlineTag,
+  RangeFormatGlyphFormatterInlineTags,
+  TextFormatInlineTags,
 } from "@rangex/core";
 import { selectionStylesChangeEventType } from "@rangex/core";
 
 import type {
-	HandleInlineFormattingParams,
-	InlineFormattingShortcut,
+  HandleInlineFormattingParams,
+  InlineFormattingShortcut,
 } from "./HandleInlineFormatting-types";
 
 const inlineFormattingShortcuts: InlineFormattingShortcut[] = [
-	{ code: "KeyB", shiftKey: false, tag: "b" },
-	{ code: "KeyI", shiftKey: false, tag: "i" },
-	{ code: "KeyU", shiftKey: false, tag: "u" },
-	{ code: "KeyS", shiftKey: true, tag: "s" },
-	{ code: "KeyE", shiftKey: false, tag: "code" },
+  { code: "KeyB", shiftKey: false, tag: "b" },
+  { code: "KeyI", shiftKey: false, tag: "i" },
+  { code: "KeyU", shiftKey: false, tag: "u" },
+  { code: "KeyS", shiftKey: true, tag: "s" },
+  { code: "KeyE", shiftKey: false, tag: "code" },
 ];
 
 const matchInlineFormattingShortcut = (event: KeyboardEvent): GlyphFormatterInlineTag | null => {
-	if (!(event.ctrlKey || event.metaKey)) {
-		return null;
-	}
+  if (!(event.ctrlKey || event.metaKey)) {
+    return null;
+  }
 
-	const shortcut = inlineFormattingShortcuts.find(
-		({ code, shiftKey }) => event.code === code && event.shiftKey === shiftKey,
-	);
+  const shortcut = inlineFormattingShortcuts.find(
+    ({ code, shiftKey }) => event.code === code && event.shiftKey === shiftKey,
+  );
 
-	return shortcut?.tag ?? null;
+  return shortcut?.tag ?? null;
 };
 
 /*
@@ -36,51 +36,51 @@ const matchInlineFormattingShortcut = (event: KeyboardEvent): GlyphFormatterInli
  * that cached state until the next glyph is typed. Returns a cleanup function.
  */
 export const handleInlineFormatting = ({ editorAPI }: HandleInlineFormattingParams) => {
-	let rangeFormat: RangeFormatGlyphFormatterInlineTags | null = null;
-	let textFormatInlineTagsState: TextFormatInlineTags | null = null;
+  let rangeFormat: RangeFormatGlyphFormatterInlineTags | null = null;
+  let textFormatInlineTagsState: TextFormatInlineTags | null = null;
 
-	const unsubscribeSelectionStylesChange = editorAPI.subscribeEditorEvent({
-		type: selectionStylesChangeEventType,
-		callback: ({ selectionFormatStyles }) => {
-			rangeFormat = selectionFormatStyles.glyphFormatterInlineTags;
-			textFormatInlineTagsState = selectionFormatStyles.textFormatInlineTagsState;
-		},
-	});
+  const unsubscribeSelectionStylesChange = editorAPI.subscribeEditorEvent({
+    type: selectionStylesChangeEventType,
+    callback: ({ selectionFormatStyles }) => {
+      rangeFormat = selectionFormatStyles.glyphFormatterInlineTags;
+      textFormatInlineTagsState = selectionFormatStyles.textFormatInlineTagsState;
+    },
+  });
 
-	const unregisterKeydown = editorAPI.registerEventInterceptor({
-		type: "keydown",
-		interceptor: (event) => {
-			const tag = matchInlineFormattingShortcut(event);
+  const unregisterKeydown = editorAPI.registerEventInterceptor({
+    type: "keydown",
+    interceptor: (event) => {
+      const tag = matchInlineFormattingShortcut(event);
 
-			if (!tag) {
-				return false;
-			}
+      if (!tag) {
+        return false;
+      }
 
-			if (!rangeFormat) {
-				return false;
-			}
+      if (!rangeFormat) {
+        return false;
+      }
 
-			const { state, permission } = rangeFormat[tag];
+      const { state, permission } = rangeFormat[tag];
 
-			if (permission === "not-allowed") {
-				return false;
-			}
+      if (permission === "not-allowed") {
+        return false;
+      }
 
-			const caretState = textFormatInlineTagsState?.[tag];
-			const applied = caretState ?? state === "applied";
+      const caretState = textFormatInlineTagsState?.[tag];
+      const applied = caretState ?? state === "applied";
 
-			editorAPI.updateSelectionStyles({
-				inlineTags: { [tag]: !applied },
-			});
+      editorAPI.updateSelectionStyles({
+        inlineTags: { [tag]: !applied },
+      });
 
-			editorAPI.focus();
+      editorAPI.focus();
 
-			return true;
-		},
-	});
+      return true;
+    },
+  });
 
-	return () => {
-		unsubscribeSelectionStylesChange();
-		unregisterKeydown();
-	};
+  return () => {
+    unsubscribeSelectionStylesChange();
+    unregisterKeydown();
+  };
 };

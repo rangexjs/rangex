@@ -8,26 +8,26 @@ import type { HandleSelectionContextChangeParams } from "./HandleSelectionContex
  * function.
  */
 export const handleSelectionContextChange = ({
-	editorAPI,
-	onChange,
+  editorAPI,
+  onChange,
 }: HandleSelectionContextChangeParams) => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			onChange();
-		},
-	});
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      onChange();
+    },
+  });
 
-	const observer = new MutationObserver(() => {
-		onChange();
-	});
+  const observer = new MutationObserver(() => {
+    onChange();
+  });
 
-	observer.observe(rootEditable, { childList: true, subtree: true });
+  observer.observe(rootEditable, { childList: true, subtree: true });
 
-	return () => {
-		unsubscribe();
-		observer.disconnect();
-	};
+  return () => {
+    unsubscribe();
+    observer.disconnect();
+  };
 };

@@ -3,19 +3,19 @@ import type { BlockComponent } from "@rangex/core";
 import type { SourcePlaceholderId } from "../_Constants";
 
 export type SourcePlaceholderStorage = {
-	id: SourcePlaceholderId;
+  id: SourcePlaceholderId;
 };
 
 export type CreateSourcePlaceholderStorageResult = SourcePlaceholderStorage;
 
 export interface EnsureSourcePlaceholderStorageParams {
-	storage: unknown;
+  storage: unknown;
 }
 
 export type EnsureSourcePlaceholderStorageResult = SourcePlaceholderStorage;
 
 export interface EnsureNodeSourcePlaceholderStorageParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 export type EnsureNodeSourcePlaceholderStorageResult = SourcePlaceholderStorage;

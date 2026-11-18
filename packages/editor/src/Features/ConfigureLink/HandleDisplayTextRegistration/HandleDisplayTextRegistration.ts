@@ -4,10 +4,10 @@ import { assertNever } from "#utilities";
 
 import { getLinkPlacementMode } from "../_Utilities";
 import type {
-	GetDisplayTextFromLinkParams,
-	GetDisplayTextFromSelectionParams,
-	GetDisplayTextInfoResult,
-	HandleDisplayTextRegistrationParams,
+  GetDisplayTextFromLinkParams,
+  GetDisplayTextFromSelectionParams,
+  GetDisplayTextInfoResult,
+  HandleDisplayTextRegistrationParams,
 } from "./HandleDisplayTextRegistration-types";
 
 /*
@@ -15,29 +15,29 @@ import type {
  * persisted rather than the raw selection.
  */
 const getDisplayTextFromLink = ({
-	editorAPI,
-	link,
+  editorAPI,
+  link,
 }: GetDisplayTextFromLinkParams): GetDisplayTextInfoResult => {
-	const nestedEditable = link.$$querySelector(nestedEditableRoleSelector);
+  const nestedEditable = link.$$querySelector(nestedEditableRoleSelector);
 
-	if (!nestedEditable) {
-		throw new Error("Link is missing its NestedEditable.");
-	}
+  if (!nestedEditable) {
+    throw new Error("Link is missing its NestedEditable.");
+  }
 
-	const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
+  const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
 
-	if (contentLine?.$$editorRole !== contentLineRole) {
-		throw new Error("Link is missing its ContentLine.");
-	}
+  if (contentLine?.$$editorRole !== contentLineRole) {
+    throw new Error("Link is missing its ContentLine.");
+  }
 
-	const value = editorAPI.getPlainText({
-		fromNode: contentLine,
-		fromOffset: 0,
-		toNode: contentLine,
-		toOffset: contentLine.$$childNodes.length,
-	});
+  const value = editorAPI.getPlainText({
+    fromNode: contentLine,
+    fromOffset: 0,
+    toNode: contentLine,
+    toOffset: contentLine.$$childNodes.length,
+  });
 
-	return { type: "edit", value };
+  return { type: "edit", value };
 };
 
 /*
@@ -45,44 +45,44 @@ const getDisplayTextFromLink = ({
  * text when it wraps into a single link, none when it wraps into several.
  */
 const getDisplayTextFromSelection = ({
-	editorAPI,
+  editorAPI,
 }: GetDisplayTextFromSelectionParams): GetDisplayTextInfoResult => {
-	const mode = getLinkPlacementMode({ editorAPI });
+  const mode = getLinkPlacementMode({ editorAPI });
 
-	if (!mode) {
-		return null;
-	}
+  if (!mode) {
+    return null;
+  }
 
-	if (mode.type === "insert") {
-		return { type: "insert" };
-	}
+  if (mode.type === "insert") {
+    return { type: "insert" };
+  }
 
-	if (mode.type === "wrap") {
-		const { segments } = mode;
+  if (mode.type === "wrap") {
+    const { segments } = mode;
 
-		if (segments.length > 1) {
-			return { type: "multiple-wrap" };
-		}
+    if (segments.length > 1) {
+      return { type: "multiple-wrap" };
+    }
 
-		const [segment] = segments;
+    const [segment] = segments;
 
-		if (!segment) {
-			throw new Error("Wrap mode is missing its segment.");
-		}
+    if (!segment) {
+      throw new Error("Wrap mode is missing its segment.");
+    }
 
-		const { startText, startOffset, endText, endOffset } = segment.getBoundaryPoints();
+    const { startText, startOffset, endText, endOffset } = segment.getBoundaryPoints();
 
-		const value = editorAPI.getPlainText({
-			fromNode: startText,
-			fromOffset: startOffset,
-			toNode: endText,
-			toOffset: endOffset,
-		});
+    const value = editorAPI.getPlainText({
+      fromNode: startText,
+      fromOffset: startOffset,
+      toNode: endText,
+      toOffset: endOffset,
+    });
 
-		return { type: "single-wrap", value };
-	}
+    return { type: "single-wrap", value };
+  }
 
-	return assertNever(mode);
+  return assertNever(mode);
 };
 
 /*
@@ -90,16 +90,16 @@ const getDisplayTextFromSelection = ({
  * currently open link when one exists, or from the current selection otherwise.
  */
 export const handleDisplayTextRegistration = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleDisplayTextRegistrationParams) => {
-	configPort.registerDisplayText(() => {
-		const { currentComponent } = configPort;
+  configPort.registerDisplayText(() => {
+    const { currentComponent } = configPort;
 
-		if (currentComponent) {
-			return getDisplayTextFromLink({ editorAPI, link: currentComponent });
-		}
+    if (currentComponent) {
+      return getDisplayTextFromLink({ editorAPI, link: currentComponent });
+    }
 
-		return getDisplayTextFromSelection({ editorAPI });
-	});
+    return getDisplayTextFromSelection({ editorAPI });
+  });
 };

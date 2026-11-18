@@ -5,13 +5,13 @@ import type { MentionDefinition } from "./MentionDefinition-types";
  * it. No component is allowed in it.
  */
 export const mentionDefinition = {
-	nestedEditableProps: {
-		display: "inline",
-		editState: "inherit",
-		allowedComponents: [],
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  nestedEditableProps: {
+    display: "inline",
+    editState: "inherit",
+    allowedComponents: [],
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } satisfies MentionDefinition;

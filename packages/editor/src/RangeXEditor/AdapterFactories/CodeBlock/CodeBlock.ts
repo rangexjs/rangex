@@ -4,23 +4,23 @@ import { configureCodeBlock } from "#features";
 import type { AdapterFactoryFn } from "../../RangeXEditor-types";
 
 export const CodeBlock: AdapterFactoryFn<CodeBlockSettings> = (settings) => {
-	return (options, { editor }) => {
-		const adapter = createCodeBlockAdapter(settings, options);
+  return (options, { editor }) => {
+    const adapter = createCodeBlockAdapter(settings, options);
 
-		editor.codeBlock = adapter.publicPort;
+    editor.codeBlock = adapter.publicPort;
 
-		return {
-			configure({ editorAPI }) {
-				const cleanup = configureCodeBlock({
-					adapterBus: options.adapterBus,
-					configPort: adapter.configPort,
-					editorAPI,
-				});
+    return {
+      configure({ editorAPI }) {
+        const cleanup = configureCodeBlock({
+          adapterBus: options.adapterBus,
+          configPort: adapter.configPort,
+          editorAPI,
+        });
 
-				return () => {
-					cleanup();
-				};
-			},
-		};
-	};
+        return () => {
+          cleanup();
+        };
+      },
+    };
+  };
 };

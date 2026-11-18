@@ -3,59 +3,59 @@ import { type JSONPattern, matchJSON } from "#utilities";
 import { todoListId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
-	CreateTodoListStorageResult,
-	EnsureNodeTodoListStorageParams,
-	EnsureNodeTodoListStorageResult,
-	EnsureTodoListStorageParams,
-	EnsureTodoListStorageResult,
-	TodoListStorage,
+  CreateTodoListStorageResult,
+  EnsureNodeTodoListStorageParams,
+  EnsureNodeTodoListStorageResult,
+  EnsureTodoListStorageParams,
+  EnsureTodoListStorageResult,
+  TodoListStorage,
 } from "./TodoListStorage-types";
 
 /*
  * The TodoList's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
  */
 export const todoListStoragePattern = {
-	id: todoListId,
+  id: todoListId,
 } satisfies JSONPattern<TodoListStorage>;
 
 /*
  * Matches a value against todoListStoragePattern, returning the first mismatch or null.
  */
 export const matchTodoListStorage = (storage: unknown) => {
-	return matchJSON({ value: storage, pattern: todoListStoragePattern });
+  return matchJSON({ value: storage, pattern: todoListStoragePattern });
 };
 
 export const isTodoListStorage = (storage: unknown): storage is TodoListStorage => {
-	const mismatch = matchTodoListStorage(storage);
+  const mismatch = matchTodoListStorage(storage);
 
-	return !mismatch;
+  return !mismatch;
 };
 
 export const validateTodoListStorage = (storage: unknown): storage is TodoListStorage => {
-	return validateStorage(storage, isTodoListStorage);
+  return validateStorage(storage, isTodoListStorage);
 };
 
 export const createTodoListStorage = (): CreateTodoListStorageResult => ({
-	id: todoListId,
+  id: todoListId,
 });
 
 export const ensureTodoListStorage = ({
-	storage,
+  storage,
 }: EnsureTodoListStorageParams): EnsureTodoListStorageResult => {
-	if (validateTodoListStorage(storage)) {
-		return storage;
-	}
+  if (validateTodoListStorage(storage)) {
+    return storage;
+  }
 
-	return createTodoListStorage();
+  return createTodoListStorage();
 };
 
 export const ensureNodeTodoListStorage = ({
-	blockComponent,
+  blockComponent,
 }: EnsureNodeTodoListStorageParams): EnsureNodeTodoListStorageResult => {
-	const { $$customStorage } = blockComponent;
+  const { $$customStorage } = blockComponent;
 
-	const storage = ensureTodoListStorage({ storage: $$customStorage });
-	blockComponent.$$customStorage = storage;
+  const storage = ensureTodoListStorage({ storage: $$customStorage });
+  blockComponent.$$customStorage = storage;
 
-	return storage;
+  return storage;
 };

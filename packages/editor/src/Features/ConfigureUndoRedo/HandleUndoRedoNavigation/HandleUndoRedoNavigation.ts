@@ -5,23 +5,23 @@ import type { HandleUndoRedoNavigationParams } from "./HandleUndoRedoNavigation-
  * the editor after each step. Returns a cleanup function that unsubscribes both listeners.
  */
 export const handleUndoRedoNavigation = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleUndoRedoNavigationParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribeStepBack = configPort.onStepBack(() => {
-		snapshotTimeline.stepBack();
-		editorAPI.focus();
-	});
+  const unsubscribeStepBack = configPort.onStepBack(() => {
+    snapshotTimeline.stepBack();
+    editorAPI.focus();
+  });
 
-	const unsubscribeStepForward = configPort.onStepForward(() => {
-		snapshotTimeline.stepForward();
-		editorAPI.focus();
-	});
+  const unsubscribeStepForward = configPort.onStepForward(() => {
+    snapshotTimeline.stepForward();
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribeStepBack();
-		unsubscribeStepForward();
-	};
+  return () => {
+    unsubscribeStepBack();
+    unsubscribeStepForward();
+  };
 };

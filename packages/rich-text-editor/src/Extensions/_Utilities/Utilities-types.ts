@@ -9,15 +9,15 @@ export type ExtensionToolbarButtons = Partial<Record<ToolbarButtonValue, Compone
 export type ExtensionFloatingComponents = Component[];
 
 export interface ExtensionComponents {
-	toolbarButtons: ExtensionToolbarButtons;
-	floatingComponents: ExtensionFloatingComponents;
+  toolbarButtons: ExtensionToolbarButtons;
+  floatingComponents: ExtensionFloatingComponents;
 }
 
 export type RegisterFn = (editor: RangeXEditor) => void;
 
 export interface Extension {
-	createAdapter: () => AdapterFactoryValue;
-	components: ExtensionComponents;
-	uiOptions?: UIOptions;
-	register?: RegisterFn;
+  createAdapter: () => AdapterFactoryValue;
+  components: ExtensionComponents;
+  uiOptions?: UIOptions;
+  register?: RegisterFn;
 }

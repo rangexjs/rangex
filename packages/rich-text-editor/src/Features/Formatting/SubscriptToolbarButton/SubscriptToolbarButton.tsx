@@ -7,32 +7,32 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const SubscriptToolbarButton = () => {
-	const editor = useEditorContext();
-	const { formatting, readOnly } = editor;
+  const editor = useEditorContext();
+  const { formatting, readOnly } = editor;
 
-	if (!formatting) {
-		throw new Error("Formatting can't be undefined.");
-	}
+  if (!formatting) {
+    throw new Error("Formatting can't be undefined.");
+  }
 
-	const $subscript = Subscript(formatting);
-	const $readOnly = ReadOnly(readOnly);
+  const $subscript = Subscript(formatting);
+  const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(() => $subscript.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $subscript.disabled() || !!$readOnly?.checked());
 
-	const onClick = () => {
-		formatting.toggleSubscript();
-	};
+  const onClick = () => {
+    formatting.toggleSubscript();
+  };
 
-	return (
-		<span>
-			<ToolbarButton
-				checked={$subscript.checked()}
-				disabled={disabled()}
-				onClick={onClick}
-				aria-pressed={$subscript.pressed()}
-			>
-				<Icon name="Subscript" title="Subscript" class="size-4" />
-			</ToolbarButton>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton
+        checked={$subscript.checked()}
+        disabled={disabled()}
+        onClick={onClick}
+        aria-pressed={$subscript.pressed()}
+      >
+        <Icon name="Subscript" title="Subscript" class="size-4" />
+      </ToolbarButton>
+    </span>
+  );
 };

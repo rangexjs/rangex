@@ -1,29 +1,29 @@
 import {
-	contentLineRole,
-	isComponentDraft,
-	isFormattableTextDraft,
-	snapshotManager,
+  contentLineRole,
+  isComponentDraft,
+  isFormattableTextDraft,
+  snapshotManager,
 } from "@rangex/core";
 
 import { componentsName } from "#constants";
 import type { RootStorage, TemplateVariableStorage } from "#storage";
 
 import type {
-	GetDisplayContentLineParams,
-	ResolveTemplateVariableTextsParams,
+  GetDisplayContentLineParams,
+  ResolveTemplateVariableTextsParams,
 } from "./ResolveTemplateVariableTexts-types";
 
 /*
  * Returns the ContentLine holding a TemplateVariable's display text, which its validator guarantees.
  */
 const getDisplayContentLine = ({ componentDraft }: GetDisplayContentLineParams) => {
-	const contentLineDraft = componentDraft.query(({ editorRole }) => editorRole === contentLineRole);
+  const contentLineDraft = componentDraft.query(({ editorRole }) => editorRole === contentLineRole);
 
-	if (contentLineDraft?.editorRole !== contentLineRole) {
-		throw new Error("Expected a ContentLine inside the TemplateVariable.");
-	}
+  if (contentLineDraft?.editorRole !== contentLineRole) {
+    throw new Error("Expected a ContentLine inside the TemplateVariable.");
+  }
 
-	return contentLineDraft;
+  return contentLineDraft;
 };
 
 /*
@@ -33,46 +33,46 @@ const getDisplayContentLine = ({ componentDraft }: GetDisplayContentLineParams) 
  * components are validated, as it relies on their structure and resolved storages.
  */
 export const resolveTemplateVariableTexts = ({
-	rootEditableDraft,
+  rootEditableDraft,
 }: ResolveTemplateVariableTextsParams) => {
-	// validateRoot guarantees the storage's shape
-	const { templateVariable: fields } = rootEditableDraft.customStorage as RootStorage;
+  // validateRoot guarantees the storage's shape
+  const { templateVariable: fields } = rootEditableDraft.customStorage as RootStorage;
 
-	const nodeDrafts = rootEditableDraft.queryAll(isComponentDraft);
+  const nodeDrafts = rootEditableDraft.queryAll(isComponentDraft);
 
-	// queryAll's result isn't narrowed by its predicate
-	const componentDrafts = nodeDrafts.filter(isComponentDraft);
+  // queryAll's result isn't narrowed by its predicate
+  const componentDrafts = nodeDrafts.filter(isComponentDraft);
 
-	for (const componentDraft of componentDrafts) {
-		if (componentDraft.name !== componentsName.templateVariable) {
-			continue;
-		}
+  for (const componentDraft of componentDrafts) {
+    if (componentDraft.name !== componentsName.templateVariable) {
+      continue;
+    }
 
-		// The component's validator guarantees the storage's shape
-		const { fieldName } = componentDraft.customStorage as TemplateVariableStorage;
+    // The component's validator guarantees the storage's shape
+    const { fieldName } = componentDraft.customStorage as TemplateVariableStorage;
 
-		const hasValue = Object.hasOwn(fields, fieldName) && fields[fieldName] !== "";
+    const hasValue = Object.hasOwn(fields, fieldName) && fields[fieldName] !== "";
 
-		if (!hasValue) {
-			continue;
-		}
+    if (!hasValue) {
+      continue;
+    }
 
-		const fieldValue = fields[fieldName];
+    const fieldValue = fields[fieldName];
 
-		const contentLineDraft = getDisplayContentLine({ componentDraft });
+    const contentLineDraft = getDisplayContentLine({ componentDraft });
 
-		const textDrafts = contentLineDraft.childNodes.filter(isFormattableTextDraft);
+    const textDrafts = contentLineDraft.childNodes.filter(isFormattableTextDraft);
 
-		const displayText = textDrafts.map(({ data }) => data).join("");
+    const displayText = textDrafts.map(({ data }) => data).join("");
 
-		if (displayText === fieldValue) {
-			continue;
-		}
+    if (displayText === fieldValue) {
+      continue;
+    }
 
-		const fieldValueDrafts = snapshotManager.createFormattableTextDrafts({
-			data: fieldValue,
-		});
+    const fieldValueDrafts = snapshotManager.createFormattableTextDrafts({
+      data: fieldValue,
+    });
 
-		contentLineDraft.replaceChildren(...fieldValueDrafts);
-	}
+    contentLineDraft.replaceChildren(...fieldValueDrafts);
+  }
 };

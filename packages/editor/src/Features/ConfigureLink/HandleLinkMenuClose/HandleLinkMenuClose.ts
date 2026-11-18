@@ -3,50 +3,50 @@ import { EditorRange, editorSelectionChangeEventType } from "@rangex/core";
 import { observeEditorNodeAttachment } from "#engine-links";
 
 import type {
-	CloseOnLinkRemovalParams,
-	CloseOnSelectionChangeParams,
-	HandleLinkMenuCloseParams,
+  CloseOnLinkRemovalParams,
+  CloseOnSelectionChangeParams,
+  HandleLinkMenuCloseParams,
 } from "./HandleLinkMenuClose-types";
 
 /*
  * Closes the popover whenever the selection leaves the link it is anchored to or becomes non-collapsed.
  */
 const closeOnSelectionChange = ({
-	configPort,
-	editorAPI,
-	linkMenuPopoverController,
+  configPort,
+  editorAPI,
+  linkMenuPopoverController,
 }: CloseOnSelectionChangeParams) => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	return editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			if (!linkMenuPopoverController.isOpen) {
-				return;
-			}
+  return editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      if (!linkMenuPopoverController.isOpen) {
+        return;
+      }
 
-			const { currentComponent } = configPort;
-			const { anchorElement } = linkMenuPopoverController;
+      const { currentComponent } = configPort;
+      const { anchorElement } = linkMenuPopoverController;
 
-			if (currentComponent && anchorElement === currentComponent) {
-				const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+      if (currentComponent && anchorElement === currentComponent) {
+        const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-				const range = new EditorRange({
-					fromNode: fromText,
-					fromOffset,
-					toNode: toText,
-					toOffset,
-				});
+        const range = new EditorRange({
+          fromNode: fromText,
+          fromOffset,
+          toNode: toText,
+          toOffset,
+        });
 
-				// Keep the popover open only while the caret is collapsed inside its link.
-				if (range.isSinglePoint) {
-					return;
-				}
-			}
+        // Keep the popover open only while the caret is collapsed inside its link.
+        if (range.isSinglePoint) {
+          return;
+        }
+      }
 
-			linkMenuPopoverController.hide({});
-		},
-	});
+      linkMenuPopoverController.hide({});
+    },
+  });
 };
 
 /*
@@ -54,18 +54,18 @@ const closeOnSelectionChange = ({
  * removal). The controller skips the hide animation on its own for a detached anchor.
  */
 const closeOnLinkRemoval = ({ editorAPI, linkMenuPopoverController }: CloseOnLinkRemovalParams) => {
-	return observeEditorNodeAttachment({
-		editorAPI,
-		onMutation: () => {
-			const { anchorElement } = linkMenuPopoverController;
+  return observeEditorNodeAttachment({
+    editorAPI,
+    onMutation: () => {
+      const { anchorElement } = linkMenuPopoverController;
 
-			if (!anchorElement || anchorElement.isConnected) {
-				return;
-			}
+      if (!anchorElement || anchorElement.isConnected) {
+        return;
+      }
 
-			linkMenuPopoverController.hide({});
-		},
-	});
+      linkMenuPopoverController.hide({});
+    },
+  });
 };
 
 /*
@@ -73,22 +73,22 @@ const closeOnLinkRemoval = ({ editorAPI, linkMenuPopoverController }: CloseOnLin
  * is removed from the document. Returns a cleanup function.
  */
 export const handleLinkMenuClose = ({
-	configPort,
-	editorAPI,
-	linkMenuPopoverController,
+  configPort,
+  editorAPI,
+  linkMenuPopoverController,
 }: HandleLinkMenuCloseParams) => {
-	const unsubscribeSelectionChange = closeOnSelectionChange({
-		configPort,
-		editorAPI,
-		linkMenuPopoverController,
-	});
-	const unsubscribeLinkRemoval = closeOnLinkRemoval({
-		editorAPI,
-		linkMenuPopoverController,
-	});
+  const unsubscribeSelectionChange = closeOnSelectionChange({
+    configPort,
+    editorAPI,
+    linkMenuPopoverController,
+  });
+  const unsubscribeLinkRemoval = closeOnLinkRemoval({
+    editorAPI,
+    linkMenuPopoverController,
+  });
 
-	return () => {
-		unsubscribeSelectionChange();
-		unsubscribeLinkRemoval();
-	};
+  return () => {
+    unsubscribeSelectionChange();
+    unsubscribeLinkRemoval();
+  };
 };

@@ -1,33 +1,33 @@
 import { inlineComponentRole, isEditorElement } from "@rangex/core";
 
 import type {
-	GetClosestInlineComponentParams,
-	GetClosestInlineComponentResult,
+  GetClosestInlineComponentParams,
+  GetClosestInlineComponentResult,
 } from "./InlineComponent-types";
 
 export const getClosestInlineComponent = ({
-	fromNode,
-	components,
+  fromNode,
+  components,
 }: GetClosestInlineComponentParams): GetClosestInlineComponentResult => {
-	const { $$parentElement } = fromNode;
+  const { $$parentElement } = fromNode;
 
-	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
+  let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
-	while (parent) {
-		if (parent.$$editorRole === inlineComponentRole) {
-			if (!components) {
-				return parent;
-			}
+  while (parent) {
+    if (parent.$$editorRole === inlineComponentRole) {
+      if (!components) {
+        return parent;
+      }
 
-			const { $$name } = parent;
+      const { $$name } = parent;
 
-			if (components.some((name) => name === $$name)) {
-				return parent;
-			}
-		}
+      if (components.some((name) => name === $$name)) {
+        return parent;
+      }
+    }
 
-		parent = parent.$$parentElement;
-	}
+    parent = parent.$$parentElement;
+  }
 
-	return null;
+  return null;
 };

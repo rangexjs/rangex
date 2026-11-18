@@ -10,18 +10,18 @@ let isSanitizerConfigured = false;
  * Calling it again replaces all the previous policies.
  */
 export const configureSanitizer = (...sanitizerPolicies: SanitizerPolicy[]) => {
-	configureEngineSanitizer(...sanitizerPolicies, basePolicy);
+  configureEngineSanitizer(...sanitizerPolicies, basePolicy);
 
-	isSanitizerConfigured = true;
+  isSanitizerConfigured = true;
 };
 
 /*
  * Sets the basePolicy alone if configureSanitizer hasn't been called yet, so the Sanitizer never runs without rules.
  */
 export const ensureSanitizerConfigured = () => {
-	if (isSanitizerConfigured) {
-		return;
-	}
+  if (isSanitizerConfigured) {
+    return;
+  }
 
-	configureSanitizer();
+  configureSanitizer();
 };

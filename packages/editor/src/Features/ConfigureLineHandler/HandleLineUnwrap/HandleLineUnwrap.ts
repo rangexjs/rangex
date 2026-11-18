@@ -1,7 +1,7 @@
 import {
-	blockComponentLineRole,
-	blockComponentRole,
-	blockComponentRoleSelector,
+  blockComponentLineRole,
+  blockComponentRole,
+  blockComponentRoleSelector,
 } from "@rangex/core";
 
 import { handleComponentUnwrap } from "../../_Utilities";
@@ -13,27 +13,27 @@ import type { HandleLineUnwrapParams } from "./HandleLineUnwrap-types";
  * all.
  */
 export const handleLineUnwrap = ({
-	configPort,
-	editorAPI,
-	getCurrentLine,
+  configPort,
+  editorAPI,
+  getCurrentLine,
 }: HandleLineUnwrapParams) => {
-	return handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => {
-			const currentLine = getCurrentLine();
+  return handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => {
+      const currentLine = getCurrentLine();
 
-			if (currentLine?.$$editorRole !== blockComponentLineRole) {
-				return null;
-			}
+      if (currentLine?.$$editorRole !== blockComponentLineRole) {
+        return null;
+      }
 
-			const blockComponent = currentLine.$$querySelector(blockComponentRoleSelector);
+      const blockComponent = currentLine.$$querySelector(blockComponentRoleSelector);
 
-			if (blockComponent?.$$editorRole !== blockComponentRole) {
-				return null;
-			}
+      if (blockComponent?.$$editorRole !== blockComponentRole) {
+        return null;
+      }
 
-			return blockComponent;
-		},
-	});
+      return blockComponent;
+    },
+  });
 };

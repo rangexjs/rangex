@@ -1,8 +1,8 @@
 import type { JSONMismatchPath } from "../MatchJSON";
 import type {
-	FindValueAtPathParams,
-	FormatJSONMismatchParams,
-	FormatJSONMismatchResult,
+  FindValueAtPathParams,
+  FormatJSONMismatchParams,
+  FormatJSONMismatchResult,
 } from "./FormatJSONMismatch-types";
 
 const identifierPattern = /^[A-Za-z_$][\w$]*$/;
@@ -14,16 +14,16 @@ const maxLength = 64;
  * step is in it.
  */
 const findValueAtPath = ({ value, path }: FindValueAtPathParams) => {
-	let currentValue = value;
+  let currentValue = value;
 
-	for (const segment of path) {
-		const container = currentValue as Record<string | number, unknown>;
+  for (const segment of path) {
+    const container = currentValue as Record<string | number, unknown>;
 
-		// An own key only, so a missing key named like an inherited one (e.g. "constructor") still gives undefined
-		currentValue = Object.hasOwn(container, segment) ? container[segment] : undefined;
-	}
+    // An own key only, so a missing key named like an inherited one (e.g. "constructor") still gives undefined
+    currentValue = Object.hasOwn(container, segment) ? container[segment] : undefined;
+  }
 
-	return currentValue;
+  return currentValue;
 };
 
 /*
@@ -31,25 +31,25 @@ const findValueAtPath = ({ value, path }: FindValueAtPathParams) => {
  * isn't an identifier is escaped like a JSON string.
  */
 const formatPath = (path: JSONMismatchPath) => {
-	let formattedPath = "";
+  let formattedPath = "";
 
-	for (const segment of path) {
-		if (typeof segment === "number") {
-			formattedPath += `[${segment}]`;
-			continue;
-		}
+  for (const segment of path) {
+    if (typeof segment === "number") {
+      formattedPath += `[${segment}]`;
+      continue;
+    }
 
-		const cutSegment = segment.slice(0, maxLength);
+    const cutSegment = segment.slice(0, maxLength);
 
-		if (!identifierPattern.test(cutSegment)) {
-			formattedPath += `[${JSON.stringify(cutSegment)}]`;
-			continue;
-		}
+    if (!identifierPattern.test(cutSegment)) {
+      formattedPath += `[${JSON.stringify(cutSegment)}]`;
+      continue;
+    }
 
-		formattedPath += formattedPath ? `.${cutSegment}` : cutSegment;
-	}
+    formattedPath += formattedPath ? `.${cutSegment}` : cutSegment;
+  }
 
-	return formattedPath;
+  return formattedPath;
 };
 
 /*
@@ -57,15 +57,15 @@ const formatPath = (path: JSONMismatchPath) => {
  * a whole.
  */
 const formatValue = (value: unknown) => {
-	if (typeof value === "string") {
-		const cutValue = value.slice(0, maxLength);
+  if (typeof value === "string") {
+    const cutValue = value.slice(0, maxLength);
 
-		return JSON.stringify(cutValue);
-	}
+    return JSON.stringify(cutValue);
+  }
 
-	const formattedValue = JSON.stringify(value) ?? String(value);
+  const formattedValue = JSON.stringify(value) ?? String(value);
 
-	return formattedValue.slice(0, maxLength);
+  return formattedValue.slice(0, maxLength);
 };
 
 /*
@@ -75,24 +75,24 @@ const formatValue = (value: unknown) => {
  * message stays short and on one line whatever the value contains.
  */
 export const formatJSONMismatch = ({
-	value,
-	mismatch,
+  value,
+  mismatch,
 }: FormatJSONMismatchParams): FormatJSONMismatchResult => {
-	const { path, kind } = mismatch;
+  const { path, kind } = mismatch;
 
-	const formattedPath = formatPath(path);
+  const formattedPath = formatPath(path);
 
-	if (kind === "missing-key") {
-		return formattedPath;
-	}
+  if (kind === "missing-key") {
+    return formattedPath;
+  }
 
-	const valueAtPath = findValueAtPath({ value, path });
+  const valueAtPath = findValueAtPath({ value, path });
 
-	const formattedValue = formatValue(valueAtPath);
+  const formattedValue = formatValue(valueAtPath);
 
-	if (!formattedPath) {
-		return formattedValue;
-	}
+  if (!formattedPath) {
+    return formattedValue;
+  }
 
-	return `${formattedPath}: ${formattedValue}`;
+  return `${formattedPath}: ${formattedValue}`;
 };

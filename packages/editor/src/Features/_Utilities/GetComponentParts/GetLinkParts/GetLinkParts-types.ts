@@ -1,9 +1,9 @@
 import type { HTMLLayout, InlineComponent } from "@rangex/core";
 
 export interface GetLinkPartsParams {
-	link: InlineComponent;
+  link: InlineComponent;
 }
 
 export interface GetLinkPartsResult {
-	anchor: HTMLLayout;
+  anchor: HTMLLayout;
 }

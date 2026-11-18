@@ -1,18 +1,18 @@
 import type { EditorNode, Line } from "@rangex/core";
 
 export interface ReplaceContentLineIfNeededParams {
-	blockLevelLine: Line;
-	lines: Line[];
-	shouldReplaceContentLineIfEmpty?: boolean;
+  blockLevelLine: Line;
+  lines: Line[];
+  shouldReplaceContentLineIfEmpty?: boolean;
 }
 
 export interface ReplaceContentLineIfNeededResult {
-	updatedLine: Line;
-	updatedLines: Line[];
+  updatedLine: Line;
+  updatedLines: Line[];
 }
 
 export interface InsertBlockLinesParams {
-	fromNode: EditorNode;
-	lines: Line[];
-	shouldReplaceContentLineIfEmpty: boolean;
+  fromNode: EditorNode;
+  lines: Line[];
+  shouldReplaceContentLineIfEmpty: boolean;
 }

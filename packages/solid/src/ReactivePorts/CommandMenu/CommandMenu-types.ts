@@ -4,6 +4,6 @@ import type { Accessor } from "solid-js";
 import type { ReactiveCaretMenuPort } from "../_Utilities";
 
 export interface ReactiveCommandMenuPort {
-	caretMenu: ReactiveCaretMenuPort;
-	availableItems: Accessor<CommandMenuAvailableItems>;
+  caretMenu: ReactiveCaretMenuPort;
+  availableItems: Accessor<CommandMenuAvailableItems>;
 }

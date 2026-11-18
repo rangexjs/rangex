@@ -5,107 +5,107 @@ import { buildViewStyleText } from "../../Styles";
 import { createSnapshotView } from "../CreateSnapshotView";
 import { highlightCodeBlocks } from "../HighlightCodeBlocks";
 import type {
-	CreateElementParams,
-	CreateHTMLTreeParams,
-	CreateHTMLTreeResult,
-	CreateHTMLViewParams,
-	CreateHTMLViewResult,
-	CreateIdFn,
-	CreateTextParams,
-	HTMLViewStorage,
+  CreateElementParams,
+  CreateHTMLTreeParams,
+  CreateHTMLTreeResult,
+  CreateHTMLViewParams,
+  CreateHTMLViewResult,
+  CreateIdFn,
+  CreateTextParams,
+  HTMLViewStorage,
 } from "./CreateHTMLView-types";
 
 export const storageId = "data-storage-id";
 
 const selfClosing = new Set([
-	"area",
-	"base",
-	"br",
-	"col",
-	"embed",
-	"hr",
-	"img",
-	"input",
-	"link",
-	"meta",
-	"source",
-	"track",
-	"wbr",
+  "area",
+  "base",
+  "br",
+  "col",
+  "embed",
+  "hr",
+  "img",
+  "input",
+  "link",
+  "meta",
+  "source",
+  "track",
+  "wbr",
 ]);
 
 const generateId = (): CreateIdFn => {
-	let i = 0;
+  let i = 0;
 
-	return () => {
-		return `${i++}`;
-	};
+  return () => {
+    return `${i++}`;
+  };
 };
 
 const escapeText = (text: string) => {
-	return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 };
 
 const escapeAttribute = (value: string) => {
-	return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+  return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 };
 
 const createText = ({ textView }: CreateTextParams) => {
-	const { data } = textView;
+  const { data } = textView;
 
-	return escapeText(data);
+  return escapeText(data);
 };
 
 const createElement = ({ storage, createId, elementView, childNodes }: CreateElementParams) => {
-	const { customStorage, localName, attributes } = elementView;
+  const { customStorage, localName, attributes } = elementView;
 
-	const attrs = { ...attributes };
+  const attrs = { ...attributes };
 
-	if (isNodeStorage(customStorage)) {
-		const id = createId();
-		storage[id] = customStorage;
-		attrs[storageId] = id;
-	}
+  if (isNodeStorage(customStorage)) {
+    const id = createId();
+    storage[id] = customStorage;
+    attrs[storageId] = id;
+  }
 
-	const attrsList = Object.entries(attrs).map(
-		([name, value]) => ` ${name}="${escapeAttribute(String(value))}"`,
-	);
+  const attrsList = Object.entries(attrs).map(
+    ([name, value]) => ` ${name}="${escapeAttribute(String(value))}"`,
+  );
 
-	const attrText = attrsList.join("");
+  const attrText = attrsList.join("");
 
-	if (selfClosing.has(localName)) {
-		return `<${localName}${attrText} />`;
-	}
+  if (selfClosing.has(localName)) {
+    return `<${localName}${attrText} />`;
+  }
 
-	return `<${localName}${attrText}>${childNodes}</${localName}>`;
+  return `<${localName}${attrText}>${childNodes}</${localName}>`;
 };
 
 const createHTMLTree = ({
-	storage,
-	createId,
-	nodeView,
+  storage,
+  createId,
+  nodeView,
 }: CreateHTMLTreeParams): CreateHTMLTreeResult => {
-	if (nodeView.type === "text") {
-		return createText({ textView: nodeView });
-	}
+  if (nodeView.type === "text") {
+    return createText({ textView: nodeView });
+  }
 
-	if (nodeView.type === "comment") {
-		return "";
-	}
+  if (nodeView.type === "comment") {
+    return "";
+  }
 
-	if (nodeView.type === "element") {
-		const childNodes = nodeView.childNodes
-			.map((childView) => createHTMLTree({ storage, createId, nodeView: childView }))
-			.join("");
+  if (nodeView.type === "element") {
+    const childNodes = nodeView.childNodes
+      .map((childView) => createHTMLTree({ storage, createId, nodeView: childView }))
+      .join("");
 
-		return createElement({
-			storage,
-			createId,
-			elementView: nodeView,
-			childNodes,
-		});
-	}
+    return createElement({
+      storage,
+      createId,
+      elementView: nodeView,
+      childNodes,
+    });
+  }
 
-	return assertNever(nodeView);
+  return assertNever(nodeView);
 };
 
 /*
@@ -113,28 +113,28 @@ const createHTMLTree = ({
  * run on the server. Code blocks are syntax highlighted when `highlightCode` is given.
  */
 export const createHTMLView = ({
-	storedSnapshot,
-	limits,
-	styles,
-	highlightCode,
+  storedSnapshot,
+  limits,
+  styles,
+  highlightCode,
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
-	const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
+  const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
 
-	if (highlightCode) {
-		highlightCodeBlocks({ nodeView: snapshotView.tree, highlightCode });
-	}
+  if (highlightCode) {
+    highlightCodeBlocks({ nodeView: snapshotView.tree, highlightCode });
+  }
 
-	const storage: HTMLViewStorage = {};
-	const createId = generateId();
+  const storage: HTMLViewStorage = {};
+  const createId = generateId();
 
-	const html = createHTMLTree({
-		storage,
-		createId,
-		nodeView: snapshotView.tree,
-	});
+  const html = createHTMLTree({
+    storage,
+    createId,
+    nodeView: snapshotView.tree,
+  });
 
-	const viewStyleText = buildViewStyleText(styles);
-	const viewStyles = snapshotView.styles + viewStyleText;
+  const viewStyleText = buildViewStyleText(styles);
+  const viewStyles = snapshotView.styles + viewStyleText;
 
-	return { styles: viewStyles, html, storage };
+  return { styles: viewStyles, html, storage };
 };

@@ -11,48 +11,48 @@ import type { HandleTemplateVariableInsertionParams } from "./HandleTemplateVari
  * be placed is ignored. Returns a cleanup function.
  */
 export const handleTemplateVariableInsertion = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTemplateVariableInsertionParams) => {
-	const unsubscribe = configPort.onInsert(({ fieldName }) => {
-		const { rootEditable } = editorAPI;
+  const unsubscribe = configPort.onInsert(({ fieldName }) => {
+    const { rootEditable } = editorAPI;
 
-		const { templateVariable: storage } = getRootStorage({ rootEditable });
+    const { templateVariable: storage } = getRootStorage({ rootEditable });
 
-		const placementMismatch = validateTemplateVariablePlacement({
-			fieldName,
-			fieldsConfig: configPort.fieldsConfig,
-			storage,
-		});
+    const placementMismatch = validateTemplateVariablePlacement({
+      fieldName,
+      fieldsConfig: configPort.fieldsConfig,
+      storage,
+    });
 
-		if (placementMismatch) {
-			console.warn(placementMismatch);
-			return;
-		}
+    if (placementMismatch) {
+      console.warn(placementMismatch);
+      return;
+    }
 
-		const templateVariable = createTemplateVariable({
-			fieldName,
-			displayText: storage[fieldName],
-		});
+    const templateVariable = createTemplateVariable({
+      fieldName,
+      displayText: storage[fieldName],
+    });
 
-		const selection = editorAPI.getEditorSelection();
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+    const selection = editorAPI.getEditorSelection();
+    const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createContentLine({ localName: "p", childNodes: [templateVariable] })],
-			breakBeforeInsert: false,
-		});
+    editorAPI.insertNode({
+      fromNode: fromText,
+      fromOffset,
+      lines: [createContentLine({ localName: "p", childNodes: [templateVariable] })],
+      breakBeforeInsert: false,
+    });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

@@ -5,26 +5,26 @@ import type { GetTableCapacityParams, GetTableCapacityResult } from "./GetTableC
  * isn't spanned, otherwise it only shrinks its span.
  */
 export const getTableCapacity = ({
-	table,
-	tableCell,
-	limits,
+  table,
+  tableCell,
+  limits,
 }: GetTableCapacityParams): GetTableCapacityResult => {
-	const canAddRow = table.$$rowGroups.length < limits.maxRows;
-	const canAddCol = table.$$colGroups.length < limits.maxCols;
+  const canAddRow = table.$$rowGroups.length < limits.maxRows;
+  const canAddCol = table.$$colGroups.length < limits.maxCols;
 
-	if (!(tableCell instanceof HTMLTableCellElement)) {
-		return {
-			canAddRow,
-			canAddCol,
-			canSplitHorizontally: canAddCol,
-			canSplitVertically: canAddRow,
-		};
-	}
+  if (!(tableCell instanceof HTMLTableCellElement)) {
+    return {
+      canAddRow,
+      canAddCol,
+      canSplitHorizontally: canAddCol,
+      canSplitVertically: canAddRow,
+    };
+  }
 
-	return {
-		canAddRow,
-		canAddCol,
-		canSplitHorizontally: canAddCol || tableCell.colSpan > 1,
-		canSplitVertically: canAddRow || tableCell.rowSpan > 1,
-	};
+  return {
+    canAddRow,
+    canAddCol,
+    canSplitHorizontally: canAddCol || tableCell.colSpan > 1,
+    canSplitVertically: canAddRow || tableCell.rowSpan > 1,
+  };
 };

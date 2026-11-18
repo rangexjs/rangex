@@ -1,50 +1,50 @@
 import type { BlockComponentName } from "#constants";
 
 import type {
-	CreateAdapterParams,
-	DuplicateConfigPort,
-	DuplicatePublicPort,
-	InsertRootLineConfigPort,
-	InsertRootLinePublicPort,
-	RemoveConfigPort,
-	RemovePublicPort,
-	UnwrapConfigPort,
-	UnwrapPublicPort,
+  CreateAdapterParams,
+  DuplicateConfigPort,
+  DuplicatePublicPort,
+  InsertRootLineConfigPort,
+  InsertRootLinePublicPort,
+  RemoveConfigPort,
+  RemovePublicPort,
+  UnwrapConfigPort,
+  UnwrapPublicPort,
 } from "../_Utilities";
 import type { AccordionItemPlacementOption } from "../AccordionItemAdapter";
 import type { CodeBlockPlacementOption } from "../CodeBlockAdapter";
 import type { ListPlacementOption } from "../ListAdapter";
 
 export type TurnableComponentName = Extract<
-	BlockComponentName,
-	"accordion-item" | "block-quote" | "code-block" | "list" | "todo-list"
+  BlockComponentName,
+  "accordion-item" | "block-quote" | "code-block" | "list" | "todo-list"
 >;
 
 export type TurnIntoAvailability = Record<TurnableComponentName, boolean>;
 
 export interface TurnIntoPlacementOptions {
-	"accordion-item": AccordionItemPlacementOption;
-	"block-quote": object;
-	"code-block": CodeBlockPlacementOption;
-	list: ListPlacementOption;
-	"todo-list": object;
+  "accordion-item": AccordionItemPlacementOption;
+  "block-quote": object;
+  "code-block": CodeBlockPlacementOption;
+  list: ListPlacementOption;
+  "todo-list": object;
 }
 
 export type TurnIntoPlacementOption = {
-	[Name in TurnableComponentName]: {
-		name: Name;
-	} & TurnIntoPlacementOptions[Name];
+  [Name in TurnableComponentName]: {
+    name: Name;
+  } & TurnIntoPlacementOptions[Name];
 }[TurnableComponentName];
 
 export interface LineHandlerState {
-	turnIntoAvailability?: TurnIntoAvailability;
-	canRemove?: boolean;
-	canDuplicate?: boolean;
-	canUnwrap?: boolean;
+  turnIntoAvailability?: TurnIntoAvailability;
+  canRemove?: boolean;
+  canDuplicate?: boolean;
+  canUnwrap?: boolean;
 }
 
 export type OnTurnIntoAvailabilityUpdateCallbackFn = (
-	turnIntoAvailability: TurnIntoAvailability,
+  turnIntoAvailability: TurnIntoAvailability,
 ) => void;
 export type OnCanRemoveUpdateCallbackFn = (canRemove: boolean) => void;
 export type OnCanDuplicateUpdateCallbackFn = (canDuplicate: boolean) => void;
@@ -56,50 +56,50 @@ export type OnTurnIntoCallbackFn = (params: TurnIntoPlacementOption) => void;
 export interface UpdateStateParams extends LineHandlerState {}
 
 export interface LineHandlerConfigPortProps {
-	readonly element: HTMLDivElement;
+  readonly element: HTMLDivElement;
 
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onDragStart(callback: OnDragStartCallbackFn): () => void;
-	onTurnInto(callback: OnTurnIntoCallbackFn): () => void;
+  onDragStart(callback: OnDragStartCallbackFn): () => void;
+  onTurnInto(callback: OnTurnIntoCallbackFn): () => void;
 }
 
 export interface LineHandlerConfigPort
-	extends
-		LineHandlerConfigPortProps,
-		RemoveConfigPort,
-		UnwrapConfigPort,
-		DuplicateConfigPort,
-		InsertRootLineConfigPort {}
+  extends
+    LineHandlerConfigPortProps,
+    RemoveConfigPort,
+    UnwrapConfigPort,
+    DuplicateConfigPort,
+    InsertRootLineConfigPort {}
 
 export interface LineHandlerPublicPortProps {
-	readonly element: HTMLDivElement;
+  readonly element: HTMLDivElement;
 
-	readonly turnIntoAvailability: TurnIntoAvailability;
-	readonly canRemove: boolean;
-	readonly canDuplicate: boolean;
-	readonly canUnwrap: boolean;
+  readonly turnIntoAvailability: TurnIntoAvailability;
+  readonly canRemove: boolean;
+  readonly canDuplicate: boolean;
+  readonly canUnwrap: boolean;
 
-	onTurnIntoAvailabilityUpdate(callback: OnTurnIntoAvailabilityUpdateCallbackFn): () => void;
-	onCanRemoveUpdate(callback: OnCanRemoveUpdateCallbackFn): () => void;
-	onCanDuplicateUpdate(callback: OnCanDuplicateUpdateCallbackFn): () => void;
-	onCanUnwrapUpdate(callback: OnCanUnwrapUpdateCallbackFn): () => void;
+  onTurnIntoAvailabilityUpdate(callback: OnTurnIntoAvailabilityUpdateCallbackFn): () => void;
+  onCanRemoveUpdate(callback: OnCanRemoveUpdateCallbackFn): () => void;
+  onCanDuplicateUpdate(callback: OnCanDuplicateUpdateCallbackFn): () => void;
+  onCanUnwrapUpdate(callback: OnCanUnwrapUpdateCallbackFn): () => void;
 
-	dragStart(dragEvent: DragEvent): void;
-	turnInto(params: TurnIntoPlacementOption): void;
+  dragStart(dragEvent: DragEvent): void;
+  turnInto(params: TurnIntoPlacementOption): void;
 }
 
 export interface LineHandlerPublicPort
-	extends
-		LineHandlerPublicPortProps,
-		RemovePublicPort,
-		UnwrapPublicPort,
-		DuplicatePublicPort,
-		InsertRootLinePublicPort {}
+  extends
+    LineHandlerPublicPortProps,
+    RemovePublicPort,
+    UnwrapPublicPort,
+    DuplicatePublicPort,
+    InsertRootLinePublicPort {}
 
 export interface LineHandlerAdapter {
-	configPort: LineHandlerConfigPort;
-	publicPort: LineHandlerPublicPort;
+  configPort: LineHandlerConfigPort;
+  publicPort: LineHandlerPublicPort;
 }
 
 export interface LineHandlerSettings {}

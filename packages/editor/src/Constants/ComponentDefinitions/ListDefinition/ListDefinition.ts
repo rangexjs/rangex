@@ -6,20 +6,20 @@ import type { ListDefinition } from "./ListDefinition-types";
  * match it. An item only allows inline components, each listed by name, so a new component stays out until it's added.
  */
 export const listDefinition = {
-	lineType: "multi-line",
-	editState: "inherit",
-	itemNestedEditableProps: {
-		display: "block multi-line",
-		editState: "inherit",
-		allowedComponents: [
-			componentsName.link,
-			componentsName.mention,
-			componentsName.templateVariable,
-			componentsName.comment,
-		],
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  lineType: "multi-line",
+  editState: "inherit",
+  itemNestedEditableProps: {
+    display: "block multi-line",
+    editState: "inherit",
+    allowedComponents: [
+      componentsName.link,
+      componentsName.mention,
+      componentsName.templateVariable,
+      componentsName.comment,
+    ],
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } satisfies ListDefinition;

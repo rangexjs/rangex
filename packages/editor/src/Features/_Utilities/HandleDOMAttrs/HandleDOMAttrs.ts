@@ -1,32 +1,32 @@
 import type { Component } from "@rangex/core";
 
 import {
-	type ComponentAttrs,
-	type ComponentAttrsShape,
-	mergeComponentAttrs,
-	readComponentAttrs,
-	validateComponentAttrs,
-	validateComponentAttrsPatch,
-	writeComponentAttrs,
+  type ComponentAttrs,
+  type ComponentAttrsShape,
+  mergeComponentAttrs,
+  readComponentAttrs,
+  validateComponentAttrs,
+  validateComponentAttrsPatch,
+  writeComponentAttrs,
 } from "#dom-attrs";
 
 import type {
-	CreateDOMAttrsObserverParams,
-	CreateDOMAttrsObserverResult,
-	DOMAttrsObserverInternals,
-	HandleDOMAttrsParams,
+  CreateDOMAttrsObserverParams,
+  CreateDOMAttrsObserverResult,
+  DOMAttrsObserverInternals,
+  HandleDOMAttrsParams,
 } from "./HandleDOMAttrs-types";
 
 const getAttrNames = (componentAttrsShape: ComponentAttrsShape) => {
-	const attrNames = new Set<string>();
+  const attrNames = new Set<string>();
 
-	for (const elementAttrsShape of Object.values(componentAttrsShape)) {
-		for (const attrName of Object.keys(elementAttrsShape)) {
-			attrNames.add(attrName);
-		}
-	}
+  for (const elementAttrsShape of Object.values(componentAttrsShape)) {
+    for (const attrName of Object.keys(elementAttrsShape)) {
+      attrNames.add(attrName);
+    }
+  }
 
-	return [...attrNames];
+  return [...attrNames];
 };
 
 /*
@@ -35,71 +35,71 @@ const getAttrNames = (componentAttrsShape: ComponentAttrsShape) => {
  * component (e.g. its BlockComponentLine) is observed too, for its attributes only.
  */
 const createDOMAttrsObserver = <TComponent extends Component, TShape extends ComponentAttrsShape>({
-	domAttrsPort,
-	componentAttrsShape,
-	readDOMAttrs,
-	resolveElements,
+  domAttrsPort,
+  componentAttrsShape,
+  readDOMAttrs,
+  resolveElements,
 }: CreateDOMAttrsObserverParams<TComponent, TShape>): CreateDOMAttrsObserverResult<TComponent> => {
-	const internals: DOMAttrsObserverInternals<TComponent> = {
-		observedComponent: null,
-	};
+  const internals: DOMAttrsObserverInternals<TComponent> = {
+    observedComponent: null,
+  };
 
-	const attributeFilter = getAttrNames(componentAttrsShape);
+  const attributeFilter = getAttrNames(componentAttrsShape);
 
-	const observer = new MutationObserver(() => {
-		const { observedComponent } = internals;
+  const observer = new MutationObserver(() => {
+    const { observedComponent } = internals;
 
-		if (!observedComponent?.$$rootEditable) {
-			return;
-		}
+    if (!observedComponent?.$$rootEditable) {
+      return;
+    }
 
-		const domAttrs = readDOMAttrs(observedComponent);
+    const domAttrs = readDOMAttrs(observedComponent);
 
-		domAttrsPort.updateDOMAttrs(domAttrs);
-	});
+    domAttrsPort.updateDOMAttrs(domAttrs);
+  });
 
-	return {
-		get observedComponent() {
-			return internals.observedComponent;
-		},
+  return {
+    get observedComponent() {
+      return internals.observedComponent;
+    },
 
-		observe(component) {
-			observer.disconnect();
+    observe(component) {
+      observer.disconnect();
 
-			internals.observedComponent = component;
+      internals.observedComponent = component;
 
-			if (!component) {
-				domAttrsPort.updateDOMAttrs(null);
-				return;
-			}
+      if (!component) {
+        domAttrsPort.updateDOMAttrs(null);
+        return;
+      }
 
-			const domAttrs = readDOMAttrs(component);
+      const domAttrs = readDOMAttrs(component);
 
-			domAttrsPort.updateDOMAttrs(domAttrs);
+      domAttrsPort.updateDOMAttrs(domAttrs);
 
-			// The structure too, as an element with attributes can be added, removed or replaced
-			observer.observe(component, {
-				subtree: true,
-				childList: true,
-				attributes: true,
-				attributeFilter,
-			});
+      // The structure too, as an element with attributes can be added, removed or replaced
+      observer.observe(component, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter,
+      });
 
-			const componentElements = resolveElements(component);
+      const componentElements = resolveElements(component);
 
-			for (const element of Object.values(componentElements)) {
-				if (component.contains(element)) {
-					continue;
-				}
+      for (const element of Object.values(componentElements)) {
+        if (component.contains(element)) {
+          continue;
+        }
 
-				observer.observe(element, { attributes: true, attributeFilter });
-			}
-		},
+        observer.observe(element, { attributes: true, attributeFilter });
+      }
+    },
 
-		disconnect() {
-			observer.disconnect();
-		},
-	};
+    disconnect() {
+      observer.disconnect();
+    },
+  };
 };
 
 /*
@@ -110,94 +110,94 @@ const createDOMAttrsObserver = <TComponent extends Component, TShape extends Com
  * Returns a cleanup function.
  */
 export const handleDOMAttrs = <TComponent extends Component, TShape extends ComponentAttrsShape>({
-	currentComponentPort,
-	domAttrsPort,
-	editorAPI,
-	componentAttrsShape,
-	componentAttrValidators,
-	normalizeDOMAttrs = (domAttrs) => domAttrs,
-	resolveElements,
+  currentComponentPort,
+  domAttrsPort,
+  editorAPI,
+  componentAttrsShape,
+  componentAttrValidators,
+  normalizeDOMAttrs = (domAttrs) => domAttrs,
+  resolveElements,
 }: HandleDOMAttrsParams<TComponent, TShape>) => {
-	const readDOMAttrs = (component: TComponent) => {
-		const componentElements = resolveElements(component);
+  const readDOMAttrs = (component: TComponent) => {
+    const componentElements = resolveElements(component);
 
-		return readComponentAttrs({ componentElements, componentAttrsShape });
-	};
+    return readComponentAttrs({ componentElements, componentAttrsShape });
+  };
 
-	const validateNormalizedDOMAttrs = (domAttrs: ComponentAttrs<TShape>) =>
-		validateComponentAttrs({
-			componentAttrs: domAttrs,
-			componentAttrsShape,
-			componentAttrValidators,
-		});
+  const validateNormalizedDOMAttrs = (domAttrs: ComponentAttrs<TShape>) =>
+    validateComponentAttrs({
+      componentAttrs: domAttrs,
+      componentAttrsShape,
+      componentAttrValidators,
+    });
 
-	const domAttrsObserver = createDOMAttrsObserver({
-		domAttrsPort,
-		componentAttrsShape,
-		readDOMAttrs,
-		resolveElements,
-	});
+  const domAttrsObserver = createDOMAttrsObserver({
+    domAttrsPort,
+    componentAttrsShape,
+    readDOMAttrs,
+    resolveElements,
+  });
 
-	domAttrsObserver.observe(currentComponentPort.currentComponent);
+  domAttrsObserver.observe(currentComponentPort.currentComponent);
 
-	const unsubscribeCurrentComponentUpdate = currentComponentPort.onCurrentComponentUpdate(
-		(currentComponent) => {
-			domAttrsObserver.observe(currentComponent);
-		},
-	);
+  const unsubscribeCurrentComponentUpdate = currentComponentPort.onCurrentComponentUpdate(
+    (currentComponent) => {
+      domAttrsObserver.observe(currentComponent);
+    },
+  );
 
-	domAttrsPort.registerValidateDOMAttrs((patch) => {
-		const normalizedPatch = normalizeDOMAttrs(patch);
+  domAttrsPort.registerValidateDOMAttrs((patch) => {
+    const normalizedPatch = normalizeDOMAttrs(patch);
 
-		return validateComponentAttrsPatch({
-			componentAttrsPatch: normalizedPatch,
-			componentAttrsShape,
-			componentAttrValidators,
-		});
-	});
+    return validateComponentAttrsPatch({
+      componentAttrsPatch: normalizedPatch,
+      componentAttrsShape,
+      componentAttrValidators,
+    });
+  });
 
-	domAttrsPort.registerChangeDOMAttrs((patch) => {
-		const { observedComponent } = domAttrsObserver;
-		const { domAttrs } = domAttrsPort;
+  domAttrsPort.registerChangeDOMAttrs((patch) => {
+    const { observedComponent } = domAttrsObserver;
+    const { domAttrs } = domAttrsPort;
 
-		if (!(observedComponent && domAttrs)) {
-			throw new Error("No component is currently open.");
-		}
+    if (!(observedComponent && domAttrs)) {
+      throw new Error("No component is currently open.");
+    }
 
-		const mergedDOMAttrs = mergeComponentAttrs({
-			componentAttrs: domAttrs,
-			componentAttrsPatch: patch,
-		});
+    const mergedDOMAttrs = mergeComponentAttrs({
+      componentAttrs: domAttrs,
+      componentAttrsPatch: patch,
+    });
 
-		const normalizedDOMAttrs = normalizeDOMAttrs(mergedDOMAttrs);
+    const normalizedDOMAttrs = normalizeDOMAttrs(mergedDOMAttrs);
 
-		const mismatch = validateNormalizedDOMAttrs(normalizedDOMAttrs);
+    const mismatch = validateNormalizedDOMAttrs(normalizedDOMAttrs);
 
-		if (mismatch) {
-			return mismatch;
-		}
+    if (mismatch) {
+      return mismatch;
+    }
 
-		const componentElements = resolveElements(observedComponent);
+    const componentElements = resolveElements(observedComponent);
 
-		writeComponentAttrs({
-			componentElements,
-			componentAttrs: normalizedDOMAttrs,
-		});
+    writeComponentAttrs({
+      componentElements,
+      componentAttrs: normalizedDOMAttrs,
+    });
 
-		// Read back right away: the Sanitizer can reject an attribute, and the observer only updates the domAttrs later
-		const writtenDOMAttrs = readDOMAttrs(observedComponent);
+    // Read back right away: the Sanitizer can reject an attribute, and the observer only updates the domAttrs later
+    const writtenDOMAttrs = readDOMAttrs(observedComponent);
 
-		domAttrsPort.updateDOMAttrs(writtenDOMAttrs);
+    domAttrsPort.updateDOMAttrs(writtenDOMAttrs);
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		return null;
-	});
+    return null;
+  });
 
-	return () => {
-		unsubscribeCurrentComponentUpdate();
-		domAttrsObserver.disconnect();
-	};
+  return () => {
+    unsubscribeCurrentComponentUpdate();
+    domAttrsObserver.disconnect();
+  };
 };

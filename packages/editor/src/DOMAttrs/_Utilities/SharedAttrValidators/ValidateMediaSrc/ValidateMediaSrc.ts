@@ -5,18 +5,18 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
  * it's a safe URL is the Sanitizer's job. An invalid one is rejected: the media has no src to fall back to.
  */
 export const validateMediaSrc: ValidateAttrFn<string> = ({ value }) => {
-	const maxSrcLength = 4096;
+  const maxSrcLength = 4096;
 
-	if (value.trim() === "") {
-		return { kind: "reject", reason: "must not be empty" };
-	}
+  if (value.trim() === "") {
+    return { kind: "reject", reason: "must not be empty" };
+  }
 
-	if (value.length > maxSrcLength) {
-		return {
-			kind: "reject",
-			reason: `must be at most ${maxSrcLength} characters long`,
-		};
-	}
+  if (value.length > maxSrcLength) {
+    return {
+      kind: "reject",
+      reason: `must be at most ${maxSrcLength} characters long`,
+    };
+  }
 
-	return null;
+  return null;
 };

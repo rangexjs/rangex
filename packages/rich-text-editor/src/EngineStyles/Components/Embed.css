@@ -1,27 +1,27 @@
 [data-rx-editor-role="block-component-line"] {
-	&:has([data-rx-name="embed"]) {
-		margin-block: 8px;
-	}
+  &:has([data-rx-name="embed"]) {
+    margin-block: 8px;
+  }
 
-	[data-rx-editor-role="block-component"] {
-		&[data-rx-name="embed"] {
-			& figure {
-				display: flex;
-				flex-direction: column;
-				gap: 6px;
-				margin: 0;
-			}
+  [data-rx-editor-role="block-component"] {
+    &[data-rx-name="embed"] {
+      & figure {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+      }
 
-			& iframe {
-				display: block;
-				max-width: 100%;
-				width: 100%;
-				border: none;
+      & iframe {
+        display: block;
+        max-width: 100%;
+        width: 100%;
+        border: none;
 
-				&:not([data-aspect-ratio]) {
-					aspect-ratio: 16 / 9;
-				}
-			}
-		}
-	}
+        &:not([data-aspect-ratio]) {
+          aspect-ratio: 16 / 9;
+        }
+      }
+    }
+  }
 }

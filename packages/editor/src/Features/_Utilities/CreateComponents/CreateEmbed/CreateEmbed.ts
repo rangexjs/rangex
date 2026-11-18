@@ -1,8 +1,8 @@
 import {
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createHTMLLayout,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createHTMLLayout,
 } from "@rangex/core";
 
 import { componentsName } from "#constants";
@@ -16,30 +16,30 @@ import type { CreateEmbedParams, CreateEmbedResult } from "./CreateEmbed-types";
  * attributes of its line, block and `iframe`. They aren't validated here.
  */
 export const createEmbed = ({ attrs }: CreateEmbedParams): CreateEmbedResult => {
-	return createBlockComponentLine({
-		domAttrs: toDOMAttrs(attrs.line),
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.embed,
-			content: { type: "custom" },
-			customStorage: createEmbedStorage(),
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			domAttrs: toDOMAttrs(attrs.block),
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "iframe",
-							domAttrs: toDOMAttrs(attrs.iframe),
-							childNodes: [],
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  return createBlockComponentLine({
+    domAttrs: toDOMAttrs(attrs.line),
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.embed,
+      content: { type: "custom" },
+      customStorage: createEmbedStorage(),
+      editState: "false",
+      shouldSelectOnNavigation: true,
+      shouldSelectBeforeRemove: true,
+      domAttrs: toDOMAttrs(attrs.block),
+      childNodes: [
+        createHTMLLayout({
+          localName: "figure",
+          childNodes: [
+            createHTMLLayout({
+              localName: "iframe",
+              domAttrs: toDOMAttrs(attrs.iframe),
+              childNodes: [],
+            }),
+          ],
+        }),
+      ],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 };

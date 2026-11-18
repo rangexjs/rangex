@@ -8,23 +8,23 @@ import type { HandleAccordionItemPlacementStateParams } from "./HandleAccordionI
  * content. Returns a cleanup function.
  */
 export const handleAccordionItemPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleAccordionItemPlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.accordionItem],
-			});
-			const canWrap = blockComponentPlacement.canWrapBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.accordionItem],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.accordionItem],
+      });
+      const canWrap = blockComponentPlacement.canWrapBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.accordionItem],
+      });
 
-			configPort.updateState({ canInsert, canWrap });
-		},
-	});
+      configPort.updateState({ canInsert, canWrap });
+    },
+  });
 };

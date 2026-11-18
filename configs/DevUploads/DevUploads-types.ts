@@ -1,9 +1,9 @@
 export interface DevUpload {
-	contentType: string;
-	data: Uint8Array;
+  contentType: string;
+  data: Uint8Array;
 }
 
 export interface ByteRange {
-	start: number;
-	end: number;
+  start: number;
+  end: number;
 }

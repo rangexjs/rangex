@@ -10,17 +10,17 @@ const externalPackageNames = Object.keys(packageJson.peerDependencies);
 const external = externalPackageNames.map((name) => new RegExp(`^${name}(/.*)?$`));
 
 export default defineConfig({
-	base: "./",
-	plugins: [solid()],
-	build: {
-		target: ["chrome159", "firefox159", "safari27.3"],
-		outDir: "dist",
-		sourcemap: false,
-		lib: {
-			entry: "src/index.ts",
-			fileName: "index",
-			formats: ["es"],
-		},
-		rolldownOptions: { external },
-	},
+  base: "./",
+  plugins: [solid()],
+  build: {
+    target: ["chrome159", "firefox159", "safari27.3"],
+    outDir: "dist",
+    sourcemap: false,
+    lib: {
+      entry: "src/index.ts",
+      fileName: "index",
+      formats: ["es"],
+    },
+    rolldownOptions: { external },
+  },
 });

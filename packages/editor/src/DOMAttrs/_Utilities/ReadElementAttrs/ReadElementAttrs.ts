@@ -5,22 +5,22 @@ import type { ReadElementAttrsParams, ReadElementAttrsResult } from "./ReadEleme
  * Reads the element's attributes that are in its shape. An attribute that isn't set is null.
  */
 export const readElementAttrs = <TElementAttrsShape extends ElementAttrsShape>({
-	element,
-	elementAttrsShape,
+  element,
+  elementAttrsShape,
 }: ReadElementAttrsParams<TElementAttrsShape>): ReadElementAttrsResult<TElementAttrsShape> => {
-	const elementAttrs: Record<string, string | null> = {};
+  const elementAttrs: Record<string, string | null> = {};
 
-	for (const [attrName, requirement] of Object.entries(elementAttrsShape)) {
-		const value = element.getAttribute(attrName);
+  for (const [attrName, requirement] of Object.entries(elementAttrsShape)) {
+    const value = element.getAttribute(attrName);
 
-		const valueByRequirement = {
-			required: value ?? "",
-			optional: value,
-		};
+    const valueByRequirement = {
+      required: value ?? "",
+      optional: value,
+    };
 
-		elementAttrs[attrName] = valueByRequirement[requirement];
-	}
+    elementAttrs[attrName] = valueByRequirement[requirement];
+  }
 
-	// Has one value for each attribute of the shape, typed by its requirement
-	return elementAttrs as ReadElementAttrsResult<TElementAttrsShape>;
+  // Has one value for each attribute of the shape, typed by its requirement
+  return elementAttrs as ReadElementAttrsResult<TElementAttrsShape>;
 };

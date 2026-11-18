@@ -1,20 +1,20 @@
 import {
-	blockComponentLineRole,
-	blockComponentRole,
-	blockComponentRoleSelector,
-	contentLineRole,
+  blockComponentLineRole,
+  blockComponentRole,
+  blockComponentRoleSelector,
+  contentLineRole,
 } from "@rangex/core";
 
 import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
 
 import type {
-	HandleBlockComponentLineParams,
-	HandleContentLineParams,
-	HandleDragMenuStateParams,
-	HandleDragMenuStateResult,
-	IsAllowedAtLineParams,
-	IsAllowedAtLineResult,
+  HandleBlockComponentLineParams,
+  HandleContentLineParams,
+  HandleDragMenuStateParams,
+  HandleDragMenuStateResult,
+  IsAllowedAtLineParams,
+  IsAllowedAtLineResult,
 } from "./HandleDragMenuState-types";
 
 /*
@@ -22,99 +22,99 @@ import type {
  * $$allowedComponents.
  */
 const isAllowedAtLine = ({
-	blockComponentPlacement,
-	line,
-	name,
+  blockComponentPlacement,
+  line,
+  name,
 }: IsAllowedAtLineParams): IsAllowedAtLineResult => {
-	return blockComponentPlacement.canWrap({
-		fromNode: line,
-		fromOffset: 0,
-		toNode: line,
-		toOffset: 0,
-		scope: "current",
-		allowedComponents: [name],
-	});
+  return blockComponentPlacement.canWrap({
+    fromNode: line,
+    fromOffset: 0,
+    toNode: line,
+    toOffset: 0,
+    scope: "current",
+    allowedComponents: [name],
+  });
 };
 
 const handleContentLine = ({
-	configPort,
-	blockComponentPlacement,
-	contentLine,
+  configPort,
+  blockComponentPlacement,
+  contentLine,
 }: HandleContentLineParams) => {
-	const isVisible = (name: BlockComponentName) =>
-		isAllowedAtLine({ blockComponentPlacement, line: contentLine, name });
+  const isVisible = (name: BlockComponentName) =>
+    isAllowedAtLine({ blockComponentPlacement, line: contentLine, name });
 
-	const { accordionItem, blockQuote, codeBlock, list, todoList } = componentsName;
+  const { accordionItem, blockQuote, codeBlock, list, todoList } = componentsName;
 
-	configPort.updateState({
-		turnIntoAvailability: {
-			[accordionItem]: isVisible(accordionItem),
-			[blockQuote]: isVisible(blockQuote),
-			[codeBlock]: isVisible(codeBlock),
-			[list]: isVisible(list),
-			[todoList]: isVisible(todoList),
-		},
-		canRemove: true,
-		canDuplicate: true,
-		canUnwrap: false,
-	});
+  configPort.updateState({
+    turnIntoAvailability: {
+      [accordionItem]: isVisible(accordionItem),
+      [blockQuote]: isVisible(blockQuote),
+      [codeBlock]: isVisible(codeBlock),
+      [list]: isVisible(list),
+      [todoList]: isVisible(todoList),
+    },
+    canRemove: true,
+    canDuplicate: true,
+    canUnwrap: false,
+  });
 };
 
 const handleBlockComponentLine = ({
-	configPort,
-	blockComponentPlacement,
-	blockComponentLine,
+  configPort,
+  blockComponentPlacement,
+  blockComponentLine,
 }: HandleBlockComponentLineParams) => {
-	const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
+  const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
-	if (blockComponent?.$$editorRole !== blockComponentRole) {
-		throw new Error("BlockComponent's type is invalid.");
-	}
+  if (blockComponent?.$$editorRole !== blockComponentRole) {
+    throw new Error("BlockComponent's type is invalid.");
+  }
 
-	const { $$name } = blockComponent;
+  const { $$name } = blockComponent;
 
-	const { accordionItem, blockQuote, codeBlock, list, table, todoList } = componentsName;
+  const { accordionItem, blockQuote, codeBlock, list, table, todoList } = componentsName;
 
-	const turnableComponents: BlockComponentName[] = [
-		accordionItem,
-		blockQuote,
-		codeBlock,
-		list,
-		todoList,
-	];
+  const turnableComponents: BlockComponentName[] = [
+    accordionItem,
+    blockQuote,
+    codeBlock,
+    list,
+    todoList,
+  ];
 
-	const isVisible = (name: BlockComponentName) =>
-		$$name !== name &&
-		turnableComponents.includes($$name as (typeof turnableComponents)[number]) &&
-		isAllowedAtLine({
-			blockComponentPlacement,
-			line: blockComponentLine,
-			name,
-		});
+  const isVisible = (name: BlockComponentName) =>
+    $$name !== name &&
+    turnableComponents.includes($$name as (typeof turnableComponents)[number]) &&
+    isAllowedAtLine({
+      blockComponentPlacement,
+      line: blockComponentLine,
+      name,
+    });
 
-	const unwrappableComponents: BlockComponentName[] = [
-		accordionItem,
-		blockQuote,
-		codeBlock,
-		list,
-		table,
-		todoList,
-	];
+  const unwrappableComponents: BlockComponentName[] = [
+    accordionItem,
+    blockQuote,
+    codeBlock,
+    list,
+    table,
+    todoList,
+  ];
 
-	const canUnwrap = unwrappableComponents.some((name) => name === $$name);
+  const canUnwrap = unwrappableComponents.some((name) => name === $$name);
 
-	configPort.updateState({
-		turnIntoAvailability: {
-			[accordionItem]: isVisible(accordionItem),
-			[blockQuote]: isVisible(blockQuote),
-			[codeBlock]: isVisible(codeBlock),
-			[list]: isVisible(list),
-			[todoList]: isVisible(todoList),
-		},
-		canRemove: true,
-		canDuplicate: true,
-		canUnwrap,
-	});
+  configPort.updateState({
+    turnIntoAvailability: {
+      [accordionItem]: isVisible(accordionItem),
+      [blockQuote]: isVisible(blockQuote),
+      [codeBlock]: isVisible(codeBlock),
+      [list]: isVisible(list),
+      [todoList]: isVisible(todoList),
+    },
+    canRemove: true,
+    canDuplicate: true,
+    canUnwrap,
+  });
 };
 
 /*
@@ -126,32 +126,32 @@ const handleBlockComponentLine = ({
  * turnable at all.
  */
 export const handleDragMenuState = ({
-	configPort,
-	blockComponentPlacement,
+  configPort,
+  blockComponentPlacement,
 }: HandleDragMenuStateParams): HandleDragMenuStateResult => {
-	return (line) => {
-		if (!line) {
-			return;
-		}
+  return (line) => {
+    if (!line) {
+      return;
+    }
 
-		if (line.$$editorRole === contentLineRole) {
-			handleContentLine({
-				configPort,
-				blockComponentPlacement,
-				contentLine: line,
-			});
-			return;
-		}
+    if (line.$$editorRole === contentLineRole) {
+      handleContentLine({
+        configPort,
+        blockComponentPlacement,
+        contentLine: line,
+      });
+      return;
+    }
 
-		if (line.$$editorRole === blockComponentLineRole) {
-			handleBlockComponentLine({
-				configPort,
-				blockComponentPlacement,
-				blockComponentLine: line,
-			});
-			return;
-		}
+    if (line.$$editorRole === blockComponentLineRole) {
+      handleBlockComponentLine({
+        configPort,
+        blockComponentPlacement,
+        blockComponentLine: line,
+      });
+      return;
+    }
 
-		return assertNever(line);
-	};
+    return assertNever(line);
+  };
 };

@@ -1,7 +1,7 @@
 import type {
-	ComponentAttrs,
-	ComponentAttrValidatorOverrides,
-	ComponentAttrValidators,
+  ComponentAttrs,
+  ComponentAttrValidatorOverrides,
+  ComponentAttrValidators,
 } from "../_Utilities";
 import type { tableAttrsShape } from "./TableDOMAttrs";
 

@@ -6,18 +6,18 @@ import { handleFormattingChange } from "./HandleFormattingChange";
  * Wires up inline formatting button state and formatting change handling, returning a cleanup function.
  */
 export const configureFormatting = ({ configPort, editorAPI }: ConfigureFormattingParams) => {
-	const formattingButtonStateCleanup = handleFormattingButtonState({
-		configPort,
-		editorAPI,
-	});
+  const formattingButtonStateCleanup = handleFormattingButtonState({
+    configPort,
+    editorAPI,
+  });
 
-	const formattingChangeCleanup = handleFormattingChange({
-		configPort,
-		editorAPI,
-	});
+  const formattingChangeCleanup = handleFormattingChange({
+    configPort,
+    editorAPI,
+  });
 
-	return () => {
-		formattingButtonStateCleanup();
-		formattingChangeCleanup();
-	};
+  return () => {
+    formattingButtonStateCleanup();
+    formattingChangeCleanup();
+  };
 };

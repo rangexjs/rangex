@@ -1,16 +1,16 @@
 import type { BlockComponent } from "@rangex/core";
 
 import type {
-	CreateAdapterParams,
-	CurrentComponentConfigPort,
-	CurrentComponentPublicPort,
-	UnwrapConfigPort,
-	UnwrapPublicPort,
+  CreateAdapterParams,
+  CurrentComponentConfigPort,
+  CurrentComponentPublicPort,
+  UnwrapConfigPort,
+  UnwrapPublicPort,
 } from "../_Utilities";
 
 export interface TodoListState {
-	canInsert?: boolean;
-	canWrap?: boolean;
+  canInsert?: boolean;
+  canWrap?: boolean;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
@@ -22,32 +22,32 @@ export type OnWrapCallbackFn = () => void;
 export interface UpdateStateParams extends TodoListState {}
 
 export interface TodoListConfigPortProps {
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onInsert(callback: OnInsertCallbackFn): () => void;
-	onWrap(callback: OnWrapCallbackFn): () => void;
+  onInsert(callback: OnInsertCallbackFn): () => void;
+  onWrap(callback: OnWrapCallbackFn): () => void;
 }
 
 export interface TodoListConfigPort
-	extends TodoListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
+  extends TodoListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface TodoListPublicPortProps {
-	readonly canInsert: boolean;
-	readonly canWrap: boolean;
+  readonly canInsert: boolean;
+  readonly canWrap: boolean;
 
-	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+  onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+  onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
 
-	insert(): void;
-	wrap(): void;
+  insert(): void;
+  wrap(): void;
 }
 
 export interface TodoListPublicPort
-	extends TodoListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
+  extends TodoListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface TodoListAdapter {
-	configPort: TodoListConfigPort;
-	publicPort: TodoListPublicPort;
+  configPort: TodoListConfigPort;
+  publicPort: TodoListPublicPort;
 }
 
 export interface TodoListSettings {}

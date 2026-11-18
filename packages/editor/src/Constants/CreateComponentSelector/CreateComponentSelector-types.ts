@@ -3,7 +3,7 @@ import type { blockComponentAttrName, inlineComponentAttrName } from "@rangex/co
 import type { BlockComponentName, ComponentName, InlineComponentName } from "../ComponentsName";
 
 export type ComponentAttrNameByName<TName extends ComponentName> = TName extends BlockComponentName
-	? typeof blockComponentAttrName.dataName
-	: TName extends InlineComponentName
-		? typeof inlineComponentAttrName.dataName
-		: never;
+  ? typeof blockComponentAttrName.dataName
+  : TName extends InlineComponentName
+    ? typeof inlineComponentAttrName.dataName
+    : never;

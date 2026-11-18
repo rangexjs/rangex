@@ -8,21 +8,21 @@ import type { HandleFormattingButtonStateParams } from "./HandleFormattingButton
  * Updates the formatting toolbar buttons' state whenever the selection's applied styles change.
  */
 export const handleFormattingButtonState = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleFormattingButtonStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: selectionStylesChangeEventType,
-		callback: ({ selectionFormatStyles }) => {
-			const formattingState = getFormattingButtonState({
-				selectionFormatStyles,
-			});
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: selectionStylesChangeEventType,
+    callback: ({ selectionFormatStyles }) => {
+      const formattingState = getFormattingButtonState({
+        selectionFormatStyles,
+      });
 
-			configPort.updateState(formattingState);
-		},
-	});
+      configPort.updateState(formattingState);
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

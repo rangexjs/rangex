@@ -9,8 +9,8 @@ export interface ShortcutsPublicPortProps {}
 export interface ShortcutsPublicPort extends ShortcutsPublicPortProps {}
 
 export interface ShortcutsAdapter {
-	configPort: ShortcutsConfigPort;
-	publicPort: ShortcutsPublicPort;
+  configPort: ShortcutsConfigPort;
+  publicPort: ShortcutsPublicPort;
 }
 
 export interface ShortcutsSettings {}

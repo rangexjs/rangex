@@ -7,11 +7,11 @@ import { matchJSON } from "#utilities";
 
 import { describeJSONMismatch, resolveDraftDOMAttrs, resolveDraftStorage } from "../_Utilities";
 import type {
-	ResolveRootTypeParams,
-	ResolveRootTypeResult,
-	RootState,
-	ValidateRootParams,
-	ValidateRootResult,
+  ResolveRootTypeParams,
+  ResolveRootTypeResult,
+  RootState,
+  ValidateRootParams,
+  ValidateRootResult,
 } from "./ValidateRoot-types";
 
 /*
@@ -19,14 +19,14 @@ import type {
  * type as the mismatch.
  */
 const resolveRootType = ({
-	customStorage,
-	types,
+  customStorage,
+  types,
 }: ResolveRootTypeParams): ResolveRootTypeResult => {
-	const [firstType] = types;
+  const [firstType] = types;
 
-	const claimedType = types.find((type) => type === customStorage?.type);
+  const claimedType = types.find((type) => type === customStorage?.type);
 
-	return claimedType ?? firstType;
+  return claimedType ?? firstType;
 };
 
 /*
@@ -36,81 +36,81 @@ const resolveRootType = ({
  * (see resolveDraftStorage).
  */
 export const validateRoot = ({
-	rootEditableDraft,
-	types,
-	attrValidators = {},
-	validateStorage,
+  rootEditableDraft,
+  types,
+  attrValidators = {},
+  validateStorage,
 }: ValidateRootParams): ValidateRootResult => {
-	const {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		customStorage,
-	} = rootEditableDraft;
+  const {
+    editorRole,
+    display,
+    editState,
+    allowedComponents,
+    allowedContentLineLocalNames,
+    allowedContentLineStyleAttrNames,
+    allowedGlyphFormatterStyleAttrNames,
+    allowedGlyphFormatterInlineTags,
+    customStorage,
+  } = rootEditableDraft;
 
-	const state: RootState = {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		customStorage,
-	};
+  const state: RootState = {
+    editorRole,
+    display,
+    editState,
+    allowedComponents,
+    allowedContentLineLocalNames,
+    allowedContentLineStyleAttrNames,
+    allowedGlyphFormatterStyleAttrNames,
+    allowedGlyphFormatterInlineTags,
+    customStorage,
+  };
 
-	const type = resolveRootType({ customStorage, types });
+  const type = resolveRootType({ customStorage, types });
 
-	const storagePattern = { ...rootStoragePattern, type };
+  const storagePattern = { ...rootStoragePattern, type };
 
-	const mismatch = matchJSON({
-		value: state,
-		pattern: {
-			...rootDefinitions[type],
-			editorRole: rootEditableRole,
-			customStorage: storagePattern,
-		},
-	});
+  const mismatch = matchJSON({
+    value: state,
+    pattern: {
+      ...rootDefinitions[type],
+      editorRole: rootEditableRole,
+      customStorage: storagePattern,
+    },
+  });
 
-	if (mismatch) {
-		return {
-			sourceSnapshot: rootEditableDraft,
-			failedSnapshot: rootEditableDraft,
-			reason: describeJSONMismatch({
-				rootDraft: rootEditableDraft,
-				nodeDraft: rootEditableDraft,
-				value: state,
-				mismatch,
-			}),
-		};
-	}
+  if (mismatch) {
+    return {
+      sourceSnapshot: rootEditableDraft,
+      failedSnapshot: rootEditableDraft,
+      reason: describeJSONMismatch({
+        rootDraft: rootEditableDraft,
+        nodeDraft: rootEditableDraft,
+        value: state,
+        mismatch,
+      }),
+    };
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: rootEditableDraft,
-		elementDraft: rootEditableDraft,
-		elementAttrsShape: rootAttrsShape.root,
-		elementAttrValidators: createRootAttrValidators(attrValidators).root,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: rootEditableDraft,
+    elementDraft: rootEditableDraft,
+    elementAttrsShape: rootAttrsShape.root,
+    elementAttrValidators: createRootAttrValidators(attrValidators).root,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const storageFailed = resolveDraftStorage({
-		nodeDraft: rootEditableDraft,
-		storagePattern,
-		validateStorage,
-	});
+  const storageFailed = resolveDraftStorage({
+    nodeDraft: rootEditableDraft,
+    storagePattern,
+    validateStorage,
+  });
 
-	if (storageFailed) {
-		return storageFailed;
-	}
+  if (storageFailed) {
+    return storageFailed;
+  }
 
-	return null;
+  return null;
 };

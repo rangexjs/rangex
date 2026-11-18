@@ -1,12 +1,12 @@
 import type { TemplateVariableId } from "../_Constants";
 
 export type TemplateVariableStorage = {
-	id: TemplateVariableId;
-	fieldName: string;
+  id: TemplateVariableId;
+  fieldName: string;
 };
 
 export interface CreateTemplateVariableStorageParams {
-	fieldName: string;
+  fieldName: string;
 }
 
 export type CreateTemplateVariableStorageResult = TemplateVariableStorage;

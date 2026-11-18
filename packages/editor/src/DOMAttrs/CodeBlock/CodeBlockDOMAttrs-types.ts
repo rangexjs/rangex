@@ -1,7 +1,7 @@
 import type {
-	ComponentAttrs,
-	ComponentAttrValidatorOverrides,
-	ComponentAttrValidators,
+  ComponentAttrs,
+  ComponentAttrValidatorOverrides,
+  ComponentAttrValidators,
 } from "../_Utilities";
 import type { codeBlockAttrsShape } from "./CodeBlockDOMAttrs";
 
@@ -12,6 +12,6 @@ export type CodeBlockAttrs = ComponentAttrs<CodeBlockAttrsShape>;
 export type CodeBlockAttrValidators = ComponentAttrValidators<CodeBlockAttrsShape>;
 
 export type CreateCodeBlockAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<CodeBlockAttrsShape>;
+  ComponentAttrValidatorOverrides<CodeBlockAttrsShape>;
 
 export type CreateCodeBlockAttrValidatorsResult = CodeBlockAttrValidators;

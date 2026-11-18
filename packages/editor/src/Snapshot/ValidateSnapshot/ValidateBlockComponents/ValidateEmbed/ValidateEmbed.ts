@@ -4,37 +4,37 @@ import { embedStoragePattern } from "#storage";
 
 import { validateMediaComponent } from "../_Utilities";
 import type {
-	CreateEmbedValidatorParams,
-	CreateEmbedValidatorResult,
-	ValidateEmbedParams,
-	ValidateEmbedResult,
+  CreateEmbedValidatorParams,
+  CreateEmbedValidatorResult,
+  ValidateEmbedParams,
+  ValidateEmbedResult,
 } from "./ValidateEmbed-types";
 
 /*
  * Validates an Embed as a media component (see validateMediaComponent), with `iframe` as its media element.
  */
 const validateEmbed = ({
-	componentDraft,
-	attrValidators,
+  componentDraft,
+  attrValidators,
 }: ValidateEmbedParams): ValidateEmbedResult => {
-	const embedFailed = validateMediaComponent({
-		componentDraft,
-		name: componentsName.embed,
-		customStorage: embedStoragePattern,
-		mediaLocalName: "iframe",
-		lineAttrsShape: embedAttrsShape.line,
-		lineAttrValidators: attrValidators.line,
-		blockAttrsShape: embedAttrsShape.block,
-		blockAttrValidators: attrValidators.block,
-		mediaAttrsShape: embedAttrsShape.iframe,
-		mediaAttrValidators: attrValidators.iframe,
-	});
+  const embedFailed = validateMediaComponent({
+    componentDraft,
+    name: componentsName.embed,
+    customStorage: embedStoragePattern,
+    mediaLocalName: "iframe",
+    lineAttrsShape: embedAttrsShape.line,
+    lineAttrValidators: attrValidators.line,
+    blockAttrsShape: embedAttrsShape.block,
+    blockAttrValidators: attrValidators.block,
+    mediaAttrsShape: embedAttrsShape.iframe,
+    mediaAttrValidators: attrValidators.iframe,
+  });
 
-	if (embedFailed) {
-		return embedFailed;
-	}
+  if (embedFailed) {
+    return embedFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -42,13 +42,13 @@ const validateEmbed = ({
  * the given ones (see createEmbedAttrValidators).
  */
 export const createEmbedValidator = ({
-	attrValidators = {},
+  attrValidators = {},
 }: CreateEmbedValidatorParams): CreateEmbedValidatorResult => {
-	const embedAttrValidators = createEmbedAttrValidators(attrValidators);
+  const embedAttrValidators = createEmbedAttrValidators(attrValidators);
 
-	return {
-		name: componentsName.embed,
-		validate: ({ componentDraft }) =>
-			validateEmbed({ componentDraft, attrValidators: embedAttrValidators }),
-	};
+  return {
+    name: componentsName.embed,
+    validate: ({ componentDraft }) =>
+      validateEmbed({ componentDraft, attrValidators: embedAttrValidators }),
+  };
 };

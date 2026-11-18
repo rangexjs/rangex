@@ -1,146 +1,146 @@
 import {
-	beamTextRole,
-	blockComponentLineRole,
-	blockComponentRole,
-	blockComponentRoleSelector,
-	contentLineRole,
-	createBeamText,
-	createContentLine,
-	listRole,
-	listRoleSelector,
-	nestedEditableRole,
-	nestedEditableRoleSelector,
+  beamTextRole,
+  blockComponentLineRole,
+  blockComponentRole,
+  blockComponentRoleSelector,
+  contentLineRole,
+  createBeamText,
+  createContentLine,
+  listRole,
+  listRoleSelector,
+  nestedEditableRole,
+  nestedEditableRoleSelector,
 } from "@rangex/core";
 
 import { type BlockComponentName, componentsName } from "#constants";
 import { assertNever } from "#utilities";
 
 import {
-	createAccordionItem,
-	createBlockQuote,
-	createCodeBlock,
-	createList,
-	createTodoList,
-	getAccordionItemParts,
-	validateAccordionItemPlacement,
-	validateCodeBlockPlacement,
+  createAccordionItem,
+  createBlockQuote,
+  createCodeBlock,
+  createList,
+  createTodoList,
+  getAccordionItemParts,
+  validateAccordionItemPlacement,
+  validateCodeBlockPlacement,
 } from "../../_Utilities";
 import type {
-	CreateBlockComponentParams,
-	CreateBlockComponentResult,
-	GetListTargetParams,
-	GetListTargetResult,
-	GetNestedEditableTargetParams,
-	GetNestedEditableTargetResult,
-	HandleTurnIntoParams,
-	ReplaceBlockComponentLineParams,
-	ShouldSkipFirstLineParams,
-	ShouldSkipFirstLineResult,
-	TurnLineIntoParams,
-	ValidateTurnIntoPlacementParams,
-	ValidateTurnIntoPlacementResult,
-	WrapContentLineParams,
+  CreateBlockComponentParams,
+  CreateBlockComponentResult,
+  GetListTargetParams,
+  GetListTargetResult,
+  GetNestedEditableTargetParams,
+  GetNestedEditableTargetResult,
+  HandleTurnIntoParams,
+  ReplaceBlockComponentLineParams,
+  ShouldSkipFirstLineParams,
+  ShouldSkipFirstLineResult,
+  TurnLineIntoParams,
+  ValidateTurnIntoPlacementParams,
+  ValidateTurnIntoPlacementResult,
+  WrapContentLineParams,
 } from "./HandleTurnInto-types";
 
 const getNestedEditableTarget = ({
-	blockComponentLine,
+  blockComponentLine,
 }: GetNestedEditableTargetParams): GetNestedEditableTargetResult => {
-	const nestedEditable = blockComponentLine.$$querySelector(nestedEditableRoleSelector);
+  const nestedEditable = blockComponentLine.$$querySelector(nestedEditableRoleSelector);
 
-	if (nestedEditable?.$$editorRole !== nestedEditableRole) {
-		throw new Error("NestedEditable's type is invalid.");
-	}
+  if (nestedEditable?.$$editorRole !== nestedEditableRole) {
+    throw new Error("NestedEditable's type is invalid.");
+  }
 
-	return nestedEditable;
+  return nestedEditable;
 };
 
 const getListTarget = ({ blockComponentLine }: GetListTargetParams): GetListTargetResult => {
-	const list = blockComponentLine.$$querySelector(listRoleSelector);
+  const list = blockComponentLine.$$querySelector(listRoleSelector);
 
-	if (list?.$$editorRole !== listRole) {
-		throw new Error("List's type is invalid.");
-	}
+  if (list?.$$editorRole !== listRole) {
+    throw new Error("List's type is invalid.");
+  }
 
-	return list;
+  return list;
 };
 
 const createBlockComponent = (params: CreateBlockComponentParams): CreateBlockComponentResult => {
-	const { childNodes } = params;
+  const { childNodes } = params;
 
-	if (params.name === componentsName.accordionItem) {
-		const blockComponentLine = createAccordionItem({
-			attrs: params.attrs,
-			childNodes,
-		});
-		const accordionItem = blockComponentLine.$$querySelector(blockComponentRoleSelector);
+  if (params.name === componentsName.accordionItem) {
+    const blockComponentLine = createAccordionItem({
+      attrs: params.attrs,
+      childNodes,
+    });
+    const accordionItem = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
-		if (accordionItem?.$$editorRole !== blockComponentRole) {
-			throw new Error("AccordionItem's type is invalid.");
-		}
+    if (accordionItem?.$$editorRole !== blockComponentRole) {
+      throw new Error("AccordionItem's type is invalid.");
+    }
 
-		const { bodyNestedEditable } = getAccordionItemParts({
-			blockComponent: accordionItem,
-		});
+    const { bodyNestedEditable } = getAccordionItemParts({
+      blockComponent: accordionItem,
+    });
 
-		return { blockComponentLine, wrapTarget: bodyNestedEditable };
-	}
+    return { blockComponentLine, wrapTarget: bodyNestedEditable };
+  }
 
-	if (params.name === componentsName.blockQuote) {
-		const blockComponentLine = createBlockQuote({ childNodes });
-		const wrapTarget = getNestedEditableTarget({ blockComponentLine });
+  if (params.name === componentsName.blockQuote) {
+    const blockComponentLine = createBlockQuote({ childNodes });
+    const wrapTarget = getNestedEditableTarget({ blockComponentLine });
 
-		return { blockComponentLine, wrapTarget };
-	}
+    return { blockComponentLine, wrapTarget };
+  }
 
-	if (params.name === componentsName.codeBlock) {
-		const blockComponentLine = createCodeBlock({
-			language: params.language,
-			theme: params.theme,
-			childNodes,
-		});
-		const wrapTarget = getListTarget({ blockComponentLine });
+  if (params.name === componentsName.codeBlock) {
+    const blockComponentLine = createCodeBlock({
+      language: params.language,
+      theme: params.theme,
+      childNodes,
+    });
+    const wrapTarget = getListTarget({ blockComponentLine });
 
-		return { blockComponentLine, wrapTarget };
-	}
+    return { blockComponentLine, wrapTarget };
+  }
 
-	if (params.name === componentsName.list) {
-		const blockComponentLine = createList({
-			localName: params.localName,
-			childNodes,
-		});
-		const wrapTarget = getListTarget({ blockComponentLine });
+  if (params.name === componentsName.list) {
+    const blockComponentLine = createList({
+      localName: params.localName,
+      childNodes,
+    });
+    const wrapTarget = getListTarget({ blockComponentLine });
 
-		return { blockComponentLine, wrapTarget };
-	}
+    return { blockComponentLine, wrapTarget };
+  }
 
-	if (params.name === componentsName.todoList) {
-		const blockComponentLine = createTodoList({ childNodes });
-		const wrapTarget = getListTarget({ blockComponentLine });
+  if (params.name === componentsName.todoList) {
+    const blockComponentLine = createTodoList({ childNodes });
+    const wrapTarget = getListTarget({ blockComponentLine });
 
-		return { blockComponentLine, wrapTarget };
-	}
+    return { blockComponentLine, wrapTarget };
+  }
 
-	return assertNever(params);
+  return assertNever(params);
 };
 
 /*
  * Wraps a plain ContentLine into the newly chosen component.
  */
 const wrapContentLine = ({
-	blockComponentPlacement,
-	contentLine,
-	turnIntoParams,
+  blockComponentPlacement,
+  contentLine,
+  turnIntoParams,
 }: WrapContentLineParams) => {
-	const { blockComponentLine, wrapTarget } = createBlockComponent(turnIntoParams);
+  const { blockComponentLine, wrapTarget } = createBlockComponent(turnIntoParams);
 
-	blockComponentPlacement.wrap({
-		blockComponentLine,
-		fromNode: contentLine,
-		fromOffset: 0,
-		toNode: contentLine,
-		toOffset: 0,
-		target: wrapTarget,
-	});
+  blockComponentPlacement.wrap({
+    blockComponentLine,
+    fromNode: contentLine,
+    fromOffset: 0,
+    toNode: contentLine,
+    toOffset: 0,
+    target: wrapTarget,
+  });
 };
 
 /*
@@ -150,26 +150,26 @@ const wrapContentLine = ({
  * blank leading Line in the new component.
  */
 const shouldSkipFirstLine = ({
-	componentName,
-	extractedLines,
+  componentName,
+  extractedLines,
 }: ShouldSkipFirstLineParams): ShouldSkipFirstLineResult => {
-	const componentsWithSkippableFirstLine: BlockComponentName[] = [componentsName.accordionItem];
+  const componentsWithSkippableFirstLine: BlockComponentName[] = [componentsName.accordionItem];
 
-	const isSkippable = componentsWithSkippableFirstLine.some((name) => name === componentName);
+  const isSkippable = componentsWithSkippableFirstLine.some((name) => name === componentName);
 
-	if (!isSkippable) {
-		return false;
-	}
+  if (!isSkippable) {
+    return false;
+  }
 
-	const firstLine = extractedLines.at(0);
+  const firstLine = extractedLines.at(0);
 
-	if (firstLine?.$$editorRole !== contentLineRole) {
-		return false;
-	}
+  if (firstLine?.$$editorRole !== contentLineRole) {
+    return false;
+  }
 
-	const isEmpty = firstLine.$$firstChild?.$$editorRole === beamTextRole;
+  const isEmpty = firstLine.$$firstChild?.$$editorRole === beamTextRole;
 
-	return isEmpty;
+  return isEmpty;
 };
 
 /*
@@ -179,48 +179,48 @@ const shouldSkipFirstLine = ({
  * extraction leaves nothing.
  */
 const replaceBlockComponentLine = ({
-	editorAPI,
-	blockComponentLine,
-	turnIntoParams,
+  editorAPI,
+  blockComponentLine,
+  turnIntoParams,
 }: ReplaceBlockComponentLineParams) => {
-	const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
+  const blockComponent = blockComponentLine.$$querySelector(blockComponentRoleSelector);
 
-	if (blockComponent?.$$editorRole !== blockComponentRole) {
-		throw new Error("BlockComponent's type is invalid.");
-	}
+  if (blockComponent?.$$editorRole !== blockComponentRole) {
+    throw new Error("BlockComponent's type is invalid.");
+  }
 
-	const { $$name } = blockComponent;
+  const { $$name } = blockComponent;
 
-	editorAPI.replaceComponentTop(blockComponentLine, (extractedLines) => {
-		const childNodes = [...extractedLines];
+  editorAPI.replaceComponentTop(blockComponentLine, (extractedLines) => {
+    const childNodes = [...extractedLines];
 
-		const isFirstLineSkipped = shouldSkipFirstLine({
-			componentName: $$name,
-			extractedLines,
-		});
+    const isFirstLineSkipped = shouldSkipFirstLine({
+      componentName: $$name,
+      extractedLines,
+    });
 
-		if (isFirstLineSkipped) {
-			childNodes.shift();
-		}
+    if (isFirstLineSkipped) {
+      childNodes.shift();
+    }
 
-		if (!childNodes.length) {
-			console.warn("TurnInto target has no Lines.");
+    if (!childNodes.length) {
+      console.warn("TurnInto target has no Lines.");
 
-			childNodes.push(
-				createContentLine({
-					localName: "p",
-					childNodes: [createBeamText({})],
-				}),
-			);
-		}
+      childNodes.push(
+        createContentLine({
+          localName: "p",
+          childNodes: [createBeamText({})],
+        }),
+      );
+    }
 
-		const { blockComponentLine: replacementLine } = createBlockComponent({
-			...turnIntoParams,
-			childNodes,
-		});
+    const { blockComponentLine: replacementLine } = createBlockComponent({
+      ...turnIntoParams,
+      childNodes,
+    });
 
-		return replacementLine;
-	});
+    return replacementLine;
+  });
 };
 
 /*
@@ -228,64 +228,64 @@ const replaceBlockComponentLine = ({
  * language and theme have to be checked.
  */
 const validateTurnIntoPlacement = ({
-	adapterBus,
-	turnIntoParams,
+  adapterBus,
+  turnIntoParams,
 }: ValidateTurnIntoPlacementParams): ValidateTurnIntoPlacementResult => {
-	if (turnIntoParams.name === componentsName.codeBlock) {
-		const { language, theme } = turnIntoParams;
+  if (turnIntoParams.name === componentsName.codeBlock) {
+    const { language, theme } = turnIntoParams;
 
-		const placementMismatch = validateCodeBlockPlacement({ language, theme });
+    const placementMismatch = validateCodeBlockPlacement({ language, theme });
 
-		if (placementMismatch) {
-			console.warn(placementMismatch);
-			return false;
-		}
+    if (placementMismatch) {
+      console.warn(placementMismatch);
+      return false;
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	if (turnIntoParams.name === componentsName.accordionItem) {
-		const placementMismatch = validateAccordionItemPlacement({
-			attrValidators: adapterBus.getAttrValidators("accordionItem"),
-			attrs: turnIntoParams.attrs,
-		});
+  if (turnIntoParams.name === componentsName.accordionItem) {
+    const placementMismatch = validateAccordionItemPlacement({
+      attrValidators: adapterBus.getAttrValidators("accordionItem"),
+      attrs: turnIntoParams.attrs,
+    });
 
-		if (placementMismatch) {
-			console.warn(placementMismatch);
-			return false;
-		}
+    if (placementMismatch) {
+      console.warn(placementMismatch);
+      return false;
+    }
 
-		return true;
-	}
+    return true;
+  }
 
-	return true;
+  return true;
 };
 
 const turnLineInto = ({
-	editorAPI,
-	blockComponentPlacement,
-	line,
-	turnIntoParams,
+  editorAPI,
+  blockComponentPlacement,
+  line,
+  turnIntoParams,
 }: TurnLineIntoParams) => {
-	if (line.$$editorRole === contentLineRole) {
-		wrapContentLine({
-			blockComponentPlacement,
-			contentLine: line,
-			turnIntoParams,
-		});
-		return;
-	}
+  if (line.$$editorRole === contentLineRole) {
+    wrapContentLine({
+      blockComponentPlacement,
+      contentLine: line,
+      turnIntoParams,
+    });
+    return;
+  }
 
-	if (line.$$editorRole === blockComponentLineRole) {
-		replaceBlockComponentLine({
-			editorAPI,
-			blockComponentLine: line,
-			turnIntoParams,
-		});
-		return;
-	}
+  if (line.$$editorRole === blockComponentLineRole) {
+    replaceBlockComponentLine({
+      editorAPI,
+      blockComponentLine: line,
+      turnIntoParams,
+    });
+    return;
+  }
 
-	return assertNever(line);
+  return assertNever(line);
 };
 
 /*
@@ -293,40 +293,40 @@ const turnLineInto = ({
  * wrapped into it, while a BlockComponentLine has its component replaced by it.
  */
 export const handleTurnInto = ({
-	adapterBus,
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
-	getCurrentLine,
+  adapterBus,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
+  getCurrentLine,
 }: HandleTurnIntoParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = configPort.onTurnInto((turnIntoParams) => {
-		const currentLine = getCurrentLine();
+  const unsubscribe = configPort.onTurnInto((turnIntoParams) => {
+    const currentLine = getCurrentLine();
 
-		if (!currentLine) {
-			return;
-		}
+    if (!currentLine) {
+      return;
+    }
 
-		const isValid = validateTurnIntoPlacement({ adapterBus, turnIntoParams });
+    const isValid = validateTurnIntoPlacement({ adapterBus, turnIntoParams });
 
-		if (!isValid) {
-			return;
-		}
+    if (!isValid) {
+      return;
+    }
 
-		turnLineInto({
-			editorAPI,
-			blockComponentPlacement,
-			line: currentLine,
-			turnIntoParams,
-		});
+    turnLineInto({
+      editorAPI,
+      blockComponentPlacement,
+      line: currentLine,
+      turnIntoParams,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

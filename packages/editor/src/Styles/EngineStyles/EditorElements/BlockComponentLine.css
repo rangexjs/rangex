@@ -1,45 +1,45 @@
 [data-rx-editor-role="block-component-line"] {
-	&[data-block-align="left"] {
-		& > :nth-child(1) {
-			flex-grow: 0;
-		}
+  &[data-block-align="left"] {
+    & > :nth-child(1) {
+      flex-grow: 0;
+    }
 
-		& > :nth-child(2) {
-			flex-basis: attr(data-block-width px, 100%);
-		}
+    & > :nth-child(2) {
+      flex-basis: attr(data-block-width px, 100%);
+    }
 
-		& > :nth-child(3) {
-			flex-grow: 1;
-		}
-	}
+    & > :nth-child(3) {
+      flex-grow: 1;
+    }
+  }
 
-	/* Without data-block-align (a block that can't be aligned), it's laid out as centered */
-	&[data-block-align="center"],
-	&:not([data-block-align]) {
-		& > :nth-child(1) {
-			flex-grow: 1;
-		}
+  /* Without data-block-align (a block that can't be aligned), it's laid out as centered */
+  &[data-block-align="center"],
+  &:not([data-block-align]) {
+    & > :nth-child(1) {
+      flex-grow: 1;
+    }
 
-		& > :nth-child(2) {
-			flex-basis: attr(data-block-width px, 100%);
-		}
+    & > :nth-child(2) {
+      flex-basis: attr(data-block-width px, 100%);
+    }
 
-		& > :nth-child(3) {
-			flex-grow: 1;
-		}
-	}
+    & > :nth-child(3) {
+      flex-grow: 1;
+    }
+  }
 
-	&[data-block-align="right"] {
-		& > :nth-child(1) {
-			flex-grow: 1;
-		}
+  &[data-block-align="right"] {
+    & > :nth-child(1) {
+      flex-grow: 1;
+    }
 
-		& > :nth-child(2) {
-			flex-basis: attr(data-block-width px, 100%);
-		}
+    & > :nth-child(2) {
+      flex-basis: attr(data-block-width px, 100%);
+    }
 
-		& > :nth-child(3) {
-			flex-grow: 0;
-		}
-	}
+    & > :nth-child(3) {
+      flex-grow: 0;
+    }
+  }
 }

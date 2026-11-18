@@ -7,11 +7,11 @@ import type { RegisterTableLimitsParams } from "./RegisterTableLimits-types";
  * registered, so the Table Adapter fails when it's created.
  */
 export const registerTableLimits = ({ adapterBus, components }: RegisterTableLimitsParams) => {
-	const { table } = components;
+  const { table } = components;
 
-	if (!table) {
-		return;
-	}
+  if (!table) {
+    return;
+  }
 
-	adapterBus.registerTableLimits(resolveTableLimits(table));
+  adapterBus.registerTableLimits(resolveTableLimits(table));
 };

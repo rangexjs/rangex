@@ -2,9 +2,9 @@ import { matchJSON } from "#utilities";
 
 import { describeJSONMismatch } from "../Utilities";
 import type {
-	NestedEditableState,
-	ValidateNestedEditableStateParams,
-	ValidateNestedEditableStateResult,
+  NestedEditableState,
+  ValidateNestedEditableStateParams,
+  ValidateNestedEditableStateResult,
 } from "./ValidateNestedEditableState-types";
 
 /*
@@ -13,50 +13,50 @@ import type {
  * engine's validation, which checks it by these settings.
  */
 export const validateNestedEditableState = ({
-	componentDraft,
-	nestedEditableDraft,
-	expectedState,
+  componentDraft,
+  nestedEditableDraft,
+  expectedState,
 }: ValidateNestedEditableStateParams): ValidateNestedEditableStateResult => {
-	const {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		domAttrs,
-		customStorage,
-	} = nestedEditableDraft;
+  const {
+    editorRole,
+    display,
+    editState,
+    allowedComponents,
+    allowedContentLineLocalNames,
+    allowedContentLineStyleAttrNames,
+    allowedGlyphFormatterStyleAttrNames,
+    allowedGlyphFormatterInlineTags,
+    domAttrs,
+    customStorage,
+  } = nestedEditableDraft;
 
-	const state: NestedEditableState = {
-		editorRole,
-		display,
-		editState,
-		allowedComponents,
-		allowedContentLineLocalNames,
-		allowedContentLineStyleAttrNames,
-		allowedGlyphFormatterStyleAttrNames,
-		allowedGlyphFormatterInlineTags,
-		domAttrs,
-		customStorage,
-	};
+  const state: NestedEditableState = {
+    editorRole,
+    display,
+    editState,
+    allowedComponents,
+    allowedContentLineLocalNames,
+    allowedContentLineStyleAttrNames,
+    allowedGlyphFormatterStyleAttrNames,
+    allowedGlyphFormatterInlineTags,
+    domAttrs,
+    customStorage,
+  };
 
-	const mismatch = matchJSON({ value: state, pattern: expectedState });
+  const mismatch = matchJSON({ value: state, pattern: expectedState });
 
-	if (mismatch) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: nestedEditableDraft,
-			reason: describeJSONMismatch({
-				rootDraft: componentDraft,
-				nodeDraft: nestedEditableDraft,
-				value: state,
-				mismatch,
-			}),
-		};
-	}
+  if (mismatch) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: nestedEditableDraft,
+      reason: describeJSONMismatch({
+        rootDraft: componentDraft,
+        nodeDraft: nestedEditableDraft,
+        value: state,
+        mismatch,
+      }),
+    };
+  }
 
-	return null;
+  return null;
 };

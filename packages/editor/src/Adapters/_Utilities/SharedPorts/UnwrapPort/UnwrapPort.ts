@@ -1,26 +1,26 @@
 import { createEmitter } from "../../CreateEmitter";
 import type {
-	CreateUnwrapPortResult,
-	OnUnwrapCallbackFn,
-	UnwrapConfigPort,
-	UnwrapPublicPort,
+  CreateUnwrapPortResult,
+  OnUnwrapCallbackFn,
+  UnwrapConfigPort,
+  UnwrapPublicPort,
 } from "./UnwrapPort-types";
 
 export const createUnwrapPort = (): CreateUnwrapPortResult => {
-	// CommandListeners
-	const unwrapEmitter = createEmitter<OnUnwrapCallbackFn>();
+  // CommandListeners
+  const unwrapEmitter = createEmitter<OnUnwrapCallbackFn>();
 
-	const configPort: UnwrapConfigPort = {
-		onUnwrap(callback) {
-			return unwrapEmitter.subscribe(callback);
-		},
-	};
+  const configPort: UnwrapConfigPort = {
+    onUnwrap(callback) {
+      return unwrapEmitter.subscribe(callback);
+    },
+  };
 
-	const publicPort: UnwrapPublicPort = {
-		unwrap() {
-			unwrapEmitter.emit();
-		},
-	};
+  const publicPort: UnwrapPublicPort = {
+    unwrap() {
+      unwrapEmitter.emit();
+    },
+  };
 
-	return { configPort, publicPort };
+  return { configPort, publicPort };
 };

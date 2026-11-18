@@ -4,12 +4,12 @@ import { matchJSON } from "#utilities";
 
 import { describeJSONMismatch, formatNodePath, resolveDraftDOMAttrs } from "../../../_Utilities";
 import type {
-	BlockComponentLineState,
-	BlockComponentTextHolderState,
-	ValidateBlockComponentLineParams,
-	ValidateBlockComponentLineResult,
-	ValidateBlockComponentTextHolderParams,
-	ValidateBlockComponentTextHolderResult,
+  BlockComponentLineState,
+  BlockComponentTextHolderState,
+  ValidateBlockComponentLineParams,
+  ValidateBlockComponentLineResult,
+  ValidateBlockComponentTextHolderParams,
+  ValidateBlockComponentTextHolderResult,
 } from "./ValidateBlockComponentLine-types";
 
 /*
@@ -17,46 +17,46 @@ import type {
  * BlockComponentText, is left to the engine's validation.
  */
 const validateBlockComponentTextHolder = ({
-	lineDraft,
-	textHolderDraft,
+  lineDraft,
+  textHolderDraft,
 }: ValidateBlockComponentTextHolderParams): ValidateBlockComponentTextHolderResult => {
-	const { editorRole, customStorage } = textHolderDraft;
+  const { editorRole, customStorage } = textHolderDraft;
 
-	const textHolderState: BlockComponentTextHolderState = {
-		editorRole,
-		customStorage,
-	};
+  const textHolderState: BlockComponentTextHolderState = {
+    editorRole,
+    customStorage,
+  };
 
-	const textHolderMismatch = matchJSON({
-		value: textHolderState,
-		pattern: { editorRole: blockComponentTextHolderRole, customStorage: null },
-	});
+  const textHolderMismatch = matchJSON({
+    value: textHolderState,
+    pattern: { editorRole: blockComponentTextHolderRole, customStorage: null },
+  });
 
-	if (textHolderMismatch) {
-		return {
-			sourceSnapshot: lineDraft,
-			failedSnapshot: textHolderDraft,
-			reason: describeJSONMismatch({
-				rootDraft: lineDraft,
-				nodeDraft: textHolderDraft,
-				value: textHolderState,
-				mismatch: textHolderMismatch,
-			}),
-		};
-	}
+  if (textHolderMismatch) {
+    return {
+      sourceSnapshot: lineDraft,
+      failedSnapshot: textHolderDraft,
+      reason: describeJSONMismatch({
+        rootDraft: lineDraft,
+        nodeDraft: textHolderDraft,
+        value: textHolderState,
+        mismatch: textHolderMismatch,
+      }),
+    };
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: lineDraft,
-		elementDraft: textHolderDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: lineDraft,
+    elementDraft: textHolderDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -66,67 +66,67 @@ const validateBlockComponentTextHolder = ({
  * A failure in the line names its node from the line, e.g. `block-component-line > block-component-text-holder[2]`.
  */
 export const validateBlockComponentLine = ({
-	blockComponentDraft,
-	lineAttrsShape,
-	lineAttrValidators,
+  blockComponentDraft,
+  lineAttrsShape,
+  lineAttrValidators,
 }: ValidateBlockComponentLineParams): ValidateBlockComponentLineResult => {
-	const lineDraft = blockComponentDraft.parentElement;
+  const lineDraft = blockComponentDraft.parentElement;
 
-	if (lineDraft?.editorRole !== blockComponentLineRole) {
-		return {
-			sourceSnapshot: blockComponentDraft,
-			failedSnapshot: blockComponentDraft,
-			reason: `${formatNodePath({ rootDraft: blockComponentDraft, nodeDraft: blockComponentDraft })}: must be in a ${blockComponentLineRole}.`,
-		};
-	}
+  if (lineDraft?.editorRole !== blockComponentLineRole) {
+    return {
+      sourceSnapshot: blockComponentDraft,
+      failedSnapshot: blockComponentDraft,
+      reason: `${formatNodePath({ rootDraft: blockComponentDraft, nodeDraft: blockComponentDraft })}: must be in a ${blockComponentLineRole}.`,
+    };
+  }
 
-	const { editorRole, customStorage, childNodes } = lineDraft;
+  const { editorRole, customStorage, childNodes } = lineDraft;
 
-	const lineState: BlockComponentLineState = { editorRole, customStorage };
+  const lineState: BlockComponentLineState = { editorRole, customStorage };
 
-	const lineMismatch = matchJSON({
-		value: lineState,
-		pattern: { editorRole: blockComponentLineRole, customStorage: null },
-	});
+  const lineMismatch = matchJSON({
+    value: lineState,
+    pattern: { editorRole: blockComponentLineRole, customStorage: null },
+  });
 
-	if (lineMismatch) {
-		return {
-			sourceSnapshot: lineDraft,
-			failedSnapshot: lineDraft,
-			reason: describeJSONMismatch({
-				rootDraft: lineDraft,
-				nodeDraft: lineDraft,
-				value: lineState,
-				mismatch: lineMismatch,
-			}),
-		};
-	}
+  if (lineMismatch) {
+    return {
+      sourceSnapshot: lineDraft,
+      failedSnapshot: lineDraft,
+      reason: describeJSONMismatch({
+        rootDraft: lineDraft,
+        nodeDraft: lineDraft,
+        value: lineState,
+        mismatch: lineMismatch,
+      }),
+    };
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: lineDraft,
-		elementDraft: lineDraft,
-		elementAttrsShape: lineAttrsShape,
-		elementAttrValidators: lineAttrValidators,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: lineDraft,
+    elementDraft: lineDraft,
+    elementAttrsShape: lineAttrsShape,
+    elementAttrValidators: lineAttrValidators,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	for (const childDraft of childNodes) {
-		if (childDraft.editorRole !== blockComponentTextHolderRole) {
-			continue;
-		}
+  for (const childDraft of childNodes) {
+    if (childDraft.editorRole !== blockComponentTextHolderRole) {
+      continue;
+    }
 
-		const textHolderFailed = validateBlockComponentTextHolder({
-			lineDraft,
-			textHolderDraft: childDraft,
-		});
+    const textHolderFailed = validateBlockComponentTextHolder({
+      lineDraft,
+      textHolderDraft: childDraft,
+    });
 
-		if (textHolderFailed) {
-			return textHolderFailed;
-		}
-	}
+    if (textHolderFailed) {
+      return textHolderFailed;
+    }
+  }
 
-	return null;
+  return null;
 };

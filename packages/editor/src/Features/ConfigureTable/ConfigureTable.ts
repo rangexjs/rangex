@@ -15,69 +15,69 @@ import { handleTablePlacementState } from "./HandleTablePlacementState";
  * button state, and button interactions) and returns their combined cleanup.
  */
 export const configureTable = ({ adapterBus, configPort, editorAPI }: ConfigureTableParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	addERClass(configPort.contextMenuEl, "table-context-menu");
+  addERClass(configPort.contextMenuEl, "table-context-menu");
 
-	const anchorController = createAnchoredOverlayController({
-		element: configPort.contextMenuEl,
-		options: {
-			lightDismiss: false,
-			closeOnEscape: false,
-			onToggle: (open) => configPort.setContextMenu({ open }),
-		},
-	});
+  const anchorController = createAnchoredOverlayController({
+    element: configPort.contextMenuEl,
+    options: {
+      lightDismiss: false,
+      closeOnEscape: false,
+      onToggle: (open) => configPort.setContextMenu({ open }),
+    },
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.table,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.table,
+  });
 
-	const placementStateCleanup = handleTablePlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleTablePlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => configPort.currentComponent,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => configPort.currentComponent,
+  });
 
-	const contextMenuVisibilityCleanup = handleTableContextMenuVisibility({
-		editorAPI,
-		anchorController,
-	});
+  const contextMenuVisibilityCleanup = handleTableContextMenuVisibility({
+    editorAPI,
+    anchorController,
+  });
 
-	const contextMenuStateCleanup = handleTableContextMenuButtonsState({
-		configPort,
-		editorAPI,
-	});
+  const contextMenuStateCleanup = handleTableContextMenuButtonsState({
+    configPort,
+    editorAPI,
+  });
 
-	const contextMenuInteractionCleanup = handleTableContextMenuButtonsInteraction({
-		configPort,
-		editorAPI,
-	});
+  const contextMenuInteractionCleanup = handleTableContextMenuButtonsInteraction({
+    configPort,
+    editorAPI,
+  });
 
-	const tableInsertionCleanup = handleTableInsertion({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const tableInsertionCleanup = handleTableInsertion({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	return () => {
-		selectionComponentCleanup();
-		placementStateCleanup();
-		unwrapCleanup();
-		contextMenuVisibilityCleanup();
-		contextMenuStateCleanup();
-		contextMenuInteractionCleanup();
-		tableInsertionCleanup();
-		anchorController.cleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    placementStateCleanup();
+    unwrapCleanup();
+    contextMenuVisibilityCleanup();
+    contextMenuStateCleanup();
+    contextMenuInteractionCleanup();
+    tableInsertionCleanup();
+    anchorController.cleanup();
+  };
 };

@@ -1,8 +1,8 @@
 import type {
-	blockComponentsName,
-	componentsName,
-	inlineComponentsName,
-	todoCheckboxName,
+  blockComponentsName,
+  componentsName,
+  inlineComponentsName,
+  todoCheckboxName,
 } from "../ComponentsName";
 
 export type InlineComponentsName = typeof inlineComponentsName;

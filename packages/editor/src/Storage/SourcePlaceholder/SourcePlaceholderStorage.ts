@@ -3,66 +3,66 @@ import { type JSONPattern, matchJSON } from "#utilities";
 import { sourcePlaceholderId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
-	CreateSourcePlaceholderStorageResult,
-	EnsureNodeSourcePlaceholderStorageParams,
-	EnsureNodeSourcePlaceholderStorageResult,
-	EnsureSourcePlaceholderStorageParams,
-	EnsureSourcePlaceholderStorageResult,
-	SourcePlaceholderStorage,
+  CreateSourcePlaceholderStorageResult,
+  EnsureNodeSourcePlaceholderStorageParams,
+  EnsureNodeSourcePlaceholderStorageResult,
+  EnsureSourcePlaceholderStorageParams,
+  EnsureSourcePlaceholderStorageResult,
+  SourcePlaceholderStorage,
 } from "./SourcePlaceholderStorage-types";
 
 /*
  * The SourcePlaceholder's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
  */
 export const sourcePlaceholderStoragePattern = {
-	id: sourcePlaceholderId,
+  id: sourcePlaceholderId,
 } satisfies JSONPattern<SourcePlaceholderStorage>;
 
 /*
  * Matches a value against sourcePlaceholderStoragePattern, returning the first mismatch or null.
  */
 export const matchSourcePlaceholderStorage = (storage: unknown) => {
-	return matchJSON({
-		value: storage,
-		pattern: sourcePlaceholderStoragePattern,
-	});
+  return matchJSON({
+    value: storage,
+    pattern: sourcePlaceholderStoragePattern,
+  });
 };
 
 export const isSourcePlaceholderStorage = (
-	storage: unknown,
+  storage: unknown,
 ): storage is SourcePlaceholderStorage => {
-	const mismatch = matchSourcePlaceholderStorage(storage);
+  const mismatch = matchSourcePlaceholderStorage(storage);
 
-	return !mismatch;
+  return !mismatch;
 };
 
 export const validateSourcePlaceholderStorage = (
-	storage: unknown,
+  storage: unknown,
 ): storage is SourcePlaceholderStorage => {
-	return validateStorage(storage, isSourcePlaceholderStorage);
+  return validateStorage(storage, isSourcePlaceholderStorage);
 };
 
 export const createSourcePlaceholderStorage = (): CreateSourcePlaceholderStorageResult => ({
-	id: sourcePlaceholderId,
+  id: sourcePlaceholderId,
 });
 
 export const ensureSourcePlaceholderStorage = ({
-	storage,
+  storage,
 }: EnsureSourcePlaceholderStorageParams): EnsureSourcePlaceholderStorageResult => {
-	if (validateSourcePlaceholderStorage(storage)) {
-		return storage;
-	}
+  if (validateSourcePlaceholderStorage(storage)) {
+    return storage;
+  }
 
-	return createSourcePlaceholderStorage();
+  return createSourcePlaceholderStorage();
 };
 
 export const ensureNodeSourcePlaceholderStorage = ({
-	blockComponent,
+  blockComponent,
 }: EnsureNodeSourcePlaceholderStorageParams): EnsureNodeSourcePlaceholderStorageResult => {
-	const { $$customStorage } = blockComponent;
+  const { $$customStorage } = blockComponent;
 
-	const storage = ensureSourcePlaceholderStorage({ storage: $$customStorage });
-	blockComponent.$$customStorage = storage;
+  const storage = ensureSourcePlaceholderStorage({ storage: $$customStorage });
+  blockComponent.$$customStorage = storage;
 
-	return storage;
+  return storage;
 };

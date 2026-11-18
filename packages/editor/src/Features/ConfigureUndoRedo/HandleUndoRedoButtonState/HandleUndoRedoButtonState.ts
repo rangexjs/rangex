@@ -6,22 +6,22 @@ import type { HandleUndoRedoButtonStateParams } from "./HandleUndoRedoButtonStat
  * Updates the undo/redo buttons' enabled state whenever the snapshot timeline's current index changes.
  */
 export const handleUndoRedoButtonState = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleUndoRedoButtonStateParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: snapshotIndexChangeEventType,
-		callback: () => {
-			configPort.updateState({
-				canStepBack: snapshotTimeline.canStepBack,
-				canStepForward: snapshotTimeline.canStepForward,
-			});
-		},
-	});
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: snapshotIndexChangeEventType,
+    callback: () => {
+      configPort.updateState({
+        canStepBack: snapshotTimeline.canStepBack,
+        canStepForward: snapshotTimeline.canStepForward,
+      });
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

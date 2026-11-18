@@ -4,21 +4,21 @@ import { createSignal, onCleanup } from "solid-js";
 import type { FromFormattingToReactivePort, ReactiveIndentationPort } from "./_Utilities";
 
 export const Indentation = <T extends FormattingPublicPort | undefined>(
-	formatting: T,
+  formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveIndentationPort> => {
-	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<T, ReactiveIndentationPort>;
-	}
+  if (!formatting) {
+    return undefined as FromFormattingToReactivePort<T, ReactiveIndentationPort>;
+  }
 
-	const [state, setState] = createSignal(formatting.indentation);
+  const [state, setState] = createSignal(formatting.indentation);
 
-	onCleanup(formatting.onIndentationUpdate(setState));
+  onCleanup(formatting.onIndentationUpdate(setState));
 
-	const port: ReactiveIndentationPort = {
-		disabled: () => state().disabled,
-		hasUnset: () => state().hasUnset,
-		values: () => state().values,
-	};
+  const port: ReactiveIndentationPort = {
+    disabled: () => state().disabled,
+    hasUnset: () => state().hasUnset,
+    values: () => state().values,
+  };
 
-	return port as FromFormattingToReactivePort<T, ReactiveIndentationPort>;
+  return port as FromFormattingToReactivePort<T, ReactiveIndentationPort>;
 };

@@ -1,8 +1,8 @@
 import {
-	createContentLine,
-	createFormattableTexts,
-	createInlineComponent,
-	createNestedEditable,
+  createContentLine,
+  createFormattableTexts,
+  createInlineComponent,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { componentsName, mentionDefinition } from "#constants";
@@ -15,26 +15,26 @@ import type { CreateMentionParams, CreateMentionResult } from "./CreateMention-t
  * user id.
  */
 export const createMention = ({
-	userId,
-	displayText,
+  userId,
+  displayText,
 }: CreateMentionParams): CreateMentionResult => {
-	return createInlineComponent({
-		name: componentsName.mention,
-		content: { type: "custom" },
-		customStorage: createMentionStorage({ userId }),
-		editState: "false",
-		shouldSelectBeforeRemove: false,
-		shouldSelectOnNavigation: false,
-		childNodes: [
-			createNestedEditable({
-				...mentionDefinition.nestedEditableProps,
-				childNodes: [
-					createContentLine({
-						localName: "span",
-						childNodes: [...createFormattableTexts({ data: displayText })],
-					}),
-				],
-			}),
-		],
-	});
+  return createInlineComponent({
+    name: componentsName.mention,
+    content: { type: "custom" },
+    customStorage: createMentionStorage({ userId }),
+    editState: "false",
+    shouldSelectBeforeRemove: false,
+    shouldSelectOnNavigation: false,
+    childNodes: [
+      createNestedEditable({
+        ...mentionDefinition.nestedEditableProps,
+        childNodes: [
+          createContentLine({
+            localName: "span",
+            childNodes: [...createFormattableTexts({ data: displayText })],
+          }),
+        ],
+      }),
+    ],
+  });
 };

@@ -1,12 +1,12 @@
 import {
-	createBeamText,
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createContentLine,
-	createList as createEngineList,
-	createListItem,
-	createNestedEditable,
+  createBeamText,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createContentLine,
+  createList as createEngineList,
+  createListItem,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { componentsName, listDefinition } from "#constants";
@@ -19,36 +19,36 @@ import type { CreateListParams, CreateListResult } from "./CreateList-types";
  * or a single empty item when none are provided.
  */
 export const createList = ({
-	localName,
-	childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
+  localName,
+  childNodes = [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
 }: CreateListParams): CreateListResult => {
-	const list = createEngineList({
-		localName,
-		lineType: listDefinition.lineType,
-		editState: listDefinition.editState,
-		childNodes: childNodes.map((line) =>
-			createListItem({
-				childNodes: [
-					createNestedEditable({
-						...listDefinition.itemNestedEditableProps,
-						childNodes: [line],
-					}),
-				],
-			}),
-		),
-	});
+  const list = createEngineList({
+    localName,
+    lineType: listDefinition.lineType,
+    editState: listDefinition.editState,
+    childNodes: childNodes.map((line) =>
+      createListItem({
+        childNodes: [
+          createNestedEditable({
+            ...listDefinition.itemNestedEditableProps,
+            childNodes: [line],
+          }),
+        ],
+      }),
+    ),
+  });
 
-	return createBlockComponentLine({
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.list,
-			content: { type: "list" },
-			customStorage: createListStorage(),
-			shouldSelectBeforeRemove: false,
-			shouldSelectOnNavigation: false,
-			editState: "inherit",
-			childNodes: [list],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  return createBlockComponentLine({
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.list,
+      content: { type: "list" },
+      customStorage: createListStorage(),
+      shouldSelectBeforeRemove: false,
+      shouldSelectOnNavigation: false,
+      editState: "inherit",
+      childNodes: [list],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 };

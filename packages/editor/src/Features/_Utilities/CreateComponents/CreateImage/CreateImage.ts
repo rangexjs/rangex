@@ -1,8 +1,8 @@
 import {
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createHTMLLayout,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createHTMLLayout,
 } from "@rangex/core";
 
 import { componentsName } from "#constants";
@@ -16,30 +16,30 @@ import type { CreateImageParams, CreateImageResult } from "./CreateImage-types";
  * `img`. They aren't validated here.
  */
 export const createImage = ({ attrs }: CreateImageParams): CreateImageResult => {
-	return createBlockComponentLine({
-		domAttrs: toDOMAttrs(attrs.line),
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.image,
-			content: { type: "custom" },
-			customStorage: createImageStorage(),
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			domAttrs: toDOMAttrs(attrs.block),
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "img",
-							domAttrs: toDOMAttrs(attrs.img),
-							childNodes: [],
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  return createBlockComponentLine({
+    domAttrs: toDOMAttrs(attrs.line),
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.image,
+      content: { type: "custom" },
+      customStorage: createImageStorage(),
+      editState: "false",
+      shouldSelectOnNavigation: true,
+      shouldSelectBeforeRemove: true,
+      domAttrs: toDOMAttrs(attrs.block),
+      childNodes: [
+        createHTMLLayout({
+          localName: "figure",
+          childNodes: [
+            createHTMLLayout({
+              localName: "img",
+              domAttrs: toDOMAttrs(attrs.img),
+              childNodes: [],
+            }),
+          ],
+        }),
+      ],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 };

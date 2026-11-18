@@ -18,19 +18,19 @@ import type { VideoStorage } from "../Video";
 export type ValidateStorageCallbackFn = (storage: unknown) => boolean;
 
 export type NodeStorage =
-	| AccordionItemStorage
-	| AudioStorage
-	| BlockQuoteStorage
-	| CodeBlockStorage
-	| EmbedStorage
-	| SourcePlaceholderStorage
-	| ImageStorage
-	| LinkStorage
-	| ListStorage
-	| MentionStorage
-	| RootStorage
-	| SeparatorStorage
-	| TableStorage
-	| TemplateVariableStorage
-	| TodoListStorage
-	| VideoStorage;
+  | AccordionItemStorage
+  | AudioStorage
+  | BlockQuoteStorage
+  | CodeBlockStorage
+  | EmbedStorage
+  | SourcePlaceholderStorage
+  | ImageStorage
+  | LinkStorage
+  | ListStorage
+  | MentionStorage
+  | RootStorage
+  | SeparatorStorage
+  | TableStorage
+  | TemplateVariableStorage
+  | TodoListStorage
+  | VideoStorage;

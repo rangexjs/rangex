@@ -1,31 +1,31 @@
 import type {
-	TemplateVariableFields,
-	TemplateVariableFieldsConfig,
-	ValidateFieldNameResult,
-	ValidateFieldValueResult,
+  TemplateVariableFields,
+  TemplateVariableFieldsConfig,
+  ValidateFieldNameResult,
+  ValidateFieldValueResult,
 } from "#adapters/TemplateVariable";
 
 export interface ValidateTemplateVariableFieldNameParams {
-	fieldName: string;
+  fieldName: string;
 }
 
 export type ValidateTemplateVariableFieldNameResult = ValidateFieldNameResult;
 
 export interface ValidateTemplateVariableFieldValueParams {
-	value: string;
+  value: string;
 }
 
 export type ValidateTemplateVariableFieldValueResult = ValidateFieldValueResult;
 
 export interface ValidateTemplateVariablePlacementParams {
-	fieldName: string;
-	fieldsConfig: TemplateVariableFieldsConfig;
-	storage: TemplateVariableFields;
+  fieldName: string;
+  fieldsConfig: TemplateVariableFieldsConfig;
+  storage: TemplateVariableFields;
 }
 
 export interface TemplateVariablePlacementMismatch {
-	field: "fieldName";
-	reason: string;
+  field: "fieldName";
+  reason: string;
 }
 
 export type ValidateTemplateVariablePlacementResult = TemplateVariablePlacementMismatch | null;

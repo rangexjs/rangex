@@ -1,5 +1,5 @@
 import type { NestedEditableDefinition } from "../_Utilities";
 
 export interface CodeBlockDefinition {
-	lineNestedEditableProps: NestedEditableDefinition;
+  lineNestedEditableProps: NestedEditableDefinition;
 }

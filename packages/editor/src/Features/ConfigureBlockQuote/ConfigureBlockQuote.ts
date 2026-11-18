@@ -10,43 +10,43 @@ import { handleBlockQuotePlacementState } from "./HandleBlockQuotePlacementState
  * Wires up block quote toolbar button state and placement handling, returning a cleanup function.
  */
 export const configureBlockQuote = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureBlockQuoteParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.blockQuote,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.blockQuote,
+  });
 
-	const placementStateCleanup = handleBlockQuotePlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleBlockQuotePlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => configPort.currentComponent,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => configPort.currentComponent,
+  });
 
-	const placementCleanup = handleBlockQuotePlacement({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementCleanup = handleBlockQuotePlacement({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	return () => {
-		selectionComponentCleanup();
-		placementStateCleanup();
-		unwrapCleanup();
-		placementCleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    placementStateCleanup();
+    unwrapCleanup();
+    placementCleanup();
+  };
 };

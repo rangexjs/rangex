@@ -6,39 +6,39 @@ import type { GetCaretMenuQueryFn } from "../../../_Utilities";
  * if no valid trigger is found within the scan limit.
  */
 export const getCommandMenuQuery: GetCaretMenuQueryFn = ({ editorAPI, fromText, fromOffset }) => {
-	const { plainTextScanner } = editorAPI.createPlainTextScanner({
-		fromNode: fromText,
-		fromOffset,
-		direction: "backward",
-	});
+  const { plainTextScanner } = editorAPI.createPlainTextScanner({
+    fromNode: fromText,
+    fromOffset,
+    direction: "backward",
+  });
 
-	const charLimit = 50;
+  const charLimit = 50;
 
-	let i = 0;
-	let step = plainTextScanner.next();
+  let i = 0;
+  let step = plainTextScanner.next();
 
-	while (!step.done) {
-		if (i++ >= charLimit) {
-			return null;
-		}
+  while (!step.done) {
+    if (i++ >= charLimit) {
+      return null;
+    }
 
-		const { data, toText, toOffset } = step.value;
+    const { data, toText, toOffset } = step.value;
 
-		if (data.startsWith("/")) {
-			const nextStep = plainTextScanner.next();
+    if (data.startsWith("/")) {
+      const nextStep = plainTextScanner.next();
 
-			const precededByLineStart = nextStep.done;
-			const precededBySpace = !nextStep.done && nextStep.value.data.startsWith(" ");
+      const precededByLineStart = nextStep.done;
+      const precededBySpace = !nextStep.done && nextStep.value.data.startsWith(" ");
 
-			if (!(precededByLineStart || precededBySpace)) {
-				return null;
-			}
+      if (!(precededByLineStart || precededBySpace)) {
+        return null;
+      }
 
-			return { toText, toOffset, query: data.slice(1) };
-		}
+      return { toText, toOffset, query: data.slice(1) };
+    }
 
-		step = plainTextScanner.next();
-	}
+    step = plainTextScanner.next();
+  }
 
-	return null;
+  return null;
 };

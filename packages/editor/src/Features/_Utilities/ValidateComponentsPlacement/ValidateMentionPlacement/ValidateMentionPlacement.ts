@@ -1,23 +1,23 @@
 import { isUserId } from "#storage";
 
 import type {
-	ValidateMentionDisplayTextParams,
-	ValidateMentionDisplayTextResult,
-	ValidateMentionPlacementParams,
-	ValidateMentionPlacementResult,
+  ValidateMentionDisplayTextParams,
+  ValidateMentionDisplayTextResult,
+  ValidateMentionPlacementParams,
+  ValidateMentionPlacementResult,
 } from "./ValidateMentionPlacement-types";
 
 /*
  * A display text is valid if it isn't empty. Returns the mismatch, or null when it's valid.
  */
 export const validateMentionDisplayText = ({
-	displayText,
+  displayText,
 }: ValidateMentionDisplayTextParams): ValidateMentionDisplayTextResult => {
-	if (displayText === "") {
-		return { reason: "must not be empty" };
-	}
+  if (displayText === "") {
+    return { reason: "must not be empty" };
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -25,18 +25,18 @@ export const validateMentionDisplayText = ({
  * its displayText. Returns the first mismatch with its field's name, or null when they're valid.
  */
 export const validateMentionPlacement = ({
-	userId,
-	displayText,
+  userId,
+  displayText,
 }: ValidateMentionPlacementParams): ValidateMentionPlacementResult => {
-	if (!isUserId(userId)) {
-		return { field: "userId", reason: "must be a valid user id" };
-	}
+  if (!isUserId(userId)) {
+    return { field: "userId", reason: "must be a valid user id" };
+  }
 
-	const displayTextFailed = validateMentionDisplayText({ displayText });
+  const displayTextFailed = validateMentionDisplayText({ displayText });
 
-	if (displayTextFailed) {
-		return { field: "displayText", reason: displayTextFailed.reason };
-	}
+  if (displayTextFailed) {
+    return { field: "displayText", reason: displayTextFailed.reason };
+  }
 
-	return null;
+  return null;
 };

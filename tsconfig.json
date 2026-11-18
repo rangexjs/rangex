@@ -1,14 +1,14 @@
 {
-	"compilerOptions": {
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"noEmit": true,
-		"jsx": "preserve",
-		"jsxImportSource": "@solidjs/web",
-		"customConditions": ["@rangex/source"],
-		"types": ["vite/client"]
-	},
-	"include": ["index.ts", "src/**/*"],
-	"exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "@solidjs/web",
+    "customConditions": ["@rangex/source"],
+    "types": ["vite/client"]
+  },
+  "include": ["index.ts", "src/**/*"],
+  "exclude": ["node_modules"]
 }

@@ -1,24 +1,24 @@
 import {
-	type ContentLineDraft,
-	contentLineRole,
-	type EditorNodeDraft,
-	type GlyphFormatterDraft,
-	glyphFormatterRole,
+  type ContentLineDraft,
+  contentLineRole,
+  type EditorNodeDraft,
+  type GlyphFormatterDraft,
+  glyphFormatterRole,
 } from "@rangex/core";
 
 import { validateContentLine } from "./ValidateContentLine";
 import type {
-	ValidateFormattingElementsParams,
-	ValidateFormattingElementsResult,
+  ValidateFormattingElementsParams,
+  ValidateFormattingElementsResult,
 } from "./ValidateFormattingElements-types";
 import { validateGlyphFormatter } from "./ValidateGlyphFormatter";
 
 const isContentLineDraft = (nodeDraft: EditorNodeDraft): nodeDraft is ContentLineDraft => {
-	return nodeDraft.editorRole === contentLineRole;
+  return nodeDraft.editorRole === contentLineRole;
 };
 
 const isGlyphFormatterDraft = (nodeDraft: EditorNodeDraft): nodeDraft is GlyphFormatterDraft => {
-	return nodeDraft.editorRole === glyphFormatterRole;
+  return nodeDraft.editorRole === glyphFormatterRole;
 };
 
 /*
@@ -26,33 +26,33 @@ const isGlyphFormatterDraft = (nodeDraft: EditorNodeDraft): nodeDraft is GlyphFo
  * validateContentLine and validateGlyphFormatter. Fails on the first one that doesn't pass.
  */
 export const validateFormattingElements = ({
-	rootEditableDraft,
+  rootEditableDraft,
 }: ValidateFormattingElementsParams): ValidateFormattingElementsResult => {
-	const nodeDrafts = rootEditableDraft.queryAll(
-		(nodeDraft) => isContentLineDraft(nodeDraft) || isGlyphFormatterDraft(nodeDraft),
-	);
+  const nodeDrafts = rootEditableDraft.queryAll(
+    (nodeDraft) => isContentLineDraft(nodeDraft) || isGlyphFormatterDraft(nodeDraft),
+  );
 
-	for (const nodeDraft of nodeDrafts) {
-		if (isContentLineDraft(nodeDraft)) {
-			const contentLineFailed = validateContentLine({
-				contentLineDraft: nodeDraft,
-			});
+  for (const nodeDraft of nodeDrafts) {
+    if (isContentLineDraft(nodeDraft)) {
+      const contentLineFailed = validateContentLine({
+        contentLineDraft: nodeDraft,
+      });
 
-			if (contentLineFailed) {
-				return contentLineFailed;
-			}
-		}
+      if (contentLineFailed) {
+        return contentLineFailed;
+      }
+    }
 
-		if (isGlyphFormatterDraft(nodeDraft)) {
-			const glyphFormatterFailed = validateGlyphFormatter({
-				glyphFormatterDraft: nodeDraft,
-			});
+    if (isGlyphFormatterDraft(nodeDraft)) {
+      const glyphFormatterFailed = validateGlyphFormatter({
+        glyphFormatterDraft: nodeDraft,
+      });
 
-			if (glyphFormatterFailed) {
-				return glyphFormatterFailed;
-			}
-		}
-	}
+      if (glyphFormatterFailed) {
+        return glyphFormatterFailed;
+      }
+    }
+  }
 
-	return null;
+  return null;
 };

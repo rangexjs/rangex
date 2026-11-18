@@ -2,81 +2,81 @@ import { extendObjectProperties } from "#utilities";
 
 import { createEmitter, createStateEmitter } from "../_Utilities";
 import type {
-	CreateUndoRedoAdapterParams,
-	CreateUndoRedoAdapterResult,
-	OnStepBackCallbackFn,
-	OnStepForwardCallbackFn,
-	UndoRedoConfigPort,
-	UndoRedoConfigPortProps,
-	UndoRedoPublicPort,
-	UndoRedoPublicPortProps,
-	UpdateStateParams,
+  CreateUndoRedoAdapterParams,
+  CreateUndoRedoAdapterResult,
+  OnStepBackCallbackFn,
+  OnStepForwardCallbackFn,
+  UndoRedoConfigPort,
+  UndoRedoConfigPortProps,
+  UndoRedoPublicPort,
+  UndoRedoPublicPortProps,
+  UpdateStateParams,
 } from "./UndoRedoAdapter-types";
 
 export const createUndoRedoAdapter = (
-	...params: CreateUndoRedoAdapterParams
+  ...params: CreateUndoRedoAdapterParams
 ): CreateUndoRedoAdapterResult => {
-	const [_settings, { adapterBus }] = params;
+  const [_settings, { adapterBus }] = params;
 
-	adapterBus.registerAdapter("undoRedo");
+  adapterBus.registerAdapter("undoRedo");
 
-	// States
-	const canStepBackState = createStateEmitter<boolean>(false);
-	const canStepForwardState = createStateEmitter<boolean>(false);
+  // States
+  const canStepBackState = createStateEmitter<boolean>(false);
+  const canStepForwardState = createStateEmitter<boolean>(false);
 
-	// CommandListeners
-	const stepBackEmitter = createEmitter<OnStepBackCallbackFn>();
-	const stepForwardEmitter = createEmitter<OnStepForwardCallbackFn>();
+  // CommandListeners
+  const stepBackEmitter = createEmitter<OnStepBackCallbackFn>();
+  const stepForwardEmitter = createEmitter<OnStepForwardCallbackFn>();
 
-	const updateState = ({ canStepBack, canStepForward }: UpdateStateParams) => {
-		if (canStepBack !== undefined) {
-			canStepBackState.set(canStepBack);
-		}
+  const updateState = ({ canStepBack, canStepForward }: UpdateStateParams) => {
+    if (canStepBack !== undefined) {
+      canStepBackState.set(canStepBack);
+    }
 
-		if (canStepForward !== undefined) {
-			canStepForwardState.set(canStepForward);
-		}
-	};
+    if (canStepForward !== undefined) {
+      canStepForwardState.set(canStepForward);
+    }
+  };
 
-	const configPort: UndoRedoConfigPort = extendObjectProperties({}, {
-		updateState(params) {
-			updateState(params);
-		},
+  const configPort: UndoRedoConfigPort = extendObjectProperties({}, {
+    updateState(params) {
+      updateState(params);
+    },
 
-		onStepBack(callback) {
-			return stepBackEmitter.subscribe(callback);
-		},
+    onStepBack(callback) {
+      return stepBackEmitter.subscribe(callback);
+    },
 
-		onStepForward(callback) {
-			return stepForwardEmitter.subscribe(callback);
-		},
-	} satisfies UndoRedoConfigPortProps);
+    onStepForward(callback) {
+      return stepForwardEmitter.subscribe(callback);
+    },
+  } satisfies UndoRedoConfigPortProps);
 
-	const publicPort: UndoRedoPublicPort = extendObjectProperties({}, {
-		get canStepBack() {
-			return canStepBackState.get();
-		},
+  const publicPort: UndoRedoPublicPort = extendObjectProperties({}, {
+    get canStepBack() {
+      return canStepBackState.get();
+    },
 
-		get canStepForward() {
-			return canStepForwardState.get();
-		},
+    get canStepForward() {
+      return canStepForwardState.get();
+    },
 
-		onCanStepBackUpdate(callback) {
-			return canStepBackState.subscribe(callback);
-		},
+    onCanStepBackUpdate(callback) {
+      return canStepBackState.subscribe(callback);
+    },
 
-		onCanStepForwardUpdate(callback) {
-			return canStepForwardState.subscribe(callback);
-		},
+    onCanStepForwardUpdate(callback) {
+      return canStepForwardState.subscribe(callback);
+    },
 
-		stepBack() {
-			stepBackEmitter.emit();
-		},
+    stepBack() {
+      stepBackEmitter.emit();
+    },
 
-		stepForward() {
-			stepForwardEmitter.emit();
-		},
-	} satisfies UndoRedoPublicPortProps);
+    stepForward() {
+      stepForwardEmitter.emit();
+    },
+  } satisfies UndoRedoPublicPortProps);
 
-	return { configPort, publicPort };
+  return { configPort, publicPort };
 };

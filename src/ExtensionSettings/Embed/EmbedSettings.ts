@@ -11,27 +11,27 @@ const maxSrcLength = 4096;
  * snapshot, a share link of one of them falls back to its embed URL. Any other src is rejected.
  */
 const validateEmbedSrc: EmbedSrcValidator = ({ value }) => {
-	const url = value.length <= maxSrcLength ? parseAbsoluteURL(value) : null;
+  const url = value.length <= maxSrcLength ? parseAbsoluteURL(value) : null;
 
-	if (!url) {
-		return { kind: "reject", reason: "must be a URL of an allowed site" };
-	}
+  if (!url) {
+    return { kind: "reject", reason: "must be a URL of an allowed site" };
+  }
 
-	if (isEmbedURL(url)) {
-		return null;
-	}
+  if (isEmbedURL(url)) {
+    return null;
+  }
 
-	const embedURL = toEmbedURL(url);
+  const embedURL = toEmbedURL(url);
 
-	if (embedURL) {
-		return {
-			kind: "fallback",
-			reason: "must be an embed URL",
-			value: embedURL,
-		};
-	}
+  if (embedURL) {
+    return {
+      kind: "fallback",
+      reason: "must be an embed URL",
+      value: embedURL,
+    };
+  }
 
-	return { kind: "reject", reason: "must be a URL of an allowed site" };
+  return { kind: "reject", reason: "must be a URL of an allowed site" };
 };
 
 /**
@@ -39,7 +39,7 @@ const validateEmbedSrc: EmbedSrcValidator = ({ value }) => {
  * own, and passes the same snapshotSchema to createRichTextEditor and validateSnapshot.
  */
 export const embedAttrValidators: CreateEmbedAttrValidatorsParams = {
-	iframe: {
-		src: validateEmbedSrc,
-	},
+  iframe: {
+    src: validateEmbedSrc,
+  },
 };

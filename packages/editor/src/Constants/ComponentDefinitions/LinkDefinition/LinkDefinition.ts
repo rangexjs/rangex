@@ -5,13 +5,13 @@ import type { LinkDefinition } from "./LinkDefinition-types";
  * component is allowed in it.
  */
 export const linkDefinition = {
-	nestedEditableProps: {
-		display: "inline",
-		editState: "inherit",
-		allowedComponents: [],
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  nestedEditableProps: {
+    display: "inline",
+    editState: "inherit",
+    allowedComponents: [],
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } satisfies LinkDefinition;

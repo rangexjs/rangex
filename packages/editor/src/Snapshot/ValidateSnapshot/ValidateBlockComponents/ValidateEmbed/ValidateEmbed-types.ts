@@ -1,19 +1,19 @@
 import type { CreateEmbedAttrValidatorsParams, EmbedAttrValidators } from "#dom-attrs";
 
 import type {
-	ComponentValidator,
-	ValidateComponentParams,
-	ValidateComponentResult,
+  ComponentValidator,
+  ValidateComponentParams,
+  ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
 export interface ValidateEmbedParams extends ValidateComponentParams {
-	attrValidators: EmbedAttrValidators;
+  attrValidators: EmbedAttrValidators;
 }
 
 export type ValidateEmbedResult = ValidateComponentResult;
 
 export interface CreateEmbedValidatorParams {
-	attrValidators?: CreateEmbedAttrValidatorsParams;
+  attrValidators?: CreateEmbedAttrValidatorsParams;
 }
 
 export type CreateEmbedValidatorResult = ComponentValidator;
