@@ -29,8 +29,7 @@ export const App: Component<AppProps> = (props) => {
             toolbarButtonsLayout={props.toolbarButtonsLayout}
             toolbarButtons={props.components.toolbarButtons}
           />
-          <div>{[props.host, props.floatingContainer]}</div>
-          <div class="overflow-y-auto">{[props.host, props.floatingContainer]}</div>
+          <div class="relative overflow-y-auto">{[props.host, props.floatingContainer]}</div>
           <For each={props.components.floatingComponents}>
             {(FloatingComponent) => <FloatingComponent />}
           </For>
