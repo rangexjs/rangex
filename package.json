@@ -1,15 +1,14 @@
 {
   "name": "rangex",
-  "type": "module",
-  "license": "MIT",
   "private": true,
-  "packageManager": "npm@11.19.1",
+  "license": "MIT",
   "workspaces": [
     "packages/editor",
     "packages/solid",
     "packages/syntax-highlighter-shiki",
     "packages/rich-text-editor"
   ],
+  "type": "module",
   "scripts": {
     "dev": "vp dev",
     "build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
@@ -35,5 +34,6 @@
   },
   "overrides": {
     "vite": "npm:@voidzero-dev/vite-plus-core@1.6.0"
-  }
+  },
+  "packageManager": "npm@11.19.1"
 }

@@ -3,29 +3,77 @@
   "version": "1.0.0-beta.1",
   "description": "Framework-agnostic RangeX editor: adapters, createEditor and snapshot/HTML views on top of the RangeX engine.",
   "keywords": [
+    "contenteditable",
+    "editor",
+    "framework-agnostic",
     "rangex",
     "rich-text-editor",
-    "editor",
-    "wysiwyg",
-    "contenteditable",
-    "framework-agnostic"
+    "wysiwyg"
   ],
+  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/editor#readme",
+  "bugs": "https://github.com/rangexjs/rangex/issues",
+  "license": "MIT",
   "author": "Mozes Stumpf",
   "repository": {
     "type": "git",
     "url": "git@github.com:rangexjs/rangex.git",
     "directory": "packages/editor"
   },
-  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/editor#readme",
-  "bugs": "https://github.com/rangexjs/rangex/issues",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
-  "browserslist": [
-    "chrome >= 159",
-    "firefox >= 159",
-    "safari >= 27.3"
-  ],
+  "imports": {
+    "#utilities": {
+      "@rangex/source": "./src/_Utilities/index.ts",
+      "types": "./dist/_Utilities/index.d.ts"
+    },
+    "#constants": {
+      "@rangex/source": "./src/Constants/index.ts",
+      "types": "./dist/Constants/index.d.ts"
+    },
+    "#adapters": {
+      "@rangex/source": "./src/Adapters/index.ts",
+      "types": "./dist/Adapters/index.d.ts"
+    },
+    "#adapters/*": {
+      "@rangex/source": "./src/Adapters/*Adapter/index.ts",
+      "types": "./dist/Adapters/*Adapter/index.d.ts"
+    },
+    "#rangex-editor": {
+      "@rangex/source": "./src/RangeXEditor/index.ts",
+      "types": "./dist/RangeXEditor/index.d.ts"
+    },
+    "#engine-links": {
+      "@rangex/source": "./src/EngineLinks/index.ts",
+      "types": "./dist/EngineLinks/index.d.ts"
+    },
+    "#storage": {
+      "@rangex/source": "./src/Storage/index.ts",
+      "types": "./dist/Storage/index.d.ts"
+    },
+    "#snapshot": {
+      "@rangex/source": "./src/Snapshot/index.ts",
+      "types": "./dist/Snapshot/index.d.ts"
+    },
+    "#dom-attrs": {
+      "@rangex/source": "./src/DOMAttrs/index.ts",
+      "types": "./dist/DOMAttrs/index.d.ts"
+    },
+    "#sanitizer": {
+      "@rangex/source": "./src/Sanitizer/index.ts",
+      "types": "./dist/Sanitizer/index.d.ts"
+    },
+    "#features": {
+      "@rangex/source": "./src/Features/index.ts",
+      "types": "./dist/Features/index.d.ts"
+    },
+    "#structured-style": {
+      "@rangex/source": "./src/StructuredStyle/index.ts",
+      "types": "./dist/StructuredStyle/index.d.ts"
+    }
+  },
   "exports": {
     ".": {
       "@rangex/source": "./src/Exports/index.ts",
@@ -163,59 +211,6 @@
       "import": "./dist/video.js"
     }
   },
-  "imports": {
-    "#utilities": {
-      "@rangex/source": "./src/_Utilities/index.ts",
-      "types": "./dist/_Utilities/index.d.ts"
-    },
-    "#constants": {
-      "@rangex/source": "./src/Constants/index.ts",
-      "types": "./dist/Constants/index.d.ts"
-    },
-    "#adapters": {
-      "@rangex/source": "./src/Adapters/index.ts",
-      "types": "./dist/Adapters/index.d.ts"
-    },
-    "#adapters/*": {
-      "@rangex/source": "./src/Adapters/*Adapter/index.ts",
-      "types": "./dist/Adapters/*Adapter/index.d.ts"
-    },
-    "#rangex-editor": {
-      "@rangex/source": "./src/RangeXEditor/index.ts",
-      "types": "./dist/RangeXEditor/index.d.ts"
-    },
-    "#engine-links": {
-      "@rangex/source": "./src/EngineLinks/index.ts",
-      "types": "./dist/EngineLinks/index.d.ts"
-    },
-    "#storage": {
-      "@rangex/source": "./src/Storage/index.ts",
-      "types": "./dist/Storage/index.d.ts"
-    },
-    "#snapshot": {
-      "@rangex/source": "./src/Snapshot/index.ts",
-      "types": "./dist/Snapshot/index.d.ts"
-    },
-    "#dom-attrs": {
-      "@rangex/source": "./src/DOMAttrs/index.ts",
-      "types": "./dist/DOMAttrs/index.d.ts"
-    },
-    "#sanitizer": {
-      "@rangex/source": "./src/Sanitizer/index.ts",
-      "types": "./dist/Sanitizer/index.d.ts"
-    },
-    "#features": {
-      "@rangex/source": "./src/Features/index.ts",
-      "types": "./dist/Features/index.d.ts"
-    },
-    "#structured-style": {
-      "@rangex/source": "./src/StructuredStyle/index.ts",
-      "types": "./dist/StructuredStyle/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -228,13 +223,18 @@
     "fix": "vp check --fix && tsc -p ./tsconfig.json",
     "pre:check": "vp check && tsc && vp test"
   },
+  "dependencies": {
+    "@rangex/core": "1.0.0-beta.1"
+  },
   "devDependencies": {
     "@happy-dom/global-registrator": "^21.0.4",
     "@vitest/coverage-v8": "5.1.0",
     "typescript": "^7.0.2",
     "vite-plus": "1.6.0"
   },
-  "dependencies": {
-    "@rangex/core": "1.0.0-beta.1"
-  }
+  "browserslist": [
+    "chrome >= 159",
+    "firefox >= 159",
+    "safari >= 27.3"
+  ]
 }

@@ -3,31 +3,29 @@
   "version": "1.0.0-beta.1",
   "description": "Shiki-based syntax highlighting for RangeX code blocks, in the editor (Web Worker) and the HTML view.",
   "keywords": [
+    "code-block",
+    "contenteditable",
+    "editor",
     "rangex",
     "rich-text-editor",
-    "editor",
-    "wysiwyg",
-    "contenteditable",
     "shiki",
     "syntax-highlighting",
-    "code-block"
+    "wysiwyg"
   ],
+  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
+  "bugs": "https://github.com/rangexjs/rangex/issues",
+  "license": "MIT",
   "author": "Mozes Stumpf",
   "repository": {
     "type": "git",
     "url": "git@github.com:rangexjs/rangex.git",
     "directory": "packages/syntax-highlighter-shiki"
   },
-  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
-  "bugs": "https://github.com/rangexjs/rangex/issues",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
-  "browserslist": [
-    "chrome >= 159",
-    "firefox >= 159",
-    "safari >= 27.3"
-  ],
   "exports": {
     ".": {
       "@rangex/source": "./src/index.ts",
@@ -35,9 +33,6 @@
       "import": "./dist/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -54,5 +49,10 @@
   "peerDependencies": {
     "@rangex/editor": "1.0.0-beta.1",
     "shiki": "^4.3.1"
-  }
+  },
+  "browserslist": [
+    "chrome >= 159",
+    "firefox >= 159",
+    "safari >= 27.3"
+  ]
 }

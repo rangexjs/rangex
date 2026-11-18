@@ -9,8 +9,6 @@ export default defineConfig(() => ({
   mode: "development",
   server: { port: 3000 },
   fmt: {
-    sortImports: {},
-    sortPackageJson: false,
     ignorePatterns: ["**/*.md"],
   },
   lint: {

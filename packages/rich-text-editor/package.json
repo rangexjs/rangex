@@ -3,29 +3,57 @@
   "version": "1.0.0-beta.1",
   "description": "Zero-config RangeX rich text editor with extensions, toolbar and floating UI out of the box.",
   "keywords": [
+    "contenteditable",
+    "editor",
     "rangex",
     "rich-text-editor",
-    "editor",
-    "wysiwyg",
-    "contenteditable",
-    "solid"
+    "solid",
+    "wysiwyg"
   ],
+  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/rich-text-editor#readme",
+  "bugs": "https://github.com/rangexjs/rangex/issues",
+  "license": "MIT",
   "author": "Mozes Stumpf",
   "repository": {
     "type": "git",
     "url": "git@github.com:rangexjs/rangex.git",
     "directory": "packages/rich-text-editor"
   },
-  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/rich-text-editor#readme",
-  "bugs": "https://github.com/rangexjs/rangex/issues",
-  "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "sideEffects": false,
-  "browserslist": [
-    "chrome >= 159",
-    "firefox >= 159",
-    "safari >= 27.3"
-  ],
+  "imports": {
+    "#utilities": {
+      "@rangex/source": "./src/_Utilities/index.ts",
+      "types": "./dist/_Utilities/index.d.ts"
+    },
+    "#color": {
+      "@rangex/source": "./src/Color/index.ts",
+      "types": "./dist/Color/index.d.ts"
+    },
+    "#constants": {
+      "@rangex/source": "./src/Constants/index.ts",
+      "types": "./dist/Constants/index.d.ts"
+    },
+    "#context": {
+      "@rangex/source": "./src/Context/index.ts",
+      "types": "./dist/Context/index.d.ts"
+    },
+    "#extensions": {
+      "@rangex/source": "./src/Extensions/index.ts",
+      "types": "./dist/Extensions/index.d.ts"
+    },
+    "#features": {
+      "@rangex/source": "./src/Features/index.ts",
+      "types": "./dist/Features/index.d.ts"
+    },
+    "#ui": {
+      "@rangex/source": "./src/UI/index.ts",
+      "types": "./dist/UI/index.d.ts"
+    }
+  },
   "exports": {
     ".": {
       "@rangex/source": "./src/Exports/index.ts",
@@ -158,39 +186,6 @@
       "import": "./dist/video.js"
     }
   },
-  "imports": {
-    "#utilities": {
-      "@rangex/source": "./src/_Utilities/index.ts",
-      "types": "./dist/_Utilities/index.d.ts"
-    },
-    "#color": {
-      "@rangex/source": "./src/Color/index.ts",
-      "types": "./dist/Color/index.d.ts"
-    },
-    "#constants": {
-      "@rangex/source": "./src/Constants/index.ts",
-      "types": "./dist/Constants/index.d.ts"
-    },
-    "#context": {
-      "@rangex/source": "./src/Context/index.ts",
-      "types": "./dist/Context/index.d.ts"
-    },
-    "#extensions": {
-      "@rangex/source": "./src/Extensions/index.ts",
-      "types": "./dist/Extensions/index.d.ts"
-    },
-    "#features": {
-      "@rangex/source": "./src/Features/index.ts",
-      "types": "./dist/Features/index.d.ts"
-    },
-    "#ui": {
-      "@rangex/source": "./src/UI/index.ts",
-      "types": "./dist/UI/index.d.ts"
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -217,5 +212,10 @@
     "@rangex/solid": "1.0.0-beta.1",
     "@solidjs/web": "^2.0.0-rc.13",
     "solid-js": "^2.0.0-rc.13"
-  }
+  },
+  "browserslist": [
+    "chrome >= 159",
+    "firefox >= 159",
+    "safari >= 27.3"
+  ]
 }
