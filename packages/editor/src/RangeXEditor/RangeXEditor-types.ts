@@ -12,6 +12,7 @@ type OptionalPublicPorts = {
 
 export interface RangeXEditor extends OptionalPublicPorts {
   readonly snapshot: Snapshot;
+  focus(): void;
   destroy(): void;
 }
 

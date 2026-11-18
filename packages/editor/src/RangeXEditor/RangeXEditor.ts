@@ -41,6 +41,10 @@ export const createEditor = ({
       return snapshot;
     },
 
+    focus() {
+      editorAPI.focus();
+    },
+
     destroy() {
       for (const cleanup of cleanupList) {
         cleanup();

@@ -1,10 +1,11 @@
-import { dynamic } from "@solidjs/web";
+import { dynamic, type JSX } from "@solidjs/web";
 import { createMemo, For, Show } from "solid-js";
 
 import type { ToolbarButtonsLayout } from "#constants";
 import type { ExtensionToolbarButtons } from "#extensions";
 
 export interface EditorToolbarProps {
+  class?: JSX.ClassValue;
   toolbarButtonsLayout: ToolbarButtonsLayout;
   toolbarButtons: ExtensionToolbarButtons;
 }
@@ -31,6 +32,7 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
           flex: visibleLayout().length > 0,
           hidden: visibleLayout().length === 0,
         },
+        props.class,
       ]}
     >
       <For each={visibleLayout()}>
