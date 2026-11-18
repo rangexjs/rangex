@@ -1,9 +1,9 @@
 import { initRichTextEditor } from "../InitRichTextEditor";
 
 export const createDevelopmentView = () => {
-	const container = document.createElement("div");
+	const host = document.createElement("div");
 
-	Object.assign<CSSStyleDeclaration, Partial<CSSStyleDeclaration>>(container.style, {
+	Object.assign<CSSStyleDeclaration, Partial<CSSStyleDeclaration>>(host.style, {
 		display: "block flex",
 		flexDirection: "column",
 		gap: "30px",
@@ -11,10 +11,12 @@ export const createDevelopmentView = () => {
 		maxWidth: "1200px",
 	});
 
+	const shadowRoot = host.attachShadow({ mode: "closed" });
+
 	const richTextEditor = initRichTextEditor();
 
-	document.adoptedStyleSheets.push(richTextEditor.editorStyle);
-	container.append(richTextEditor.editorHost);
+	shadowRoot.adoptedStyleSheets.push(richTextEditor.editorStyle);
+	shadowRoot.append(richTextEditor.editorHost);
 
-	return container;
+	return host;
 };

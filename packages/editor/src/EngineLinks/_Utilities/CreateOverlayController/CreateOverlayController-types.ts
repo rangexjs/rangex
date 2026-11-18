@@ -6,12 +6,16 @@ export interface HideParams {
 
 export type HideFn = (params: HideParams) => void;
 
-export interface RegisterLightDismissParams {
+export interface CreateLightDismissParams {
 	element: HTMLElement;
-	exemptNodes: Set<HTMLElement>;
 	isOpen: () => boolean;
 	hide: HideFn;
 	signal: AbortSignal;
+}
+
+export interface CreateLightDismissResult {
+	addExemptNode(node: HTMLElement): void;
+	removeExemptNode(node: HTMLElement): void;
 }
 
 export type OnEscapeFn = () => void;
