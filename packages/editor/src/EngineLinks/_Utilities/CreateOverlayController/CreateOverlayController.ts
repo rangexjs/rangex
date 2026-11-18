@@ -12,7 +12,8 @@ import type {
 	CreatePopoverOverlayControllerParams,
 	HideParams,
 	PopoverOverlayController,
-	RegisterLightDismissParams,
+	CreateLightDismissParams,
+	CreateLightDismissResult,
 } from "./CreateOverlayController-types";
 
 const hideAnchoredClass = "hide-anchored";
@@ -65,34 +66,42 @@ const applyAnchorPosition = ({
 	element.setAttribute(attrName, positionAnchor);
 };
 
-const registerLightDismiss = ({
+/*
+ * Hides the overlay on a pointerup outside `element` and the exempt nodes.
+ */
+const createLightDismiss = ({
 	element,
-	exemptNodes,
 	isOpen,
 	hide,
 	signal,
-}: RegisterLightDismissParams) => {
+}: CreateLightDismissParams): CreateLightDismissResult => {
+	const insideEvents = new WeakSet<Event>();
+
+	const markInside = (event: PointerEvent) => {
+		insideEvents.add(event);
+	};
+
+	element.addEventListener("pointerup", markInside, { capture: true, signal });
+
 	const onPointerUp = (event: PointerEvent) => {
-		if (!isOpen()) {
+		if (!isOpen() || insideEvents.has(event)) {
 			return;
-		}
-
-		const path = event.composedPath();
-
-		if (path.includes(element)) {
-			return;
-		}
-
-		for (const node of exemptNodes) {
-			if (path.includes(node)) {
-				return;
-			}
 		}
 
 		hide({});
 	};
 
 	document.addEventListener("pointerup", onPointerUp, { signal });
+
+	return {
+		addExemptNode(node) {
+			node.addEventListener("pointerup", markInside, { capture: true, signal });
+		},
+
+		removeExemptNode(node) {
+			node.removeEventListener("pointerup", markInside, { capture: true });
+		},
+	};
 };
 
 /**
@@ -125,7 +134,6 @@ export const createAnchoredOverlayController = ({
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
 	let anchorElement: HTMLElement | null = null;
-	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
 		addERClass(element, hideAnchoredClass);
@@ -146,15 +154,14 @@ export const createAnchoredOverlayController = ({
 
 	const abortController = new AbortController();
 
-	if (lightDismiss) {
-		registerLightDismiss({
-			element,
-			exemptNodes,
-			isOpen: () => isOpen,
-			hide,
-			signal: abortController.signal,
-		});
-	}
+	const lightDismissController = lightDismiss
+		? createLightDismiss({
+				element,
+				isOpen: () => isOpen,
+				hide,
+				signal: abortController.signal,
+			})
+		: null;
 
 	const controller: AnchoredOverlayController = {
 		get element() {
@@ -203,11 +210,11 @@ export const createAnchoredOverlayController = ({
 		hide,
 
 		addExemptNode(node) {
-			exemptNodes.add(node);
+			lightDismissController?.addExemptNode(node);
 		},
 
 		removeExemptNode(node) {
-			exemptNodes.delete(node);
+			lightDismissController?.removeExemptNode(node);
 		},
 
 		cleanup() {
@@ -236,7 +243,6 @@ export const createPopoverOverlayController = ({
 	let isOpen = false;
 	let closeWatcher: CloseWatcher | null = null;
 	let anchorElement: HTMLElement | null = null;
-	const exemptNodes = new Set<HTMLElement>();
 
 	const hide = ({ instant = false }: HideParams) => {
 		if (!isOpen) {
@@ -261,15 +267,14 @@ export const createPopoverOverlayController = ({
 
 	const abortController = new AbortController();
 
-	if (lightDismiss) {
-		registerLightDismiss({
-			element,
-			exemptNodes,
-			isOpen: () => isOpen,
-			hide,
-			signal: abortController.signal,
-		});
-	}
+	const lightDismissController = lightDismiss
+		? createLightDismiss({
+				element,
+				isOpen: () => isOpen,
+				hide,
+				signal: abortController.signal,
+			})
+		: null;
 
 	const controller: PopoverOverlayController = {
 		get element() {
@@ -317,11 +322,11 @@ export const createPopoverOverlayController = ({
 		hide,
 
 		addExemptNode(node) {
-			exemptNodes.add(node);
+			lightDismissController?.addExemptNode(node);
 		},
 
 		removeExemptNode(node) {
-			exemptNodes.delete(node);
+			lightDismissController?.removeExemptNode(node);
 		},
 
 		cleanup() {

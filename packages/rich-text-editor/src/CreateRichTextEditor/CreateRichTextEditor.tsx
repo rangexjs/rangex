@@ -8,7 +8,7 @@ import type { ExtensionComponents } from "#extensions";
 import { App } from "../App";
 import type { ThemeValue } from "../App/EditorContainer";
 import { getEditorStyles } from "../EngineStyles";
-import { defaultToolbarButtonsLayout } from "./_Utilities";
+import { defaultToolbarButtonsLayout, registerTailwindProperties } from "./_Utilities";
 import type {
 	CreateRichTextEditorParams,
 	CreateRichTextEditorResult,
@@ -41,6 +41,8 @@ export const createRichTextEditor = ({
 
 	const editorStyle = new CSSStyleSheet();
 	editorStyle.replaceSync(globalStyles + hostStyles);
+
+	const unregisterTailwindProperties = registerTailwindProperties({ styleSheet: editorStyle });
 
 	const components = extensions.reduce<ExtensionComponents>(
 		(prev, value) => {
@@ -104,6 +106,7 @@ export const createRichTextEditor = ({
 		destroy() {
 			editor.destroy();
 			dispose();
+			unregisterTailwindProperties();
 		},
 	};
 
