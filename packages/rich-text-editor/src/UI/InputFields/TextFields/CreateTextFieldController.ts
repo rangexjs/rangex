@@ -104,6 +104,7 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 
       textField.value = nextValue;
       setLocalValue(nextValue);
+      textChangedDuringFocus = false;
 
       commitState({
         isDirty: false,
