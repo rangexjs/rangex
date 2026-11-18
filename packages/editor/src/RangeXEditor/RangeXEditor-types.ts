@@ -46,7 +46,6 @@ export interface CreateEditorParams {
 
 export interface CreateEditorResult {
   editor: RangeXEditor;
-  host: HTMLElement;
-  floatingContainer: HTMLDivElement;
-  hostStyles: string;
+  editorContainer: HTMLDivElement;
+  containerStyles: string;
 }

@@ -16,8 +16,7 @@ export interface AppProps {
   uiOptions: UIOptions;
   toolbarButtonsLayout: ToolbarButtonsLayout;
   editor: RangeXEditor;
-  host: HTMLElement;
-  floatingContainer: HTMLDivElement;
+  editorContainer: HTMLDivElement;
 }
 
 export const App: Component<AppProps> = (props) => {
@@ -29,7 +28,7 @@ export const App: Component<AppProps> = (props) => {
             toolbarButtonsLayout={props.toolbarButtonsLayout}
             toolbarButtons={props.components.toolbarButtons}
           />
-          <div class="relative overflow-y-auto">{[props.host, props.floatingContainer]}</div>
+          <div class="overflow-y-auto">{props.editorContainer}</div>
           <For each={props.components.floatingComponents}>
             {(FloatingComponent) => <FloatingComponent />}
           </For>

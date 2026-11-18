@@ -1,6 +1,6 @@
 import { AdapterBus } from "#adapters";
 
-import { buildEditorStyleText, getHostStyleText } from "../Styles";
+import { buildEditorStyleText, getContainerStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
 import type {
   ConfigureAdapterResult,
@@ -76,7 +76,11 @@ export const createEditor = ({
     cleanupList.add(cleanup);
   }
 
-  const hostStyles = getHostStyleText();
+  const containerStyles = getContainerStyleText();
 
-  return { editor, host, floatingContainer, hostStyles };
+  const editorContainer = document.createElement("div");
+  editorContainer.classList.add("editor-container");
+  editorContainer.append(host, floatingContainer);
+
+  return { editor, editorContainer, containerStyles };
 };

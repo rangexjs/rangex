@@ -1,0 +1,4 @@
+.editor-container {
+  position: relative;
+  overflow-x: clip;
+}
