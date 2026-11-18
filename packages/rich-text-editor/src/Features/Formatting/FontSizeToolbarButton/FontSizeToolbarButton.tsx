@@ -3,7 +3,7 @@ import { FontSize, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 
 import { useEditorContext } from "#context";
-import { createTextFieldState, Icon, InputTextField, TextFieldWrapper } from "#ui";
+import { createTextFieldController, Icon, InputTextField, TextFieldWrapper } from "#ui";
 import { isDeepEqual } from "#utilities";
 
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
@@ -63,7 +63,7 @@ export const FontSizeToolbarButton = () => {
 		getInputValueFromActiveValues($fontSize.values(), $fontSize.hasUnset()),
 	);
 
-	const [fontSizeHandle, fontSizeControls] = createTextFieldState<HTMLInputElement>({
+	const [fontSizeHandle, fontSizeControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: untrack(() => activeInputValue()),
 	});
 

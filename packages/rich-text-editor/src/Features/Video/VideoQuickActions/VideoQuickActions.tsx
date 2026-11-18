@@ -5,7 +5,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js"
 
 import { useEditorContext } from "#context";
 import {
-	createTextFieldState,
+	createTextFieldController,
 	Icon,
 	InputTextField,
 	SegmentedControl,
@@ -82,7 +82,7 @@ export const VideoQuickActions = () => {
 	const loop = () => hasVideoAttr("loop");
 	const muted = () => hasVideoAttr("muted");
 
-	const [posterHandle, posterControls] = createTextFieldState<HTMLInputElement>({
+	const [posterHandle, posterControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: "",
 	});
 
@@ -90,7 +90,7 @@ export const VideoQuickActions = () => {
 
 	const isPosterDirty = () => posterHandle.value() !== committedPoster();
 
-	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
+	const [titleHandle, titleControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: "",
 	});
 

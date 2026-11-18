@@ -5,8 +5,4 @@ export type {
 	CheckboxErrorState,
 	CheckboxHandle,
 	CheckboxState,
-	CheckboxStateHandle,
-	OnStateChangeCallbackFn,
-	OnStateChangeFn,
-	StateChangeListeners,
 } from "./Utilities-types";

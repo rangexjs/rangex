@@ -5,7 +5,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js"
 
 import { useEditorContext } from "#context";
 import {
-	createTextFieldState,
+	createTextFieldController,
 	Icon,
 	InputTextField,
 	SegmentedControl,
@@ -73,7 +73,7 @@ export const ImageQuickActions = () => {
 		return isAspectRatioValue(value) ? value : null;
 	};
 
-	const [altHandle, altControls] = createTextFieldState<HTMLInputElement>({
+	const [altHandle, altControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: "",
 	});
 

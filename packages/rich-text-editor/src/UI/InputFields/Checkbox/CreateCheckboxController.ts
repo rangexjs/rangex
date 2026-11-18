@@ -1,4 +1,4 @@
-import { createUniqueId, merge, onSettled } from "solid-js";
+import { createSignal, createUniqueId, merge, onSettled } from "solid-js";
 
 import { showInputFieldError } from "../_Utilities";
 import {
@@ -7,7 +7,6 @@ import {
 	type CheckboxHandle,
 	type CheckboxState,
 	getErrorState,
-	type StateChangeListeners,
 } from "./_Utilities";
 
 export interface CreateCheckboxControllerParams {
@@ -18,31 +17,19 @@ export interface CreateCheckboxControllerParams {
 
 export type CreateCheckboxControllerResult = [CheckboxHandle, CheckboxControls];
 
+const isCheckboxStateEqual = (prev: CheckboxState, next: CheckboxState) =>
+	prev.isDirty === next.isDirty && prev.hasError === next.hasError && prev.message === next.message;
+
 export const createCheckboxController = (
 	props: CreateCheckboxControllerParams,
 ): CreateCheckboxControllerResult => {
 	const finalProps = merge({ defaultChecked: false, error: {}, validateOnChange: false }, props);
 
 	const id = createUniqueId();
-	let localCheckbox: HTMLInputElement | null;
+	let localCheckbox: HTMLInputElement | null = null;
 
 	const setCheckbox = (checkbox: HTMLInputElement) => {
 		localCheckbox = checkbox;
-	};
-
-	let state: CheckboxState = {
-		isDirty: false,
-		...getErrorState(finalProps.defaultChecked, finalProps.error),
-	};
-
-	const stateChangeListeners: StateChangeListeners = new Set();
-
-	const emitStateChange = () => {
-		localCheckbox?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
-
-		for (const listener of stateChangeListeners) {
-			listener(state);
-		}
 	};
 
 	const getCheckbox = () => {
@@ -53,48 +40,70 @@ export const createCheckboxController = (
 		return localCheckbox;
 	};
 
-	const currentChecked = () => localCheckbox?.checked ?? finalProps.defaultChecked;
+	const [checked, setLocalChecked] = createSignal(finalProps.defaultChecked);
+
+	const [state, setLocalState] = createSignal<CheckboxState>(
+		{
+			isDirty: false,
+			...getErrorState(finalProps.defaultChecked, finalProps.error),
+		},
+		{ equals: isCheckboxStateEqual },
+	);
+
+	const commitState = (nextState: CheckboxState) => {
+		setLocalState(nextState);
+		localCheckbox?.setAttribute("data-invalid", `${showInputFieldError(nextState)}`);
+	};
+
+	const commitValidation = (nextChecked: boolean) => {
+		const nextState: CheckboxState = {
+			isDirty: true,
+			...getErrorState(nextChecked, finalProps.error),
+		};
+
+		commitState(nextState);
+
+		return nextState;
+	};
 
 	const checkboxHandle: CheckboxHandle = {
 		get id() {
 			return id;
 		},
 
-		get element() {
-			const field = getCheckbox();
+		checked,
 
-			return field;
+		setChecked(nextChecked) {
+			const checkbox = getCheckbox();
+
+			checkbox.checked = nextChecked;
+			setLocalChecked(nextChecked);
 		},
+
+		state,
 
 		validate() {
-			state = {
-				isDirty: true,
-				...getErrorState(this.element.checked, finalProps.error),
-			};
+			const nextState = commitValidation(checked());
 
-			emitStateChange();
+			return nextState;
 		},
 
-		reset() {
-			this.element.checked = finalProps.defaultChecked;
-			state = {
-				isDirty: false,
-				...getErrorState(this.element.checked, finalProps.error),
-			};
+		reset(nextChecked = finalProps.defaultChecked) {
+			const checkbox = getCheckbox();
 
-			emitStateChange();
+			checkbox.checked = nextChecked;
+			setLocalChecked(nextChecked);
+
+			commitState({
+				isDirty: false,
+				...getErrorState(nextChecked, finalProps.error),
+			});
 		},
 
 		checkValidity() {
-			const { hasError, message } = getErrorState(currentChecked(), finalProps.error);
+			const { hasError, message } = getErrorState(checked(), finalProps.error);
 
-			return { hasError, message, isDirty: state.isDirty };
-		},
-
-		onStateChange(callback) {
-			stateChangeListeners.add(callback);
-
-			return () => stateChangeListeners.delete(callback);
+			return { hasError, message, isDirty: state().isDirty };
 		},
 	};
 
@@ -105,20 +114,25 @@ export const createCheckboxController = (
 	};
 
 	const onChange = () => {
+		const checkbox = getCheckbox();
+		const nextChecked = checkbox.checked;
+
+		setLocalChecked(nextChecked);
+
 		if (!finalProps.validateOnChange) {
 			return;
 		}
 
-		checkboxHandle.validate();
+		commitValidation(nextChecked);
 	};
 
 	onSettled(() => {
 		const abortController = new AbortController();
 		const { signal } = abortController;
 
-		const field = getCheckbox();
+		const checkbox = getCheckbox();
 
-		field.addEventListener("change", onChange, { signal });
+		checkbox.addEventListener("change", onChange, { signal });
 
 		return () => {
 			abortController.abort();

@@ -28,22 +28,7 @@ export interface TextFieldErrorRestriction {
 	defaultMessage?: JSX.Element;
 }
 
-export type OnStateChangeCallbackFn = (state: TextFieldState) => void;
-
-export type OnStateChangeFn = (callback: OnStateChangeCallbackFn) => () => void;
-
-export type StateChangeListeners = Set<OnStateChangeCallbackFn>;
-
 export type HTMLTextFieldElement = HTMLInputElement | HTMLTextAreaElement;
-
-export interface TextFieldHandle<TextField extends HTMLTextFieldElement> {
-	readonly id: string;
-	element: TextField;
-	validate: () => void;
-	reset: () => void;
-	checkValidity: () => TextFieldState;
-	onStateChange: OnStateChangeFn;
-}
 
 export interface TextFieldControls<TextField extends HTMLTextFieldElement> {
 	id: string;
@@ -51,13 +36,12 @@ export interface TextFieldControls<TextField extends HTMLTextFieldElement> {
 	setTextField: (textField: TextField) => void;
 }
 
-export interface TextFieldStateHandle {
+export interface TextFieldHandle {
 	readonly id: string;
 	value: Accessor<string>;
 	setValue: (value: string) => void;
 	state: Accessor<TextFieldState>;
-	validate: () => void;
-	reset: () => void;
+	validate: () => TextFieldState;
+	reset: (value?: string) => void;
 	checkValidity: () => TextFieldState;
-	onStateChange: OnStateChangeFn;
 }

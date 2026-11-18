@@ -11,34 +11,18 @@ export interface CheckboxErrorRestriction {
 	required?: { value: boolean; message?: JSX.Element };
 }
 
-export type OnStateChangeCallbackFn = (state: CheckboxState) => void;
-
-export type OnStateChangeFn = (callback: OnStateChangeCallbackFn) => () => void;
-
-export type StateChangeListeners = Set<OnStateChangeCallbackFn>;
-
-export interface CheckboxHandle {
-	readonly id: string;
-	element: HTMLInputElement;
-	validate: () => void;
-	reset: () => void;
-	checkValidity: () => CheckboxState;
-	onStateChange: OnStateChangeFn;
-}
-
 export interface CheckboxControls {
 	id: string;
 	defaultChecked: boolean;
 	setCheckbox: (checkbox: HTMLInputElement) => void;
 }
 
-export interface CheckboxStateHandle {
+export interface CheckboxHandle {
 	readonly id: string;
 	checked: Accessor<boolean>;
 	setChecked: (checked: boolean) => void;
 	state: Accessor<CheckboxState>;
-	validate: () => void;
-	reset: () => void;
+	validate: () => CheckboxState;
+	reset: (checked?: boolean) => void;
 	checkValidity: () => CheckboxState;
-	onStateChange: OnStateChangeFn;
 }

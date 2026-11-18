@@ -2,7 +2,7 @@ import { FloatingPortal } from "@rangex/solid";
 import { createSignal, flush, onCleanup } from "solid-js";
 
 import { useEditorContext } from "#context";
-import { createTextFieldState } from "#ui";
+import { createTextFieldController } from "#ui";
 
 import { getDisplayTextField, LinkEdit } from "../_Utilities";
 
@@ -14,11 +14,11 @@ export const LinkSelectionMenu = () => {
 		throw new Error("Link can't be undefined.");
 	}
 
-	const [displayTextHandle, displayTextControls] = createTextFieldState<HTMLInputElement>({});
+	const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
-	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
+	const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
 		error: {
 			required: { value: true, message: "Field can't be empty." },
 			custom: {
@@ -41,9 +41,8 @@ export const LinkSelectionMenu = () => {
 	const selectionMenuEl = link.selectionMenu.element;
 
 	const refreshFields = () => {
-		displayTextHandle.reset();
 		const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
-		displayTextHandle.setValue(value);
+		displayTextHandle.reset(value);
 		setDisplayTextDisabled(disabled);
 		setDisplayTextPlaceholder(placeholder);
 
@@ -74,11 +73,9 @@ export const LinkSelectionMenu = () => {
 	});
 
 	const onInsert = () => {
-		urlHandle.validate();
+		const urlState = urlHandle.validate();
 
-		flush();
-
-		if (urlHandle.state().hasError) {
+		if (urlState.hasError) {
 			return;
 		}
 
