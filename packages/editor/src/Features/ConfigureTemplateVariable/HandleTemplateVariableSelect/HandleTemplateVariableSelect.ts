@@ -5,41 +5,41 @@ import { getRootStorage } from "#storage";
 import { createTemplateVariable, validateTemplateVariablePlacement } from "../../_Utilities";
 import { getTemplateVariableQuery } from "../_Utilities";
 import type {
-	HandleTemplateVariableSelectParams,
-	RemoveTemplateVariableQueryTextParams,
-	RemoveTemplateVariableQueryTextResult,
+  HandleTemplateVariableSelectParams,
+  RemoveTemplateVariableQueryTextParams,
+  RemoveTemplateVariableQueryTextResult,
 } from "./HandleTemplateVariableSelect-types";
 
 /*
  * Removes the {{query text that triggered the caret menu, before the component is inserted.
  */
 const removeTemplateVariableQueryText = ({
-	editorAPI,
+  editorAPI,
 }: RemoveTemplateVariableQueryTextParams): RemoveTemplateVariableQueryTextResult => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset } = selection.getBoundaryPoints();
+  const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-	const templateVariableQuery = getTemplateVariableQuery({
-		editorAPI,
-		fromText,
-		fromOffset,
-	});
+  const templateVariableQuery = getTemplateVariableQuery({
+    editorAPI,
+    fromText,
+    fromOffset,
+  });
 
-	if (!templateVariableQuery) {
-		return { queryFound: false };
-	}
+  if (!templateVariableQuery) {
+    return { queryFound: false };
+  }
 
-	const { toText, toOffset } = templateVariableQuery;
+  const { toText, toOffset } = templateVariableQuery;
 
-	editorAPI.removeNodesInRange({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+  editorAPI.removeNodesInRange({
+    fromNode: fromText,
+    fromOffset,
+    toNode: toText,
+    toOffset,
+  });
 
-	return { queryFound: true };
+  return { queryFound: true };
 };
 
 /*
@@ -48,58 +48,58 @@ const removeTemplateVariableQueryText = ({
  * {{query text, then re-reads the cursor position and inserts there. Returns a cleanup function.
  */
 export const handleTemplateVariableSelect = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTemplateVariableSelectParams) => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onSelect(({ fieldName }) => {
-		const { templateVariable: storage } = getRootStorage({ rootEditable });
+  const unsubscribe = configPort.onSelect(({ fieldName }) => {
+    const { templateVariable: storage } = getRootStorage({ rootEditable });
 
-		const placementMismatch = validateTemplateVariablePlacement({
-			fieldName,
-			fieldsConfig: configPort.fieldsConfig,
-			storage,
-		});
+    const placementMismatch = validateTemplateVariablePlacement({
+      fieldName,
+      fieldsConfig: configPort.fieldsConfig,
+      storage,
+    });
 
-		if (placementMismatch) {
-			console.warn(placementMismatch);
-			return;
-		}
+    if (placementMismatch) {
+      console.warn(placementMismatch);
+      return;
+    }
 
-		const { queryFound } = removeTemplateVariableQueryText({ editorAPI });
+    const { queryFound } = removeTemplateVariableQueryText({ editorAPI });
 
-		if (!queryFound) {
-			console.warn(
-				"handleTemplateVariableSelect: no {{query found at cursor — item was selected but the trigger text could not be located.",
-			);
-			return;
-		}
+    if (!queryFound) {
+      console.warn(
+        "handleTemplateVariableSelect: no {{query found at cursor — item was selected but the trigger text could not be located.",
+      );
+      return;
+    }
 
-		const { fromText, fromOffset } = selection.getBoundaryPoints();
+    const { fromText, fromOffset } = selection.getBoundaryPoints();
 
-		const templateVariable = createTemplateVariable({
-			fieldName,
-			displayText: storage[fieldName],
-		});
+    const templateVariable = createTemplateVariable({
+      fieldName,
+      displayText: storage[fieldName],
+    });
 
-		editorAPI.insertNode({
-			fromNode: fromText,
-			fromOffset,
-			lines: [createContentLine({ localName: "p", childNodes: [templateVariable] })],
-			breakBeforeInsert: false,
-		});
+    editorAPI.insertNode({
+      fromNode: fromText,
+      fromOffset,
+      lines: [createContentLine({ localName: "p", childNodes: [templateVariable] })],
+      breakBeforeInsert: false,
+    });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

@@ -1,8 +1,8 @@
 import type {
-	EditorAPI,
-	EditorSelection,
-	GetInlineWrappableSegmentsResult,
-	InlineComponent,
+  EditorAPI,
+  EditorSelection,
+  GetInlineWrappableSegmentsResult,
+  InlineComponent,
 } from "@rangex/core";
 
 import type { LinkConfigPort } from "#adapters/Link";
@@ -10,33 +10,33 @@ import type { LinkAttrs } from "#dom-attrs";
 import type { PopoverOverlayController } from "#engine-links";
 
 export interface HandleLinkInsertionParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-	linkMenuPopoverController: PopoverOverlayController;
+  configPort: LinkConfigPort;
+  editorAPI: EditorAPI;
+  linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface SetSelectionToLinkEndParams {
-	link: InlineComponent;
-	selection: EditorSelection;
+  link: InlineComponent;
+  selection: EditorSelection;
 }
 
 export interface AnchorToLinkParams {
-	link: InlineComponent;
-	linkMenuPopoverController: PopoverOverlayController;
+  link: InlineComponent;
+  linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface InsertAtCaretParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-	text: string;
-	attrs: LinkAttrs;
-	linkMenuPopoverController: PopoverOverlayController;
+  configPort: LinkConfigPort;
+  editorAPI: EditorAPI;
+  text: string;
+  attrs: LinkAttrs;
+  linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface WrapWithLinkParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-	segments: GetInlineWrappableSegmentsResult;
-	attrs: LinkAttrs;
-	linkMenuPopoverController: PopoverOverlayController;
+  configPort: LinkConfigPort;
+  editorAPI: EditorAPI;
+  segments: GetInlineWrappableSegmentsResult;
+  attrs: LinkAttrs;
+  linkMenuPopoverController: PopoverOverlayController;
 }

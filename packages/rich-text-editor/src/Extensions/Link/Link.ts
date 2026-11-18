@@ -7,13 +7,13 @@ import type { Extension } from "../_Utilities";
 import type { LinkExtensionSettings } from "./Link-types";
 
 export const Link = (settings: LinkExtensionSettings): Extension => {
-	return {
-		createAdapter: () => LinkFactory(settings),
-		components: {
-			toolbarButtons: {
-				[toolbarButtonsName.link]: LinkToolbarButton,
-			},
-			floatingComponents: [LinkSelectionMenu, LinkMenu],
-		},
-	};
+  return {
+    createAdapter: () => LinkFactory(settings),
+    components: {
+      toolbarButtons: {
+        [toolbarButtonsName.link]: LinkToolbarButton,
+      },
+      floatingComponents: [LinkSelectionMenu, LinkMenu],
+    },
+  };
 };

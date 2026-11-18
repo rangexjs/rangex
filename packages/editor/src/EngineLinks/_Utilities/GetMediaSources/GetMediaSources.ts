@@ -5,40 +5,40 @@ import type { GetMediaSourcesParams, GetMediaSourcesResult } from "./GetMediaSou
 const mediaLocalNames = ["audio", "img", "video"];
 
 export const getMediaSources = ({
-	rootEditableSnapshot,
+  rootEditableSnapshot,
 }: GetMediaSourcesParams): GetMediaSourcesResult => {
-	const rootEditableDraft = snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
+  const rootEditableDraft = snapshotManager.createDraftFromSnapshot(rootEditableSnapshot);
 
-	const mediaElements = rootEditableDraft.queryAll((node) => {
-		if (node.editorRole !== htmlLayoutRole) {
-			return false;
-		}
+  const mediaElements = rootEditableDraft.queryAll((node) => {
+    if (node.editorRole !== htmlLayoutRole) {
+      return false;
+    }
 
-		const { localName } = node;
+    const { localName } = node;
 
-		if (!mediaLocalNames.includes(localName)) {
-			return false;
-		}
+    if (!mediaLocalNames.includes(localName)) {
+      return false;
+    }
 
-		return true;
-	});
+    return true;
+  });
 
-	const sources: string[] = [];
+  const sources: string[] = [];
 
-	for (const mediaElement of mediaElements) {
-		if (mediaElement.editorRole !== htmlLayoutRole) {
-			throw new Error("MediaElement's editorRole is invalid.");
-		}
+  for (const mediaElement of mediaElements) {
+    if (mediaElement.editorRole !== htmlLayoutRole) {
+      throw new Error("MediaElement's editorRole is invalid.");
+    }
 
-		const { src } = mediaElement.domAttrs;
+    const { src } = mediaElement.domAttrs;
 
-		if (!src) {
-			console.warn("src attribute is missing.");
-			continue;
-		}
+    if (!src) {
+      console.warn("src attribute is missing.");
+      continue;
+    }
 
-		sources.push(src);
-	}
+    sources.push(src);
+  }
 
-	return sources;
+  return sources;
 };

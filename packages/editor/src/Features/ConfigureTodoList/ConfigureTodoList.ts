@@ -12,46 +12,46 @@ import { handleTodoListPlacementState } from "./HandleTodoListPlacementState";
  * and checkbox state syncing. Returns a cleanup function that tears down all of it.
  */
 export const configureTodoList = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureTodoListParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.todoList,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.todoList,
+  });
 
-	const placementStateCleanup = handleTodoListPlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleTodoListPlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => configPort.currentComponent,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => configPort.currentComponent,
+  });
 
-	const placementCleanup = handleTodoListPlacement({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementCleanup = handleTodoListPlacement({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const checkboxStateCleanup = handleTodoListCheckboxState({ editorAPI });
+  const checkboxStateCleanup = handleTodoListCheckboxState({ editorAPI });
 
-	return () => {
-		selectionComponentCleanup();
-		placementStateCleanup();
-		unwrapCleanup();
-		placementCleanup();
-		checkboxStateCleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    placementStateCleanup();
+    unwrapCleanup();
+    placementCleanup();
+    checkboxStateCleanup();
+  };
 };

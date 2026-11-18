@@ -4,13 +4,13 @@ import type { NodeStorage, ValidateStorageCallbackFn } from "./Utilities-types";
  * Runs the given storage check and warns when the value has an unexpected shape.
  */
 export const validateStorage = (storage: unknown, isStorage: ValidateStorageCallbackFn) => {
-	const isValid = isStorage(storage);
+  const isValid = isStorage(storage);
 
-	if (!isValid) {
-		console.warn("Unexpected data shape", storage);
-	}
+  if (!isValid) {
+    console.warn("Unexpected data shape", storage);
+  }
 
-	return isValid;
+  return isValid;
 };
 
 /*
@@ -18,11 +18,11 @@ export const validateStorage = (storage: unknown, isStorage: ValidateStorageCall
  * trusted to match it.
  */
 export const isNodeStorage = (storage: unknown): storage is NodeStorage => {
-	const isValidStorage =
-		typeof storage === "object" &&
-		storage !== null &&
-		"id" in storage &&
-		typeof storage.id === "string";
+  const isValidStorage =
+    typeof storage === "object" &&
+    storage !== null &&
+    "id" in storage &&
+    typeof storage.id === "string";
 
-	return isValidStorage;
+  return isValidStorage;
 };

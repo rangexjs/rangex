@@ -6,11 +6,11 @@ import type { Extension } from "../_Utilities";
 import type { AudioExtensionSettings } from "./Audio-types";
 
 export const Audio = (settings: AudioExtensionSettings): Extension => {
-	return {
-		createAdapter: () => AudioFactory(settings),
-		components: {
-			toolbarButtons: {},
-			floatingComponents: [AudioQuickActions],
-		},
-	};
+  return {
+    createAdapter: () => AudioFactory(settings),
+    components: {
+      toolbarButtons: {},
+      floatingComponents: [AudioQuickActions],
+    },
+  };
 };

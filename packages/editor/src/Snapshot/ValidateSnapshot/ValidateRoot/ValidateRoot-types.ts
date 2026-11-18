@@ -17,20 +17,20 @@ export type SnapshotRootTypes = [RootType, ...RootType[]];
  * The root a snapshot must have: it's valid if its type is one of the given ones
  */
 export interface SnapshotRoot {
-	types: SnapshotRootTypes;
-	attrValidators?: CreateRootAttrValidatorsParams;
-	validateStorage?: ValidateStorageFn<RootStorage>;
+  types: SnapshotRootTypes;
+  attrValidators?: CreateRootAttrValidatorsParams;
+  validateStorage?: ValidateStorageFn<RootStorage>;
 }
 
 export interface ResolveRootTypeParams {
-	customStorage: RootEditableDraft["customStorage"];
-	types: SnapshotRootTypes;
+  customStorage: RootEditableDraft["customStorage"];
+  types: SnapshotRootTypes;
 }
 
 export type ResolveRootTypeResult = RootType;
 
 export interface ValidateRootParams extends SnapshotRoot {
-	rootEditableDraft: RootEditableDraft;
+  rootEditableDraft: RootEditableDraft;
 }
 
 export type ValidateRootResult = ValidateComponentResult;

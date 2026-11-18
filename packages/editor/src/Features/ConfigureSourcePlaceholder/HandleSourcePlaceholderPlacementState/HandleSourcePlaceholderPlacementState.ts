@@ -9,23 +9,23 @@ import type { HandleSourcePlaceholderPlacementStateParams } from "./HandleSource
  * selection. Returns a cleanup function.
  */
 export const handleSourcePlaceholderPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleSourcePlaceholderPlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.sourcePlaceholder],
-			});
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.sourcePlaceholder],
+      });
 
-			configPort.updateState({ canInsert });
-		},
-	});
+      configPort.updateState({ canInsert });
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

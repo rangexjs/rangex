@@ -5,19 +5,19 @@ import { createLinkAttrValidators, linkAttrsShape } from "#dom-attrs";
 import { linkStoragePattern } from "#storage";
 
 import {
-	formatNodePath,
-	resolveDraftDOMAttrs,
-	validateHTMLLayoutState,
-	validateNestedEditableState,
+  formatNodePath,
+  resolveDraftDOMAttrs,
+  validateHTMLLayoutState,
+  validateNestedEditableState,
 } from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
-	CreateLinkValidatorParams,
-	CreateLinkValidatorResult,
-	ValidateAnchorParams,
-	ValidateAnchorResult,
-	ValidateLinkParams,
-	ValidateLinkResult,
+  CreateLinkValidatorParams,
+  CreateLinkValidatorResult,
+  ValidateAnchorParams,
+  ValidateAnchorResult,
+  ValidateLinkParams,
+  ValidateLinkResult,
 } from "./ValidateLink-types";
 
 /*
@@ -25,63 +25,63 @@ import type {
  * linkAttrsShape and the anchor's validators (see resolveElementAttrs), and replaced by the resolved ones.
  */
 const validateAnchor = ({
-	componentDraft,
-	htmlLayoutDraft,
-	anchorAttrValidators,
+  componentDraft,
+  htmlLayoutDraft,
+  anchorAttrValidators,
 }: ValidateAnchorParams): ValidateAnchorResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: "a",
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: "a",
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: linkAttrsShape.anchor,
-		elementAttrValidators: anchorAttrValidators,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: linkAttrsShape.anchor,
+    elementAttrValidators: anchorAttrValidators,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = htmlLayoutDraft;
+  const { childNodes } = htmlLayoutDraft;
 
-	const nestedEditableDraft = childNodes.at(0);
+  const nestedEditableDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+    };
+  }
 
-	const nestedEditableFailed = validateNestedEditableState({
-		componentDraft,
-		nestedEditableDraft,
-		expectedState: {
-			editorRole: nestedEditableRole,
-			...linkDefinition.nestedEditableProps,
-			domAttrs: {},
-			customStorage: null,
-		},
-	});
+  const nestedEditableFailed = validateNestedEditableState({
+    componentDraft,
+    nestedEditableDraft,
+    expectedState: {
+      editorRole: nestedEditableRole,
+      ...linkDefinition.nestedEditableProps,
+      domAttrs: {},
+      customStorage: null,
+    },
+  });
 
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
+  if (nestedEditableFailed) {
+    return nestedEditableFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -89,58 +89,58 @@ const validateAnchor = ({
  * The NestedEditable's content is left to the engine's validation, which checks it by the NestedEditable's settings.
  */
 const validateLink = ({
-	componentDraft,
-	attrValidators,
+  componentDraft,
+  attrValidators,
 }: ValidateLinkParams): ValidateLinkResult => {
-	if (componentDraft.editorRole !== inlineComponentRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
-		};
-	}
+  if (componentDraft.editorRole !== inlineComponentRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
+    };
+  }
 
-	const stateFailed = validateInlineComponentState({
-		inlineComponentDraft: componentDraft,
-		expectedState: {
-			editorRole: inlineComponentRole,
-			name: componentsName.link,
-			content: { type: "bound-text", unwrap: "if-empty" },
-			editState: "inherit",
-			shouldSelectBeforeRemove: false,
-			shouldSelectOnNavigation: false,
-			domAttrs: {},
-			customStorage: linkStoragePattern,
-		},
-	});
+  const stateFailed = validateInlineComponentState({
+    inlineComponentDraft: componentDraft,
+    expectedState: {
+      editorRole: inlineComponentRole,
+      name: componentsName.link,
+      content: { type: "bound-text", unwrap: "if-empty" },
+      editState: "inherit",
+      shouldSelectBeforeRemove: false,
+      shouldSelectOnNavigation: false,
+      domAttrs: {},
+      customStorage: linkStoragePattern,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const { childNodes } = componentDraft;
+  const { childNodes } = componentDraft;
 
-	const htmlLayoutDraft = childNodes.at(0);
+  const htmlLayoutDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+    };
+  }
 
-	const anchorFailed = validateAnchor({
-		componentDraft,
-		htmlLayoutDraft,
-		anchorAttrValidators: attrValidators.anchor,
-	});
+  const anchorFailed = validateAnchor({
+    componentDraft,
+    htmlLayoutDraft,
+    anchorAttrValidators: attrValidators.anchor,
+  });
 
-	if (anchorFailed) {
-		return anchorFailed;
-	}
+  if (anchorFailed) {
+    return anchorFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -148,13 +148,13 @@ const validateLink = ({
  * the given ones (see createLinkAttrValidators).
  */
 export const createLinkValidator = ({
-	attrValidators = {},
+  attrValidators = {},
 }: CreateLinkValidatorParams): CreateLinkValidatorResult => {
-	const linkAttrValidators = createLinkAttrValidators(attrValidators);
+  const linkAttrValidators = createLinkAttrValidators(attrValidators);
 
-	return {
-		name: componentsName.link,
-		validate: ({ componentDraft }) =>
-			validateLink({ componentDraft, attrValidators: linkAttrValidators }),
-	};
+  return {
+    name: componentsName.link,
+    validate: ({ componentDraft }) =>
+      validateLink({ componentDraft, attrValidators: linkAttrValidators }),
+  };
 };

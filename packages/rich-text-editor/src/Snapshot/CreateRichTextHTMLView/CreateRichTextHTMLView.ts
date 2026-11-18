@@ -2,23 +2,23 @@ import { createHTMLView } from "@rangex/editor";
 
 import { getViewStyles } from "../../EngineStyles";
 import type {
-	CreateRichTextHTMLViewParams,
-	CreateRichTextHTMLViewResult,
+  CreateRichTextHTMLViewParams,
+  CreateRichTextHTMLViewResult,
 } from "./CreateRichTextHTMLView-types";
 
 export const createRichTextHTMLView = ({
-	storedSnapshot,
-	limits,
-	highlightCode,
+  storedSnapshot,
+  limits,
+  highlightCode,
 }: CreateRichTextHTMLViewParams): CreateRichTextHTMLViewResult => {
-	const styles = getViewStyles();
+  const styles = getViewStyles();
 
-	const result = createHTMLView({
-		styles,
-		storedSnapshot,
-		limits,
-		highlightCode,
-	});
+  const result = createHTMLView({
+    styles,
+    storedSnapshot,
+    limits,
+    highlightCode,
+  });
 
-	return result;
+  return result;
 };

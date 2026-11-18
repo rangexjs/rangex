@@ -3,10 +3,10 @@ import { type EditorNodeDraft, isComponentDraft } from "@rangex/core";
 import { assertNever, formatJSONMismatch } from "#utilities";
 
 import type {
-	DescribeElementAttrsMismatchParams,
-	DescribeJSONMismatchParams,
-	FormatNodePathParams,
-	FormatNodeSegmentParams,
+  DescribeElementAttrsMismatchParams,
+  DescribeJSONMismatchParams,
+  FormatNodePathParams,
+  FormatNodeSegmentParams,
 } from "./Utilities-types";
 
 const maxValueLength = 64;
@@ -16,9 +16,9 @@ const maxValueLength = 64;
  * so the reason stays short and on one line whatever the snapshot contains.
  */
 export const formatValue = (value: string) => {
-	const cutValue = value.slice(0, maxValueLength);
+  const cutValue = value.slice(0, maxValueLength);
 
-	return JSON.stringify(cutValue);
+  return JSON.stringify(cutValue);
 };
 
 /*
@@ -27,26 +27,26 @@ export const formatValue = (value: string) => {
  * has no index.
  */
 const formatNodeSegment = ({ rootDraft, nodeDraft }: FormatNodeSegmentParams) => {
-	const { editorRole, parentElement } = nodeDraft;
+  const { editorRole, parentElement } = nodeDraft;
 
-	let segment: string = editorRole;
+  let segment: string = editorRole;
 
-	if (isComponentDraft(nodeDraft)) {
-		segment += `<${nodeDraft.name}>`;
-	}
+  if (isComponentDraft(nodeDraft)) {
+    segment += `<${nodeDraft.name}>`;
+  }
 
-	if ("localName" in nodeDraft) {
-		segment += `(${nodeDraft.localName})`;
-	}
+  if ("localName" in nodeDraft) {
+    segment += `(${nodeDraft.localName})`;
+  }
 
-	if (nodeDraft === rootDraft || !parentElement) {
-		return segment;
-	}
+  if (nodeDraft === rootDraft || !parentElement) {
+    return segment;
+  }
 
-	// TypeScript limitation
-	const index = parentElement.childNodes.indexOf(nodeDraft as never);
+  // TypeScript limitation
+  const index = parentElement.childNodes.indexOf(nodeDraft as never);
 
-	return `${segment}[${index}]`;
+  return `${segment}[${index}]`;
 };
 
 /*
@@ -54,19 +54,19 @@ const formatNodeSegment = ({ rootDraft, nodeDraft }: FormatNodeSegmentParams) =>
  * `inline-component<link> > html-layout(a)[0] > nested-editable[0]`. Every node is formatted by formatNodeSegment.
  */
 export const formatNodePath = ({ rootDraft, nodeDraft }: FormatNodePathParams) => {
-	const segments: string[] = [];
+  const segments: string[] = [];
 
-	let currentDraft: EditorNodeDraft | null = nodeDraft;
+  let currentDraft: EditorNodeDraft | null = nodeDraft;
 
-	while (currentDraft && currentDraft !== rootDraft) {
-		segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: currentDraft }));
+  while (currentDraft && currentDraft !== rootDraft) {
+    segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: currentDraft }));
 
-		currentDraft = currentDraft.parentElement;
-	}
+    currentDraft = currentDraft.parentElement;
+  }
 
-	segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: rootDraft }));
+  segments.unshift(formatNodeSegment({ rootDraft, nodeDraft: rootDraft }));
 
-	return segments.join(" > ");
+  return segments.join(" > ");
 };
 
 /*
@@ -75,30 +75,30 @@ export const formatNodePath = ({ rootDraft, nodeDraft }: FormatNodePathParams) =
  * matchJSON.
  */
 export const describeJSONMismatch = ({
-	rootDraft,
-	nodeDraft,
-	value,
-	mismatch,
+  rootDraft,
+  nodeDraft,
+  value,
+  mismatch,
 }: DescribeJSONMismatchParams) => {
-	const { kind } = mismatch;
+  const { kind } = mismatch;
 
-	const nodePath = formatNodePath({ rootDraft, nodeDraft });
+  const nodePath = formatNodePath({ rootDraft, nodeDraft });
 
-	const formattedMismatch = formatJSONMismatch({ value, mismatch });
+  const formattedMismatch = formatJSONMismatch({ value, mismatch });
 
-	if (kind === "invalid-value") {
-		return `${nodePath}: invalid value ${formattedMismatch}.`;
-	}
+  if (kind === "invalid-value") {
+    return `${nodePath}: invalid value ${formattedMismatch}.`;
+  }
 
-	if (kind === "unknown-key") {
-		return `${nodePath}: unknown key ${formattedMismatch}.`;
-	}
+  if (kind === "unknown-key") {
+    return `${nodePath}: unknown key ${formattedMismatch}.`;
+  }
 
-	if (kind === "missing-key") {
-		return `${nodePath}: missing key ${formattedMismatch}.`;
-	}
+  if (kind === "missing-key") {
+    return `${nodePath}: missing key ${formattedMismatch}.`;
+  }
 
-	return assertNever(kind);
+  return assertNever(kind);
 };
 
 /*
@@ -107,44 +107,44 @@ export const describeJSONMismatch = ({
  * SanitizerPolicy).`
  */
 export const describeElementAttrsMismatch = ({
-	rootDraft,
-	nodeDraft,
-	domAttrs,
-	mismatch,
+  rootDraft,
+  nodeDraft,
+  domAttrs,
+  mismatch,
 }: DescribeElementAttrsMismatchParams) => {
-	const { kind, attrName } = mismatch;
+  const { kind, attrName } = mismatch;
 
-	const nodePath = formatNodePath({ rootDraft, nodeDraft });
+  const nodePath = formatNodePath({ rootDraft, nodeDraft });
 
-	const value = { domAttrs };
-	const path = ["domAttrs", attrName];
+  const value = { domAttrs };
+  const path = ["domAttrs", attrName];
 
-	if (kind === "unknown-attr") {
-		const formattedMismatch = formatJSONMismatch({
-			value,
-			mismatch: { path, kind: "unknown-key" },
-		});
+  if (kind === "unknown-attr") {
+    const formattedMismatch = formatJSONMismatch({
+      value,
+      mismatch: { path, kind: "unknown-key" },
+    });
 
-		return `${nodePath}: unknown key ${formattedMismatch}.`;
-	}
+    return `${nodePath}: unknown key ${formattedMismatch}.`;
+  }
 
-	if (kind === "missing-attr") {
-		const formattedMismatch = formatJSONMismatch({
-			value,
-			mismatch: { path, kind: "missing-key" },
-		});
+  if (kind === "missing-attr") {
+    const formattedMismatch = formatJSONMismatch({
+      value,
+      mismatch: { path, kind: "missing-key" },
+    });
 
-		return `${nodePath}: missing key ${formattedMismatch}.`;
-	}
+    return `${nodePath}: missing key ${formattedMismatch}.`;
+  }
 
-	if (kind === "invalid-attr") {
-		const formattedMismatch = formatJSONMismatch({
-			value,
-			mismatch: { path, kind: "invalid-value" },
-		});
+  if (kind === "invalid-attr") {
+    const formattedMismatch = formatJSONMismatch({
+      value,
+      mismatch: { path, kind: "invalid-value" },
+    });
 
-		return `${nodePath}: invalid value ${formattedMismatch} (${mismatch.validationFailed.reason}).`;
-	}
+    return `${nodePath}: invalid value ${formattedMismatch} (${mismatch.validationFailed.reason}).`;
+  }
 
-	return assertNever(mismatch);
+  return assertNever(mismatch);
 };

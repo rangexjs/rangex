@@ -3,19 +3,19 @@ import type { BlockComponent } from "@rangex/core";
 import type { AccordionItemId } from "../_Constants";
 
 export type AccordionItemStorage = {
-	id: AccordionItemId;
+  id: AccordionItemId;
 };
 
 export type CreateAccordionItemStorageResult = AccordionItemStorage;
 
 export interface EnsureAccordionItemStorageParams {
-	storage: unknown;
+  storage: unknown;
 }
 
 export type EnsureAccordionItemStorageResult = AccordionItemStorage;
 
 export interface EnsureNodeAccordionItemStorageParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 export type EnsureNodeAccordionItemStorageResult = AccordionItemStorage;

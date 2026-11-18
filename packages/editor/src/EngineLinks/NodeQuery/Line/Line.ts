@@ -3,29 +3,29 @@ import { blockComponentLineRole, contentLineRole, type EditorNode } from "@range
 import type { GetClosestBlockLevelLineParams, GetClosestBlockLevelLineResult } from "./Line-types";
 
 export const getClosestBlockLevelLine = ({
-	fromNode,
+  fromNode,
 }: GetClosestBlockLevelLineParams): GetClosestBlockLevelLineResult => {
-	let currentNode: EditorNode | null = fromNode;
+  let currentNode: EditorNode | null = fromNode;
 
-	while (currentNode) {
-		if (currentNode.$$editorRole === contentLineRole) {
-			const { $$parentElement } = currentNode;
+  while (currentNode) {
+    if (currentNode.$$editorRole === contentLineRole) {
+      const { $$parentElement } = currentNode;
 
-			if (!$$parentElement) {
-				return null;
-			}
+      if (!$$parentElement) {
+        return null;
+      }
 
-			if ($$parentElement.$$display === "block multi-line") {
-				return currentNode;
-			}
-		}
+      if ($$parentElement.$$display === "block multi-line") {
+        return currentNode;
+      }
+    }
 
-		if (currentNode.$$editorRole === blockComponentLineRole) {
-			return currentNode;
-		}
+    if (currentNode.$$editorRole === blockComponentLineRole) {
+      return currentNode;
+    }
 
-		currentNode = currentNode.$$parentElement;
-	}
+    currentNode = currentNode.$$parentElement;
+  }
 
-	return null;
+  return null;
 };

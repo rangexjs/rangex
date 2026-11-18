@@ -1,9 +1,9 @@
 import type {
-	ComponentAttrs,
-	ComponentAttrsMismatch,
-	ComponentAttrsPatch,
-	ComponentAttrValidatorOverrides,
-	ComponentAttrValidators,
+  ComponentAttrs,
+  ComponentAttrsMismatch,
+  ComponentAttrsPatch,
+  ComponentAttrValidatorOverrides,
+  ComponentAttrValidators,
 } from "../_Utilities";
 import type { accordionItemAttrsShape } from "./AccordionItemDOMAttrs";
 
@@ -18,6 +18,6 @@ export type AccordionItemAttrValidators = ComponentAttrValidators<AccordionItemA
 export type AccordionItemAttrsMismatch = ComponentAttrsMismatch<AccordionItemAttrsShape>;
 
 export type CreateAccordionItemAttrValidatorsParams =
-	ComponentAttrValidatorOverrides<AccordionItemAttrsShape>;
+  ComponentAttrValidatorOverrides<AccordionItemAttrsShape>;
 
 export type CreateAccordionItemAttrValidatorsResult = AccordionItemAttrValidators;

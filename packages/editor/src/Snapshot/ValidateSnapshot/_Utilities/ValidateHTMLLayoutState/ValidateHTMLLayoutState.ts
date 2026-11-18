@@ -2,9 +2,9 @@ import { matchJSON } from "#utilities";
 
 import { describeJSONMismatch } from "../Utilities";
 import type {
-	HTMLLayoutState,
-	ValidateHTMLLayoutStateParams,
-	ValidateHTMLLayoutStateResult,
+  HTMLLayoutState,
+  ValidateHTMLLayoutStateParams,
+  ValidateHTMLLayoutStateResult,
 } from "./ValidateHTMLLayoutState-types";
 
 /*
@@ -12,28 +12,28 @@ import type {
  * Fails on the first prop that doesn't match.
  */
 export const validateHTMLLayoutState = ({
-	componentDraft,
-	htmlLayoutDraft,
-	expectedState,
+  componentDraft,
+  htmlLayoutDraft,
+  expectedState,
 }: ValidateHTMLLayoutStateParams): ValidateHTMLLayoutStateResult => {
-	const { editorRole, localName, customStorage } = htmlLayoutDraft;
+  const { editorRole, localName, customStorage } = htmlLayoutDraft;
 
-	const state: HTMLLayoutState = { editorRole, localName, customStorage };
+  const state: HTMLLayoutState = { editorRole, localName, customStorage };
 
-	const mismatch = matchJSON({ value: state, pattern: expectedState });
+  const mismatch = matchJSON({ value: state, pattern: expectedState });
 
-	if (mismatch) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: describeJSONMismatch({
-				rootDraft: componentDraft,
-				nodeDraft: htmlLayoutDraft,
-				value: state,
-				mismatch,
-			}),
-		};
-	}
+  if (mismatch) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: describeJSONMismatch({
+        rootDraft: componentDraft,
+        nodeDraft: htmlLayoutDraft,
+        value: state,
+        mismatch,
+      }),
+    };
+  }
 
-	return null;
+  return null;
 };

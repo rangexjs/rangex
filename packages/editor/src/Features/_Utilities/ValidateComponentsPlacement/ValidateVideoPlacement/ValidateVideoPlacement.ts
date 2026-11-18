@@ -1,8 +1,8 @@
 import { validateComponentAttrs, videoAttrsShape } from "#dom-attrs";
 
 import type {
-	ValidateVideoPlacementParams,
-	ValidateVideoPlacementResult,
+  ValidateVideoPlacementParams,
+  ValidateVideoPlacementResult,
 } from "./ValidateVideoPlacement-types";
 
 /*
@@ -10,18 +10,18 @@ import type {
  * valid.
  */
 export const validateVideoPlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateVideoPlacementParams): ValidateVideoPlacementResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: videoAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: attrs,
+    componentAttrsShape: videoAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

@@ -10,17 +10,17 @@ import type { ComponentAttrNameByName } from "./CreateComponentSelector-types";
  * component attribute depending on the name.
  */
 export const createComponentSelector = <Name extends ComponentName>(name: Name) => {
-	if (isInlineComponentName(name)) {
-		const { dataName } = inlineComponentAttrName;
-		const typedName = dataName as ComponentAttrNameByName<Name>;
-		return `[${typedName}="${name}"]` as const;
-	}
+  if (isInlineComponentName(name)) {
+    const { dataName } = inlineComponentAttrName;
+    const typedName = dataName as ComponentAttrNameByName<Name>;
+    return `[${typedName}="${name}"]` as const;
+  }
 
-	if (isBlockComponentName(name)) {
-		const { dataName } = blockComponentAttrName;
-		const typedName = dataName as ComponentAttrNameByName<Name>;
-		return `[${typedName}="${name}"]` as const;
-	}
+  if (isBlockComponentName(name)) {
+    const { dataName } = blockComponentAttrName;
+    const typedName = dataName as ComponentAttrNameByName<Name>;
+    return `[${typedName}="${name}"]` as const;
+  }
 
-	return assertNever(name);
+  return assertNever(name);
 };

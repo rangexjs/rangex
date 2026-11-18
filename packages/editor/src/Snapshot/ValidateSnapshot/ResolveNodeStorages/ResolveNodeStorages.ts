@@ -8,9 +8,9 @@ import type { ResolveNodeStoragesParams } from "./ResolveNodeStorages-types";
  * making the snapshot invalid. The RootEditable's own storage isn't touched.
  */
 export const resolveNodeStorages = ({ rootEditableDraft }: ResolveNodeStoragesParams) => {
-	const nodeDrafts = rootEditableDraft.queryAll((nodeDraft) => !isComponentDraft(nodeDraft));
+  const nodeDrafts = rootEditableDraft.queryAll((nodeDraft) => !isComponentDraft(nodeDraft));
 
-	for (const nodeDraft of nodeDrafts) {
-		nodeDraft.customStorage = null;
-	}
+  for (const nodeDraft of nodeDrafts) {
+    nodeDraft.customStorage = null;
+  }
 };

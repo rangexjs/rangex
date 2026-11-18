@@ -1,64 +1,64 @@
 {
-	"name": "@rangex/solid",
-	"version": "1.0.0-beta.1",
-	"description": "SolidJS bindings for @rangex/editor: reactive ports and shared Solid utilities.",
-	"keywords": [
-		"rangex",
-		"rich-text-editor",
-		"editor",
-		"wysiwyg",
-		"contenteditable",
-		"solid",
-		"solidjs"
-	],
-	"author": "Mozes Stumpf",
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:rangexjs/rangex.git",
-		"directory": "packages/solid"
-	},
-	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/solid#readme",
-	"bugs": "https://github.com/rangexjs/rangex/issues",
-	"license": "MIT",
-	"type": "module",
-	"sideEffects": false,
-	"browserslist": [
-		"chrome >= 159",
-		"firefox >= 159",
-		"safari >= 27.3"
-	],
-	"exports": {
-		".": {
-			"@rangex/source": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		}
-	},
-	"files": [
-		"dist"
-	],
-	"publishConfig": {
-		"access": "public"
-	},
-	"scripts": {
-		"dev": "vp dev",
-		"build": "vp build && tsc -p ./tsconfig.build.json",
-		"prepublishOnly": "npm run build",
-		"test": "vp test",
-		"test:coverage": "vp test --coverage",
-		"fix": "vp check --fix && tsc -p ./tsconfig.json",
-		"pre:check": "vp check && tsc && vp test"
-	},
-	"devDependencies": {
-		"@happy-dom/global-registrator": "^21.0.4",
-		"@solidjs/vite-plugin": "3.0.0-next.47",
-		"@vitest/coverage-v8": "5.1.0",
-		"typescript": "^7.0.2",
-		"vite-plus": "1.6.0"
-	},
-	"peerDependencies": {
-		"@rangex/editor": "1.0.0-beta.1",
-		"@solidjs/web": "^2.0.0-rc.13",
-		"solid-js": "^2.0.0-rc.13"
-	}
+  "name": "@rangex/solid",
+  "version": "1.0.0-beta.1",
+  "description": "SolidJS bindings for @rangex/editor: reactive ports and shared Solid utilities.",
+  "keywords": [
+    "rangex",
+    "rich-text-editor",
+    "editor",
+    "wysiwyg",
+    "contenteditable",
+    "solid",
+    "solidjs"
+  ],
+  "author": "Mozes Stumpf",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rangexjs/rangex.git",
+    "directory": "packages/solid"
+  },
+  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/solid#readme",
+  "bugs": "https://github.com/rangexjs/rangex/issues",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "browserslist": [
+    "chrome >= 159",
+    "firefox >= 159",
+    "safari >= 27.3"
+  ],
+  "exports": {
+    ".": {
+      "@rangex/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && tsc -p ./tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "test": "vp test",
+    "test:coverage": "vp test --coverage",
+    "fix": "vp check --fix && tsc -p ./tsconfig.json",
+    "pre:check": "vp check && tsc && vp test"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^21.0.4",
+    "@solidjs/vite-plugin": "3.0.0-next.47",
+    "@vitest/coverage-v8": "5.1.0",
+    "typescript": "^7.0.2",
+    "vite-plus": "1.6.0"
+  },
+  "peerDependencies": {
+    "@rangex/editor": "1.0.0-beta.1",
+    "@solidjs/web": "^2.0.0-rc.13",
+    "solid-js": "^2.0.0-rc.13"
+  }
 }

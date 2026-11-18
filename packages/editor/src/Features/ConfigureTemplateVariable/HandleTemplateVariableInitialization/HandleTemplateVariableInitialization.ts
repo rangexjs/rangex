@@ -10,55 +10,55 @@ import type { HandleTemplateVariableInitializationParams } from "./HandleTemplat
  * and resets the snapshot timeline so the seeded state becomes the initial one.
  */
 export const handleTemplateVariableInitialization = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTemplateVariableInitializationParams) => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const rootStorage = getRootStorage({ rootEditable });
-	const { templateVariable: storage } = rootStorage;
+  const rootStorage = getRootStorage({ rootEditable });
+  const { templateVariable: storage } = rootStorage;
 
-	for (const [name, { placeholder, initialValue }] of Object.entries(configPort.fieldsConfig)) {
-		const isFieldSet =
-			Object.hasOwn(storage, name) && storage[name] !== "" && storage[name] !== placeholder;
+  for (const [name, { placeholder, initialValue }] of Object.entries(configPort.fieldsConfig)) {
+    const isFieldSet =
+      Object.hasOwn(storage, name) && storage[name] !== "" && storage[name] !== placeholder;
 
-		if (isFieldSet) {
-			continue;
-		}
+    if (isFieldSet) {
+      continue;
+    }
 
-		if (initialValue === "") {
-			console.warn(
-				`Template variable field "${name}": initialValue can't be empty, placeholder is used instead.`,
-			);
-		}
+    if (initialValue === "") {
+      console.warn(
+        `Template variable field "${name}": initialValue can't be empty, placeholder is used instead.`,
+      );
+    }
 
-		const value = initialValue || placeholder;
+    const value = initialValue || placeholder;
 
-		const fieldMismatch = validateTemplateVariableField({
-			fieldName: name,
-			value,
-			storage,
-		});
+    const fieldMismatch = validateTemplateVariableField({
+      fieldName: name,
+      value,
+      storage,
+    });
 
-		if (fieldMismatch) {
-			console.warn(`Template variable field "${name}":`, fieldMismatch);
-			continue;
-		}
+    if (fieldMismatch) {
+      console.warn(`Template variable field "${name}":`, fieldMismatch);
+      continue;
+    }
 
-		storage[name] = value;
-	}
+    storage[name] = value;
+  }
 
-	updateAllTemplateVariableNodes({
-		rootEditable,
-		storage,
-		fieldsConfig: configPort.fieldsConfig,
-	});
+  updateAllTemplateVariableNodes({
+    rootEditable,
+    storage,
+    fieldsConfig: configPort.fieldsConfig,
+  });
 
-	configPort.updateState({ fields: { ...storage } });
+  configPort.updateState({ fields: { ...storage } });
 
-	editorAPI.flushEditorEvents();
+  editorAPI.flushEditorEvents();
 
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	snapshotTimeline.reset();
+  snapshotTimeline.reset();
 };

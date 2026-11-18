@@ -3,27 +3,27 @@ import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
 import { dataPartName, todoCheckboxPart } from "#constants";
 
 import {
-	type ComponentAttrsShape,
-	createComponentAttrValidators,
-	type ElementAttrsShape,
-	type ElementDescriptor,
-	type ValidateAttrFn,
-	validateBooleanAttr,
+  type ComponentAttrsShape,
+  createComponentAttrValidators,
+  type ElementAttrsShape,
+  type ElementDescriptor,
+  type ValidateAttrFn,
+  validateBooleanAttr,
 } from "../_Utilities";
 import type {
-	CreateTodoListAttrValidatorsParams,
-	CreateTodoListAttrValidatorsResult,
+  CreateTodoListAttrValidatorsParams,
+  CreateTodoListAttrValidatorsResult,
 } from "./TodoListDOMAttrs-types";
 
 /*
  * A checkbox's type is always "checkbox": any other value falls back to it.
  */
 const validateCheckboxType: ValidateAttrFn<string> = ({ value }) => {
-	if (value !== "checkbox") {
-		return { kind: "fallback", reason: "must be checkbox", value: "checkbox" };
-	}
+  if (value !== "checkbox") {
+    return { kind: "fallback", reason: "must be checkbox", value: "checkbox" };
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -31,34 +31,34 @@ const validateCheckboxType: ValidateAttrFn<string> = ({ value }) => {
  * back to it.
  */
 const validateCheckboxPartName: ValidateAttrFn<string> = ({ value }) => {
-	if (value !== todoCheckboxPart.name) {
-		return {
-			kind: "fallback",
-			reason: `must be ${todoCheckboxPart.name}`,
-			value: todoCheckboxPart.name,
-		};
-	}
+  if (value !== todoCheckboxPart.name) {
+    return {
+      kind: "fallback",
+      reason: `must be ${todoCheckboxPart.name}`,
+      value: todoCheckboxPart.name,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
  * The checkbox of a todo item. Its checked attribute is the item's stored checked state.
  */
 const checkboxAttrsShape = {
-	type: "required",
-	[dataPartName]: "required",
-	checked: "optional",
+  type: "required",
+  [dataPartName]: "required",
+  checked: "optional",
 } as const satisfies ElementAttrsShape;
 
 const checkboxElement: ElementDescriptor = {
-	localName: "input",
-	namespaceURI: xhtmlNamespaceURI,
-	editorRole: htmlLayoutRole,
+  localName: "input",
+  namespaceURI: xhtmlNamespaceURI,
+  editorRole: htmlLayoutRole,
 };
 
 export const todoListAttrsShape = {
-	checkbox: checkboxAttrsShape,
+  checkbox: checkboxAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
 /*
@@ -66,20 +66,20 @@ export const todoListAttrsShape = {
  * createComponentAttrValidators).
  */
 export const createTodoListAttrValidators = (
-	validatorOverrides: CreateTodoListAttrValidatorsParams,
+  validatorOverrides: CreateTodoListAttrValidatorsParams,
 ): CreateTodoListAttrValidatorsResult => {
-	const todoListAttrValidators = createComponentAttrValidators({
-		componentAttrsShape: todoListAttrsShape,
-		elementDescriptors: { checkbox: checkboxElement },
-		defaultValidators: {
-			checkbox: {
-				type: validateCheckboxType,
-				[dataPartName]: validateCheckboxPartName,
-				checked: validateBooleanAttr,
-			},
-		},
-		validatorOverrides,
-	});
+  const todoListAttrValidators = createComponentAttrValidators({
+    componentAttrsShape: todoListAttrsShape,
+    elementDescriptors: { checkbox: checkboxElement },
+    defaultValidators: {
+      checkbox: {
+        type: validateCheckboxType,
+        [dataPartName]: validateCheckboxPartName,
+        checked: validateBooleanAttr,
+      },
+    },
+    validatorOverrides,
+  });
 
-	return todoListAttrValidators;
+  return todoListAttrValidators;
 };

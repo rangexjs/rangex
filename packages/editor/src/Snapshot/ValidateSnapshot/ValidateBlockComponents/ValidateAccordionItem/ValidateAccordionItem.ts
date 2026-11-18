@@ -5,21 +5,21 @@ import { accordionItemAttrsShape, createAccordionItemAttrValidators } from "#dom
 import { accordionItemStoragePattern } from "#storage";
 
 import {
-	formatNodePath,
-	resolveDraftDOMAttrs,
-	validateHTMLLayoutState,
-	validateNestedEditableState,
+  formatNodePath,
+  resolveDraftDOMAttrs,
+  validateHTMLLayoutState,
+  validateNestedEditableState,
 } from "../../_Utilities";
 import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
-	CreateAccordionItemValidatorParams,
-	CreateAccordionItemValidatorResult,
-	ValidateAccordionItemParams,
-	ValidateAccordionItemResult,
-	ValidateDetailsParams,
-	ValidateDetailsResult,
-	ValidateSummaryParams,
-	ValidateSummaryResult,
+  CreateAccordionItemValidatorParams,
+  CreateAccordionItemValidatorResult,
+  ValidateAccordionItemParams,
+  ValidateAccordionItemResult,
+  ValidateDetailsParams,
+  ValidateDetailsResult,
+  ValidateSummaryParams,
+  ValidateSummaryResult,
 } from "./ValidateAccordionItem-types";
 
 /*
@@ -27,62 +27,62 @@ import type {
  * engine's validation.
  */
 const validateSummary = ({
-	componentDraft,
-	htmlLayoutDraft,
+  componentDraft,
+  htmlLayoutDraft,
 }: ValidateSummaryParams): ValidateSummaryResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: "summary",
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: "summary",
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = htmlLayoutDraft;
+  const { childNodes } = htmlLayoutDraft;
 
-	const nestedEditableDraft = childNodes.at(0);
+  const nestedEditableDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+    };
+  }
 
-	const nestedEditableFailed = validateNestedEditableState({
-		componentDraft,
-		nestedEditableDraft,
-		expectedState: {
-			editorRole: nestedEditableRole,
-			...accordionItemDefinition.summaryNestedEditableProps,
-			domAttrs: {},
-			customStorage: null,
-		},
-	});
+  const nestedEditableFailed = validateNestedEditableState({
+    componentDraft,
+    nestedEditableDraft,
+    expectedState: {
+      editorRole: nestedEditableRole,
+      ...accordionItemDefinition.summaryNestedEditableProps,
+      domAttrs: {},
+      customStorage: null,
+    },
+  });
 
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
+  if (nestedEditableFailed) {
+    return nestedEditableFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -91,76 +91,76 @@ const validateSummary = ({
  * the engine's validation.
  */
 const validateDetails = ({
-	componentDraft,
-	htmlLayoutDraft,
-	attrValidators,
+  componentDraft,
+  htmlLayoutDraft,
+  attrValidators,
 }: ValidateDetailsParams): ValidateDetailsResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: "details",
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: "details",
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: accordionItemAttrsShape.details,
-		elementAttrValidators: attrValidators.details,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: accordionItemAttrsShape.details,
+    elementAttrValidators: attrValidators.details,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = htmlLayoutDraft;
+  const { childNodes } = htmlLayoutDraft;
 
-	const [summaryDraft, nestedEditableDraft] = childNodes;
+  const [summaryDraft, nestedEditableDraft] = childNodes;
 
-	if (
-		childNodes.length !== 2 ||
-		summaryDraft?.editorRole !== htmlLayoutRole ||
-		nestedEditableDraft?.editorRole !== nestedEditableRole
-	) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain a summary, then a ${nestedEditableRole}.`,
-		};
-	}
+  if (
+    childNodes.length !== 2 ||
+    summaryDraft?.editorRole !== htmlLayoutRole ||
+    nestedEditableDraft?.editorRole !== nestedEditableRole
+  ) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain a summary, then a ${nestedEditableRole}.`,
+    };
+  }
 
-	const summaryFailed = validateSummary({
-		componentDraft,
-		htmlLayoutDraft: summaryDraft,
-	});
+  const summaryFailed = validateSummary({
+    componentDraft,
+    htmlLayoutDraft: summaryDraft,
+  });
 
-	if (summaryFailed) {
-		return summaryFailed;
-	}
+  if (summaryFailed) {
+    return summaryFailed;
+  }
 
-	const nestedEditableFailed = validateNestedEditableState({
-		componentDraft,
-		nestedEditableDraft,
-		expectedState: {
-			editorRole: nestedEditableRole,
-			...accordionItemDefinition.bodyNestedEditableProps,
-			domAttrs: {},
-			customStorage: null,
-		},
-	});
+  const nestedEditableFailed = validateNestedEditableState({
+    componentDraft,
+    nestedEditableDraft,
+    expectedState: {
+      editorRole: nestedEditableRole,
+      ...accordionItemDefinition.bodyNestedEditableProps,
+      domAttrs: {},
+      customStorage: null,
+    },
+  });
 
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
+  if (nestedEditableFailed) {
+    return nestedEditableFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -171,78 +171,78 @@ const validateDetails = ({
  * content is left to the engine's validation.
  */
 const validateAccordionItem = ({
-	componentDraft,
-	attrValidators,
+  componentDraft,
+  attrValidators,
 }: ValidateAccordionItemParams): ValidateAccordionItemResult => {
-	if (componentDraft.editorRole !== blockComponentRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
-		};
-	}
+  if (componentDraft.editorRole !== blockComponentRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
+    };
+  }
 
-	const stateFailed = validateBlockComponentState({
-		blockComponentDraft: componentDraft,
-		expectedState: {
-			editorRole: blockComponentRole,
-			name: componentsName.accordionItem,
-			content: { type: "custom" },
-			editState: "inherit",
-			shouldSelectBeforeRemove: true,
-			shouldSelectOnNavigation: false,
-			customStorage: accordionItemStoragePattern,
-		},
-	});
+  const stateFailed = validateBlockComponentState({
+    blockComponentDraft: componentDraft,
+    expectedState: {
+      editorRole: blockComponentRole,
+      name: componentsName.accordionItem,
+      content: { type: "custom" },
+      editState: "inherit",
+      shouldSelectBeforeRemove: true,
+      shouldSelectOnNavigation: false,
+      customStorage: accordionItemStoragePattern,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const lineFailed = validateBlockComponentLine({
-		blockComponentDraft: componentDraft,
-		lineAttrsShape: {},
-		lineAttrValidators: {},
-	});
+  const lineFailed = validateBlockComponentLine({
+    blockComponentDraft: componentDraft,
+    lineAttrsShape: {},
+    lineAttrValidators: {},
+  });
 
-	if (lineFailed) {
-		return lineFailed;
-	}
+  if (lineFailed) {
+    return lineFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: componentDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: componentDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = componentDraft;
+  const { childNodes } = componentDraft;
 
-	const htmlLayoutDraft = childNodes.at(0);
+  const htmlLayoutDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+    };
+  }
 
-	const detailsFailed = validateDetails({
-		componentDraft,
-		htmlLayoutDraft,
-		attrValidators,
-	});
+  const detailsFailed = validateDetails({
+    componentDraft,
+    htmlLayoutDraft,
+    attrValidators,
+  });
 
-	if (detailsFailed) {
-		return detailsFailed;
-	}
+  if (detailsFailed) {
+    return detailsFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -250,16 +250,16 @@ const validateAccordionItem = ({
  * validators, replaced by the given ones (see createAccordionItemAttrValidators).
  */
 export const createAccordionItemValidator = ({
-	attrValidators = {},
+  attrValidators = {},
 }: CreateAccordionItemValidatorParams): CreateAccordionItemValidatorResult => {
-	const accordionItemAttrValidators = createAccordionItemAttrValidators(attrValidators);
+  const accordionItemAttrValidators = createAccordionItemAttrValidators(attrValidators);
 
-	return {
-		name: componentsName.accordionItem,
-		validate: ({ componentDraft }) =>
-			validateAccordionItem({
-				componentDraft,
-				attrValidators: accordionItemAttrValidators,
-			}),
-	};
+  return {
+    name: componentsName.accordionItem,
+    validate: ({ componentDraft }) =>
+      validateAccordionItem({
+        componentDraft,
+        attrValidators: accordionItemAttrValidators,
+      }),
+  };
 };

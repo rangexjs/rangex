@@ -1,16 +1,16 @@
 import type {
-	ComponentAttrs,
-	ComponentAttrsMismatch,
-	ComponentAttrsShape,
-	ComponentAttrValidators,
+  ComponentAttrs,
+  ComponentAttrsMismatch,
+  ComponentAttrsShape,
+  ComponentAttrValidators,
 } from "../DOMAttrs-types";
 
 export interface ValidateComponentAttrsParams<TComponentAttrsShape extends ComponentAttrsShape> {
-	componentAttrs: ComponentAttrs<TComponentAttrsShape>;
-	componentAttrsShape: TComponentAttrsShape;
-	componentAttrValidators: ComponentAttrValidators<TComponentAttrsShape>;
+  componentAttrs: ComponentAttrs<TComponentAttrsShape>;
+  componentAttrsShape: TComponentAttrsShape;
+  componentAttrValidators: ComponentAttrValidators<TComponentAttrsShape>;
 }
 
 export type ValidateComponentAttrsResult<
-	TComponentAttrsShape extends ComponentAttrsShape,
+  TComponentAttrsShape extends ComponentAttrsShape,
 > = ComponentAttrsMismatch<TComponentAttrsShape> | null;

@@ -1,8 +1,8 @@
 import { audioAttrsShape, validateComponentAttrs } from "#dom-attrs";
 
 import type {
-	ValidateAudioPlacementParams,
-	ValidateAudioPlacementResult,
+  ValidateAudioPlacementParams,
+  ValidateAudioPlacementResult,
 } from "./ValidateAudioPlacement-types";
 
 /*
@@ -10,18 +10,18 @@ import type {
  * valid.
  */
 export const validateAudioPlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateAudioPlacementParams): ValidateAudioPlacementResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: audioAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: attrs,
+    componentAttrsShape: audioAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

@@ -9,48 +9,48 @@ import type { HandleBlockResizeAppearanceParams } from "./HandleBlockResizeAppea
 const MIN_CONTAINER_WIDTH = 300;
 
 interface CalcFlexBasisParams {
-	blockComponent: BlockComponent;
-	deltaPx: number;
-	handleSide: "left" | "right";
-	dragStartWidth: number;
+  blockComponent: BlockComponent;
+  deltaPx: number;
+  handleSide: "left" | "right";
+  dragStartWidth: number;
 }
 
 const calcFlexBasis = ({
-	blockComponent,
-	deltaPx,
-	handleSide,
-	dragStartWidth,
+  blockComponent,
+  deltaPx,
+  handleSide,
+  dragStartWidth,
 }: CalcFlexBasisParams): number => {
-	const { $$parentElement } = blockComponent;
+  const { $$parentElement } = blockComponent;
 
-	if (!$$parentElement) {
-		throw new Error("ParentElement not supposed to be null.");
-	}
+  if (!$$parentElement) {
+    throw new Error("ParentElement not supposed to be null.");
+  }
 
-	const align = getBlockAlign({ blockComponentLine: $$parentElement });
+  const align = getBlockAlign({ blockComponentLine: $$parentElement });
 
-	const isSameCorner =
-		(align === "left" && handleSide === "left") || (align === "right" && handleSide === "right");
+  const isSameCorner =
+    (align === "left" && handleSide === "left") || (align === "right" && handleSide === "right");
 
-	if (isSameCorner) {
-		const numFlexBasis = dragStartWidth + deltaPx;
-		const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
+  if (isSameCorner) {
+    const numFlexBasis = dragStartWidth + deltaPx;
+    const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
 
-		return Math.round(normalizedFlexBasis);
-	}
+    return Math.round(normalizedFlexBasis);
+  }
 
-	const isOppositeCorner =
-		(align === "left" && handleSide === "right") || (align === "right" && handleSide === "left");
+  const isOppositeCorner =
+    (align === "left" && handleSide === "right") || (align === "right" && handleSide === "left");
 
-	if (isOppositeCorner || align === "center") {
-		const rect = blockComponent.getBoundingClientRect();
-		const numFlexBasis = rect.width + deltaPx;
-		const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
+  if (isOppositeCorner || align === "center") {
+    const rect = blockComponent.getBoundingClientRect();
+    const numFlexBasis = rect.width + deltaPx;
+    const normalizedFlexBasis = Math.max(MIN_CONTAINER_WIDTH, numFlexBasis);
 
-		return Math.round(normalizedFlexBasis);
-	}
+    return Math.round(normalizedFlexBasis);
+  }
 
-	throw new Error("Missing condition");
+  throw new Error("Missing condition");
 };
 
 /*
@@ -59,130 +59,130 @@ const calcFlexBasis = ({
  * On resize end, a width wider than the block can grow is removed, so it falls back to the full width.
  */
 export const handleBlockResizeAppearance = ({
-	blockResize,
-	editorAPI,
-	componentName,
+  blockResize,
+  editorAPI,
+  componentName,
 }: HandleBlockResizeAppearanceParams) => {
-	let currentBlock: BlockComponent | null = null;
-	let dragStartWidth: number | null = null;
-	let hideTimeoutId = NaN;
+  let currentBlock: BlockComponent | null = null;
+  let dragStartWidth: number | null = null;
+  let hideTimeoutId = NaN;
 
-	const anchorController = createAnchoredOverlayController({
-		element: blockResize.element,
-		options: {
-			lightDismiss: false,
-			closeOnEscape: false,
-		},
-	});
+  const anchorController = createAnchoredOverlayController({
+    element: blockResize.element,
+    options: {
+      lightDismiss: false,
+      closeOnEscape: false,
+    },
+  });
 
-	const scheduleHide = () => {
-		clearTimeout(hideTimeoutId);
-		hideTimeoutId = setTimeout(() => {
-			anchorController.hide({});
-			currentBlock = null;
-		}, 100);
-	};
+  const scheduleHide = () => {
+    clearTimeout(hideTimeoutId);
+    hideTimeoutId = setTimeout(() => {
+      anchorController.hide({});
+      currentBlock = null;
+    }, 100);
+  };
 
-	const cancelHide = () => {
-		clearTimeout(hideTimeoutId);
-	};
+  const cancelHide = () => {
+    clearTimeout(hideTimeoutId);
+  };
 
-	const controller = new AbortController();
-	const { signal } = controller;
+  const controller = new AbortController();
+  const { signal } = controller;
 
-	blockResize.element.addEventListener("pointerenter", cancelHide, { signal });
-	blockResize.element.addEventListener("pointerleave", scheduleHide, {
-		signal,
-	});
+  blockResize.element.addEventListener("pointerenter", cancelHide, { signal });
+  blockResize.element.addEventListener("pointerleave", scheduleHide, {
+    signal,
+  });
 
-	const unsubscribePointerEnter = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockComponentRole,
-		eventListener: {
-			type: "pointerenter",
-			listener(event) {
-				const { currentTarget } = event;
+  const unsubscribePointerEnter = editorAPI.registerDOMEvent({
+    when: ({ element }) => element.$$editorRole === blockComponentRole,
+    eventListener: {
+      type: "pointerenter",
+      listener(event) {
+        const { currentTarget } = event;
 
-				if (!(currentTarget && isEditorNode(currentTarget))) {
-					throw new Error("CurrentTarget must be an EditorNode.");
-				}
+        if (!(currentTarget && isEditorNode(currentTarget))) {
+          throw new Error("CurrentTarget must be an EditorNode.");
+        }
 
-				if (currentTarget.$$editorRole !== blockComponentRole) {
-					throw new Error("CurrentTarget's type is invalid.");
-				}
+        if (currentTarget.$$editorRole !== blockComponentRole) {
+          throw new Error("CurrentTarget's type is invalid.");
+        }
 
-				if (currentTarget.$$name !== componentName) {
-					return;
-				}
+        if (currentTarget.$$name !== componentName) {
+          return;
+        }
 
-				cancelHide();
+        cancelHide();
 
-				if (currentBlock === currentTarget) {
-					return;
-				}
+        if (currentBlock === currentTarget) {
+          return;
+        }
 
-				currentBlock = currentTarget;
+        currentBlock = currentTarget;
 
-				anchorController.show(currentTarget, {
-					clear: true,
-					position: "absolute",
-					"position-area": "center",
-					width: "anchor-size(width)",
-					height: "anchor-size(height)",
-				});
-			},
-		},
-	});
+        anchorController.show(currentTarget, {
+          clear: true,
+          position: "absolute",
+          "position-area": "center",
+          width: "anchor-size(width)",
+          height: "anchor-size(height)",
+        });
+      },
+    },
+  });
 
-	const unsubscribePointerLeave = editorAPI.registerDOMEvent({
-		when: ({ element }) => element.$$editorRole === blockComponentRole,
-		eventListener: {
-			type: "pointerleave",
-			listener: scheduleHide,
-		},
-	});
+  const unsubscribePointerLeave = editorAPI.registerDOMEvent({
+    when: ({ element }) => element.$$editorRole === blockComponentRole,
+    eventListener: {
+      type: "pointerleave",
+      listener: scheduleHide,
+    },
+  });
 
-	const unsubscribeResizeMove = blockResize.onResizeMove(({ deltaPx, side }) => {
-		if (!currentBlock) {
-			return;
-		}
+  const unsubscribeResizeMove = blockResize.onResizeMove(({ deltaPx, side }) => {
+    if (!currentBlock) {
+      return;
+    }
 
-		dragStartWidth ??= currentBlock.getBoundingClientRect().width;
+    dragStartWidth ??= currentBlock.getBoundingClientRect().width;
 
-		const flexBasis = calcFlexBasis({
-			blockComponent: currentBlock,
-			deltaPx,
-			handleSide: side,
-			dragStartWidth,
-		});
+    const flexBasis = calcFlexBasis({
+      blockComponent: currentBlock,
+      deltaPx,
+      handleSide: side,
+      dragStartWidth,
+    });
 
-		currentBlock.$$setAttribute(blockWidthAttr.name, `${flexBasis}`);
-	});
+    currentBlock.$$setAttribute(blockWidthAttr.name, `${flexBasis}`);
+  });
 
-	const unsubscribeResizeEnd = blockResize.onResizeEnd(() => {
-		dragStartWidth = null;
+  const unsubscribeResizeEnd = blockResize.onResizeEnd(() => {
+    dragStartWidth = null;
 
-		if (!currentBlock?.isConnected) {
-			return;
-		}
+    if (!currentBlock?.isConnected) {
+      return;
+    }
 
-		const blockWidth = currentBlock.getAttribute(blockWidthAttr.name);
+    const blockWidth = currentBlock.getAttribute(blockWidthAttr.name);
 
-		if (blockWidth !== null && Number(blockWidth) > currentBlock.offsetWidth) {
-			currentBlock.$$removeAttribute(blockWidthAttr.name);
-		}
+    if (blockWidth !== null && Number(blockWidth) > currentBlock.offsetWidth) {
+      currentBlock.$$removeAttribute(blockWidthAttr.name);
+    }
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
-	});
+    snapshotTimeline.registerSnapshotBoundary();
+  });
 
-	return () => {
-		controller.abort();
-		unsubscribePointerEnter();
-		unsubscribePointerLeave();
-		unsubscribeResizeMove();
-		unsubscribeResizeEnd();
-		clearTimeout(hideTimeoutId);
-		anchorController.cleanup();
-	};
+  return () => {
+    controller.abort();
+    unsubscribePointerEnter();
+    unsubscribePointerLeave();
+    unsubscribeResizeMove();
+    unsubscribeResizeEnd();
+    clearTimeout(hideTimeoutId);
+    anchorController.cleanup();
+  };
 };

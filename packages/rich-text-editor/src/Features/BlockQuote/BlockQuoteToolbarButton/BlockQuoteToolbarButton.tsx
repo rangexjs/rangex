@@ -7,39 +7,39 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const BlockQuoteToolbarButton = () => {
-	const editor = useEditorContext();
-	const { blockQuote, readOnly } = editor;
+  const editor = useEditorContext();
+  const { blockQuote, readOnly } = editor;
 
-	if (!blockQuote) {
-		throw new Error("BlockQuote can't be undefined.");
-	}
+  if (!blockQuote) {
+    throw new Error("BlockQuote can't be undefined.");
+  }
 
-	const $blockQuote = BlockQuote(blockQuote);
-	const $readOnly = ReadOnly(readOnly);
+  const $blockQuote = BlockQuote(blockQuote);
+  const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => !($blockQuote.isSelectionActive() || $blockQuote.canWrap()) || !!$readOnly?.checked(),
-	);
+  const disabled = createMemo(
+    () => !($blockQuote.isSelectionActive() || $blockQuote.canWrap()) || !!$readOnly?.checked(),
+  );
 
-	const onClick = () => {
-		if ($blockQuote.isSelectionActive()) {
-			blockQuote.unwrap();
-			return;
-		}
+  const onClick = () => {
+    if ($blockQuote.isSelectionActive()) {
+      blockQuote.unwrap();
+      return;
+    }
 
-		blockQuote.wrap();
-	};
+    blockQuote.wrap();
+  };
 
-	return (
-		<span>
-			<ToolbarButton
-				checked={$blockQuote.isSelectionActive()}
-				disabled={disabled()}
-				onClick={onClick}
-				aria-pressed={`${$blockQuote.isSelectionActive()}`}
-			>
-				<Icon name="BlockQuote" title="Block quote" class="size-4" />
-			</ToolbarButton>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton
+        checked={$blockQuote.isSelectionActive()}
+        disabled={disabled()}
+        onClick={onClick}
+        aria-pressed={`${$blockQuote.isSelectionActive()}`}
+      >
+        <Icon name="BlockQuote" title="Block quote" class="size-4" />
+      </ToolbarButton>
+    </span>
+  );
 };

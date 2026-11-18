@@ -4,8 +4,8 @@ import { componentsName } from "#constants";
 import { getClosestScopedEditable } from "#engine-links";
 
 import type {
-	GetLinkPlacementModeParams,
-	GetLinkPlacementModeResult,
+  GetLinkPlacementModeParams,
+  GetLinkPlacementModeResult,
 } from "./GetLinkPlacementMode-types";
 
 /*
@@ -15,66 +15,66 @@ import type {
  * inside a link already, or where links aren't an allowed component.
  */
 export const getLinkPlacementMode = ({
-	editorAPI,
+  editorAPI,
 }: GetLinkPlacementModeParams): GetLinkPlacementModeResult => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+  const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-	const range = new EditorRange({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+  const range = new EditorRange({
+    fromNode: fromText,
+    fromOffset,
+    toNode: toText,
+    toOffset,
+  });
 
-	if (range.isSinglePoint) {
-		const scopedEditable = getClosestScopedEditable({ fromNode: fromText });
+  if (range.isSinglePoint) {
+    const scopedEditable = getClosestScopedEditable({ fromNode: fromText });
 
-		if (!scopedEditable) {
-			return null;
-		}
+    if (!scopedEditable) {
+      return null;
+    }
 
-		const { $$allowedComponents } = scopedEditable;
+    const { $$allowedComponents } = scopedEditable;
 
-		if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
-			return { type: "insert" };
-		}
+    if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
+      return { type: "insert" };
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	const segments = editorAPI.getInlineWrappableSegments({
-		fromNode: fromText,
-		fromOffset,
-		toNode: toText,
-		toOffset,
-	});
+  const segments = editorAPI.getInlineWrappableSegments({
+    fromNode: fromText,
+    fromOffset,
+    toNode: toText,
+    toOffset,
+  });
 
-	// Only segments free of InlineComponents, in lines that allow links, can be wrapped.
-	const wrappableSegments: GetInlineWrappableSegmentsResult = [];
+  // Only segments free of InlineComponents, in lines that allow links, can be wrapped.
+  const wrappableSegments: GetInlineWrappableSegmentsResult = [];
 
-	for (const segment of segments) {
-		if (segment.getInlineComponentListInSegment().length > 0) {
-			continue;
-		}
+  for (const segment of segments) {
+    if (segment.getInlineComponentListInSegment().length > 0) {
+      continue;
+    }
 
-		const { $$parentElement } = segment.getContentLine();
+    const { $$parentElement } = segment.getContentLine();
 
-		if (!$$parentElement) {
-			throw new Error("ParentElement can't be null.");
-		}
+    if (!$$parentElement) {
+      throw new Error("ParentElement can't be null.");
+    }
 
-		const { $$allowedComponents } = $$parentElement;
+    const { $$allowedComponents } = $$parentElement;
 
-		if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
-			wrappableSegments.push(segment);
-		}
-	}
+    if (!$$allowedComponents || $$allowedComponents.includes(componentsName.link)) {
+      wrappableSegments.push(segment);
+    }
+  }
 
-	if (wrappableSegments.length > 0) {
-		return { type: "wrap", segments: wrappableSegments };
-	}
+  if (wrappableSegments.length > 0) {
+    return { type: "wrap", segments: wrappableSegments };
+  }
 
-	return null;
+  return null;
 };

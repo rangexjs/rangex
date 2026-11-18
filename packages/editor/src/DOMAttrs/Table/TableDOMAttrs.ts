@@ -3,15 +3,15 @@ import { nestedEditableRole, xhtmlNamespaceURI } from "@rangex/core";
 import { verticalAlignAttr } from "#constants";
 
 import {
-	type ComponentAttrsShape,
-	createComponentAttrValidators,
-	type ElementAttrsShape,
-	type ElementDescriptor,
-	type ValidateAttrFn,
+  type ComponentAttrsShape,
+  createComponentAttrValidators,
+  type ElementAttrsShape,
+  type ElementDescriptor,
+  type ValidateAttrFn,
 } from "../_Utilities";
 import type {
-	CreateTableAttrValidatorsParams,
-	CreateTableAttrValidatorsResult,
+  CreateTableAttrValidatorsParams,
+  CreateTableAttrValidatorsResult,
 } from "./TableDOMAttrs-types";
 
 const verticalAligns = new Set<string>(Object.values(verticalAlignAttr.value));
@@ -21,32 +21,32 @@ const verticalAligns = new Set<string>(Object.values(verticalAlignAttr.value));
  * cell is top-aligned.
  */
 const validateVerticalAlign: ValidateAttrFn<string | null> = ({ value }) => {
-	if (!verticalAligns.has(value)) {
-		return {
-			kind: "fallback",
-			reason: `must be ${[...verticalAligns].join(", ")}`,
-			value: null,
-		};
-	}
+  if (!verticalAligns.has(value)) {
+    return {
+      kind: "fallback",
+      reason: `must be ${[...verticalAligns].join(", ")}`,
+      value: null,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
  * The NestedEditable of a table cell
  */
 const cellNestedEditableAttrsShape = {
-	[verticalAlignAttr.name]: "optional",
+  [verticalAlignAttr.name]: "optional",
 } as const satisfies ElementAttrsShape;
 
 const cellNestedEditableElement: ElementDescriptor = {
-	localName: "div",
-	namespaceURI: xhtmlNamespaceURI,
-	editorRole: nestedEditableRole,
+  localName: "div",
+  namespaceURI: xhtmlNamespaceURI,
+  editorRole: nestedEditableRole,
 };
 
 export const tableAttrsShape = {
-	cellNestedEditable: cellNestedEditableAttrsShape,
+  cellNestedEditable: cellNestedEditableAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
 /*
@@ -54,18 +54,18 @@ export const tableAttrsShape = {
  * createComponentAttrValidators).
  */
 export const createTableAttrValidators = (
-	validatorOverrides: CreateTableAttrValidatorsParams,
+  validatorOverrides: CreateTableAttrValidatorsParams,
 ): CreateTableAttrValidatorsResult => {
-	const tableAttrValidators = createComponentAttrValidators({
-		componentAttrsShape: tableAttrsShape,
-		elementDescriptors: { cellNestedEditable: cellNestedEditableElement },
-		defaultValidators: {
-			cellNestedEditable: {
-				[verticalAlignAttr.name]: validateVerticalAlign,
-			},
-		},
-		validatorOverrides,
-	});
+  const tableAttrValidators = createComponentAttrValidators({
+    componentAttrsShape: tableAttrsShape,
+    elementDescriptors: { cellNestedEditable: cellNestedEditableElement },
+    defaultValidators: {
+      cellNestedEditable: {
+        [verticalAlignAttr.name]: validateVerticalAlign,
+      },
+    },
+    validatorOverrides,
+  });
 
-	return tableAttrValidators;
+  return tableAttrValidators;
 };

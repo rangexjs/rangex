@@ -10,102 +10,102 @@ import type { HandleCaretMenuAppearanceParams } from "./HandleCaretMenuAppearanc
  * Escape. Any close resets the query to null, so the query is non-null exactly while the overlay is open.
  */
 export const handleCaretMenuAppearance = ({
-	port,
-	editorAPI,
-	getQuery,
+  port,
+  editorAPI,
+  getQuery,
 }: HandleCaretMenuAppearanceParams) => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const anchorController = createAnchoredOverlayController({
-		element: port.element,
-		options: {
-			lightDismiss: false,
-			closeOnEscape: true,
-			onToggle(isOpen) {
-				if (isOpen) {
-					return;
-				}
+  const anchorController = createAnchoredOverlayController({
+    element: port.element,
+    options: {
+      lightDismiss: false,
+      closeOnEscape: true,
+      onToggle(isOpen) {
+        if (isOpen) {
+          return;
+        }
 
-				port.updateCaretMenu({ query: null });
-			},
-			onEscape() {
-				editorAPI.focus();
-			},
-		},
-	});
+        port.updateCaretMenu({ query: null });
+      },
+      onEscape() {
+        editorAPI.focus();
+      },
+    },
+  });
 
-	const unsubscribeEditorBlurClose = editorAPI.subscribeEditorEvent({
-		type: selectionOutEventType,
-		callback: () => {
-			if (!anchorController.isOpen) {
-				return;
-			}
+  const unsubscribeEditorBlurClose = editorAPI.subscribeEditorEvent({
+    type: selectionOutEventType,
+    callback: () => {
+      if (!anchorController.isOpen) {
+        return;
+      }
 
-			const { element } = anchorController;
-			const root = element.getRootNode();
+      const { element } = anchorController;
+      const root = element.getRootNode();
 
-			if (!(root instanceof ShadowRoot || root instanceof Document)) {
-				throw new Error("Overlay root is not a ShadowRoot nor Document.");
-			}
+      if (!(root instanceof ShadowRoot || root instanceof Document)) {
+        throw new Error("Overlay root is not a ShadowRoot nor Document.");
+      }
 
-			if (element.contains(root.activeElement)) {
-				return;
-			}
+      if (element.contains(root.activeElement)) {
+        return;
+      }
 
-			anchorController.hide({});
-		},
-	});
+      anchorController.hide({});
+    },
+  });
 
-	const unsubscribeAppearance = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
+  const unsubscribeAppearance = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      const { fromText, fromOffset, toText, toOffset } = selection.getBoundaryPoints();
 
-			const range = new EditorRange({
-				fromNode: fromText,
-				fromOffset,
-				toNode: toText,
-				toOffset,
-			});
+      const range = new EditorRange({
+        fromNode: fromText,
+        fromOffset,
+        toNode: toText,
+        toOffset,
+      });
 
-			const result = (() => {
-				// Caret menus only trigger from a collapsed cursor, not a range selection
-				if (!range.isSinglePoint) {
-					return null;
-				}
+      const result = (() => {
+        // Caret menus only trigger from a collapsed cursor, not a range selection
+        if (!range.isSinglePoint) {
+          return null;
+        }
 
-				const { startText, startOffset } = range;
+        const { startText, startOffset } = range;
 
-				return getQuery({
-					editorAPI,
-					fromText: startText,
-					fromOffset: startOffset,
-				});
-			})();
+        return getQuery({
+          editorAPI,
+          fromText: startText,
+          fromOffset: startOffset,
+        });
+      })();
 
-			const query = result ? result.query : null;
+      const query = result ? result.query : null;
 
-			port.updateCaretMenu({ query });
+      port.updateCaretMenu({ query });
 
-			if (!result) {
-				if (anchorController.isOpen) {
-					anchorController.hide({});
-				}
+      if (!result) {
+        if (anchorController.isOpen) {
+          anchorController.hide({});
+        }
 
-				return;
-			}
+        return;
+      }
 
-			positionToSelection({
-				editorAPI,
-				controller: anchorController,
-				topMargin: 8,
-			});
-		},
-	});
+      positionToSelection({
+        editorAPI,
+        controller: anchorController,
+        topMargin: 8,
+      });
+    },
+  });
 
-	return () => {
-		unsubscribeEditorBlurClose();
-		unsubscribeAppearance();
-		anchorController.cleanup();
-	};
+  return () => {
+    unsubscribeEditorBlurClose();
+    unsubscribeAppearance();
+    anchorController.cleanup();
+  };
 };

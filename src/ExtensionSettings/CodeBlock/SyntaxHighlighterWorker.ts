@@ -1,11 +1,11 @@
 import { initEditorHighlighterWorker } from "@rangex/syntax-highlighter-shiki";
 
 import {
-	codeBlockLanguageDefinitions,
-	codeBlockThemeDefinitions,
+  codeBlockLanguageDefinitions,
+  codeBlockThemeDefinitions,
 } from "./CodeBlockSyntaxHighlighting";
 
 initEditorHighlighterWorker({
-	langs: codeBlockLanguageDefinitions.map(({ load }) => load),
-	themes: codeBlockThemeDefinitions.map(({ load }) => load),
+  langs: codeBlockLanguageDefinitions.map(({ load }) => load),
+  themes: codeBlockThemeDefinitions.map(({ load }) => load),
 });

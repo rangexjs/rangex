@@ -7,32 +7,32 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const StrikethroughToolbarButton = () => {
-	const editor = useEditorContext();
-	const { formatting, readOnly } = editor;
+  const editor = useEditorContext();
+  const { formatting, readOnly } = editor;
 
-	if (!formatting) {
-		throw new Error("Formatting can't be undefined.");
-	}
+  if (!formatting) {
+    throw new Error("Formatting can't be undefined.");
+  }
 
-	const $strikethrough = Strikethrough(formatting);
-	const $readOnly = ReadOnly(readOnly);
+  const $strikethrough = Strikethrough(formatting);
+  const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(() => $strikethrough.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $strikethrough.disabled() || !!$readOnly?.checked());
 
-	const onClick = () => {
-		formatting.toggleStrikethrough();
-	};
+  const onClick = () => {
+    formatting.toggleStrikethrough();
+  };
 
-	return (
-		<span>
-			<ToolbarButton
-				checked={$strikethrough.checked()}
-				disabled={disabled()}
-				onClick={onClick}
-				aria-pressed={$strikethrough.pressed()}
-			>
-				<Icon name="Strikethrough" title="Strikethrough" class="size-4" />
-			</ToolbarButton>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton
+        checked={$strikethrough.checked()}
+        disabled={disabled()}
+        onClick={onClick}
+        aria-pressed={$strikethrough.pressed()}
+      >
+        <Icon name="Strikethrough" title="Strikethrough" class="size-4" />
+      </ToolbarButton>
+    </span>
+  );
 };

@@ -7,13 +7,13 @@ import type { Extension } from "../_Utilities";
 import type { BlockQuoteExtensionSettings } from "./BlockQuote-types";
 
 export const BlockQuote = (settings: BlockQuoteExtensionSettings): Extension => {
-	return {
-		createAdapter: () => BlockQuoteFactory(settings),
-		components: {
-			toolbarButtons: {
-				[toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
-			},
-			floatingComponents: [],
-		},
-	};
+  return {
+    createAdapter: () => BlockQuoteFactory(settings),
+    components: {
+      toolbarButtons: {
+        [toolbarButtonsName.blockQuote]: BlockQuoteToolbarButton,
+      },
+      floatingComponents: [],
+    },
+  };
 };

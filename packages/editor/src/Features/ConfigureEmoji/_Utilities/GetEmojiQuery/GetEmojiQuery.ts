@@ -6,51 +6,51 @@ import type { GetEmojiQueryParams, GetEmojiQueryResult } from "./GetEmojiQuery-t
  * closing ':' first and keeps scanning for the query's opening ':'. Returns null if none is found.
  */
 export const getEmojiQuery = ({
-	editorAPI,
-	fromText,
-	fromOffset,
-	hasClosingColon,
+  editorAPI,
+  fromText,
+  fromOffset,
+  hasClosingColon,
 }: GetEmojiQueryParams): GetEmojiQueryResult => {
-	const { plainTextScanner } = editorAPI.createPlainTextScanner({
-		fromNode: fromText,
-		fromOffset,
-		direction: "backward",
-	});
+  const { plainTextScanner } = editorAPI.createPlainTextScanner({
+    fromNode: fromText,
+    fromOffset,
+    direction: "backward",
+  });
 
-	const charLimit = 50;
+  const charLimit = 50;
 
-	let i = 0;
-	let skippedClosingColon = false;
+  let i = 0;
+  let skippedClosingColon = false;
 
-	for (const { toText, toOffset, data } of plainTextScanner) {
-		if (i++ >= charLimit) {
-			return null;
-		}
+  for (const { toText, toOffset, data } of plainTextScanner) {
+    if (i++ >= charLimit) {
+      return null;
+    }
 
-		// Stop if the leftmost accumulated character is whitespace — no valid emoji
-		// query can span whitespace, so the : must appear before the space.
-		if (/\s/.test(data[0])) {
-			return null;
-		}
+    // Stop if the leftmost accumulated character is whitespace — no valid emoji
+    // query can span whitespace, so the : must appear before the space.
+    if (/\s/.test(data[0])) {
+      return null;
+    }
 
-		if (!data.startsWith(":")) {
-			continue;
-		}
+    if (!data.startsWith(":")) {
+      continue;
+    }
 
-		if (hasClosingColon && !skippedClosingColon) {
-			skippedClosingColon = true;
-			continue;
-		}
+    if (hasClosingColon && !skippedClosingColon) {
+      skippedClosingColon = true;
+      continue;
+    }
 
-		const query = hasClosingColon ? data.slice(1, -1) : data.slice(1);
+    const query = hasClosingColon ? data.slice(1, -1) : data.slice(1);
 
-		// Require at least one character between the colons before showing the popover
-		if (!query.length) {
-			return null;
-		}
+    // Require at least one character between the colons before showing the popover
+    if (!query.length) {
+      return null;
+    }
 
-		return { toText, toOffset, query };
-	}
+    return { toText, toOffset, query };
+  }
 
-	return null;
+  return null;
 };

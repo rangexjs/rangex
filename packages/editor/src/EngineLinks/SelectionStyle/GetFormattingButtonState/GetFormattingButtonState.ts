@@ -1,480 +1,480 @@
 import {
-	type BackgroundColorValue,
-	type ColorValue,
-	type FontFamilyValue,
-	type FontSizeValue,
-	isBackgroundColorStructuredStyle,
-	isColorStructuredStyle,
-	isFontFamilyStructuredStyle,
-	isFontSizeStructuredStyle,
-	isLetterSpacingStructuredStyle,
-	isLineHeightStructuredStyle,
-	isPaddingBlockStructuredStyle,
-	isTextAlignStructuredStyle,
-	isTextIndentStructuredStyle,
-	type LetterSpacingValue,
+  type BackgroundColorValue,
+  type ColorValue,
+  type FontFamilyValue,
+  type FontSizeValue,
+  isBackgroundColorStructuredStyle,
+  isColorStructuredStyle,
+  isFontFamilyStructuredStyle,
+  isFontSizeStructuredStyle,
+  isLetterSpacingStructuredStyle,
+  isLineHeightStructuredStyle,
+  isPaddingBlockStructuredStyle,
+  isTextAlignStructuredStyle,
+  isTextIndentStructuredStyle,
+  type LetterSpacingValue,
 } from "#structured-style";
 
 import type {
-	GetBackgroundColorToolbarButtonStateParams,
-	GetBackgroundColorToolbarButtonStateResult,
-	GetColorToolbarButtonStateParams,
-	GetColorToolbarButtonStateResult,
-	GetFontFamilyToolbarButtonStateParams,
-	GetFontFamilyToolbarButtonStateResult,
-	GetFontSizeToolbarButtonStateParams,
-	GetFontSizeToolbarButtonStateResult,
-	GetFormattingButtonStateParams,
-	GetFormattingButtonStateResult,
-	GetIndentationToolbarButtonStateParams,
-	GetIndentationToolbarButtonStateResult,
-	GetLetterSpacingToolbarButtonStateParams,
-	GetLetterSpacingToolbarButtonStateResult,
-	GetLineHeightToolbarButtonStateParams,
-	GetLineHeightToolbarButtonStateResult,
-	GetLineLocalNameParams,
-	GetLineLocalNameResult,
-	GetLineSpacingToolbarButtonStateParams,
-	GetLineSpacingToolbarButtonStateResult,
-	GetTextAlignToolbarButtonStateParams,
-	GetTextAlignToolbarButtonStateResult,
-	GetToggleButtonStateParams,
-	GetToggleButtonStateResult,
-	InitializeToggleButtonStateGetterParams,
-	InitializeToggleButtonStateGetterResult,
+  GetBackgroundColorToolbarButtonStateParams,
+  GetBackgroundColorToolbarButtonStateResult,
+  GetColorToolbarButtonStateParams,
+  GetColorToolbarButtonStateResult,
+  GetFontFamilyToolbarButtonStateParams,
+  GetFontFamilyToolbarButtonStateResult,
+  GetFontSizeToolbarButtonStateParams,
+  GetFontSizeToolbarButtonStateResult,
+  GetFormattingButtonStateParams,
+  GetFormattingButtonStateResult,
+  GetIndentationToolbarButtonStateParams,
+  GetIndentationToolbarButtonStateResult,
+  GetLetterSpacingToolbarButtonStateParams,
+  GetLetterSpacingToolbarButtonStateResult,
+  GetLineHeightToolbarButtonStateParams,
+  GetLineHeightToolbarButtonStateResult,
+  GetLineLocalNameParams,
+  GetLineLocalNameResult,
+  GetLineSpacingToolbarButtonStateParams,
+  GetLineSpacingToolbarButtonStateResult,
+  GetTextAlignToolbarButtonStateParams,
+  GetTextAlignToolbarButtonStateResult,
+  GetToggleButtonStateParams,
+  GetToggleButtonStateResult,
+  InitializeToggleButtonStateGetterParams,
+  InitializeToggleButtonStateGetterResult,
 } from "./GetFormattingButtonState-types";
 
 const getLineLocalName = ({
-	contentLineLocalNames,
+  contentLineLocalNames,
 }: GetLineLocalNameParams): GetLineLocalNameResult => {
-	const { permission, values } = contentLineLocalNames;
+  const { permission, values } = contentLineLocalNames;
 
-	const disabled = permission === "not-allowed";
+  const disabled = permission === "not-allowed";
 
-	const lineLocalNameValues = new Set(values);
+  const lineLocalNameValues = new Set(values);
 
-	return { disabled, values: lineLocalNameValues };
+  return { disabled, values: lineLocalNameValues };
 };
 
 const initializeToggleButtonStateGetter = ({
-	glyphFormatterInlineTags,
-	textFormatInlineTagsState,
+  glyphFormatterInlineTags,
+  textFormatInlineTagsState,
 }: InitializeToggleButtonStateGetterParams): InitializeToggleButtonStateGetterResult => {
-	const getToggleButtonState = ({
-		inlineTagKey,
-		inlineTagStateKey,
-	}: GetToggleButtonStateParams): GetToggleButtonStateResult => {
-		const stateValue = textFormatInlineTagsState[inlineTagStateKey];
+  const getToggleButtonState = ({
+    inlineTagKey,
+    inlineTagStateKey,
+  }: GetToggleButtonStateParams): GetToggleButtonStateResult => {
+    const stateValue = textFormatInlineTagsState[inlineTagStateKey];
 
-		if (stateValue !== undefined) {
-			return { disabled: false, pressed: `${stateValue}` };
-		}
+    if (stateValue !== undefined) {
+      return { disabled: false, pressed: `${stateValue}` };
+    }
 
-		const value = glyphFormatterInlineTags[inlineTagKey];
+    const value = glyphFormatterInlineTags[inlineTagKey];
 
-		const disabled = value.permission === "not-allowed";
-		const pressed = ({ applied: "true", "not-applied": "false", mixed: "mixed" } as const)[
-			value.state
-		];
+    const disabled = value.permission === "not-allowed";
+    const pressed = ({ applied: "true", "not-applied": "false", mixed: "mixed" } as const)[
+      value.state
+    ];
 
-		return { disabled, pressed };
-	};
+    return { disabled, pressed };
+  };
 
-	return getToggleButtonState;
+  return getToggleButtonState;
 };
 
 const getLineHeightToolbarButtonState = ({
-	contentLineStructuredStyle,
+  contentLineStructuredStyle,
 }: GetLineHeightToolbarButtonStateParams): GetLineHeightToolbarButtonStateResult => {
-	const { lineHeight } = contentLineStructuredStyle;
+  const { lineHeight } = contentLineStructuredStyle;
 
-	const { style, permission } = lineHeight;
+  const { style, permission } = lineHeight;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isLineHeightStructuredStyle);
+  const validStructuredStyles = style.values.filter(isLineHeightStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.lineHeight),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.lineHeight),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getLineSpacingToolbarButtonState = ({
-	contentLineStructuredStyle,
+  contentLineStructuredStyle,
 }: GetLineSpacingToolbarButtonStateParams): GetLineSpacingToolbarButtonStateResult => {
-	const { paddingBlock } = contentLineStructuredStyle;
+  const { paddingBlock } = contentLineStructuredStyle;
 
-	const { style, permission } = paddingBlock;
+  const { style, permission } = paddingBlock;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isPaddingBlockStructuredStyle);
+  const validStructuredStyles = style.values.filter(isPaddingBlockStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.paddingBlock),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.paddingBlock),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getIndentationToolbarButtonState = ({
-	contentLineStructuredStyle,
+  contentLineStructuredStyle,
 }: GetIndentationToolbarButtonStateParams): GetIndentationToolbarButtonStateResult => {
-	const { textIndent } = contentLineStructuredStyle;
+  const { textIndent } = contentLineStructuredStyle;
 
-	const { style, permission } = textIndent;
+  const { style, permission } = textIndent;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isTextIndentStructuredStyle);
+  const validStructuredStyles = style.values.filter(isTextIndentStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.textIndent),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.textIndent),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getTextAlignToolbarButtonState = ({
-	contentLineStructuredStyle,
+  contentLineStructuredStyle,
 }: GetTextAlignToolbarButtonStateParams): GetTextAlignToolbarButtonStateResult => {
-	const { textAlign } = contentLineStructuredStyle;
+  const { textAlign } = contentLineStructuredStyle;
 
-	const { style, permission } = textAlign;
+  const { style, permission } = textAlign;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isTextAlignStructuredStyle);
+  const validStructuredStyles = style.values.filter(isTextAlignStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.textAlign),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.textAlign),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getBackgroundColorToolbarButtonState = ({
-	glyphFormatterStructuredStyle,
-	textFormatStylesState,
+  glyphFormatterStructuredStyle,
+  textFormatStylesState,
 }: GetBackgroundColorToolbarButtonStateParams): GetBackgroundColorToolbarButtonStateResult => {
-	if (textFormatStylesState.backgroundColor) {
-		const { backgroundColor } = textFormatStylesState;
+  if (textFormatStylesState.backgroundColor) {
+    const { backgroundColor } = textFormatStylesState;
 
-		if (!isBackgroundColorStructuredStyle(backgroundColor)) {
-			return { disabled: true, values: new Set() };
-		}
+    if (!isBackgroundColorStructuredStyle(backgroundColor)) {
+      return { disabled: true, values: new Set() };
+    }
 
-		const values = new Set<BackgroundColorValue>([backgroundColor.values.backgroundColor]);
+    const values = new Set<BackgroundColorValue>([backgroundColor.values.backgroundColor]);
 
-		return { disabled: false, values };
-	}
+    return { disabled: false, values };
+  }
 
-	const { backgroundColor } = glyphFormatterStructuredStyle;
+  const { backgroundColor } = glyphFormatterStructuredStyle;
 
-	const { style, permission } = backgroundColor;
+  const { style, permission } = backgroundColor;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isBackgroundColorStructuredStyle);
+  const validStructuredStyles = style.values.filter(isBackgroundColorStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.backgroundColor),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.backgroundColor),
+  );
 
-	return { disabled: false, values };
+  return { disabled: false, values };
 };
 
 const getColorToolbarButtonState = ({
-	glyphFormatterStructuredStyle,
-	textFormatStylesState,
+  glyphFormatterStructuredStyle,
+  textFormatStylesState,
 }: GetColorToolbarButtonStateParams): GetColorToolbarButtonStateResult => {
-	if (textFormatStylesState.color) {
-		const { color } = textFormatStylesState;
+  if (textFormatStylesState.color) {
+    const { color } = textFormatStylesState;
 
-		if (!isColorStructuredStyle(color)) {
-			return { disabled: true, values: new Set() };
-		}
+    if (!isColorStructuredStyle(color)) {
+      return { disabled: true, values: new Set() };
+    }
 
-		const values = new Set<ColorValue>([color.values.color]);
+    const values = new Set<ColorValue>([color.values.color]);
 
-		return { disabled: false, values };
-	}
+    return { disabled: false, values };
+  }
 
-	const { color } = glyphFormatterStructuredStyle;
+  const { color } = glyphFormatterStructuredStyle;
 
-	const { style, permission } = color;
+  const { style, permission } = color;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isColorStructuredStyle);
+  const validStructuredStyles = style.values.filter(isColorStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.color),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.color),
+  );
 
-	return { disabled: false, values };
+  return { disabled: false, values };
 };
 
 const getFontFamilyToolbarButtonState = ({
-	glyphFormatterStructuredStyle,
-	textFormatStylesState,
+  glyphFormatterStructuredStyle,
+  textFormatStylesState,
 }: GetFontFamilyToolbarButtonStateParams): GetFontFamilyToolbarButtonStateResult => {
-	if (textFormatStylesState.fontFamily) {
-		const { fontFamily } = textFormatStylesState;
+  if (textFormatStylesState.fontFamily) {
+    const { fontFamily } = textFormatStylesState;
 
-		if (!isFontFamilyStructuredStyle(fontFamily)) {
-			return { disabled: true, hasUnset: true, values: new Set() };
-		}
+    if (!isFontFamilyStructuredStyle(fontFamily)) {
+      return { disabled: true, hasUnset: true, values: new Set() };
+    }
 
-		const values = new Set<FontFamilyValue>([fontFamily.values.fontFamily]);
+    const values = new Set<FontFamilyValue>([fontFamily.values.fontFamily]);
 
-		return { disabled: false, hasUnset: false, values };
-	}
+    return { disabled: false, hasUnset: false, values };
+  }
 
-	const { fontFamily } = glyphFormatterStructuredStyle;
+  const { fontFamily } = glyphFormatterStructuredStyle;
 
-	const { style, permission } = fontFamily;
+  const { style, permission } = fontFamily;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isFontFamilyStructuredStyle);
+  const validStructuredStyles = style.values.filter(isFontFamilyStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.fontFamily),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.fontFamily),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getFontSizeToolbarButtonState = ({
-	glyphFormatterStructuredStyle,
-	textFormatStylesState,
+  glyphFormatterStructuredStyle,
+  textFormatStylesState,
 }: GetFontSizeToolbarButtonStateParams): GetFontSizeToolbarButtonStateResult => {
-	if (textFormatStylesState.fontSize) {
-		const { fontSize } = textFormatStylesState;
+  if (textFormatStylesState.fontSize) {
+    const { fontSize } = textFormatStylesState;
 
-		if (!isFontSizeStructuredStyle(fontSize)) {
-			return { disabled: true, hasUnset: true, values: new Set() };
-		}
+    if (!isFontSizeStructuredStyle(fontSize)) {
+      return { disabled: true, hasUnset: true, values: new Set() };
+    }
 
-		const values = new Set<FontSizeValue>([fontSize.values.fontSize]);
+    const values = new Set<FontSizeValue>([fontSize.values.fontSize]);
 
-		return { disabled: false, hasUnset: false, values };
-	}
+    return { disabled: false, hasUnset: false, values };
+  }
 
-	const { fontSize } = glyphFormatterStructuredStyle;
+  const { fontSize } = glyphFormatterStructuredStyle;
 
-	const { style, permission } = fontSize;
+  const { style, permission } = fontSize;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, hasUnset: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, hasUnset: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, hasUnset: true, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, hasUnset: true, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isFontSizeStructuredStyle);
+  const validStructuredStyles = style.values.filter(isFontSizeStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.fontSize),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.fontSize),
+  );
 
-	const hasUnset = style.state === "mixed";
+  const hasUnset = style.state === "mixed";
 
-	return { disabled: false, hasUnset, values };
+  return { disabled: false, hasUnset, values };
 };
 
 const getLetterSpacingToolbarButtonState = ({
-	glyphFormatterStructuredStyle,
-	textFormatStylesState,
+  glyphFormatterStructuredStyle,
+  textFormatStylesState,
 }: GetLetterSpacingToolbarButtonStateParams): GetLetterSpacingToolbarButtonStateResult => {
-	if (textFormatStylesState.letterSpacing) {
-		const { letterSpacing } = textFormatStylesState;
+  if (textFormatStylesState.letterSpacing) {
+    const { letterSpacing } = textFormatStylesState;
 
-		if (!isLetterSpacingStructuredStyle(letterSpacing)) {
-			return { disabled: true, values: new Set() };
-		}
+    if (!isLetterSpacingStructuredStyle(letterSpacing)) {
+      return { disabled: true, values: new Set() };
+    }
 
-		const values = new Set<LetterSpacingValue>([letterSpacing.values.letterSpacing]);
+    const values = new Set<LetterSpacingValue>([letterSpacing.values.letterSpacing]);
 
-		return { disabled: false, values };
-	}
+    return { disabled: false, values };
+  }
 
-	const { letterSpacing } = glyphFormatterStructuredStyle;
+  const { letterSpacing } = glyphFormatterStructuredStyle;
 
-	const { style, permission } = letterSpacing;
+  const { style, permission } = letterSpacing;
 
-	if (permission === "not-allowed") {
-		return { disabled: true, values: new Set() };
-	}
+  if (permission === "not-allowed") {
+    return { disabled: true, values: new Set() };
+  }
 
-	if (style.state === "not-applied") {
-		return { disabled: false, values: new Set() };
-	}
+  if (style.state === "not-applied") {
+    return { disabled: false, values: new Set() };
+  }
 
-	const validStructuredStyles = style.values.filter(isLetterSpacingStructuredStyle);
+  const validStructuredStyles = style.values.filter(isLetterSpacingStructuredStyle);
 
-	const values = new Set(
-		validStructuredStyles.map((structuredStyle) => structuredStyle.values.letterSpacing),
-	);
+  const values = new Set(
+    validStructuredStyles.map((structuredStyle) => structuredStyle.values.letterSpacing),
+  );
 
-	return { disabled: false, values };
+  return { disabled: false, values };
 };
 
 export const getFormattingButtonState = ({
-	selectionFormatStyles,
+  selectionFormatStyles,
 }: GetFormattingButtonStateParams): GetFormattingButtonStateResult => {
-	const {
-		contentLineLocalNames,
-		contentLineStructuredStyle,
-		glyphFormatterInlineTags,
-		glyphFormatterStructuredStyle,
-		textFormatInlineTagsState,
-		textFormatStylesState,
-	} = selectionFormatStyles;
+  const {
+    contentLineLocalNames,
+    contentLineStructuredStyle,
+    glyphFormatterInlineTags,
+    glyphFormatterStructuredStyle,
+    textFormatInlineTagsState,
+    textFormatStylesState,
+  } = selectionFormatStyles;
 
-	const lineLocalName = getLineLocalName({ contentLineLocalNames });
+  const lineLocalName = getLineLocalName({ contentLineLocalNames });
 
-	const getToggleButtonState = initializeToggleButtonStateGetter({
-		glyphFormatterInlineTags,
-		textFormatInlineTagsState,
-	});
+  const getToggleButtonState = initializeToggleButtonStateGetter({
+    glyphFormatterInlineTags,
+    textFormatInlineTagsState,
+  });
 
-	const bold = getToggleButtonState({
-		inlineTagKey: "b",
-		inlineTagStateKey: "b",
-	});
-	const code = getToggleButtonState({
-		inlineTagKey: "code",
-		inlineTagStateKey: "code",
-	});
-	const italic = getToggleButtonState({
-		inlineTagKey: "i",
-		inlineTagStateKey: "i",
-	});
-	const strikethrough = getToggleButtonState({
-		inlineTagKey: "s",
-		inlineTagStateKey: "s",
-	});
-	const subscript = getToggleButtonState({
-		inlineTagKey: "sub",
-		inlineTagStateKey: "sub",
-	});
-	const superscript = getToggleButtonState({
-		inlineTagKey: "sup",
-		inlineTagStateKey: "sup",
-	});
-	const underline = getToggleButtonState({
-		inlineTagKey: "u",
-		inlineTagStateKey: "u",
-	});
+  const bold = getToggleButtonState({
+    inlineTagKey: "b",
+    inlineTagStateKey: "b",
+  });
+  const code = getToggleButtonState({
+    inlineTagKey: "code",
+    inlineTagStateKey: "code",
+  });
+  const italic = getToggleButtonState({
+    inlineTagKey: "i",
+    inlineTagStateKey: "i",
+  });
+  const strikethrough = getToggleButtonState({
+    inlineTagKey: "s",
+    inlineTagStateKey: "s",
+  });
+  const subscript = getToggleButtonState({
+    inlineTagKey: "sub",
+    inlineTagStateKey: "sub",
+  });
+  const superscript = getToggleButtonState({
+    inlineTagKey: "sup",
+    inlineTagStateKey: "sup",
+  });
+  const underline = getToggleButtonState({
+    inlineTagKey: "u",
+    inlineTagStateKey: "u",
+  });
 
-	const lineHeight = getLineHeightToolbarButtonState({
-		contentLineStructuredStyle,
-	});
-	const lineSpacing = getLineSpacingToolbarButtonState({
-		contentLineStructuredStyle,
-	});
-	const indentation = getIndentationToolbarButtonState({
-		contentLineStructuredStyle,
-	});
-	const textAlign = getTextAlignToolbarButtonState({
-		contentLineStructuredStyle,
-	});
+  const lineHeight = getLineHeightToolbarButtonState({
+    contentLineStructuredStyle,
+  });
+  const lineSpacing = getLineSpacingToolbarButtonState({
+    contentLineStructuredStyle,
+  });
+  const indentation = getIndentationToolbarButtonState({
+    contentLineStructuredStyle,
+  });
+  const textAlign = getTextAlignToolbarButtonState({
+    contentLineStructuredStyle,
+  });
 
-	const backgroundColor = getBackgroundColorToolbarButtonState({
-		glyphFormatterStructuredStyle,
-		textFormatStylesState,
-	});
-	const color = getColorToolbarButtonState({
-		glyphFormatterStructuredStyle,
-		textFormatStylesState,
-	});
-	const fontFamily = getFontFamilyToolbarButtonState({
-		glyphFormatterStructuredStyle,
-		textFormatStylesState,
-	});
-	const fontSize = getFontSizeToolbarButtonState({
-		glyphFormatterStructuredStyle,
-		textFormatStylesState,
-	});
-	const letterSpacing = getLetterSpacingToolbarButtonState({
-		glyphFormatterStructuredStyle,
-		textFormatStylesState,
-	});
+  const backgroundColor = getBackgroundColorToolbarButtonState({
+    glyphFormatterStructuredStyle,
+    textFormatStylesState,
+  });
+  const color = getColorToolbarButtonState({
+    glyphFormatterStructuredStyle,
+    textFormatStylesState,
+  });
+  const fontFamily = getFontFamilyToolbarButtonState({
+    glyphFormatterStructuredStyle,
+    textFormatStylesState,
+  });
+  const fontSize = getFontSizeToolbarButtonState({
+    glyphFormatterStructuredStyle,
+    textFormatStylesState,
+  });
+  const letterSpacing = getLetterSpacingToolbarButtonState({
+    glyphFormatterStructuredStyle,
+    textFormatStylesState,
+  });
 
-	return {
-		lineLocalName,
-		bold,
-		code,
-		italic,
-		strikethrough,
-		subscript,
-		superscript,
-		underline,
-		lineHeight,
-		lineSpacing,
-		indentation,
-		textAlign,
-		backgroundColor,
-		color,
-		fontFamily,
-		fontSize,
-		letterSpacing,
-	};
+  return {
+    lineLocalName,
+    bold,
+    code,
+    italic,
+    strikethrough,
+    subscript,
+    superscript,
+    underline,
+    lineHeight,
+    lineSpacing,
+    indentation,
+    textAlign,
+    backgroundColor,
+    color,
+    fontFamily,
+    fontSize,
+    letterSpacing,
+  };
 };

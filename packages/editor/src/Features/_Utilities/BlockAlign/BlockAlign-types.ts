@@ -5,12 +5,12 @@ import type { blockAlignAttr } from "#constants";
 export type BlockAlignValue = keyof typeof blockAlignAttr.value;
 
 export interface GetBlockAlignParams {
-	blockComponentLine: BlockComponentLine;
+  blockComponentLine: BlockComponentLine;
 }
 
 export type GetBlockAlignResult = BlockAlignValue;
 
 export interface SetBlockAlignParams {
-	blockComponentLine: BlockComponentLine;
-	align: BlockAlignValue;
+  blockComponentLine: BlockComponentLine;
+  align: BlockAlignValue;
 }

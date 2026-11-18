@@ -1,7 +1,7 @@
 import type {
-	ComponentValidator,
-	ValidateComponentParams,
-	ValidateComponentResult,
+  ComponentValidator,
+  ValidateComponentParams,
+  ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
 export interface ValidateBlockQuoteParams extends ValidateComponentParams {}

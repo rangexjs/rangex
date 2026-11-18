@@ -5,28 +5,28 @@ import type { HandleComponentUnwrapParams } from "./HandleComponentUnwrap-types"
  * registering a snapshot boundary.
  */
 export const handleComponentUnwrap = ({
-	port,
-	editorAPI,
-	getComponent,
+  port,
+  editorAPI,
+  getComponent,
 }: HandleComponentUnwrapParams) => {
-	const unsubscribe = port.onUnwrap(() => {
-		const component = getComponent();
+  const unsubscribe = port.onUnwrap(() => {
+    const component = getComponent();
 
-		if (!component) {
-			console.warn("Component wasn't assigned.");
-			return;
-		}
+    if (!component) {
+      console.warn("Component wasn't assigned.");
+      return;
+    }
 
-		component.$$unwrap();
+    component.$$unwrap();
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

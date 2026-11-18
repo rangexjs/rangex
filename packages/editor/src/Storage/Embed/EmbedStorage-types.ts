@@ -3,19 +3,19 @@ import type { BlockComponent } from "@rangex/core";
 import type { EmbedId } from "../_Constants";
 
 export type EmbedStorage = {
-	id: EmbedId;
+  id: EmbedId;
 };
 
 export type CreateEmbedStorageResult = EmbedStorage;
 
 export interface EnsureEmbedStorageParams {
-	storage: unknown;
+  storage: unknown;
 }
 
 export type EnsureEmbedStorageResult = EmbedStorage;
 
 export interface EnsureNodeEmbedStorageParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 export type EnsureNodeEmbedStorageResult = EmbedStorage;

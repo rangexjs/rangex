@@ -1,43 +1,43 @@
 import { rootEditableRole, xhtmlNamespaceURI } from "@rangex/core";
 
 import {
-	type ComponentAttrsShape,
-	createComponentAttrValidators,
-	type ElementAttrsShape,
-	type ElementDescriptor,
-	type ValidateAttrFn,
+  type ComponentAttrsShape,
+  createComponentAttrValidators,
+  type ElementAttrsShape,
+  type ElementDescriptor,
+  type ValidateAttrFn,
 } from "../_Utilities";
 import type {
-	CreateRootAttrValidatorsParams,
-	CreateRootAttrValidatorsResult,
+  CreateRootAttrValidatorsParams,
+  CreateRootAttrValidatorsResult,
 } from "./RootDOMAttrs-types";
 
 const rootElementAttrsShape = {
-	spellcheck: "optional",
+  spellcheck: "optional",
 } as const satisfies ElementAttrsShape;
 
 const rootElement: ElementDescriptor = {
-	localName: "div",
-	namespaceURI: xhtmlNamespaceURI,
-	editorRole: rootEditableRole,
+  localName: "div",
+  namespaceURI: xhtmlNamespaceURI,
+  editorRole: rootEditableRole,
 };
 
 export const rootAttrsShape = {
-	root: rootElementAttrsShape,
+  root: rootElementAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
 const validateSpellcheck: ValidateAttrFn<string | null> = ({ value }) => {
-	const allowedSpellchecks = new Set(["true", "false"]);
+  const allowedSpellchecks = new Set(["true", "false"]);
 
-	if (!allowedSpellchecks.has(value)) {
-		return {
-			kind: "fallback",
-			reason: 'must be "true" or "false"',
-			value: null,
-		};
-	}
+  if (!allowedSpellchecks.has(value)) {
+    return {
+      kind: "fallback",
+      reason: 'must be "true" or "false"',
+      value: null,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -45,18 +45,18 @@ const validateSpellcheck: ValidateAttrFn<string | null> = ({ value }) => {
  * createComponentAttrValidators).
  */
 export const createRootAttrValidators = (
-	validatorOverrides: CreateRootAttrValidatorsParams,
+  validatorOverrides: CreateRootAttrValidatorsParams,
 ): CreateRootAttrValidatorsResult => {
-	const rootAttrValidators = createComponentAttrValidators({
-		componentAttrsShape: rootAttrsShape,
-		elementDescriptors: { root: rootElement },
-		defaultValidators: {
-			root: {
-				spellcheck: validateSpellcheck,
-			},
-		},
-		validatorOverrides,
-	});
+  const rootAttrValidators = createComponentAttrValidators({
+    componentAttrsShape: rootAttrsShape,
+    elementDescriptors: { root: rootElement },
+    defaultValidators: {
+      root: {
+        spellcheck: validateSpellcheck,
+      },
+    },
+    validatorOverrides,
+  });
 
-	return rootAttrValidators;
+  return rootAttrValidators;
 };

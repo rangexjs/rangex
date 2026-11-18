@@ -8,26 +8,26 @@ import type { GetMediaPartsParams, GetMediaPartsResult } from "./GetMediaParts-t
  * HTMLLayout that must be its first child.
  */
 export const getMediaParts = ({
-	blockComponent,
-	mediaLocalName,
+  blockComponent,
+  mediaLocalName,
 }: GetMediaPartsParams): GetMediaPartsResult => {
-	const line = blockComponent.$$parentElement;
+  const line = blockComponent.$$parentElement;
 
-	if (line?.$$editorRole !== blockComponentLineRole) {
-		throw new Error("Media must be in a BlockComponentLine.");
-	}
+  if (line?.$$editorRole !== blockComponentLineRole) {
+    throw new Error("Media must be in a BlockComponentLine.");
+  }
 
-	const [figure] = blockComponent.$$children;
+  const [figure] = blockComponent.$$children;
 
-	if (!figure || figure.$$editorRole !== htmlLayoutRole || figure.$$localName !== "figure") {
-		throw new Error("Media's first child must be the figure.");
-	}
+  if (!figure || figure.$$editorRole !== htmlLayoutRole || figure.$$localName !== "figure") {
+    throw new Error("Media's first child must be the figure.");
+  }
 
-	for (const child of figure.$$children) {
-		if (child.$$editorRole === htmlLayoutRole && child.$$localName === mediaLocalName) {
-			return { line, block: blockComponent, media: child };
-		}
-	}
+  for (const child of figure.$$children) {
+    if (child.$$editorRole === htmlLayoutRole && child.$$localName === mediaLocalName) {
+      return { line, block: blockComponent, media: child };
+    }
+  }
 
-	throw new Error(`Media's figure must contain a ${mediaLocalName}.`);
+  throw new Error(`Media's figure must contain a ${mediaLocalName}.`);
 };

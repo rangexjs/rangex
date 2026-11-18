@@ -1,7 +1,7 @@
 import {
-	handleCaretMenuAppearance,
-	handleComponentUnwrap,
-	validateMentionDisplayText,
+  handleCaretMenuAppearance,
+  handleComponentUnwrap,
+  validateMentionDisplayText,
 } from "../_Utilities";
 import { getMentionQuery } from "./_Utilities";
 import type { ConfigureMentionParams } from "./ConfigureMention-types";
@@ -12,31 +12,31 @@ import { handleMentionSelect } from "./HandleMentionSelect";
  * manages the caret menu's appearance while typing an @-query. Returns a cleanup function.
  */
 export const configureMention = ({ configPort, editorAPI }: ConfigureMentionParams) => {
-	configPort.registerValidateDisplayText((displayText) =>
-		validateMentionDisplayText({ displayText }),
-	);
+  configPort.registerValidateDisplayText((displayText) =>
+    validateMentionDisplayText({ displayText }),
+  );
 
-	const selectCleanup = handleMentionSelect({
-		configPort,
-		editorAPI,
-	});
+  const selectCleanup = handleMentionSelect({
+    configPort,
+    editorAPI,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		// TODO: resolve the component once mention unwrapping is wired up
-		getComponent: () => null,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    // TODO: resolve the component once mention unwrapping is wired up
+    getComponent: () => null,
+  });
 
-	const caretMenuCleanup = handleCaretMenuAppearance({
-		port: configPort.caretMenu,
-		editorAPI,
-		getQuery: getMentionQuery,
-	});
+  const caretMenuCleanup = handleCaretMenuAppearance({
+    port: configPort.caretMenu,
+    editorAPI,
+    getQuery: getMentionQuery,
+  });
 
-	return () => {
-		selectCleanup();
-		unwrapCleanup();
-		caretMenuCleanup();
-	};
+  return () => {
+    selectCleanup();
+    unwrapCleanup();
+    caretMenuCleanup();
+  };
 };

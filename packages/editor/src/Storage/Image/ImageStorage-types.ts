@@ -3,19 +3,19 @@ import type { BlockComponent } from "@rangex/core";
 import type { ImageId } from "../_Constants";
 
 export type ImageStorage = {
-	id: ImageId;
+  id: ImageId;
 };
 
 export type CreateImageStorageResult = ImageStorage;
 
 export interface EnsureImageStorageParams {
-	storage: unknown;
+  storage: unknown;
 }
 
 export type EnsureImageStorageResult = ImageStorage;
 
 export interface EnsureNodeImageStorageParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 export type EnsureNodeImageStorageResult = ImageStorage;

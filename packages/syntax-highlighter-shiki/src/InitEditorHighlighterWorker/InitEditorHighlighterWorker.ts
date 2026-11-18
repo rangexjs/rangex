@@ -3,9 +3,9 @@ import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 import { tokenizeCode } from "../_Utilities";
 import type {
-	InitEditorHighlighterWorkerParams,
-	WorkerRequest,
-	WorkerResponse,
+  InitEditorHighlighterWorkerParams,
+  WorkerRequest,
+  WorkerResponse,
 } from "./InitEditorHighlighterWorker-types";
 
 /*
@@ -19,32 +19,32 @@ import type {
  * and answered with a `null` result instead, which callers treat as "no highlight available".
  */
 export const initEditorHighlighterWorker = ({
-	langs,
-	themes,
+  langs,
+  themes,
 }: InitEditorHighlighterWorkerParams) => {
-	const highlighterPromise = createHighlighterCore({
-		langs,
-		themes,
-		engine: createJavaScriptRegexEngine(),
-	});
+  const highlighterPromise = createHighlighterCore({
+    langs,
+    themes,
+    engine: createJavaScriptRegexEngine(),
+  });
 
-	self.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
-		const result = await (async () => {
-			try {
-				const highlighter = await highlighterPromise;
-				const { lines, language, theme } = data;
+  self.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
+    const result = await (async () => {
+      try {
+        const highlighter = await highlighterPromise;
+        const { lines, language, theme } = data;
 
-				return tokenizeCode({ highlighter, lines, language, theme });
-			} catch (error) {
-				console.warn(
-					`[syntax-highlighter-shiki] Failed to highlight language "${data.language}" with theme "${data.theme.light}"/"${data.theme.dark}".`,
-					error,
-				);
-				return null;
-			}
-		})();
+        return tokenizeCode({ highlighter, lines, language, theme });
+      } catch (error) {
+        console.warn(
+          `[syntax-highlighter-shiki] Failed to highlight language "${data.language}" with theme "${data.theme.light}"/"${data.theme.dark}".`,
+          error,
+        );
+        return null;
+      }
+    })();
 
-		const response: WorkerResponse = { id: data.id, result };
-		self.postMessage(response);
-	};
+    const response: WorkerResponse = { id: data.id, result };
+    self.postMessage(response);
+  };
 };

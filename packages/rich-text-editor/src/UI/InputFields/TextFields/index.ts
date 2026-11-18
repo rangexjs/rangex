@@ -1,17 +1,17 @@
 export type {
-	HTMLTextFieldElement,
-	TextFieldControls,
-	TextFieldErrorRestriction,
-	TextFieldErrorState,
-	TextFieldErrorVariant,
-	TextFieldHandle,
-	TextFieldState,
+  HTMLTextFieldElement,
+  TextFieldControls,
+  TextFieldErrorRestriction,
+  TextFieldErrorState,
+  TextFieldErrorVariant,
+  TextFieldHandle,
+  TextFieldState,
 } from "./_Utilities";
 export type {
-	CreateTextFieldControllerParams,
-	CreateTextFieldControllerResult,
-	ValidateOn,
-	ValidationOption,
+  CreateTextFieldControllerParams,
+  CreateTextFieldControllerResult,
+  ValidateOn,
+  ValidationOption,
 } from "./CreateTextFieldController";
 export { createTextFieldController } from "./CreateTextFieldController";
 export { InputTextField } from "./InputTextField";

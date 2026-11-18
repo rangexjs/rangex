@@ -1,83 +1,83 @@
 import {
-	blockComponentRole,
-	type HTMLLayoutDraft,
-	htmlLayoutRole,
-	nestedEditableRole,
+  blockComponentRole,
+  type HTMLLayoutDraft,
+  htmlLayoutRole,
+  nestedEditableRole,
 } from "@rangex/core";
 
 import { mediaCaptionDefinition } from "#constants";
 
 import {
-	formatNodePath,
-	resolveDraftDOMAttrs,
-	validateHTMLLayoutState,
-	validateNestedEditableState,
+  formatNodePath,
+  resolveDraftDOMAttrs,
+  validateHTMLLayoutState,
+  validateNestedEditableState,
 } from "../../../_Utilities";
 import { validateBlockComponentLine } from "../ValidateBlockComponentLine";
 import { validateBlockComponentState } from "../ValidateBlockComponentState";
 import type {
-	FindHTMLLayoutDraftParams,
-	FindHTMLLayoutDraftResult,
-	ValidateFigcaptionParams,
-	ValidateFigcaptionResult,
-	ValidateFigureParams,
-	ValidateFigureResult,
-	ValidateMediaComponentParams,
-	ValidateMediaComponentResult,
-	ValidateMediaParams,
-	ValidateMediaResult,
+  FindHTMLLayoutDraftParams,
+  FindHTMLLayoutDraftResult,
+  ValidateFigcaptionParams,
+  ValidateFigcaptionResult,
+  ValidateFigureParams,
+  ValidateFigureResult,
+  ValidateMediaComponentParams,
+  ValidateMediaComponentResult,
+  ValidateMediaParams,
+  ValidateMediaResult,
 } from "./ValidateMediaComponent-types";
 
 const findHTMLLayoutDraft = ({
-	childNodes,
-	localName,
+  childNodes,
+  localName,
 }: FindHTMLLayoutDraftParams): FindHTMLLayoutDraftResult =>
-	childNodes.find(
-		(childDraft): childDraft is HTMLLayoutDraft =>
-			childDraft.editorRole === htmlLayoutRole && childDraft.localName === localName,
-	);
+  childNodes.find(
+    (childDraft): childDraft is HTMLLayoutDraft =>
+      childDraft.editorRole === htmlLayoutRole && childDraft.localName === localName,
+  );
 
 const validateMedia = ({
-	componentDraft,
-	htmlLayoutDraft,
-	mediaLocalName,
-	mediaAttrsShape,
-	mediaAttrValidators,
+  componentDraft,
+  htmlLayoutDraft,
+  mediaLocalName,
+  mediaAttrsShape,
+  mediaAttrValidators,
 }: ValidateMediaParams): ValidateMediaResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: mediaLocalName,
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: mediaLocalName,
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: mediaAttrsShape,
-		elementAttrValidators: mediaAttrValidators,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: mediaAttrsShape,
+    elementAttrValidators: mediaAttrValidators,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	if (htmlLayoutDraft.childNodes.length) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must have no children.`,
-		};
-	}
+  if (htmlLayoutDraft.childNodes.length) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must have no children.`,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -85,146 +85,146 @@ const validateMedia = ({
  * NestedEditable's content is left to the engine's validation.
  */
 const validateFigcaption = ({
-	componentDraft,
-	htmlLayoutDraft,
+  componentDraft,
+  htmlLayoutDraft,
 }: ValidateFigcaptionParams): ValidateFigcaptionResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: "figcaption",
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: "figcaption",
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = htmlLayoutDraft;
+  const { childNodes } = htmlLayoutDraft;
 
-	const nestedEditableDraft = childNodes.at(0);
+  const nestedEditableDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${nestedEditableRole}.`,
+    };
+  }
 
-	const nestedEditableFailed = validateNestedEditableState({
-		componentDraft,
-		nestedEditableDraft,
-		expectedState: {
-			editorRole: nestedEditableRole,
-			...mediaCaptionDefinition.nestedEditableProps,
-			domAttrs: {},
-			customStorage: null,
-		},
-	});
+  const nestedEditableFailed = validateNestedEditableState({
+    componentDraft,
+    nestedEditableDraft,
+    expectedState: {
+      editorRole: nestedEditableRole,
+      ...mediaCaptionDefinition.nestedEditableProps,
+      domAttrs: {},
+      customStorage: null,
+    },
+  });
 
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
+  if (nestedEditableFailed) {
+    return nestedEditableFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
  * Validates the figure and its children: exactly one media element, and at most one figcaption, above or below it.
  */
 const validateFigure = ({
-	componentDraft,
-	htmlLayoutDraft,
-	mediaLocalName,
-	mediaAttrsShape,
-	mediaAttrValidators,
+  componentDraft,
+  htmlLayoutDraft,
+  mediaLocalName,
+  mediaAttrsShape,
+  mediaAttrValidators,
 }: ValidateFigureParams): ValidateFigureResult => {
-	const stateFailed = validateHTMLLayoutState({
-		componentDraft,
-		htmlLayoutDraft,
-		expectedState: {
-			editorRole: htmlLayoutRole,
-			localName: "figure",
-			customStorage: null,
-		},
-	});
+  const stateFailed = validateHTMLLayoutState({
+    componentDraft,
+    htmlLayoutDraft,
+    expectedState: {
+      editorRole: htmlLayoutRole,
+      localName: "figure",
+      customStorage: null,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: htmlLayoutDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: htmlLayoutDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = htmlLayoutDraft;
+  const { childNodes } = htmlLayoutDraft;
 
-	const mediaDraft = findHTMLLayoutDraft({
-		childNodes,
-		localName: mediaLocalName,
-	});
+  const mediaDraft = findHTMLLayoutDraft({
+    childNodes,
+    localName: mediaLocalName,
+  });
 
-	const figcaptionDraft = findHTMLLayoutDraft({
-		childNodes,
-		localName: "figcaption",
-	});
+  const figcaptionDraft = findHTMLLayoutDraft({
+    childNodes,
+    localName: "figcaption",
+  });
 
-	// The media, and the figcaption if there's one: any other child (e.g. a second media) changes the count
-	const expectedLength = [mediaDraft, figcaptionDraft].filter(Boolean).length;
+  // The media, and the figcaption if there's one: any other child (e.g. a second media) changes the count
+  const expectedLength = [mediaDraft, figcaptionDraft].filter(Boolean).length;
 
-	if (!mediaDraft || childNodes.length !== expectedLength) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: htmlLayoutDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${mediaLocalName}, and at most one figcaption.`,
-		};
-	}
+  if (!mediaDraft || childNodes.length !== expectedLength) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: htmlLayoutDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: htmlLayoutDraft })}: must contain exactly one ${mediaLocalName}, and at most one figcaption.`,
+    };
+  }
 
-	const mediaFailed = validateMedia({
-		componentDraft,
-		htmlLayoutDraft: mediaDraft,
-		mediaLocalName,
-		mediaAttrsShape,
-		mediaAttrValidators,
-	});
+  const mediaFailed = validateMedia({
+    componentDraft,
+    htmlLayoutDraft: mediaDraft,
+    mediaLocalName,
+    mediaAttrsShape,
+    mediaAttrValidators,
+  });
 
-	if (mediaFailed) {
-		return mediaFailed;
-	}
+  if (mediaFailed) {
+    return mediaFailed;
+  }
 
-	if (figcaptionDraft) {
-		const figcaptionFailed = validateFigcaption({
-			componentDraft,
-			htmlLayoutDraft: figcaptionDraft,
-		});
+  if (figcaptionDraft) {
+    const figcaptionFailed = validateFigcaption({
+      componentDraft,
+      htmlLayoutDraft: figcaptionDraft,
+    });
 
-		if (figcaptionFailed) {
-			return figcaptionFailed;
-		}
-	}
+    if (figcaptionFailed) {
+      return figcaptionFailed;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -235,86 +235,86 @@ const validateFigure = ({
  * and the figcaption's by an empty shape. The NestedEditable's content is left to the engine's validation.
  */
 export const validateMediaComponent = ({
-	componentDraft,
-	name,
-	customStorage,
-	mediaLocalName,
-	lineAttrsShape,
-	lineAttrValidators,
-	blockAttrsShape,
-	blockAttrValidators,
-	mediaAttrsShape,
-	mediaAttrValidators,
+  componentDraft,
+  name,
+  customStorage,
+  mediaLocalName,
+  lineAttrsShape,
+  lineAttrValidators,
+  blockAttrsShape,
+  blockAttrValidators,
+  mediaAttrsShape,
+  mediaAttrValidators,
 }: ValidateMediaComponentParams): ValidateMediaComponentResult => {
-	if (componentDraft.editorRole !== blockComponentRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
-		};
-	}
+  if (componentDraft.editorRole !== blockComponentRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
+    };
+  }
 
-	const stateFailed = validateBlockComponentState({
-		blockComponentDraft: componentDraft,
-		expectedState: {
-			editorRole: blockComponentRole,
-			name,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectBeforeRemove: true,
-			shouldSelectOnNavigation: true,
-			customStorage,
-		},
-	});
+  const stateFailed = validateBlockComponentState({
+    blockComponentDraft: componentDraft,
+    expectedState: {
+      editorRole: blockComponentRole,
+      name,
+      content: { type: "custom" },
+      editState: "false",
+      shouldSelectBeforeRemove: true,
+      shouldSelectOnNavigation: true,
+      customStorage,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const lineFailed = validateBlockComponentLine({
-		blockComponentDraft: componentDraft,
-		lineAttrsShape,
-		lineAttrValidators,
-	});
+  const lineFailed = validateBlockComponentLine({
+    blockComponentDraft: componentDraft,
+    lineAttrsShape,
+    lineAttrValidators,
+  });
 
-	if (lineFailed) {
-		return lineFailed;
-	}
+  if (lineFailed) {
+    return lineFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: componentDraft,
-		elementAttrsShape: blockAttrsShape,
-		elementAttrValidators: blockAttrValidators,
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: componentDraft,
+    elementAttrsShape: blockAttrsShape,
+    elementAttrValidators: blockAttrValidators,
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = componentDraft;
+  const { childNodes } = componentDraft;
 
-	const htmlLayoutDraft = childNodes.at(0);
+  const htmlLayoutDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || htmlLayoutDraft?.editorRole !== htmlLayoutRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${htmlLayoutRole}.`,
+    };
+  }
 
-	const figureFailed = validateFigure({
-		componentDraft,
-		htmlLayoutDraft,
-		mediaLocalName,
-		mediaAttrsShape,
-		mediaAttrValidators,
-	});
+  const figureFailed = validateFigure({
+    componentDraft,
+    htmlLayoutDraft,
+    mediaLocalName,
+    mediaAttrsShape,
+    mediaAttrValidators,
+  });
 
-	if (figureFailed) {
-		return figureFailed;
-	}
+  if (figureFailed) {
+    return figureFailed;
+  }
 
-	return null;
+  return null;
 };

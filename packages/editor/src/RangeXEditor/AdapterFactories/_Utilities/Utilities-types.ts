@@ -25,30 +25,30 @@ import type { UndoRedo } from "../UndoRedo";
 import type { Video } from "../Video";
 
 export type AdapterFactory =
-	| typeof AccordionItem
-	| typeof Audio
-	| typeof BlockQuote
-	| typeof CodeBlock
-	| typeof CommandMenu
-	| typeof Embed
-	| typeof Emoji
-	| typeof SourcePlaceholder
-	| typeof FindReplace
-	| typeof Formatting
-	| typeof Image
-	| typeof LineHandler
-	| typeof Link
-	| typeof List
-	| typeof Markdown
-	| typeof Mention
-	| typeof ReadOnly
-	| typeof Separator
-	| typeof Shortcuts
-	| typeof Symbols
-	| typeof Table
-	| typeof TemplateVariable
-	| typeof TodoList
-	| typeof UndoRedo
-	| typeof Video;
+  | typeof AccordionItem
+  | typeof Audio
+  | typeof BlockQuote
+  | typeof CodeBlock
+  | typeof CommandMenu
+  | typeof Embed
+  | typeof Emoji
+  | typeof SourcePlaceholder
+  | typeof FindReplace
+  | typeof Formatting
+  | typeof Image
+  | typeof LineHandler
+  | typeof Link
+  | typeof List
+  | typeof Markdown
+  | typeof Mention
+  | typeof ReadOnly
+  | typeof Separator
+  | typeof Shortcuts
+  | typeof Symbols
+  | typeof Table
+  | typeof TemplateVariable
+  | typeof TodoList
+  | typeof UndoRedo
+  | typeof Video;
 
 export type AdapterFactoryValue = ReturnType<AdapterFactory>;

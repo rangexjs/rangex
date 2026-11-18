@@ -1,16 +1,16 @@
 import {
-	createContentLine,
-	createFormattableTexts,
-	createInlineComponent,
-	createNestedEditable,
+  createContentLine,
+  createFormattableTexts,
+  createInlineComponent,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { componentsName, templateVariableDefinition } from "#constants";
 import { createTemplateVariableStorage } from "#storage";
 
 import type {
-	CreateTemplateVariableParams,
-	CreateTemplateVariableResult,
+  CreateTemplateVariableParams,
+  CreateTemplateVariableResult,
 } from "./CreateTemplateVariable-types";
 
 /*
@@ -18,26 +18,26 @@ import type {
  * components, so it only holds the display text's FormattableTexts.
  */
 export const createTemplateVariable = ({
-	fieldName,
-	displayText,
+  fieldName,
+  displayText,
 }: CreateTemplateVariableParams): CreateTemplateVariableResult => {
-	return createInlineComponent({
-		name: componentsName.templateVariable,
-		content: { type: "custom" },
-		editState: "false",
-		shouldSelectOnNavigation: true,
-		customStorage: createTemplateVariableStorage({ fieldName }),
-		shouldSelectBeforeRemove: false,
-		childNodes: [
-			createNestedEditable({
-				...templateVariableDefinition.nestedEditableProps,
-				childNodes: [
-					createContentLine({
-						localName: "span",
-						childNodes: [...createFormattableTexts({ data: displayText })],
-					}),
-				],
-			}),
-		],
-	});
+  return createInlineComponent({
+    name: componentsName.templateVariable,
+    content: { type: "custom" },
+    editState: "false",
+    shouldSelectOnNavigation: true,
+    customStorage: createTemplateVariableStorage({ fieldName }),
+    shouldSelectBeforeRemove: false,
+    childNodes: [
+      createNestedEditable({
+        ...templateVariableDefinition.nestedEditableProps,
+        childNodes: [
+          createContentLine({
+            localName: "span",
+            childNodes: [...createFormattableTexts({ data: displayText })],
+          }),
+        ],
+      }),
+    ],
+  });
 };

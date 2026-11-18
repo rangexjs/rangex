@@ -1,10 +1,10 @@
 import {
-	contentLineRole,
-	contentLineRoleSelector,
-	createContentLine,
-	createFormattableTexts,
-	inlineComponentRole,
-	nestedEditableRoleSelector,
+  contentLineRole,
+  contentLineRoleSelector,
+  createContentLine,
+  createFormattableTexts,
+  inlineComponentRole,
+  nestedEditableRoleSelector,
 } from "@rangex/core";
 
 import { componentsName, createComponentSelector } from "#constants";
@@ -20,52 +20,52 @@ const templateVariableSelector = createComponentSelector(componentsName.template
  * placed (e.g. it isn't declared) keep their current text.
  */
 export const updateAllTemplateVariableNodes = ({
-	rootEditable,
-	storage,
-	fieldsConfig,
+  rootEditable,
+  storage,
+  fieldsConfig,
 }: UpdateAllTemplateVariableNodesParams) => {
-	const nodes = rootEditable.$$querySelectorAll(templateVariableSelector);
+  const nodes = rootEditable.$$querySelectorAll(templateVariableSelector);
 
-	for (const node of nodes) {
-		if (node.$$editorRole !== inlineComponentRole) {
-			throw new Error("Expected an InlineComponent node.");
-		}
+  for (const node of nodes) {
+    if (node.$$editorRole !== inlineComponentRole) {
+      throw new Error("Expected an InlineComponent node.");
+    }
 
-		const nodeStorage = node.$$customStorage;
+    const nodeStorage = node.$$customStorage;
 
-		if (!validateTemplateVariableStorage(nodeStorage)) {
-			continue;
-		}
+    if (!validateTemplateVariableStorage(nodeStorage)) {
+      continue;
+    }
 
-		const { fieldName } = nodeStorage;
+    const { fieldName } = nodeStorage;
 
-		const placementMismatch = validateTemplateVariablePlacement({
-			fieldName,
-			fieldsConfig,
-			storage,
-		});
+    const placementMismatch = validateTemplateVariablePlacement({
+      fieldName,
+      fieldsConfig,
+      storage,
+    });
 
-		if (placementMismatch) {
-			continue;
-		}
+    if (placementMismatch) {
+      continue;
+    }
 
-		const nestedEditable = node.$$querySelector(nestedEditableRoleSelector);
+    const nestedEditable = node.$$querySelector(nestedEditableRoleSelector);
 
-		if (!nestedEditable) {
-			throw new Error("Expected a NestedEditable inside the template variable node.");
-		}
+    if (!nestedEditable) {
+      throw new Error("Expected a NestedEditable inside the template variable node.");
+    }
 
-		const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
+    const contentLine = nestedEditable.$$querySelector(contentLineRoleSelector);
 
-		if (contentLine?.$$editorRole !== contentLineRole) {
-			throw new Error("Expected a ContentLine inside the NestedEditable.");
-		}
+    if (contentLine?.$$editorRole !== contentLineRole) {
+      throw new Error("Expected a ContentLine inside the NestedEditable.");
+    }
 
-		contentLine.$$replaceWith(
-			createContentLine({
-				localName: "span",
-				childNodes: [...createFormattableTexts({ data: storage[fieldName] })],
-			}),
-		);
-	}
+    contentLine.$$replaceWith(
+      createContentLine({
+        localName: "span",
+        childNodes: [...createFormattableTexts({ data: storage[fieldName] })],
+      }),
+    );
+  }
 };

@@ -6,9 +6,9 @@ import { sourcePlaceholderStoragePattern } from "#storage";
 import { formatNodePath, resolveDraftDOMAttrs } from "../../_Utilities";
 import { validateBlockComponentLine, validateBlockComponentState } from "../_Utilities";
 import type {
-	CreateSourcePlaceholderValidatorResult,
-	ValidateSourcePlaceholderParams,
-	ValidateSourcePlaceholderResult,
+  CreateSourcePlaceholderValidatorResult,
+  ValidateSourcePlaceholderParams,
+  ValidateSourcePlaceholderResult,
 } from "./ValidateSourcePlaceholder-types";
 
 /*
@@ -17,90 +17,90 @@ import type {
  * attributes, so every attribute of these nodes is dropped.
  */
 const validateSourcePlaceholder = ({
-	componentDraft,
+  componentDraft,
 }: ValidateSourcePlaceholderParams): ValidateSourcePlaceholderResult => {
-	if (componentDraft.editorRole !== blockComponentRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
-		};
-	}
+  if (componentDraft.editorRole !== blockComponentRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be a ${blockComponentRole}.`,
+    };
+  }
 
-	const stateFailed = validateBlockComponentState({
-		blockComponentDraft: componentDraft,
-		expectedState: {
-			editorRole: blockComponentRole,
-			name: componentsName.sourcePlaceholder,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectBeforeRemove: true,
-			shouldSelectOnNavigation: true,
-			customStorage: sourcePlaceholderStoragePattern,
-		},
-	});
+  const stateFailed = validateBlockComponentState({
+    blockComponentDraft: componentDraft,
+    expectedState: {
+      editorRole: blockComponentRole,
+      name: componentsName.sourcePlaceholder,
+      content: { type: "custom" },
+      editState: "false",
+      shouldSelectBeforeRemove: true,
+      shouldSelectOnNavigation: true,
+      customStorage: sourcePlaceholderStoragePattern,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const lineFailed = validateBlockComponentLine({
-		blockComponentDraft: componentDraft,
-		lineAttrsShape: {},
-		lineAttrValidators: {},
-	});
+  const lineFailed = validateBlockComponentLine({
+    blockComponentDraft: componentDraft,
+    lineAttrsShape: {},
+    lineAttrValidators: {},
+  });
 
-	if (lineFailed) {
-		return lineFailed;
-	}
+  if (lineFailed) {
+    return lineFailed;
+  }
 
-	const domAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: componentDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const domAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: componentDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (domAttrsFailed) {
-		return domAttrsFailed;
-	}
+  if (domAttrsFailed) {
+    return domAttrsFailed;
+  }
 
-	const { childNodes } = componentDraft;
+  const { childNodes } = componentDraft;
 
-	const detachedContextDraft = childNodes.at(0);
+  const detachedContextDraft = childNodes.at(0);
 
-	if (
-		childNodes.length !== 1 ||
-		detachedContextDraft?.editorRole !== detachedContextRole ||
-		detachedContextDraft.localName !== "slot"
-	) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one slot ${detachedContextRole}.`,
-		};
-	}
+  if (
+    childNodes.length !== 1 ||
+    detachedContextDraft?.editorRole !== detachedContextRole ||
+    detachedContextDraft.localName !== "slot"
+  ) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one slot ${detachedContextRole}.`,
+    };
+  }
 
-	const detachedContextAttrsFailed = resolveDraftDOMAttrs({
-		rootDraft: componentDraft,
-		elementDraft: detachedContextDraft,
-		elementAttrsShape: {},
-		elementAttrValidators: {},
-	});
+  const detachedContextAttrsFailed = resolveDraftDOMAttrs({
+    rootDraft: componentDraft,
+    elementDraft: detachedContextDraft,
+    elementAttrsShape: {},
+    elementAttrValidators: {},
+  });
 
-	if (detachedContextAttrsFailed) {
-		return detachedContextAttrsFailed;
-	}
+  if (detachedContextAttrsFailed) {
+    return detachedContextAttrsFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
  * Creates the SourcePlaceholder's ComponentValidator.
  */
 export const createSourcePlaceholderValidator = (): CreateSourcePlaceholderValidatorResult => {
-	return {
-		name: componentsName.sourcePlaceholder,
-		validate: ({ componentDraft }) => validateSourcePlaceholder({ componentDraft }),
-	};
+  return {
+    name: componentsName.sourcePlaceholder,
+    validate: ({ componentDraft }) => validateSourcePlaceholder({ componentDraft }),
+  };
 };

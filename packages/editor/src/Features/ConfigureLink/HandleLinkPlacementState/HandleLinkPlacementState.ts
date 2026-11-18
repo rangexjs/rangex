@@ -7,16 +7,16 @@ import type { HandleLinkPlacementStateParams } from "./HandleLinkPlacementState-
  * content. Returns a cleanup function.
  */
 export const handleLinkPlacementState = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleLinkPlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const mode = getLinkPlacementMode({ editorAPI });
-			const canInsert = mode !== null;
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const mode = getLinkPlacementMode({ editorAPI });
+      const canInsert = mode !== null;
 
-			configPort.updateState({ canInsert });
-		},
-	});
+      configPort.updateState({ canInsert });
+    },
+  });
 };

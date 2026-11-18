@@ -1,9 +1,9 @@
 import { isDeepEqual } from "#utilities";
 
 export interface StateEmitter<State> {
-	get(): State;
-	set(state: State): void;
-	subscribe(callback: (state: State) => void): () => void;
+  get(): State;
+  set(state: State): void;
+  subscribe(callback: (state: State) => void): () => void;
 }
 
 /*
@@ -12,30 +12,30 @@ export interface StateEmitter<State> {
  * does not replay the current state.
  */
 export const createStateEmitter = <State>(initialState: State): StateEmitter<State> => {
-	const listeners = new Set<(state: State) => void>();
+  const listeners = new Set<(state: State) => void>();
 
-	let state = initialState;
+  let state = initialState;
 
-	return {
-		get() {
-			return state;
-		},
+  return {
+    get() {
+      return state;
+    },
 
-		set(nextState) {
-			if (isDeepEqual(state, nextState)) {
-				return;
-			}
+    set(nextState) {
+      if (isDeepEqual(state, nextState)) {
+        return;
+      }
 
-			state = nextState;
+      state = nextState;
 
-			for (const listener of listeners) {
-				listener(state);
-			}
-		},
+      for (const listener of listeners) {
+        listener(state);
+      }
+    },
 
-		subscribe(callback) {
-			listeners.add(callback);
-			return () => listeners.delete(callback);
-		},
-	};
+    subscribe(callback) {
+      listeners.add(callback);
+      return () => listeners.delete(callback);
+    },
+  };
 };

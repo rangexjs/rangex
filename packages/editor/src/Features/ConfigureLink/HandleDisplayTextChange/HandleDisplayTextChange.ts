@@ -1,13 +1,13 @@
 import {
-	contentLineRole,
-	contentLineRoleSelector,
-	createContentLine,
-	createFormattableTexts,
+  contentLineRole,
+  contentLineRoleSelector,
+  createContentLine,
+  createFormattableTexts,
 } from "@rangex/core";
 
 import type {
-	HandleDisplayTextChangeParams,
-	OnChangeDisplayTextCallback,
+  HandleDisplayTextChangeParams,
+  OnChangeDisplayTextCallback,
 } from "./HandleDisplayTextChange-types";
 
 /*
@@ -16,49 +16,49 @@ import type {
  * function.
  */
 export const handleDisplayTextChange = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleDisplayTextChangeParams) => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const callback: OnChangeDisplayTextCallback = ({ displayText }) => {
-		const { currentComponent } = configPort;
+  const callback: OnChangeDisplayTextCallback = ({ displayText }) => {
+    const { currentComponent } = configPort;
 
-		if (!currentComponent) {
-			console.warn("handleDisplayTextChange: no link is currently open.");
-			return;
-		}
+    if (!currentComponent) {
+      console.warn("handleDisplayTextChange: no link is currently open.");
+      return;
+    }
 
-		const contentLine = currentComponent.$$querySelector(contentLineRoleSelector);
+    const contentLine = currentComponent.$$querySelector(contentLineRoleSelector);
 
-		if (contentLine?.$$editorRole !== contentLineRole) {
-			throw new Error("Link is missing its ContentLine.");
-		}
+    if (contentLine?.$$editorRole !== contentLineRole) {
+      throw new Error("Link is missing its ContentLine.");
+    }
 
-		const createdContentLine = createContentLine({
-			localName: "span",
-			childNodes: [...createFormattableTexts({ data: displayText })],
-		});
+    const createdContentLine = createContentLine({
+      localName: "span",
+      childNodes: [...createFormattableTexts({ data: displayText })],
+    });
 
-		contentLine.$$replaceWith(createdContentLine);
+    contentLine.$$replaceWith(createdContentLine);
 
-		selection.setBoundaryPoints({
-			fromNode: createdContentLine,
-			fromOffset: createdContentLine.$$childNodes.length,
-			toNode: createdContentLine,
-			toOffset: createdContentLine.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: createdContentLine,
+      fromOffset: createdContentLine.$$childNodes.length,
+      toNode: createdContentLine,
+      toOffset: createdContentLine.$$childNodes.length,
+    });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	};
+    editorAPI.focus();
+  };
 
-	const unsubscribe = configPort.onChangeDisplayText(callback);
+  const unsubscribe = configPort.onChangeDisplayText(callback);
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

@@ -3,194 +3,194 @@ import { createStructuredStyleValue } from "@rangex/core";
 import { assertNever } from "#utilities";
 
 import type {
-	CreateBackgroundColorStructuredStyleParams,
-	CreateBackgroundColorStructuredStyleResult,
-	CreateColorStructuredStyleParams,
-	CreateColorStructuredStyleResult,
-	CreateFontFamilyStructuredStyleParams,
-	CreateFontFamilyStructuredStyleResult,
-	CreateFontSizeStructuredStyleParams,
-	CreateFontSizeStructuredStyleResult,
-	CreateLetterSpacingStructuredStyleParams,
-	CreateLetterSpacingStructuredStyleResult,
-	CreateLineHeightStructuredStyleParams,
-	CreateLineHeightStructuredStyleResult,
-	CreatePaddingBlockStructuredStyleParams,
-	CreatePaddingBlockStructuredStyleResult,
-	CreatePaddingInlineStructuredStyleParams,
-	CreatePaddingInlineStructuredStyleResult,
-	CreateTextAlignStructuredStyleParams,
-	CreateTextAlignStructuredStyleResult,
-	CreateTextIndentStructuredStyleParams,
-	CreateTextIndentStructuredStyleResult,
-	ResolveLightDarkColorParams,
-	ResolveLightDarkColorResult,
-	ResolveStructuredColorParams,
-	ResolveStructuredColorResult,
+  CreateBackgroundColorStructuredStyleParams,
+  CreateBackgroundColorStructuredStyleResult,
+  CreateColorStructuredStyleParams,
+  CreateColorStructuredStyleResult,
+  CreateFontFamilyStructuredStyleParams,
+  CreateFontFamilyStructuredStyleResult,
+  CreateFontSizeStructuredStyleParams,
+  CreateFontSizeStructuredStyleResult,
+  CreateLetterSpacingStructuredStyleParams,
+  CreateLetterSpacingStructuredStyleResult,
+  CreateLineHeightStructuredStyleParams,
+  CreateLineHeightStructuredStyleResult,
+  CreatePaddingBlockStructuredStyleParams,
+  CreatePaddingBlockStructuredStyleResult,
+  CreatePaddingInlineStructuredStyleParams,
+  CreatePaddingInlineStructuredStyleResult,
+  CreateTextAlignStructuredStyleParams,
+  CreateTextAlignStructuredStyleResult,
+  CreateTextIndentStructuredStyleParams,
+  CreateTextIndentStructuredStyleResult,
+  ResolveLightDarkColorParams,
+  ResolveLightDarkColorResult,
+  ResolveStructuredColorParams,
+  ResolveStructuredColorResult,
 } from "./CreateStructuredStyle-types";
 
 /*
  * A color's CSS value
  */
 const resolveStructuredColor = ({
-	color,
+  color,
 }: ResolveStructuredColorParams): ResolveStructuredColorResult => {
-	if (color.type === "solid") {
-		return color.value;
-	}
+  if (color.type === "solid") {
+    return color.value;
+  }
 
-	return assertNever(color.type);
+  return assertNever(color.type);
 };
 
 /*
  * A light-dark() of the color's light and dark values
  */
 const resolveLightDarkColor = ({
-	lightDarkColor,
+  lightDarkColor,
 }: ResolveLightDarkColorParams): ResolveLightDarkColorResult => {
-	const lightValue = resolveStructuredColor({ color: lightDarkColor.light });
-	const darkValue = resolveStructuredColor({ color: lightDarkColor.dark });
+  const lightValue = resolveStructuredColor({ color: lightDarkColor.light });
+  const darkValue = resolveStructuredColor({ color: lightDarkColor.dark });
 
-	return `light-dark(${lightValue},${darkValue})`;
+  return `light-dark(${lightValue},${darkValue})`;
 };
 
 export const createBackgroundColorStructuredStyle = ({
-	backgroundColor,
+  backgroundColor,
 }: CreateBackgroundColorStructuredStyleParams): CreateBackgroundColorStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "background-color",
-		values: {
-			backgroundColor: {
-				light: backgroundColor.light,
-				dark: backgroundColor.dark,
-			},
-		},
-		resolve: ({ backgroundColor }) => resolveLightDarkColor({ lightDarkColor: backgroundColor }),
-	});
+  return createStructuredStyleValue({
+    type: "background-color",
+    values: {
+      backgroundColor: {
+        light: backgroundColor.light,
+        dark: backgroundColor.dark,
+      },
+    },
+    resolve: ({ backgroundColor }) => resolveLightDarkColor({ lightDarkColor: backgroundColor }),
+  });
 };
 
 export const createColorStructuredStyle = ({
-	color,
+  color,
 }: CreateColorStructuredStyleParams): CreateColorStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "color",
-		values: { color: { light: color.light, dark: color.dark } },
-		resolve: ({ color }) => resolveLightDarkColor({ lightDarkColor: color }),
-	});
+  return createStructuredStyleValue({
+    type: "color",
+    values: { color: { light: color.light, dark: color.dark } },
+    resolve: ({ color }) => resolveLightDarkColor({ lightDarkColor: color }),
+  });
 };
 
 export const createFontFamilyStructuredStyle = ({
-	fontFamily,
+  fontFamily,
 }: CreateFontFamilyStructuredStyleParams): CreateFontFamilyStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "font-family",
-		values: { fontFamily },
-		resolve: ({ fontFamily }) => fontFamily,
-	});
+  return createStructuredStyleValue({
+    type: "font-family",
+    values: { fontFamily },
+    resolve: ({ fontFamily }) => fontFamily,
+  });
 };
 
 export const createFontSizeStructuredStyle = ({
-	fontSize,
+  fontSize,
 }: CreateFontSizeStructuredStyleParams): CreateFontSizeStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "font-size",
-		values: { fontSize },
-		resolve: ({ fontSize }) => {
-			if (fontSize.type === "px") {
-				return `${fontSize.value}px`;
-			}
+  return createStructuredStyleValue({
+    type: "font-size",
+    values: { fontSize },
+    resolve: ({ fontSize }) => {
+      if (fontSize.type === "px") {
+        return `${fontSize.value}px`;
+      }
 
-			return assertNever(fontSize.type);
-		},
-	});
+      return assertNever(fontSize.type);
+    },
+  });
 };
 
 export const createLetterSpacingStructuredStyle = ({
-	letterSpacing,
+  letterSpacing,
 }: CreateLetterSpacingStructuredStyleParams): CreateLetterSpacingStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "letter-spacing",
-		values: { letterSpacing },
-		resolve: ({ letterSpacing }) => {
-			if (letterSpacing.type === "px") {
-				return `${letterSpacing.value}px`;
-			}
+  return createStructuredStyleValue({
+    type: "letter-spacing",
+    values: { letterSpacing },
+    resolve: ({ letterSpacing }) => {
+      if (letterSpacing.type === "px") {
+        return `${letterSpacing.value}px`;
+      }
 
-			return assertNever(letterSpacing.type);
-		},
-	});
+      return assertNever(letterSpacing.type);
+    },
+  });
 };
 
 export const createLineHeightStructuredStyle = ({
-	lineHeight,
+  lineHeight,
 }: CreateLineHeightStructuredStyleParams): CreateLineHeightStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "line-height",
-		values: { lineHeight },
-		resolve: ({ lineHeight }) => {
-			if (lineHeight.type === "number") {
-				return `${lineHeight.value}`;
-			}
+  return createStructuredStyleValue({
+    type: "line-height",
+    values: { lineHeight },
+    resolve: ({ lineHeight }) => {
+      if (lineHeight.type === "number") {
+        return `${lineHeight.value}`;
+      }
 
-			return assertNever(lineHeight.type);
-		},
-	});
+      return assertNever(lineHeight.type);
+    },
+  });
 };
 
 export const createPaddingBlockStructuredStyle = ({
-	paddingBlock,
+  paddingBlock,
 }: CreatePaddingBlockStructuredStyleParams): CreatePaddingBlockStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "padding-block",
-		values: { paddingBlock },
-		resolve: ({ paddingBlock }) => {
-			if (paddingBlock.type === "px") {
-				return `${paddingBlock.value}px`;
-			}
+  return createStructuredStyleValue({
+    type: "padding-block",
+    values: { paddingBlock },
+    resolve: ({ paddingBlock }) => {
+      if (paddingBlock.type === "px") {
+        return `${paddingBlock.value}px`;
+      }
 
-			return assertNever(paddingBlock.type);
-		},
-	});
+      return assertNever(paddingBlock.type);
+    },
+  });
 };
 
 export const createPaddingInlineStructuredStyle = ({
-	paddingInline,
+  paddingInline,
 }: CreatePaddingInlineStructuredStyleParams): CreatePaddingInlineStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "padding-inline",
-		values: { paddingInline },
-		resolve: ({ paddingInline }) => {
-			if (paddingInline.type === "px") {
-				return `${paddingInline.value}px`;
-			}
+  return createStructuredStyleValue({
+    type: "padding-inline",
+    values: { paddingInline },
+    resolve: ({ paddingInline }) => {
+      if (paddingInline.type === "px") {
+        return `${paddingInline.value}px`;
+      }
 
-			return assertNever(paddingInline.type);
-		},
-	});
+      return assertNever(paddingInline.type);
+    },
+  });
 };
 
 export const createTextAlignStructuredStyle = ({
-	textAlign,
+  textAlign,
 }: CreateTextAlignStructuredStyleParams): CreateTextAlignStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "text-align",
-		values: { textAlign },
-		resolve: ({ textAlign }) => textAlign,
-	});
+  return createStructuredStyleValue({
+    type: "text-align",
+    values: { textAlign },
+    resolve: ({ textAlign }) => textAlign,
+  });
 };
 
 export const createTextIndentStructuredStyle = ({
-	textIndent,
+  textIndent,
 }: CreateTextIndentStructuredStyleParams): CreateTextIndentStructuredStyleResult => {
-	return createStructuredStyleValue({
-		type: "text-indent",
-		values: { textIndent },
-		resolve: ({ textIndent }) => {
-			if (textIndent.type === "px") {
-				return `${textIndent.value}px`;
-			}
+  return createStructuredStyleValue({
+    type: "text-indent",
+    values: { textIndent },
+    resolve: ({ textIndent }) => {
+      if (textIndent.type === "px") {
+        return `${textIndent.value}px`;
+      }
 
-			return assertNever(textIndent.type);
-		},
-	});
+      return assertNever(textIndent.type);
+    },
+  });
 };

@@ -6,38 +6,38 @@ import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
  * source, ignoring resolutions for other media types.
  */
 export const handleEmbedInsertion = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleEmbedInsertionParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-	const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve((params) => {
-		if (params.type !== "embed") {
-			return;
-		}
+  const unsubscribe = configPort.onMediaResolve((params) => {
+    if (params.type !== "embed") {
+      return;
+    }
 
-		const embed = createEmbed({ attrs: params.attrs });
+    const embed = createEmbed({ attrs: params.attrs });
 
-		blockComponentPlacement.insertBySelection({
-			lines: [embed],
-			shouldReplaceContentLineIfEmpty: true,
-		});
+    blockComponentPlacement.insertBySelection({
+      lines: [embed],
+      shouldReplaceContentLineIfEmpty: true,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		selection.setBoundaryPoints({
-			fromNode: embed,
-			fromOffset: embed.$$childNodes.length,
-			toNode: embed,
-			toOffset: embed.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: embed,
+      fromOffset: embed.$$childNodes.length,
+      toNode: embed,
+      toOffset: embed.$$childNodes.length,
+    });
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

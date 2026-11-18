@@ -1,58 +1,58 @@
 {
-	"name": "@rangex/syntax-highlighter-shiki",
-	"version": "1.0.0-beta.1",
-	"description": "Shiki-based syntax highlighting for RangeX code blocks, in the editor (Web Worker) and the HTML view.",
-	"keywords": [
-		"rangex",
-		"rich-text-editor",
-		"editor",
-		"wysiwyg",
-		"contenteditable",
-		"shiki",
-		"syntax-highlighting",
-		"code-block"
-	],
-	"author": "Mozes Stumpf",
-	"repository": {
-		"type": "git",
-		"url": "git@github.com:rangexjs/rangex.git",
-		"directory": "packages/syntax-highlighter-shiki"
-	},
-	"homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
-	"bugs": "https://github.com/rangexjs/rangex/issues",
-	"license": "MIT",
-	"type": "module",
-	"sideEffects": false,
-	"browserslist": [
-		"chrome >= 159",
-		"firefox >= 159",
-		"safari >= 27.3"
-	],
-	"exports": {
-		".": {
-			"@rangex/source": "./src/index.ts",
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		}
-	},
-	"files": [
-		"dist"
-	],
-	"publishConfig": {
-		"access": "public"
-	},
-	"scripts": {
-		"dev": "vp dev",
-		"build": "vp build && tsc -p ./tsconfig.build.json",
-		"prepublishOnly": "npm run build",
-		"fix": "vp check --fix && tsc -p ./tsconfig.json"
-	},
-	"devDependencies": {
-		"typescript": "^7.0.2",
-		"vite-plus": "1.6.0"
-	},
-	"peerDependencies": {
-		"@rangex/editor": "1.0.0-beta.1",
-		"shiki": "^4.3.1"
-	}
+  "name": "@rangex/syntax-highlighter-shiki",
+  "version": "1.0.0-beta.1",
+  "description": "Shiki-based syntax highlighting for RangeX code blocks, in the editor (Web Worker) and the HTML view.",
+  "keywords": [
+    "rangex",
+    "rich-text-editor",
+    "editor",
+    "wysiwyg",
+    "contenteditable",
+    "shiki",
+    "syntax-highlighting",
+    "code-block"
+  ],
+  "author": "Mozes Stumpf",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rangexjs/rangex.git",
+    "directory": "packages/syntax-highlighter-shiki"
+  },
+  "homepage": "https://github.com/rangexjs/rangex/tree/main/packages/syntax-highlighter-shiki#readme",
+  "bugs": "https://github.com/rangexjs/rangex/issues",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "browserslist": [
+    "chrome >= 159",
+    "firefox >= 159",
+    "safari >= 27.3"
+  ],
+  "exports": {
+    ".": {
+      "@rangex/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && tsc -p ./tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "fix": "vp check --fix && tsc -p ./tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite-plus": "1.6.0"
+  },
+  "peerDependencies": {
+    "@rangex/editor": "1.0.0-beta.1",
+    "shiki": "^4.3.1"
+  }
 }

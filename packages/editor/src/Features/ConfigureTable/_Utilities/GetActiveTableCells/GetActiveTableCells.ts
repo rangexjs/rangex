@@ -1,7 +1,7 @@
 import { getCommonTableCellFromSelection } from "../GetCommonTable";
 import type {
-	GetActiveTableCellsParams,
-	GetActiveTableCellsResult,
+  GetActiveTableCellsParams,
+  GetActiveTableCellsResult,
 } from "./GetActiveTableCells-types";
 
 /*
@@ -9,18 +9,18 @@ import type {
  * an active TableSelection, otherwise the cell holding the EditorSelection, if any.
  */
 export const getActiveTableCells = ({
-	editorAPI,
-	table,
+  editorAPI,
+  table,
 }: GetActiveTableCellsParams): GetActiveTableCellsResult => {
-	if (table.$$isTableSelectionActive) {
-		return table.$$tableCells.filter((tableCell) => tableCell.$$isInMultiSelection);
-	}
+  if (table.$$isTableSelectionActive) {
+    return table.$$tableCells.filter((tableCell) => tableCell.$$isInMultiSelection);
+  }
 
-	const tableCell = getCommonTableCellFromSelection({ editorAPI });
+  const tableCell = getCommonTableCellFromSelection({ editorAPI });
 
-	if (tableCell) {
-		return [tableCell];
-	}
+  if (tableCell) {
+    return [tableCell];
+  }
 
-	return [];
+  return [];
 };

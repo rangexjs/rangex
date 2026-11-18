@@ -8,21 +8,21 @@ export type CheckboxErrorState = InputFieldErrorState;
 export type CheckboxState = InputFieldState;
 
 export interface CheckboxErrorRestriction {
-	required?: { value: boolean; message?: JSX.Element };
+  required?: { value: boolean; message?: JSX.Element };
 }
 
 export interface CheckboxControls {
-	id: string;
-	defaultChecked: boolean;
-	setCheckbox: (checkbox: HTMLInputElement) => void;
+  id: string;
+  defaultChecked: boolean;
+  setCheckbox: (checkbox: HTMLInputElement) => void;
 }
 
 export interface CheckboxHandle {
-	readonly id: string;
-	checked: Accessor<boolean>;
-	setChecked: (checked: boolean) => void;
-	state: Accessor<CheckboxState>;
-	validate: () => CheckboxState;
-	reset: (checked?: boolean) => void;
-	checkValidity: () => CheckboxState;
+  readonly id: string;
+  checked: Accessor<boolean>;
+  setChecked: (checked: boolean) => void;
+  state: Accessor<CheckboxState>;
+  validate: () => CheckboxState;
+  reset: (checked?: boolean) => void;
+  checkValidity: () => CheckboxState;
 }

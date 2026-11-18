@@ -5,19 +5,19 @@ import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveReadOnlyPort } from "./ReadOnly-types";
 
 export const ReadOnly = <T extends ReadOnlyPublicPort | undefined>(
-	publicPort: T,
+  publicPort: T,
 ): PreserveUndefined<T, ReactiveReadOnlyPort> => {
-	if (!publicPort) {
-		return undefined as PreserveUndefined<T, ReactiveReadOnlyPort>;
-	}
+  if (!publicPort) {
+    return undefined as PreserveUndefined<T, ReactiveReadOnlyPort>;
+  }
 
-	const [checked, setChecked] = createSignal(publicPort.checked);
+  const [checked, setChecked] = createSignal(publicPort.checked);
 
-	onCleanup(publicPort.onCheckedUpdate(setChecked));
+  onCleanup(publicPort.onCheckedUpdate(setChecked));
 
-	const port: ReactiveReadOnlyPort = {
-		checked,
-	};
+  const port: ReactiveReadOnlyPort = {
+    checked,
+  };
 
-	return port as PreserveUndefined<T, ReactiveReadOnlyPort>;
+  return port as PreserveUndefined<T, ReactiveReadOnlyPort>;
 };

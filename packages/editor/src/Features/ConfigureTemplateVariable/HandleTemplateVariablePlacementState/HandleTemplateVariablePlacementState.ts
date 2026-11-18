@@ -11,29 +11,29 @@ import type { HandleTemplateVariablePlacementStateParams } from "./HandleTemplat
  * function.
  */
 export const handleTemplateVariablePlacementState = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTemplateVariablePlacementStateParams) => {
-	const { rootEditable } = editorAPI;
+  const { rootEditable } = editorAPI;
 
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			const selection = editorAPI.getEditorSelection();
-			const { fromText } = selection.getBoundaryPoints();
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      const selection = editorAPI.getEditorSelection();
+      const { fromText } = selection.getBoundaryPoints();
 
-			const canInsert = canInsertTemplateVariable({ fromText });
+      const canInsert = canInsertTemplateVariable({ fromText });
 
-			const rootStorage = getRootStorage({ rootEditable });
+      const rootStorage = getRootStorage({ rootEditable });
 
-			configPort.updateState({
-				canInsert,
-				fields: { ...rootStorage.templateVariable },
-			});
-		},
-	});
+      configPort.updateState({
+        canInsert,
+        fields: { ...rootStorage.templateVariable },
+      });
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

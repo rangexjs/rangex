@@ -6,62 +6,62 @@ import { assertNever } from "#utilities";
 import type { ColorMode } from "./ColorPanel";
 
 const getHslFromColorType = (color: StructuredColor): HslFormat => {
-	if (color.type === "solid") {
-		const { value } = color;
+  if (color.type === "solid") {
+    const { value } = color;
 
-		const hsl = ColorFormat.fromColor({ color: value }).hslFormat();
+    const hsl = ColorFormat.fromColor({ color: value }).hslFormat();
 
-		return hsl;
-	}
+    return hsl;
+  }
 
-	return assertNever(color.type);
+  return assertNever(color.type);
 };
 
 interface GetHslThemeColorsParams {
-	colors: Set<LightDarkColor>;
+  colors: Set<LightDarkColor>;
 }
 
 interface GetHslThemeColorsResult {
-	lightColors: HslFormat[];
-	darkColors: HslFormat[];
+  lightColors: HslFormat[];
+  darkColors: HslFormat[];
 }
 
 export const getHslThemeColors = ({ colors }: GetHslThemeColorsParams): GetHslThemeColorsResult => {
-	const lightColors: HslFormat[] = [];
-	const darkColors: HslFormat[] = [];
+  const lightColors: HslFormat[] = [];
+  const darkColors: HslFormat[] = [];
 
-	for (const { light, dark } of colors) {
-		const lightColor = getHslFromColorType(light);
-		const darkColor = getHslFromColorType(dark);
+  for (const { light, dark } of colors) {
+    const lightColor = getHslFromColorType(light);
+    const darkColor = getHslFromColorType(dark);
 
-		lightColors.push(lightColor);
-		darkColors.push(darkColor);
-	}
+    lightColors.push(lightColor);
+    darkColors.push(darkColor);
+  }
 
-	return { lightColors, darkColors };
+  return { lightColors, darkColors };
 };
 
 export const getDeduplicatedColors = (colors: HslFormat[]): HslFormat[] => {
-	const deduplicatedColors: HslFormat[] = [];
+  const deduplicatedColors: HslFormat[] = [];
 
-	for (const color of colors) {
-		const matchedColor = deduplicatedColors.find(({ h, s, l, a }) => {
-			return color.h === h && color.s === s && color.l === l && color.a === a;
-		});
+  for (const color of colors) {
+    const matchedColor = deduplicatedColors.find(({ h, s, l, a }) => {
+      return color.h === h && color.s === s && color.l === l && color.a === a;
+    });
 
-		if (matchedColor) {
-			continue;
-		}
+    if (matchedColor) {
+      continue;
+    }
 
-		deduplicatedColors.push(color);
-	}
+    deduplicatedColors.push(color);
+  }
 
-	return deduplicatedColors;
+  return deduplicatedColors;
 };
 
 export interface GetColorModeParams {
-	lightColors: HslFormat[];
-	darkColors: HslFormat[];
+  lightColors: HslFormat[];
+  darkColors: HslFormat[];
 }
 
 export type GetColorModeResult = ColorMode;
@@ -71,62 +71,62 @@ export type GetColorModeResult = ColorMode;
  * otherwise it returns "light".
  */
 export const getColorMode = ({
-	lightColors,
-	darkColors,
+  lightColors,
+  darkColors,
 }: GetColorModeParams): GetColorModeResult => {
-	const deduplicatedLightColors = getDeduplicatedColors(lightColors);
-	const deduplicatedDarkColors = getDeduplicatedColors(darkColors);
+  const deduplicatedLightColors = getDeduplicatedColors(lightColors);
+  const deduplicatedDarkColors = getDeduplicatedColors(darkColors);
 
-	if (
-		(deduplicatedLightColors.length === 0 && deduplicatedDarkColors.length === 0) ||
-		deduplicatedLightColors.length !== deduplicatedDarkColors.length
-	) {
-		return "common";
-	}
+  if (
+    (deduplicatedLightColors.length === 0 && deduplicatedDarkColors.length === 0) ||
+    deduplicatedLightColors.length !== deduplicatedDarkColors.length
+  ) {
+    return "common";
+  }
 
-	for (const color of deduplicatedLightColors) {
-		const matchedColor = deduplicatedDarkColors.find(({ h, s, l, a }) => {
-			return color.h === h && color.s === s && color.l === l && color.a === a;
-		});
+  for (const color of deduplicatedLightColors) {
+    const matchedColor = deduplicatedDarkColors.find(({ h, s, l, a }) => {
+      return color.h === h && color.s === s && color.l === l && color.a === a;
+    });
 
-		if (matchedColor) {
-			continue;
-		}
+    if (matchedColor) {
+      continue;
+    }
 
-		return "light";
-	}
+    return "light";
+  }
 
-	return "common";
+  return "common";
 };
 
 interface GetGridPaletteColorsParams {
-	paletteRows: number;
-	paletteCols: number;
+  paletteRows: number;
+  paletteCols: number;
 }
 
 export const getGridPaletteColors = ({ paletteRows, paletteCols }: GetGridPaletteColorsParams) => {
-	const gridFilledColors = Array.from({ length: paletteRows - 3 }, (_, rowIndex) =>
-		Array.from({ length: paletteCols }, (_, colIndex) => {
-			const h = (360 / paletteCols) * colIndex;
+  const gridFilledColors = Array.from({ length: paletteRows - 3 }, (_, rowIndex) =>
+    Array.from({ length: paletteCols }, (_, colIndex) => {
+      const h = (360 / paletteCols) * colIndex;
 
-			const s = (100 / paletteRows) * (paletteRows - rowIndex);
+      const s = (100 / paletteRows) * (paletteRows - rowIndex);
 
-			const l = (100 / paletteRows) * (paletteRows - (rowIndex + 1));
+      const l = (100 / paletteRows) * (paletteRows - (rowIndex + 1));
 
-			return { h, s, l, a: 1 };
-		}),
-	);
+      return { h, s, l, a: 1 };
+    }),
+  );
 
-	const grayColors: HslFormat[] = [
-		...Array.from({ length: paletteCols - 1 }, (_, index) => {
-			const l = 100 - index * (100 / paletteCols);
+  const grayColors: HslFormat[] = [
+    ...Array.from({ length: paletteCols - 1 }, (_, index) => {
+      const l = 100 - index * (100 / paletteCols);
 
-			return { h: 0, s: 0, l: l, a: 1 };
-		}),
-		{ h: 0, s: 0, l: 0, a: 1 },
-	];
+      return { h: 0, s: 0, l: l, a: 1 };
+    }),
+    { h: 0, s: 0, l: 0, a: 1 },
+  ];
 
-	const gridPaletteColors: HslFormat[] = [grayColors, ...gridFilledColors].flat();
+  const gridPaletteColors: HslFormat[] = [grayColors, ...gridFilledColors].flat();
 
-	return gridPaletteColors;
+  return gridPaletteColors;
 };

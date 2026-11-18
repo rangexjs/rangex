@@ -2,9 +2,9 @@ import { matchJSON } from "#utilities";
 
 import { describeJSONMismatch } from "../../../_Utilities";
 import type {
-	BlockComponentState,
-	ValidateBlockComponentStateParams,
-	ValidateBlockComponentStateResult,
+  BlockComponentState,
+  ValidateBlockComponentStateParams,
+  ValidateBlockComponentStateResult,
 } from "./ValidateBlockComponentState-types";
 
 /*
@@ -12,43 +12,43 @@ import type {
  * pattern its component expects. Fails on the first prop that doesn't match.
  */
 export const validateBlockComponentState = ({
-	blockComponentDraft,
-	expectedState,
+  blockComponentDraft,
+  expectedState,
 }: ValidateBlockComponentStateParams): ValidateBlockComponentStateResult => {
-	const {
-		editorRole,
-		name,
-		content,
-		editState,
-		shouldSelectBeforeRemove,
-		shouldSelectOnNavigation,
-		customStorage,
-	} = blockComponentDraft;
+  const {
+    editorRole,
+    name,
+    content,
+    editState,
+    shouldSelectBeforeRemove,
+    shouldSelectOnNavigation,
+    customStorage,
+  } = blockComponentDraft;
 
-	const state: BlockComponentState = {
-		editorRole,
-		name,
-		content,
-		editState,
-		shouldSelectBeforeRemove,
-		shouldSelectOnNavigation,
-		customStorage,
-	};
+  const state: BlockComponentState = {
+    editorRole,
+    name,
+    content,
+    editState,
+    shouldSelectBeforeRemove,
+    shouldSelectOnNavigation,
+    customStorage,
+  };
 
-	const mismatch = matchJSON({ value: state, pattern: expectedState });
+  const mismatch = matchJSON({ value: state, pattern: expectedState });
 
-	if (mismatch) {
-		return {
-			sourceSnapshot: blockComponentDraft,
-			failedSnapshot: blockComponentDraft,
-			reason: describeJSONMismatch({
-				rootDraft: blockComponentDraft,
-				nodeDraft: blockComponentDraft,
-				value: state,
-				mismatch,
-			}),
-		};
-	}
+  if (mismatch) {
+    return {
+      sourceSnapshot: blockComponentDraft,
+      failedSnapshot: blockComponentDraft,
+      reason: describeJSONMismatch({
+        rootDraft: blockComponentDraft,
+        nodeDraft: blockComponentDraft,
+        value: state,
+        mismatch,
+      }),
+    };
+  }
 
-	return null;
+  return null;
 };

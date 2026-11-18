@@ -7,15 +7,15 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
  * block is created with.
  */
 export const validateBlockAlign: ValidateAttrFn<string> = ({ value }) => {
-	const allowedBlockAligns = new Set<string>(Object.values(blockAlignAttr.value));
+  const allowedBlockAligns = new Set<string>(Object.values(blockAlignAttr.value));
 
-	if (!allowedBlockAligns.has(value)) {
-		return {
-			kind: "fallback",
-			reason: `must be ${[...allowedBlockAligns].join(", ")}`,
-			value: blockAlignAttr.value.center,
-		};
-	}
+  if (!allowedBlockAligns.has(value)) {
+    return {
+      kind: "fallback",
+      reason: `must be ${[...allowedBlockAligns].join(", ")}`,
+      value: blockAlignAttr.value.center,
+    };
+  }
 
-	return null;
+  return null;
 };

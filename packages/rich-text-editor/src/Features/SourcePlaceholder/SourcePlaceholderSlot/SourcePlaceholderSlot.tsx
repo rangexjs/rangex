@@ -12,85 +12,85 @@ import { StatusIndicator } from "./StatusIndicator";
  * (see createMediaResolver).
  */
 export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
-	const { sourcePlaceholder } = props.editor;
+  const { sourcePlaceholder } = props.editor;
 
-	if (!sourcePlaceholder) {
-		throw new Error("SourcePlaceholder can't be undefined.");
-	}
+  if (!sourcePlaceholder) {
+    throw new Error("SourcePlaceholder can't be undefined.");
+  }
 
-	const supportedMediaTypes = sourcePlaceholder.supportedMediaTypes;
+  const supportedMediaTypes = sourcePlaceholder.supportedMediaTypes;
 
-	if (!supportedMediaTypes.length) {
-		return <NoSupportedMediaTypes />;
-	}
+  if (!supportedMediaTypes.length) {
+    return <NoSupportedMediaTypes />;
+  }
 
-	const mediaResolver = createMediaResolver({
-		editor: props.editor,
-		sourcePlaceholder,
-		container: props.container,
-		settings: props.settings,
-	});
+  const mediaResolver = createMediaResolver({
+    editor: props.editor,
+    sourcePlaceholder,
+    container: props.container,
+    settings: props.settings,
+  });
 
-	const fileDropzone = createFileDropzone({
-		onFile: (file) => {
-			const type = detectMediaFileType({ file, supportedMediaTypes });
+  const fileDropzone = createFileDropzone({
+    onFile: (file) => {
+      const type = detectMediaFileType({ file, supportedMediaTypes });
 
-			if (!type) {
-				return;
-			}
+      if (!type) {
+        return;
+      }
 
-			mediaResolver.resolveFile(type, file);
-		},
-	});
+      mediaResolver.resolveFile(type, file);
+    },
+  });
 
-	const errorMessage = () => {
-		const state = mediaResolver.status();
-		return state.status === "error" ? state.message : null;
-	};
+  const errorMessage = () => {
+    const state = mediaResolver.status();
+    return state.status === "error" ? state.message : null;
+  };
 
-	const pickerVisible = () => {
-		const { status } = mediaResolver.status();
-		return status === "idle" || status === "error";
-	};
+  const pickerVisible = () => {
+    const { status } = mediaResolver.status();
+    return status === "idle" || status === "error";
+  };
 
-	const stopEditorPropagation = (event: Event) => {
-		event.stopPropagation();
-	};
+  const stopEditorPropagation = (event: Event) => {
+    event.stopPropagation();
+  };
 
-	return (
-		// oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- drag-and-drop dropzone container; the keydown/paste/copy/cut handlers only stop propagation into the editor underneath, they aren't a real interactive control
-		<div
-			class={[
-				"flex flex-col rounded-lg border border-dashed p-4",
-				{
-					"border-blue-400 bg-blue-50 dark:bg-blue-950": fileDropzone.dragActive(),
-					"border-neutral-300 dark:border-neutral-700": !fileDropzone.dragActive(),
-				},
-			]}
-			onDragEnter={fileDropzone.onDragEnter}
-			onDragOver={fileDropzone.onDragOver}
-			onDragLeave={fileDropzone.onDragLeave}
-			onDrop={fileDropzone.onDrop}
-			onKeyDown={stopEditorPropagation}
-			onBeforeInput={stopEditorPropagation}
-			onPointerDown={stopEditorPropagation}
-			onPaste={stopEditorPropagation}
-			onCopy={stopEditorPropagation}
-			onCut={stopEditorPropagation}
-		>
-			<MediaSourcePicker
-				supportedMediaTypes={supportedMediaTypes}
-				visible={pickerVisible()}
-				errorMessage={errorMessage()}
-				onSubmitFile={(type, file) => {
-					mediaResolver.resolveFile(type, file);
-				}}
-				onSubmitUrl={(url) => {
-					mediaResolver.resolveUrl(url);
-				}}
-			/>
+  return (
+    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- drag-and-drop dropzone container; the keydown/paste/copy/cut handlers only stop propagation into the editor underneath, they aren't a real interactive control
+    <div
+      class={[
+        "flex flex-col rounded-lg border border-dashed p-4",
+        {
+          "border-blue-400 bg-blue-50 dark:bg-blue-950": fileDropzone.dragActive(),
+          "border-neutral-300 dark:border-neutral-700": !fileDropzone.dragActive(),
+        },
+      ]}
+      onDragEnter={fileDropzone.onDragEnter}
+      onDragOver={fileDropzone.onDragOver}
+      onDragLeave={fileDropzone.onDragLeave}
+      onDrop={fileDropzone.onDrop}
+      onKeyDown={stopEditorPropagation}
+      onBeforeInput={stopEditorPropagation}
+      onPointerDown={stopEditorPropagation}
+      onPaste={stopEditorPropagation}
+      onCopy={stopEditorPropagation}
+      onCut={stopEditorPropagation}
+    >
+      <MediaSourcePicker
+        supportedMediaTypes={supportedMediaTypes}
+        visible={pickerVisible()}
+        errorMessage={errorMessage()}
+        onSubmitFile={(type, file) => {
+          mediaResolver.resolveFile(type, file);
+        }}
+        onSubmitUrl={(url) => {
+          mediaResolver.resolveUrl(url);
+        }}
+      />
 
-			<StatusIndicator status={mediaResolver.status()} />
-		</div>
-	);
+      <StatusIndicator status={mediaResolver.status()} />
+    </div>
+  );
 };

@@ -1,8 +1,8 @@
 import { beamTextRole, contentLineRole } from "@rangex/core";
 
 import type {
-	IsScopedEditableEmptyParams,
-	IsScopedEditableEmptyResult,
+  IsScopedEditableEmptyParams,
+  IsScopedEditableEmptyResult,
 } from "./IsScopedEditableEmpty-types";
 
 /**
@@ -11,21 +11,21 @@ import type {
  * every empty line.
  */
 export const isScopedEditableEmpty = ({
-	scopedEditable,
+  scopedEditable,
 }: IsScopedEditableEmptyParams): IsScopedEditableEmptyResult => {
-	if (scopedEditable.$$childNodes.length > 1) {
-		return false;
-	}
+  if (scopedEditable.$$childNodes.length > 1) {
+    return false;
+  }
 
-	const firstLine = scopedEditable.$$firstChild;
+  const firstLine = scopedEditable.$$firstChild;
 
-	if (!firstLine) {
-		throw new Error("FirstLine can't be null.");
-	}
+  if (!firstLine) {
+    throw new Error("FirstLine can't be null.");
+  }
 
-	if (firstLine.$$editorRole !== contentLineRole) {
-		return false;
-	}
+  if (firstLine.$$editorRole !== contentLineRole) {
+    return false;
+  }
 
-	return firstLine.$$firstChild?.$$editorRole === beamTextRole;
+  return firstLine.$$firstChild?.$$editorRole === beamTextRole;
 };

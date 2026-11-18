@@ -1,5 +1,5 @@
 export interface GetDisplayTextFieldResult {
-	value: string;
-	disabled: boolean;
-	placeholder: string;
+  value: string;
+  disabled: boolean;
+  placeholder: string;
 }

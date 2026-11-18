@@ -10,36 +10,36 @@ import { watchSourcePlaceholder } from "./WatchSourcePlaceholder";
  * watching placed blocks to resolve their final media source. Returns a cleanup function.
  */
 export const configureSourcePlaceholder = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureSourcePlaceholderParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const placementStateCleanup = handleSourcePlaceholderPlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleSourcePlaceholderPlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const insertionCleanup = handleSourcePlaceholderInsertion({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const insertionCleanup = handleSourcePlaceholderInsertion({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const watchCleanup = watchSourcePlaceholder({
-		adapterBus,
-		configPort,
-		editorAPI,
-	});
+  const watchCleanup = watchSourcePlaceholder({
+    adapterBus,
+    configPort,
+    editorAPI,
+  });
 
-	return () => {
-		placementStateCleanup();
-		insertionCleanup();
-		watchCleanup();
-	};
+  return () => {
+    placementStateCleanup();
+    insertionCleanup();
+    watchCleanup();
+  };
 };

@@ -3,59 +3,59 @@ import { type JSONPattern, matchJSON } from "#utilities";
 import { blockQuoteId } from "../_Constants";
 import { validateStorage } from "../_Utilities";
 import type {
-	BlockQuoteStorage,
-	CreateBlockQuoteStorageResult,
-	EnsureBlockQuoteStorageParams,
-	EnsureBlockQuoteStorageResult,
-	EnsureNodeBlockQuoteStorageParams,
-	EnsureNodeBlockQuoteStorageResult,
+  BlockQuoteStorage,
+  CreateBlockQuoteStorageResult,
+  EnsureBlockQuoteStorageParams,
+  EnsureBlockQuoteStorageResult,
+  EnsureNodeBlockQuoteStorageParams,
+  EnsureNodeBlockQuoteStorageResult,
 } from "./BlockQuoteStorage-types";
 
 /*
  * The BlockQuote's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
  */
 export const blockQuoteStoragePattern = {
-	id: blockQuoteId,
+  id: blockQuoteId,
 } satisfies JSONPattern<BlockQuoteStorage>;
 
 /*
  * Matches a value against blockQuoteStoragePattern, returning the first mismatch or null.
  */
 export const matchBlockQuoteStorage = (storage: unknown) => {
-	return matchJSON({ value: storage, pattern: blockQuoteStoragePattern });
+  return matchJSON({ value: storage, pattern: blockQuoteStoragePattern });
 };
 
 export const isBlockQuoteStorage = (storage: unknown): storage is BlockQuoteStorage => {
-	const mismatch = matchBlockQuoteStorage(storage);
+  const mismatch = matchBlockQuoteStorage(storage);
 
-	return !mismatch;
+  return !mismatch;
 };
 
 export const validateBlockQuoteStorage = (storage: unknown): storage is BlockQuoteStorage => {
-	return validateStorage(storage, isBlockQuoteStorage);
+  return validateStorage(storage, isBlockQuoteStorage);
 };
 
 export const createBlockQuoteStorage = (): CreateBlockQuoteStorageResult => ({
-	id: blockQuoteId,
+  id: blockQuoteId,
 });
 
 export const ensureBlockQuoteStorage = ({
-	storage,
+  storage,
 }: EnsureBlockQuoteStorageParams): EnsureBlockQuoteStorageResult => {
-	if (validateBlockQuoteStorage(storage)) {
-		return storage;
-	}
+  if (validateBlockQuoteStorage(storage)) {
+    return storage;
+  }
 
-	return createBlockQuoteStorage();
+  return createBlockQuoteStorage();
 };
 
 export const ensureNodeBlockQuoteStorage = ({
-	blockComponent,
+  blockComponent,
 }: EnsureNodeBlockQuoteStorageParams): EnsureNodeBlockQuoteStorageResult => {
-	const { $$customStorage } = blockComponent;
+  const { $$customStorage } = blockComponent;
 
-	const storage = ensureBlockQuoteStorage({ storage: $$customStorage });
-	blockComponent.$$customStorage = storage;
+  const storage = ensureBlockQuoteStorage({ storage: $$customStorage });
+  blockComponent.$$customStorage = storage;
 
-	return storage;
+  return storage;
 };

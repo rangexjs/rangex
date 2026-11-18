@@ -8,23 +8,23 @@ import type { HandleBlockQuotePlacementStateParams } from "./HandleBlockQuotePla
  * content. Returns a cleanup function.
  */
 export const handleBlockQuotePlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleBlockQuotePlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.blockQuote],
-			});
-			const canWrap = blockComponentPlacement.canWrapBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.blockQuote],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.blockQuote],
+      });
+      const canWrap = blockComponentPlacement.canWrapBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.blockQuote],
+      });
 
-			configPort.updateState({ canInsert, canWrap });
-		},
-	});
+      configPort.updateState({ canInsert, canWrap });
+    },
+  });
 };

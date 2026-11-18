@@ -1,12 +1,12 @@
 import { maxTemplateVariableFieldCount } from "#storage";
 
 import {
-	validateTemplateVariableFieldName,
-	validateTemplateVariableFieldValue,
+  validateTemplateVariableFieldName,
+  validateTemplateVariableFieldValue,
 } from "../../../_Utilities";
 import type {
-	ValidateTemplateVariableFieldParams,
-	ValidateTemplateVariableFieldResult,
+  ValidateTemplateVariableFieldParams,
+  ValidateTemplateVariableFieldResult,
 } from "./ValidateTemplateVariableField-types";
 
 /*
@@ -15,32 +15,32 @@ import type {
  * null when it's valid.
  */
 export const validateTemplateVariableField = ({
-	fieldName,
-	value,
-	storage,
+  fieldName,
+  value,
+  storage,
 }: ValidateTemplateVariableFieldParams): ValidateTemplateVariableFieldResult => {
-	const fieldNameFailed = validateTemplateVariableFieldName({ fieldName });
+  const fieldNameFailed = validateTemplateVariableFieldName({ fieldName });
 
-	if (fieldNameFailed) {
-		return { field: "fieldName", reason: fieldNameFailed.reason };
-	}
+  if (fieldNameFailed) {
+    return { field: "fieldName", reason: fieldNameFailed.reason };
+  }
 
-	const valueFailed = validateTemplateVariableFieldValue({ value });
+  const valueFailed = validateTemplateVariableFieldValue({ value });
 
-	if (valueFailed) {
-		return { field: "value", reason: valueFailed.reason };
-	}
+  if (valueFailed) {
+    return { field: "value", reason: valueFailed.reason };
+  }
 
-	const isStored = Object.hasOwn(storage, fieldName);
+  const isStored = Object.hasOwn(storage, fieldName);
 
-	const fieldCount = Object.keys(storage).length;
+  const fieldCount = Object.keys(storage).length;
 
-	if (!isStored && fieldCount >= maxTemplateVariableFieldCount) {
-		return {
-			field: "fieldName",
-			reason: `can't be stored: the limit is ${maxTemplateVariableFieldCount} fields`,
-		};
-	}
+  if (!isStored && fieldCount >= maxTemplateVariableFieldCount) {
+    return {
+      field: "fieldName",
+      reason: `can't be stored: the limit is ${maxTemplateVariableFieldCount} fields`,
+    };
+  }
 
-	return null;
+  return null;
 };

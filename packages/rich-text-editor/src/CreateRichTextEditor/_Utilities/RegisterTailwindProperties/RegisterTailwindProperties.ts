@@ -4,13 +4,13 @@ let propertiesStyleSheet: CSSStyleSheet | null = null;
 let registrationCount = 0;
 
 const createPropertiesStyleSheet = ({ styleSheet }: RegisterTailwindPropertiesParams) => {
-	const propertyRules = [...styleSheet.cssRules].filter((rule) => rule instanceof CSSPropertyRule);
-	const propertiesCSS = propertyRules.map((rule) => rule.cssText).join("\n");
+  const propertyRules = [...styleSheet.cssRules].filter((rule) => rule instanceof CSSPropertyRule);
+  const propertiesCSS = propertyRules.map((rule) => rule.cssText).join("\n");
 
-	const propertiesStyleSheet = new CSSStyleSheet();
-	propertiesStyleSheet.replaceSync(propertiesCSS);
+  const propertiesStyleSheet = new CSSStyleSheet();
+  propertiesStyleSheet.replaceSync(propertiesCSS);
 
-	return propertiesStyleSheet;
+  return propertiesStyleSheet;
 };
 
 /**
@@ -22,33 +22,33 @@ const createPropertiesStyleSheet = ({ styleSheet }: RegisterTailwindPropertiesPa
  * @see https://github.com/tailwindlabs/tailwindcss/issues/15005#issuecomment-2621978261
  */
 export const registerTailwindProperties = ({ styleSheet }: RegisterTailwindPropertiesParams) => {
-	if (!propertiesStyleSheet) {
-		propertiesStyleSheet = createPropertiesStyleSheet({ styleSheet });
-		document.adoptedStyleSheets.push(propertiesStyleSheet);
-	}
+  if (!propertiesStyleSheet) {
+    propertiesStyleSheet = createPropertiesStyleSheet({ styleSheet });
+    document.adoptedStyleSheets.push(propertiesStyleSheet);
+  }
 
-	registrationCount++;
+  registrationCount++;
 
-	let isUnregistered = false;
+  let isUnregistered = false;
 
-	return () => {
-		if (isUnregistered) {
-			return;
-		}
+  return () => {
+    if (isUnregistered) {
+      return;
+    }
 
-		isUnregistered = true;
-		registrationCount--;
+    isUnregistered = true;
+    registrationCount--;
 
-		if (registrationCount > 0 || !propertiesStyleSheet) {
-			return;
-		}
+    if (registrationCount > 0 || !propertiesStyleSheet) {
+      return;
+    }
 
-		const index = document.adoptedStyleSheets.indexOf(propertiesStyleSheet);
+    const index = document.adoptedStyleSheets.indexOf(propertiesStyleSheet);
 
-		if (index !== -1) {
-			document.adoptedStyleSheets.splice(index, 1);
-		}
+    if (index !== -1) {
+      document.adoptedStyleSheets.splice(index, 1);
+    }
 
-		propertiesStyleSheet = null;
-	};
+    propertiesStyleSheet = null;
+  };
 };

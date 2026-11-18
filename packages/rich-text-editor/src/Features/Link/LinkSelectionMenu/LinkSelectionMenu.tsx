@@ -7,120 +7,120 @@ import { createTextFieldController } from "#ui";
 import { getDisplayTextField, LinkEdit } from "../_Utilities";
 
 export const LinkSelectionMenu = () => {
-	const editor = useEditorContext();
-	const { link } = editor;
+  const editor = useEditorContext();
+  const { link } = editor;
 
-	if (!link) {
-		throw new Error("Link can't be undefined.");
-	}
+  if (!link) {
+    throw new Error("Link can't be undefined.");
+  }
 
-	const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
-	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
-	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
+  const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
+  const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
+  const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
-	const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
-		error: {
-			required: { value: true, message: "Field can't be empty." },
-			custom: {
-				isValid: (value) => {
-					const mismatch = link.validateDOMAttrs({
-						anchor: {
-							href: value,
-						},
-					});
+  const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
+    error: {
+      required: { value: true, message: "Field can't be empty." },
+      custom: {
+        isValid: (value) => {
+          const mismatch = link.validateDOMAttrs({
+            anchor: {
+              href: value,
+            },
+          });
 
-					return !mismatch;
-				},
-				message: "URL isn't allowed.",
-			},
-		},
-	});
+          return !mismatch;
+        },
+        message: "URL isn't allowed.",
+      },
+    },
+  });
 
-	const [isNewTab, setIsNewTab] = createSignal(false);
+  const [isNewTab, setIsNewTab] = createSignal(false);
 
-	const selectionMenuEl = link.selectionMenu.element;
+  const selectionMenuEl = link.selectionMenu.element;
 
-	const refreshFields = () => {
-		const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
-		displayTextHandle.reset(value);
-		setDisplayTextDisabled(disabled);
-		setDisplayTextPlaceholder(placeholder);
+  const refreshFields = () => {
+    const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
+    displayTextHandle.reset(value);
+    setDisplayTextDisabled(disabled);
+    setDisplayTextPlaceholder(placeholder);
 
-		urlHandle.reset();
-		setIsNewTab(false);
+    urlHandle.reset();
+    setIsNewTab(false);
 
-		flush();
+    flush();
 
-		const input = selectionMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
+    const input = selectionMenuEl.querySelector<HTMLInputElement>(`#${displayTextHandle.id}`);
 
-		if (!input) {
-			throw new Error("Input wasn't found.");
-		}
+    if (!input) {
+      throw new Error("Input wasn't found.");
+    }
 
-		input.focus();
-	};
+    input.focus();
+  };
 
-	const selectionMenuOpenUpdateCleanup = link.selectionMenu.onToggle(() => {
-		if (!link.selectionMenu.isOpen) {
-			return;
-		}
+  const selectionMenuOpenUpdateCleanup = link.selectionMenu.onToggle(() => {
+    if (!link.selectionMenu.isOpen) {
+      return;
+    }
 
-		refreshFields();
-	});
+    refreshFields();
+  });
 
-	onCleanup(() => {
-		selectionMenuOpenUpdateCleanup();
-	});
+  onCleanup(() => {
+    selectionMenuOpenUpdateCleanup();
+  });
 
-	const onInsert = () => {
-		const urlState = urlHandle.validate();
+  const onInsert = () => {
+    const urlState = urlHandle.validate();
 
-		if (urlState.hasError) {
-			return;
-		}
+    if (urlState.hasError) {
+      return;
+    }
 
-		const url = urlHandle.value();
+    const url = urlHandle.value();
 
-		link.insert({
-			displayText: displayTextHandle.value(),
-			attrs: {
-				anchor: {
-					href: url,
-					target: isNewTab() ? "_blank" : null,
-				},
-			},
-		});
+    link.insert({
+      displayText: displayTextHandle.value(),
+      attrs: {
+        anchor: {
+          href: url,
+          target: isNewTab() ? "_blank" : null,
+        },
+      },
+    });
 
-		link.selectionMenu.close();
-	};
+    link.selectionMenu.close();
+  };
 
-	const onNewTabChange = () => {
-		setIsNewTab((prev) => !prev);
-	};
+  const onNewTabChange = () => {
+    setIsNewTab((prev) => !prev);
+  };
 
-	const onCancel = () => {
-		link.selectionMenu.close();
-	};
+  const onCancel = () => {
+    link.selectionMenu.close();
+  };
 
-	return (
-		<FloatingPortal
-			mount={selectionMenuEl}
-			class="z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
-		>
-			<span class="absolute -top-2 left-1/2 inline-block size-4 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
-			<LinkEdit
-				mode="insert"
-				displayTextHandle={displayTextHandle}
-				displayTextControls={displayTextControls}
-				displayTextDisabled={displayTextDisabled()}
-				displayTextPlaceholder={displayTextPlaceholder()}
-				urlHandle={urlHandle}
-				urlControls={urlControls}
-				onNewTabChange={onNewTabChange}
-				isNewTab={isNewTab()}
-				onApply={onInsert}
-				onCancel={onCancel}
-			/>
-		</FloatingPortal>
-	);
+  return (
+    <FloatingPortal
+      mount={selectionMenuEl}
+      class="z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
+    >
+      <span class="absolute -top-2 left-1/2 inline-block size-4 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
+      <LinkEdit
+        mode="insert"
+        displayTextHandle={displayTextHandle}
+        displayTextControls={displayTextControls}
+        displayTextDisabled={displayTextDisabled()}
+        displayTextPlaceholder={displayTextPlaceholder()}
+        urlHandle={urlHandle}
+        urlControls={urlControls}
+        onNewTabChange={onNewTabChange}
+        isNewTab={isNewTab()}
+        onApply={onInsert}
+        onCancel={onCancel}
+      />
+    </FloatingPortal>
+  );
 };

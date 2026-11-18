@@ -7,16 +7,16 @@ import type { Extension } from "../_Utilities";
 import type { SourcePlaceholderExtensionSettings } from "./SourcePlaceholder-types";
 
 export const SourcePlaceholder = (settings: SourcePlaceholderExtensionSettings): Extension => {
-	return {
-		createAdapter: () => SourcePlaceholderFactory(settings),
-		components: {
-			toolbarButtons: {
-				[toolbarButtonsName.media]: SourcePlaceholderToolbarButton,
-			},
-			floatingComponents: [],
-		},
-		register: (editor) => {
-			registerSourcePlaceholder({ editor, settings });
-		},
-	};
+  return {
+    createAdapter: () => SourcePlaceholderFactory(settings),
+    components: {
+      toolbarButtons: {
+        [toolbarButtonsName.media]: SourcePlaceholderToolbarButton,
+      },
+      floatingComponents: [],
+    },
+    register: (editor) => {
+      registerSourcePlaceholder({ editor, settings });
+    },
+  };
 };

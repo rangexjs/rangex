@@ -1,7 +1,7 @@
 import type { BlockComponent, EditorAPI } from "@rangex/core";
 
 export interface OnOverlayShowParams {
-	blockComponent: BlockComponent;
+  blockComponent: BlockComponent;
 }
 
 /**
@@ -31,37 +31,37 @@ export type OnOverlayCloseFn = (params: OnOverlayShowParams) => void;
 type CurrentBlock = BlockComponent | null;
 
 export interface OverlayRegistration {
-	popover: HTMLElement;
-	shouldShow: OnOverlayShouldShowFn;
-	onShow: OnOverlayShowFn;
-	onClose: OnOverlayCloseFn;
-	currentBlock: CurrentBlock;
-	hideTimeoutId: number;
-	abortController: AbortController;
-	pointerOver: boolean;
-	focusWithin: boolean;
+  popover: HTMLElement;
+  shouldShow: OnOverlayShouldShowFn;
+  onShow: OnOverlayShowFn;
+  onClose: OnOverlayCloseFn;
+  currentBlock: CurrentBlock;
+  hideTimeoutId: number;
+  abortController: AbortController;
+  pointerOver: boolean;
+  focusWithin: boolean;
 }
 
 export interface RegisterOverlayParams {
-	popover: HTMLElement;
-	extraElements?: HTMLElement[];
-	shouldShow: OnOverlayShouldShowFn;
-	onShow: OnOverlayShowFn;
-	onClose: OnOverlayCloseFn;
+  popover: HTMLElement;
+  extraElements?: HTMLElement[];
+  shouldShow: OnOverlayShouldShowFn;
+  onShow: OnOverlayShowFn;
+  onClose: OnOverlayCloseFn;
 }
 
 export interface RegisterOverlayResult {
-	getCurrentBlock: () => CurrentBlock;
-	cleanup: () => void;
+  getCurrentBlock: () => CurrentBlock;
+  cleanup: () => void;
 }
 
 export interface OverlayAppearanceHandler {
-	registerComponent: (params: RegisterOverlayParams) => RegisterOverlayResult;
-	cleanup: () => void;
+  registerComponent: (params: RegisterOverlayParams) => RegisterOverlayResult;
+  cleanup: () => void;
 }
 
 export interface CreateOverlayAppearanceHandlerParams {
-	editorAPI: EditorAPI;
+  editorAPI: EditorAPI;
 }
 
 export interface CreateOverlayAppearanceHandlerResult extends OverlayAppearanceHandler {}

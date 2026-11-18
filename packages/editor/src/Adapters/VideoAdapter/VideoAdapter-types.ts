@@ -3,56 +3,56 @@ import type { BlockComponent } from "@rangex/core";
 import type { VideoAttrsShape, VideoAttrValidators } from "#dom-attrs";
 
 import type {
-	BlockAlignConfigPort,
-	BlockAlignPublicPort,
-	BlockResize,
-	CaptionConfigPort,
-	CaptionPublicPort,
-	CreateAdapterParams,
-	CurrentComponentConfigPort,
-	CurrentComponentPublicPort,
-	DOMAttrsConfigPort,
-	DOMAttrsPublicPort,
-	OnMediaResolveCallbackFn,
-	QuickActionsConfigPort,
-	QuickActionsPublicPort,
-	SwapToSourcePlaceholderConfigPort,
-	SwapToSourcePlaceholderPublicPort,
+  BlockAlignConfigPort,
+  BlockAlignPublicPort,
+  BlockResize,
+  CaptionConfigPort,
+  CaptionPublicPort,
+  CreateAdapterParams,
+  CurrentComponentConfigPort,
+  CurrentComponentPublicPort,
+  DOMAttrsConfigPort,
+  DOMAttrsPublicPort,
+  OnMediaResolveCallbackFn,
+  QuickActionsConfigPort,
+  QuickActionsPublicPort,
+  SwapToSourcePlaceholderConfigPort,
+  SwapToSourcePlaceholderPublicPort,
 } from "../_Utilities";
 
 export interface VideoConfigPortProps {
-	readonly blockResize: BlockResize;
-	readonly attrValidators: VideoAttrValidators;
-	readonly quickActions: QuickActionsConfigPort;
+  readonly blockResize: BlockResize;
+  readonly attrValidators: VideoAttrValidators;
+  readonly quickActions: QuickActionsConfigPort;
 
-	onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
+  onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
 }
 
 export interface VideoConfigPort
-	extends
-		VideoConfigPortProps,
-		CaptionConfigPort,
-		BlockAlignConfigPort,
-		CurrentComponentConfigPort<BlockComponent>,
-		DOMAttrsConfigPort<VideoAttrsShape>,
-		SwapToSourcePlaceholderConfigPort {}
+  extends
+    VideoConfigPortProps,
+    CaptionConfigPort,
+    BlockAlignConfigPort,
+    CurrentComponentConfigPort<BlockComponent>,
+    DOMAttrsConfigPort<VideoAttrsShape>,
+    SwapToSourcePlaceholderConfigPort {}
 
 export interface VideoPublicPortProps {
-	readonly quickActions: QuickActionsPublicPort;
+  readonly quickActions: QuickActionsPublicPort;
 }
 
 export interface VideoPublicPort
-	extends
-		VideoPublicPortProps,
-		CaptionPublicPort,
-		BlockAlignPublicPort,
-		CurrentComponentPublicPort,
-		DOMAttrsPublicPort<VideoAttrsShape>,
-		SwapToSourcePlaceholderPublicPort {}
+  extends
+    VideoPublicPortProps,
+    CaptionPublicPort,
+    BlockAlignPublicPort,
+    CurrentComponentPublicPort,
+    DOMAttrsPublicPort<VideoAttrsShape>,
+    SwapToSourcePlaceholderPublicPort {}
 
 export interface VideoAdapter {
-	configPort: VideoConfigPort;
-	publicPort: VideoPublicPort;
+  configPort: VideoConfigPort;
+  publicPort: VideoPublicPort;
 }
 
 export interface VideoSettings {}

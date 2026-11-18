@@ -1,7 +1,7 @@
 import type { CreateAdapterParams } from "../_Utilities";
 
 export interface SeparatorState {
-	canInsert?: boolean;
+  canInsert?: boolean;
 }
 
 export interface UpdateStateParams extends SeparatorState {}
@@ -9,9 +9,9 @@ export interface UpdateStateParams extends SeparatorState {}
 export type OnInsertCallbackFn = () => void;
 
 export interface SeparatorConfigPortProps {
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onInsert(callback: OnInsertCallbackFn): () => void;
+  onInsert(callback: OnInsertCallbackFn): () => void;
 }
 
 export interface SeparatorConfigPort extends SeparatorConfigPortProps {}
@@ -19,18 +19,18 @@ export interface SeparatorConfigPort extends SeparatorConfigPortProps {}
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
 
 export interface SeparatorPublicPortProps {
-	readonly canInsert: boolean;
+  readonly canInsert: boolean;
 
-	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+  onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
 
-	insert(): void;
+  insert(): void;
 }
 
 export interface SeparatorPublicPort extends SeparatorPublicPortProps {}
 
 export interface SeparatorAdapter {
-	configPort: SeparatorConfigPort;
-	publicPort: SeparatorPublicPort;
+  configPort: SeparatorConfigPort;
+  publicPort: SeparatorPublicPort;
 }
 
 export interface SeparatorSettings {}

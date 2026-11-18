@@ -2,8 +2,8 @@ import { assertNever } from "#utilities";
 
 import { getClosestCommonScopedEditable } from "../../NodeQuery";
 import type {
-	CanWrapBlockComponentParams,
-	CanWrapBlockComponentResult,
+  CanWrapBlockComponentParams,
+  CanWrapBlockComponentResult,
 } from "./CanWrapBlockComponent-types";
 
 /*
@@ -11,61 +11,61 @@ import type {
  * innermost ScopedEditable holding both ends must itself be `"block multi-line"`, so it never wraps an outer line.
  */
 export const canWrapBlockComponent = ({
-	editorAPI,
-	fromNode,
-	fromOffset,
-	toNode,
-	toOffset,
-	scope,
-	allowedComponents,
+  editorAPI,
+  fromNode,
+  fromOffset,
+  toNode,
+  toOffset,
+  scope,
+  allowedComponents,
 }: CanWrapBlockComponentParams): CanWrapBlockComponentResult => {
-	const scopedEditable = (() => {
-		if (scope === "current") {
-			const scopedEditable = getClosestCommonScopedEditable({
-				fromNode,
-				toNode,
-			});
+  const scopedEditable = (() => {
+    if (scope === "current") {
+      const scopedEditable = getClosestCommonScopedEditable({
+        fromNode,
+        toNode,
+      });
 
-			if (scopedEditable?.$$display !== "block multi-line") {
-				return null;
-			}
+      if (scopedEditable?.$$display !== "block multi-line") {
+        return null;
+      }
 
-			return scopedEditable;
-		}
+      return scopedEditable;
+    }
 
-		if (scope === "nearest-multi-line") {
-			const blockWrappableSegment = editorAPI.getBlockWrappableSegment({
-				fromNode,
-				fromOffset,
-				toNode,
-				toOffset,
-			});
+    if (scope === "nearest-multi-line") {
+      const blockWrappableSegment = editorAPI.getBlockWrappableSegment({
+        fromNode,
+        fromOffset,
+        toNode,
+        toOffset,
+      });
 
-			if (!blockWrappableSegment) {
-				return null;
-			}
+      if (!blockWrappableSegment) {
+        return null;
+      }
 
-			const scopedEditable = blockWrappableSegment.getCommonScopedEditable();
+      const scopedEditable = blockWrappableSegment.getCommonScopedEditable();
 
-			return scopedEditable;
-		}
+      return scopedEditable;
+    }
 
-		return assertNever(scope);
-	})();
+    return assertNever(scope);
+  })();
 
-	if (!scopedEditable) {
-		return false;
-	}
+  if (!scopedEditable) {
+    return false;
+  }
 
-	const { $$allowedComponents } = scopedEditable;
+  const { $$allowedComponents } = scopedEditable;
 
-	if ($$allowedComponents === null) {
-		return true;
-	}
+  if ($$allowedComponents === null) {
+    return true;
+  }
 
-	const isAllowed = allowedComponents.every((componentName) =>
-		$$allowedComponents.includes(componentName),
-	);
+  const isAllowed = allowedComponents.every((componentName) =>
+    $$allowedComponents.includes(componentName),
+  );
 
-	return isAllowed;
+  return isAllowed;
 };

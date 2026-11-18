@@ -1,21 +1,21 @@
 import type { ComponentDraft, ListDraft, ListItemDraft } from "@rangex/core";
 
 import type {
-	ComponentValidator,
-	ValidateComponentParams,
-	ValidateComponentResult,
+  ComponentValidator,
+  ValidateComponentParams,
+  ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
 export interface ValidateListItemParams {
-	componentDraft: ComponentDraft;
-	listItemDraft: ListItemDraft;
+  componentDraft: ComponentDraft;
+  listItemDraft: ListItemDraft;
 }
 
 export type ValidateListItemResult = ValidateComponentResult;
 
 export interface ValidateListNodeParams {
-	componentDraft: ComponentDraft;
-	listDraft: ListDraft;
+  componentDraft: ComponentDraft;
+  listDraft: ListDraft;
 }
 
 export type ValidateListNodeResult = ValidateComponentResult;

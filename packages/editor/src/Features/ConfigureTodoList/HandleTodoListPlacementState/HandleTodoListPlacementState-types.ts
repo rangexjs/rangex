@@ -4,7 +4,7 @@ import type { TodoListConfigPort } from "#adapters/TodoList";
 import type { BlockComponentPlacement } from "#engine-links";
 
 export interface HandleTodoListPlacementStateParams {
-	configPort: TodoListConfigPort;
-	editorAPI: EditorAPI;
-	blockComponentPlacement: BlockComponentPlacement;
+  configPort: TodoListConfigPort;
+  editorAPI: EditorAPI;
+  blockComponentPlacement: BlockComponentPlacement;
 }

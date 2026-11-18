@@ -6,4 +6,4 @@ import type { InputFieldState } from "./Utilities-types";
  * yet worth showing an error for.
  */
 export const showInputFieldError = (state: InputFieldState): boolean =>
-	state.hasError && state.isDirty;
+  state.hasError && state.isDirty;

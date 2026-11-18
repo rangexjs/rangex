@@ -1,10 +1,10 @@
 import {
-	createBeamText,
-	createContentLine,
-	createHTMLLayout,
-	createNestedEditable,
-	type HTMLLayout,
-	htmlLayoutRole,
+  createBeamText,
+  createContentLine,
+  createHTMLLayout,
+  createNestedEditable,
+  type HTMLLayout,
+  htmlLayoutRole,
 } from "@rangex/core";
 
 import type { CaptionPosition } from "#adapters";
@@ -13,22 +13,22 @@ import { createTextAlignStructuredStyle } from "#structured-style";
 
 import { getImageImg } from "../GetImageElements";
 import type {
-	GetImageCaptionParams,
-	GetImageCaptionResult,
-	SetImageCaptionEnabledParams,
-	SetImageCaptionPositionParams,
+  GetImageCaptionParams,
+  GetImageCaptionResult,
+  SetImageCaptionEnabledParams,
+  SetImageCaptionPositionParams,
 } from "./ImageCaption-types";
 
 const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
-	for (const child of figure.$$children) {
-		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
-			return child;
-		}
-	}
+  for (const child of figure.$$children) {
+    if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
+      return child;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -36,20 +36,20 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * the image — derived from the figcaption's presence and DOM order, not a stored flag.
  */
 export const getImageCaption = ({ figure }: GetImageCaptionParams): GetImageCaptionResult => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		return { captionEnabled: false, captionPosition: "below" };
-	}
+  if (!figcaption) {
+    return { captionEnabled: false, captionPosition: "below" };
+  }
 
-	const img = getImageImg({ figure });
+  const img = getImageImg({ figure });
 
-	const { $$children } = figure;
+  const { $$children } = figure;
 
-	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(img) ? "above" : "below";
+  const position: CaptionPosition =
+    $$children.indexOf(figcaption) < $$children.indexOf(img) ? "above" : "below";
 
-	return { captionEnabled: true, captionPosition: position };
+  return { captionEnabled: true, captionPosition: position };
 };
 
 /*
@@ -58,43 +58,43 @@ export const getImageCaption = ({ figure }: GetImageCaptionParams): GetImageCapt
  * typed in it.
  */
 export const setImageCaptionEnabled = ({
-	figure,
-	enabled,
-	position,
+  figure,
+  enabled,
+  position,
 }: SetImageCaptionEnabledParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!enabled) {
-		figcaption?.$$remove();
-		return;
-	}
+  if (!enabled) {
+    figcaption?.$$remove();
+    return;
+  }
 
-	if (figcaption) {
-		return;
-	}
+  if (figcaption) {
+    return;
+  }
 
-	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
+  const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
-	const nestedEditable = createNestedEditable({
-		...mediaCaptionDefinition.nestedEditableProps,
-		childNodes: [
-			createContentLine({
-				localName: "p",
-				structuredStyle: { textAlign },
-				childNodes: [createBeamText({})],
-			}),
-		],
-	});
+  const nestedEditable = createNestedEditable({
+    ...mediaCaptionDefinition.nestedEditableProps,
+    childNodes: [
+      createContentLine({
+        localName: "p",
+        structuredStyle: { textAlign },
+        childNodes: [createBeamText({})],
+      }),
+    ],
+  });
 
-	const newFigcaption = createHTMLLayout({
-		localName: figcaptionLocalName,
-		childNodes: [nestedEditable],
-	});
+  const newFigcaption = createHTMLLayout({
+    localName: figcaptionLocalName,
+    childNodes: [nestedEditable],
+  });
 
-	({
-		above: () => figure.$$prepend(newFigcaption),
-		below: () => figure.$$append(newFigcaption),
-	})[position]();
+  ({
+    above: () => figure.$$prepend(newFigcaption),
+    below: () => figure.$$append(newFigcaption),
+  })[position]();
 };
 
 /*
@@ -102,18 +102,18 @@ export const setImageCaptionEnabled = ({
  * than checking the current order first. Throws if the figure has no figcaption.
  */
 export const setImageCaptionPosition = ({ figure, position }: SetImageCaptionPositionParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		throw new Error("Figure must contain a figcaption to reposition.");
-	}
+  if (!figcaption) {
+    throw new Error("Figure must contain a figcaption to reposition.");
+  }
 
-	const img = getImageImg({ figure });
+  const img = getImageImg({ figure });
 
-	figcaption.$$remove();
+  figcaption.$$remove();
 
-	({
-		above: () => img.$$before(figcaption),
-		below: () => img.$$after(figcaption),
-	})[position]();
+  ({
+    above: () => img.$$before(figcaption),
+    below: () => img.$$after(figcaption),
+  })[position]();
 };

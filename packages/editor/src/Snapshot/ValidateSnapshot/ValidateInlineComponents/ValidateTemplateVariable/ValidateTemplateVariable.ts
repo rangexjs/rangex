@@ -1,8 +1,8 @@
 import {
-	contentLineRole,
-	inlineComponentRole,
-	isFormattableTextDraft,
-	nestedEditableRole,
+  contentLineRole,
+  inlineComponentRole,
+  isFormattableTextDraft,
+  nestedEditableRole,
 } from "@rangex/core";
 
 import { componentsName, templateVariableDefinition } from "#constants";
@@ -11,10 +11,10 @@ import { templateVariableStoragePattern } from "#storage";
 import { formatNodePath, resolveDraftStorage, validateNestedEditableState } from "../../_Utilities";
 import { validateInlineComponentState } from "../_Utilities";
 import type {
-	CreateTemplateVariableValidatorParams,
-	CreateTemplateVariableValidatorResult,
-	ValidateTemplateVariableParams,
-	ValidateTemplateVariableResult,
+  CreateTemplateVariableValidatorParams,
+  CreateTemplateVariableValidatorResult,
+  ValidateTemplateVariableParams,
+  ValidateTemplateVariableResult,
 } from "./ValidateTemplateVariable-types";
 
 /*
@@ -25,89 +25,89 @@ import type {
  * here (see resolveTemplateVariableTexts).
  */
 const validateTemplateVariable = ({
-	componentDraft,
-	validateStorage,
+  componentDraft,
+  validateStorage,
 }: ValidateTemplateVariableParams): ValidateTemplateVariableResult => {
-	if (componentDraft.editorRole !== inlineComponentRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
-		};
-	}
+  if (componentDraft.editorRole !== inlineComponentRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must be an ${inlineComponentRole}.`,
+    };
+  }
 
-	const stateFailed = validateInlineComponentState({
-		inlineComponentDraft: componentDraft,
-		expectedState: {
-			editorRole: inlineComponentRole,
-			name: componentsName.templateVariable,
-			content: { type: "custom" },
-			editState: "false",
-			shouldSelectBeforeRemove: false,
-			shouldSelectOnNavigation: true,
-			domAttrs: {},
-			customStorage: templateVariableStoragePattern,
-		},
-	});
+  const stateFailed = validateInlineComponentState({
+    inlineComponentDraft: componentDraft,
+    expectedState: {
+      editorRole: inlineComponentRole,
+      name: componentsName.templateVariable,
+      content: { type: "custom" },
+      editState: "false",
+      shouldSelectBeforeRemove: false,
+      shouldSelectOnNavigation: true,
+      domAttrs: {},
+      customStorage: templateVariableStoragePattern,
+    },
+  });
 
-	if (stateFailed) {
-		return stateFailed;
-	}
+  if (stateFailed) {
+    return stateFailed;
+  }
 
-	const storageFailed = resolveDraftStorage({
-		nodeDraft: componentDraft,
-		storagePattern: templateVariableStoragePattern,
-		validateStorage,
-	});
+  const storageFailed = resolveDraftStorage({
+    nodeDraft: componentDraft,
+    storagePattern: templateVariableStoragePattern,
+    validateStorage,
+  });
 
-	if (storageFailed) {
-		return storageFailed;
-	}
+  if (storageFailed) {
+    return storageFailed;
+  }
 
-	const { childNodes } = componentDraft;
+  const { childNodes } = componentDraft;
 
-	const nestedEditableDraft = childNodes.at(0);
+  const nestedEditableDraft = childNodes.at(0);
 
-	if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: componentDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${nestedEditableRole}.`,
-		};
-	}
+  if (childNodes.length !== 1 || nestedEditableDraft?.editorRole !== nestedEditableRole) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: componentDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: componentDraft })}: must contain exactly one ${nestedEditableRole}.`,
+    };
+  }
 
-	const nestedEditableFailed = validateNestedEditableState({
-		componentDraft,
-		nestedEditableDraft,
-		expectedState: {
-			editorRole: nestedEditableRole,
-			...templateVariableDefinition.nestedEditableProps,
-			domAttrs: {},
-			customStorage: null,
-		},
-	});
+  const nestedEditableFailed = validateNestedEditableState({
+    componentDraft,
+    nestedEditableDraft,
+    expectedState: {
+      editorRole: nestedEditableRole,
+      ...templateVariableDefinition.nestedEditableProps,
+      domAttrs: {},
+      customStorage: null,
+    },
+  });
 
-	if (nestedEditableFailed) {
-		return nestedEditableFailed;
-	}
+  if (nestedEditableFailed) {
+    return nestedEditableFailed;
+  }
 
-	const contentLineDraft = nestedEditableDraft.childNodes.at(0);
+  const contentLineDraft = nestedEditableDraft.childNodes.at(0);
 
-	if (contentLineDraft?.editorRole !== contentLineRole) {
-		throw new Error("Expected a ContentLine inside the NestedEditable.");
-	}
+  if (contentLineDraft?.editorRole !== contentLineRole) {
+    throw new Error("Expected a ContentLine inside the NestedEditable.");
+  }
 
-	const textDrafts = contentLineDraft.childNodes.filter(isFormattableTextDraft);
+  const textDrafts = contentLineDraft.childNodes.filter(isFormattableTextDraft);
 
-	if (textDrafts.length !== contentLineDraft.childNodes.length) {
-		return {
-			sourceSnapshot: componentDraft,
-			failedSnapshot: contentLineDraft,
-			reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: contentLineDraft })}: must only contain FormattableTexts.`,
-		};
-	}
+  if (textDrafts.length !== contentLineDraft.childNodes.length) {
+    return {
+      sourceSnapshot: componentDraft,
+      failedSnapshot: contentLineDraft,
+      reason: `${formatNodePath({ rootDraft: componentDraft, nodeDraft: contentLineDraft })}: must only contain FormattableTexts.`,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -115,10 +115,10 @@ const validateTemplateVariable = ({
  * validateStorage.
  */
 export const createTemplateVariableValidator = ({
-	validateStorage,
+  validateStorage,
 }: CreateTemplateVariableValidatorParams): CreateTemplateVariableValidatorResult => {
-	return {
-		name: componentsName.templateVariable,
-		validate: ({ componentDraft }) => validateTemplateVariable({ componentDraft, validateStorage }),
-	};
+  return {
+    name: componentsName.templateVariable,
+    validate: ({ componentDraft }) => validateTemplateVariable({ componentDraft, validateStorage }),
+  };
 };

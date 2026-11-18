@@ -1,8 +1,8 @@
 import { accordionItemAttrsShape, validateComponentAttrs } from "#dom-attrs";
 
 import type {
-	ValidateAccordionItemPlacementParams,
-	ValidateAccordionItemPlacementResult,
+  ValidateAccordionItemPlacementParams,
+  ValidateAccordionItemPlacementResult,
 } from "./ValidateAccordionItemPlacement-types";
 
 /*
@@ -10,18 +10,18 @@ import type {
  * the mismatch, or null when they're valid.
  */
 export const validateAccordionItemPlacement = ({
-	attrValidators,
-	attrs,
+  attrValidators,
+  attrs,
 }: ValidateAccordionItemPlacementParams): ValidateAccordionItemPlacementResult => {
-	const attrsMismatch = validateComponentAttrs({
-		componentAttrs: attrs,
-		componentAttrsShape: accordionItemAttrsShape,
-		componentAttrValidators: attrValidators,
-	});
+  const attrsMismatch = validateComponentAttrs({
+    componentAttrs: attrs,
+    componentAttrsShape: accordionItemAttrsShape,
+    componentAttrValidators: attrValidators,
+  });
 
-	if (attrsMismatch) {
-		return attrsMismatch;
-	}
+  if (attrsMismatch) {
+    return attrsMismatch;
+  }
 
-	return null;
+  return null;
 };

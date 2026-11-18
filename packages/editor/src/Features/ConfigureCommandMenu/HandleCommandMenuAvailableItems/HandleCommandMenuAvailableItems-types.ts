@@ -10,17 +10,17 @@ export type BlockComponentItemValue = Exclude<CommandMenuItemValue, BlockContent
 export type BlockComponentItems = Record<BlockComponentItemValue, BlockComponentName>;
 
 export interface IsItemAvailableParams {
-	value: CommandMenuItemValue;
-	adapterBus: AdapterBus;
-	editorAPI: EditorAPI;
-	blockComponentPlacement: BlockComponentPlacement;
+  value: CommandMenuItemValue;
+  adapterBus: AdapterBus;
+  editorAPI: EditorAPI;
+  blockComponentPlacement: BlockComponentPlacement;
 }
 
 export type IsItemAvailableResult = boolean;
 
 export interface HandleCommandMenuAvailableItemsParams {
-	configPort: CommandMenuConfigPort;
-	adapterBus: AdapterBus;
-	editorAPI: EditorAPI;
-	blockComponentPlacement: BlockComponentPlacement;
+  configPort: CommandMenuConfigPort;
+  adapterBus: AdapterBus;
+  editorAPI: EditorAPI;
+  blockComponentPlacement: BlockComponentPlacement;
 }

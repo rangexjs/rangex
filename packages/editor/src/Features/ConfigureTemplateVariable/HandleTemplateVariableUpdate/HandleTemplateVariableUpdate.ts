@@ -10,62 +10,62 @@ import type { HandleTemplateVariableUpdateParams } from "./HandleTemplateVariabl
  * function.
  */
 export const handleTemplateVariableUpdate = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleTemplateVariableUpdateParams) => {
-	const unsubscribe = configPort.onChangeFields((fields) => {
-		const { rootEditable } = editorAPI;
+  const unsubscribe = configPort.onChangeFields((fields) => {
+    const { rootEditable } = editorAPI;
 
-		const rootStorage = getRootStorage({ rootEditable });
-		const { templateVariable: storage } = rootStorage;
+    const rootStorage = getRootStorage({ rootEditable });
+    const { templateVariable: storage } = rootStorage;
 
-		let hasChanged = false;
+    let hasChanged = false;
 
-		for (const [name, value] of Object.entries(fields)) {
-			if (!Object.hasOwn(configPort.fieldsConfig, name)) {
-				console.warn(`Template variable field "${name}" is not declared.`);
-				continue;
-			}
+    for (const [name, value] of Object.entries(fields)) {
+      if (!Object.hasOwn(configPort.fieldsConfig, name)) {
+        console.warn(`Template variable field "${name}" is not declared.`);
+        continue;
+      }
 
-			if (storage[name] === value) {
-				continue;
-			}
+      if (storage[name] === value) {
+        continue;
+      }
 
-			const fieldMismatch = validateTemplateVariableField({
-				fieldName: name,
-				value,
-				storage,
-			});
+      const fieldMismatch = validateTemplateVariableField({
+        fieldName: name,
+        value,
+        storage,
+      });
 
-			if (fieldMismatch) {
-				console.warn(`Template variable field "${name}":`, fieldMismatch);
-				continue;
-			}
+      if (fieldMismatch) {
+        console.warn(`Template variable field "${name}":`, fieldMismatch);
+        continue;
+      }
 
-			storage[name] = value;
-			hasChanged = true;
-		}
+      storage[name] = value;
+      hasChanged = true;
+    }
 
-		if (!hasChanged) {
-			return;
-		}
+    if (!hasChanged) {
+      return;
+    }
 
-		configPort.updateState({ fields: { ...storage } });
+    configPort.updateState({ fields: { ...storage } });
 
-		updateAllTemplateVariableNodes({
-			rootEditable,
-			storage,
-			fieldsConfig: configPort.fieldsConfig,
-		});
+    updateAllTemplateVariableNodes({
+      rootEditable,
+      storage,
+      fieldsConfig: configPort.fieldsConfig,
+    });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

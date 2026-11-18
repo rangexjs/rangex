@@ -8,23 +8,23 @@ import type { HandleTodoListPlacementStateParams } from "./HandleTodoListPlaceme
  * content. Returns a cleanup function.
  */
 export const handleTodoListPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleTodoListPlacementStateParams) => {
-	return handleSelectionContextChange({
-		editorAPI,
-		onChange: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.todoList],
-			});
-			const canWrap = blockComponentPlacement.canWrapBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.todoList],
-			});
+  return handleSelectionContextChange({
+    editorAPI,
+    onChange: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.todoList],
+      });
+      const canWrap = blockComponentPlacement.canWrapBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.todoList],
+      });
 
-			configPort.updateState({ canInsert, canWrap });
-		},
-	});
+      configPort.updateState({ canInsert, canWrap });
+    },
+  });
 };

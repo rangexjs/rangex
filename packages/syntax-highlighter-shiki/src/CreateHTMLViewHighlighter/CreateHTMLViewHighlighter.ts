@@ -15,24 +15,24 @@ import type { CreateHTMLViewHighlighterParams } from "./CreateHTMLViewHighlighte
  * answered with `null`, which leaves the code block unhighlighted.
  */
 export const createHTMLViewHighlighter = ({
-	langs,
-	themes,
+  langs,
+  themes,
 }: CreateHTMLViewHighlighterParams): HighlightCodeFn => {
-	const highlighter = createHighlighterCoreSync({
-		langs,
-		themes,
-		engine: createJavaScriptRegexEngine(),
-	});
+  const highlighter = createHighlighterCoreSync({
+    langs,
+    themes,
+    engine: createJavaScriptRegexEngine(),
+  });
 
-	return ({ lines, language, theme }) => {
-		try {
-			return tokenizeCode({ highlighter, lines, language, theme });
-		} catch (error) {
-			console.warn(
-				`[syntax-highlighter-shiki] Failed to highlight language "${language}" with theme "${theme.light}"/"${theme.dark}".`,
-				error,
-			);
-			return null;
-		}
-	};
+  return ({ lines, language, theme }) => {
+    try {
+      return tokenizeCode({ highlighter, lines, language, theme });
+    } catch (error) {
+      console.warn(
+        `[syntax-highlighter-shiki] Failed to highlight language "${language}" with theme "${theme.light}"/"${theme.dark}".`,
+        error,
+      );
+      return null;
+    }
+  };
 };

@@ -1,39 +1,39 @@
 {
-	"name": "rangex",
-	"type": "module",
-	"license": "MIT",
-	"private": true,
-	"packageManager": "npm@11.19.1",
-	"workspaces": [
-		"packages/editor",
-		"packages/solid",
-		"packages/syntax-highlighter-shiki",
-		"packages/rich-text-editor"
-	],
-	"scripts": {
-		"dev": "vp dev",
-		"build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"fix": "vp check --fix index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"lint": "vp check index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
-		"set-version": "node scripts/set-version.js",
-		"publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag beta"
-	},
-	"dependencies": {
-		"@rangex/rich-text-editor": "*",
-		"@rangex/syntax-highlighter-shiki": "*",
-		"@shikijs/langs": "^4.3.1",
-		"@shikijs/themes": "^4.3.1",
-		"@solidjs/web": "2.0.0-rc.13",
-		"@tailwindcss/vite": "^4.3.3",
-		"solid-js": "2.0.0-rc.13",
-		"tailwindcss": "^4.3.3"
-	},
-	"devDependencies": {
-		"@solidjs/vite-plugin": "3.0.0-next.47",
-		"typescript": "^7.0.2",
-		"vite-plus": "1.6.0"
-	},
-	"overrides": {
-		"vite": "npm:@voidzero-dev/vite-plus-core@1.6.0"
-	}
+  "name": "rangex",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "npm@11.19.1",
+  "workspaces": [
+    "packages/editor",
+    "packages/solid",
+    "packages/syntax-highlighter-shiki",
+    "packages/rich-text-editor"
+  ],
+  "scripts": {
+    "dev": "vp dev",
+    "build": "npm run build -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+    "fix": "vp check --fix index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+    "lint": "vp check index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
+    "set-version": "node scripts/set-version.js",
+    "publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag beta"
+  },
+  "dependencies": {
+    "@rangex/rich-text-editor": "*",
+    "@rangex/syntax-highlighter-shiki": "*",
+    "@shikijs/langs": "^4.3.1",
+    "@shikijs/themes": "^4.3.1",
+    "@solidjs/web": "2.0.0-rc.13",
+    "@tailwindcss/vite": "^4.3.3",
+    "solid-js": "2.0.0-rc.13",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@solidjs/vite-plugin": "3.0.0-next.47",
+    "typescript": "^7.0.2",
+    "vite-plus": "1.6.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.6.0"
+  }
 }

@@ -3,20 +3,20 @@ import { videoAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-	getMediaParts,
-	handleBlockAlignState,
-	handleBlockResizeAppearance,
-	handleCaptionState,
-	handleDOMAttrs,
-	handleQuickActionsAppearance,
-	handleSelectionComponent,
-	handleSwapToSourcePlaceholder,
+  getMediaParts,
+  handleBlockAlignState,
+  handleBlockResizeAppearance,
+  handleCaptionState,
+  handleDOMAttrs,
+  handleQuickActionsAppearance,
+  handleSelectionComponent,
+  handleSwapToSourcePlaceholder,
 } from "../_Utilities";
 import {
-	getVideoCaption,
-	getVideoFigure,
-	setVideoCaptionEnabled,
-	setVideoCaptionPosition,
+  getVideoCaption,
+  getVideoFigure,
+  setVideoCaptionEnabled,
+  setVideoCaptionPosition,
 } from "./_Utilities";
 import type { ConfigureVideoParams } from "./ConfigureVideo-types";
 import { handleVideoInsertion } from "./HandleVideoInsertion";
@@ -26,79 +26,79 @@ import { handleVideoInsertion } from "./HandleVideoInsertion";
  * source-placeholder swap behavior. Returns a cleanup function that tears down all of it.
  */
 export const configureVideo = ({ adapterBus, configPort, editorAPI }: ConfigureVideoParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.video,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.video,
+  });
 
-	const insertionCleanup = handleVideoInsertion({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const insertionCleanup = handleVideoInsertion({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const quickActionsCleanup = handleQuickActionsAppearance({
-		port: configPort,
-		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.video,
-	});
+  const quickActionsCleanup = handleQuickActionsAppearance({
+    port: configPort,
+    quickActionsPort: configPort.quickActions,
+    editorAPI,
+    componentName: componentsName.video,
+  });
 
-	const resizeAppearanceCleanup = handleBlockResizeAppearance({
-		blockResize: configPort.blockResize,
-		editorAPI,
-		componentName: componentsName.video,
-	});
+  const resizeAppearanceCleanup = handleBlockResizeAppearance({
+    blockResize: configPort.blockResize,
+    editorAPI,
+    componentName: componentsName.video,
+  });
 
-	const alignStateCleanup = handleBlockAlignState({
-		port: configPort,
-		editorAPI,
-	});
+  const alignStateCleanup = handleBlockAlignState({
+    port: configPort,
+    editorAPI,
+  });
 
-	const captionStateCleanup = handleCaptionState({
-		port: configPort,
-		editorAPI,
-		getFigure: getVideoFigure,
-		getCaption: getVideoCaption,
-		setCaptionEnabled: setVideoCaptionEnabled,
-		setCaptionPosition: setVideoCaptionPosition,
-	});
+  const captionStateCleanup = handleCaptionState({
+    port: configPort,
+    editorAPI,
+    getFigure: getVideoFigure,
+    getCaption: getVideoCaption,
+    setCaptionEnabled: setVideoCaptionEnabled,
+    setCaptionPosition: setVideoCaptionPosition,
+  });
 
-	const domAttrsCleanup = handleDOMAttrs({
-		currentComponentPort: configPort,
-		domAttrsPort: configPort,
-		editorAPI,
-		componentAttrsShape: videoAttrsShape,
-		componentAttrValidators: configPort.attrValidators,
-		resolveElements: (video) => {
-			const { line, block, media } = getMediaParts({
-				blockComponent: video,
-				mediaLocalName: "video",
-			});
+  const domAttrsCleanup = handleDOMAttrs({
+    currentComponentPort: configPort,
+    domAttrsPort: configPort,
+    editorAPI,
+    componentAttrsShape: videoAttrsShape,
+    componentAttrValidators: configPort.attrValidators,
+    resolveElements: (video) => {
+      const { line, block, media } = getMediaParts({
+        blockComponent: video,
+        mediaLocalName: "video",
+      });
 
-			return { line, block, video: media };
-		},
-	});
+      return { line, block, video: media };
+    },
+  });
 
-	const swapCleanup = handleSwapToSourcePlaceholder({
-		port: configPort,
-		editorAPI,
-	});
+  const swapCleanup = handleSwapToSourcePlaceholder({
+    port: configPort,
+    editorAPI,
+  });
 
-	return () => {
-		selectionComponentCleanup();
-		insertionCleanup();
-		quickActionsCleanup();
-		resizeAppearanceCleanup();
-		alignStateCleanup();
-		captionStateCleanup();
-		domAttrsCleanup();
-		swapCleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    insertionCleanup();
+    quickActionsCleanup();
+    resizeAppearanceCleanup();
+    alignStateCleanup();
+    captionStateCleanup();
+    domAttrsCleanup();
+    swapCleanup();
+  };
 };

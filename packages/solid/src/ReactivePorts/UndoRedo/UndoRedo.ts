@@ -5,22 +5,22 @@ import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveUndoRedoPort } from "./UndoRedo-types";
 
 export const UndoRedo = <T extends UndoRedoPublicPort | undefined>(
-	publicPort: T,
+  publicPort: T,
 ): PreserveUndefined<T, ReactiveUndoRedoPort> => {
-	if (!publicPort) {
-		return undefined as PreserveUndefined<T, ReactiveUndoRedoPort>;
-	}
+  if (!publicPort) {
+    return undefined as PreserveUndefined<T, ReactiveUndoRedoPort>;
+  }
 
-	const [canStepBack, setCanStepBack] = createSignal(publicPort.canStepBack);
-	const [canStepForward, setCanStepForward] = createSignal(publicPort.canStepForward);
+  const [canStepBack, setCanStepBack] = createSignal(publicPort.canStepBack);
+  const [canStepForward, setCanStepForward] = createSignal(publicPort.canStepForward);
 
-	onCleanup(publicPort.onCanStepBackUpdate(setCanStepBack));
-	onCleanup(publicPort.onCanStepForwardUpdate(setCanStepForward));
+  onCleanup(publicPort.onCanStepBackUpdate(setCanStepBack));
+  onCleanup(publicPort.onCanStepForwardUpdate(setCanStepForward));
 
-	const port: ReactiveUndoRedoPort = {
-		canStepBack,
-		canStepForward,
-	};
+  const port: ReactiveUndoRedoPort = {
+    canStepBack,
+    canStepForward,
+  };
 
-	return port as PreserveUndefined<T, ReactiveUndoRedoPort>;
+  return port as PreserveUndefined<T, ReactiveUndoRedoPort>;
 };

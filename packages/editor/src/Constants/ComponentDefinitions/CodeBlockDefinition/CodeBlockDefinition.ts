@@ -5,13 +5,13 @@ import type { CodeBlockDefinition } from "./CodeBlockDefinition-types";
  * must match it. A line is plain text: no component, line tag, style or inline tag is allowed in it.
  */
 export const codeBlockDefinition = {
-	lineNestedEditableProps: {
-		display: "block single-line",
-		editState: "inherit",
-		allowedComponents: [],
-		allowedContentLineLocalNames: [],
-		allowedContentLineStyleAttrNames: [],
-		allowedGlyphFormatterStyleAttrNames: [],
-		allowedGlyphFormatterInlineTags: [],
-	},
+  lineNestedEditableProps: {
+    display: "block single-line",
+    editState: "inherit",
+    allowedComponents: [],
+    allowedContentLineLocalNames: [],
+    allowedContentLineStyleAttrNames: [],
+    allowedGlyphFormatterStyleAttrNames: [],
+    allowedGlyphFormatterInlineTags: [],
+  },
 } satisfies CodeBlockDefinition;

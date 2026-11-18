@@ -1,8 +1,8 @@
 import {
-	createRichTextEditor,
-	type Extension,
-	type SnapshotSchema,
-	type StoredSnapshot,
+  createRichTextEditor,
+  type Extension,
+  type SnapshotSchema,
+  type StoredSnapshot,
 } from "@rangex/rich-text-editor";
 import { AccordionItem } from "@rangex/rich-text-editor/accordion-item";
 import { Audio } from "@rangex/rich-text-editor/audio";
@@ -32,103 +32,103 @@ import { Video } from "@rangex/rich-text-editor/video";
 
 import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
 import {
-	codeBlockSettings,
-	embedAttrValidators,
-	formattingSettings,
-	markdownSettings,
-	mentionSettings,
-	sourcePlaceholderSettings,
-	templateVariableSettings,
+  codeBlockSettings,
+  embedAttrValidators,
+  formattingSettings,
+  markdownSettings,
+  mentionSettings,
+  sourcePlaceholderSettings,
+  templateVariableSettings,
 } from "../ExtensionSettings";
 
 const licenseKey =
-	"eyJ2IjoxLCJraWQiOiJ0ZXN0LTEiLCJjaWQiOiI5NjFiN2FmMS05NTdhLTRiNmMtYjQ2OS0wMjM1MDdkZmQxZDQiLCJ0aWVyIjoiZnJlZSIsImlzc3VlZCI6IjIwMjYtMTAtMDIiLCJleHBpcmVzIjoiMjAyNy0wNC0wMiJ9.j3XyNzZIObuMhOJEBD1C13i1bHtP9-PQ8rUQ1atZQniT8dtEC55GsFB9ENSaX_U92G4l_SlZJOiHB4kzsRWHAw";
+  "eyJ2IjoxLCJraWQiOiJ0ZXN0LTEiLCJjaWQiOiI5NjFiN2FmMS05NTdhLTRiNmMtYjQ2OS0wMjM1MDdkZmQxZDQiLCJ0aWVyIjoiZnJlZSIsImlzc3VlZCI6IjIwMjYtMTAtMDIiLCJleHBpcmVzIjoiMjAyNy0wNC0wMiJ9.j3XyNzZIObuMhOJEBD1C13i1bHtP9-PQ8rUQ1atZQniT8dtEC55GsFB9ENSaX_U92G4l_SlZJOiHB4kzsRWHAw";
 
 const snapshotSchema: SnapshotSchema = {
-	limits: {
-		maxDepth: 100,
-		maxNodeCount: 50_000,
-		maxTextLength: 100_000,
-	},
-	root: { types: ["rich-text"] },
-	components: {
-		accordionItem: {},
-		audio: {},
-		blockQuote: {},
-		codeBlock: {},
-		embed: { attrValidators: embedAttrValidators },
-		sourcePlaceholder: {},
-		image: {},
-		link: {},
-		list: {},
-		mention: {},
-		separator: {},
-		table: {},
-		templateVariable: {},
-		todoList: {},
-		video: {},
-	},
+  limits: {
+    maxDepth: 100,
+    maxNodeCount: 50_000,
+    maxTextLength: 100_000,
+  },
+  root: { types: ["rich-text"] },
+  components: {
+    accordionItem: {},
+    audio: {},
+    blockQuote: {},
+    codeBlock: {},
+    embed: { attrValidators: embedAttrValidators },
+    sourcePlaceholder: {},
+    image: {},
+    link: {},
+    list: {},
+    mention: {},
+    separator: {},
+    table: {},
+    templateVariable: {},
+    todoList: {},
+    video: {},
+  },
 };
 
 export const initRichTextEditor = () => {
-	const extensions: Extension[] = [
-		AccordionItem({}),
-		Audio({}),
-		BlockQuote({}),
-		Embed({}),
-		Emoji({}),
-		SourcePlaceholder(sourcePlaceholderSettings),
-		FindReplace({}),
-		Formatting(formattingSettings),
-		CodeBlock(codeBlockSettings),
-		CommandMenu({}),
-		Image({}),
-		LineHandler({}),
-		Link({}),
-		List({}),
-		Markdown(markdownSettings),
-		Mention(mentionSettings),
-		ReadOnly({}),
-		Separator({}),
-		Shortcuts({}),
-		Symbols({}),
-		Table({}),
-		TemplateVariable(templateVariableSettings),
-		TodoList({}),
-		UndoRedo({}),
-		Video({}),
-	];
+  const extensions: Extension[] = [
+    AccordionItem({}),
+    Audio({}),
+    BlockQuote({}),
+    Embed({}),
+    Emoji({}),
+    SourcePlaceholder(sourcePlaceholderSettings),
+    FindReplace({}),
+    Formatting(formattingSettings),
+    CodeBlock(codeBlockSettings),
+    CommandMenu({}),
+    Image({}),
+    LineHandler({}),
+    Link({}),
+    List({}),
+    Markdown(markdownSettings),
+    Mention(mentionSettings),
+    ReadOnly({}),
+    Separator({}),
+    Shortcuts({}),
+    Symbols({}),
+    Table({}),
+    TemplateVariable(templateVariableSettings),
+    TodoList({}),
+    UndoRedo({}),
+    Video({}),
+  ];
 
-	const snapshot = (() => {
-		try {
-			const snap = localStorage.getItem("snapshot");
+  const snapshot = (() => {
+    try {
+      const snap = localStorage.getItem("snapshot");
 
-			if (snap) {
-				return JSON.parse(snap);
-			}
-			throw new Error("");
-		} catch {
-			return storedSnapshot;
-		}
-	})();
+      if (snap) {
+        return JSON.parse(snap);
+      }
+      throw new Error("");
+    } catch {
+      return storedSnapshot;
+    }
+  })();
 
-	const richTextEditor = createRichTextEditor({
-		licenseKey,
-		storedSnapshot: snapshot as StoredSnapshot,
-		snapshotSchema,
-		extensions,
-	});
+  const richTextEditor = createRichTextEditor({
+    licenseKey,
+    storedSnapshot: snapshot as StoredSnapshot,
+    snapshotSchema,
+    extensions,
+  });
 
-	// @ts-expect-error
-	window.addSnapshot = () => {
-		const snap = richTextEditor.createStoredSnapshot();
-		localStorage.setItem("snapshot", JSON.stringify(snap));
-	};
+  // @ts-expect-error
+  window.addSnapshot = () => {
+    const snap = richTextEditor.createStoredSnapshot();
+    localStorage.setItem("snapshot", JSON.stringify(snap));
+  };
 
-	// @ts-expect-error
-	window.removeSnapshot = () => {
-		localStorage.removeItem("snapshot");
-	};
+  // @ts-expect-error
+  window.removeSnapshot = () => {
+    localStorage.removeItem("snapshot");
+  };
 
-	return richTextEditor;
+  return richTextEditor;
 };

@@ -1,16 +1,16 @@
 export type OnUnwrapCallbackFn = () => void;
 
 export interface UnwrapConfigPort {
-	onUnwrap(callback: OnUnwrapCallbackFn): () => void;
+  onUnwrap(callback: OnUnwrapCallbackFn): () => void;
 }
 
 export interface UnwrapPublicPort {
-	unwrap(): void;
+  unwrap(): void;
 }
 
 export interface UnwrapPort {
-	configPort: UnwrapConfigPort;
-	publicPort: UnwrapPublicPort;
+  configPort: UnwrapConfigPort;
+  publicPort: UnwrapPublicPort;
 }
 
 export interface CreateUnwrapPortResult extends UnwrapPort {}

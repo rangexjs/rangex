@@ -12,36 +12,36 @@ import { handleCommandMenuBeforeSelect } from "./HandleCommandMenuBeforeSelect";
  * cleanup function.
  */
 export const configureCommandMenu = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureCommandMenuParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const availableItemsCleanup = handleCommandMenuAvailableItems({
-		configPort,
-		adapterBus,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const availableItemsCleanup = handleCommandMenuAvailableItems({
+    configPort,
+    adapterBus,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const beforeSelectCleanup = handleCommandMenuBeforeSelect({
-		configPort,
-		editorAPI,
-	});
+  const beforeSelectCleanup = handleCommandMenuBeforeSelect({
+    configPort,
+    editorAPI,
+  });
 
-	const caretMenuCleanup = handleCaretMenuAppearance({
-		port: configPort.caretMenu,
-		editorAPI,
-		getQuery: getCommandMenuQuery,
-	});
+  const caretMenuCleanup = handleCaretMenuAppearance({
+    port: configPort.caretMenu,
+    editorAPI,
+    getQuery: getCommandMenuQuery,
+  });
 
-	return () => {
-		availableItemsCleanup();
-		beforeSelectCleanup();
-		caretMenuCleanup();
-	};
+  return () => {
+    availableItemsCleanup();
+    beforeSelectCleanup();
+    caretMenuCleanup();
+  };
 };

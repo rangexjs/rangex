@@ -4,28 +4,28 @@ import type { HighlightCodeFn, ThemedChars } from "#adapters/CodeBlock";
 import type { CodeBlockStorage } from "#storage";
 
 export interface HighlightCodeBlocksParams {
-	nodeView: NodeView;
-	highlightCode: HighlightCodeFn;
+  nodeView: NodeView;
+  highlightCode: HighlightCodeFn;
 }
 
 export interface HighlightCodeBlockParams {
-	elementView: ElementView;
-	codeBlockStorage: CodeBlockStorage;
-	highlightCode: HighlightCodeFn;
+  elementView: ElementView;
+  codeBlockStorage: CodeBlockStorage;
+  highlightCode: HighlightCodeFn;
 }
 
 export interface GetContentLinesParams {
-	elementView: ElementView;
+  elementView: ElementView;
 }
 
 export type GetContentLinesResult = ElementView[];
 
 export interface GetLineTextParams {
-	contentLine: ElementView;
+  contentLine: ElementView;
 }
 
 export type GetLineTextResult = string;
 
 export interface CreateTokenViewParams {
-	themedChars: ThemedChars;
+  themedChars: ThemedChars;
 }

@@ -1,19 +1,19 @@
 import type { CreateImageAttrValidatorsParams, ImageAttrValidators } from "#dom-attrs";
 
 import type {
-	ComponentValidator,
-	ValidateComponentParams,
-	ValidateComponentResult,
+  ComponentValidator,
+  ValidateComponentParams,
+  ValidateComponentResult,
 } from "../../ValidateSnapshot-types";
 
 export interface ValidateImageParams extends ValidateComponentParams {
-	attrValidators: ImageAttrValidators;
+  attrValidators: ImageAttrValidators;
 }
 
 export type ValidateImageResult = ValidateComponentResult;
 
 export interface CreateImageValidatorParams {
-	attrValidators?: CreateImageAttrValidatorsParams;
+  attrValidators?: CreateImageAttrValidatorsParams;
 }
 
 export type CreateImageValidatorResult = ComponentValidator;

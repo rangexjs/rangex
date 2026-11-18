@@ -1,8 +1,8 @@
 import {
-	handleCaretMenuAppearance,
-	handleComponentUnwrap,
-	validateTemplateVariableFieldName,
-	validateTemplateVariableFieldValue,
+  handleCaretMenuAppearance,
+  handleComponentUnwrap,
+  validateTemplateVariableFieldName,
+  validateTemplateVariableFieldValue,
 } from "../_Utilities";
 import { getTemplateVariableQuery } from "./_Utilities";
 import type { ConfigureTemplateVariableParams } from "./ConfigureTemplateVariable-types";
@@ -18,56 +18,56 @@ import { handleTemplateVariableUpdate } from "./HandleTemplateVariableUpdate";
  * Returns a cleanup function.
  */
 export const configureTemplateVariable = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: ConfigureTemplateVariableParams) => {
-	configPort.registerValidateFieldName((fieldName) =>
-		validateTemplateVariableFieldName({ fieldName }),
-	);
+  configPort.registerValidateFieldName((fieldName) =>
+    validateTemplateVariableFieldName({ fieldName }),
+  );
 
-	configPort.registerValidateFieldValue((value) => validateTemplateVariableFieldValue({ value }));
+  configPort.registerValidateFieldValue((value) => validateTemplateVariableFieldValue({ value }));
 
-	handleTemplateVariableInitialization({ configPort, editorAPI });
+  handleTemplateVariableInitialization({ configPort, editorAPI });
 
-	const placementStateCleanup = handleTemplateVariablePlacementState({
-		configPort,
-		editorAPI,
-	});
+  const placementStateCleanup = handleTemplateVariablePlacementState({
+    configPort,
+    editorAPI,
+  });
 
-	const insertionCleanup = handleTemplateVariableInsertion({
-		configPort,
-		editorAPI,
-	});
+  const insertionCleanup = handleTemplateVariableInsertion({
+    configPort,
+    editorAPI,
+  });
 
-	const updateCleanup = handleTemplateVariableUpdate({
-		configPort,
-		editorAPI,
-	});
+  const updateCleanup = handleTemplateVariableUpdate({
+    configPort,
+    editorAPI,
+  });
 
-	const selectCleanup = handleTemplateVariableSelect({
-		configPort,
-		editorAPI,
-	});
+  const selectCleanup = handleTemplateVariableSelect({
+    configPort,
+    editorAPI,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		// TODO: resolve the component once template variable unwrapping is wired up
-		getComponent: () => null,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    // TODO: resolve the component once template variable unwrapping is wired up
+    getComponent: () => null,
+  });
 
-	const caretMenuCleanup = handleCaretMenuAppearance({
-		port: configPort.caretMenu,
-		editorAPI,
-		getQuery: getTemplateVariableQuery,
-	});
+  const caretMenuCleanup = handleCaretMenuAppearance({
+    port: configPort.caretMenu,
+    editorAPI,
+    getQuery: getTemplateVariableQuery,
+  });
 
-	return () => {
-		placementStateCleanup();
-		insertionCleanup();
-		updateCleanup();
-		selectCleanup();
-		unwrapCleanup();
-		caretMenuCleanup();
-	};
+  return () => {
+    placementStateCleanup();
+    insertionCleanup();
+    updateCleanup();
+    selectCleanup();
+    unwrapCleanup();
+    caretMenuCleanup();
+  };
 };

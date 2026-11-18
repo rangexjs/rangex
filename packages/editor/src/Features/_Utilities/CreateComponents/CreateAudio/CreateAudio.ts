@@ -1,8 +1,8 @@
 import {
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createHTMLLayout,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createHTMLLayout,
 } from "@rangex/core";
 
 import { componentsName } from "#constants";
@@ -16,30 +16,30 @@ import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
  * and `audio`. They aren't validated here.
  */
 export const createAudio = ({ attrs }: CreateAudioParams): CreateAudioResult => {
-	return createBlockComponentLine({
-		domAttrs: toDOMAttrs(attrs.line),
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.audio,
-			content: { type: "custom" },
-			customStorage: createAudioStorage(),
-			editState: "false",
-			shouldSelectOnNavigation: true,
-			shouldSelectBeforeRemove: true,
-			domAttrs: toDOMAttrs(attrs.block),
-			childNodes: [
-				createHTMLLayout({
-					localName: "figure",
-					childNodes: [
-						createHTMLLayout({
-							localName: "audio",
-							domAttrs: toDOMAttrs(attrs.audio),
-							childNodes: [],
-						}),
-					],
-				}),
-			],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  return createBlockComponentLine({
+    domAttrs: toDOMAttrs(attrs.line),
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.audio,
+      content: { type: "custom" },
+      customStorage: createAudioStorage(),
+      editState: "false",
+      shouldSelectOnNavigation: true,
+      shouldSelectBeforeRemove: true,
+      domAttrs: toDOMAttrs(attrs.block),
+      childNodes: [
+        createHTMLLayout({
+          localName: "figure",
+          childNodes: [
+            createHTMLLayout({
+              localName: "audio",
+              domAttrs: toDOMAttrs(attrs.audio),
+              childNodes: [],
+            }),
+          ],
+        }),
+      ],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 };

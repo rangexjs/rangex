@@ -4,21 +4,21 @@ import { createSignal, onCleanup } from "solid-js";
 import type { FromFormattingToReactivePort, ReactiveLineHeightPort } from "./_Utilities";
 
 export const LineHeight = <T extends FormattingPublicPort | undefined>(
-	formatting: T,
+  formatting: T,
 ): FromFormattingToReactivePort<T, ReactiveLineHeightPort> => {
-	if (!formatting) {
-		return undefined as FromFormattingToReactivePort<T, ReactiveLineHeightPort>;
-	}
+  if (!formatting) {
+    return undefined as FromFormattingToReactivePort<T, ReactiveLineHeightPort>;
+  }
 
-	const [state, setState] = createSignal(formatting.lineHeight);
+  const [state, setState] = createSignal(formatting.lineHeight);
 
-	onCleanup(formatting.onLineHeightUpdate(setState));
+  onCleanup(formatting.onLineHeightUpdate(setState));
 
-	const port: ReactiveLineHeightPort = {
-		disabled: () => state().disabled,
-		hasUnset: () => state().hasUnset,
-		values: () => state().values,
-	};
+  const port: ReactiveLineHeightPort = {
+    disabled: () => state().disabled,
+    hasUnset: () => state().hasUnset,
+    values: () => state().values,
+  };
 
-	return port as FromFormattingToReactivePort<T, ReactiveLineHeightPort>;
+  return port as FromFormattingToReactivePort<T, ReactiveLineHeightPort>;
 };

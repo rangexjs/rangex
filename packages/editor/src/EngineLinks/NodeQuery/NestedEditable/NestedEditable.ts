@@ -1,31 +1,31 @@
 import { isEditorElement, nestedEditableRole } from "@rangex/core";
 
 import type {
-	GetClosestNestedEditableParams,
-	GetClosestNestedEditableResult,
+  GetClosestNestedEditableParams,
+  GetClosestNestedEditableResult,
 } from "./NestedEditable-types";
 
 export const getClosestNestedEditable = ({
-	fromNode,
-	display,
+  fromNode,
+  display,
 }: GetClosestNestedEditableParams): GetClosestNestedEditableResult => {
-	const { $$parentElement } = fromNode;
+  const { $$parentElement } = fromNode;
 
-	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
+  let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
-	while (parent) {
-		if (parent.$$editorRole === nestedEditableRole) {
-			if (!display) {
-				return parent;
-			}
+  while (parent) {
+    if (parent.$$editorRole === nestedEditableRole) {
+      if (!display) {
+        return parent;
+      }
 
-			if (parent.$$display === display) {
-				return parent;
-			}
-		}
+      if (parent.$$display === display) {
+        return parent;
+      }
+    }
 
-		parent = parent.$$parentElement;
-	}
+    parent = parent.$$parentElement;
+  }
 
-	return null;
+  return null;
 };

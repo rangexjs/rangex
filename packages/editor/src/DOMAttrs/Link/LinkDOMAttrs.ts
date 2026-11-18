@@ -3,34 +3,34 @@ import { htmlLayoutRole, xhtmlNamespaceURI } from "@rangex/core";
 import { isSafeURL, safeProtocols } from "#utilities";
 
 import {
-	type ComponentAttrsShape,
-	createComponentAttrValidators,
-	type ElementAttrsShape,
-	type ElementDescriptor,
-	type ValidateAttrFn,
-	validateTitle,
+  type ComponentAttrsShape,
+  createComponentAttrValidators,
+  type ElementAttrsShape,
+  type ElementDescriptor,
+  type ValidateAttrFn,
+  validateTitle,
 } from "../_Utilities";
 import type {
-	CreateLinkAttrValidatorsParams,
-	CreateLinkAttrValidatorsResult,
-	LinkAttrsPatch,
+  CreateLinkAttrValidatorsParams,
+  CreateLinkAttrValidatorsResult,
+  LinkAttrsPatch,
 } from "./LinkDOMAttrs-types";
 
 const anchorAttrsShape = {
-	href: "required",
-	target: "optional",
-	rel: "optional",
-	title: "optional",
+  href: "required",
+  target: "optional",
+  rel: "optional",
+  title: "optional",
 } as const satisfies ElementAttrsShape;
 
 const anchorElement: ElementDescriptor = {
-	localName: "a",
-	namespaceURI: xhtmlNamespaceURI,
-	editorRole: htmlLayoutRole,
+  localName: "a",
+  namespaceURI: xhtmlNamespaceURI,
+  editorRole: htmlLayoutRole,
 };
 
 export const linkAttrsShape = {
-	anchor: anchorAttrsShape,
+  anchor: anchorAttrsShape,
 } as const satisfies ComponentAttrsShape;
 
 /*
@@ -38,102 +38,102 @@ export const linkAttrsShape = {
  * stays on the page's host. An invalid one falls back to "#".
  */
 const validateHref: ValidateAttrFn<string> = ({ value }) => {
-	const baseURL = "https://base.invalid/";
-	const baseHost = "base.invalid";
-	const maxHrefLength = 8192;
-	const hrefFallback = "#";
+  const baseURL = "https://base.invalid/";
+  const baseHost = "base.invalid";
+  const maxHrefLength = 8192;
+  const hrefFallback = "#";
 
-	if (value.trim() === "") {
-		return {
-			kind: "fallback",
-			reason: "must not be empty",
-			value: hrefFallback,
-		};
-	}
+  if (value.trim() === "") {
+    return {
+      kind: "fallback",
+      reason: "must not be empty",
+      value: hrefFallback,
+    };
+  }
 
-	if (value.length > maxHrefLength) {
-		return {
-			kind: "fallback",
-			reason: `must be at most ${maxHrefLength} characters long`,
-			value: hrefFallback,
-		};
-	}
+  if (value.length > maxHrefLength) {
+    return {
+      kind: "fallback",
+      reason: `must be at most ${maxHrefLength} characters long`,
+      value: hrefFallback,
+    };
+  }
 
-	if (!isSafeURL(value)) {
-		return {
-			kind: "fallback",
-			reason: "must be a safe URL",
-			value: hrefFallback,
-		};
-	}
+  if (!isSafeURL(value)) {
+    return {
+      kind: "fallback",
+      reason: "must be a safe URL",
+      value: hrefFallback,
+    };
+  }
 
-	const isAbsolute = URL.canParse(value);
+  const isAbsolute = URL.canParse(value);
 
-	if (isAbsolute) {
-		return null;
-	}
+  if (isAbsolute) {
+    return null;
+  }
 
-	const resolvedURL = new URL(value, baseURL);
+  const resolvedURL = new URL(value, baseURL);
 
-	if (resolvedURL.host !== baseHost) {
-		return {
-			kind: "fallback",
-			reason: "must stay on the page's host",
-			value: hrefFallback,
-		};
-	}
+  if (resolvedURL.host !== baseHost) {
+    return {
+      kind: "fallback",
+      reason: "must stay on the page's host",
+      value: hrefFallback,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 const validateTarget: ValidateAttrFn<string | null> = ({ value }) => {
-	const allowedTargets = new Set(["_blank", "_self"]);
+  const allowedTargets = new Set(["_blank", "_self"]);
 
-	if (!allowedTargets.has(value)) {
-		return {
-			kind: "fallback",
-			reason: 'must be "_blank" or "_self"',
-			value: null,
-		};
-	}
+  if (!allowedTargets.has(value)) {
+    return {
+      kind: "fallback",
+      reason: 'must be "_blank" or "_self"',
+      value: null,
+    };
+  }
 
-	return null;
+  return null;
 };
 
 /*
  * A rel is valid if it has at least one token, and each of them is allowed and only listed once.
  */
 const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
-	const allowedRelTokens = new Set(["noopener", "noreferrer", "nofollow", "ugc", "sponsored"]);
+  const allowedRelTokens = new Set(["noopener", "noreferrer", "nofollow", "ugc", "sponsored"]);
 
-	const tokens = value.split(/\s+/);
-	const nonEmptyTokens = tokens.filter((token) => token !== "");
+  const tokens = value.split(/\s+/);
+  const nonEmptyTokens = tokens.filter((token) => token !== "");
 
-	if (!nonEmptyTokens.length) {
-		return {
-			kind: "fallback",
-			reason: "must contain at least one token",
-			value: null,
-		};
-	}
+  if (!nonEmptyTokens.length) {
+    return {
+      kind: "fallback",
+      reason: "must contain at least one token",
+      value: null,
+    };
+  }
 
-	const uniqueTokens = new Set(nonEmptyTokens);
+  const uniqueTokens = new Set(nonEmptyTokens);
 
-	if (uniqueTokens.size !== nonEmptyTokens.length) {
-		return { kind: "fallback", reason: "must not repeat a token", value: null };
-	}
+  if (uniqueTokens.size !== nonEmptyTokens.length) {
+    return { kind: "fallback", reason: "must not repeat a token", value: null };
+  }
 
-	for (const token of uniqueTokens) {
-		if (!allowedRelTokens.has(token)) {
-			return {
-				kind: "fallback",
-				reason: `must only contain ${[...allowedRelTokens].join(", ")}`,
-				value: null,
-			};
-		}
-	}
+  for (const token of uniqueTokens) {
+    if (!allowedRelTokens.has(token)) {
+      return {
+        kind: "fallback",
+        reason: `must only contain ${[...allowedRelTokens].join(", ")}`,
+        value: null,
+      };
+    }
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -141,24 +141,24 @@ const validateRel: ValidateAttrFn<string | null> = ({ value }) => {
  * An href left out (undefined) stays left out.
  */
 const normalizeHref = (href: string | undefined) => {
-	if (href === undefined) {
-		return href;
-	}
+  if (href === undefined) {
+    return href;
+  }
 
-	// An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
-	const keptHrefPrefixes = [...safeProtocols, "/", "./", "../", "?", "#"];
+  // An href starting with one of them is kept as it is, any other one is taken as an https URL without its scheme
+  const keptHrefPrefixes = [...safeProtocols, "/", "./", "../", "?", "#"];
 
-	const trimmedHref = href.trim();
+  const trimmedHref = href.trim();
 
-	if (trimmedHref === "") {
-		return trimmedHref;
-	}
+  if (trimmedHref === "") {
+    return trimmedHref;
+  }
 
-	const lowerCaseHref = trimmedHref.toLowerCase();
+  const lowerCaseHref = trimmedHref.toLowerCase();
 
-	const isKept = keptHrefPrefixes.some((prefix) => lowerCaseHref.startsWith(prefix));
+  const isKept = keptHrefPrefixes.some((prefix) => lowerCaseHref.startsWith(prefix));
 
-	return isKept ? trimmedHref : `https://${trimmedHref}`;
+  return isKept ? trimmedHref : `https://${trimmedHref}`;
 };
 
 /*
@@ -167,16 +167,16 @@ const normalizeHref = (href: string | undefined) => {
  * normalized values.
  */
 export const normalizeLinkAttrs = <TLinkAttrs extends LinkAttrsPatch>(
-	linkAttrs: TLinkAttrs,
+  linkAttrs: TLinkAttrs,
 ): TLinkAttrs => {
-	const { anchor } = linkAttrs;
+  const { anchor } = linkAttrs;
 
-	const normalizedLinkAttrs: TLinkAttrs = {
-		...linkAttrs,
-		anchor: { ...anchor, href: normalizeHref(anchor?.href) },
-	};
+  const normalizedLinkAttrs: TLinkAttrs = {
+    ...linkAttrs,
+    anchor: { ...anchor, href: normalizeHref(anchor?.href) },
+  };
 
-	return normalizedLinkAttrs;
+  return normalizedLinkAttrs;
 };
 
 /*
@@ -184,21 +184,21 @@ export const normalizeLinkAttrs = <TLinkAttrs extends LinkAttrsPatch>(
  * createComponentAttrValidators).
  */
 export const createLinkAttrValidators = (
-	validatorOverrides: CreateLinkAttrValidatorsParams,
+  validatorOverrides: CreateLinkAttrValidatorsParams,
 ): CreateLinkAttrValidatorsResult => {
-	const linkAttrValidators = createComponentAttrValidators({
-		componentAttrsShape: linkAttrsShape,
-		elementDescriptors: { anchor: anchorElement },
-		defaultValidators: {
-			anchor: {
-				href: validateHref,
-				target: validateTarget,
-				rel: validateRel,
-				title: validateTitle,
-			},
-		},
-		validatorOverrides,
-	});
+  const linkAttrValidators = createComponentAttrValidators({
+    componentAttrsShape: linkAttrsShape,
+    elementDescriptors: { anchor: anchorElement },
+    defaultValidators: {
+      anchor: {
+        href: validateHref,
+        target: validateTarget,
+        rel: validateRel,
+        title: validateTitle,
+      },
+    },
+    validatorOverrides,
+  });
 
-	return linkAttrValidators;
+  return linkAttrValidators;
 };

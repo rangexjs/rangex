@@ -3,11 +3,11 @@ import type { TableLimits } from "#constants";
 import { createEmitter } from "../CreateEmitter";
 import type { AdapterName } from "../Utilities-types";
 import type {
-	AttrValidatorsAdapterName,
-	AttrValidatorsByAdapter,
-	MediaResolveDetail,
-	OnMediaResolveCallbackFn,
-	OnSwapToSourcePlaceholderCallbackFn,
+  AttrValidatorsAdapterName,
+  AttrValidatorsByAdapter,
+  MediaResolveDetail,
+  OnMediaResolveCallbackFn,
+  OnSwapToSourcePlaceholderCallbackFn,
 } from "./AdapterBus-types";
 
 export const mediaTypes = ["audio", "embed", "image", "video"] satisfies AdapterName[];
@@ -19,74 +19,74 @@ export const mediaTypes = ["audio", "embed", "image", "video"] satisfies Adapter
  * createEditor registers them from the SnapshotSchema before any Adapter is created.
  */
 export class AdapterBus {
-	#registeredAdapters: Set<AdapterName> = new Set();
+  #registeredAdapters: Set<AdapterName> = new Set();
 
-	#registeredAttrValidators = new Map<
-		AttrValidatorsAdapterName,
-		AttrValidatorsByAdapter[AttrValidatorsAdapterName]
-	>();
+  #registeredAttrValidators = new Map<
+    AttrValidatorsAdapterName,
+    AttrValidatorsByAdapter[AttrValidatorsAdapterName]
+  >();
 
-	#tableLimits: TableLimits | null = null;
+  #tableLimits: TableLimits | null = null;
 
-	#mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
-	#swapToSourcePlaceholderEmitter = createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
+  #mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
+  #swapToSourcePlaceholderEmitter = createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
 
-	registerAdapter(name: AdapterName) {
-		this.#registeredAdapters.add(name);
-	}
+  registerAdapter(name: AdapterName) {
+    this.#registeredAdapters.add(name);
+  }
 
-	hasAdapter(name: AdapterName): boolean {
-		return this.#registeredAdapters.has(name);
-	}
+  hasAdapter(name: AdapterName): boolean {
+    return this.#registeredAdapters.has(name);
+  }
 
-	registerAttrValidators<Name extends AttrValidatorsAdapterName>(
-		name: Name,
-		attrValidators: AttrValidatorsByAdapter[Name],
-	) {
-		this.#registeredAttrValidators.set(name, attrValidators);
-	}
+  registerAttrValidators<Name extends AttrValidatorsAdapterName>(
+    name: Name,
+    attrValidators: AttrValidatorsByAdapter[Name],
+  ) {
+    this.#registeredAttrValidators.set(name, attrValidators);
+  }
 
-	getAttrValidators<Name extends AttrValidatorsAdapterName>(
-		name: Name,
-	): AttrValidatorsByAdapter[Name] {
-		const attrValidators = this.#registeredAttrValidators.get(name);
+  getAttrValidators<Name extends AttrValidatorsAdapterName>(
+    name: Name,
+  ): AttrValidatorsByAdapter[Name] {
+    const attrValidators = this.#registeredAttrValidators.get(name);
 
-		if (!attrValidators) {
-			throw new Error(
-				`${name} Adapter's attribute validators weren't registered: add it to the SnapshotSchema's components.`,
-			);
-		}
+    if (!attrValidators) {
+      throw new Error(
+        `${name} Adapter's attribute validators weren't registered: add it to the SnapshotSchema's components.`,
+      );
+    }
 
-		return attrValidators as AttrValidatorsByAdapter[Name];
-	}
+    return attrValidators as AttrValidatorsByAdapter[Name];
+  }
 
-	registerTableLimits(tableLimits: TableLimits) {
-		this.#tableLimits = tableLimits;
-	}
+  registerTableLimits(tableLimits: TableLimits) {
+    this.#tableLimits = tableLimits;
+  }
 
-	getTableLimits(): TableLimits {
-		if (!this.#tableLimits) {
-			throw new Error(
-				"Table Adapter's limits weren't registered: add it to the SnapshotSchema's components.",
-			);
-		}
+  getTableLimits(): TableLimits {
+    if (!this.#tableLimits) {
+      throw new Error(
+        "Table Adapter's limits weren't registered: add it to the SnapshotSchema's components.",
+      );
+    }
 
-		return this.#tableLimits;
-	}
+    return this.#tableLimits;
+  }
 
-	onMediaResolve(callback: OnMediaResolveCallbackFn) {
-		return this.#mediaResolveEmitter.subscribe(callback);
-	}
+  onMediaResolve(callback: OnMediaResolveCallbackFn) {
+    return this.#mediaResolveEmitter.subscribe(callback);
+  }
 
-	emitMediaResolve(params: MediaResolveDetail) {
-		this.#mediaResolveEmitter.emit(params);
-	}
+  emitMediaResolve(params: MediaResolveDetail) {
+    this.#mediaResolveEmitter.emit(params);
+  }
 
-	onSwapToSourcePlaceholder(callback: OnSwapToSourcePlaceholderCallbackFn) {
-		return this.#swapToSourcePlaceholderEmitter.subscribe(callback);
-	}
+  onSwapToSourcePlaceholder(callback: OnSwapToSourcePlaceholderCallbackFn) {
+    return this.#swapToSourcePlaceholderEmitter.subscribe(callback);
+  }
 
-	emitSwapToSourcePlaceholder() {
-		this.#swapToSourcePlaceholderEmitter.emit();
-	}
+  emitSwapToSourcePlaceholder() {
+    this.#swapToSourcePlaceholderEmitter.emit();
+  }
 }

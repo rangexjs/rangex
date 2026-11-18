@@ -11,37 +11,37 @@ import { handleSeparatorMarkdown } from "./HandleSeparatorMarkdown";
  * markdown) and returns their combined cleanup.
  */
 export const configureMarkdown = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureMarkdownParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const blockMarkdownCleanup = handleBlockMarkdown({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const blockMarkdownCleanup = handleBlockMarkdown({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const separatorMarkdownCleanup = handleSeparatorMarkdown({
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const separatorMarkdownCleanup = handleSeparatorMarkdown({
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const inlineMarkdownCleanup = handleInlineMarkdown({ editorAPI });
+  const inlineMarkdownCleanup = handleInlineMarkdown({ editorAPI });
 
-	const linkMarkdownCleanup = handleLinkMarkdown({
-		adapterBus,
-		editorAPI,
-	});
+  const linkMarkdownCleanup = handleLinkMarkdown({
+    adapterBus,
+    editorAPI,
+  });
 
-	return () => {
-		blockMarkdownCleanup();
-		separatorMarkdownCleanup();
-		inlineMarkdownCleanup();
-		linkMarkdownCleanup();
-	};
+  return () => {
+    blockMarkdownCleanup();
+    separatorMarkdownCleanup();
+    inlineMarkdownCleanup();
+    linkMarkdownCleanup();
+  };
 };

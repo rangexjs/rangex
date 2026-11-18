@@ -14,71 +14,71 @@ import { handleTurnInto } from "./HandleTurnInto";
  * down all of it.
  */
 export const configureLineHandler = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureLineHandlerParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const onLineChange = handleDragMenuState({
-		configPort,
-		blockComponentPlacement,
-	});
+  const onLineChange = handleDragMenuState({
+    configPort,
+    blockComponentPlacement,
+  });
 
-	const { getCurrentLine, cleanup: hoverCleanup } = handleLineHover({
-		configPort,
-		editorAPI,
-		onLineChange,
-	});
+  const { getCurrentLine, cleanup: hoverCleanup } = handleLineHover({
+    configPort,
+    editorAPI,
+    onLineChange,
+  });
 
-	const insertRootLineCleanup = handleInsertRootLine({
-		port: configPort,
-		editorAPI,
-		getCurrentLine,
-	});
+  const insertRootLineCleanup = handleInsertRootLine({
+    port: configPort,
+    editorAPI,
+    getCurrentLine,
+  });
 
-	const dragStartCleanup = handleLineDragStart({
-		configPort,
-		editorAPI,
-		getCurrentLine,
-	});
+  const dragStartCleanup = handleLineDragStart({
+    configPort,
+    editorAPI,
+    getCurrentLine,
+  });
 
-	const turnIntoCleanup = handleTurnInto({
-		adapterBus,
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-		getCurrentLine,
-	});
+  const turnIntoCleanup = handleTurnInto({
+    adapterBus,
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+    getCurrentLine,
+  });
 
-	const lineUnwrapCleanup = handleLineUnwrap({
-		configPort,
-		editorAPI,
-		getCurrentLine,
-	});
+  const lineUnwrapCleanup = handleLineUnwrap({
+    configPort,
+    editorAPI,
+    getCurrentLine,
+  });
 
-	const duplicateCleanup = handleBlockLineDuplication({
-		port: configPort,
-		editorAPI,
-		getBlockLine: getCurrentLine,
-	});
+  const duplicateCleanup = handleBlockLineDuplication({
+    port: configPort,
+    editorAPI,
+    getBlockLine: getCurrentLine,
+  });
 
-	const removeCleanup = handleLineRemove({
-		port: configPort,
-		editorAPI,
-		getCurrentLine,
-	});
+  const removeCleanup = handleLineRemove({
+    port: configPort,
+    editorAPI,
+    getCurrentLine,
+  });
 
-	return () => {
-		hoverCleanup();
-		insertRootLineCleanup();
-		dragStartCleanup();
-		turnIntoCleanup();
-		lineUnwrapCleanup();
-		duplicateCleanup();
-		removeCleanup();
-	};
+  return () => {
+    hoverCleanup();
+    insertRootLineCleanup();
+    dragStartCleanup();
+    turnIntoCleanup();
+    lineUnwrapCleanup();
+    duplicateCleanup();
+    removeCleanup();
+  };
 };

@@ -4,12 +4,12 @@ import type { SelectionMenuConfigPort } from "#adapters";
 import type { PopoverOverlayController } from "#engine-links";
 
 export interface HandleSelectionMenuInteractionParams {
-	configPort: SelectionMenuConfigPort;
-	editorAPI: EditorAPI;
-	preventHighlight?: boolean;
+  configPort: SelectionMenuConfigPort;
+  editorAPI: EditorAPI;
+  preventHighlight?: boolean;
 }
 
 export interface HandleSelectionMenuInteractionResult {
-	selectionMenuPopoverController: PopoverOverlayController;
-	cleanup(): void;
+  selectionMenuPopoverController: PopoverOverlayController;
+  cleanup(): void;
 }

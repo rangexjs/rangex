@@ -1,8 +1,8 @@
 import type { ComponentAttrsShape } from "../DOMAttrs-types";
 import { validateElementAttrs } from "../ValidateElementAttrs";
 import type {
-	ValidateComponentAttrsParams,
-	ValidateComponentAttrsResult,
+  ValidateComponentAttrsParams,
+  ValidateComponentAttrsResult,
 } from "./ValidateComponentAttrs-types";
 
 /*
@@ -10,21 +10,21 @@ import type {
  * element's name, or null when the attributes are valid.
  */
 export const validateComponentAttrs = <TComponentAttrsShape extends ComponentAttrsShape>({
-	componentAttrs,
-	componentAttrsShape,
-	componentAttrValidators,
+  componentAttrs,
+  componentAttrsShape,
+  componentAttrValidators,
 }: ValidateComponentAttrsParams<TComponentAttrsShape>): ValidateComponentAttrsResult<TComponentAttrsShape> => {
-	for (const elementName in componentAttrsShape) {
-		const mismatch = validateElementAttrs({
-			elementAttrs: componentAttrs[elementName],
-			elementAttrsShape: componentAttrsShape[elementName],
-			elementAttrValidators: componentAttrValidators[elementName],
-		});
+  for (const elementName in componentAttrsShape) {
+    const mismatch = validateElementAttrs({
+      elementAttrs: componentAttrs[elementName],
+      elementAttrsShape: componentAttrsShape[elementName],
+      elementAttrValidators: componentAttrValidators[elementName],
+    });
 
-		if (mismatch) {
-			return { elementName, mismatch };
-		}
-	}
+    if (mismatch) {
+      return { elementName, mismatch };
+    }
+  }
 
-	return null;
+  return null;
 };

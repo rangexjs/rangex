@@ -3,23 +3,23 @@ import { isEditorElement, tableCellRole, tableCellRoleSelector } from "@rangex/c
 import type { GetClosestTableCellParams, GetClosestTableCellResult } from "./TableCell-types";
 
 export const getClosestTableCell = ({
-	fromNode,
+  fromNode,
 }: GetClosestTableCellParams): GetClosestTableCellResult => {
-	const element = isEditorElement(fromNode) ? fromNode : fromNode.$$parentElement;
+  const element = isEditorElement(fromNode) ? fromNode : fromNode.$$parentElement;
 
-	if (!element) {
-		return null;
-	}
+  if (!element) {
+    return null;
+  }
 
-	const tableCell = element.$$closest(tableCellRoleSelector);
+  const tableCell = element.$$closest(tableCellRoleSelector);
 
-	if (!tableCell) {
-		return null;
-	}
+  if (!tableCell) {
+    return null;
+  }
 
-	if (tableCell.$$editorRole !== tableCellRole) {
-		throw new Error("TableCell's type is invalid.");
-	}
+  if (tableCell.$$editorRole !== tableCellRole) {
+    throw new Error("TableCell's type is invalid.");
+  }
 
-	return tableCell;
+  return tableCell;
 };

@@ -10,57 +10,57 @@ import type { CreateMediaResolveDetailParams } from "./CreateMediaResolveDetail-
  * image's object fit and its alt without alt text, a video's controls). An embed's iframe gets the configured attributes.
  */
 export const createMediaResolveDetail = ({
-	type,
-	src,
-	settings,
+  type,
+  src,
+  settings,
 }: CreateMediaResolveDetailParams): MediaResolveDetail => {
-	const line = { "data-block-align": "center" };
+  const line = { "data-block-align": "center" };
 
-	if (type === "image") {
-		return {
-			type,
-			attrs: {
-				line,
-				block: {},
-				img: {
-					src,
-					...createImageAltAttrs(""),
-					"data-object-fit": "cover",
-				},
-			},
-		};
-	}
+  if (type === "image") {
+    return {
+      type,
+      attrs: {
+        line,
+        block: {},
+        img: {
+          src,
+          ...createImageAltAttrs(""),
+          "data-object-fit": "cover",
+        },
+      },
+    };
+  }
 
-	if (type === "video") {
-		return {
-			type,
-			attrs: {
-				line,
-				block: {},
-				video: { src, controls: "", "data-object-fit": "cover" },
-			},
-		};
-	}
+  if (type === "video") {
+    return {
+      type,
+      attrs: {
+        line,
+        block: {},
+        video: { src, controls: "", "data-object-fit": "cover" },
+      },
+    };
+  }
 
-	if (type === "audio") {
-		return {
-			type,
-			attrs: { line, block: {}, audio: { src, controls: "" } },
-		};
-	}
+  if (type === "audio") {
+    return {
+      type,
+      attrs: { line, block: {}, audio: { src, controls: "" } },
+    };
+  }
 
-	if (type === "embed") {
-		const { embedIframeAttrs = {} } = settings;
+  if (type === "embed") {
+    const { embedIframeAttrs = {} } = settings;
 
-		return {
-			type,
-			attrs: {
-				line,
-				block: {},
-				iframe: { ...embedIframeAttrs, src },
-			},
-		};
-	}
+    return {
+      type,
+      attrs: {
+        line,
+        block: {},
+        iframe: { ...embedIframeAttrs, src },
+      },
+    };
+  }
 
-	return assertNever(type);
+  return assertNever(type);
 };

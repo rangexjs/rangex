@@ -3,16 +3,16 @@ import type { JSONPattern } from "#utilities";
 
 import { rootId } from "../_Constants";
 import {
-	isTemplateVariableFieldName,
-	isTemplateVariableFieldValue,
-	maxTemplateVariableFieldCount,
+  isTemplateVariableFieldName,
+  isTemplateVariableFieldValue,
+  maxTemplateVariableFieldCount,
 } from "../TemplateVariable";
 import type {
-	CreateRootStorageParams,
-	CreateRootStorageResult,
-	GetRootStorageParams,
-	GetRootStorageResult,
-	RootStorage,
+  CreateRootStorageParams,
+  CreateRootStorageResult,
+  GetRootStorageParams,
+  GetRootStorageResult,
+  RootStorage,
 } from "./RootStorage-types";
 
 /*
@@ -28,37 +28,37 @@ export const snapshotVersion = 1 as const;
  * a valid name and value.
  */
 const isTemplateVariableFields = (value: unknown) => {
-	if (typeof value !== "object" || value === null || Array.isArray(value)) {
-		return false;
-	}
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    return false;
+  }
 
-	const fields = Object.entries(value);
+  const fields = Object.entries(value);
 
-	if (fields.length > maxTemplateVariableFieldCount) {
-		return false;
-	}
+  if (fields.length > maxTemplateVariableFieldCount) {
+    return false;
+  }
 
-	return fields.every(
-		([fieldName, fieldValue]) =>
-			isTemplateVariableFieldName(fieldName) && isTemplateVariableFieldValue(fieldValue),
-	);
+  return fields.every(
+    ([fieldName, fieldValue]) =>
+      isTemplateVariableFieldName(fieldName) && isTemplateVariableFieldValue(fieldValue),
+  );
 };
 
 /*
  * The Root's storage, every field checked: any other field, or a value of the wrong type, doesn't match.
  */
 export const rootStoragePattern = {
-	id: rootId,
-	version: snapshotVersion,
-	type: isRootType,
-	templateVariable: isTemplateVariableFields,
+  id: rootId,
+  version: snapshotVersion,
+  type: isRootType,
+  templateVariable: isTemplateVariableFields,
 } satisfies JSONPattern<RootStorage>;
 
 export const createRootStorage = ({ type }: CreateRootStorageParams): CreateRootStorageResult => ({
-	id: rootId,
-	version: snapshotVersion,
-	type,
-	templateVariable: {},
+  id: rootId,
+  version: snapshotVersion,
+  type,
+  templateVariable: {},
 });
 
 /*
@@ -66,4 +66,4 @@ export const createRootStorage = ({ type }: CreateRootStorageParams): CreateRoot
  * snapshot's before loading it.
  */
 export const getRootStorage = ({ rootEditable }: GetRootStorageParams): GetRootStorageResult =>
-	rootEditable.$$customStorage as RootStorage;
+  rootEditable.$$customStorage as RootStorage;

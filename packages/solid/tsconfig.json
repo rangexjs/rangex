@@ -1,10 +1,10 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"noEmit": true,
-		"customConditions": ["@rangex/source"],
-		"types": ["vite/client"]
-	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules"]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "customConditions": ["@rangex/source"],
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

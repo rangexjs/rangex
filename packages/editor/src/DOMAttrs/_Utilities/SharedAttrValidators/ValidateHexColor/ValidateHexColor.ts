@@ -7,13 +7,13 @@ const hexColorPattern = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
  * exactly.
  */
 export const validateHexColor: ValidateAttrFn<string | null> = ({ value }) => {
-	if (!hexColorPattern.test(value)) {
-		return {
-			kind: "fallback",
-			reason: "must be a hex color",
-			value: null,
-		};
-	}
+  if (!hexColorPattern.test(value)) {
+    return {
+      kind: "fallback",
+      reason: "must be a hex color",
+      value: null,
+    };
+  }
 
-	return null;
+  return null;
 };

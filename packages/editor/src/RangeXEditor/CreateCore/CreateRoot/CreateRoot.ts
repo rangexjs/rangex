@@ -7,7 +7,7 @@ import { createRootStorage } from "#storage";
 import type { CreateRootParams, CreateRootResult } from "./CreateRoot-types";
 
 const createEmptyLines = () => [
-	createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
+  createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
 ];
 
 /*
@@ -15,14 +15,14 @@ const createEmptyLines = () => [
  * attributes and lines, by default none and one empty paragraph. They aren't validated here.
  */
 export const createRoot = ({
-	type,
-	attrs = { root: {} },
-	childNodes = createEmptyLines(),
+  type,
+  attrs = { root: {} },
+  childNodes = createEmptyLines(),
 }: CreateRootParams): CreateRootResult => {
-	return createRootEditable({
-		...rootDefinitions[type],
-		customStorage: createRootStorage({ type }),
-		domAttrs: toDOMAttrs(attrs.root),
-		childNodes,
-	});
+  return createRootEditable({
+    ...rootDefinitions[type],
+    customStorage: createRootStorage({ type }),
+    domAttrs: toDOMAttrs(attrs.root),
+    childNodes,
+  });
 };

@@ -2,11 +2,11 @@ import { componentsName } from "#constants";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-	handleComponentUnwrap,
-	handleQuickActionsAppearance,
-	handleSelectionComponent,
-	validateCodeBlockLanguage,
-	validateCodeBlockTheme,
+  handleComponentUnwrap,
+  handleQuickActionsAppearance,
+  handleSelectionComponent,
+  validateCodeBlockLanguage,
+  validateCodeBlockTheme,
 } from "../_Utilities";
 import { CodeHighlighter } from "./CodeHighlighter";
 import type { ConfigureCodeBlockParams } from "./ConfigureCodeBlock-types";
@@ -21,71 +21,71 @@ import { handleLineNumbers } from "./HandleLineNumbers";
  * a cleanup function.
  */
 export const configureCodeBlock = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureCodeBlockParams) => {
-	configPort.registerValidateLanguage((language) => validateCodeBlockLanguage({ language }));
+  configPort.registerValidateLanguage((language) => validateCodeBlockLanguage({ language }));
 
-	configPort.registerValidateTheme((theme) => validateCodeBlockTheme({ theme }));
+  configPort.registerValidateTheme((theme) => validateCodeBlockTheme({ theme }));
 
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
-	const codeHighlighter = new CodeHighlighter({
-		editorAPI,
-		getHighlightInfo: configPort.getHighlightInfo,
-		attrValidators: configPort.attrValidators,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
+  const codeHighlighter = new CodeHighlighter({
+    editorAPI,
+    getHighlightInfo: configPort.getHighlightInfo,
+    attrValidators: configPort.attrValidators,
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.codeBlock,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.codeBlock,
+  });
 
-	const placementStateCleanup = handleCodeBlockPlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleCodeBlockPlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => configPort.currentComponent,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => configPort.currentComponent,
+  });
 
-	const placementCleanup = handleCodeBlockPlacement({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementCleanup = handleCodeBlockPlacement({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const lineNumbersCleanup = handleLineNumbers({ editorAPI });
+  const lineNumbersCleanup = handleLineNumbers({ editorAPI });
 
-	const quickActionsCleanup = handleQuickActionsAppearance({
-		port: configPort,
-		quickActionsPort: configPort.quickActions,
-		editorAPI,
-		componentName: componentsName.codeBlock,
-	});
+  const quickActionsCleanup = handleQuickActionsAppearance({
+    port: configPort,
+    quickActionsPort: configPort.quickActions,
+    editorAPI,
+    componentName: componentsName.codeBlock,
+  });
 
-	const codeBlockStateCleanup = handleCodeBlockState({
-		configPort,
-		editorAPI,
-		codeHighlighter,
-	});
+  const codeBlockStateCleanup = handleCodeBlockState({
+    configPort,
+    editorAPI,
+    codeHighlighter,
+  });
 
-	return () => {
-		selectionComponentCleanup();
-		placementStateCleanup();
-		unwrapCleanup();
-		placementCleanup();
-		lineNumbersCleanup();
-		codeBlockStateCleanup();
-		quickActionsCleanup();
-		codeHighlighter.cleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    placementStateCleanup();
+    unwrapCleanup();
+    placementCleanup();
+    lineNumbersCleanup();
+    codeBlockStateCleanup();
+    quickActionsCleanup();
+    codeHighlighter.cleanup();
+  };
 };

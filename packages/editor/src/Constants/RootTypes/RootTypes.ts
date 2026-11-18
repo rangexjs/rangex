@@ -5,22 +5,22 @@ import type { RootDefinitions, RootType } from "./RootTypes-types";
  * match. It's kept in the RootStorage, as the engine's display doesn't tell them apart.
  */
 export const rootTypes = {
-	richText: "rich-text",
+  richText: "rich-text",
 } as const;
 
 /*
  * The state of a root of each type: createRoot builds it with this, and validateRoot matches a snapshot's root against it
  */
 export const rootDefinitions = {
-	[rootTypes.richText]: {
-		display: "block multi-line",
-		editState: "true",
-		allowedComponents: null,
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  [rootTypes.richText]: {
+    display: "block multi-line",
+    editState: "true",
+    allowedComponents: null,
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } as const satisfies RootDefinitions;
 
 const rootTypeValues: unknown[] = Object.values(rootTypes);

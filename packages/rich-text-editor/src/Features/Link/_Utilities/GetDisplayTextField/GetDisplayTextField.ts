@@ -10,26 +10,26 @@ import type { GetDisplayTextFieldResult } from "./GetDisplayTextField-types";
  * links.
  */
 export const getDisplayTextField = (displayText: LinkDisplayText): GetDisplayTextFieldResult => {
-	if (!displayText) {
-		console.warn("getDisplayTextField: selection can't take a link.");
-		return { value: "", disabled: false, placeholder: "Example" };
-	}
+  if (!displayText) {
+    console.warn("getDisplayTextField: selection can't take a link.");
+    return { value: "", disabled: false, placeholder: "Example" };
+  }
 
-	if (displayText.type === "insert") {
-		return { value: "", disabled: false, placeholder: "Example" };
-	}
+  if (displayText.type === "insert") {
+    return { value: "", disabled: false, placeholder: "Example" };
+  }
 
-	if (displayText.type === "single-wrap" || displayText.type === "edit") {
-		return {
-			value: displayText.value,
-			disabled: false,
-			placeholder: "Example",
-		};
-	}
+  if (displayText.type === "single-wrap" || displayText.type === "edit") {
+    return {
+      value: displayText.value,
+      disabled: false,
+      placeholder: "Example",
+    };
+  }
 
-	if (displayText.type === "multiple-wrap") {
-		return { value: "", disabled: true, placeholder: "Selected text" };
-	}
+  if (displayText.type === "multiple-wrap") {
+    return { value: "", disabled: true, placeholder: "Selected text" };
+  }
 
-	return assertNever(displayText);
+  return assertNever(displayText);
 };

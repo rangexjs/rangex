@@ -1,13 +1,13 @@
 import type { Component } from "@rangex/core";
 
 export interface CurrentComponentInternals<TComponent extends Component> {
-	hoverComponent: TComponent | null;
-	selectionComponent: TComponent | null;
+  hoverComponent: TComponent | null;
+  selectionComponent: TComponent | null;
 }
 
 export interface UpdateStateParams<TComponent extends Component> {
-	hoverComponent?: TComponent | null;
-	selectionComponent?: TComponent | null;
+  hoverComponent?: TComponent | null;
+  selectionComponent?: TComponent | null;
 }
 
 export type OnCurrentComponentUpdateCallbackFn = (currentComponent: HTMLElement | null) => void;
@@ -15,33 +15,33 @@ export type OnCurrentComponentUpdateCallbackFn = (currentComponent: HTMLElement 
 export type OnIsSelectionActiveUpdateCallbackFn = (isSelectionActive: boolean) => void;
 
 export type OnConfigCurrentComponentUpdateCallbackFn<TComponent extends Component> = (
-	currentComponent: TComponent | null,
+  currentComponent: TComponent | null,
 ) => void;
 
 export interface CurrentComponentConfigPort<TComponent extends Component> {
-	readonly currentComponent: TComponent | null;
+  readonly currentComponent: TComponent | null;
 
-	updateCurrentComponent(params: UpdateStateParams<TComponent>): void;
+  updateCurrentComponent(params: UpdateStateParams<TComponent>): void;
 
-	onCurrentComponentUpdate(
-		callback: OnConfigCurrentComponentUpdateCallbackFn<TComponent>,
-	): () => void;
+  onCurrentComponentUpdate(
+    callback: OnConfigCurrentComponentUpdateCallbackFn<TComponent>,
+  ): () => void;
 }
 
 export interface CurrentComponentPublicPort {
-	readonly currentComponent: HTMLElement | null;
-	readonly isSelectionActive: boolean;
+  readonly currentComponent: HTMLElement | null;
+  readonly isSelectionActive: boolean;
 
-	onCurrentComponentUpdate(callback: OnCurrentComponentUpdateCallbackFn): () => void;
+  onCurrentComponentUpdate(callback: OnCurrentComponentUpdateCallbackFn): () => void;
 
-	onIsSelectionActiveUpdate(callback: OnIsSelectionActiveUpdateCallbackFn): () => void;
+  onIsSelectionActiveUpdate(callback: OnIsSelectionActiveUpdateCallbackFn): () => void;
 }
 
 export interface CurrentComponentPort<TComponent extends Component> {
-	configPort: CurrentComponentConfigPort<TComponent>;
-	publicPort: CurrentComponentPublicPort;
+  configPort: CurrentComponentConfigPort<TComponent>;
+  publicPort: CurrentComponentPublicPort;
 }
 
 export interface CreateCurrentComponentPortResult<
-	TComponent extends Component,
+  TComponent extends Component,
 > extends CurrentComponentPort<TComponent> {}

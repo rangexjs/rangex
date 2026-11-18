@@ -9,23 +9,23 @@ import type { HandleSeparatorPlacementStateParams } from "./HandleSeparatorPlace
  * whether a separator can be inserted at the current selection.
  */
 export const handleSeparatorPlacementState = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleSeparatorPlacementStateParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			const canInsert = blockComponentPlacement.canInsertBySelection({
-				scope: "nearest-multi-line",
-				allowedComponents: [componentsName.separator],
-			});
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      const canInsert = blockComponentPlacement.canInsertBySelection({
+        scope: "nearest-multi-line",
+        allowedComponents: [componentsName.separator],
+      });
 
-			configPort.updateState({ canInsert });
-		},
-	});
+      configPort.updateState({ canInsert });
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

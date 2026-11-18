@@ -1,26 +1,26 @@
 import { createEmitter } from "../../CreateEmitter";
 import type {
-	CreateRemovePortResult,
-	OnRemoveCallbackFn,
-	RemoveConfigPort,
-	RemovePublicPort,
+  CreateRemovePortResult,
+  OnRemoveCallbackFn,
+  RemoveConfigPort,
+  RemovePublicPort,
 } from "./RemovePort-types";
 
 export const createRemovePort = (): CreateRemovePortResult => {
-	// CommandListeners
-	const removeEmitter = createEmitter<OnRemoveCallbackFn>();
+  // CommandListeners
+  const removeEmitter = createEmitter<OnRemoveCallbackFn>();
 
-	const configPort: RemoveConfigPort = {
-		onRemove(callback) {
-			return removeEmitter.subscribe(callback);
-		},
-	};
+  const configPort: RemoveConfigPort = {
+    onRemove(callback) {
+      return removeEmitter.subscribe(callback);
+    },
+  };
 
-	const publicPort: RemovePublicPort = {
-		remove() {
-			removeEmitter.emit();
-		},
-	};
+  const publicPort: RemovePublicPort = {
+    remove() {
+      removeEmitter.emit();
+    },
+  };
 
-	return { configPort, publicPort };
+  return { configPort, publicPort };
 };

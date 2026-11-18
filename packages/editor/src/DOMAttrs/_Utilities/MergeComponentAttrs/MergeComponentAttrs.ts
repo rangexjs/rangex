@@ -1,7 +1,7 @@
 import type { ComponentAttrs, ComponentAttrsShape, ElementAttrsPatch } from "../DOMAttrs-types";
 import type {
-	MergeComponentAttrsParams,
-	MergeComponentAttrsResult,
+  MergeComponentAttrsParams,
+  MergeComponentAttrsResult,
 } from "./MergeComponentAttrs-types";
 
 /*
@@ -9,35 +9,35 @@ import type {
  * value, and an element or attribute left out (or undefined) keeps it.
  */
 export const mergeComponentAttrs = <TComponentAttrsShape extends ComponentAttrsShape>({
-	componentAttrs,
-	componentAttrsPatch,
+  componentAttrs,
+  componentAttrsPatch,
 }: MergeComponentAttrsParams<TComponentAttrsShape>): MergeComponentAttrsResult<TComponentAttrsShape> => {
-	const mergedComponentAttrs = { ...componentAttrs };
+  const mergedComponentAttrs = { ...componentAttrs };
 
-	for (const elementName in componentAttrsPatch) {
-		const elementAttrsPatch = componentAttrsPatch[elementName];
+  for (const elementName in componentAttrsPatch) {
+    const elementAttrsPatch = componentAttrsPatch[elementName];
 
-		if (!elementAttrsPatch) {
-			continue;
-		}
+    if (!elementAttrsPatch) {
+      continue;
+    }
 
-		const mergedElementAttrs: ElementAttrsPatch<TComponentAttrsShape[typeof elementName]> = {
-			...componentAttrs[elementName],
-		};
+    const mergedElementAttrs: ElementAttrsPatch<TComponentAttrsShape[typeof elementName]> = {
+      ...componentAttrs[elementName],
+    };
 
-		for (const attrName in elementAttrsPatch) {
-			const value = elementAttrsPatch[attrName];
+    for (const attrName in elementAttrsPatch) {
+      const value = elementAttrsPatch[attrName];
 
-			if (value === undefined) {
-				continue;
-			}
+      if (value === undefined) {
+        continue;
+      }
 
-			mergedElementAttrs[attrName] = value;
-		}
+      mergedElementAttrs[attrName] = value;
+    }
 
-		mergedComponentAttrs[elementName] =
-			mergedElementAttrs as ComponentAttrs<TComponentAttrsShape>[typeof elementName];
-	}
+    mergedComponentAttrs[elementName] =
+      mergedElementAttrs as ComponentAttrs<TComponentAttrsShape>[typeof elementName];
+  }
 
-	return mergedComponentAttrs;
+  return mergedComponentAttrs;
 };

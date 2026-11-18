@@ -8,9 +8,9 @@ import type { ValidateComponentResult } from "../../ValidateSnapshot-types";
 export type HTMLLayoutState = Omit<HTMLLayoutSnapshot, "uniqueId" | "childNodes" | "domAttrs">;
 
 export interface ValidateHTMLLayoutStateParams {
-	componentDraft: ComponentDraft;
-	htmlLayoutDraft: HTMLLayoutDraft;
-	expectedState: JSONPattern<HTMLLayoutState>;
+  componentDraft: ComponentDraft;
+  htmlLayoutDraft: HTMLLayoutDraft;
+  expectedState: JSONPattern<HTMLLayoutState>;
 }
 
 export type ValidateHTMLLayoutStateResult = ValidateComponentResult;

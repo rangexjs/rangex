@@ -5,22 +5,22 @@ import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveFindReplacePort } from "./FindReplace-types";
 
 export const FindReplace = <T extends FindReplacePublicPort | undefined>(
-	publicPort: T,
+  publicPort: T,
 ): PreserveUndefined<T, ReactiveFindReplacePort> => {
-	if (!publicPort) {
-		return undefined as PreserveUndefined<T, ReactiveFindReplacePort>;
-	}
+  if (!publicPort) {
+    return undefined as PreserveUndefined<T, ReactiveFindReplacePort>;
+  }
 
-	const [currentIndex, setCurrentIndex] = createSignal(publicPort.currentIndex);
-	const [results, setResults] = createSignal(publicPort.results);
+  const [currentIndex, setCurrentIndex] = createSignal(publicPort.currentIndex);
+  const [results, setResults] = createSignal(publicPort.results);
 
-	onCleanup(publicPort.onCurrentIndexUpdate(setCurrentIndex));
-	onCleanup(publicPort.onResultsUpdate(setResults));
+  onCleanup(publicPort.onCurrentIndexUpdate(setCurrentIndex));
+  onCleanup(publicPort.onResultsUpdate(setResults));
 
-	const port: ReactiveFindReplacePort = {
-		currentIndex,
-		results,
-	};
+  const port: ReactiveFindReplacePort = {
+    currentIndex,
+    results,
+  };
 
-	return port as PreserveUndefined<T, ReactiveFindReplacePort>;
+  return port as PreserveUndefined<T, ReactiveFindReplacePort>;
 };

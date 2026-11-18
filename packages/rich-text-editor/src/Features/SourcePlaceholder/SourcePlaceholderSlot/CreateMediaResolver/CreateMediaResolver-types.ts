@@ -6,14 +6,14 @@ import type { MediaFileType } from "../../_Utilities";
 import type { SlotStatus, SourcePlaceholderSlotSettings } from "../SourcePlaceholderSlot-types";
 
 export interface CreateMediaResolverParams {
-	editor: RangeXEditor;
-	sourcePlaceholder: SourcePlaceholderPublicPort;
-	container: HTMLDivElement;
-	settings: SourcePlaceholderSlotSettings;
+  editor: RangeXEditor;
+  sourcePlaceholder: SourcePlaceholderPublicPort;
+  container: HTMLDivElement;
+  settings: SourcePlaceholderSlotSettings;
 }
 
 export interface CreateMediaResolverResult {
-	status: Accessor<SlotStatus>;
-	resolveFile(type: MediaFileType, file: File): Promise<void>;
-	resolveUrl(url: string): Promise<void>;
+  status: Accessor<SlotStatus>;
+  resolveFile(type: MediaFileType, file: File): Promise<void>;
+  resolveUrl(url: string): Promise<void>;
 }

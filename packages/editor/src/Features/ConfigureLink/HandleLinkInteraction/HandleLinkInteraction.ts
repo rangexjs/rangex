@@ -3,25 +3,25 @@ import { editorSelectionChangeEventType, inlineComponentRole, isEditorNode } fro
 import { componentsName } from "#constants";
 
 import type {
-	HandleLinkInteractionParams,
-	OpenLinkMenuParams,
-	RegisterClickParams,
-	RegisterSelectionInParams,
+  HandleLinkInteractionParams,
+  OpenLinkMenuParams,
+  RegisterClickParams,
+  RegisterSelectionInParams,
 } from "./HandleLinkInteraction-types";
 
 const openLinkMenu = ({ configPort, linkMenuPopoverController }: OpenLinkMenuParams) => {
-	const { currentComponent } = configPort;
+  const { currentComponent } = configPort;
 
-	if (!currentComponent) {
-		throw new Error("openLinkMenu: no link is currently open.");
-	}
+  if (!currentComponent) {
+    throw new Error("openLinkMenu: no link is currently open.");
+  }
 
-	linkMenuPopoverController.show(currentComponent, {
-		clear: true,
-		position: "fixed",
-		margin: "8px 0px 0px 0px",
-		"position-area": "center bottom",
-	});
+  linkMenuPopoverController.show(currentComponent, {
+    clear: true,
+    position: "fixed",
+    margin: "8px 0px 0px 0px",
+    "position-area": "center bottom",
+  });
 };
 
 /*
@@ -29,38 +29,38 @@ const openLinkMenu = ({ configPort, linkMenuPopoverController }: OpenLinkMenuPar
  * when configured to open on click.
  */
 const registerClick = ({
-	configPort,
-	editorAPI,
-	linkMenuPopoverController,
+  configPort,
+  editorAPI,
+  linkMenuPopoverController,
 }: RegisterClickParams) => {
-	const unsubscribe = editorAPI.registerDOMEvent({
-		when: ({ element }) =>
-			element.$$editorRole === inlineComponentRole && element.$$name === componentsName.link,
-		eventListener: {
-			type: "click",
-			listener(event) {
-				const { currentTarget } = event;
+  const unsubscribe = editorAPI.registerDOMEvent({
+    when: ({ element }) =>
+      element.$$editorRole === inlineComponentRole && element.$$name === componentsName.link,
+    eventListener: {
+      type: "click",
+      listener(event) {
+        const { currentTarget } = event;
 
-				if (!(currentTarget && isEditorNode(currentTarget))) {
-					throw new Error("CurrentTarget must be an EditorNode.");
-				}
+        if (!(currentTarget && isEditorNode(currentTarget))) {
+          throw new Error("CurrentTarget must be an EditorNode.");
+        }
 
-				if (currentTarget !== configPort.currentComponent) {
-					return;
-				}
+        if (currentTarget !== configPort.currentComponent) {
+          return;
+        }
 
-				configPort.notifyLinkClick();
+        configPort.notifyLinkClick();
 
-				if (configPort.linkMenuSettings.openAt.includes("click")) {
-					openLinkMenu({ linkMenuPopoverController, configPort });
-				}
-			},
-		},
-	});
+        if (configPort.linkMenuSettings.openAt.includes("click")) {
+          openLinkMenu({ linkMenuPopoverController, configPort });
+        }
+      },
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };
 
 /*
@@ -68,28 +68,28 @@ const registerClick = ({
  * on selection-in.
  */
 const registerSelectionIn = ({
-	configPort,
-	editorAPI,
-	linkMenuPopoverController,
+  configPort,
+  editorAPI,
+  linkMenuPopoverController,
 }: RegisterSelectionInParams) => {
-	const unsubscribe = editorAPI.subscribeEditorEvent({
-		type: editorSelectionChangeEventType,
-		callback: () => {
-			if (!configPort.currentComponent) {
-				return;
-			}
+  const unsubscribe = editorAPI.subscribeEditorEvent({
+    type: editorSelectionChangeEventType,
+    callback: () => {
+      if (!configPort.currentComponent) {
+        return;
+      }
 
-			configPort.notifyLinkSelectionIn();
+      configPort.notifyLinkSelectionIn();
 
-			if (configPort.linkMenuSettings.openAt.includes("selection-in")) {
-				openLinkMenu({ linkMenuPopoverController, configPort });
-			}
-		},
-	});
+      if (configPort.linkMenuSettings.openAt.includes("selection-in")) {
+        openLinkMenu({ linkMenuPopoverController, configPort });
+      }
+    },
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };
 
 /*
@@ -98,24 +98,24 @@ const registerSelectionIn = ({
  * Returns a cleanup function.
  */
 export const handleLinkInteraction = ({
-	configPort,
-	editorAPI,
-	linkMenuPopoverController,
+  configPort,
+  editorAPI,
+  linkMenuPopoverController,
 }: HandleLinkInteractionParams) => {
-	const unsubscribeClick = registerClick({
-		configPort,
-		editorAPI,
-		linkMenuPopoverController,
-	});
+  const unsubscribeClick = registerClick({
+    configPort,
+    editorAPI,
+    linkMenuPopoverController,
+  });
 
-	const unsubscribeSelectionIn = registerSelectionIn({
-		configPort,
-		editorAPI,
-		linkMenuPopoverController,
-	});
+  const unsubscribeSelectionIn = registerSelectionIn({
+    configPort,
+    editorAPI,
+    linkMenuPopoverController,
+  });
 
-	return () => {
-		unsubscribeClick();
-		unsubscribeSelectionIn();
-	};
+  return () => {
+    unsubscribeClick();
+    unsubscribeSelectionIn();
+  };
 };

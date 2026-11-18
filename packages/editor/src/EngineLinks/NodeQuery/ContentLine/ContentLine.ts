@@ -3,26 +3,26 @@ import { contentLineRole, isEditorElement } from "@rangex/core";
 import type { GetClosestContentLineParams, GetClosestContentLineResult } from "./ContentLine-types";
 
 export const getClosestContentLine = ({
-	fromNode,
-	display,
+  fromNode,
+  display,
 }: GetClosestContentLineParams): GetClosestContentLineResult => {
-	const { $$parentElement } = fromNode;
+  const { $$parentElement } = fromNode;
 
-	let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
+  let parent = isEditorElement(fromNode) ? fromNode : $$parentElement;
 
-	while (parent) {
-		if (parent.$$editorRole === contentLineRole) {
-			if (!display) {
-				return parent;
-			}
+  while (parent) {
+    if (parent.$$editorRole === contentLineRole) {
+      if (!display) {
+        return parent;
+      }
 
-			if (parent.$$display === display) {
-				return parent;
-			}
-		}
+      if (parent.$$display === display) {
+        return parent;
+      }
+    }
 
-		parent = parent.$$parentElement;
-	}
+    parent = parent.$$parentElement;
+  }
 
-	return null;
+  return null;
 };

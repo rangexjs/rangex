@@ -6,38 +6,38 @@ import type { HandleSourcePlaceholderInsertionParams } from "./HandleSourcePlace
  * after it and registering a snapshot boundary. Returns a cleanup function.
  */
 export const handleSourcePlaceholderInsertion = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleSourcePlaceholderInsertionParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-	const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
 
-	const insertSourcePlaceholder = () => {
-		const sourcePlaceholderLine = createSourcePlaceholder();
+  const insertSourcePlaceholder = () => {
+    const sourcePlaceholderLine = createSourcePlaceholder();
 
-		blockComponentPlacement.insertBySelection({
-			lines: [sourcePlaceholderLine],
-			shouldReplaceContentLineIfEmpty: true,
-		});
+    blockComponentPlacement.insertBySelection({
+      lines: [sourcePlaceholderLine],
+      shouldReplaceContentLineIfEmpty: true,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		selection.setBoundaryPoints({
-			fromNode: sourcePlaceholderLine,
-			fromOffset: sourcePlaceholderLine.$$childNodes.length,
-			toNode: sourcePlaceholderLine,
-			toOffset: sourcePlaceholderLine.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: sourcePlaceholderLine,
+      fromOffset: sourcePlaceholderLine.$$childNodes.length,
+      toNode: sourcePlaceholderLine,
+      toOffset: sourcePlaceholderLine.$$childNodes.length,
+    });
 
-		editorAPI.focus();
-	};
+    editorAPI.focus();
+  };
 
-	const unsubscribeInsert = configPort.onInsert(insertSourcePlaceholder);
-	const unsubscribeSwap = configPort.onSwap(insertSourcePlaceholder);
+  const unsubscribeInsert = configPort.onInsert(insertSourcePlaceholder);
+  const unsubscribeSwap = configPort.onSwap(insertSourcePlaceholder);
 
-	return () => {
-		unsubscribeInsert();
-		unsubscribeSwap();
-	};
+  return () => {
+    unsubscribeInsert();
+    unsubscribeSwap();
+  };
 };

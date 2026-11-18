@@ -8,24 +8,24 @@ import type { HandleReplacementParams } from "./HandleReplacement-types";
  * Performs single or bulk text replacement in response to replace actions.
  */
 export const handleReplacement = ({ configPort, editorAPI }: HandleReplacementParams) => {
-	const findReplace = editorAPI.getFindReplace();
+  const findReplace = editorAPI.getFindReplace();
 
-	const retainedComponents = [componentsName.link];
+  const retainedComponents = [componentsName.link];
 
-	const replaceCleanup = configPort.onReplace(({ replaceText }) => {
-		const content = replaceText ? createFormattableTexts({ data: replaceText }) : [];
+  const replaceCleanup = configPort.onReplace(({ replaceText }) => {
+    const content = replaceText ? createFormattableTexts({ data: replaceText }) : [];
 
-		findReplace.replace({ content, retainedComponents });
-	});
+    findReplace.replace({ content, retainedComponents });
+  });
 
-	const replaceAllCleanup = configPort.onReplaceAll(({ replaceText }) => {
-		const content = replaceText ? createFormattableTexts({ data: replaceText }) : [];
+  const replaceAllCleanup = configPort.onReplaceAll(({ replaceText }) => {
+    const content = replaceText ? createFormattableTexts({ data: replaceText }) : [];
 
-		findReplace.replaceAll({ content, retainedComponents });
-	});
+    findReplace.replaceAll({ content, retainedComponents });
+  });
 
-	return () => {
-		replaceCleanup();
-		replaceAllCleanup();
-	};
+  return () => {
+    replaceCleanup();
+    replaceAllCleanup();
+  };
 };

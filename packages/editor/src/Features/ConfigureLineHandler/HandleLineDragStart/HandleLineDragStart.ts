@@ -5,44 +5,44 @@ import type { HandleLineDragStartParams } from "./HandleLineDragStart-types";
  * selection, and hands the drag event off to the engine's external-drag flow.
  */
 export const handleLineDragStart = ({
-	configPort,
-	editorAPI,
-	getCurrentLine,
+  configPort,
+  editorAPI,
+  getCurrentLine,
 }: HandleLineDragStartParams) => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onDragStart((event) => {
-		const currentLine = getCurrentLine();
+  const unsubscribe = configPort.onDragStart((event) => {
+    const currentLine = getCurrentLine();
 
-		if (!currentLine) {
-			return;
-		}
+    if (!currentLine) {
+      return;
+    }
 
-		if (!event.dataTransfer) {
-			return;
-		}
+    if (!event.dataTransfer) {
+      return;
+    }
 
-		const lineRect = currentLine.getBoundingClientRect();
+    const lineRect = currentLine.getBoundingClientRect();
 
-		event.dataTransfer.setDragImage(
-			currentLine,
-			event.clientX - lineRect.left,
-			event.clientY - lineRect.top,
-		);
+    event.dataTransfer.setDragImage(
+      currentLine,
+      event.clientX - lineRect.left,
+      event.clientY - lineRect.top,
+    );
 
-		selection.setBoundaryPoints({
-			fromNode: currentLine,
-			fromOffset: 0,
-			toNode: currentLine,
-			toOffset: currentLine.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: currentLine,
+      fromOffset: 0,
+      toNode: currentLine,
+      toOffset: currentLine.$$childNodes.length,
+    });
 
-		selection.syncToNativeSelection();
+    selection.syncToNativeSelection();
 
-		editorAPI.startExternalDrag(event);
-	});
+    editorAPI.startExternalDrag(event);
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

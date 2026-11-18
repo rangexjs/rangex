@@ -6,38 +6,38 @@ import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
  * source, ignoring resolutions for other media types.
  */
 export const handleImageInsertion = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleImageInsertionParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-	const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onMediaResolve((params) => {
-		if (params.type !== "image") {
-			return;
-		}
+  const unsubscribe = configPort.onMediaResolve((params) => {
+    if (params.type !== "image") {
+      return;
+    }
 
-		const image = createImage({ attrs: params.attrs });
+    const image = createImage({ attrs: params.attrs });
 
-		blockComponentPlacement.insertBySelection({
-			lines: [image],
-			shouldReplaceContentLineIfEmpty: true,
-		});
+    blockComponentPlacement.insertBySelection({
+      lines: [image],
+      shouldReplaceContentLineIfEmpty: true,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		selection.setBoundaryPoints({
-			fromNode: image,
-			fromOffset: image.$$childNodes.length,
-			toNode: image,
-			toOffset: image.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: image,
+      fromOffset: image.$$childNodes.length,
+      toNode: image,
+      toOffset: image.$$childNodes.length,
+    });
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

@@ -6,45 +6,45 @@ import type { HandleTableInsertionParams } from "./HandleTableInsertion-types";
  * selection inside it and focuses the editor. A size past the table's limits is ignored.
  */
 export const handleTableInsertion = ({
-	configPort,
-	editorAPI,
-	blockComponentPlacement,
+  configPort,
+  editorAPI,
+  blockComponentPlacement,
 }: HandleTableInsertionParams) => {
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
-	const selection = editorAPI.getEditorSelection();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const selection = editorAPI.getEditorSelection();
 
-	const unsubscribe = configPort.onInsert(({ row, column }) => {
-		const placementMismatch = validateTablePlacement({
-			row,
-			column,
-			limits: configPort.limits,
-		});
+  const unsubscribe = configPort.onInsert(({ row, column }) => {
+    const placementMismatch = validateTablePlacement({
+      row,
+      column,
+      limits: configPort.limits,
+    });
 
-		if (placementMismatch) {
-			console.warn(placementMismatch);
-			return;
-		}
+    if (placementMismatch) {
+      console.warn(placementMismatch);
+      return;
+    }
 
-		const table = createTable({ rows: row, cols: column });
+    const table = createTable({ rows: row, cols: column });
 
-		blockComponentPlacement.insertBySelection({
-			lines: [table],
-			shouldReplaceContentLineIfEmpty: true,
-		});
+    blockComponentPlacement.insertBySelection({
+      lines: [table],
+      shouldReplaceContentLineIfEmpty: true,
+    });
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		selection.setBoundaryPoints({
-			fromNode: table,
-			fromOffset: table.$$childNodes.length,
-			toNode: table,
-			toOffset: table.$$childNodes.length,
-		});
+    selection.setBoundaryPoints({
+      fromNode: table,
+      fromOffset: table.$$childNodes.length,
+      toNode: table,
+      toOffset: table.$$childNodes.length,
+    });
 
-		editorAPI.focus();
-	});
+    editorAPI.focus();
+  });
 
-	return () => {
-		unsubscribe();
-	};
+  return () => {
+    unsubscribe();
+  };
 };

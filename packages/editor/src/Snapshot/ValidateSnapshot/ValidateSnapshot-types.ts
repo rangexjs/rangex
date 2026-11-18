@@ -1,16 +1,16 @@
 import type {
-	ComponentDraft,
-	EditorNodeSnapshotValidation,
-	FailedStoredSnapshotValidation,
-	SnapshotLimits,
-	StoredSnapshot,
+  ComponentDraft,
+  EditorNodeSnapshotValidation,
+  FailedStoredSnapshotValidation,
+  SnapshotLimits,
+  StoredSnapshot,
 } from "@rangex/core";
 
 import type { SnapshotComponents } from "./CreateComponentValidators";
 import type { SnapshotRoot } from "./ValidateRoot";
 
 export interface ValidateComponentParams {
-	componentDraft: ComponentDraft;
+  componentDraft: ComponentDraft;
 }
 
 export type ValidateComponentResult = EditorNodeSnapshotValidation;
@@ -18,8 +18,8 @@ export type ValidateComponentResult = EditorNodeSnapshotValidation;
 export type ValidateComponentFn = (params: ValidateComponentParams) => ValidateComponentResult;
 
 export interface ComponentValidator {
-	name: string;
-	validate: ValidateComponentFn;
+  name: string;
+  validate: ValidateComponentFn;
 }
 
 /*
@@ -28,22 +28,22 @@ export interface ComponentValidator {
  * the same rules.
  */
 export interface SnapshotSchema {
-	limits: SnapshotLimits;
-	root: SnapshotRoot;
-	components: SnapshotComponents;
+  limits: SnapshotLimits;
+  root: SnapshotRoot;
+  components: SnapshotComponents;
 }
 
 export interface ValidateSnapshotParams extends SnapshotSchema {
-	storedSnapshot: object;
+  storedSnapshot: object;
 }
 
 export interface ValidateSnapshotSucceeded {
-	isValid: true;
-	storedSnapshot: StoredSnapshot;
+  isValid: true;
+  storedSnapshot: StoredSnapshot;
 }
 
 export interface ValidateSnapshotFailed extends FailedStoredSnapshotValidation {
-	isValid: false;
+  isValid: false;
 }
 
 export type ValidateSnapshotResult = ValidateSnapshotSucceeded | ValidateSnapshotFailed;

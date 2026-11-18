@@ -7,23 +7,23 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const HistoryForwardToolbarButton = () => {
-	const editor = useEditorContext();
-	const { undoRedo, readOnly } = editor;
+  const editor = useEditorContext();
+  const { undoRedo, readOnly } = editor;
 
-	if (!undoRedo) {
-		throw new Error("UndoRedo can't be undefined.");
-	}
+  if (!undoRedo) {
+    throw new Error("UndoRedo can't be undefined.");
+  }
 
-	const $undoRedo = UndoRedo(undoRedo);
-	const $readOnly = ReadOnly(readOnly);
+  const $undoRedo = UndoRedo(undoRedo);
+  const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(() => !$undoRedo.canStepForward() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$undoRedo.canStepForward() || !!$readOnly?.checked());
 
-	return (
-		<span>
-			<ToolbarButton disabled={disabled()} onClick={() => undoRedo.stepForward()}>
-				<Icon name="ArrowBendUpRight" title="Redo" class="size-4" />
-			</ToolbarButton>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton disabled={disabled()} onClick={() => undoRedo.stepForward()}>
+        <Icon name="ArrowBendUpRight" title="Redo" class="size-4" />
+      </ToolbarButton>
+    </span>
+  );
 };

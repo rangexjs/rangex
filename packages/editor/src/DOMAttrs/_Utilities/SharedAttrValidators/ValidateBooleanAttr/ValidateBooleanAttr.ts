@@ -5,9 +5,9 @@ import type { ValidateAttrFn } from "../../DOMAttrs-types";
  * falls back to an empty one, so the attribute stays set.
  */
 export const validateBooleanAttr: ValidateAttrFn<string | null> = ({ value }) => {
-	if (value !== "") {
-		return { kind: "fallback", reason: "must be empty", value: "" };
-	}
+  if (value !== "") {
+    return { kind: "fallback", reason: "must be empty", value: "" };
+  }
 
-	return null;
+  return null;
 };

@@ -3,25 +3,25 @@ import type { AdapterBus } from "../../AdapterBus";
 export type OnSwapCallbackFn = () => void;
 
 export interface SwapToSourcePlaceholderConfigPort {
-	readonly canSwap: boolean;
+  readonly canSwap: boolean;
 
-	onSwap(callback: OnSwapCallbackFn): () => void;
-	notifySwapToSourcePlaceholder(): void;
+  onSwap(callback: OnSwapCallbackFn): () => void;
+  notifySwapToSourcePlaceholder(): void;
 }
 
 export interface SwapToSourcePlaceholderPublicPort {
-	readonly canSwap: boolean;
+  readonly canSwap: boolean;
 
-	swap(): void;
+  swap(): void;
 }
 
 export interface SwapToSourcePlaceholderPort {
-	configPort: SwapToSourcePlaceholderConfigPort;
-	publicPort: SwapToSourcePlaceholderPublicPort;
+  configPort: SwapToSourcePlaceholderConfigPort;
+  publicPort: SwapToSourcePlaceholderPublicPort;
 }
 
 export interface CreateSwapToSourcePlaceholderPortParams {
-	adapterBus: AdapterBus;
+  adapterBus: AdapterBus;
 }
 
 export interface CreateSwapToSourcePlaceholderPortResult extends SwapToSourcePlaceholderPort {}

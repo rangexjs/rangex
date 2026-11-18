@@ -4,18 +4,18 @@ import type { LinkConfigPort } from "#adapters/Link";
 import type { PopoverOverlayController } from "#engine-links";
 
 export interface CloseOnSelectionChangeParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-	linkMenuPopoverController: PopoverOverlayController;
+  configPort: LinkConfigPort;
+  editorAPI: EditorAPI;
+  linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface CloseOnLinkRemovalParams {
-	editorAPI: EditorAPI;
-	linkMenuPopoverController: PopoverOverlayController;
+  editorAPI: EditorAPI;
+  linkMenuPopoverController: PopoverOverlayController;
 }
 
 export interface HandleLinkMenuCloseParams {
-	configPort: LinkConfigPort;
-	editorAPI: EditorAPI;
-	linkMenuPopoverController: PopoverOverlayController;
+  configPort: LinkConfigPort;
+  editorAPI: EditorAPI;
+  linkMenuPopoverController: PopoverOverlayController;
 }

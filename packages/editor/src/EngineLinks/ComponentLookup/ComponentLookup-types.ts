@@ -3,40 +3,40 @@ import type { BlockComponent, ContentFlowNode, EditorAPI, InlineComponent } from
 import type { BlockComponentName, ComponentName, InlineComponentName } from "#constants";
 
 export type ComponentByName<TName extends ComponentName> = TName extends BlockComponentName
-	? BlockComponent
-	: TName extends InlineComponentName
-		? InlineComponent
-		: never;
+  ? BlockComponent
+  : TName extends InlineComponentName
+    ? InlineComponent
+    : never;
 
 export interface ClosestParams<TName extends ComponentName> {
-	fromNode: ContentFlowNode;
-	fromOffset: number;
-	toNode: ContentFlowNode;
-	toOffset: number;
-	components: TName[];
+  fromNode: ContentFlowNode;
+  fromOffset: number;
+  toNode: ContentFlowNode;
+  toOffset: number;
+  components: TName[];
 }
 
 export type ClosestResult<TName extends ComponentName> = ComponentByName<TName> | null;
 
 export type ClosestFn = <TName extends ComponentName>(
-	params: ClosestParams<TName>,
+  params: ClosestParams<TName>,
 ) => ClosestResult<TName>;
 
 export interface ClosestBySelectionParams<TName extends ComponentName> {
-	components: TName[];
+  components: TName[];
 }
 
 export type ClosestBySelectionFn = <TName extends ComponentName>(
-	params: ClosestBySelectionParams<TName>,
+  params: ClosestBySelectionParams<TName>,
 ) => ClosestResult<TName>;
 
 export interface ComponentLookup {
-	closest: ClosestFn;
-	closestBySelection: ClosestBySelectionFn;
+  closest: ClosestFn;
+  closestBySelection: ClosestBySelectionFn;
 }
 
 export interface CreateComponentLookupParams {
-	editorAPI: EditorAPI;
+  editorAPI: EditorAPI;
 }
 
 export interface CreateComponentLookupResult extends ComponentLookup {}

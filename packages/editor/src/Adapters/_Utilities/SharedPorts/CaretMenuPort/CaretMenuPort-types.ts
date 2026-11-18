@@ -1,7 +1,7 @@
 export type CaretMenuQuery = string | null;
 
 export interface CaretMenuState {
-	query: CaretMenuQuery;
+  query: CaretMenuQuery;
 }
 
 export type OnQueryUpdateCallbackFn = (value: CaretMenuQuery) => void;
@@ -9,25 +9,25 @@ export type OnQueryUpdateCallbackFn = (value: CaretMenuQuery) => void;
 export interface UpdateStateParams extends Partial<CaretMenuState> {}
 
 export interface CaretMenuConfigPort {
-	readonly element: HTMLDivElement;
+  readonly element: HTMLDivElement;
 
-	updateCaretMenu(params: UpdateStateParams): void;
+  updateCaretMenu(params: UpdateStateParams): void;
 }
 
 export interface CaretMenuPublicPort {
-	readonly element: HTMLDivElement;
-	readonly query: CaretMenuQuery;
+  readonly element: HTMLDivElement;
+  readonly query: CaretMenuQuery;
 
-	onQueryUpdate(callback: OnQueryUpdateCallbackFn): () => void;
+  onQueryUpdate(callback: OnQueryUpdateCallbackFn): () => void;
 }
 
 export interface CaretMenuPort {
-	configPort: CaretMenuConfigPort;
-	publicPort: CaretMenuPublicPort;
+  configPort: CaretMenuConfigPort;
+  publicPort: CaretMenuPublicPort;
 }
 
 export interface CreateCaretMenuPortParams {
-	floatingContainer: HTMLDivElement;
+  floatingContainer: HTMLDivElement;
 }
 
 export interface CreateCaretMenuPortResult extends CaretMenuPort {}

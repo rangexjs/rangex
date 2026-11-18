@@ -6,11 +6,11 @@ import type { Extension } from "../_Utilities";
 import type { LineHandlerExtensionSettings } from "./LineHandler-types";
 
 export const LineHandler = (settings: LineHandlerExtensionSettings): Extension => {
-	return {
-		createAdapter: () => LineHandlerFactory(settings),
-		components: {
-			toolbarButtons: {},
-			floatingComponents: [LineHandlerOverlay],
-		},
-	};
+  return {
+    createAdapter: () => LineHandlerFactory(settings),
+    components: {
+      toolbarButtons: {},
+      floatingComponents: [LineHandlerOverlay],
+    },
+  };
 };

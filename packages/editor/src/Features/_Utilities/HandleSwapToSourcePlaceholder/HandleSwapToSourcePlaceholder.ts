@@ -5,41 +5,41 @@ import type { HandleSwapToSourcePlaceholderParams } from "./HandleSwapToSourcePl
  * content, registers a snapshot boundary, and notifies the port that the swap happened.
  */
 export const handleSwapToSourcePlaceholder = ({
-	port,
-	editorAPI,
+  port,
+  editorAPI,
 }: HandleSwapToSourcePlaceholderParams) => {
-	const unsubscribeSwap = port.onSwap(() => {
-		if (!port.canSwap) {
-			return;
-		}
+  const unsubscribeSwap = port.onSwap(() => {
+    if (!port.canSwap) {
+      return;
+    }
 
-		const { currentComponent } = port;
+    const { currentComponent } = port;
 
-		if (!currentComponent) {
-			return;
-		}
+    if (!currentComponent) {
+      return;
+    }
 
-		const { $$parentElement } = currentComponent;
+    const { $$parentElement } = currentComponent;
 
-		if (!$$parentElement) {
-			throw new Error("ParentElement not supposed to be null.");
-		}
+    if (!$$parentElement) {
+      throw new Error("ParentElement not supposed to be null.");
+    }
 
-		editorAPI.removeNodesInRange({
-			fromNode: $$parentElement,
-			fromOffset: 0,
-			toNode: $$parentElement,
-			toOffset: $$parentElement.$$childNodes.length,
-		});
+    editorAPI.removeNodesInRange({
+      fromNode: $$parentElement,
+      fromOffset: 0,
+      toNode: $$parentElement,
+      toOffset: $$parentElement.$$childNodes.length,
+    });
 
-		const snapshotTimeline = editorAPI.getSnapshotTimeline();
+    const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-		snapshotTimeline.registerSnapshotBoundary();
+    snapshotTimeline.registerSnapshotBoundary();
 
-		port.notifySwapToSourcePlaceholder();
-	});
+    port.notifySwapToSourcePlaceholder();
+  });
 
-	return () => {
-		unsubscribeSwap();
-	};
+  return () => {
+    unsubscribeSwap();
+  };
 };

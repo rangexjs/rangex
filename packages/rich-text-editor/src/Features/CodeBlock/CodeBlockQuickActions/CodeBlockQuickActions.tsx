@@ -7,57 +7,57 @@ import { Icon } from "#ui";
 import { CodeBlockHighlight } from "./CodeBlockHighlight";
 
 export const CodeBlockQuickActions = () => {
-	const editor = useEditorContext();
-	const uiOptions = useUIOptionsContext();
+  const editor = useEditorContext();
+  const uiOptions = useUIOptionsContext();
 
-	const { codeBlock, readOnly } = editor;
-	const options = uiOptions.codeBlock;
+  const { codeBlock, readOnly } = editor;
+  const options = uiOptions.codeBlock;
 
-	if (!codeBlock) {
-		throw new Error("CodeBlock can't be undefined.");
-	}
+  if (!codeBlock) {
+    throw new Error("CodeBlock can't be undefined.");
+  }
 
-	if (!options) {
-		throw new Error("CodeBlockOptions can't be undefined.");
-	}
+  if (!options) {
+    throw new Error("CodeBlockOptions can't be undefined.");
+  }
 
-	const $codeBlock = CodeBlock(codeBlock);
-	const $readOnly = ReadOnly(readOnly);
+  const $codeBlock = CodeBlock(codeBlock);
+  const $readOnly = ReadOnly(readOnly);
 
-	const [copied, setCopied] = createSignal(false);
+  const [copied, setCopied] = createSignal(false);
 
-	const onCopyClick = (() => {
-		let timeoutId = NaN;
-		return () => {
-			const plainText = codeBlock.getPlainText();
-			const lines = plainText.join("\n");
-			navigator.clipboard.writeText(lines);
-			setCopied(true);
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => setCopied(false), 1200);
-		};
-	})();
+  const onCopyClick = (() => {
+    let timeoutId = NaN;
+    return () => {
+      const plainText = codeBlock.getPlainText();
+      const lines = plainText.join("\n");
+      navigator.clipboard.writeText(lines);
+      setCopied(true);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => setCopied(false), 1200);
+    };
+  })();
 
-	return (
-		<FloatingPortal mount={codeBlock.quickActions.element}>
-			<div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
-				<button
-					type="button"
-					class="btn-menu-trigger flex items-center justify-center rounded p-1"
-					aria-label="Copy code"
-					disabled={$readOnly?.checked()}
-					onClick={onCopyClick}
-				>
-					<Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />
-				</button>
+  return (
+    <FloatingPortal mount={codeBlock.quickActions.element}>
+      <div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
+        <button
+          type="button"
+          class="btn-menu-trigger flex items-center justify-center rounded p-1"
+          aria-label="Copy code"
+          disabled={$readOnly?.checked()}
+          onClick={onCopyClick}
+        >
+          <Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />
+        </button>
 
-				<CodeBlockHighlight
-					codeBlock={codeBlock}
-					$codeBlock={$codeBlock}
-					readOnly={$readOnly}
-					options={options}
-				/>
-			</div>
-		</FloatingPortal>
-	);
+        <CodeBlockHighlight
+          codeBlock={codeBlock}
+          $codeBlock={$codeBlock}
+          readOnly={$readOnly}
+          options={options}
+        />
+      </div>
+    </FloatingPortal>
+  );
 };

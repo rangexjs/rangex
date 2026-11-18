@@ -3,10 +3,10 @@ import { accordionItemAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-	getAccordionItemParts,
-	handleComponentUnwrap,
-	handleDOMAttrs,
-	handleSelectionComponent,
+  getAccordionItemParts,
+  handleComponentUnwrap,
+  handleDOMAttrs,
+  handleSelectionComponent,
 } from "../_Utilities";
 import type { ConfigureAccordionItemParams } from "./ConfigureAccordionItem-types";
 import { handleAccordionItemPlacement } from "./HandleAccordionItemPlacement";
@@ -18,56 +18,56 @@ import { handleAccordionItemSummaryToggle } from "./HandleAccordionItemSummaryTo
  * and summary toggle handling. Returns a cleanup function that tears down all of it.
  */
 export const configureAccordionItem = ({
-	adapterBus,
-	configPort,
-	editorAPI,
+  adapterBus,
+  configPort,
+  editorAPI,
 }: ConfigureAccordionItemParams) => {
-	const blockComponentPlacement = createBlockComponentPlacement({
-		editorAPI,
-		adapterBus,
-	});
+  const blockComponentPlacement = createBlockComponentPlacement({
+    editorAPI,
+    adapterBus,
+  });
 
-	const selectionComponentCleanup = handleSelectionComponent({
-		port: configPort,
-		editorAPI,
-		componentName: componentsName.accordionItem,
-	});
+  const selectionComponentCleanup = handleSelectionComponent({
+    port: configPort,
+    editorAPI,
+    componentName: componentsName.accordionItem,
+  });
 
-	const placementStateCleanup = handleAccordionItemPlacementState({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const placementStateCleanup = handleAccordionItemPlacementState({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const unwrapCleanup = handleComponentUnwrap({
-		port: configPort,
-		editorAPI,
-		getComponent: () => configPort.currentComponent,
-	});
+  const unwrapCleanup = handleComponentUnwrap({
+    port: configPort,
+    editorAPI,
+    getComponent: () => configPort.currentComponent,
+  });
 
-	const insertionCleanup = handleAccordionItemPlacement({
-		configPort,
-		editorAPI,
-		blockComponentPlacement,
-	});
+  const insertionCleanup = handleAccordionItemPlacement({
+    configPort,
+    editorAPI,
+    blockComponentPlacement,
+  });
 
-	const domAttrsCleanup = handleDOMAttrs({
-		currentComponentPort: configPort,
-		domAttrsPort: configPort,
-		editorAPI,
-		componentAttrsShape: accordionItemAttrsShape,
-		componentAttrValidators: configPort.attrValidators,
-		resolveElements: (accordionItem) => getAccordionItemParts({ blockComponent: accordionItem }),
-	});
+  const domAttrsCleanup = handleDOMAttrs({
+    currentComponentPort: configPort,
+    domAttrsPort: configPort,
+    editorAPI,
+    componentAttrsShape: accordionItemAttrsShape,
+    componentAttrValidators: configPort.attrValidators,
+    resolveElements: (accordionItem) => getAccordionItemParts({ blockComponent: accordionItem }),
+  });
 
-	const summaryToggleCleanup = handleAccordionItemSummaryToggle({ editorAPI });
+  const summaryToggleCleanup = handleAccordionItemSummaryToggle({ editorAPI });
 
-	return () => {
-		selectionComponentCleanup();
-		placementStateCleanup();
-		unwrapCleanup();
-		insertionCleanup();
-		domAttrsCleanup();
-		summaryToggleCleanup();
-	};
+  return () => {
+    selectionComponentCleanup();
+    placementStateCleanup();
+    unwrapCleanup();
+    insertionCleanup();
+    domAttrsCleanup();
+    summaryToggleCleanup();
+  };
 };

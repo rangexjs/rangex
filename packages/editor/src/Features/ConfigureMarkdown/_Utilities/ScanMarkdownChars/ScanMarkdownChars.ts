@@ -7,32 +7,32 @@ import type { ScanMarkdownCharsParams, ScanMarkdownCharsResult } from "./ScanMar
  * step and how many characters were actually scanned, or null if nothing could be scanned.
  */
 export const scanMarkdownChars = ({
-	editorAPI,
-	fromText,
-	fromOffset,
-	maxChars,
+  editorAPI,
+  fromText,
+  fromOffset,
+  maxChars,
 }: ScanMarkdownCharsParams): ScanMarkdownCharsResult => {
-	const { plainTextScanner } = editorAPI.createPlainTextScanner({
-		fromNode: fromText,
-		fromOffset,
-		direction: "backward",
-	});
+  const { plainTextScanner } = editorAPI.createPlainTextScanner({
+    fromNode: fromText,
+    fromOffset,
+    direction: "backward",
+  });
 
-	let lastStep: PlainTextScanStep | null = null;
-	let charsScanned = 0;
+  let lastStep: PlainTextScanStep | null = null;
+  let charsScanned = 0;
 
-	for (const step of plainTextScanner) {
-		if (charsScanned >= maxChars) {
-			break;
-		}
+  for (const step of plainTextScanner) {
+    if (charsScanned >= maxChars) {
+      break;
+    }
 
-		lastStep = step;
-		charsScanned++;
-	}
+    lastStep = step;
+    charsScanned++;
+  }
 
-	if (!lastStep) {
-		return null;
-	}
+  if (!lastStep) {
+    return null;
+  }
 
-	return { step: lastStep, charsScanned };
+  return { step: lastStep, charsScanned };
 };

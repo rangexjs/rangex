@@ -7,39 +7,39 @@ import { Icon } from "#ui";
 import { ToolbarButton } from "../../_Utilities";
 
 export const CheckboxListToolbarButton = () => {
-	const editor = useEditorContext();
-	const { todoList, readOnly } = editor;
+  const editor = useEditorContext();
+  const { todoList, readOnly } = editor;
 
-	if (!todoList) {
-		throw new Error("TodoList can't be undefined.");
-	}
+  if (!todoList) {
+    throw new Error("TodoList can't be undefined.");
+  }
 
-	const $todoList = TodoList(todoList);
-	const $readOnly = ReadOnly(readOnly);
+  const $todoList = TodoList(todoList);
+  const $readOnly = ReadOnly(readOnly);
 
-	const disabled = createMemo(
-		() => !($todoList.isSelectionActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
-	);
+  const disabled = createMemo(
+    () => !($todoList.isSelectionActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
+  );
 
-	const onClick = () => {
-		if ($todoList.isSelectionActive()) {
-			todoList.unwrap();
-			return;
-		}
+  const onClick = () => {
+    if ($todoList.isSelectionActive()) {
+      todoList.unwrap();
+      return;
+    }
 
-		todoList.wrap();
-	};
+    todoList.wrap();
+  };
 
-	return (
-		<span>
-			<ToolbarButton
-				checked={$todoList.isSelectionActive()}
-				disabled={disabled()}
-				onClick={onClick}
-				aria-pressed={`${$todoList.isSelectionActive()}`}
-			>
-				<Icon name="ListChecks" title="Checklist" class="size-4" />
-			</ToolbarButton>
-		</span>
-	);
+  return (
+    <span>
+      <ToolbarButton
+        checked={$todoList.isSelectionActive()}
+        disabled={disabled()}
+        onClick={onClick}
+        aria-pressed={`${$todoList.isSelectionActive()}`}
+      >
+        <Icon name="ListChecks" title="Checklist" class="size-4" />
+      </ToolbarButton>
+    </span>
+  );
 };

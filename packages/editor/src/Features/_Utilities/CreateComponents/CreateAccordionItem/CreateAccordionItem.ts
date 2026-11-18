@@ -1,11 +1,11 @@
 import {
-	createBeamText,
-	createBlockComponent,
-	createBlockComponentLine,
-	createBlockComponentTextHolder,
-	createContentLine,
-	createHTMLLayout,
-	createNestedEditable,
+  createBeamText,
+  createBlockComponent,
+  createBlockComponentLine,
+  createBlockComponentTextHolder,
+  createContentLine,
+  createHTMLLayout,
+  createNestedEditable,
 } from "@rangex/core";
 
 import { accordionItemDefinition, componentsName } from "#constants";
@@ -13,8 +13,8 @@ import { toDOMAttrs } from "#dom-attrs";
 import { createAccordionItemStorage } from "#storage";
 
 import type {
-	CreateAccordionItemParams,
-	CreateAccordionItemResult,
+  CreateAccordionItemParams,
+  CreateAccordionItemResult,
 } from "./CreateAccordionItem-types";
 
 /*
@@ -23,46 +23,46 @@ import type {
  * attributes of its line and `details`. They aren't validated here.
  */
 export const createAccordionItem = ({
-	attrs,
-	childNodes,
+  attrs,
+  childNodes,
 }: CreateAccordionItemParams): CreateAccordionItemResult => {
-	const summaryNestedEditable = createNestedEditable({
-		...accordionItemDefinition.summaryNestedEditableProps,
-		childNodes: [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
-	});
+  const summaryNestedEditable = createNestedEditable({
+    ...accordionItemDefinition.summaryNestedEditableProps,
+    childNodes: [createContentLine({ localName: "p", childNodes: [createBeamText({})] })],
+  });
 
-	const bodyNestedEditable = createNestedEditable({
-		...accordionItemDefinition.bodyNestedEditableProps,
-		childNodes: childNodes ?? [
-			createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
-		],
-	});
+  const bodyNestedEditable = createNestedEditable({
+    ...accordionItemDefinition.bodyNestedEditableProps,
+    childNodes: childNodes ?? [
+      createContentLine({ localName: "p", childNodes: [createBeamText({})] }),
+    ],
+  });
 
-	const blockComponentLine = createBlockComponentLine({
-		leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
-		blockComponent: createBlockComponent({
-			name: componentsName.accordionItem,
-			content: { type: "custom" },
-			customStorage: createAccordionItemStorage(),
-			shouldSelectBeforeRemove: true,
-			shouldSelectOnNavigation: false,
-			editState: "inherit",
-			childNodes: [
-				createHTMLLayout({
-					localName: "details",
-					domAttrs: toDOMAttrs(attrs.details),
-					childNodes: [
-						createHTMLLayout({
-							localName: "summary",
-							childNodes: [summaryNestedEditable],
-						}),
-						bodyNestedEditable,
-					],
-				}),
-			],
-		}),
-		rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
-	});
+  const blockComponentLine = createBlockComponentLine({
+    leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
+    blockComponent: createBlockComponent({
+      name: componentsName.accordionItem,
+      content: { type: "custom" },
+      customStorage: createAccordionItemStorage(),
+      shouldSelectBeforeRemove: true,
+      shouldSelectOnNavigation: false,
+      editState: "inherit",
+      childNodes: [
+        createHTMLLayout({
+          localName: "details",
+          domAttrs: toDOMAttrs(attrs.details),
+          childNodes: [
+            createHTMLLayout({
+              localName: "summary",
+              childNodes: [summaryNestedEditable],
+            }),
+            bodyNestedEditable,
+          ],
+        }),
+      ],
+    }),
+    rightBlockComponentTextHolder: createBlockComponentTextHolder({}),
+  });
 
-	return blockComponentLine;
+  return blockComponentLine;
 };

@@ -7,13 +7,13 @@ import type { Extension } from "../_Utilities";
 import type { TodoListExtensionSettings } from "./TodoList-types";
 
 export const TodoList = (settings: TodoListExtensionSettings): Extension => {
-	return {
-		createAdapter: () => TodoListFactory(settings),
-		components: {
-			toolbarButtons: {
-				[toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
-			},
-			floatingComponents: [],
-		},
-	};
+  return {
+    createAdapter: () => TodoListFactory(settings),
+    components: {
+      toolbarButtons: {
+        [toolbarButtonsName.checkboxList]: CheckboxListToolbarButton,
+      },
+      floatingComponents: [],
+    },
+  };
 };

@@ -5,34 +5,34 @@ import type { PreserveUndefined } from "../../_Utilities";
 import type { ReactiveEmbedPort } from "./Embed-types";
 
 export const Embed = <T extends EmbedPublicPort | undefined>(
-	publicPort: T,
+  publicPort: T,
 ): PreserveUndefined<T, ReactiveEmbedPort> => {
-	if (!publicPort) {
-		return undefined as PreserveUndefined<T, ReactiveEmbedPort>;
-	}
+  if (!publicPort) {
+    return undefined as PreserveUndefined<T, ReactiveEmbedPort>;
+  }
 
-	const [captionEnabled, setCaptionEnabled] = createSignal(publicPort.captionEnabled);
-	const [captionPosition, setCaptionPosition] = createSignal(publicPort.captionPosition);
-	const [align, setAlign] = createSignal(publicPort.align);
-	const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
-	const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
-	const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
+  const [captionEnabled, setCaptionEnabled] = createSignal(publicPort.captionEnabled);
+  const [captionPosition, setCaptionPosition] = createSignal(publicPort.captionPosition);
+  const [align, setAlign] = createSignal(publicPort.align);
+  const [domAttrs, setDOMAttrs] = createSignal(publicPort.domAttrs);
+  const [currentComponent, setCurrentComponent] = createSignal(publicPort.currentComponent);
+  const [isSelectionActive, setIsSelectionActive] = createSignal(publicPort.isSelectionActive);
 
-	onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
-	onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
-	onCleanup(publicPort.onAlignUpdate(setAlign));
-	onCleanup(publicPort.onDOMAttrsUpdate(setDOMAttrs));
-	onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
-	onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
+  onCleanup(publicPort.onCaptionEnabledUpdate(setCaptionEnabled));
+  onCleanup(publicPort.onCaptionPositionUpdate(setCaptionPosition));
+  onCleanup(publicPort.onAlignUpdate(setAlign));
+  onCleanup(publicPort.onDOMAttrsUpdate(setDOMAttrs));
+  onCleanup(publicPort.onCurrentComponentUpdate(setCurrentComponent));
+  onCleanup(publicPort.onIsSelectionActiveUpdate(setIsSelectionActive));
 
-	const port: ReactiveEmbedPort = {
-		captionEnabled,
-		captionPosition,
-		align,
-		domAttrs,
-		currentComponent,
-		isSelectionActive,
-	};
+  const port: ReactiveEmbedPort = {
+    captionEnabled,
+    captionPosition,
+    align,
+    domAttrs,
+    currentComponent,
+    isSelectionActive,
+  };
 
-	return port as PreserveUndefined<T, ReactiveEmbedPort>;
+  return port as PreserveUndefined<T, ReactiveEmbedPort>;
 };

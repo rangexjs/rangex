@@ -1,10 +1,10 @@
 import {
-	createBeamText,
-	createContentLine,
-	createHTMLLayout,
-	createNestedEditable,
-	type HTMLLayout,
-	htmlLayoutRole,
+  createBeamText,
+  createContentLine,
+  createHTMLLayout,
+  createNestedEditable,
+  type HTMLLayout,
+  htmlLayoutRole,
 } from "@rangex/core";
 
 import type { CaptionPosition } from "#adapters";
@@ -13,22 +13,22 @@ import { createTextAlignStructuredStyle } from "#structured-style";
 
 import { getEmbedElement } from "../GetEmbedElements";
 import type {
-	GetEmbedCaptionParams,
-	GetEmbedCaptionResult,
-	SetEmbedCaptionEnabledParams,
-	SetEmbedCaptionPositionParams,
+  GetEmbedCaptionParams,
+  GetEmbedCaptionResult,
+  SetEmbedCaptionEnabledParams,
+  SetEmbedCaptionPositionParams,
 } from "./EmbedCaption-types";
 
 const figcaptionLocalName = "figcaption";
 
 const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
-	for (const child of figure.$$children) {
-		if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
-			return child;
-		}
-	}
+  for (const child of figure.$$children) {
+    if (child.$$editorRole === htmlLayoutRole && child.$$localName === figcaptionLocalName) {
+      return child;
+    }
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -36,20 +36,20 @@ const getFigcaption = (figure: HTMLLayout): HTMLLayout | null => {
  * the embed — derived from the figcaption's presence and DOM order, not a stored flag.
  */
 export const getEmbedCaption = ({ figure }: GetEmbedCaptionParams): GetEmbedCaptionResult => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		return { captionEnabled: false, captionPosition: "below" };
-	}
+  if (!figcaption) {
+    return { captionEnabled: false, captionPosition: "below" };
+  }
 
-	const embedElement = getEmbedElement({ figure });
+  const embedElement = getEmbedElement({ figure });
 
-	const { $$children } = figure;
+  const { $$children } = figure;
 
-	const position: CaptionPosition =
-		$$children.indexOf(figcaption) < $$children.indexOf(embedElement) ? "above" : "below";
+  const position: CaptionPosition =
+    $$children.indexOf(figcaption) < $$children.indexOf(embedElement) ? "above" : "below";
 
-	return { captionEnabled: true, captionPosition: position };
+  return { captionEnabled: true, captionPosition: position };
 };
 
 /*
@@ -58,43 +58,43 @@ export const getEmbedCaption = ({ figure }: GetEmbedCaptionParams): GetEmbedCapt
  * typed in it.
  */
 export const setEmbedCaptionEnabled = ({
-	figure,
-	enabled,
-	position,
+  figure,
+  enabled,
+  position,
 }: SetEmbedCaptionEnabledParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!enabled) {
-		figcaption?.$$remove();
-		return;
-	}
+  if (!enabled) {
+    figcaption?.$$remove();
+    return;
+  }
 
-	if (figcaption) {
-		return;
-	}
+  if (figcaption) {
+    return;
+  }
 
-	const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
+  const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
-	const nestedEditable = createNestedEditable({
-		...mediaCaptionDefinition.nestedEditableProps,
-		childNodes: [
-			createContentLine({
-				localName: "p",
-				structuredStyle: { textAlign },
-				childNodes: [createBeamText({})],
-			}),
-		],
-	});
+  const nestedEditable = createNestedEditable({
+    ...mediaCaptionDefinition.nestedEditableProps,
+    childNodes: [
+      createContentLine({
+        localName: "p",
+        structuredStyle: { textAlign },
+        childNodes: [createBeamText({})],
+      }),
+    ],
+  });
 
-	const newFigcaption = createHTMLLayout({
-		localName: figcaptionLocalName,
-		childNodes: [nestedEditable],
-	});
+  const newFigcaption = createHTMLLayout({
+    localName: figcaptionLocalName,
+    childNodes: [nestedEditable],
+  });
 
-	({
-		above: () => figure.$$prepend(newFigcaption),
-		below: () => figure.$$append(newFigcaption),
-	})[position]();
+  ({
+    above: () => figure.$$prepend(newFigcaption),
+    below: () => figure.$$append(newFigcaption),
+  })[position]();
 };
 
 /*
@@ -102,18 +102,18 @@ export const setEmbedCaptionEnabled = ({
  * rather than checking the current order first. Throws if the figure has no figcaption.
  */
 export const setEmbedCaptionPosition = ({ figure, position }: SetEmbedCaptionPositionParams) => {
-	const figcaption = getFigcaption(figure);
+  const figcaption = getFigcaption(figure);
 
-	if (!figcaption) {
-		throw new Error("Figure must contain a figcaption to reposition.");
-	}
+  if (!figcaption) {
+    throw new Error("Figure must contain a figcaption to reposition.");
+  }
 
-	const embedElement = getEmbedElement({ figure });
+  const embedElement = getEmbedElement({ figure });
 
-	figcaption.$$remove();
+  figcaption.$$remove();
 
-	({
-		above: () => embedElement.$$before(figcaption),
-		below: () => embedElement.$$after(figcaption),
-	})[position]();
+  ({
+    above: () => embedElement.$$before(figcaption),
+    below: () => embedElement.$$after(figcaption),
+  })[position]();
 };

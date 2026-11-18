@@ -4,37 +4,37 @@ import { videoStoragePattern } from "#storage";
 
 import { validateMediaComponent } from "../_Utilities";
 import type {
-	CreateVideoValidatorParams,
-	CreateVideoValidatorResult,
-	ValidateVideoParams,
-	ValidateVideoResult,
+  CreateVideoValidatorParams,
+  CreateVideoValidatorResult,
+  ValidateVideoParams,
+  ValidateVideoResult,
 } from "./ValidateVideo-types";
 
 /*
  * Validates a Video as a media component (see validateMediaComponent), with `video` as its media element.
  */
 const validateVideo = ({
-	componentDraft,
-	attrValidators,
+  componentDraft,
+  attrValidators,
 }: ValidateVideoParams): ValidateVideoResult => {
-	const videoFailed = validateMediaComponent({
-		componentDraft,
-		name: componentsName.video,
-		customStorage: videoStoragePattern,
-		mediaLocalName: "video",
-		lineAttrsShape: videoAttrsShape.line,
-		lineAttrValidators: attrValidators.line,
-		blockAttrsShape: videoAttrsShape.block,
-		blockAttrValidators: attrValidators.block,
-		mediaAttrsShape: videoAttrsShape.video,
-		mediaAttrValidators: attrValidators.video,
-	});
+  const videoFailed = validateMediaComponent({
+    componentDraft,
+    name: componentsName.video,
+    customStorage: videoStoragePattern,
+    mediaLocalName: "video",
+    lineAttrsShape: videoAttrsShape.line,
+    lineAttrValidators: attrValidators.line,
+    blockAttrsShape: videoAttrsShape.block,
+    blockAttrValidators: attrValidators.block,
+    mediaAttrsShape: videoAttrsShape.video,
+    mediaAttrValidators: attrValidators.video,
+  });
 
-	if (videoFailed) {
-		return videoFailed;
-	}
+  if (videoFailed) {
+    return videoFailed;
+  }
 
-	return null;
+  return null;
 };
 
 /*
@@ -42,13 +42,13 @@ const validateVideo = ({
  * the given ones (see createVideoAttrValidators).
  */
 export const createVideoValidator = ({
-	attrValidators = {},
+  attrValidators = {},
 }: CreateVideoValidatorParams): CreateVideoValidatorResult => {
-	const videoAttrValidators = createVideoAttrValidators(attrValidators);
+  const videoAttrValidators = createVideoAttrValidators(attrValidators);
 
-	return {
-		name: componentsName.video,
-		validate: ({ componentDraft }) =>
-			validateVideo({ componentDraft, attrValidators: videoAttrValidators }),
-	};
+  return {
+    name: componentsName.video,
+    validate: ({ componentDraft }) =>
+      validateVideo({ componentDraft, attrValidators: videoAttrValidators }),
+  };
 };

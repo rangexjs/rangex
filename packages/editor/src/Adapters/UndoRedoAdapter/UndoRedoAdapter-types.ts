@@ -1,8 +1,8 @@
 import type { CreateAdapterParams } from "../_Utilities";
 
 export interface UndoRedoState {
-	canStepBack?: boolean;
-	canStepForward?: boolean;
+  canStepBack?: boolean;
+  canStepForward?: boolean;
 }
 
 export type OnCanStepBackUpdateCallbackFn = (canStepBack: boolean) => void;
@@ -14,30 +14,30 @@ export type OnStepForwardCallbackFn = () => void;
 export interface UpdateStateParams extends UndoRedoState {}
 
 export interface UndoRedoConfigPortProps {
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onStepBack(callback: OnStepBackCallbackFn): () => void;
-	onStepForward(callback: OnStepForwardCallbackFn): () => void;
+  onStepBack(callback: OnStepBackCallbackFn): () => void;
+  onStepForward(callback: OnStepForwardCallbackFn): () => void;
 }
 
 export interface UndoRedoConfigPort extends UndoRedoConfigPortProps {}
 
 export interface UndoRedoPublicPortProps {
-	readonly canStepBack: boolean;
-	readonly canStepForward: boolean;
+  readonly canStepBack: boolean;
+  readonly canStepForward: boolean;
 
-	onCanStepBackUpdate(callback: OnCanStepBackUpdateCallbackFn): () => void;
-	onCanStepForwardUpdate(callback: OnCanStepForwardUpdateCallbackFn): () => void;
+  onCanStepBackUpdate(callback: OnCanStepBackUpdateCallbackFn): () => void;
+  onCanStepForwardUpdate(callback: OnCanStepForwardUpdateCallbackFn): () => void;
 
-	stepBack(): void;
-	stepForward(): void;
+  stepBack(): void;
+  stepForward(): void;
 }
 
 export interface UndoRedoPublicPort extends UndoRedoPublicPortProps {}
 
 export interface UndoRedoAdapter {
-	configPort: UndoRedoConfigPort;
-	publicPort: UndoRedoPublicPort;
+  configPort: UndoRedoConfigPort;
+  publicPort: UndoRedoPublicPort;
 }
 
 export interface UndoRedoSettings {}

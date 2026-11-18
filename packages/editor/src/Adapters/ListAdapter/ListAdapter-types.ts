@@ -1,17 +1,17 @@
 import type { BlockComponent, ListLocalName } from "@rangex/core";
 
 import type {
-	CreateAdapterParams,
-	CurrentComponentConfigPort,
-	CurrentComponentPublicPort,
-	UnwrapConfigPort,
-	UnwrapPublicPort,
+  CreateAdapterParams,
+  CurrentComponentConfigPort,
+  CurrentComponentPublicPort,
+  UnwrapConfigPort,
+  UnwrapPublicPort,
 } from "../_Utilities";
 
 export interface ListState {
-	canInsert?: boolean;
-	canWrap?: boolean;
-	localName?: ListLocalName | null;
+  canInsert?: boolean;
+  canWrap?: boolean;
+  localName?: ListLocalName | null;
 }
 
 export type OnCanInsertUpdateCallbackFn = (canInsert: boolean) => void;
@@ -19,7 +19,7 @@ export type OnCanWrapUpdateCallbackFn = (canWrap: boolean) => void;
 export type OnLocalNameUpdateCallbackFn = (localName: ListLocalName | null) => void;
 
 export interface ListPlacementOption {
-	localName: ListLocalName;
+  localName: ListLocalName;
 }
 
 export interface OnInsertCallbackParams extends ListPlacementOption {}
@@ -35,40 +35,40 @@ export type OnChangeLocalNameCallbackFn = (localName: ListLocalName) => void;
 export interface UpdateStateParams extends ListState {}
 
 export interface ListConfigPortProps {
-	updateState(params: UpdateStateParams): void;
+  updateState(params: UpdateStateParams): void;
 
-	onInsert(callback: OnInsertCallbackFn): () => void;
-	onWrap(callback: OnWrapCallbackFn): () => void;
-	onChangeLocalName(callback: OnChangeLocalNameCallbackFn): () => void;
+  onInsert(callback: OnInsertCallbackFn): () => void;
+  onWrap(callback: OnWrapCallbackFn): () => void;
+  onChangeLocalName(callback: OnChangeLocalNameCallbackFn): () => void;
 }
 
 export interface ListConfigPort
-	extends ListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
+  extends ListConfigPortProps, UnwrapConfigPort, CurrentComponentConfigPort<BlockComponent> {}
 
 export interface InsertParams extends ListPlacementOption {}
 
 export interface WrapParams extends ListPlacementOption {}
 
 export interface ListPublicPortProps {
-	readonly canInsert: boolean;
-	readonly canWrap: boolean;
-	readonly localName: ListLocalName | null;
+  readonly canInsert: boolean;
+  readonly canWrap: boolean;
+  readonly localName: ListLocalName | null;
 
-	onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
-	onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
-	onLocalNameUpdate(callback: OnLocalNameUpdateCallbackFn): () => void;
+  onCanInsertUpdate(callback: OnCanInsertUpdateCallbackFn): () => void;
+  onCanWrapUpdate(callback: OnCanWrapUpdateCallbackFn): () => void;
+  onLocalNameUpdate(callback: OnLocalNameUpdateCallbackFn): () => void;
 
-	insert(params: InsertParams): void;
-	wrap(params: WrapParams): void;
-	changeLocalName(localName: ListLocalName): void;
+  insert(params: InsertParams): void;
+  wrap(params: WrapParams): void;
+  changeLocalName(localName: ListLocalName): void;
 }
 
 export interface ListPublicPort
-	extends ListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
+  extends ListPublicPortProps, UnwrapPublicPort, CurrentComponentPublicPort {}
 
 export interface ListAdapter {
-	configPort: ListConfigPort;
-	publicPort: ListPublicPort;
+  configPort: ListConfigPort;
+  publicPort: ListPublicPort;
 }
 
 export interface ListSettings {}

@@ -6,7 +6,7 @@ import { GlyphFormatterEditor } from "../EditorElements";
  * caller's own styles.
  */
 export const buildEditorStyleText = (styles: string) => {
-	const common = buildCommonStyleText();
+  const common = buildCommonStyleText();
 
-	return [common, GlyphFormatterEditor, styles].join("");
+  return [common, GlyphFormatterEditor, styles].join("");
 };

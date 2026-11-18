@@ -8,119 +8,119 @@ import type { HandleEmojiAutoCompleteParams } from "./HandleEmojiAutoComplete-ty
  * completed :name: shortcode matching a known emoji, replaces the shortcode with that emoji.
  */
 export const handleEmojiAutoComplete = ({
-	configPort,
-	editorAPI,
+  configPort,
+  editorAPI,
 }: HandleEmojiAutoCompleteParams) => {
-	const selection = editorAPI.getEditorSelection();
+  const selection = editorAPI.getEditorSelection();
 
-	const snapshotTimeline = editorAPI.getSnapshotTimeline();
+  const snapshotTimeline = editorAPI.getSnapshotTimeline();
 
-	const unregister = editorAPI.registerEventInterceptor({
-		type: "beforeinput",
-		interceptor: (event) => {
-			if (event.data !== ":") {
-				return false;
-			}
+  const unregister = editorAPI.registerEventInterceptor({
+    type: "beforeinput",
+    interceptor: (event) => {
+      if (event.data !== ":") {
+        return false;
+      }
 
-			const preColonBoundary = selection.getBoundaryPoints();
+      const preColonBoundary = selection.getBoundaryPoints();
 
-			const range = new EditorRange({
-				fromNode: preColonBoundary.fromText,
-				fromOffset: preColonBoundary.fromOffset,
-				toNode: preColonBoundary.toText,
-				toOffset: preColonBoundary.toOffset,
-			});
+      const range = new EditorRange({
+        fromNode: preColonBoundary.fromText,
+        fromOffset: preColonBoundary.fromOffset,
+        toNode: preColonBoundary.toText,
+        toOffset: preColonBoundary.toOffset,
+      });
 
-			if (!range.isSinglePoint) {
-				return false;
-			}
+      if (!range.isSinglePoint) {
+        return false;
+      }
 
-			const { startText, startOffset } = range;
+      const { startText, startOffset } = range;
 
-			const emojiQuery = getEmojiQuery({
-				editorAPI,
-				fromText: startText,
-				fromOffset: startOffset,
-				hasClosingColon: false,
-			});
+      const emojiQuery = getEmojiQuery({
+        editorAPI,
+        fromText: startText,
+        fromOffset: startOffset,
+        hasClosingColon: false,
+      });
 
-			if (!emojiQuery) {
-				return false;
-			}
+      if (!emojiQuery) {
+        return false;
+      }
 
-			const match = configPort.findByName(emojiQuery.query);
+      const match = configPort.findByName(emojiQuery.query);
 
-			if (!match) {
-				return false;
-			}
+      if (!match) {
+        return false;
+      }
 
-			// Materialize the closing ':' so the full shortcode (e.g. ":sob:") is what
-			// a single undo later restores.
-			editorAPI.insertNode({
-				fromNode: startText,
-				fromOffset: startOffset,
-				lines: [
-					createContentLine({
-						localName: "p",
-						childNodes: [...createFormattableTexts({ data: ":" })],
-					}),
-				],
-				breakBeforeInsert: false,
-			});
+      // Materialize the closing ':' so the full shortcode (e.g. ":sob:") is what
+      // a single undo later restores.
+      editorAPI.insertNode({
+        fromNode: startText,
+        fromOffset: startOffset,
+        lines: [
+          createContentLine({
+            localName: "p",
+            childNodes: [...createFormattableTexts({ data: ":" })],
+          }),
+        ],
+        breakBeforeInsert: false,
+      });
 
-			// `emojiQuery`'s boundary points are stale after the insert above — re-scan.
-			const postColonBoundary = selection.getBoundaryPoints();
+      // `emojiQuery`'s boundary points are stale after the insert above — re-scan.
+      const postColonBoundary = selection.getBoundaryPoints();
 
-			const closedEmojiQuery = getEmojiQuery({
-				editorAPI,
-				fromText: postColonBoundary.fromText,
-				fromOffset: postColonBoundary.fromOffset,
-				hasClosingColon: true,
-			});
+      const closedEmojiQuery = getEmojiQuery({
+        editorAPI,
+        fromText: postColonBoundary.fromText,
+        fromOffset: postColonBoundary.fromOffset,
+        hasClosingColon: true,
+      });
 
-			if (!closedEmojiQuery) {
-				console.warn(
-					"handleEmojiAutoComplete: could not re-locate the :name: shortcode after inserting ':'.",
-				);
-				return true;
-			}
+      if (!closedEmojiQuery) {
+        console.warn(
+          "handleEmojiAutoComplete: could not re-locate the :name: shortcode after inserting ':'.",
+        );
+        return true;
+      }
 
-			// Commit the completed shortcode as its own undo step before converting it.
-			snapshotTimeline.registerSnapshotBoundary();
-			editorAPI.flushEditorEvents();
+      // Commit the completed shortcode as its own undo step before converting it.
+      snapshotTimeline.registerSnapshotBoundary();
+      editorAPI.flushEditorEvents();
 
-			// Remove the whole :<name>: trigger text
-			editorAPI.removeNodesInRange({
-				fromNode: postColonBoundary.fromText,
-				fromOffset: postColonBoundary.fromOffset,
-				toNode: closedEmojiQuery.toText,
-				toOffset: closedEmojiQuery.toOffset,
-			});
+      // Remove the whole :<name>: trigger text
+      editorAPI.removeNodesInRange({
+        fromNode: postColonBoundary.fromText,
+        fromOffset: postColonBoundary.fromOffset,
+        toNode: closedEmojiQuery.toText,
+        toOffset: closedEmojiQuery.toOffset,
+      });
 
-			// Re-read cursor after removal, then insert the emoji character
-			const postRemovalBoundary = selection.getBoundaryPoints();
+      // Re-read cursor after removal, then insert the emoji character
+      const postRemovalBoundary = selection.getBoundaryPoints();
 
-			editorAPI.insertNode({
-				fromNode: postRemovalBoundary.fromText,
-				fromOffset: postRemovalBoundary.fromOffset,
-				lines: [
-					createContentLine({
-						localName: "p",
-						childNodes: [...createFormattableTexts({ data: match.emoji })],
-					}),
-				],
-				breakBeforeInsert: false,
-			});
+      editorAPI.insertNode({
+        fromNode: postRemovalBoundary.fromText,
+        fromOffset: postRemovalBoundary.fromOffset,
+        lines: [
+          createContentLine({
+            localName: "p",
+            childNodes: [...createFormattableTexts({ data: match.emoji })],
+          }),
+        ],
+        breakBeforeInsert: false,
+      });
 
-			snapshotTimeline.registerSnapshotBoundary();
+      snapshotTimeline.registerSnapshotBoundary();
 
-			editorAPI.focus();
+      editorAPI.focus();
 
-			return true;
-		},
-	});
+      return true;
+    },
+  });
 
-	return () => {
-		unregister();
-	};
+  return () => {
+    unregister();
+  };
 };

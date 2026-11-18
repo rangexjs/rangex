@@ -4,7 +4,7 @@ import type { BlockResize } from "#adapters";
 import type { ComponentName } from "#constants";
 
 export interface HandleBlockResizeAppearanceParams {
-	blockResize: BlockResize;
-	editorAPI: EditorAPI;
-	componentName: ComponentName;
+  blockResize: BlockResize;
+  editorAPI: EditorAPI;
+  componentName: ComponentName;
 }

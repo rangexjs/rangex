@@ -2,11 +2,11 @@ import type { CreateAdapterParams } from "../_Utilities";
 import type { CodeBlockPlacementOption } from "../CodeBlockAdapter";
 
 export interface CodeBlockMarkdownTrigger extends CodeBlockPlacementOption {
-	trigger: string;
+  trigger: string;
 }
 
 export interface MarkdownConfigPortProps {
-	readonly codeBlockTriggers: CodeBlockMarkdownTrigger[];
+  readonly codeBlockTriggers: CodeBlockMarkdownTrigger[];
 }
 
 export interface MarkdownConfigPort extends MarkdownConfigPortProps {}
@@ -16,16 +16,16 @@ export interface MarkdownPublicPortProps {}
 export interface MarkdownPublicPort extends MarkdownPublicPortProps {}
 
 export interface MarkdownInternals {
-	codeBlockTriggers: CodeBlockMarkdownTrigger[];
+  codeBlockTriggers: CodeBlockMarkdownTrigger[];
 }
 
 export interface MarkdownAdapter {
-	configPort: MarkdownConfigPort;
-	publicPort: MarkdownPublicPort;
+  configPort: MarkdownConfigPort;
+  publicPort: MarkdownPublicPort;
 }
 
 export interface MarkdownSettings {
-	codeBlockTriggers?: CodeBlockMarkdownTrigger[];
+  codeBlockTriggers?: CodeBlockMarkdownTrigger[];
 }
 
 export interface CreateMarkdownAdapterParams extends CreateAdapterParams<MarkdownSettings> {}

@@ -7,21 +7,21 @@ import type { TodoListDefinition } from "./TodoListDefinition-types";
  * until it's added.
  */
 export const todoListDefinition = {
-	localName: "ul",
-	lineType: "multi-line",
-	editState: "inherit",
-	itemNestedEditableProps: {
-		display: "block multi-line",
-		editState: "inherit",
-		allowedComponents: [
-			componentsName.link,
-			componentsName.mention,
-			componentsName.templateVariable,
-			componentsName.comment,
-		],
-		allowedContentLineLocalNames: null,
-		allowedContentLineStyleAttrNames: null,
-		allowedGlyphFormatterStyleAttrNames: null,
-		allowedGlyphFormatterInlineTags: null,
-	},
+  localName: "ul",
+  lineType: "multi-line",
+  editState: "inherit",
+  itemNestedEditableProps: {
+    display: "block multi-line",
+    editState: "inherit",
+    allowedComponents: [
+      componentsName.link,
+      componentsName.mention,
+      componentsName.templateVariable,
+      componentsName.comment,
+    ],
+    allowedContentLineLocalNames: null,
+    allowedContentLineStyleAttrNames: null,
+    allowedGlyphFormatterStyleAttrNames: null,
+    allowedGlyphFormatterInlineTags: null,
+  },
 } satisfies TodoListDefinition;

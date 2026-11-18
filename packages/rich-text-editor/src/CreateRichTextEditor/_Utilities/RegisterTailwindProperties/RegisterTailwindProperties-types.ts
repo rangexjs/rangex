@@ -1,3 +1,3 @@
 export interface RegisterTailwindPropertiesParams {
-	styleSheet: CSSStyleSheet;
+  styleSheet: CSSStyleSheet;
 }
