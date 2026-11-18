@@ -64,6 +64,7 @@ export const createRichTextEditor = ({
   }
 
   const editorHost = document.createElement("div");
+  editorHost.classList.add(..."flex min-h-0 flex-col".split(" "));
 
   const dispose = render(
     () => (

@@ -9,6 +9,7 @@ export const createDevelopmentView = () => {
     gap: "30px",
     margin: "60px auto",
     maxWidth: "1200px",
+    maxHeight: "900px",
   });
 
   const shadowRoot = host.attachShadow({ mode: "closed" });

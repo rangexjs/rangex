@@ -12,7 +12,7 @@ export const EditorContainer = (props: EditorContainerProps) => {
 
   return (
     <div
-      class="overflow-clip rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+      class="flex min-h-0 flex-col overflow-clip rounded-xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
       data-color-scheme={props.theme()}
       style={{ "color-scheme": colorScheme() }}
     >
