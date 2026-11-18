@@ -5,7 +5,7 @@ import { createEffect, createSignal, createUniqueId, onCleanup } from "solid-js"
 
 import { useEditorContext } from "#context";
 import {
-	createTextFieldState,
+	createTextFieldController,
 	Icon,
 	InputTextField,
 	SegmentedControl,
@@ -44,7 +44,7 @@ export const AudioQuickActions = () => {
 	const loop = () => hasAudioAttr("loop");
 	const muted = () => hasAudioAttr("muted");
 
-	const [titleHandle, titleControls] = createTextFieldState<HTMLInputElement>({
+	const [titleHandle, titleControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: "",
 	});
 

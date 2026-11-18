@@ -4,7 +4,7 @@ import {
 	FormField,
 	InputTextField,
 	type TextFieldControls,
-	type TextFieldStateHandle,
+	type TextFieldHandle,
 	TextFieldWrapper,
 	ToggleButton,
 } from "#ui";
@@ -13,11 +13,11 @@ type LinkMode = "insert" | "modify";
 
 interface LinkEditProps {
 	mode: LinkMode;
-	displayTextHandle: TextFieldStateHandle;
+	displayTextHandle: TextFieldHandle;
 	displayTextControls: TextFieldControls<HTMLInputElement>;
 	displayTextDisabled: boolean;
 	displayTextPlaceholder: string;
-	urlHandle: TextFieldStateHandle;
+	urlHandle: TextFieldHandle;
 	urlControls: TextFieldControls<HTMLInputElement>;
 	isNewTab: boolean;
 	onNewTabChange: () => void;

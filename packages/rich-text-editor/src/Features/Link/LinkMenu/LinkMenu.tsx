@@ -2,7 +2,7 @@ import { FloatingPortal, Link } from "@rangex/solid";
 import { createEffect, createSignal, flush, onCleanup } from "solid-js";
 
 import { useEditorContext } from "#context";
-import { createTextFieldState } from "#ui";
+import { createTextFieldController } from "#ui";
 
 import { getDisplayTextField, LinkEdit, LinkPreview } from "../_Utilities";
 
@@ -20,11 +20,11 @@ export const LinkMenu = () => {
 
 	const [view, setView] = createSignal<MenuView>("preview");
 
-	const [displayTextHandle, displayTextControls] = createTextFieldState<HTMLInputElement>({});
+	const [displayTextHandle, displayTextControls] = createTextFieldController<HTMLInputElement>({});
 	const [displayTextDisabled, setDisplayTextDisabled] = createSignal(false);
 	const [displayTextPlaceholder, setDisplayTextPlaceholder] = createSignal("");
 
-	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
+	const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
 		error: {
 			required: { value: true, message: "Field can't be empty." },
 			custom: {
@@ -79,13 +79,11 @@ export const LinkMenu = () => {
 
 			const { value, disabled, placeholder } = getDisplayTextField(link.getDisplayText());
 
-			displayTextHandle.reset();
-			displayTextHandle.setValue(value);
+			displayTextHandle.reset(value);
 			setDisplayTextDisabled(disabled);
 			setDisplayTextPlaceholder(placeholder);
 
-			urlHandle.reset();
-			urlHandle.setValue(anchor.href);
+			urlHandle.reset(anchor.href);
 
 			setIsNewTab(anchor.target === "_blank");
 		},
@@ -127,8 +125,6 @@ export const LinkMenu = () => {
 
 	const onChangeDisplayText = () => {
 		urlHandle.validate();
-
-		flush();
 
 		if (urlHandle.state().hasError) {
 			return;

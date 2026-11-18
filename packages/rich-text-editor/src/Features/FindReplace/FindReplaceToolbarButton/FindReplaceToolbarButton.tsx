@@ -6,7 +6,7 @@ import {
 	Checkbox,
 	type CheckboxControls,
 	createCheckboxState,
-	createTextFieldState,
+	createTextFieldController,
 	FormField,
 	Icon,
 	InputTextField,
@@ -75,7 +75,7 @@ export const FindReplaceToolbarButton = () => {
 		return getPattern(findText);
 	};
 
-	const [findHandle, findControls] = createTextFieldState<HTMLInputElement>({
+	const [findHandle, findControls] = createTextFieldController<HTMLInputElement>({
 		error: {
 			custom: {
 				isValid: (value) => isValidPattern(value),
@@ -84,7 +84,7 @@ export const FindReplaceToolbarButton = () => {
 		},
 		validateOn: ["blur:changed", "input:dirty"],
 	});
-	const [replaceHandle, replaceControls] = createTextFieldState<HTMLInputElement>({});
+	const [replaceHandle, replaceControls] = createTextFieldController<HTMLInputElement>({});
 	const [includeNonEditableContentHandle, includeNonEditableContentControls] = createCheckboxState(
 		{},
 	);

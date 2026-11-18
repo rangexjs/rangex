@@ -2,10 +2,9 @@ import type {
 	TemplateVariableFields,
 	TemplateVariablePublicPort,
 } from "@rangex/editor/template-variable";
-import { flush } from "solid-js";
 
 import type { TemplateVariableModalSettings } from "#context";
-import { createTextFieldState, FormField, InputTextField, TextFieldWrapper } from "#ui";
+import { createTextFieldController, FormField, InputTextField, TextFieldWrapper } from "#ui";
 
 import { FixedPosModal } from "../../../_Utilities";
 
@@ -17,7 +16,7 @@ interface TemplateVariableModalProps {
 
 export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 	const inputs = props.settings.inputs.map((input) => {
-		const [handle, controls] = createTextFieldState<HTMLInputElement>({
+		const [handle, controls] = createTextFieldController<HTMLInputElement>({
 			error: {
 				patterns: input.patterns,
 				custom: {
@@ -68,8 +67,6 @@ export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
 		for (const { handle } of inputs) {
 			handle.validate();
 		}
-
-		flush();
 
 		const hasError = inputs.some(({ handle }) => handle.state().hasError);
 

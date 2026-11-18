@@ -13,8 +13,6 @@ export { FormField } from "./FormField";
 export type {
 	CreateTextFieldControllerParams,
 	CreateTextFieldControllerResult,
-	CreateTextFieldStateParams,
-	CreateTextFieldStateResult,
 	HTMLTextFieldElement,
 	TextFieldControls,
 	TextFieldErrorRestriction,
@@ -22,13 +20,11 @@ export type {
 	TextFieldErrorVariant,
 	TextFieldHandle,
 	TextFieldState,
-	TextFieldStateHandle,
 	ValidateOn,
 	ValidationOption,
 } from "./TextFields";
 export {
 	createTextFieldController,
-	createTextFieldState,
 	InputTextField,
 	TextAreaField,
 	TextFieldWrapper,

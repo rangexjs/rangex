@@ -3,7 +3,7 @@ import { FontFamily, ReadOnly } from "@rangex/solid";
 import { createEffect, createMemo, createUniqueId, untrack } from "solid-js";
 
 import { useEditorContext, useUIOptionsContext } from "#context";
-import { createTextFieldState, Icon, InputTextField, TextFieldWrapper } from "#ui";
+import { createTextFieldController, Icon, InputTextField, TextFieldWrapper } from "#ui";
 
 import { ToolbarDropdown, type ToolbarDropdownList } from "../../_Utilities";
 
@@ -52,7 +52,7 @@ export const FontFamilyToolbarButton = () => {
 		getInputValueFromActiveValues($fontFamily.values(), $fontFamily.hasUnset()),
 	);
 
-	const [fontFamilyHandle, fontFamilyControls] = createTextFieldState<HTMLInputElement>({
+	const [fontFamilyHandle, fontFamilyControls] = createTextFieldController<HTMLInputElement>({
 		defaultValue: untrack(() => activeInputValue()),
 	});
 

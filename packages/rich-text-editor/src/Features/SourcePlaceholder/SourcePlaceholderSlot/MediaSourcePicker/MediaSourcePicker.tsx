@@ -1,7 +1,7 @@
-import { createMemo, createSignal, flush } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 
 import {
-	createTextFieldState,
+	createTextFieldController,
 	FormField,
 	Icon,
 	InputTextField,
@@ -28,7 +28,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 
 	const [activeTab, setActiveTab] = createSignal<MediaTab>(mediaTabControls[0].id);
 
-	const [urlHandle, urlControls] = createTextFieldState<HTMLInputElement>({
+	const [urlHandle, urlControls] = createTextFieldController<HTMLInputElement>({
 		error: { required: { value: true, message: "Field can't be empty." } },
 	});
 
@@ -92,8 +92,6 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
 		}
 
 		urlHandle.validate();
-
-		flush();
 
 		if (urlHandle.state().hasError) {
 			return;

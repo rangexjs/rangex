@@ -1,10 +1,9 @@
-import { createUniqueId, merge, onSettled } from "solid-js";
+import { createSignal, createUniqueId, flush, merge, onSettled } from "solid-js";
 
 import { showInputFieldError } from "../_Utilities";
 import {
 	getErrorState,
 	type HTMLTextFieldElement,
-	type StateChangeListeners,
 	type TextFieldControls,
 	type TextFieldErrorRestriction,
 	type TextFieldHandle,
@@ -21,9 +20,12 @@ export interface CreateTextFieldControllerParams {
 }
 
 export type CreateTextFieldControllerResult<TextField extends HTMLTextFieldElement> = [
-	TextFieldHandle<TextField>,
+	TextFieldHandle,
 	TextFieldControls<TextField>,
 ];
+
+const isTextFieldStateEqual = (prev: TextFieldState, next: TextFieldState) =>
+	prev.isDirty === next.isDirty && prev.hasError === next.hasError && prev.message === next.message;
 
 export const createTextFieldController = <TextField extends HTMLTextFieldElement>(
 	props: CreateTextFieldControllerParams,
@@ -33,27 +35,10 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 	const finalProps = merge({ defaultValue: "", error: {}, validateOn: defaultValidateOn }, props);
 
 	const id = createUniqueId();
-	let localTextField: TextField | null;
+	let localTextField: TextField | null = null;
 
 	const setTextField = (textField: TextField) => {
 		localTextField = textField;
-	};
-
-	let textChangedDuringFocus = false;
-
-	let state: TextFieldState = {
-		isDirty: false,
-		...getErrorState(finalProps.defaultValue, finalProps.error),
-	};
-
-	const stateChangeListeners: StateChangeListeners = new Set();
-
-	const emitStateChange = () => {
-		localTextField?.setAttribute("data-invalid", `${showInputFieldError(state)}`);
-
-		for (const listener of stateChangeListeners) {
-			listener(state);
-		}
 	};
 
 	const getTextField = () => {
@@ -64,48 +49,72 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 		return localTextField;
 	};
 
-	const currentValue = () => localTextField?.value ?? finalProps.defaultValue;
+	let textChangedDuringFocus = false;
 
-	const textFieldHandle: TextFieldHandle<TextField> = {
+	const [value, setLocalValue] = createSignal(finalProps.defaultValue);
+
+	const [state, setLocalState] = createSignal<TextFieldState>(
+		{
+			isDirty: false,
+			...getErrorState(finalProps.defaultValue, finalProps.error),
+		},
+		{ equals: isTextFieldStateEqual },
+	);
+
+	const commitState = (nextState: TextFieldState) => {
+		setLocalState(nextState);
+		localTextField?.setAttribute("data-invalid", `${showInputFieldError(nextState)}`);
+	};
+
+	const commitValidation = (nextValue: string) => {
+		commitState({
+			isDirty: true,
+			...getErrorState(nextValue, finalProps.error),
+		});
+	};
+
+	const textFieldHandle: TextFieldHandle = {
 		get id() {
 			return id;
 		},
 
-		get element() {
-			const field = getTextField();
+		value,
 
-			return field;
+		setValue(nextValue) {
+			const textField = getTextField();
+
+			textField.value = nextValue;
+			setLocalValue(nextValue);
 		},
+
+		state,
 
 		validate() {
-			state = {
-				isDirty: true,
-				...getErrorState(this.element.value, finalProps.error),
-			};
+			flush();
 
-			emitStateChange();
+			commitValidation(value());
+
+			flush();
 		},
 
-		reset() {
-			this.element.value = finalProps.defaultValue;
-			state = {
-				isDirty: false,
-				...getErrorState(this.element.value, finalProps.error),
-			};
+		reset(nextValue = finalProps.defaultValue) {
+			const textField = getTextField();
 
-			emitStateChange();
+			textField.value = nextValue;
+			setLocalValue(nextValue);
+
+			commitState({
+				isDirty: false,
+				...getErrorState(nextValue, finalProps.error),
+			});
 		},
 
 		checkValidity() {
-			const { hasError, message } = getErrorState(currentValue(), finalProps.error);
+			flush();
 
-			return { hasError, message, isDirty: state.isDirty };
-		},
+			const { hasError, message } = getErrorState(value(), finalProps.error);
 
-		onStateChange(callback) {
-			stateChangeListeners.add(callback);
-
-			return () => stateChangeListeners.delete(callback);
+			return { hasError, message, isDirty: state().isDirty };
 		},
 	};
 
@@ -133,11 +142,17 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 
 	const onInput = () => {
 		textChangedDuringFocus = true;
-		const currentState = textFieldHandle.checkValidity();
 
-		// Always revalidate if the previous state had an error, but the new one is valid
-		if (showInputFieldError(state) && !currentState.hasError) {
-			textFieldHandle.validate();
+		const textField = getTextField();
+		const nextValue = textField.value;
+
+		setLocalValue(nextValue);
+
+		const { hasError } = getErrorState(nextValue, finalProps.error);
+
+		// Always revalidate if the previous state had an error, but the current one is valid
+		if (showInputFieldError(state()) && !hasError) {
+			commitValidation(nextValue);
 			return;
 		}
 
@@ -145,11 +160,11 @@ export const createTextFieldController = <TextField extends HTMLTextFieldElement
 			return;
 		}
 
-		if (!state.isDirty) {
+		if (!state().isDirty) {
 			return;
 		}
 
-		textFieldHandle.validate();
+		commitValidation(nextValue);
 	};
 
 	onSettled(() => {
