@@ -154,7 +154,7 @@ export const createAnchoredOverlayController = ({
 
 	const abortController = new AbortController();
 
-	const lightDismissHandle = lightDismiss
+	const lightDismissController = lightDismiss
 		? createLightDismiss({
 				element,
 				isOpen: () => isOpen,
@@ -210,11 +210,11 @@ export const createAnchoredOverlayController = ({
 		hide,
 
 		addExemptNode(node) {
-			lightDismissHandle?.addExemptNode(node);
+			lightDismissController?.addExemptNode(node);
 		},
 
 		removeExemptNode(node) {
-			lightDismissHandle?.removeExemptNode(node);
+			lightDismissController?.removeExemptNode(node);
 		},
 
 		cleanup() {
@@ -267,7 +267,7 @@ export const createPopoverOverlayController = ({
 
 	const abortController = new AbortController();
 
-	const lightDismissHandle = lightDismiss
+	const lightDismissController = lightDismiss
 		? createLightDismiss({
 				element,
 				isOpen: () => isOpen,
@@ -322,11 +322,11 @@ export const createPopoverOverlayController = ({
 		hide,
 
 		addExemptNode(node) {
-			lightDismissHandle?.addExemptNode(node);
+			lightDismissController?.addExemptNode(node);
 		},
 
 		removeExemptNode(node) {
-			lightDismissHandle?.removeExemptNode(node);
+			lightDismissController?.removeExemptNode(node);
 		},
 
 		cleanup() {
