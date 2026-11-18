@@ -5,7 +5,7 @@ import { useEditorContext } from "#context";
 import {
 	Checkbox,
 	type CheckboxControls,
-	createCheckboxState,
+	createCheckboxController,
 	createTextFieldController,
 	FormField,
 	Icon,
@@ -42,9 +42,9 @@ export const FindReplaceToolbarButton = () => {
 	const popoverId = createUniqueId();
 	const headingId = createUniqueId();
 
-	const [useRegexHandle, useRegexControls] = createCheckboxState({});
-	const [matchCaseHandle, matchCaseControls] = createCheckboxState({});
-	const [wholeWordHandle, wholeWordControls] = createCheckboxState({});
+	const [useRegexHandle, useRegexControls] = createCheckboxController({});
+	const [matchCaseHandle, matchCaseControls] = createCheckboxController({});
+	const [wholeWordHandle, wholeWordControls] = createCheckboxController({});
 
 	const getPattern = (findText: string) =>
 		buildFindReplacePattern({
@@ -85,9 +85,8 @@ export const FindReplaceToolbarButton = () => {
 		validateOn: ["blur:changed", "input:dirty"],
 	});
 	const [replaceHandle, replaceControls] = createTextFieldController<HTMLInputElement>({});
-	const [includeNonEditableContentHandle, includeNonEditableContentControls] = createCheckboxState(
-		{},
-	);
+	const [includeNonEditableContentHandle, includeNonEditableContentControls] =
+		createCheckboxController({});
 	const [hasFindFocus, setHasFindFocus] = createSignal(false);
 	const [replaceButtonDisabled, setReplaceButtonDisabled] = createSignal(false);
 	const [isFirstOpening, setIsFirstOpening] = createSignal(true);
@@ -234,26 +233,36 @@ export const FindReplaceToolbarButton = () => {
 	};
 
 	createEffect(
-		findHandle.value,
+		() => findHandle.value(),
 		() => {
 			searchDebouncer.schedule(() => emitSearchChange());
 		},
 		{ defer: true },
 	);
 
-	createEffect(matchCaseHandle.checked, () => emitSearchChange(), {
-		defer: true,
-	});
+	createEffect(
+		() => matchCaseHandle.checked(),
+		() => emitSearchChange(),
+		{ defer: true },
+	);
 
-	createEffect(wholeWordHandle.checked, () => emitSearchChange(), {
-		defer: true,
-	});
+	createEffect(
+		() => wholeWordHandle.checked(),
+		() => emitSearchChange(),
+		{ defer: true },
+	);
 
-	createEffect(useRegexHandle.checked, () => emitSearchChange(), {
-		defer: true,
-	});
+	createEffect(
+		() => useRegexHandle.checked(),
+		() => emitSearchChange(),
+		{ defer: true },
+	);
 
-	createEffect(includeNonEditableContentHandle.checked, () => emitSearchChange(), { defer: true });
+	createEffect(
+		() => includeNonEditableContentHandle.checked(),
+		() => emitSearchChange(),
+		{ defer: true },
+	);
 
 	const navigateToIndex = (index: number) => {
 		findReplace.navigateToIndex({ index });

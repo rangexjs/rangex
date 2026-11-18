@@ -6,9 +6,8 @@ export type {
 	CheckboxErrorState,
 	CheckboxHandle,
 	CheckboxState,
-	CheckboxStateHandle,
 } from "./Checkbox";
-export { Checkbox, createCheckboxController, createCheckboxState } from "./Checkbox";
+export { Checkbox, createCheckboxController } from "./Checkbox";
 export { FormField } from "./FormField";
 export type {
 	CreateTextFieldControllerParams,
