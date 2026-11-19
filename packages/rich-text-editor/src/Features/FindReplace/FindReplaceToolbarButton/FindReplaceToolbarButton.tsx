@@ -312,7 +312,7 @@ export const FindReplaceToolbarButton = () => {
         onBeforeToggle={setPopoverInitialPosition}
       >
         <div class="mb-2 flex cursor-grab items-center justify-between" onPointerDown={movePopover}>
-          <h2 id={headingId} class="font-bold text-neutral-700 text-sm dark:text-neutral-200">
+          <h2 id={headingId} class="text-sm font-bold text-neutral-700 dark:text-neutral-200">
             Find & Replace
           </h2>
           <button
@@ -363,7 +363,7 @@ export const FindReplaceToolbarButton = () => {
               </FormField>
               <div
                 role="alert"
-                class="absolute w-[anchor-size(width)] bg-red-700 p-1 font-medium text-neutral-50 text-xs [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
+                class="absolute w-[anchor-size(width)] bg-red-700 p-1 text-xs font-medium text-neutral-50 [position-area:center_bottom] dark:bg-red-800 dark:text-neutral-300"
                 hidden={!(showInputFieldError(findHandle.state()) && hasFindFocus())}
                 style={{
                   "position-anchor": findInputAnchorName,
@@ -383,7 +383,7 @@ export const FindReplaceToolbarButton = () => {
                     />
                   }
                 >
-                  <span class="font-semibold text-neutral-600 text-xs dark:text-neutral-400">
+                  <span class="text-xs font-semibold text-neutral-600 dark:text-neutral-400">
                     {displayIndex()} of {resultsCount()}
                   </span>
                 </Show>
@@ -433,7 +433,7 @@ export const FindReplaceToolbarButton = () => {
                     {(item) => (
                       <label class="inline-flex cursor-pointer items-center gap-2">
                         <Checkbox {...item().controls} />
-                        <span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
+                        <span class="text-sm font-medium text-neutral-600 dark:text-neutral-300">
                           {item().text}
                         </span>
                       </label>
@@ -451,7 +451,7 @@ export const FindReplaceToolbarButton = () => {
           <div class="flex justify-end gap-3">
             <button
               type="button"
-              class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-sm"
+              class="btn-primary-solid rounded-sm px-3 py-1 text-sm font-medium"
               onClick={() => replaceText()}
               disabled={replaceDisabled()}
             >
@@ -459,7 +459,7 @@ export const FindReplaceToolbarButton = () => {
             </button>
             <button
               type="button"
-              class="btn-primary-outline rounded-sm px-3 py-1 font-medium text-sm"
+              class="btn-primary-outline rounded-sm px-3 py-1 text-sm font-medium"
               onClick={() => replaceAllText()}
               disabled={replaceDisabled()}
             >

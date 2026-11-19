@@ -15,7 +15,7 @@ export const OptionDropdown = <Option,>(props: OptionDropdownProps<Option>) => {
 
   return (
     <div class={["flex flex-col gap-1", props.class]}>
-      <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">{props.label}</span>
+      <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">{props.label}</span>
       <SelectDropdown<Option> {...selectDropdownProps} />
     </div>
   );

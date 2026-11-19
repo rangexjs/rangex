@@ -226,7 +226,7 @@ export const TableToolbarButton = () => {
         </div>
         <div
           aria-hidden="true"
-          class="flex justify-center gap-2 font-mono font-semibold text-neutral-700 text-xs dark:text-neutral-300"
+          class="flex justify-center gap-2 font-mono text-xs font-semibold text-neutral-700 dark:text-neutral-300"
         >
           <span>Col: {selectedCellPos().col}</span>
           <span>Row: {selectedCellPos().row}</span>

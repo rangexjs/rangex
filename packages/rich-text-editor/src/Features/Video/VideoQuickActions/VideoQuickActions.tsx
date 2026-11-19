@@ -302,31 +302,31 @@ export const VideoQuickActions = () => {
             />
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Controls
               </span>
               <ToggleButton checked={controls()} label="Controls" onClick={onControlsToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Autoplay
               </span>
               <ToggleButton checked={autoplay()} label="Autoplay" onClick={onAutoplayToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Loop</span>
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">Loop</span>
               <ToggleButton checked={loop()} label="Loop" onClick={onLoopToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Muted</span>
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">Muted</span>
               <ToggleButton checked={muted()} label="Muted" onClick={onMutedToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Caption
               </span>
               <ToggleButton
@@ -352,12 +352,12 @@ export const VideoQuickActions = () => {
               <div class="flex items-center justify-between">
                 <label
                   for={posterHandle.id}
-                  class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
+                  class="text-xs font-medium text-neutral-600 dark:text-neutral-300"
                 >
                   Poster
                 </label>
                 <span
-                  class="text-neutral-500 text-xs dark:text-neutral-400"
+                  class="text-xs text-neutral-500 dark:text-neutral-400"
                   hidden={!isPosterDirty()}
                 >
                   Enter to save
@@ -379,12 +379,12 @@ export const VideoQuickActions = () => {
               <div class="flex items-center justify-between">
                 <label
                   for={titleHandle.id}
-                  class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
+                  class="text-xs font-medium text-neutral-600 dark:text-neutral-300"
                 >
                   Title
                 </label>
                 <span
-                  class="text-neutral-500 text-xs dark:text-neutral-400"
+                  class="text-xs text-neutral-500 dark:text-neutral-400"
                   hidden={!isTitleDirty()}
                 >
                   Enter to save

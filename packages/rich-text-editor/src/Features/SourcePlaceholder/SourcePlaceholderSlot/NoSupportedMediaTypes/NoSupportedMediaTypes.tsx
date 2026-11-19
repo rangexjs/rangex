@@ -1,7 +1,7 @@
 import { Icon } from "#ui";
 
 export const NoSupportedMediaTypes = () => (
-  <div class="flex flex-col items-center gap-1 rounded-lg border border-neutral-300 border-dashed p-4 text-center text-neutral-500 text-sm dark:border-neutral-700 dark:text-neutral-400">
+  <div class="flex flex-col items-center gap-1 rounded-lg border border-dashed border-neutral-300 p-4 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
     <Icon name="WarningCircle" class="size-6" />
     <span>No media types are available</span>
     <span class="text-xs">

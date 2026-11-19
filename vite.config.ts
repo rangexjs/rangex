@@ -10,6 +10,9 @@ export default defineConfig(() => ({
   server: { port: 3000 },
   fmt: {
     ignorePatterns: ["**/*.md"],
+    sortTailwindcss: {
+      stylesheet: "./packages/rich-text-editor/src/ComponentStyles/global.css",
+    },
   },
   lint: {
     plugins: ["eslint", "typescript", "unicorn", "oxc", "import", "jsx-a11y"],

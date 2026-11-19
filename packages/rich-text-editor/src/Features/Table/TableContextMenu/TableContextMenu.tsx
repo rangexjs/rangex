@@ -25,7 +25,7 @@ const ActionTrigger = (props: ActionTriggerProps) => {
         type="button"
         commandfor={props.mainPopoverId}
         command="hide-popover"
-        class="btn-menu-item w-full whitespace-nowrap rounded-sm p-1 text-start font-semibold text-sm"
+        class="btn-menu-item w-full rounded-sm p-1 text-start text-sm font-semibold whitespace-nowrap"
         data-checked={`${!!props.checked()}`}
         onClick={props.onClick}
         disabled={props.disabled()}
@@ -44,9 +44,9 @@ const ActionTrigger = (props: ActionTriggerProps) => {
         <div
           id={popoverId}
           popover="auto"
-          class="mt-1.5 w-max max-w-60 overflow-visible rounded-sm border border-neutral-200 bg-white p-1 text-neutral-800 text-xs shadow-xs [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+          class="mt-1.5 w-max max-w-60 overflow-visible rounded-sm border border-neutral-200 bg-white p-1 text-xs text-neutral-800 shadow-xs [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
         >
-          <span class="absolute -top-1 left-1/2 inline-block size-2 -translate-x-1/2 rotate-45 border-neutral-200 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-800" />
+          <span class="absolute -top-1 left-1/2 inline-block size-2 -translate-x-1/2 rotate-45 border-t border-l border-neutral-200 bg-white dark:border-neutral-700 dark:bg-neutral-800" />
           {props.info()}
         </div>
       </Show>
@@ -67,12 +67,12 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
         type="button"
         commandfor={popoverId}
         command="toggle-popover"
-        class="btn-menu-item flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm p-1 font-semibold text-sm"
+        class="btn-menu-item flex w-full items-center justify-between gap-4 rounded-sm p-1 text-sm font-semibold whitespace-nowrap"
       >
         <span>{props.label}</span>
         <Icon
           name="CaretRight"
-          class="size-2 shrink-0 text-neutral-700 hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-200 dark:active:text-white dark:hover:text-neutral-100"
+          class="size-2 shrink-0 text-neutral-700 hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-200 dark:hover:text-neutral-100 dark:active:text-white"
         />
       </button>
       <Menu mainPopoverId={props.mainPopoverId} popoverId={popoverId} items={props.items} />

@@ -102,7 +102,7 @@ export const CaretMenu = (props: CaretMenuProps) => {
     <FloatingPortal
       mount={props.caretMenuPort.element}
       class={[
-        "scrollbar-thin z-20 max-h-[min(100%,360px)] overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",
+        "z-20 max-h-[min(100%,360px)] scrollbar-thin overflow-y-auto rounded-lg border border-neutral-300 bg-white shadow-md dark:border-neutral-700 dark:bg-neutral-900",
         props.class,
         { hidden: !props.items().length },
       ]}

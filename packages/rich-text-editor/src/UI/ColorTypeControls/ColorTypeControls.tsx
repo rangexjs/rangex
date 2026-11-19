@@ -41,7 +41,7 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
         type="button"
         commandfor={popoverId}
         command="toggle-popover"
-        class="btn-neutral-solid flex w-16 items-center justify-between rounded-sm px-2 py-1 font-semibold text-sm"
+        class="btn-neutral-solid flex w-16 items-center justify-between rounded-sm px-2 py-1 text-sm font-semibold"
       >
         <span>{props.colorFormat()}</span>
         <Icon name="CaretDown" class="size-2" />
@@ -60,7 +60,7 @@ const ColorFormatButton = (props: ColorFormatButtonProps) => {
                   commandfor={popoverId}
                   command="hide-popover"
                   class={[
-                    "w-full rounded-xs border border-transparent px-2 py-1 text-start font-semibold text-neutral-700 text-xs transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-200 dark:active:border-neutral-600 dark:active:bg-neutral-800 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
+                    "w-full rounded-xs border border-transparent px-2 py-1 text-start text-xs font-semibold text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 active:border-neutral-200 active:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 dark:active:border-neutral-600 dark:active:bg-neutral-800",
                     { hidden: item === props.colorFormat() },
                   ]}
                   onClick={() => props.setColorFormat(item)}
@@ -326,7 +326,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
 
       <div
         class={[
-          "inline-flex rounded-sm border border-neutral-300 bg-neutral-100 font-semibold text-neutral-600 text-sm dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300",
+          "inline-flex rounded-sm border border-neutral-300 bg-neutral-100 text-sm font-semibold text-neutral-600 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300",
           props.colorContainerClass,
         ]}
       >
@@ -344,7 +344,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
           </div>
 
           <div class={["flex h-full", { hidden: colorType() !== "RGB" }]}>
-            <div class="content-center border-neutral-300 border-r dark:border-neutral-600">
+            <div class="content-center border-r border-neutral-300 dark:border-neutral-600">
               <InputTextField
                 type="text"
                 class="w-full text-center outline-none"
@@ -357,7 +357,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
               />
             </div>
 
-            <div class="h-full content-center border-neutral-300 border-r dark:border-neutral-600">
+            <div class="h-full content-center border-r border-neutral-300 dark:border-neutral-600">
               <InputTextField
                 type="text"
                 class="w-full text-center outline-none"
@@ -385,7 +385,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
           </div>
 
           <div class={["flex h-full", { hidden: colorType() !== "HSL" }]}>
-            <div class="content-center border-neutral-300 border-r dark:border-neutral-600">
+            <div class="content-center border-r border-neutral-300 dark:border-neutral-600">
               <InputTextField
                 type="text"
                 class="w-full text-center outline-none"
@@ -398,7 +398,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
               />
             </div>
 
-            <div class="h-full content-center border-neutral-300 border-r dark:border-neutral-600">
+            <div class="h-full content-center border-r border-neutral-300 dark:border-neutral-600">
               <InputTextField
                 type="text"
                 class="w-full text-center outline-none"
@@ -426,7 +426,7 @@ export const ColorTypeControls = (props: ColorTypeControlsParams) => {
           </div>
         </div>
 
-        <div class="inline-flex items-center border-neutral-300 border-l px-1 dark:border-neutral-600">
+        <div class="inline-flex items-center border-l border-neutral-300 px-1 dark:border-neutral-600">
           <InputTextField
             type="text"
             class="w-8 text-center outline-none"

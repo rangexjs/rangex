@@ -105,7 +105,7 @@ export const MentionCaretMenu = () => {
             </span>
             <span
               class={[
-                "min-w-0 flex-1 truncate font-medium text-sm active:text-neutral-800 active:dark:text-neutral-50",
+                "min-w-0 flex-1 truncate text-sm font-medium active:text-neutral-800 active:dark:text-neutral-50",
                 { "text-neutral-600 dark:text-neutral-200": !isActive() },
                 { "text-neutral-800 dark:text-neutral-50": isActive() },
               ]}
@@ -132,7 +132,7 @@ export const MentionCaretMenu = () => {
       caretMenuPort={mention.caretMenu}
       items={items}
       onSelect={onSelect}
-      class="min-w-48 max-w-64"
+      class="max-w-64 min-w-48"
     />
   );
 };

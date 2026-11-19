@@ -78,7 +78,7 @@ export const CommandMenuCaretMenu = () => {
       caretMenuPort={commandMenu.caretMenu}
       items={items}
       onSelect={onSelect}
-      class="min-w-48 max-w-64"
+      class="max-w-64 min-w-48"
     />
   );
 };

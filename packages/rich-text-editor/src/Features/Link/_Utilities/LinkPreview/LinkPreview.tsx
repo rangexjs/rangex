@@ -17,7 +17,7 @@ export const LinkPreview = (props: LinkPreviewProps) => {
         href={props.url}
         target="_blank"
         rel="noopener"
-        class="self-center truncate font-semibold text-blue-600 text-sm dark:text-blue-400"
+        class="self-center truncate text-sm font-semibold text-blue-600 dark:text-blue-400"
       >
         {props.url}
         <span class="sr-only"> (opens in new tab)</span>

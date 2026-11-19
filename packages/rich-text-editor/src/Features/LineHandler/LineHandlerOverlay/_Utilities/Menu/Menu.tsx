@@ -29,7 +29,7 @@ const ActionTrigger = (props: ActionTriggerProps) => (
     type="button"
     commandfor={props.mainPopoverId}
     command="hide-popover"
-    class="btn-menu-item flex w-full items-center gap-2 whitespace-nowrap rounded-sm p-1 text-start font-semibold text-xs"
+    class="btn-menu-item flex w-full items-center gap-2 rounded-sm p-1 text-start text-xs font-semibold whitespace-nowrap"
     onClick={props.onClick}
   >
     {props.icon && <Icon name={props.icon} class="size-3 shrink-0" />}
@@ -50,7 +50,7 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
         type="button"
         commandfor={popoverId}
         command="toggle-popover"
-        class="btn-menu-item flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm p-1 font-semibold text-xs"
+        class="btn-menu-item flex w-full items-center justify-between gap-4 rounded-sm p-1 text-xs font-semibold whitespace-nowrap"
       >
         <span class="flex items-center gap-2">
           <Icon name={props.icon} class="size-3 shrink-0" />

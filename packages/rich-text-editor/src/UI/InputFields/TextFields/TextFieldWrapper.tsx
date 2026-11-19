@@ -32,13 +32,13 @@ export const TextFieldWrapper = (props: TextFieldWrapperProps) => {
       style={props.style}
     >
       <Show when={props.prefix}>
-        <span class={["text-neutral-600 text-xs dark:text-neutral-300", props.prefixClass]}>
+        <span class={["text-xs text-neutral-600 dark:text-neutral-300", props.prefixClass]}>
           {props.prefix}
         </span>
       </Show>
       {props.children}
       <Show when={props.postfix}>
-        <span class={["text-neutral-600 text-xs dark:text-neutral-300", props.postfixClass]}>
+        <span class={["text-xs text-neutral-600 dark:text-neutral-300", props.postfixClass]}>
           {props.postfix}
         </span>
       </Show>

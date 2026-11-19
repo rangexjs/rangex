@@ -14,7 +14,7 @@ const ActionTrigger = (props: ActionTriggerProps) => (
     type="button"
     commandfor={props.mainPopoverId}
     command="hide-popover"
-    class="btn-menu-item w-full whitespace-nowrap rounded-sm p-1 text-start font-semibold text-xs"
+    class="btn-menu-item w-full rounded-sm p-1 text-start text-xs font-semibold whitespace-nowrap"
     data-checked={`${!!props.checked()}`}
     aria-pressed={`${!!props.checked()}`}
     onClick={props.onClick}
@@ -36,7 +36,7 @@ const SubmenuTrigger = (props: SubmenuTriggerProps) => {
         type="button"
         commandfor={popoverId}
         command="toggle-popover"
-        class="btn-menu-item flex w-full items-center justify-between gap-4 whitespace-nowrap rounded-sm p-1 font-semibold text-xs"
+        class="btn-menu-item flex w-full items-center justify-between gap-4 rounded-sm p-1 text-xs font-semibold whitespace-nowrap"
       >
         <span>{props.label}</span>
         <Icon name="CaretRight" class="size-2 shrink-0 text-neutral-700 dark:text-neutral-200" />

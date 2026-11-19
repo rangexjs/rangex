@@ -202,24 +202,24 @@ export const AudioQuickActions = () => {
             class="w-52 space-y-2 rounded-lg border border-neutral-200 bg-white p-2 shadow-sm [position-area:center_bottom] dark:border-neutral-700 dark:bg-neutral-900"
           >
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Autoplay
               </span>
               <ToggleButton checked={autoplay()} label="Autoplay" onClick={onAutoplayToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Loop</span>
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">Loop</span>
               <ToggleButton checked={loop()} label="Loop" onClick={onLoopToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">Muted</span>
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">Muted</span>
               <ToggleButton checked={muted()} label="Muted" onClick={onMutedToggle} />
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Caption
               </span>
               <ToggleButton
@@ -245,12 +245,12 @@ export const AudioQuickActions = () => {
               <div class="flex items-center justify-between">
                 <label
                   for={titleHandle.id}
-                  class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
+                  class="text-xs font-medium text-neutral-600 dark:text-neutral-300"
                 >
                   Title
                 </label>
                 <span
-                  class="text-neutral-500 text-xs dark:text-neutral-400"
+                  class="text-xs text-neutral-500 dark:text-neutral-400"
                   hidden={!isTitleDirty()}
                 >
                   Enter to save

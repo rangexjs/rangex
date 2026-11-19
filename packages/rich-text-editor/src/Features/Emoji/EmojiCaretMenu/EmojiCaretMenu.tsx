@@ -38,7 +38,7 @@ export const EmojiCaretMenu = () => {
           onClick={() => emoji.select(item)}
         >
           <span class="shrink-0 text-lg leading-none">{item.emoji}</span>
-          <span class="truncate text-neutral-600 text-sm dark:text-neutral-300">:{item.name}:</span>
+          <span class="truncate text-sm text-neutral-600 dark:text-neutral-300">:{item.name}:</span>
         </button>
       );
     });
@@ -58,7 +58,7 @@ export const EmojiCaretMenu = () => {
       caretMenuPort={emoji.caretMenu}
       items={items}
       onSelect={onSelect}
-      class="min-w-40 max-w-56"
+      class="max-w-56 min-w-40"
     />
   );
 };
