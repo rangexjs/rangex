@@ -72,6 +72,8 @@ const codeBlock = CodeBlock({
 
 When building on `@rangex/editor` directly, pass the same `getHighlightInfo` to its `CodeBlock` adapter (`@rangex/editor/code-block`).
 
+**Server-side rendering:** `Worker` only exists in the browser, so creating the worker on the server throws. Create the worker and call `createEditorHighlighter` in client-only code, e.g. right before `createRichTextEditor`, not at the top of a module that also runs on the server.
+
 ### Bundler setup
 
 Languages and themes load lazily inside the worker. Your bundler must output the worker as an ES module, or every listed language and theme ends up in one large worker file.

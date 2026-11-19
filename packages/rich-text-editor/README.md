@@ -72,6 +72,15 @@ import { createRichTextHTMLView } from "@rangex/rich-text-editor";
 const { html, styles } = createRichTextHTMLView({ storedSnapshot, limits });
 ```
 
+## Server-side rendering
+
+Every entry point can be imported on the server (Node, Deno, workers), so the editor can be imported normally in code that also runs during server-side rendering.
+
+- `createRichTextHTMLView`, `createRichTextSnapshotView`, `createSnapshotView` and `configureSanitizer` work on the server, so saved content can be rendered there.
+- `createRichTextEditor` needs the browser: on the server it throws. Call it from client-only code, e.g. a mount hook.
+- Extensions can be created on the server, so a shared extension list is fine; they only take effect in the browser.
+- The code block highlighter runs in a Web Worker, which only exists in the browser: create it in client-only code too (see [`@rangex/syntax-highlighter-shiki`](https://www.npmjs.com/package/@rangex/syntax-highlighter-shiki)).
+
 ## License
 
 MIT. RangeX depends on `@rangex/core`, which is licensed separately: [rangex.dev/license](https://rangex.dev/license).
