@@ -31,7 +31,7 @@ export const createRichTextEditor = ({
 
   const styles = getEditorStyles();
 
-  const { editor, host, floatingContainer, hostStyles } = createEditor({
+  const { editor, editorContainer, containerStyles } = createEditor({
     licenseKey,
     storedSnapshot,
     snapshotSchema,
@@ -40,7 +40,7 @@ export const createRichTextEditor = ({
   });
 
   const editorStyle = new CSSStyleSheet();
-  editorStyle.replaceSync(globalStyles + hostStyles);
+  editorStyle.replaceSync(globalStyles + containerStyles);
 
   const unregisterTailwindProperties = registerTailwindProperties({ styleSheet: editorStyle });
 
@@ -64,6 +64,7 @@ export const createRichTextEditor = ({
   }
 
   const editorHost = document.createElement("div");
+  editorHost.classList.add("h-full");
 
   const dispose = render(
     () => (
@@ -74,8 +75,7 @@ export const createRichTextEditor = ({
         uiOptions={uiOptions}
         toolbarButtonsLayout={toolbarButtonsLayout}
         editor={editor}
-        host={host}
-        floatingContainer={floatingContainer}
+        editorContainer={editorContainer}
       />
     ),
     editorHost,

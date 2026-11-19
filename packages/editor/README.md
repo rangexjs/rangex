@@ -26,7 +26,7 @@ import { Formatting } from "@rangex/editor/formatting";
 import { Link } from "@rangex/editor/link";
 import { UndoRedo } from "@rangex/editor/undo-redo";
 
-const { editor, host, floatingContainer, hostStyles } = createEditor({
+const { editor, editorContainer, containerStyles } = createEditor({
 	licenseKey: "eyJ2IjoxLC...", // your RangeX license key; "" while developing locally
 	snapshotSchema: {
 		limits: { maxDepth: 100, maxNodeCount: 50_000, maxTextLength: 100_000 }, // how large a stored snapshot may be
@@ -37,12 +37,12 @@ const { editor, host, floatingContainer, hostStyles } = createEditor({
 	styles: editorStyles, // CSS for the content inside the editor
 });
 
-// The editable area, and the element floating UI (menus, popovers) mounts into
-document.body.append(host, floatingContainer);
+// Holds the editable area and the element floating UI (menus, popovers) mounts into
+document.body.append(editorContainer);
 
-// Styles for the page the editor lives in
+// Styles for the container, adopted where it is mounted
 const styleSheet = new CSSStyleSheet();
-styleSheet.replaceSync(hostStyles);
+styleSheet.replaceSync(containerStyles);
 document.adoptedStyleSheets.push(styleSheet);
 ```
 

@@ -4,10 +4,8 @@ export const createDevelopmentView = () => {
   const host = document.createElement("div");
 
   Object.assign<CSSStyleDeclaration, Partial<CSSStyleDeclaration>>(host.style, {
-    display: "block flex",
-    flexDirection: "column",
-    gap: "30px",
     margin: "60px auto",
+    height: "900px",
     maxWidth: "1200px",
   });
 

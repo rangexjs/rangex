@@ -12,6 +12,7 @@ type OptionalPublicPorts = {
 
 export interface RangeXEditor extends OptionalPublicPorts {
   readonly snapshot: Snapshot;
+  focus(): void;
   destroy(): void;
 }
 
@@ -46,7 +47,6 @@ export interface CreateEditorParams {
 
 export interface CreateEditorResult {
   editor: RangeXEditor;
-  host: HTMLElement;
-  floatingContainer: HTMLDivElement;
-  hostStyles: string;
+  editorContainer: HTMLDivElement;
+  containerStyles: string;
 }

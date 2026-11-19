@@ -49,7 +49,7 @@ concatenation.
 The `styles` parameter in both cases is the consumer's own CSS, layered on top of the engine's required styles — it
 is not where the engine's own styles are supplied.
 
-## Host styles
+## Container styles
 
-Out of scope here — see the separate host styles handling (`getHostStyleText`), which is unrelated to the engine's
+Out of scope here — see the separate container styles handling (`getContainerStyleText`), which is unrelated to the engine's
 shadow DOM styling described above.
