@@ -1,6 +1,6 @@
 {
   "name": "@rangex/syntax-highlighter-shiki",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Shiki-based syntax highlighting for RangeX code blocks, in the editor (Web Worker) and the HTML view.",
   "keywords": [
     "code-block",
@@ -47,7 +47,7 @@
     "vite-plus": "1.6.0"
   },
   "peerDependencies": {
-    "@rangex/editor": "1.0.0-beta.1",
+    "@rangex/editor": "1.0.0-beta.2",
     "shiki": "^4.3.1"
   },
   "browserslist": [

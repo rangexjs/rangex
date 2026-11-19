@@ -15,7 +15,7 @@
     "fix": "vp check --fix index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
     "lint": "vp check index.ts src configs scripts package.json tsconfig.json vite.config.ts && tsc -p ./tsconfig.json && npm run fix -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor",
     "set-version": "node scripts/set-version.js",
-    "publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag beta"
+    "publish:packages": "npm publish -w @rangex/editor -w @rangex/solid -w @rangex/syntax-highlighter-shiki -w @rangex/rich-text-editor --tag latest"
   },
   "dependencies": {
     "@rangex/rich-text-editor": "*",
