@@ -87,9 +87,18 @@ const updateLockfile = () => {
   execSync("npm install --package-lock-only", { cwd: rootDirectory, stdio: "inherit" });
 };
 
+const formatManifests = ({ packages }) => {
+  console.log("Formatting package.json files:");
+
+  const manifestPaths = packages.map(({ path }) => `${path}/package.json`);
+
+  execSync(`vp fmt ${manifestPaths.join(" ")}`, { cwd: rootDirectory, stdio: "inherit" });
+};
+
 /**
  * Sets every package in `packages/` to the version given as the first CLI argument,
- * updates their references to each other, then regenerates `package-lock.json`.
+ * updates their references to each other, formats the rewritten manifests, then
+ * regenerates `package-lock.json`.
  */
 const setVersion = () => {
   const version = process.argv[2];
@@ -106,6 +115,7 @@ const setVersion = () => {
   console.log(`Setting version ${version}:`);
 
   updateManifests({ packages, packageNames, version });
+  formatManifests({ packages });
   updateLockfile();
 
   console.log("Done.");
