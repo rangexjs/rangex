@@ -27,7 +27,7 @@ export const EditorToolbar = (props: EditorToolbarProps) => {
   return (
     <div
       class={[
-        "flex-col gap-1 border-neutral-200 border-b bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950",
+        "flex-col gap-1 border-b border-neutral-200 bg-white p-2 dark:border-neutral-800 dark:bg-neutral-950",
         {
           flex: visibleLayout().length > 0,
           hidden: visibleLayout().length === 0,

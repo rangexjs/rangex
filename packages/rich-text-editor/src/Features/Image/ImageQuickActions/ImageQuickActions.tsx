@@ -233,7 +233,7 @@ export const ImageQuickActions = () => {
             />
 
             <div class="flex items-center justify-between">
-              <span class="font-medium text-neutral-600 text-xs dark:text-neutral-300">
+              <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">
                 Caption
               </span>
               <ToggleButton
@@ -259,12 +259,12 @@ export const ImageQuickActions = () => {
               <div class="flex items-center justify-between">
                 <label
                   for={altHandle.id}
-                  class="font-medium text-neutral-600 text-xs dark:text-neutral-300"
+                  class="text-xs font-medium text-neutral-600 dark:text-neutral-300"
                 >
                   Alt text
                 </label>
                 <span
-                  class="text-neutral-500 text-xs dark:text-neutral-400"
+                  class="text-xs text-neutral-500 dark:text-neutral-400"
                   hidden={!isAltTextDirty()}
                 >
                   Enter to save

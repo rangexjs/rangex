@@ -66,7 +66,7 @@ export const TemplateVariableCaretMenu = () => {
       caretMenuPort={templateVariable.caretMenu}
       items={items}
       onSelect={onSelect}
-      class="min-w-40 max-w-56"
+      class="max-w-56 min-w-40"
     />
   );
 };

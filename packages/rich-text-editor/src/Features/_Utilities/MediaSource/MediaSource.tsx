@@ -75,7 +75,7 @@ export const MediaSource = (props: MediaSourceProps) => {
           target="_blank"
           rel="noopener"
           title={props.src ?? undefined}
-          class="min-w-0 truncate font-semibold text-blue-600 text-sm dark:text-blue-400"
+          class="min-w-0 truncate text-sm font-semibold text-blue-600 dark:text-blue-400"
         >
           {props.src}
           <span class="sr-only"> (opens in new tab)</span>

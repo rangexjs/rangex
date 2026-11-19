@@ -115,7 +115,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
         { flex: props.visible, hidden: !props.visible },
       ]}
     >
-      <div class="flex flex-col items-center gap-1 text-neutral-500 text-sm dark:text-neutral-400">
+      <div class="flex flex-col items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400">
         <Icon name="FileArrowUp" class="size-6" />
         <span>Drag and drop, or choose a source below</span>
       </div>
@@ -123,7 +123,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
       <div
         role="alert"
         class={[
-          "rounded-sm bg-red-50 px-3 py-2 text-red-600 text-sm dark:bg-red-950 dark:text-red-400",
+          "rounded-sm bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-950 dark:text-red-400",
           { hidden: props.errorMessage === null },
         ]}
       >
@@ -143,7 +143,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
       <div class={{ hidden: activeTab() !== "upload" }}>
         <button
           type="button"
-          class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left font-medium text-sm"
+          class="btn-neutral-solid w-full rounded-sm px-3 py-2 text-left text-sm font-medium"
           onClick={() => fileInput?.click()}
         >
           {selectedFileName() ?? "Choose file…"}
@@ -177,7 +177,7 @@ export const MediaSourcePicker = (props: MediaSourcePickerProps) => {
       <div class="text-right">
         <button
           type="button"
-          class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
+          class="btn-primary-solid rounded-sm px-4 py-1 text-sm font-semibold"
           onClick={onApply}
         >
           Apply

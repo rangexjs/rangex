@@ -295,7 +295,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
       <div class="mt-6 flex justify-between">
         <button
           type="button"
-          class="btn-neutral-solid inline-flex min-w-20 items-center gap-2 rounded-sm px-2 py-1 font-medium text-sm"
+          class="btn-neutral-solid inline-flex min-w-20 items-center gap-2 rounded-sm px-2 py-1 text-sm font-medium"
           onClick={() => props.onAction({ type: "remove" })}
         >
           <Icon name="Trash" class="size-4" />
@@ -304,14 +304,14 @@ export const ColorPanel = (props: ColorPanelProps) => {
         <div class="flex gap-2">
           <button
             type="button"
-            class="btn-neutral-solid min-w-20 rounded-sm px-2 py-1 font-medium text-sm"
+            class="btn-neutral-solid min-w-20 rounded-sm px-2 py-1 text-sm font-medium"
             onClick={() => props.onAction({ type: "cancel" })}
           >
             Cancel
           </button>
           <button
             type="button"
-            class="btn-primary-solid min-w-20 rounded-sm px-2 py-1 font-medium text-sm"
+            class="btn-primary-solid min-w-20 rounded-sm px-2 py-1 text-sm font-medium"
             onClick={() => props.onAction({ type: "apply" })}
           >
             Apply
@@ -323,7 +323,7 @@ export const ColorPanel = (props: ColorPanelProps) => {
         <hr class="mb-2 h-0.5 rounded-sm border-0 bg-neutral-300 dark:bg-neutral-700" />
         <div
           id={activeColorsLabelId}
-          class="mb-1 font-medium text-neutral-600 text-sm [text-box:trim-start_cap_alphabetic] dark:text-neutral-300"
+          class="mb-1 text-sm font-medium text-neutral-600 [text-box:trim-start_cap_alphabetic] dark:text-neutral-300"
         >
           Active colors
         </div>

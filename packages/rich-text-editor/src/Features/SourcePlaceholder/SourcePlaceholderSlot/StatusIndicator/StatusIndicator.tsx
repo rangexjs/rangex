@@ -13,7 +13,7 @@ export const StatusIndicator = (props: StatusIndicatorProps) => {
     <div
       role="status"
       class={[
-        "mx-auto w-full max-w-125 flex-col items-center gap-2 text-neutral-500 text-sm dark:text-neutral-400",
+        "mx-auto w-full max-w-125 flex-col items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400",
         { flex: isVisible(), hidden: !isVisible() },
       ]}
     >

@@ -92,14 +92,14 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
 
   return (
     <details ref={detailsRef} class="group mb-3" onToggle={onToggle}>
-      <summary class="flex cursor-pointer select-none items-center gap-1 font-medium text-neutral-600 text-xs transition-colors hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-300 dark:active:text-white dark:hover:text-neutral-100">
+      <summary class="flex cursor-pointer items-center gap-1 text-xs font-medium text-neutral-600 transition-colors select-none hover:text-neutral-800 active:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100 dark:active:text-white">
         <Icon name="CaretRight" class="size-2 transition-transform group-open:rotate-90" />
         Results ({resultsCount()})
       </summary>
       <ol
         ref={listRef}
         class={[
-          "scrollbar-thin mt-1 max-h-72 overflow-auto overscroll-contain rounded border border-neutral-200 dark:border-neutral-700",
+          "mt-1 max-h-72 scrollbar-thin overflow-auto overscroll-contain rounded border border-neutral-200 dark:border-neutral-700",
           { hidden: !debouncedResults().length },
         ]}
       >
@@ -111,7 +111,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
                 <span
                   aria-hidden="true"
                   class={[
-                    "inline-block min-w-6 shrink-0 whitespace-nowrap border-r bg-neutral-100 px-1 py-1 text-center font-bold text-xs dark:bg-neutral-800",
+                    "inline-block min-w-6 shrink-0 border-r bg-neutral-100 px-1 py-1 text-center text-xs font-bold whitespace-nowrap dark:bg-neutral-800",
                     {
                       "border-neutral-200 text-neutral-500 dark:border-neutral-700 dark:text-neutral-400":
                         props.currentIndex() !== index(),
@@ -124,7 +124,7 @@ export const FindReplaceResults = (props: FindReplaceResultsProps) => {
                 {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label -- The label is the snippet text rendered inside */}
                 <button
                   type="button"
-                  class="w-full px-1 text-left text-xs transition-colors hover:bg-neutral-50 active:bg-neutral-100 active:text-neutral-900 dark:active:bg-neutral-700 dark:active:text-white dark:hover:bg-neutral-800"
+                  class="w-full px-1 text-left text-xs transition-colors hover:bg-neutral-50 active:bg-neutral-100 active:text-neutral-900 dark:hover:bg-neutral-800 dark:active:bg-neutral-700 dark:active:text-white"
                   aria-current={`${props.currentIndex() === index()}`}
                   onClick={() => props.onClick(index())}
                 >

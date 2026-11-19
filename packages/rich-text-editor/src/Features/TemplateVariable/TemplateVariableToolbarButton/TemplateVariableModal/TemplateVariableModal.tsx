@@ -131,7 +131,7 @@ export const TemplateVariableModal = (props: TemplateVariableModalProps) => {
           type="button"
           commandfor={props.modalId}
           command="close"
-          class="btn-primary-solid rounded-sm px-4 py-1 font-semibold text-sm"
+          class="btn-primary-solid rounded-sm px-4 py-1 text-sm font-semibold"
           onClick={updateTemplateVariable}
         >
           Update

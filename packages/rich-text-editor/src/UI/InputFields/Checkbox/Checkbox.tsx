@@ -32,7 +32,7 @@ export const Checkbox = (props: CheckboxProps) => {
       />
       <Icon
         name="Check"
-        class="-translate-1/2 pointer-events-none absolute top-1/2 left-1/2 hidden size-3 text-white peer-checked:block"
+        class="pointer-events-none absolute top-1/2 left-1/2 hidden size-3 -translate-1/2 text-white peer-checked:block"
       />
     </span>
   );

@@ -79,7 +79,7 @@ export const LinkEdit = (props: LinkEditProps) => {
 
       <div class="mb-4 space-y-2">
         <div class="flex justify-between">
-          <span class="font-medium text-neutral-600 text-sm dark:text-neutral-300">
+          <span class="text-sm font-medium text-neutral-600 dark:text-neutral-300">
             Open in New Tab
           </span>
           <ToggleButton
@@ -93,14 +93,14 @@ export const LinkEdit = (props: LinkEditProps) => {
       <div class="flex justify-end gap-2">
         <button
           type="button"
-          class="btn-neutral-solid rounded-sm px-3 py-1 font-medium text-sm"
+          class="btn-neutral-solid rounded-sm px-3 py-1 text-sm font-medium"
           onClick={props.onCancel}
         >
           Cancel
         </button>
         <button
           type="button"
-          class="btn-primary-solid rounded-sm px-3 py-1 font-medium text-sm"
+          class="btn-primary-solid rounded-sm px-3 py-1 text-sm font-medium"
           onClick={props.onApply}
         >
           {modeLabel[props.mode]}

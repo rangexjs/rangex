@@ -107,7 +107,7 @@ export const LinkSelectionMenu = () => {
       mount={selectionMenuEl}
       class="z-20 w-64 overflow-visible rounded-lg border border-neutral-300 bg-white p-2 shadow-md dark:border-neutral-700 dark:bg-neutral-900"
     >
-      <span class="absolute -top-2 left-1/2 inline-block size-4 -translate-x-1/2 rotate-45 border-neutral-300 border-t border-l bg-white dark:border-neutral-700 dark:bg-neutral-900" />
+      <span class="absolute -top-2 left-1/2 inline-block size-4 -translate-x-1/2 rotate-45 border-t border-l border-neutral-300 bg-white dark:border-neutral-700 dark:bg-neutral-900" />
       <LinkEdit
         mode="insert"
         displayTextHandle={displayTextHandle}
