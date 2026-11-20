@@ -266,6 +266,9 @@ export const handleInlineMarkdown = ({ editorAPI }: HandleInlineMarkdownParams) 
         toOffset: afterStylesRange.endOffset,
       });
 
+      // Stop the tag from carrying over to the next typed text.
+      editorAPI.updateSelectionStyles({ inlineTags: { [match.tag]: false } });
+
       snapshotTimeline.registerSnapshotBoundary();
 
       editorAPI.focus();
