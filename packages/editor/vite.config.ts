@@ -1,3 +1,5 @@
+import { readdirSync } from "node:fs";
+
 import { defaultClientConditions, defineConfig } from "vite-plus";
 
 import packageJson from "./package.json" with { type: "json" };
@@ -9,14 +11,16 @@ import tsconfig from "./tsconfig.json" with { type: "json" };
 const externalPackageNames = Object.keys(packageJson.dependencies);
 const external = externalPackageNames.map((name) => new RegExp(`^${name}(/.*)?$`));
 
-// One build entry per `exports` subpath, named after it, so "./link" builds src/Exports/Link/index.ts into dist/link.js.
-const entry = Object.fromEntries(
-  Object.entries(packageJson.exports).map(([subpath, conditions]) => {
-    const name = subpath === "." ? "index" : subpath.slice(2);
+// The root entry plus one per feature folder in src/Exports/, which the "./*" export maps to its subpath:
+// src/Exports/link/index.ts builds into dist/link.js and is imported as "@rangex/editor/link".
+const featureNames = readdirSync("src/Exports", { withFileTypes: true })
+  .filter((dirent) => dirent.isDirectory())
+  .map((dirent) => dirent.name);
 
-    return [name, conditions["@rangex/source"]];
-  }),
-);
+const entry = Object.fromEntries([
+  ["index", "src/Exports/index.ts"],
+  ...featureNames.map((name) => [name, `src/Exports/${name}/index.ts`]),
+]);
 
 export default defineConfig({
   base: "./",

@@ -1,6 +1,6 @@
 import { createEditor } from "@rangex/editor";
 import { render } from "@solidjs/web";
-import { createSignal, flush } from "solid-js";
+import { createSignal, flush, onHydrationEnd, runWithOwner } from "solid-js";
 
 import type { UIOptions } from "#context";
 import type { ExtensionComponents } from "#extensions";
@@ -59,27 +59,46 @@ export const createRichTextEditor = ({
     {},
   );
 
-  for (const { register } of extensions) {
-    register?.(editor);
-  }
-
   const editorHost = document.createElement("div");
   editorHost.classList.add("h-full");
 
-  const dispose = render(
-    () => (
-      <App
-        theme={theme}
-        onThemeChange={setTheme}
-        components={components}
-        uiOptions={uiOptions}
-        toolbarButtonsLayout={toolbarButtonsLayout}
-        editor={editor}
-        editorContainer={editorContainer}
-      />
-    ),
-    editorHost,
-  );
+  let dispose: (() => void) | undefined;
+  let destroyed = false;
+
+  const mount = () => {
+    if (destroyed) {
+      return;
+    }
+
+    // Extensions may render Solid UI from `register` too (e.g. source placeholder slots), so it shares the deferral.
+    for (const { register } of extensions) {
+      register?.(editor);
+    }
+
+    dispose = render(
+      () => (
+        <App
+          theme={theme}
+          onThemeChange={setTheme}
+          components={components}
+          uiOptions={uiOptions}
+          toolbarButtonsLayout={toolbarButtonsLayout}
+          editor={editor}
+          editorContainer={editorContainer}
+        />
+      ),
+      editorHost,
+    );
+  };
+
+  // The UI mounts asynchronously, never inside the caller's synchronous scope. A Solid host typically calls this from
+  // `onSettled`, where mounting inline breaks:
+  // - during hydration, `render()` sees Solid's global hydration flag, takes hydration code paths, finds no server
+  //   markup to claim and renders nothing;
+  // - after hydration (e.g. client-side navigation), `render()` calls `flush()`, which isn't reentrant inside
+  //   `onSettled` and throws.
+  // `onHydrationEnd` covers both: it waits for hydration to end, or runs in the next microtask when none is going on.
+  onHydrationEnd(() => runWithOwner(null, mount));
 
   const richTextEditor: RichTextEditor = {
     get editorHost() {
@@ -104,8 +123,9 @@ export const createRichTextEditor = ({
     },
 
     destroy() {
+      destroyed = true;
       editor.destroy();
-      dispose();
+      dispose?.();
       unregisterTailwindProperties();
     },
   };

@@ -15,8 +15,10 @@ The framework-agnostic layer over the RangeX engine (`@rangex/core`), written in
 The package has one entry point per feature plus a root entry:
 
 - `src/Exports/index.ts` is `@rangex/editor`: what isn't specific to one feature (`createEditor`, the views, engine types, types shared by several features).
-- `src/Exports/<Feature>/index.ts` is `@rangex/editor/<feature>` (kebab-case, e.g. `CodeBlock` → `code-block`): the feature's adapter factory, its settings type (`<Feature>Settings`) and its other public types. `@rangex/rich-text-editor` mirrors this, with `<Feature>ExtensionSettings` for each extension.
+- `src/Exports/<feature>/index.ts` is `@rangex/editor/<feature>`: the feature's adapter factory, its settings type (`<Feature>Settings`) and its other public types. `@rangex/rich-text-editor` mirrors this, with `<Feature>ExtensionSettings` for each extension.
+
+Feature folders in `src/Exports/` are named in kebab-case (`code-block/`, unlike the PascalCase folders elsewhere), because the folder name is the subpath: the single `"./*"` entry in `package.json`'s `exports` maps `@rangex/editor/code-block` to `src/Exports/code-block/`.
 
 Types keep the names they have in the adapter (`InsertParams`, not `LinkInsertParams`); the subpath already says which feature they belong to.
 
-When adding a feature, add its `Exports/<Feature>/index.ts` and a matching `exports` entry in `package.json` (`@rangex/source`, `types`, `import`). The Vite build reads its entries from `exports`, so nothing else needs registering.
+When adding a feature, add its `Exports/<feature>/index.ts`. The `"./*"` export and the Vite build (which reads the folders in `src/Exports/`) pick it up, so nothing else needs registering.
