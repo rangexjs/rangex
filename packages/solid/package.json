@@ -1,6 +1,6 @@
 {
   "name": "@rangex/solid",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "SolidJS bindings for @rangex/editor: reactive ports and shared Solid utilities.",
   "keywords": [
     "contenteditable",
@@ -52,7 +52,7 @@
     "vite-plus": "1.6.0"
   },
   "peerDependencies": {
-    "@rangex/editor": "1.0.0-beta.2",
+    "@rangex/editor": "1.0.0-beta.3",
     "@solidjs/web": "^2.0.3",
     "solid-js": "^2.0.3"
   },
