@@ -11,7 +11,7 @@ export type {
   SnapshotView,
   StoredSnapshot,
 } from "@rangex/editor";
-export { configureSanitizer, createSnapshotView } from "@rangex/editor";
+export { validateSnapshot, configureSanitizer, createSnapshotView } from "@rangex/editor";
 export type {
   Extension,
   ExtensionComponents,

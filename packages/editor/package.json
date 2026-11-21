@@ -1,6 +1,6 @@
 {
   "name": "@rangex/editor",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "Framework-agnostic RangeX editor: adapters, createEditor and snapshot/HTML views on top of the RangeX engine.",
   "keywords": [
     "contenteditable",

@@ -53,5 +53,5 @@ export type {
 export { createEditor } from "#rangex-editor";
 export { configureSanitizer } from "#sanitizer";
 export type { SnapshotComponents, SnapshotRoot, SnapshotSchema, SnapshotView } from "#snapshot";
-export { createHTMLView, createSnapshotView } from "#snapshot";
+export { createHTMLView, createSnapshotView, validateSnapshot } from "#snapshot";
 export { buildViewStyleText } from "../Styles";
