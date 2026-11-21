@@ -67,7 +67,7 @@ Call `richTextEditor.destroy()` when you remove the editor.
 `createRichTextHTMLView` turns a stored snapshot into an HTML string plus its styles, using the same styling as the editor.
 
 ```ts
-import { createRichTextHTMLView } from "@rangex/rich-text-editor";
+import { createRichTextHTMLView } from "@rangex/rich-text-editor/snapshot";
 
 const { html, styles } = createRichTextHTMLView({ storedSnapshot, limits });
 ```
@@ -76,7 +76,7 @@ const { html, styles } = createRichTextHTMLView({ storedSnapshot, limits });
 
 Every entry point can be imported on the server (Node, Deno, workers), so the editor can be imported normally in code that also runs during server-side rendering.
 
-- `createRichTextHTMLView`, `createRichTextSnapshotView`, `createSnapshotView` and `configureSanitizer` work on the server, so saved content can be rendered there.
+- Everything in `@rangex/rich-text-editor/snapshot` works on the server (the views, `migrateStoredSnapshot`, `validateSnapshot`, `configureSanitizer`, `getFileSources`), so saved content can be validated and rendered there.
 - `createRichTextEditor` needs the browser: on the server it throws. Call it from client-only code, e.g. a mount hook.
 - Extensions can be created on the server, so a shared extension list is fine; they only take effect in the browser.
 - The code block highlighter runs in a Web Worker, which only exists in the browser: create it in client-only code too (see [`@rangex/syntax-highlighter-shiki`](https://www.npmjs.com/package/@rangex/syntax-highlighter-shiki)).

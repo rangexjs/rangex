@@ -1,4 +1,4 @@
-import { createHTMLView } from "@rangex/editor";
+import { createHTMLView } from "@rangex/editor/snapshot";
 
 import { getViewStyles } from "../../EngineStyles";
 import type {

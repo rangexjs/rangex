@@ -1,13 +1,4 @@
-export type {
-  AttributeRuleFn,
-  AttributeRuleParams,
-  AttributeRules,
-  EditorAPI,
-  ElementPolicy,
-  SanitizerPolicy,
-  SnapshotLimits,
-  StoredSnapshot,
-} from "@rangex/core";
+export type { EditorAPI, StoredSnapshot } from "@rangex/core";
 export type {
   BlockAlignValue,
   CaptionPosition,
@@ -51,7 +42,4 @@ export type {
   RangeXEditor,
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
-export { configureSanitizer } from "#sanitizer";
-export type { SnapshotComponents, SnapshotRoot, SnapshotSchema, SnapshotView } from "#snapshot";
-export { createHTMLView, createSnapshotView, validateSnapshot } from "#snapshot";
-export { buildViewStyleText } from "../Styles";
+export type { SnapshotSchema } from "#snapshot";

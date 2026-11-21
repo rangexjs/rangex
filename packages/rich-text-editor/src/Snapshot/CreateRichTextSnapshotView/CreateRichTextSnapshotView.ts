@@ -1,4 +1,4 @@
-import { buildViewStyleText, createSnapshotView } from "@rangex/editor";
+import { buildViewStyleText, createSnapshotView } from "@rangex/editor/snapshot";
 
 import { getViewStyles } from "../../EngineStyles";
 import type {

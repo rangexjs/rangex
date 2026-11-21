@@ -102,7 +102,7 @@ import typescript from "@shikijs/langs/typescript";
 import css from "@shikijs/langs/css";
 import githubLight from "@shikijs/themes/github-light";
 import githubDark from "@shikijs/themes/github-dark";
-import { createRichTextHTMLView } from "@rangex/rich-text-editor";
+import { createRichTextHTMLView } from "@rangex/rich-text-editor/snapshot";
 import { createHTMLViewHighlighter } from "@rangex/syntax-highlighter-shiki";
 
 const highlightCode = createHTMLViewHighlighter({
