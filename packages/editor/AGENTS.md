@@ -14,7 +14,7 @@ The framework-agnostic layer over the RangeX engine (`@rangex/core`), written in
 
 The package has one entry point per feature plus a root entry:
 
-- `src/Exports/index.ts` is `@rangex/editor`: what isn't specific to one feature (`createEditor`, the views, engine types, types shared by several features).
+- `src/Exports/index.ts` is `@rangex/editor`: what isn't specific to one feature (`createEditor`, engine types, types shared by several features). The snapshot tools (views, validation, sanitizer, `getFileSources`) are in `@rangex/editor/snapshot`.
 - `src/Exports/<feature>/index.ts` is `@rangex/editor/<feature>`: the feature's adapter factory, its settings type (`<Feature>Settings`) and its other public types. `@rangex/rich-text-editor` mirrors this, with `<Feature>ExtensionSettings` for each extension.
 
 Feature folders in `src/Exports/` are named in kebab-case (`code-block/`, unlike the PascalCase folders elsewhere), because the folder name is the subpath: the single `"./*"` entry in `package.json`'s `exports` maps `@rangex/editor/code-block` to `src/Exports/code-block/`.

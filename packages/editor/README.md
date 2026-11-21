@@ -73,7 +73,7 @@ Call `editor.destroy()` when you remove the editor.
 `createHTMLView` turns a stored snapshot into an HTML string plus its styles, e.g. to display saved content read-only.
 
 ```ts
-import { createHTMLView } from "@rangex/editor";
+import { createHTMLView } from "@rangex/editor/snapshot";
 
 const { html, styles } = createHTMLView({ storedSnapshot, limits, styles: editorStyles });
 ```

@@ -234,8 +234,8 @@ The validation runs wherever snapshots are saved, e.g. on a server. Everything i
 time: `#dom-attrs` (see [DOMAttrs](DOMAttrs.md#rules)), `#constants` (see [Constants](Constants.md#rules)),
 `#storage`, `#sanitizer`, `#utilities` and `@rangex/core`. Never `#engine-links`, whose modules need a DOM.
 
-`@rangex/editor/snapshot` is the entry to import it from on a server, with `migrateStoredSnapshot` and
-`configureSanitizer`. The other public entries export modules that need a DOM.
+`@rangex/editor/snapshot` is the entry to import it from on a server, with `migrateStoredSnapshot`,
+`configureSanitizer`, the views and `getFileSources`. The other public entries export modules that need a DOM.
 
 ## Consumer contract
 

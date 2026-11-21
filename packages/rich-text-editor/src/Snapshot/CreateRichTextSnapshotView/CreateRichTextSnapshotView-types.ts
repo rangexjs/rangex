@@ -1,4 +1,4 @@
-import type { createSnapshotView, SnapshotLimits, StoredSnapshot } from "@rangex/editor";
+import type { createSnapshotView, SnapshotLimits, StoredSnapshot } from "@rangex/editor/snapshot";
 
 export interface CreateRichTextSnapshotViewParams {
   storedSnapshot: StoredSnapshot;

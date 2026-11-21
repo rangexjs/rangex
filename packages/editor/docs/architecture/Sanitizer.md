@@ -40,7 +40,7 @@ its own attributes through.
 
 ## `configureSanitizer`
 
-`ConfigureSanitizer/ConfigureSanitizer.ts`, exported from `@rangex/editor`. It wraps the engine's `configureSanitizer`
+`ConfigureSanitizer/ConfigureSanitizer.ts`, exported from `@rangex/editor/snapshot`. It wraps the engine's `configureSanitizer`
 and always appends the `basePolicy` after the given policies:
 
 ```ts
@@ -61,7 +61,7 @@ Sanitizer never runs without rules. It's called before anything that sets attrib
 
 ### Consumer contract
 
-- Use `configureSanitizer` from `@rangex/editor`, never the engine's: the engine's leaves out the `basePolicy`, and
+- Use `configureSanitizer` from `@rangex/editor/snapshot`, never the engine's: the engine's leaves out the `basePolicy`, and
   `ensureSanitizerConfigured` doesn't know it was called, so the next editor, view or validation replaces those
   policies with the `basePolicy` alone.
 - Call it before creating an editor or a view, or validating a snapshot. The policies apply to every one of them.
