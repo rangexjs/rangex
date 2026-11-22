@@ -7,7 +7,7 @@
   border-color: light-dark(var(--color-neutral-400), var(--color-neutral-600));
   border-radius: 8px;
   background-color: light-dark(
-    color(from var(--color-neutral-400) srgb r b g / 0.4),
+    color(from var(--color-neutral-400) srgb r g b / 0.4),
     color(from var(--color-neutral-600) srgb r g b / 0.4)
   );
   transition: background-color, border;
