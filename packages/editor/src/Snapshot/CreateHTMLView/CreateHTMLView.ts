@@ -1,9 +1,7 @@
 import { isNodeStorage } from "#storage";
 import { assertNever } from "#utilities";
 
-import { buildViewStyleText } from "../../Styles";
 import { createSnapshotView } from "../CreateSnapshotView";
-import { highlightCodeBlocks } from "../HighlightCodeBlocks";
 import type {
   CreateElementParams,
   CreateHTMLTreeParams,
@@ -118,11 +116,12 @@ export const createHTMLView = ({
   styles,
   highlightCode,
 }: CreateHTMLViewParams): CreateHTMLViewResult => {
-  const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
-
-  if (highlightCode) {
-    highlightCodeBlocks({ nodeView: snapshotView.tree, highlightCode });
-  }
+  const { snapshotView } = createSnapshotView({
+    storedSnapshot,
+    limits,
+    styles,
+    highlightCode,
+  });
 
   const storage: HTMLViewStorage = {};
   const createId = generateId();
@@ -133,8 +132,5 @@ export const createHTMLView = ({
     nodeView: snapshotView.tree,
   });
 
-  const viewStyleText = buildViewStyleText(styles);
-  const viewStyles = snapshotView.styles + viewStyleText;
-
-  return { styles: viewStyles, html, storage };
+  return { styles: snapshotView.styles, html, storage };
 };

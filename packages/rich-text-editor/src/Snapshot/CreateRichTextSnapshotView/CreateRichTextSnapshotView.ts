@@ -1,4 +1,4 @@
-import { buildViewStyleText, createSnapshotView } from "@rangex/editor/snapshot";
+import { createSnapshotView } from "@rangex/editor/snapshot";
 
 import { getViewStyles } from "../../EngineStyles";
 import type {
@@ -9,16 +9,16 @@ import type {
 export const createRichTextSnapshotView = ({
   storedSnapshot,
   limits,
+  highlightCode,
 }: CreateRichTextSnapshotViewParams): CreateRichTextSnapshotViewResult => {
-  const { snapshotView } = createSnapshotView({ storedSnapshot, limits });
-
   const styles = getViewStyles();
-  const viewStyleText = buildViewStyleText(styles);
 
-  return {
-    snapshotView: {
-      ...snapshotView,
-      styles: snapshotView.styles + viewStyleText,
-    },
-  };
+  const result = createSnapshotView({
+    styles,
+    storedSnapshot,
+    limits,
+    highlightCode,
+  });
+
+  return result;
 };

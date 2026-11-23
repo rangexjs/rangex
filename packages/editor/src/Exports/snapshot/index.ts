@@ -36,4 +36,3 @@ export type {
   RootStorage,
   TemplateVariableStorage,
 } from "#storage";
-export { buildViewStyleText } from "../../Styles";

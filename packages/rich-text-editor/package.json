@@ -1,6 +1,6 @@
 {
   "name": "@rangex/rich-text-editor",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "Zero-config RangeX rich text editor with extensions, toolbar and floating UI out of the box.",
   "keywords": [
     "contenteditable",
@@ -94,8 +94,8 @@
     "vite-plus": "1.6.0"
   },
   "peerDependencies": {
-    "@rangex/editor": "1.0.0-beta.6",
-    "@rangex/solid": "1.0.0-beta.6",
+    "@rangex/editor": "1.0.0-beta.7",
+    "@rangex/solid": "1.0.0-beta.7",
     "@solidjs/web": "^2.0.3",
     "solid-js": "^2.0.3"
   },
