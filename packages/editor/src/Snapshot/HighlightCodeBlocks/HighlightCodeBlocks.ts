@@ -47,8 +47,21 @@ const getContentLines = ({ elementView }: GetContentLinesParams): GetContentLine
   return contentLines;
 };
 
+/*
+ * Returns the code line's text. An empty ContentLine holds only the BeamText sentinel, whose view is a "\n" text that
+ * isn't part of the code, so it gives "".
+ */
 const getLineText = ({ contentLine }: GetLineTextParams): GetLineTextResult => {
-  const textViews = contentLine.childNodes.filter(isTextView);
+  const { childNodes } = contentLine;
+  const [firstChild] = childNodes;
+
+  const isEmptyLine = childNodes.length === 1 && isTextView(firstChild) && firstChild.data === "\n";
+
+  if (isEmptyLine) {
+    return "";
+  }
+
+  const textViews = childNodes.filter(isTextView);
   const texts = textViews.map((textView) => textView.data);
 
   return texts.join("");
