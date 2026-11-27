@@ -18,7 +18,7 @@ export const handleImageInsertion = ({
       return;
     }
 
-    const image = createImage({ attrs: params.attrs });
+    const image = createImage({ attrs: params.attrs, fileId: params.fileId });
 
     blockComponentPlacement.insertBySelection({
       lines: [image],

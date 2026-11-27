@@ -1,4 +1,4 @@
-import type { RangeXEditor } from "@rangex/editor";
+import type { FileId, RangeXEditor } from "@rangex/editor";
 
 import type { DetectMediaUrlTypeSettings } from "../_Utilities";
 
@@ -14,8 +14,15 @@ export interface UploadMediaFileParams {
   signal: AbortSignal;
 }
 
-// Resolves to the uploaded file's URL, or null if it couldn't be uploaded
-export type UploadMediaFileFn = (params: UploadMediaFileParams) => Promise<string | null>;
+export interface UploadedMediaFile {
+  src: string;
+  fileId: FileId;
+}
+
+// Resolves to the uploaded file's URL and its id in the app's storage, or null if it couldn't be uploaded
+export type UploadMediaFileFn = (
+  params: UploadMediaFileParams,
+) => Promise<UploadedMediaFile | null>;
 
 export interface SourcePlaceholderSlotSettings extends DetectMediaUrlTypeSettings {
   // Uploads a picked or dropped file (e.g. to the app's storage)

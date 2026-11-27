@@ -60,6 +60,8 @@ createRichTextEditor({ licenseKey, storedSnapshot, snapshotSchema, extensions })
 
 A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty and logs a warning. Saving then replaces the stored snapshot with the empty content.
 
+`uploadFile` resolves `{ src, fileId }`: the file's URL and its id in your storage. Each uploaded image, video and audio keeps that `fileId`, and `getFileSources({ storedSnapshot })` (from `@rangex/rich-text-editor/snapshot`) lists every file a stored snapshot uses as `{ type, src, fileId }` (`type` being `"image"`, `"video"` or `"audio"`), `fileId` being null for media inserted from a link. Use it e.g. to delete the files no saved content uses anymore; content copied within the editor keeps the same `fileId`, so several media can share a file.
+
 Call `richTextEditor.destroy()` when you remove the editor.
 
 ## Display saved content

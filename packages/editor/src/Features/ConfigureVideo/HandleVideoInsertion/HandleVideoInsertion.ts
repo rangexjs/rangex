@@ -18,7 +18,7 @@ export const handleVideoInsertion = ({
       return;
     }
 
-    const video = createVideo({ attrs: params.attrs });
+    const video = createVideo({ attrs: params.attrs, fileId: params.fileId });
 
     blockComponentPlacement.insertBySelection({
       lines: [video],

@@ -12,6 +12,7 @@ export type { RootType } from "#constants";
 export type { CreateRootAttrValidatorsParams } from "#dom-attrs";
 export { configureSanitizer } from "#sanitizer";
 export type {
+  FileSource,
   GetFileSourcesParams,
   GetFileSourcesResult,
   SnapshotComponents,
@@ -31,8 +32,11 @@ export type {
 } from "#snapshot";
 export { createHTMLView, createSnapshotView, getFileSources, validateSnapshot } from "#snapshot";
 export type {
+  AudioStorage,
   CodeBlockStorage,
+  ImageStorage,
   MentionStorage,
   RootStorage,
   TemplateVariableStorage,
+  VideoStorage,
 } from "#storage";

@@ -60,8 +60,9 @@ const joinChunks = (chunks: Uint8Array[], size: number) => {
 export const devUploadsPath = "/__dev-uploads";
 
 /**
- * Demo-only stand-in for an app's storage: a POST to devUploadsPath stores the file in memory and answers its URL,
- * which serves it back (with Range requests, so a video can seek). The files are lost once the dev server stops.
+ * Demo-only stand-in for an app's storage: a POST to devUploadsPath stores the file in memory and answers its URL and id
+ * as JSON (`{ src, fileId }`), the URL serving it back (with Range requests, so a video can seek). The files are lost
+ * once the dev server stops.
  */
 export const devUploads = (): Plugin => {
   const uploads = new Map<string, DevUpload>();
@@ -97,8 +98,8 @@ export const devUploads = (): Plugin => {
             uploads.set(id, { contentType, data: joinChunks(chunks, size) });
 
             response.statusCode = 201;
-            response.setHeader("Content-Type", "text/plain");
-            response.end(`${devUploadsPath}/${id}`);
+            response.setHeader("Content-Type", "application/json");
+            response.end(JSON.stringify({ src: `${devUploadsPath}/${id}`, fileId: id }));
           });
           return;
         }

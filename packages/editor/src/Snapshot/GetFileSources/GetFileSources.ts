@@ -1,46 +1,114 @@
-import { htmlLayoutRole, snapshotManager } from "@rangex/core";
+import { blockComponentRole, htmlLayoutRole, snapshotManager } from "@rangex/core";
 
-import type { GetFileSourcesParams, GetFileSourcesResult } from "./GetFileSources-types";
+import { componentsName } from "#constants";
+import { isAudioStorage, isImageStorage, isVideoStorage } from "#storage";
 
-const fileLocalNames = ["audio", "img", "video"];
+import type {
+  FileSource,
+  FileStorage,
+  FileType,
+  GetFileSourcesParams,
+  GetFileSourcesResult,
+  GetMediaSrcParams,
+  GetMediaSrcResult,
+} from "./GetFileSources-types";
+
+const mediaLocalNamesByType = {
+  [componentsName.image]: "img",
+  [componentsName.video]: "video",
+  [componentsName.audio]: "audio",
+} satisfies Record<FileType, string>;
+
+const isFileType = (name: string): name is FileType => {
+  const isValid = Object.hasOwn(mediaLocalNamesByType, name);
+
+  return isValid;
+};
+
+const isFileStorage = (storage: unknown): storage is FileStorage => {
+  const isValid = isImageStorage(storage) || isVideoStorage(storage) || isAudioStorage(storage);
+
+  return isValid;
+};
 
 /*
- * Returns the src of every audio, image and video element in the StoredSnapshot, each once, in order of first
- * appearance: the files the snapshot uses. The snapshot isn't validated here: pass one returned by validateSnapshot.
+ * Returns the src of the media component's media element, or null if it has none.
  */
-export const getFileSources = ({ storedSnapshot }: GetFileSourcesParams): GetFileSourcesResult => {
-  const rootEditableDraft = snapshotManager.createDraftFromSnapshot(storedSnapshot.snapshot);
-
-  const fileElements = rootEditableDraft.queryAll((node) => {
+const getMediaSrc = ({
+  blockComponentDraft,
+  mediaLocalName,
+}: GetMediaSrcParams): GetMediaSrcResult => {
+  const mediaElement = blockComponentDraft.query((node) => {
     if (node.editorRole !== htmlLayoutRole) {
       return false;
     }
 
-    const { localName } = node;
+    return node.localName === mediaLocalName;
+  });
 
-    if (!fileLocalNames.includes(localName)) {
+  if (mediaElement?.editorRole !== htmlLayoutRole) {
+    return null;
+  }
+
+  const { src } = mediaElement.domAttrs;
+
+  if (!src) {
+    return null;
+  }
+
+  return src;
+};
+
+/*
+ * Returns every file the StoredSnapshot uses: the type and src of each Image, Video and Audio, with the file id their
+ * storage holds (null when the media isn't an uploaded file). Each type, src and file id combination is returned once,
+ * in order of first appearance. The snapshot isn't validated here: pass one returned by validateSnapshot.
+ */
+export const getFileSources = ({ storedSnapshot }: GetFileSourcesParams): GetFileSourcesResult => {
+  const rootEditableDraft = snapshotManager.createDraftFromSnapshot(storedSnapshot.snapshot);
+
+  const mediaComponents = rootEditableDraft.queryAll((node) => {
+    if (node.editorRole !== blockComponentRole) {
       return false;
     }
 
-    return true;
+    return isFileType(node.name);
   });
 
-  const sources = new Set<string>();
+  const fileSourcesByKey = new Map<string, FileSource>();
 
-  for (const fileElement of fileElements) {
-    if (fileElement.editorRole !== htmlLayoutRole) {
-      throw new Error("FileElement's editorRole is invalid.");
+  for (const blockComponentDraft of mediaComponents) {
+    if (blockComponentDraft.editorRole !== blockComponentRole) {
+      throw new Error("MediaComponent's editorRole is invalid.");
     }
 
-    const { src } = fileElement.domAttrs;
+    const type = blockComponentDraft.name;
+
+    if (!isFileType(type)) {
+      throw new Error("MediaComponent's name is invalid.");
+    }
+
+    const mediaLocalName = mediaLocalNamesByType[type];
+    const { customStorage } = blockComponentDraft;
+
+    if (!isFileStorage(customStorage)) {
+      throw new Error("MediaComponent's customStorage is invalid.");
+    }
+
+    const src = getMediaSrc({ blockComponentDraft, mediaLocalName });
 
     if (!src) {
       console.warn("src attribute is missing.");
       continue;
     }
 
-    sources.add(src);
+    const { fileId } = customStorage;
+    const key = JSON.stringify([type, src, fileId]);
+
+    if (!fileSourcesByKey.has(key)) {
+      fileSourcesByKey.set(key, { type, src, fileId });
+    }
   }
 
-  return [...sources];
+  return [...fileSourcesByKey.values()];
 };

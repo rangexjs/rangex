@@ -3,6 +3,7 @@ export type {
   AttributeRuleParams,
   AttributeRules,
   ElementPolicy,
+  FileSource,
   GetFileSourcesParams,
   GetFileSourcesResult,
   SanitizerPolicy,

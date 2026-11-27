@@ -11,6 +11,7 @@ import type {
   VideoAttrs,
   VideoAttrValidators,
 } from "#dom-attrs";
+import type { FileId } from "#storage";
 
 import type { mediaTypes } from "./AdapterBus";
 
@@ -32,12 +33,13 @@ export interface AttrValidatorsByAdapter {
 export type AttrValidatorsAdapterName = keyof AttrValidatorsByAdapter;
 
 /*
- * The resolved media, with every attribute of its component
+ * The resolved media, with every attribute of its component. An image, video or audio also carries its file's id in the
+ * app's storage, or null when it isn't an uploaded file.
  */
 export type MediaResolveDetail =
-  | { type: "image"; attrs: ImageAttrs }
-  | { type: "video"; attrs: VideoAttrs }
-  | { type: "audio"; attrs: AudioAttrs }
+  | { type: "image"; attrs: ImageAttrs; fileId: FileId }
+  | { type: "video"; attrs: VideoAttrs; fileId: FileId }
+  | { type: "audio"; attrs: AudioAttrs; fileId: FileId }
   | { type: "embed"; attrs: EmbedAttrs };
 
 export type OnMediaResolveCallbackFn = (params: MediaResolveDetail) => void;

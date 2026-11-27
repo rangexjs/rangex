@@ -1,5 +1,6 @@
 import type {
   SourcePlaceholderExtensionSettings,
+  UploadedMediaFile,
   UploadMediaFileFn,
 } from "@rangex/rich-text-editor/source-placeholder";
 
@@ -9,9 +10,10 @@ import { isEmbedURL, parseAbsoluteURL, toEmbedURL } from "../_Utilities";
 const devUploadsPath = "/__dev-uploads";
 
 /**
- * Demo-only upload to the dev server, which keeps the file in memory until it stops, and resolves its URL. A consumer
- * building a real editor should replace this with a function that uploads to their own storage and resolves the
- * resulting URL. It's an XMLHttpRequest, as fetch can't report an upload's progress.
+ * Demo-only upload to the dev server, which keeps the file in memory until it stops, and resolves its URL and id. A
+ * consumer building a real editor should replace this with a function that uploads to their own storage and resolves
+ * the resulting URL and the id their storage gave the file. It's an XMLHttpRequest, as fetch can't report an upload's
+ * progress.
  */
 const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
   return new Promise((resolve) => {
@@ -24,7 +26,13 @@ const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
     });
 
     request.addEventListener("load", () => {
-      resolve(request.status === 201 ? request.responseText : null);
+      if (request.status !== 201) {
+        resolve(null);
+        return;
+      }
+
+      const uploadedFile: UploadedMediaFile = request.response;
+      resolve(uploadedFile);
     });
 
     request.addEventListener("error", () => {
@@ -39,6 +47,7 @@ const uploadFile: UploadMediaFileFn = ({ file, onProgress, signal }) => {
       request.abort();
     });
 
+    request.responseType = "json";
     request.open("POST", devUploadsPath);
     request.setRequestHeader("Content-Type", file.type || "application/octet-stream");
     request.send(file);

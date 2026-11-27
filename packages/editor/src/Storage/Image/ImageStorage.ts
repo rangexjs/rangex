@@ -1,8 +1,9 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 
 import { imageId } from "../_Constants";
-import { validateStorage } from "../_Utilities";
+import { isFileId, validateStorage } from "../_Utilities";
 import type {
+  CreateImageStorageParams,
   CreateImageStorageResult,
   EnsureImageStorageParams,
   EnsureImageStorageResult,
@@ -16,6 +17,7 @@ import type {
  */
 export const imageStoragePattern = {
   id: imageId,
+  fileId: isFileId,
 } satisfies JSONPattern<ImageStorage>;
 
 /*
@@ -35,8 +37,11 @@ export const validateImageStorage = (storage: unknown): storage is ImageStorage 
   return validateStorage(storage, isImageStorage);
 };
 
-export const createImageStorage = (): CreateImageStorageResult => ({
+export const createImageStorage = ({
+  fileId,
+}: CreateImageStorageParams): CreateImageStorageResult => ({
   id: imageId,
+  fileId,
 });
 
 export const ensureImageStorage = ({
@@ -46,7 +51,7 @@ export const ensureImageStorage = ({
     return storage;
   }
 
-  return createImageStorage();
+  return createImageStorage({ fileId: null });
 };
 
 export const ensureNodeImageStorage = ({

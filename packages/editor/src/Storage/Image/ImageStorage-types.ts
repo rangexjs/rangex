@@ -1,10 +1,16 @@
 import type { BlockComponent } from "@rangex/core";
 
 import type { ImageId } from "../_Constants";
+import type { FileId } from "../_Utilities";
 
 export type ImageStorage = {
   id: ImageId;
+  fileId: FileId;
 };
+
+export interface CreateImageStorageParams {
+  fileId: FileId;
+}
 
 export type CreateImageStorageResult = ImageStorage;
 

@@ -1,9 +1,10 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 
 import { audioId } from "../_Constants";
-import { validateStorage } from "../_Utilities";
+import { isFileId, validateStorage } from "../_Utilities";
 import type {
   AudioStorage,
+  CreateAudioStorageParams,
   CreateAudioStorageResult,
   EnsureAudioStorageParams,
   EnsureAudioStorageResult,
@@ -16,6 +17,7 @@ import type {
  */
 export const audioStoragePattern = {
   id: audioId,
+  fileId: isFileId,
 } satisfies JSONPattern<AudioStorage>;
 
 /*
@@ -35,8 +37,11 @@ export const validateAudioStorage = (storage: unknown): storage is AudioStorage 
   return validateStorage(storage, isAudioStorage);
 };
 
-export const createAudioStorage = (): CreateAudioStorageResult => ({
+export const createAudioStorage = ({
+  fileId,
+}: CreateAudioStorageParams): CreateAudioStorageResult => ({
   id: audioId,
+  fileId,
 });
 
 export const ensureAudioStorage = ({
@@ -46,7 +51,7 @@ export const ensureAudioStorage = ({
     return storage;
   }
 
-  return createAudioStorage();
+  return createAudioStorage({ fileId: null });
 };
 
 export const ensureNodeAudioStorage = ({
