@@ -2,6 +2,7 @@ import { AdapterBus } from "#adapters";
 
 import { buildEditorStyleText, getContainerStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
+import { handlePlaceholder } from "./HandlePlaceholder";
 import type {
   ConfigureAdapterResult,
   CreateEditorParams,
@@ -19,6 +20,7 @@ export const createEditor = ({
   snapshotSchema,
   adapters,
   styles,
+  placeholder,
 }: CreateEditorParams): CreateEditorResult => {
   const { editorAPI } = createCore({
     licenseKey,
@@ -78,6 +80,12 @@ export const createEditor = ({
     const cleanup = registeredAdapter.configure({ editorAPI });
 
     cleanupList.add(cleanup);
+  }
+
+  if (placeholder) {
+    const placeholderCleanup = handlePlaceholder({ editorAPI, resolvePlaceholder: placeholder });
+
+    cleanupList.add(placeholderCleanup);
   }
 
   const containerStyles = getContainerStyleText();

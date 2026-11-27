@@ -1,3 +1,13 @@
+export type {
+  PlaceholderComponentName,
+  PlaceholderContext,
+  PlaceholderLine,
+  PlaceholderOwner,
+  ResolvePlaceholderFn,
+  ScopedEditablePlaceholder,
+  ScopedEditablePlaceholderCondition,
+  ScopedEditablePlaceholderOptions,
+} from "@rangex/editor";
 export type { SnapshotSchema, StoredSnapshot } from "@rangex/editor/snapshot";
 export type {
   Extension,

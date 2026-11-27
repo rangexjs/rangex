@@ -24,6 +24,7 @@ export const createRichTextEditor = ({
   extensions,
   toolbarButtonsLayout = defaultToolbarButtonsLayout,
   theme: initialTheme = "system",
+  placeholder,
 }: CreateRichTextEditorParams): CreateRichTextEditorResult => {
   const [theme, setTheme] = createSignal<ThemeValue>(initialTheme);
 
@@ -37,6 +38,7 @@ export const createRichTextEditor = ({
     snapshotSchema,
     adapters,
     styles,
+    placeholder,
   });
 
   const editorStyle = new CSSStyleSheet();

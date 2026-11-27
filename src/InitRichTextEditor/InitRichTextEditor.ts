@@ -31,6 +31,7 @@ import { UndoRedo } from "@rangex/rich-text-editor/undo-redo";
 import { Video } from "@rangex/rich-text-editor/video";
 
 import storedSnapshot from "../DemoData/Demo.json" with { type: "json" };
+import { resolvePlaceholder } from "../EditorSettings";
 import {
   codeBlockSettings,
   embedAttrValidators,
@@ -117,6 +118,7 @@ export const initRichTextEditor = () => {
     storedSnapshot: snapshot as StoredSnapshot,
     snapshotSchema,
     extensions,
+    placeholder: resolvePlaceholder,
   });
 
   // @ts-expect-error

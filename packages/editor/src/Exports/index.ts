@@ -1,4 +1,11 @@
-export type { EditorAPI, StoredSnapshot } from "@rangex/core";
+export type {
+  BlockContentLineLocalName,
+  EditorAPI,
+  ScopedEditablePlaceholder,
+  ScopedEditablePlaceholderCondition,
+  ScopedEditablePlaceholderOptions,
+  StoredSnapshot,
+} from "@rangex/core";
 export type {
   BlockAlignValue,
   CaptionPosition,
@@ -39,7 +46,12 @@ export type {
   AdapterFactoryValue,
   CreateEditorParams,
   CreateEditorResult,
+  PlaceholderComponentName,
+  PlaceholderContext,
+  PlaceholderLine,
+  PlaceholderOwner,
   RangeXEditor,
+  ResolvePlaceholderFn,
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
 export type { SnapshotSchema } from "#snapshot";
