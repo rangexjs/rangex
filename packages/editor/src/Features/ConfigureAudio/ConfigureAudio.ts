@@ -6,6 +6,7 @@ import {
   getMediaParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
+  handleCaptionPlaceholder,
   handleCaptionState,
   handleDOMAttrs,
   handleQuickActionsAppearance,
@@ -65,6 +66,12 @@ export const configureAudio = ({ adapterBus, configPort, editorAPI }: ConfigureA
     editorAPI,
   });
 
+  const captionPlaceholderCleanup = handleCaptionPlaceholder({
+    editorAPI,
+    componentName: componentsName.audio,
+    text: configPort.captionPlaceholder,
+  });
+
   const captionStateCleanup = handleCaptionState({
     port: configPort,
     editorAPI,
@@ -101,6 +108,7 @@ export const configureAudio = ({ adapterBus, configPort, editorAPI }: ConfigureA
     quickActionsCleanup();
     resizeAppearanceCleanup();
     alignStateCleanup();
+    captionPlaceholderCleanup();
     captionStateCleanup();
     domAttrsCleanup();
     swapCleanup();

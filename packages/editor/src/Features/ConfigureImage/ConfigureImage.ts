@@ -6,6 +6,7 @@ import {
   getMediaParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
+  handleCaptionPlaceholder,
   handleCaptionState,
   handleDOMAttrs,
   handleQuickActionsAppearance,
@@ -61,6 +62,12 @@ export const configureImage = ({ adapterBus, configPort, editorAPI }: ConfigureI
     editorAPI,
   });
 
+  const captionPlaceholderCleanup = handleCaptionPlaceholder({
+    editorAPI,
+    componentName: componentsName.image,
+    text: configPort.captionPlaceholder,
+  });
+
   const captionStateCleanup = handleCaptionState({
     port: configPort,
     editorAPI,
@@ -97,6 +104,7 @@ export const configureImage = ({ adapterBus, configPort, editorAPI }: ConfigureI
     quickActionsCleanup();
     resizeAppearanceCleanup();
     alignStateCleanup();
+    captionPlaceholderCleanup();
     captionStateCleanup();
     domAttrsCleanup();
     swapCleanup();

@@ -1,4 +1,4 @@
-import type { SnapshotSchema, StoredSnapshot } from "@rangex/editor";
+import type { ResolvePlaceholderFn, SnapshotSchema, StoredSnapshot } from "@rangex/editor";
 
 import type { ToolbarButtonsLayout } from "#constants";
 import type { Extension } from "#extensions";
@@ -20,6 +20,7 @@ export interface CreateRichTextEditorParams {
   extensions: Extension[];
   toolbarButtonsLayout?: ToolbarButtonsLayout;
   theme?: ThemeValue;
+  placeholder?: ResolvePlaceholderFn;
 }
 
 export interface CreateRichTextEditorResult extends RichTextEditor {}

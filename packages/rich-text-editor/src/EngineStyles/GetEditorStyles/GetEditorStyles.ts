@@ -26,6 +26,7 @@ import {
 } from "../Components";
 import {
   ContentLine,
+  ContentLineEditor,
   GlyphFormatterEditor,
   RootEditable,
   RootEditableEditor,
@@ -56,7 +57,7 @@ export const getEditorStyles = () => {
   const componentsEditor = AccordionItemEditor + ComponentEditor + LinkEditor + TableEditor;
 
   const editorElementsCommon = ContentLine + RootEditable;
-  const editorElementsEditor = GlyphFormatterEditor + RootEditableEditor;
+  const editorElementsEditor = ContentLineEditor + GlyphFormatterEditor + RootEditableEditor;
 
   const common = baseCommon + componentsCommon + editorElementsCommon;
   const editor = baseEditor + componentsEditor + editorElementsEditor;

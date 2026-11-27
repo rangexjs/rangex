@@ -22,6 +22,7 @@ import type {
 
 export interface AudioConfigPortProps {
   readonly blockResize: BlockResize;
+  readonly captionPlaceholder: string;
   readonly attrValidators: AudioAttrValidators;
   readonly quickActions: QuickActionsConfigPort;
 
@@ -55,7 +56,9 @@ export interface AudioAdapter {
   publicPort: AudioPublicPort;
 }
 
-export interface AudioSettings {}
+export interface AudioSettings {
+  captionPlaceholder?: string;
+}
 
 export interface CreateAudioAdapterParams extends CreateAdapterParams<AudioSettings> {}
 
