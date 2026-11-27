@@ -22,6 +22,7 @@ import type {
 
 export interface EmbedConfigPortProps {
   readonly blockResize: BlockResize;
+  readonly captionPlaceholder: string;
   readonly attrValidators: EmbedAttrValidators;
   readonly quickActions: QuickActionsConfigPort;
 
@@ -55,7 +56,9 @@ export interface EmbedAdapter {
   publicPort: EmbedPublicPort;
 }
 
-export interface EmbedSettings {}
+export interface EmbedSettings {
+  captionPlaceholder?: string;
+}
 
 export interface CreateEmbedAdapterParams extends CreateAdapterParams<EmbedSettings> {}
 

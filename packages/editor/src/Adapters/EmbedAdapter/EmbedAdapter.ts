@@ -11,6 +11,7 @@ import {
   createDOMAttrsPort,
   createQuickActionsPort,
   createSwapToSourcePlaceholderPort,
+  defaultCaptionPlaceholder,
 } from "../_Utilities";
 import type {
   CreateEmbedAdapterParams,
@@ -24,7 +25,8 @@ import type {
 export const createEmbedAdapter = (
   ...params: CreateEmbedAdapterParams
 ): CreateEmbedAdapterResult => {
-  const [_settings, { adapterBus, floatingContainer }] = params;
+  const [{ captionPlaceholder = defaultCaptionPlaceholder }, { adapterBus, floatingContainer }] =
+    params;
 
   adapterBus.registerAdapter("embed");
 
@@ -50,6 +52,10 @@ export const createEmbedAdapter = (
     {
       get blockResize() {
         return blockResize;
+      },
+
+      get captionPlaceholder() {
+        return captionPlaceholder;
       },
 
       get attrValidators() {

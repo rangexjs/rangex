@@ -4,6 +4,7 @@ export * from "./GetComponentParts";
 export * from "./HandleBlockAlignState";
 export * from "./HandleBlockLineDuplication";
 export * from "./HandleBlockResizeAppearance";
+export * from "./HandleCaptionPlaceholder";
 export * from "./HandleCaptionState";
 export * from "./HandleCaretMenuAppearance";
 export * from "./HandleComponentUnwrap";

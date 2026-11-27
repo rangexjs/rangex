@@ -11,6 +11,7 @@ import {
   createDOMAttrsPort,
   createQuickActionsPort,
   createSwapToSourcePlaceholderPort,
+  defaultCaptionPlaceholder,
 } from "../_Utilities";
 import type {
   CreateVideoAdapterParams,
@@ -24,7 +25,8 @@ import type {
 export const createVideoAdapter = (
   ...params: CreateVideoAdapterParams
 ): CreateVideoAdapterResult => {
-  const [_settings, { adapterBus, floatingContainer }] = params;
+  const [{ captionPlaceholder = defaultCaptionPlaceholder }, { adapterBus, floatingContainer }] =
+    params;
 
   adapterBus.registerAdapter("video");
 
@@ -50,6 +52,10 @@ export const createVideoAdapter = (
     {
       get blockResize() {
         return blockResize;
+      },
+
+      get captionPlaceholder() {
+        return captionPlaceholder;
       },
 
       get attrValidators() {

@@ -1,4 +1,5 @@
 export { createCaptionPort } from "./CaptionPort";
+export { defaultCaptionPlaceholder } from "./CaptionPort-default";
 export type {
   CaptionConfigPort,
   CaptionPort,

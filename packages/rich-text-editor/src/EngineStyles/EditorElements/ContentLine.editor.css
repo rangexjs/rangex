@@ -1,0 +1,3 @@
+[data-rx-editor-role="content-line"][data-rx-interactive-placeholder]::before {
+  color: light-dark(var(--color-neutral-500), var(--color-neutral-400));
+}

@@ -11,6 +11,7 @@ import {
   createDOMAttrsPort,
   createQuickActionsPort,
   createSwapToSourcePlaceholderPort,
+  defaultCaptionPlaceholder,
 } from "../_Utilities";
 import type {
   AudioConfigPort,
@@ -24,7 +25,8 @@ import type {
 export const createAudioAdapter = (
   ...params: CreateAudioAdapterParams
 ): CreateAudioAdapterResult => {
-  const [_settings, { adapterBus, floatingContainer }] = params;
+  const [{ captionPlaceholder = defaultCaptionPlaceholder }, { adapterBus, floatingContainer }] =
+    params;
 
   adapterBus.registerAdapter("audio");
 
@@ -50,6 +52,10 @@ export const createAudioAdapter = (
     {
       get blockResize() {
         return blockResize;
+      },
+
+      get captionPlaceholder() {
+        return captionPlaceholder;
       },
 
       get attrValidators() {

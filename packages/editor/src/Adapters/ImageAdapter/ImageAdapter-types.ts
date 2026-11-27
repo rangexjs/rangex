@@ -22,6 +22,7 @@ import type {
 
 export interface ImageConfigPortProps {
   readonly blockResize: BlockResize;
+  readonly captionPlaceholder: string;
   readonly attrValidators: ImageAttrValidators;
   readonly quickActions: QuickActionsConfigPort;
 
@@ -55,7 +56,9 @@ export interface ImageAdapter {
   publicPort: ImagePublicPort;
 }
 
-export interface ImageSettings {}
+export interface ImageSettings {
+  captionPlaceholder?: string;
+}
 
 export interface CreateImageAdapterParams extends CreateAdapterParams<ImageSettings> {}
 

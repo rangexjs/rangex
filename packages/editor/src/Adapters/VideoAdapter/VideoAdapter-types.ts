@@ -22,6 +22,7 @@ import type {
 
 export interface VideoConfigPortProps {
   readonly blockResize: BlockResize;
+  readonly captionPlaceholder: string;
   readonly attrValidators: VideoAttrValidators;
   readonly quickActions: QuickActionsConfigPort;
 
@@ -55,7 +56,9 @@ export interface VideoAdapter {
   publicPort: VideoPublicPort;
 }
 
-export interface VideoSettings {}
+export interface VideoSettings {
+  captionPlaceholder?: string;
+}
 
 export interface CreateVideoAdapterParams extends CreateAdapterParams<VideoSettings> {}
 
