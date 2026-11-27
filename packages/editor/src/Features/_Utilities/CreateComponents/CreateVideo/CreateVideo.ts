@@ -13,16 +13,16 @@ import type { CreateVideoParams, CreateVideoResult } from "./CreateVideo-types";
 
 /*
  * Builds a video block component wrapping a `figure`/`video` element, with the given attributes of its line, block and
- * `video`. They aren't validated here.
+ * `video`, and the file id its storage holds. They aren't validated here.
  */
-export const createVideo = ({ attrs }: CreateVideoParams): CreateVideoResult => {
+export const createVideo = ({ attrs, fileId }: CreateVideoParams): CreateVideoResult => {
   return createBlockComponentLine({
     domAttrs: toDOMAttrs(attrs.line),
     leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
     blockComponent: createBlockComponent({
       name: componentsName.video,
       content: { type: "custom" },
-      customStorage: createVideoStorage(),
+      customStorage: createVideoStorage({ fileId }),
       editState: "false",
       shouldSelectOnNavigation: true,
       shouldSelectBeforeRemove: true,

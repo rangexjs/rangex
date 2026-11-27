@@ -1,8 +1,9 @@
 import { type JSONPattern, matchJSON } from "#utilities";
 
 import { videoId } from "../_Constants";
-import { validateStorage } from "../_Utilities";
+import { isFileId, validateStorage } from "../_Utilities";
 import type {
+  CreateVideoStorageParams,
   CreateVideoStorageResult,
   EnsureNodeVideoStorageParams,
   EnsureNodeVideoStorageResult,
@@ -16,6 +17,7 @@ import type {
  */
 export const videoStoragePattern = {
   id: videoId,
+  fileId: isFileId,
 } satisfies JSONPattern<VideoStorage>;
 
 /*
@@ -35,8 +37,11 @@ export const validateVideoStorage = (storage: unknown): storage is VideoStorage 
   return validateStorage(storage, isVideoStorage);
 };
 
-export const createVideoStorage = (): CreateVideoStorageResult => ({
+export const createVideoStorage = ({
+  fileId,
+}: CreateVideoStorageParams): CreateVideoStorageResult => ({
   id: videoId,
+  fileId,
 });
 
 export const ensureVideoStorage = ({
@@ -46,7 +51,7 @@ export const ensureVideoStorage = ({
     return storage;
   }
 
-  return createVideoStorage();
+  return createVideoStorage({ fileId: null });
 };
 
 export const ensureNodeVideoStorage = ({

@@ -70,7 +70,7 @@ const getEmbedSrc = ({ editor, url, settings }: GetEmbedSrcParams) => {
   const { transformEmbedURL = (value) => value } = settings;
 
   const src = transformEmbedURL(url);
-  const detail = createMediaResolveDetail({ type: "embed", src, settings });
+  const detail = createMediaResolveDetail({ type: "embed", src, fileId: null, settings });
 
   return validateMediaAttrs({ editor, detail }) ? src : null;
 };

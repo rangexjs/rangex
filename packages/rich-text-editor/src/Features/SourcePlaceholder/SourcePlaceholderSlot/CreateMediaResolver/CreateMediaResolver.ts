@@ -1,4 +1,4 @@
-import type { MediaType } from "@rangex/editor";
+import type { FileId, MediaType } from "@rangex/editor";
 import { createSignal, onCleanup } from "solid-js";
 
 import {
@@ -57,13 +57,13 @@ export const createMediaResolver = ({
   });
 
   /*
-   * Uploads the file, reporting its progress. Returns the uploaded file's URL, or null if it couldn't be uploaded or
-   * the slot was disposed meanwhile.
+   * Uploads the file, reporting its progress. Returns the uploaded file's URL and id, or null if it couldn't be
+   * uploaded or the slot was disposed meanwhile.
    */
   const uploadMediaFile = async (file: File) => {
     setStatus({ status: "uploading", progress: 0 });
 
-    const src = await settings
+    const uploadedFile = await settings
       .uploadFile({
         file,
         signal,
@@ -77,7 +77,7 @@ export const createMediaResolver = ({
       return null;
     }
 
-    if (!src) {
+    if (!uploadedFile) {
       setStatus({
         status: "error",
         message: "Couldn't upload that file. Try a different one.",
@@ -85,14 +85,14 @@ export const createMediaResolver = ({
       return null;
     }
 
-    return src;
+    return uploadedFile;
   };
 
   /*
    * Replaces the placeholder with the media, if its attributes are valid.
    */
-  const insertMedia = (type: MediaType, src: string) => {
-    const detail = createMediaResolveDetail({ type, src, settings });
+  const insertMedia = (type: MediaType, src: string, fileId: FileId) => {
+    const detail = createMediaResolveDetail({ type, src, fileId, settings });
 
     if (!validateMediaAttrs({ editor, detail })) {
       const message =
@@ -111,13 +111,13 @@ export const createMediaResolver = ({
    * An uploaded file's URL isn't checked: it comes from uploadFile, and it can be a relative one.
    */
   const resolveFile = async (type: MediaFileType, file: File) => {
-    const src = await uploadMediaFile(file);
+    const uploadedFile = await uploadMediaFile(file);
 
-    if (src === null) {
+    if (uploadedFile === null) {
       return;
     }
 
-    insertMedia(type, src);
+    insertMedia(type, uploadedFile.src, uploadedFile.fileId);
   };
 
   const resolveUrl = async (url: string) => {
@@ -148,7 +148,7 @@ export const createMediaResolver = ({
       return;
     }
 
-    insertMedia(detection.type, detection.src);
+    insertMedia(detection.type, detection.src, null);
   };
 
   return { status, resolveFile, resolveUrl };

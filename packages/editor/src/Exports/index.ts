@@ -55,3 +55,4 @@ export type {
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
 export type { SnapshotSchema } from "#snapshot";
+export type { FileId } from "#storage";

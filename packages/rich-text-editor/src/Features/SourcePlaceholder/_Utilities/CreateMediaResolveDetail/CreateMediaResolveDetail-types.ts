@@ -1,4 +1,4 @@
-import type { MediaType } from "@rangex/editor";
+import type { FileId, MediaType } from "@rangex/editor";
 import type { EmbedAttrs } from "@rangex/editor/embed";
 
 export interface MediaResolveDetailSettings {
@@ -9,5 +9,6 @@ export interface MediaResolveDetailSettings {
 export interface CreateMediaResolveDetailParams {
   type: MediaType;
   src: string;
+  fileId: FileId;
   settings: MediaResolveDetailSettings;
 }

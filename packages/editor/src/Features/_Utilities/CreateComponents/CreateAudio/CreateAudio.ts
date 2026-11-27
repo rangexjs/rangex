@@ -13,16 +13,16 @@ import type { CreateAudioParams, CreateAudioResult } from "./CreateAudio-types";
 
 /*
  * Builds an audio block component wrapping a `figure`/`audio` element, with the given attributes of its line, block
- * and `audio`. They aren't validated here.
+ * and `audio`, and the file id its storage holds. They aren't validated here.
  */
-export const createAudio = ({ attrs }: CreateAudioParams): CreateAudioResult => {
+export const createAudio = ({ attrs, fileId }: CreateAudioParams): CreateAudioResult => {
   return createBlockComponentLine({
     domAttrs: toDOMAttrs(attrs.line),
     leftBlockComponentTextHolder: createBlockComponentTextHolder({}),
     blockComponent: createBlockComponent({
       name: componentsName.audio,
       content: { type: "custom" },
-      customStorage: createAudioStorage(),
+      customStorage: createAudioStorage({ fileId }),
       editState: "false",
       shouldSelectOnNavigation: true,
       shouldSelectBeforeRemove: true,

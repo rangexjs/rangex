@@ -18,7 +18,7 @@ export const handleAudioInsertion = ({
       return;
     }
 
-    const audio = createAudio({ attrs: params.attrs });
+    const audio = createAudio({ attrs: params.attrs, fileId: params.fileId });
 
     blockComponentPlacement.insertBySelection({
       lines: [audio],

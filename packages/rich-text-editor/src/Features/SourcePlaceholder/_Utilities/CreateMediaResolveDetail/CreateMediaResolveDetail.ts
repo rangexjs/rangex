@@ -7,11 +7,13 @@ import type { CreateMediaResolveDetailParams } from "./CreateMediaResolveDetail-
 
 /*
  * Builds every attribute of the media to insert: centered, with the media element's src and its defaults (e.g. an
- * image's object fit and its alt without alt text, a video's controls). An embed's iframe gets the configured attributes.
+ * image's object fit and its alt without alt text, a video's controls). An image, video or audio carries the file id, and
+ * an embed's iframe gets the configured attributes.
  */
 export const createMediaResolveDetail = ({
   type,
   src,
+  fileId,
   settings,
 }: CreateMediaResolveDetailParams): MediaResolveDetail => {
   const line = { "data-block-align": "center" };
@@ -28,6 +30,7 @@ export const createMediaResolveDetail = ({
           "data-object-fit": "cover",
         },
       },
+      fileId,
     };
   }
 
@@ -39,6 +42,7 @@ export const createMediaResolveDetail = ({
         block: {},
         video: { src, controls: "", "data-object-fit": "cover" },
       },
+      fileId,
     };
   }
 
@@ -46,6 +50,7 @@ export const createMediaResolveDetail = ({
     return {
       type,
       attrs: { line, block: {}, audio: { src, controls: "" } },
+      fileId,
     };
   }
 

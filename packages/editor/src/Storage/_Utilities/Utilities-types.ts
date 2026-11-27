@@ -15,6 +15,8 @@ import type { TemplateVariableStorage } from "../TemplateVariable";
 import type { TodoListStorage } from "../TodoList";
 import type { VideoStorage } from "../Video";
 
+export type FileId = string | null;
+
 export type ValidateStorageCallbackFn = (storage: unknown) => boolean;
 
 export type NodeStorage =

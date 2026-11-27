@@ -1,4 +1,5 @@
 export type {
+  FileId,
   PlaceholderComponentName,
   PlaceholderContext,
   PlaceholderLine,
