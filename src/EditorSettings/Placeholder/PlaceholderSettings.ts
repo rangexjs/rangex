@@ -1,26 +1,34 @@
-import type { ResolvePlaceholderFn } from "@rangex/rich-text-editor";
+import type { PlaceholderLine, ResolvePlaceholderFn } from "@rangex/rich-text-editor";
+
+type HeadingLocalName = Exclude<PlaceholderLine["localName"], "p">;
 
 const commandsHint = "Press / for commands…";
+
+const getHeadingText = (localName: HeadingLocalName) => {
+  const level = localName.slice(1);
+
+  const headingText = `Heading ${level}`;
+
+  return headingText;
+};
 
 export const resolvePlaceholder: ResolvePlaceholderFn = (context) => {
   const { isFocused, owner, line } = context;
 
-  if (owner === "root" && !isFocused) {
-    return { text: commandsHint, showWhen: "empty editable" };
-  }
-
-  if (line.localName !== "p") {
-    const level = line.localName.slice(1);
-
-    return { text: `Heading ${level}`, showWhen: "caret in empty line" };
-  }
+  const { localName } = line;
 
   if (owner === "root") {
-    return { text: commandsHint, showWhen: "caret in empty line" };
+    const showWhen = isFocused ? "caret in empty line" : "empty editable";
+
+    const text = localName === "p" ? commandsHint : getHeadingText(localName);
+
+    return { text, showWhen };
   }
 
-  if (owner === "block-quote") {
-    return { text: "Quote", showWhen: "caret in empty line" };
+  if (localName !== "p") {
+    const text = getHeadingText(localName);
+
+    return { text, showWhen: "caret in empty line" };
   }
 
   return null;
