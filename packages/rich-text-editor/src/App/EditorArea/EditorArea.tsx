@@ -5,10 +5,12 @@ import type { EditorAreaProps } from "./EditorArea-types";
 export const EditorArea = (props: EditorAreaProps) => {
   const editor = useEditorContext();
 
-  const handleClick = (event: MouseEvent) => {
+  const handlePointerDown = (event: PointerEvent) => {
     if (event.target !== event.currentTarget) {
       return;
     }
+
+    event.preventDefault();
 
     editor.focus();
   };
@@ -20,7 +22,7 @@ export const EditorArea = (props: EditorAreaProps) => {
         props.class,
       ]}
       role="presentation"
-      onClick={handleClick}
+      onPointerDown={handlePointerDown}
     >
       {props.children}
     </div>
