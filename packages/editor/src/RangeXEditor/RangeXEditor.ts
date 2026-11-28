@@ -13,7 +13,7 @@ export const createEditor = ({
   styles,
   placeholder,
 }: CreateEditorParams): CreateEditorResult => {
-  const { editorAPI } = createCore({
+  const { editorAPI, storedSnapshotFailed } = createCore({
     licenseKey,
     storedSnapshot,
     snapshotSchema,
@@ -26,7 +26,7 @@ export const createEditor = ({
 
   const cleanupList = new Set<() => void>();
 
-  const editor = createRangeXEditor({ editorAPI, cleanupList });
+  const editor = createRangeXEditor({ editorAPI, snapshotSchema, cleanupList });
 
   const adaptersCleanup = registerAdapters({
     adapters,
@@ -44,5 +44,5 @@ export const createEditor = ({
     cleanupList.add(placeholderCleanup);
   }
 
-  return { editor, editorContainer, containerStyles };
+  return { editor, editorContainer, containerStyles, storedSnapshotFailed };
 };

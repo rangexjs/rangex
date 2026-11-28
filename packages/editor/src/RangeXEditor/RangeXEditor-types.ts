@@ -1,4 +1,4 @@
-import type { StoredSnapshot } from "@rangex/core";
+import type { FailedStoredSnapshotValidation, StoredSnapshot } from "@rangex/core";
 
 import type { AdapterPublicPorts } from "#adapters";
 import type { SnapshotSchema } from "#snapshot";
@@ -30,4 +30,5 @@ export interface CreateEditorResult {
   editor: RangeXEditor;
   editorContainer: HTMLDivElement;
   containerStyles: string;
+  storedSnapshotFailed: FailedStoredSnapshotValidation | null;
 }

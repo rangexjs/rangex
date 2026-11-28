@@ -59,12 +59,15 @@ const unsubscribe = editor.undoRedo?.onCanStepBackUpdate((canStepBack) => {
 ## Save and restore
 
 ```ts
-const storedSnapshot = editor.snapshot.createStored(); // plain JSON, ready to store
+const storedSnapshot = editor.snapshot.create(); // plain JSON, ready to store
 
-createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters, styles });
+// Later, e.g. on the next page load
+const { storedSnapshotFailed } = createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters, styles });
 ```
 
-A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty and logs a warning. Saving then replaces the stored snapshot with the empty content.
+A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty, logs a warning, and `storedSnapshotFailed` holds the `reason`. Check it before saving, or saving replaces the stored snapshot with the empty content.
+
+To open another snapshot in a running editor, use `editor.snapshot.load(storedSnapshot)`. It replaces the content and clears the undo history. An invalid snapshot leaves the editor unchanged and returns the failure, `null` otherwise.
 
 Call `editor.destroy()` when you remove the editor.
 

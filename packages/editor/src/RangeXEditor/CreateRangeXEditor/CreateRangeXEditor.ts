@@ -8,9 +8,10 @@ import type { CreateRangeXEditorParams } from "./CreateRangeXEditor-types";
  */
 export const createRangeXEditor = ({
   editorAPI,
+  snapshotSchema,
   cleanupList,
 }: CreateRangeXEditorParams): RangeXEditor => {
-  const snapshot = createSnapshotNamespace({ editorAPI });
+  const snapshot = createSnapshotNamespace({ editorAPI, snapshotSchema });
 
   const editor: RangeXEditor = {
     get snapshot() {
