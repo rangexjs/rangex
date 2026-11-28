@@ -46,9 +46,11 @@ export type {
 } from "#dom-attrs";
 export type {
   AdapterFactoryValue,
+  ContentNamespace,
   CreateEditorParams,
   CreateEditorResult,
   LoadSnapshotResult,
+  OnContentChangeCallbackFn,
   PlaceholderComponentName,
   PlaceholderContext,
   PlaceholderLine,
