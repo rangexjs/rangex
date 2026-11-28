@@ -23,7 +23,7 @@ export const LineHandlerOverlay = () => {
     lineHandler.insertRootLine(position);
   };
 
-  const visible = createMemo(() => !$readOnly?.checked());
+  const visible = createMemo(() => !$readOnly?.isEnabled());
 
   return (
     <FloatingPortal

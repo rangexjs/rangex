@@ -17,7 +17,7 @@ export const SourcePlaceholderToolbarButton = () => {
   const $sourcePlaceholder = SourcePlaceholder(sourcePlaceholder);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => !$sourcePlaceholder.canInsert() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$sourcePlaceholder.canInsert() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     sourcePlaceholder.insert();

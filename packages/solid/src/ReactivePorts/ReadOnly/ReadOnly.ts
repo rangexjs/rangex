@@ -11,12 +11,12 @@ export const ReadOnly = <T extends ReadOnlyPublicPort | undefined>(
     return undefined as PreserveUndefined<T, ReactiveReadOnlyPort>;
   }
 
-  const [checked, setChecked] = createSignal(publicPort.checked);
+  const [isEnabled, setIsEnabled] = createSignal(publicPort.isEnabled);
 
-  onCleanup(publicPort.onCheckedUpdate(setChecked));
+  onCleanup(publicPort.onIsEnabledUpdate(setIsEnabled));
 
   const port: ReactiveReadOnlyPort = {
-    checked,
+    isEnabled,
   };
 
   return port as PreserveUndefined<T, ReactiveReadOnlyPort>;

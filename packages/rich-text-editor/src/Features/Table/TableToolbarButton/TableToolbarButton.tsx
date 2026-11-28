@@ -158,7 +158,7 @@ export const TableToolbarButton = () => {
     nextCell?.focus();
   };
 
-  const disabled = createMemo(() => !$table.canInsert() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$table.canInsert() || !!$readOnly?.isEnabled());
 
   return (
     <span>

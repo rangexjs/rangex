@@ -18,7 +18,7 @@ export const BlockQuoteToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const disabled = createMemo(
-    () => !($blockQuote.isSelectionActive() || $blockQuote.canWrap()) || !!$readOnly?.checked(),
+    () => !($blockQuote.isSelectionActive() || $blockQuote.canWrap()) || !!$readOnly?.isEnabled(),
   );
 
   const onClick = () => {

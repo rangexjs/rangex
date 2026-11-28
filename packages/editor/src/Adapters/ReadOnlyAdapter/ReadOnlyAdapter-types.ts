@@ -1,13 +1,13 @@
 import type { CreateAdapterParams } from "../_Utilities";
 
 export interface ReadOnlyState {
-  checked?: boolean;
+  isEnabled?: boolean;
 }
 
-export type OnCheckedUpdateCallbackFn = (checked: boolean) => void;
+export type OnIsEnabledUpdateCallbackFn = (isEnabled: boolean) => void;
 
 export interface OnToggleCallbackParams {
-  checked: boolean;
+  isEnabled: boolean;
   force: boolean | undefined;
 }
 
@@ -20,6 +20,8 @@ export interface ToggleParams {
 }
 
 export interface ReadOnlyConfigPortProps {
+  readonly initialEnabled: boolean;
+
   updateState(params: UpdateStateParams): void;
 
   onToggle(callback: OnToggleCallbackFn): () => void;
@@ -28,9 +30,9 @@ export interface ReadOnlyConfigPortProps {
 export interface ReadOnlyConfigPort extends ReadOnlyConfigPortProps {}
 
 export interface ReadOnlyPublicPortProps {
-  readonly checked: boolean;
+  readonly isEnabled: boolean;
 
-  onCheckedUpdate(callback: OnCheckedUpdateCallbackFn): () => void;
+  onIsEnabledUpdate(callback: OnIsEnabledUpdateCallbackFn): () => void;
 
   toggle(params: ToggleParams): void;
 }
@@ -42,7 +44,9 @@ export interface ReadOnlyAdapter {
   publicPort: ReadOnlyPublicPort;
 }
 
-export interface ReadOnlySettings {}
+export interface ReadOnlySettings {
+  initialEnabled?: boolean;
+}
 
 export interface CreateReadOnlyAdapterParams extends CreateAdapterParams<ReadOnlySettings> {}
 

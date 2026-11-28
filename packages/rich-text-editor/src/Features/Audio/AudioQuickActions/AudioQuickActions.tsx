@@ -156,7 +156,7 @@ export const AudioQuickActions = () => {
       <div class="z-20 flex items-center gap-1 rounded-md border border-neutral-200 bg-white p-0.5 shadow-xs dark:border-neutral-700 dark:bg-neutral-900">
         <BlockAlign
           value={$audio.align()}
-          disabled={$readOnly?.checked()}
+          disabled={$readOnly?.isEnabled()}
           onChange={(value) => audio.changeAlign(value)}
           popoverRef={(el) => {
             blockAlignPopover = el;
@@ -167,7 +167,7 @@ export const AudioQuickActions = () => {
           type="button"
           class="btn-menu-trigger flex items-center justify-center rounded p-1"
           aria-label="Swap audio"
-          disabled={!audio.canSwap || $readOnly?.checked()}
+          disabled={!audio.canSwap || $readOnly?.isEnabled()}
           onClick={onSwapClick}
         >
           <Icon name="Swap" class="size-4" />
@@ -188,7 +188,7 @@ export const AudioQuickActions = () => {
             command="toggle-popover"
             class="btn-menu-trigger flex items-center justify-center rounded p-1"
             aria-label="Audio options"
-            disabled={$readOnly?.checked()}
+            disabled={$readOnly?.isEnabled()}
           >
             <Icon name="DotsThreeHorizontal" class="size-4" />
           </button>

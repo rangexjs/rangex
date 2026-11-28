@@ -30,7 +30,7 @@ export const TemplateVariableToolbarButton = () => {
 
   const [checked, setChecked] = createSignal(false);
 
-  const disabled = createMemo(() => !$templateVariable.canInsert() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$templateVariable.canInsert() || !!$readOnly?.isEnabled());
 
   const popoverId = createUniqueId();
 

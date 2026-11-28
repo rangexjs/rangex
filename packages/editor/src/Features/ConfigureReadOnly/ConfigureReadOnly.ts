@@ -1,17 +1,21 @@
 import type { ConfigureReadOnlyParams } from "./ConfigureReadOnly-types";
 
 /*
- * Syncs the read-only toggle's initial state with the editor's editability and wires up toggling
- * it, returning a cleanup function.
+ * Makes the editor read-only if it starts so, syncs the read-only state with the editor's editability and wires up
+ * toggling it, returning a cleanup function.
  */
 export const configureReadOnly = ({ configPort, editorAPI }: ConfigureReadOnlyParams) => {
-  configPort.updateState({ checked: !editorAPI.getIsTextAreaEditable() });
+  if (configPort.initialEnabled) {
+    editorAPI.setIsTextAreaEditable(false);
+  }
 
-  const unsubscribe = configPort.onToggle(({ checked, force }) => {
-    const nextChecked = force ?? !checked;
+  configPort.updateState({ isEnabled: !editorAPI.getIsTextAreaEditable() });
 
-    editorAPI.setIsTextAreaEditable(!nextChecked);
-    configPort.updateState({ checked: nextChecked });
+  const unsubscribe = configPort.onToggle(({ isEnabled, force }) => {
+    const nextIsEnabled = force ?? !isEnabled;
+
+    editorAPI.setIsTextAreaEditable(!nextIsEnabled);
+    configPort.updateState({ isEnabled: nextIsEnabled });
   });
 
   return () => {

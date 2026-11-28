@@ -17,7 +17,7 @@ export const HistoryBackToolbarButton = () => {
   const $undoRedo = UndoRedo(undoRedo);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => !$undoRedo.canStepBack() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$undoRedo.canStepBack() || !!$readOnly?.isEnabled());
 
   return (
     <span>

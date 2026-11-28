@@ -23,7 +23,7 @@ export const CustomComponentToolbarButton = () => {
         $accordionItem?.isSelectionActive() ||
         $accordionItem?.canInsert() ||
         $separator?.canInsert()
-      ) || !!$readOnly?.checked(),
+      ) || !!$readOnly?.isEnabled(),
   );
 
   const popoverId = createUniqueId();

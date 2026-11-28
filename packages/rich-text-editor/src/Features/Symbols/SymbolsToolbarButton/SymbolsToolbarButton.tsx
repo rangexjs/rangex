@@ -28,7 +28,7 @@ export const SymbolsToolbarButton = () => {
     symbols.insert(data);
   };
 
-  const disabled = createMemo(() => !!$readOnly?.checked());
+  const disabled = createMemo(() => !!$readOnly?.isEnabled());
 
   return (
     <span>

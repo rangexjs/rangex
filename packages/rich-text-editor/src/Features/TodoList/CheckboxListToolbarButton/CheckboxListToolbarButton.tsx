@@ -18,7 +18,7 @@ export const CheckboxListToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const disabled = createMemo(
-    () => !($todoList.isSelectionActive() || $todoList.canWrap()) || !!$readOnly?.checked(),
+    () => !($todoList.isSelectionActive() || $todoList.canWrap()) || !!$readOnly?.isEnabled(),
   );
 
   const onClick = () => {

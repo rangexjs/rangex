@@ -98,7 +98,7 @@ export const LineHeightToolbarButton = () => {
     return [defaultItem, ...lineHeightItems];
   });
 
-  const disabled = createMemo(() => $lineHeight.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $lineHeight.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

@@ -45,7 +45,7 @@ export const CodeBlockQuickActions = () => {
           type="button"
           class="btn-menu-trigger flex items-center justify-center rounded p-1"
           aria-label="Copy code"
-          disabled={$readOnly?.checked()}
+          disabled={$readOnly?.isEnabled()}
           onClick={onCopyClick}
         >
           <Icon name={copied() ? "Check" : "CopySimple"} class="size-4" />

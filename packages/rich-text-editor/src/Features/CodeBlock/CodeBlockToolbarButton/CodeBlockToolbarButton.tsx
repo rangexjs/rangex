@@ -27,7 +27,7 @@ export const CodeBlockToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const disabled = createMemo(
-    () => !($codeBlock.isSelectionActive() || $codeBlock.canWrap()) || !!$readOnly?.checked(),
+    () => !($codeBlock.isSelectionActive() || $codeBlock.canWrap()) || !!$readOnly?.isEnabled(),
   );
 
   const onClick = () => {

@@ -17,7 +17,7 @@ export const ItalicToolbarButton = () => {
   const $italic = Italic(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $italic.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $italic.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleItalic();

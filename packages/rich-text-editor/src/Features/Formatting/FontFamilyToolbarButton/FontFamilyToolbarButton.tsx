@@ -153,7 +153,7 @@ export const FontFamilyToolbarButton = () => {
     return [defaultItem, ...fontFamilyItems];
   });
 
-  const disabled = createMemo(() => $fontFamily.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $fontFamily.disabled() || !!$readOnly?.isEnabled());
 
   const anchorName = "--font-family-anchor";
 
