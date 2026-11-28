@@ -11,8 +11,8 @@ import { createSourcePlaceholderStorage } from "#storage";
 import type { CreateSourcePlaceholderResult } from "./CreateSourcePlaceholder-types";
 
 /*
- * Builds an unresolved media placeholder block component, exposing a single `slot` child
- * that a picker UI can later mount into once a concrete media type is chosen.
+ * Builds an unresolved source placeholder block component, exposing a single `slot` child
+ * that a picker UI can later mount into once a concrete source type is chosen.
  */
 export const createSourcePlaceholder = (): CreateSourcePlaceholderResult => {
   const blockComponentLine = createBlockComponentLine({

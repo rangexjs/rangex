@@ -1,6 +1,6 @@
 import type { BlockComponent, EditorAPI } from "@rangex/core";
 
-import type { AdapterBus, MediaResolveDetail } from "#adapters";
+import type { AdapterBus, SourceResolveDetail } from "#adapters";
 import type { SourcePlaceholderConfigPort } from "#adapters/SourcePlaceholder";
 import type {
   AudioAttrsMismatch,
@@ -17,12 +17,12 @@ export interface WatchSourcePlaceholderParams {
 
 export type WatchSourcePlaceholderResult = () => void;
 
-export interface ValidateMediaPlacementParams {
+export interface ValidateSourcePlacementParams {
   adapterBus: AdapterBus;
-  detail: MediaResolveDetail;
+  detail: SourceResolveDetail;
 }
 
-export type ValidateMediaPlacementResult =
+export type ValidateSourcePlacementResult =
   | ImageAttrsMismatch
   | VideoAttrsMismatch
   | AudioAttrsMismatch
@@ -31,5 +31,5 @@ export type ValidateMediaPlacementResult =
 
 export interface FinalizeResolveParams {
   blockComponent: BlockComponent;
-  detail: MediaResolveDetail;
+  detail: SourceResolveDetail;
 }

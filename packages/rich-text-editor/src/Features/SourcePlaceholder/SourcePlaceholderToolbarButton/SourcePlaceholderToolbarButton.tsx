@@ -26,7 +26,7 @@ export const SourcePlaceholderToolbarButton = () => {
   return (
     <span>
       <ToolbarButton disabled={disabled()} onClick={onClick}>
-        <Icon name="FileArrowUp" title="Insert media" class="size-4" />
+        <Icon name="FileArrowUp" title="Insert media or embed" class="size-4" />
       </ToolbarButton>
     </span>
   );

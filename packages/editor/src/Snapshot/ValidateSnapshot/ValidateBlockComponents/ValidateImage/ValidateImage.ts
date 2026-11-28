@@ -2,7 +2,7 @@ import { componentsName } from "#constants";
 import { createImageAttrValidators, imageAttrsShape } from "#dom-attrs";
 import { imageStoragePattern } from "#storage";
 
-import { validateMediaComponent } from "../_Utilities";
+import { validateSourceComponent } from "../_Utilities";
 import type {
   CreateImageValidatorParams,
   CreateImageValidatorResult,
@@ -11,23 +11,23 @@ import type {
 } from "./ValidateImage-types";
 
 /*
- * Validates an Image as a media component (see validateMediaComponent), with `img` as its media element.
+ * Validates an Image as a source component (see validateSourceComponent), with `img` as its source element.
  */
 const validateImage = ({
   componentDraft,
   attrValidators,
 }: ValidateImageParams): ValidateImageResult => {
-  const imageFailed = validateMediaComponent({
+  const imageFailed = validateSourceComponent({
     componentDraft,
     name: componentsName.image,
     customStorage: imageStoragePattern,
-    mediaLocalName: "img",
+    sourceElementLocalName: "img",
     lineAttrsShape: imageAttrsShape.line,
     lineAttrValidators: attrValidators.line,
     blockAttrsShape: imageAttrsShape.block,
     blockAttrValidators: attrValidators.block,
-    mediaAttrsShape: imageAttrsShape.img,
-    mediaAttrValidators: attrValidators.img,
+    sourceElementAttrsShape: imageAttrsShape.img,
+    sourceElementAttrValidators: attrValidators.img,
   });
 
   if (imageFailed) {

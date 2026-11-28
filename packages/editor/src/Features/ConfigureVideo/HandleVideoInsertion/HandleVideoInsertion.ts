@@ -2,8 +2,8 @@ import { createVideo } from "../../_Utilities";
 import type { HandleVideoInsertionParams } from "./HandleVideoInsertion-types";
 
 /*
- * Inserts a real video block at the caret whenever media resolution reports a resolved video
- * source, ignoring resolutions for other media types.
+ * Inserts a real video block at the caret whenever source resolution reports a resolved video
+ * source, ignoring resolutions for other source types.
  */
 export const handleVideoInsertion = ({
   configPort,
@@ -13,7 +13,7 @@ export const handleVideoInsertion = ({
   const snapshotTimeline = editorAPI.getSnapshotTimeline();
   const selection = editorAPI.getEditorSelection();
 
-  const unsubscribe = configPort.onMediaResolve((params) => {
+  const unsubscribe = configPort.onSourceResolve((params) => {
     if (params.type !== "video") {
       return;
     }

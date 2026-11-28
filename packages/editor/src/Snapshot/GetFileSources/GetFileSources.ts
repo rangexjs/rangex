@@ -1,12 +1,12 @@
 import { blockComponentRole, htmlLayoutRole, snapshotManager } from "@rangex/core";
 
+import type { MediaType } from "#adapters";
 import { componentsName } from "#constants";
 import { isAudioStorage, isImageStorage, isVideoStorage } from "#storage";
 
 import type {
   FileSource,
   FileStorage,
-  FileType,
   GetFileSourcesParams,
   GetFileSourcesResult,
   GetMediaSrcParams,
@@ -17,9 +17,9 @@ const mediaLocalNamesByType = {
   [componentsName.image]: "img",
   [componentsName.video]: "video",
   [componentsName.audio]: "audio",
-} satisfies Record<FileType, string>;
+} satisfies Record<MediaType, string>;
 
-const isFileType = (name: string): name is FileType => {
+const isMediaType = (name: string): name is MediaType => {
   const isValid = Object.hasOwn(mediaLocalNamesByType, name);
 
   return isValid;
@@ -72,7 +72,7 @@ export const getFileSources = ({ storedSnapshot }: GetFileSourcesParams): GetFil
       return false;
     }
 
-    return isFileType(node.name);
+    return isMediaType(node.name);
   });
 
   const fileSourcesByKey = new Map<string, FileSource>();
@@ -84,7 +84,7 @@ export const getFileSources = ({ storedSnapshot }: GetFileSourcesParams): GetFil
 
     const type = blockComponentDraft.name;
 
-    if (!isFileType(type)) {
+    if (!isMediaType(type)) {
       throw new Error("MediaComponent's name is invalid.");
     }
 

@@ -2,7 +2,7 @@ import { componentsName } from "#constants";
 import { createEmbedAttrValidators, embedAttrsShape } from "#dom-attrs";
 import { embedStoragePattern } from "#storage";
 
-import { validateMediaComponent } from "../_Utilities";
+import { validateSourceComponent } from "../_Utilities";
 import type {
   CreateEmbedValidatorParams,
   CreateEmbedValidatorResult,
@@ -11,23 +11,23 @@ import type {
 } from "./ValidateEmbed-types";
 
 /*
- * Validates an Embed as a media component (see validateMediaComponent), with `iframe` as its media element.
+ * Validates an Embed as a source component (see validateSourceComponent), with `iframe` as its source element.
  */
 const validateEmbed = ({
   componentDraft,
   attrValidators,
 }: ValidateEmbedParams): ValidateEmbedResult => {
-  const embedFailed = validateMediaComponent({
+  const embedFailed = validateSourceComponent({
     componentDraft,
     name: componentsName.embed,
     customStorage: embedStoragePattern,
-    mediaLocalName: "iframe",
+    sourceElementLocalName: "iframe",
     lineAttrsShape: embedAttrsShape.line,
     lineAttrValidators: attrValidators.line,
     blockAttrsShape: embedAttrsShape.block,
     blockAttrValidators: attrValidators.block,
-    mediaAttrsShape: embedAttrsShape.iframe,
-    mediaAttrValidators: attrValidators.iframe,
+    sourceElementAttrsShape: embedAttrsShape.iframe,
+    sourceElementAttrValidators: attrValidators.iframe,
   });
 
   if (embedFailed) {

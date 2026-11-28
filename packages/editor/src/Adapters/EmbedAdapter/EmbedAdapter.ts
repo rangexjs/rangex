@@ -66,8 +66,8 @@ export const createEmbedAdapter = (
         return quickActionsPort.configPort;
       },
 
-      onMediaResolve(callback) {
-        const cleanup = adapterBus.onMediaResolve(callback);
+      onSourceResolve(callback) {
+        const cleanup = adapterBus.onSourceResolve(callback);
         return () => cleanup();
       },
     } satisfies EmbedConfigPortProps,

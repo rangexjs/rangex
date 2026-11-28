@@ -8,15 +8,15 @@ import type {
  */
 export const detectMediaFileType = ({
   file,
-  supportedMediaTypes,
+  supportedSourceTypes,
 }: DetectMediaFileTypeParams): DetectMediaFileTypeResult => {
-  if (file.type.startsWith("image/") && supportedMediaTypes.includes("image")) {
+  if (file.type.startsWith("image/") && supportedSourceTypes.includes("image")) {
     return "image";
   }
-  if (file.type.startsWith("video/") && supportedMediaTypes.includes("video")) {
+  if (file.type.startsWith("video/") && supportedSourceTypes.includes("video")) {
     return "video";
   }
-  if (file.type.startsWith("audio/") && supportedMediaTypes.includes("audio")) {
+  if (file.type.startsWith("audio/") && supportedSourceTypes.includes("audio")) {
     return "audio";
   }
   return null;

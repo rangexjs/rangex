@@ -3,7 +3,7 @@ import { imageAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-  getMediaParts,
+  getSourceComponentParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
   handleCaptionPlaceholder,
@@ -84,12 +84,12 @@ export const configureImage = ({ adapterBus, configPort, editorAPI }: ConfigureI
     componentAttrsShape: imageAttrsShape,
     componentAttrValidators: configPort.attrValidators,
     resolveElements: (image) => {
-      const { line, block, media } = getMediaParts({
+      const { line, block, sourceElement } = getSourceComponentParts({
         blockComponent: image,
-        mediaLocalName: "img",
+        sourceElementLocalName: "img",
       });
 
-      return { line, block, img: media };
+      return { line, block, img: sourceElement };
     },
   });
 

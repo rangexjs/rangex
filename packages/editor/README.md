@@ -2,7 +2,7 @@
 
 The framework-agnostic layer of RangeX, written in plain TypeScript. It wires the RangeX engine (`@rangex/core`) into an editor you can build any UI on:
 
-- **Adapters** for each feature (formatting, links, lists, tables, code blocks, media, mentions…). Enable only the ones you need.
+- **Adapters** for each feature (formatting, links, lists, tables, code blocks, media and embeds, mentions…). Enable only the ones you need.
 - **`createEditor`** mounts the editor and exposes each enabled adapter's public port: actions to call, and state you can read and subscribe to.
 - **Snapshot and HTML views** render a stored document without an editor.
 

@@ -14,7 +14,7 @@ import {
   ToggleButton,
 } from "#ui";
 
-import { BlockAlign, MediaSource } from "../../_Utilities";
+import { BlockAlign, SourceUrl } from "../../_Utilities";
 
 const captionPositionControls: SegmentedControlControls<CaptionPosition> = [
   { id: "above", node: "Above" },
@@ -119,12 +119,12 @@ export const AudioQuickActions = () => {
 
   let blockAlignPopover: HTMLDivElement | undefined;
   let optionsPopover: HTMLDivElement | undefined;
-  let mediaSourcePopover: HTMLDivElement | undefined;
+  let sourceUrlPopover: HTMLDivElement | undefined;
 
   const optionsPopoverId = createUniqueId();
 
   const closeNestedPopovers = () => {
-    const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
+    const nestedPopovers = [blockAlignPopover, sourceUrlPopover, optionsPopover];
 
     for (const nestedPopover of nestedPopovers) {
       if (!nestedPopover) {
@@ -173,11 +173,11 @@ export const AudioQuickActions = () => {
           <Icon name="Swap" class="size-4" />
         </button>
 
-        <MediaSource
+        <SourceUrl
           src={$audio.domAttrs()?.audio.src ?? null}
           label="Audio source"
           popoverRef={(el) => {
-            mediaSourcePopover = el;
+            sourceUrlPopover = el;
           }}
         />
 

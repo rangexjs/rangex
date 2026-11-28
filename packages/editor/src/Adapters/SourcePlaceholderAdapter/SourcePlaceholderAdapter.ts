@@ -1,6 +1,6 @@
 import { extendObjectProperties } from "#utilities";
 
-import { createEmitter, createStateEmitter, mediaTypes } from "../_Utilities";
+import { createEmitter, createStateEmitter, sourceTypes } from "../_Utilities";
 import type {
   CreateSourcePlaceholderAdapterParams,
   CreateSourcePlaceholderAdapterResult,
@@ -85,8 +85,8 @@ export const createSourcePlaceholderAdapter = (
       return resolveEmitter.subscribe(callback);
     },
 
-    emitMediaResolve(detail) {
-      adapterBus.emitMediaResolve(detail);
+    emitSourceResolve(detail) {
+      adapterBus.emitSourceResolve(detail);
     },
   } satisfies SourcePlaceholderConfigPortProps);
 
@@ -95,8 +95,8 @@ export const createSourcePlaceholderAdapter = (
       return canInsertState.get();
     },
 
-    get supportedMediaTypes() {
-      return mediaTypes.filter((type) => adapterBus.hasAdapter(type));
+    get supportedSourceTypes() {
+      return sourceTypes.filter((type) => adapterBus.hasAdapter(type));
     },
 
     registerSlottedElement(callback) {

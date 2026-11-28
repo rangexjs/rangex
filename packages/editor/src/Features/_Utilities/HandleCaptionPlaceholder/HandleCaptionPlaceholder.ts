@@ -9,7 +9,7 @@ import { createComponentSelector } from "#constants";
 import type { HandleCaptionPlaceholderParams } from "./HandleCaptionPlaceholder-types";
 
 /*
- * Gives every caption of the given media component its placeholder, with the given text. The engine doesn't store the placeholder in the
+ * Gives every caption of the given source component its placeholder, with the given text. The engine doesn't store the placeholder in the
  * snapshot, so a caption created by paste, drag and drop, undo/redo or loadStoredSnapshot has none: the captions are
  * re-checked on every mutation of the root, and the ones without a placeholder get it.
  */

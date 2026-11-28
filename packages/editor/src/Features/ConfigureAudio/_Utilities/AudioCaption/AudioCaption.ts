@@ -8,7 +8,7 @@ import {
 } from "@rangex/core";
 
 import type { CaptionPosition } from "#adapters";
-import { mediaCaptionDefinition } from "#constants";
+import { sourceCaptionDefinition } from "#constants";
 import { createTextAlignStructuredStyle } from "#structured-style";
 
 import { getAudioElement } from "../GetAudioElements";
@@ -76,7 +76,7 @@ export const setAudioCaptionEnabled = ({
   const textAlign = createTextAlignStructuredStyle({ textAlign: "center" });
 
   const nestedEditable = createNestedEditable({
-    ...mediaCaptionDefinition.nestedEditableProps,
+    ...sourceCaptionDefinition.nestedEditableProps,
     childNodes: [
       createContentLine({
         localName: "p",

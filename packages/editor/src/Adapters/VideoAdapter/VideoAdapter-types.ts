@@ -13,7 +13,7 @@ import type {
   CurrentComponentPublicPort,
   DOMAttrsConfigPort,
   DOMAttrsPublicPort,
-  OnMediaResolveCallbackFn,
+  OnSourceResolveCallbackFn,
   QuickActionsConfigPort,
   QuickActionsPublicPort,
   SwapToSourcePlaceholderConfigPort,
@@ -26,7 +26,7 @@ export interface VideoConfigPortProps {
   readonly attrValidators: VideoAttrValidators;
   readonly quickActions: QuickActionsConfigPort;
 
-  onMediaResolve(callback: OnMediaResolveCallbackFn): () => void;
+  onSourceResolve(callback: OnSourceResolveCallbackFn): () => void;
 }
 
 export interface VideoConfigPort

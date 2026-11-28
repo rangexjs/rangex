@@ -122,7 +122,7 @@ export const handleLinkMarkdown = ({ adapterBus, editorAPI }: HandleLinkMarkdown
         return false;
       }
 
-      // TODO: media insertion (image/video/audio/embed, routed by URL/extension) isn't
+      // TODO: source insertion (image/video/audio/embed, routed by URL/extension) isn't
       // wired up yet — detection works, but there's nowhere to send it. Leave the
       // keystroke alone for now so it just types literally.
       if (match.type === "media") {

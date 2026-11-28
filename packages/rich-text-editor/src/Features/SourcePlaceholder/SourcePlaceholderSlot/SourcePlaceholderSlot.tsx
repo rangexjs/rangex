@@ -1,15 +1,15 @@
 import { detectMediaFileType } from "../_Utilities";
 import { createFileDropzone } from "./CreateFileDropzone";
-import { createMediaResolver } from "./CreateMediaResolver";
-import { MediaSourcePicker } from "./MediaSourcePicker";
-import { NoSupportedMediaTypes } from "./NoSupportedMediaTypes";
+import { createSourceResolver } from "./CreateSourceResolver";
+import { SourcePicker } from "./SourcePicker";
+import { NoSupportedSourceTypes } from "./NoSupportedSourceTypes";
 import type { SourcePlaceholderSlotProps } from "./SourcePlaceholderSlot-types";
 import { StatusIndicator } from "./StatusIndicator";
 
 /**
- * Solid UI for an unresolved media placeholder — drag&drop anywhere on the card, or a
- * MediaSourcePicker. Every capture goes through a media resolver, which replaces the placeholder
- * (see createMediaResolver).
+ * Solid UI for an unresolved source placeholder — drag&drop anywhere on the card, or a
+ * SourcePicker. Every capture goes through a source resolver, which replaces the placeholder
+ * (see createSourceResolver).
  */
 export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
   const { sourcePlaceholder } = props.editor;
@@ -18,13 +18,13 @@ export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
     throw new Error("SourcePlaceholder can't be undefined.");
   }
 
-  const supportedMediaTypes = sourcePlaceholder.supportedMediaTypes;
+  const supportedSourceTypes = sourcePlaceholder.supportedSourceTypes;
 
-  if (!supportedMediaTypes.length) {
-    return <NoSupportedMediaTypes />;
+  if (!supportedSourceTypes.length) {
+    return <NoSupportedSourceTypes />;
   }
 
-  const mediaResolver = createMediaResolver({
+  const sourceResolver = createSourceResolver({
     editor: props.editor,
     sourcePlaceholder,
     container: props.container,
@@ -33,23 +33,23 @@ export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
 
   const fileDropzone = createFileDropzone({
     onFile: (file) => {
-      const type = detectMediaFileType({ file, supportedMediaTypes });
+      const type = detectMediaFileType({ file, supportedSourceTypes });
 
       if (!type) {
         return;
       }
 
-      mediaResolver.resolveFile(type, file);
+      sourceResolver.resolveFile(type, file);
     },
   });
 
   const errorMessage = () => {
-    const state = mediaResolver.status();
+    const state = sourceResolver.status();
     return state.status === "error" ? state.message : null;
   };
 
   const pickerVisible = () => {
-    const { status } = mediaResolver.status();
+    const { status } = sourceResolver.status();
     return status === "idle" || status === "error";
   };
 
@@ -78,19 +78,19 @@ export const SourcePlaceholderSlot = (props: SourcePlaceholderSlotProps) => {
       onCopy={stopEditorPropagation}
       onCut={stopEditorPropagation}
     >
-      <MediaSourcePicker
-        supportedMediaTypes={supportedMediaTypes}
+      <SourcePicker
+        supportedSourceTypes={supportedSourceTypes}
         visible={pickerVisible()}
         errorMessage={errorMessage()}
         onSubmitFile={(type, file) => {
-          mediaResolver.resolveFile(type, file);
+          sourceResolver.resolveFile(type, file);
         }}
         onSubmitUrl={(url) => {
-          mediaResolver.resolveUrl(url);
+          sourceResolver.resolveUrl(url);
         }}
       />
 
-      <StatusIndicator status={mediaResolver.status()} />
+      <StatusIndicator status={sourceResolver.status()} />
     </div>
   );
 };

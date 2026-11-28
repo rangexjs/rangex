@@ -203,11 +203,11 @@ field became `element`, since the composed key is already `selectionMenu`).
 `AdapterOptions`; Adapters use it to talk to each other without holding direct references.
 Three channel shapes:
 
-- **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onMediaResolve`,
+- **Event** — `onXxx`/`emitXxx`, fire-and-forget, never cached (`onSourceResolve`,
   `onSwapToSourcePlaceholder`).
 - **Registry** — `registerAdapter(name)` / `hasAdapter(name)`, keyed by `AdapterName`.
   Answers "was the editor built with Adapter X?" for anything that depends on another
-  Adapter (SourcePlaceholder's `supportedMediaTypes`, `SwapToSourcePlaceholderPort.canSwap`, and every
+  Adapter (SourcePlaceholder's `supportedSourceTypes`, `SwapToSourcePlaceholderPort.canSwap`, and every
   `BlockComponentPlacement` `can*` check, which returns `false` for a component whose Adapter
   isn't registered).
 - **Shared value** — `registerAttrValidators(name, attrValidators)` /

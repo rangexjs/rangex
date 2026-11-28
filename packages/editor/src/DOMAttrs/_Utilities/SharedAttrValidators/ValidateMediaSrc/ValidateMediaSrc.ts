@@ -1,7 +1,7 @@
 import type { ValidateAttrFn } from "../../DOMAttrs-types";
 
 /*
- * A media src (e.g. a video's or an iframe's) is valid if it isn't empty and it's at most 4096 characters long. Whether
+ * A media src (a video's or an audio's) is valid if it isn't empty and it's at most 4096 characters long. Whether
  * it's a safe URL is the Sanitizer's job. An invalid one is rejected: the media has no src to fall back to.
  */
 export const validateMediaSrc: ValidateAttrFn<string> = ({ value }) => {

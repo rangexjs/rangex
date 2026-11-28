@@ -1,10 +1,8 @@
-import type { MediaType } from "@rangex/editor";
+import type { MediaType, SourceType } from "@rangex/editor";
 
 export interface DetectMediaFileTypeParams {
   file: File;
-  supportedMediaTypes: MediaType[];
+  supportedSourceTypes: SourceType[];
 }
 
-export type MediaFileType = Exclude<MediaType, "embed">;
-
-export type DetectMediaFileTypeResult = MediaFileType | null;
+export type DetectMediaFileTypeResult = MediaType | null;

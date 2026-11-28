@@ -3,7 +3,7 @@ import { audioAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-  getMediaParts,
+  getSourceComponentParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
   handleCaptionPlaceholder,
@@ -88,12 +88,12 @@ export const configureAudio = ({ adapterBus, configPort, editorAPI }: ConfigureA
     componentAttrsShape: audioAttrsShape,
     componentAttrValidators: configPort.attrValidators,
     resolveElements: (audio) => {
-      const { line, block, media } = getMediaParts({
+      const { line, block, sourceElement } = getSourceComponentParts({
         blockComponent: audio,
-        mediaLocalName: "audio",
+        sourceElementLocalName: "audio",
       });
 
-      return { line, block, audio: media };
+      return { line, block, audio: sourceElement };
     },
   });
 

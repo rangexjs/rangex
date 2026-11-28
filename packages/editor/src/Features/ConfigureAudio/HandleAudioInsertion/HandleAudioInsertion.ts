@@ -2,8 +2,8 @@ import { createAudio } from "../../_Utilities";
 import type { HandleAudioInsertionParams } from "./HandleAudioInsertion-types";
 
 /*
- * Inserts a real audio block at the caret whenever media resolution reports a resolved audio
- * source, ignoring resolutions for other media types.
+ * Inserts a real audio block at the caret whenever source resolution reports a resolved audio
+ * source, ignoring resolutions for other source types.
  */
 export const handleAudioInsertion = ({
   configPort,
@@ -13,7 +13,7 @@ export const handleAudioInsertion = ({
   const snapshotTimeline = editorAPI.getSnapshotTimeline();
   const selection = editorAPI.getEditorSelection();
 
-  const unsubscribe = configPort.onMediaResolve((params) => {
+  const unsubscribe = configPort.onSourceResolve((params) => {
     if (params.type !== "audio") {
       return;
     }

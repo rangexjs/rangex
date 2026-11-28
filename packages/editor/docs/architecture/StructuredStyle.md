@@ -18,7 +18,7 @@ one becomes CSS. `src/StructuredStyle/` (alias `#structured-style`).
   A stored `declarationValue` is never trusted, so the rendered CSS can only be what the editor builds.
 
 Everything that builds a structured style goes through a creator: `getSelectionStylesData` (the Formatting adapter's
-actions) and the media captions' `text-align`.
+actions) and the source captions' `text-align`.
 
 ## Rules
 

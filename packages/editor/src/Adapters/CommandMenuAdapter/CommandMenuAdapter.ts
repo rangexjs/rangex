@@ -32,7 +32,7 @@ export const commandMenuItemValues: CommandMenuItemValue[] = [
   "block-quote",
   "code-block",
   "table",
-  "media",
+  "source-placeholder",
   "accordion-item",
   "separator",
 ];

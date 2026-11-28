@@ -1,3 +1,3 @@
 export * from "./GetAccordionItemParts";
 export * from "./GetLinkParts";
-export * from "./GetMediaParts";
+export * from "./GetSourceComponentParts";

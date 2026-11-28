@@ -112,9 +112,9 @@ The shared steps are helpers, so a component's validator only describes its own 
 
 `ValidateLink` and `ValidateImage` are the two references: an
 InlineComponent with one `NestedEditable`, and a BlockComponent with a fixed layout (an Image's `figure` holds exactly
-one `img` and at most one `figcaption`, above or below it). The media components (Image, Video, Audio, Embed) are all
-built that way, so they share `validateMediaComponent` (in `ValidateBlockComponents/_Utilities/`) and only pass their
-name, storage pattern, media element (`img`, `video`, `audio`, `iframe`) and shapes. `ValidateMention` has no attributes; its `customStorage` is matched by `mentionStoragePattern` (see
+one `img` and at most one `figcaption`, above or below it). The source components (Image, Video, Audio, Embed) are all
+built that way, so they share `validateSourceComponent` (in `ValidateBlockComponents/_Utilities/`) and only pass their
+name, storage pattern, source element (`img`, `video`, `audio`, `iframe`) and shapes. `ValidateMention` has no attributes; its `customStorage` is matched by `mentionStoragePattern` (see
 [SnapshotMigrations](SnapshotMigrations.md)), so an invalid `userId` makes it invalid.
 
 ### The consumer's storage check

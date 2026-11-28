@@ -10,7 +10,7 @@ export const defaultToolbarButtonsLayout: ToolbarButtonsLayout = [
       "checkbox-list",
       "code-block",
       "block-quote",
-      "media",
+      "source-placeholder",
       "custom-component",
       "symbols",
       "link",

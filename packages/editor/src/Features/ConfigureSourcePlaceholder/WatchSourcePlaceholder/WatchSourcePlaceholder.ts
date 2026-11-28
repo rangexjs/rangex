@@ -17,35 +17,35 @@ import {
 } from "../../_Utilities";
 import type {
   FinalizeResolveParams,
-  ValidateMediaPlacementParams,
-  ValidateMediaPlacementResult,
+  ValidateSourcePlacementParams,
+  ValidateSourcePlacementResult,
   WatchSourcePlaceholderParams,
   WatchSourcePlaceholderResult,
 } from "./WatchSourcePlaceholder-types";
 
 const sourcePlaceholderSelector = createComponentSelector(componentsName.sourcePlaceholder);
 
-const getMediaDetachedContext = (blockComponent: BlockComponent) => {
+const getPlaceholderDetachedContext = (blockComponent: BlockComponent) => {
   const detachedContext = blockComponent.$$firstChild;
 
   if (
     detachedContext?.$$editorRole !== detachedContextRole ||
     !(detachedContext instanceof HTMLSlotElement)
   ) {
-    throw new Error("Media block's first child must be a DetachedContext.");
+    throw new Error("SourcePlaceholder block's first child must be a DetachedContext.");
   }
 
   return detachedContext;
 };
 
 /*
- * Validates whether the media can be placed, by its component's validators. Returns the mismatch, or null when it's
+ * Validates whether the source can be placed, by its component's validators. Returns the mismatch, or null when it's
  * valid.
  */
-const validateMediaPlacement = ({
+const validateSourcePlacement = ({
   adapterBus,
   detail,
-}: ValidateMediaPlacementParams): ValidateMediaPlacementResult => {
+}: ValidateSourcePlacementParams): ValidateSourcePlacementResult => {
   if (detail.type === "image") {
     const imageFailed = validateImagePlacement({
       attrValidators: adapterBus.getAttrValidators("image"),
@@ -103,8 +103,8 @@ const validateMediaPlacement = ({
 
 /*
  * Tracks source placeholder block components in the root editable, mounting a slotted element for each one, and resolves
- * submissions (see SourcePlaceholder's resolve): replaces the placeholder block with the media if its attributes are valid.
- * Reacts to whatever is actually in the tree, however it got there. Returns a cleanup function.
+ * submissions (see SourcePlaceholder's resolve): replaces the placeholder block with the source if its attributes are
+ * valid. Reacts to whatever is actually in the tree, however it got there. Returns a cleanup function.
  */
 export const watchSourcePlaceholder = ({
   adapterBus,
@@ -122,14 +122,14 @@ export const watchSourcePlaceholder = ({
 
   /**
    * Removes the placeholder block via `removeNodesInRange`, then forwards `{ type, attrs }` onto `adapterBus`, without
-   * `blockComponent`: it no longer exists in the tree by the time this fires. The media component's Adapter inserts
+   * `blockComponent`: it no longer exists in the tree by the time this fires. The source component's Adapter inserts
    * its block at the now-collapsed selection (see its handleXInsertion).
    */
   const finalizeResolve = ({ blockComponent, detail }: FinalizeResolveParams) => {
     const blockComponentLine = blockComponent.$$parentElement;
 
     if (!blockComponentLine) {
-      throw new Error("Media block's parent must be a BlockComponentLine.");
+      throw new Error("SourcePlaceholder block's parent must be a BlockComponentLine.");
     }
 
     editorAPI.removeNodesInRange({
@@ -141,7 +141,7 @@ export const watchSourcePlaceholder = ({
 
     editorAPI.getSnapshotTimeline().registerSnapshotBoundary();
 
-    configPort.emitMediaResolve(detail);
+    configPort.emitSourceResolve(detail);
   };
 
   const unsubscribeResolve = configPort.onResolve(({ element, detail }) => {
@@ -164,7 +164,7 @@ export const watchSourcePlaceholder = ({
       return;
     }
 
-    const placementMismatch = validateMediaPlacement({ adapterBus, detail });
+    const placementMismatch = validateSourcePlacement({ adapterBus, detail });
 
     if (placementMismatch) {
       console.warn(placementMismatch);
@@ -174,18 +174,22 @@ export const watchSourcePlaceholder = ({
     finalizeResolve({ blockComponent, detail });
   });
 
-  const queryMediaBlocks = (): Set<BlockComponent> => {
-    const queriedMediaBlocks = rootEditable.$$querySelectorAll(sourcePlaceholderSelector);
+  const queryPlaceholderBlocks = (): Set<BlockComponent> => {
+    const queriedPlaceholderBlocks = rootEditable.$$querySelectorAll(sourcePlaceholderSelector);
 
-    if (!queriedMediaBlocks.every((mediaBlock) => mediaBlock.$$editorRole === blockComponentRole)) {
-      throw new Error("Media block's type is invalid.");
+    if (
+      !queriedPlaceholderBlocks.every(
+        (placeholderBlock) => placeholderBlock.$$editorRole === blockComponentRole,
+      )
+    ) {
+      throw new Error("SourcePlaceholder block's type is invalid.");
     }
 
-    return new Set(queriedMediaBlocks);
+    return new Set(queriedPlaceholderBlocks);
   };
 
-  const attachMediaBlock = (blockComponent: BlockComponent) => {
-    const detachedContext = getMediaDetachedContext(blockComponent);
+  const attachPlaceholderBlock = (blockComponent: BlockComponent) => {
+    const detachedContext = getPlaceholderDetachedContext(blockComponent);
 
     const slottedElement = configPort.createSlottedElement();
     host.append(slottedElement);
@@ -193,13 +197,13 @@ export const watchSourcePlaceholder = ({
     containersByBlock.set(blockComponent, slottedElement);
   };
 
-  const detachMediaBlock = (blockComponent: BlockComponent) => {
-    const detachedContext = getMediaDetachedContext(blockComponent);
+  const detachPlaceholderBlock = (blockComponent: BlockComponent) => {
+    const detachedContext = getPlaceholderDetachedContext(blockComponent);
 
     const slottedElement = containersByBlock.get(blockComponent);
 
     if (!slottedElement) {
-      throw new Error("No tracked container for the given media block.");
+      throw new Error("No tracked container for the given SourcePlaceholder block.");
     }
 
     detachedContext.assign();
@@ -208,37 +212,37 @@ export const watchSourcePlaceholder = ({
     configPort.removeSlottedElement(slottedElement);
   };
 
-  let tracked = queryMediaBlocks();
+  let tracked = queryPlaceholderBlocks();
 
   for (const blockComponent of tracked) {
-    attachMediaBlock(blockComponent);
+    attachPlaceholderBlock(blockComponent);
   }
 
-  const mediaBlockObserver = new MutationObserver(() => {
-    const containedMediaBlocks = queryMediaBlocks();
+  const placeholderBlockObserver = new MutationObserver(() => {
+    const containedPlaceholderBlocks = queryPlaceholderBlocks();
 
-    const addedMediaBlocks = containedMediaBlocks.difference(tracked);
-    const removedMediaBlocks = tracked.difference(containedMediaBlocks);
+    const addedPlaceholderBlocks = containedPlaceholderBlocks.difference(tracked);
+    const removedPlaceholderBlocks = tracked.difference(containedPlaceholderBlocks);
 
-    for (const blockComponent of addedMediaBlocks) {
-      attachMediaBlock(blockComponent);
+    for (const blockComponent of addedPlaceholderBlocks) {
+      attachPlaceholderBlock(blockComponent);
     }
 
-    for (const blockComponent of removedMediaBlocks) {
-      detachMediaBlock(blockComponent);
+    for (const blockComponent of removedPlaceholderBlocks) {
+      detachPlaceholderBlock(blockComponent);
     }
 
-    tracked = containedMediaBlocks;
+    tracked = containedPlaceholderBlocks;
   });
 
-  mediaBlockObserver.observe(rootEditable, { childList: true, subtree: true });
+  placeholderBlockObserver.observe(rootEditable, { childList: true, subtree: true });
 
   return () => {
-    mediaBlockObserver.disconnect();
+    placeholderBlockObserver.disconnect();
     unsubscribeResolve();
 
     for (const blockComponent of tracked) {
-      detachMediaBlock(blockComponent);
+      detachPlaceholderBlock(blockComponent);
     }
 
     tracked = new Set();

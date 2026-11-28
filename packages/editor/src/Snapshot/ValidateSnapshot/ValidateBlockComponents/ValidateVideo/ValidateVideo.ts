@@ -2,7 +2,7 @@ import { componentsName } from "#constants";
 import { createVideoAttrValidators, videoAttrsShape } from "#dom-attrs";
 import { videoStoragePattern } from "#storage";
 
-import { validateMediaComponent } from "../_Utilities";
+import { validateSourceComponent } from "../_Utilities";
 import type {
   CreateVideoValidatorParams,
   CreateVideoValidatorResult,
@@ -11,23 +11,23 @@ import type {
 } from "./ValidateVideo-types";
 
 /*
- * Validates a Video as a media component (see validateMediaComponent), with `video` as its media element.
+ * Validates a Video as a source component (see validateSourceComponent), with `video` as its source element.
  */
 const validateVideo = ({
   componentDraft,
   attrValidators,
 }: ValidateVideoParams): ValidateVideoResult => {
-  const videoFailed = validateMediaComponent({
+  const videoFailed = validateSourceComponent({
     componentDraft,
     name: componentsName.video,
     customStorage: videoStoragePattern,
-    mediaLocalName: "video",
+    sourceElementLocalName: "video",
     lineAttrsShape: videoAttrsShape.line,
     lineAttrValidators: attrValidators.line,
     blockAttrsShape: videoAttrsShape.block,
     blockAttrValidators: attrValidators.block,
-    mediaAttrsShape: videoAttrsShape.video,
-    mediaAttrValidators: attrValidators.video,
+    sourceElementAttrsShape: videoAttrsShape.video,
+    sourceElementAttrValidators: attrValidators.video,
   });
 
   if (videoFailed) {
