@@ -1,7 +1,7 @@
 import { createReadOnlyAdapter, type ReadOnlySettings } from "#adapters/ReadOnly";
 import { configureReadOnly } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const ReadOnly: AdapterFactoryFn<ReadOnlySettings> = (settings) => {
   return (options, { editor }) => {

@@ -102,7 +102,7 @@ export const IndentationToolbarButton = () => {
     return [defaultItem, ...indentationItems];
   });
 
-  const disabled = createMemo(() => $indentation.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $indentation.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

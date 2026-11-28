@@ -175,7 +175,7 @@ export const FontSizeToolbarButton = () => {
     return [defaultItem, ...fontSizeItems];
   });
 
-  const disabled = createMemo(() => $fontSize.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $fontSize.disabled() || !!$readOnly?.isEnabled());
 
   const anchorName = "--font-size-anchor";
 

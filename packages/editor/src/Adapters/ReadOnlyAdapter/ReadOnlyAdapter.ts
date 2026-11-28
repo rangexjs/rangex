@@ -15,23 +15,27 @@ import type {
 export const createReadOnlyAdapter = (
   ...params: CreateReadOnlyAdapterParams
 ): CreateReadOnlyAdapterResult => {
-  const [_settings, { adapterBus }] = params;
+  const [{ initialEnabled = false }, { adapterBus }] = params;
 
   adapterBus.registerAdapter("readOnly");
 
   // States
-  const checkedState = createStateEmitter<boolean>(false);
+  const isEnabledState = createStateEmitter<boolean>(false);
 
   // CommandListeners
   const toggleEmitter = createEmitter<OnToggleCallbackFn>();
 
-  const updateState = ({ checked }: UpdateStateParams) => {
-    if (checked !== undefined) {
-      checkedState.set(checked);
+  const updateState = ({ isEnabled }: UpdateStateParams) => {
+    if (isEnabled !== undefined) {
+      isEnabledState.set(isEnabled);
     }
   };
 
   const configPort: ReadOnlyConfigPort = extendObjectProperties({}, {
+    get initialEnabled() {
+      return initialEnabled;
+    },
+
     updateState(params) {
       updateState(params);
     },
@@ -42,16 +46,16 @@ export const createReadOnlyAdapter = (
   } satisfies ReadOnlyConfigPortProps);
 
   const publicPort: ReadOnlyPublicPort = extendObjectProperties({}, {
-    get checked() {
-      return checkedState.get();
+    get isEnabled() {
+      return isEnabledState.get();
     },
 
-    onCheckedUpdate(callback) {
-      return checkedState.subscribe(callback);
+    onIsEnabledUpdate(callback) {
+      return isEnabledState.subscribe(callback);
     },
 
-    toggle() {
-      toggleEmitter.emit(checkedState.get());
+    toggle({ force }) {
+      toggleEmitter.emit({ isEnabled: isEnabledState.get(), force });
     },
   } satisfies ReadOnlyPublicPortProps);
 

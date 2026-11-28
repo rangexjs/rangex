@@ -1,7 +1,7 @@
 import { createLinkAdapter, type LinkSettings } from "#adapters/Link";
 import { configureLink } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Link: AdapterFactoryFn<LinkSettings> = (settings) => {
   return (options, { editor }) => {

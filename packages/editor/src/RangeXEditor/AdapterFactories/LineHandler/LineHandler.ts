@@ -1,7 +1,7 @@
 import { createLineHandlerAdapter, type LineHandlerSettings } from "#adapters/LineHandler";
 import { configureLineHandler } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const LineHandler: AdapterFactoryFn<LineHandlerSettings> = (settings) => {
   return (options, { editor }) => {

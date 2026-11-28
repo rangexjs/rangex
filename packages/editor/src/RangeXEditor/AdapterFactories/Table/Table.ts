@@ -1,7 +1,7 @@
 import { createTableAdapter, type TableSettings } from "#adapters/Table";
 import { configureTable } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Table: AdapterFactoryFn<TableSettings> = (settings) => {
   return (options, { editor }) => {

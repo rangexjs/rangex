@@ -1,18 +1,9 @@
-import { AdapterBus } from "#adapters";
-
-import { buildEditorStyleText, getContainerStyleText } from "../Styles";
 import { createCore } from "./CreateCore";
+import { createEditorContainer } from "./CreateEditorContainer";
+import { createRangeXEditor } from "./CreateRangeXEditor";
 import { handlePlaceholder } from "./HandlePlaceholder";
-import type {
-  ConfigureAdapterResult,
-  CreateEditorParams,
-  CreateEditorResult,
-  RangeXEditor,
-  RegisterAdapterResult,
-} from "./RangeXEditor-types";
-import { registerAttrValidators } from "./RegisterAttrValidators";
-import { registerTableLimits } from "./RegisterTableLimits";
-import { Snapshot } from "./Snapshot";
+import type { CreateEditorParams, CreateEditorResult } from "./RangeXEditor-types";
+import { registerAdapters } from "./RegisterAdapters";
 
 export const createEditor = ({
   licenseKey,
@@ -22,65 +13,30 @@ export const createEditor = ({
   styles,
   placeholder,
 }: CreateEditorParams): CreateEditorResult => {
-  const { editorAPI } = createCore({
+  const { editorAPI, storedSnapshotFailed } = createCore({
     licenseKey,
     storedSnapshot,
     snapshotSchema,
+    styles,
   });
 
-  const editorStyleText = buildEditorStyleText(styles);
+  const { editorContainer, floatingContainer, containerStyles } = createEditorContainer({
+    editorAPI,
+  });
 
-  editorAPI.replaceCustomStyles(editorStyleText);
+  const cleanupList = new Set<() => void>();
 
-  const { host } = editorAPI;
+  const editor = createRangeXEditor({ editorAPI, snapshotSchema, cleanupList });
 
-  const cleanupList = new Set<ConfigureAdapterResult>();
-
-  const snapshot = new Snapshot({ editorAPI });
-
-  const editor: RangeXEditor = {
-    get snapshot() {
-      return snapshot;
-    },
-
-    focus() {
-      editorAPI.focus();
-    },
-
-    destroy() {
-      for (const cleanup of cleanupList) {
-        cleanup();
-      }
-    },
-  };
-
-  const adapterBus = new AdapterBus();
-
-  registerAttrValidators({
-    adapterBus,
+  const adaptersCleanup = registerAdapters({
+    adapters,
     components: snapshotSchema.components,
+    floatingContainer,
+    editor,
+    editorAPI,
   });
 
-  registerTableLimits({
-    adapterBus,
-    components: snapshotSchema.components,
-  });
-
-  const floatingContainer = document.createElement("div");
-
-  const registeredAdapters: RegisterAdapterResult[] = [];
-
-  for (const adapter of adapters) {
-    const registeredAdapter = adapter({ adapterBus, floatingContainer }, { editor });
-
-    registeredAdapters.push(registeredAdapter);
-  }
-
-  for (const registeredAdapter of registeredAdapters) {
-    const cleanup = registeredAdapter.configure({ editorAPI });
-
-    cleanupList.add(cleanup);
-  }
+  cleanupList.add(adaptersCleanup);
 
   if (placeholder) {
     const placeholderCleanup = handlePlaceholder({ editorAPI, resolvePlaceholder: placeholder });
@@ -88,11 +44,5 @@ export const createEditor = ({
     cleanupList.add(placeholderCleanup);
   }
 
-  const containerStyles = getContainerStyleText();
-
-  const editorContainer = document.createElement("div");
-  editorContainer.classList.add("editor-container");
-  editorContainer.append(host, floatingContainer);
-
-  return { editor, editorContainer, containerStyles };
+  return { editor, editorContainer, containerStyles, storedSnapshotFailed };
 };

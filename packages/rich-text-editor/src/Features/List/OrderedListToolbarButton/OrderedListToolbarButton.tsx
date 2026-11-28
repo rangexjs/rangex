@@ -18,7 +18,7 @@ export const OrderedListToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const disabled = createMemo(
-    () => !($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.checked(),
+    () => !($list.isSelectionActive() || $list.canWrap()) || !!$readOnly?.isEnabled(),
   );
 
   const onClick = () => {

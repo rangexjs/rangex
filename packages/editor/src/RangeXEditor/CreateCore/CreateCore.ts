@@ -1,65 +1,53 @@
-import {
-  type CreateFallbackRootEditable,
-  createEditorAPI,
-  migrateStoredSnapshot,
-} from "@rangex/core";
+import { type CreateFallbackRootEditable, createEditorAPI } from "@rangex/core";
 
 import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
-import { validateSnapshot } from "#snapshot";
 
+import { buildEditorStyleText } from "../../Styles";
+import { resolveStoredSnapshot } from "../ResolveStoredSnapshot";
 import type {
   CreateCoreParams,
-  ResolveStoredSnapshotParams,
-  ResolveStoredSnapshotResult,
+  CreateCoreResult,
+  CreateFallbackRootEditableFnParams,
+  ResolveInitialStoredSnapshotParams,
+  ResolveInitialStoredSnapshotResult,
 } from "./CreateCore-types";
 import { createRoot } from "./CreateRoot";
 
 /*
- * Migrates the given snapshot, then validates it by the SnapshotSchema. Resolves to the copy to load, or to null if it
- * can't be loaded, which makes the editor start from a new root instead.
+ * Resolves the snapshot the editor starts with: the given one once it's migrated and validated, or null if none was given
+ * or it can't be loaded. The failure is kept to tell the consumer why.
  */
-const resolveStoredSnapshot = ({
+const resolveInitialStoredSnapshot = ({
   storedSnapshot,
   snapshotSchema,
-}: ResolveStoredSnapshotParams): ResolveStoredSnapshotResult => {
+}: ResolveInitialStoredSnapshotParams): ResolveInitialStoredSnapshotResult => {
   if (!storedSnapshot) {
-    return null;
+    return { resolvedStoredSnapshot: null, resolvedStoredSnapshotFailed: null };
   }
 
-  const migrationResult = migrateStoredSnapshot({
-    storedSnapshot,
-    limits: snapshotSchema.limits,
-  });
+  const resolveResult = resolveStoredSnapshot({ storedSnapshot, snapshotSchema });
 
-  if (!migrationResult.isValid) {
-    console.warn("Snapshot migration failed.", migrationResult.reason);
-
-    return null;
+  if (!resolveResult.isValid) {
+    return {
+      resolvedStoredSnapshot: null,
+      resolvedStoredSnapshotFailed: resolveResult.storedSnapshotFailed,
+    };
   }
 
-  const validationResult = validateSnapshot({
-    ...snapshotSchema,
-    storedSnapshot: migrationResult.storedSnapshot,
-  });
-
-  if (!validationResult.isValid) {
-    console.warn("Snapshot validation failed.", validationResult.reason);
-
-    return null;
-  }
-
-  return validationResult.storedSnapshot;
+  return {
+    resolvedStoredSnapshot: resolveResult.storedSnapshot,
+    resolvedStoredSnapshotFailed: null,
+  };
 };
 
-export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: CreateCoreParams) => {
-  ensureSanitizerConfigured();
-
-  const resolvedStoredSnapshot = resolveStoredSnapshot({
-    storedSnapshot,
-    snapshotSchema,
-  });
-
+/*
+ * Creates the engine's fallback for a snapshot that's missing or can't be loaded: a new root of the schema's first root
+ * type, with one empty paragraph.
+ */
+const createFallbackRootEditableFn = ({
+  snapshotSchema,
+}: CreateFallbackRootEditableFnParams): CreateFallbackRootEditable => {
   const createFallbackRootEditable: CreateFallbackRootEditable = ({ storedSnapshotFailed }) => {
     if (storedSnapshotFailed) {
       console.warn("Snapshot validation failed.", storedSnapshotFailed.reason);
@@ -75,6 +63,28 @@ export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: Creat
     };
   };
 
+  return createFallbackRootEditable;
+};
+
+/*
+ * Creates the engine with the given snapshot once it's migrated and validated, or with a new root if it can't be
+ * loaded. Returns why it couldn't be loaded, if it was given.
+ */
+export const createCore = ({
+  licenseKey,
+  storedSnapshot,
+  snapshotSchema,
+  styles,
+}: CreateCoreParams): CreateCoreResult => {
+  ensureSanitizerConfigured();
+
+  const { resolvedStoredSnapshot, resolvedStoredSnapshotFailed } = resolveInitialStoredSnapshot({
+    storedSnapshot,
+    snapshotSchema,
+  });
+
+  const createFallbackRootEditable = createFallbackRootEditableFn({ snapshotSchema });
+
   const { editorAPI } = createEditorAPI({
     licenseKey,
     storedSnapshot: resolvedStoredSnapshot,
@@ -89,5 +99,9 @@ export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: Creat
 
   editorAPI.host.classList.add("editor-host");
 
-  return { editorAPI };
+  const editorStyleText = buildEditorStyleText(styles);
+
+  editorAPI.replaceCustomStyles(editorStyleText);
+
+  return { editorAPI, storedSnapshotFailed: resolvedStoredSnapshotFailed };
 };

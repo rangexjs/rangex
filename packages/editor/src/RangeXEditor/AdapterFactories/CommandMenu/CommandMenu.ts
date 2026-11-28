@@ -1,7 +1,7 @@
 import { type CommandMenuSettings, createCommandMenuAdapter } from "#adapters/CommandMenu";
 import { configureCommandMenu } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const CommandMenu: AdapterFactoryFn<CommandMenuSettings> = (settings) => {
   return (options, { editor }) => {

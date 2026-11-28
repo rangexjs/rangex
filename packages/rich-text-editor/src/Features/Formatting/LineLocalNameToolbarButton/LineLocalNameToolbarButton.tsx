@@ -74,7 +74,7 @@ export const LineLocalNameToolbarButton = () => {
     });
   });
 
-  const disabled = createMemo(() => $lineLocalName.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $lineLocalName.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

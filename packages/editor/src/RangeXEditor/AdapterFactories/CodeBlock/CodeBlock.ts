@@ -1,7 +1,7 @@
 import { type CodeBlockSettings, createCodeBlockAdapter } from "#adapters/CodeBlock";
 import { configureCodeBlock } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const CodeBlock: AdapterFactoryFn<CodeBlockSettings> = (settings) => {
   return (options, { editor }) => {

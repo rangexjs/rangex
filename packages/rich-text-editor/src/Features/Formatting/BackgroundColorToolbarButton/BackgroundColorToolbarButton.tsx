@@ -109,7 +109,7 @@ export const BackgroundColorToolbarButton = () => {
     }
   };
 
-  const disabled = createMemo(() => $backgroundColor.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $backgroundColor.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

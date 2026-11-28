@@ -93,7 +93,7 @@ export const LineSpacingToolbarButton = () => {
     return [defaultItem, ...lineSpacingItems];
   });
 
-  const disabled = createMemo(() => $lineSpacing.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $lineSpacing.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

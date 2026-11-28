@@ -1,7 +1,7 @@
 import { createMentionAdapter, type MentionSettings } from "#adapters/Mention";
 import { configureMention } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Mention: AdapterFactoryFn<MentionSettings> = (settings) => {
   return (options, { editor }) => {

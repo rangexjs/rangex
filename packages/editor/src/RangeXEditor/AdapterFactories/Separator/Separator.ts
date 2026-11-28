@@ -1,7 +1,7 @@
 import { createSeparatorAdapter, type SeparatorSettings } from "#adapters/Separator";
 import { configureSeparator } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Separator: AdapterFactoryFn<SeparatorSettings> = (settings) => {
   return (options, { editor }) => {

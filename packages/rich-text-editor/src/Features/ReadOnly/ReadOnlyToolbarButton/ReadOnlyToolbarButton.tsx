@@ -16,15 +16,15 @@ export const ReadOnlyToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const onClick = () => {
-    readOnly.toggle();
+    readOnly.toggle({});
   };
 
   return (
     <span>
       <ToolbarButton
-        checked={$readOnly.checked()}
+        checked={$readOnly.isEnabled()}
         onClick={onClick}
-        aria-pressed={`${$readOnly.checked()}`}
+        aria-pressed={`${$readOnly.isEnabled()}`}
       >
         <Icon name="LockSimple" title="Read only" class="size-4" />
       </ToolbarButton>

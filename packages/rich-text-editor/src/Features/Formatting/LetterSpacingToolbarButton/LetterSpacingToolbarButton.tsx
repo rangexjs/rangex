@@ -94,7 +94,7 @@ export const LetterSpacingToolbarButton = () => {
     });
   });
 
-  const disabled = createMemo(() => $letterSpacing.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $letterSpacing.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

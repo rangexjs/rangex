@@ -1,7 +1,7 @@
 import { createTodoListAdapter, type TodoListSettings } from "#adapters/TodoList";
 import { configureTodoList } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const TodoList: AdapterFactoryFn<TodoListSettings> = (settings) => {
   return (options, { editor }) => {

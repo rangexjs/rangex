@@ -121,7 +121,7 @@ export const createRichTextEditor = ({
     },
 
     createStoredSnapshot() {
-      return editor.snapshot.createStored();
+      return editor.snapshot.create();
     },
 
     destroy() {

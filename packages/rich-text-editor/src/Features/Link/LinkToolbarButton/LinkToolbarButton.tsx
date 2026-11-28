@@ -37,7 +37,7 @@ export const LinkToolbarButton = () => {
     };
   });
 
-  const disabled = createMemo(() => !$link.canInsert() || !!$readOnly?.checked());
+  const disabled = createMemo(() => !$link.canInsert() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     if (link.selectionMenu.isOpen) {

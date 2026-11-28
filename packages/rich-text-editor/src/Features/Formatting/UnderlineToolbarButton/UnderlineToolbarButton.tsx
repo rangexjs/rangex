@@ -17,7 +17,7 @@ export const UnderlineToolbarButton = () => {
   const $underline = Underline(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $underline.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $underline.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleUnderline();

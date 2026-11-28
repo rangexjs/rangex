@@ -52,7 +52,8 @@ policies override the `basePolicy`'s rules (e.g. to allow `video.poster` only fr
 every previous policy.
 
 `ensureSanitizerConfigured()` applies the `basePolicy` alone if `configureSanitizer` hasn't been called yet, so the
-Sanitizer never runs without rules. It's called before anything that sets attributes or validates them:
+Sanitizer never runs without rules, and logs a warning: the consumer always calls `configureSanitizer`, even without
+policies of their own. It's called before anything that sets attributes or validates them:
 
 - `createCore` (`src/RangeXEditor/CreateCore/`) — every editor instance.
 - `createSnapshotView` (`src/Snapshot/CreateSnapshotView/`) — the editor's wrapper around the engine's, also used by
@@ -64,6 +65,11 @@ Sanitizer never runs without rules. It's called before anything that sets attrib
 - Use `configureSanitizer` from `@rangex/editor/snapshot`, never the engine's: the engine's leaves out the `basePolicy`, and
   `ensureSanitizerConfigured` doesn't know it was called, so the next editor, view or validation replaces those
   policies with the `basePolicy` alone.
-- Call it before creating an editor or a view, or validating a snapshot. The policies apply to every one of them.
+- Call it before creating an editor or a view, or validating a snapshot, even without policies of your own. The
+  policies apply to every one of them.
+- Call it in the module that defines the `SnapshotSchema`, right after the schema, and give views the schema's
+  `limits`. Then every editor, view and validation imports that module, which runs `configureSanitizer` before any of
+  them, once per environment: on the server and in the browser alike. The policies are global, so all the schemas share
+  one such module.
 - Overriding a component's `attrValidators` can't get around the Sanitizer: every validator runs `canSetAttribute`
   first (see [DOMAttrs](DOMAttrs.md#validators)). Only a `SanitizerPolicy` can allow what the `basePolicy` blocks.

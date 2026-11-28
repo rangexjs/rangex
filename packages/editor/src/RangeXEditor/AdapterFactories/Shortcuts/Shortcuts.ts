@@ -1,7 +1,7 @@
 import { createShortcutsAdapter, type ShortcutsSettings } from "#adapters/Shortcuts";
 import { configureShortcuts } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Shortcuts: AdapterFactoryFn<ShortcutsSettings> = (settings) => {
   return (options, { editor }) => {

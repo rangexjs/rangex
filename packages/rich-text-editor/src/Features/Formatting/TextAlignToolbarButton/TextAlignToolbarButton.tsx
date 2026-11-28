@@ -69,7 +69,7 @@ export const TextAlignToolbarButton = () => {
     formatting.setTextAlign(textAlignValue === "start" ? null : textAlignValue);
   };
 
-  const disabled = createMemo(() => $textAlign.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $textAlign.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

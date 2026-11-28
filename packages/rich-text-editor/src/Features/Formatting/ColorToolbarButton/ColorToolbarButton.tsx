@@ -109,7 +109,7 @@ export const ColorToolbarButton = () => {
     }
   };
 
-  const disabled = createMemo(() => $color.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $color.disabled() || !!$readOnly?.isEnabled());
 
   return (
     <span>

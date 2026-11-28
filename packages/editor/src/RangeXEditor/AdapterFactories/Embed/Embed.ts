@@ -1,7 +1,7 @@
 import { createEmbedAdapter, type EmbedSettings } from "#adapters/Embed";
 import { configureEmbed } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Embed: AdapterFactoryFn<EmbedSettings> = (settings) => {
   return (options, { editor }) => {

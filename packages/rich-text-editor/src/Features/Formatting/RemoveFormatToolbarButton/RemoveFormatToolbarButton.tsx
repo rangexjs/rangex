@@ -17,7 +17,7 @@ export const RemoveFormatToolbarButton = () => {
   const $removeFormat = RemoveFormat(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $removeFormat.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $removeFormat.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.removeLineFormat();

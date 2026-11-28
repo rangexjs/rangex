@@ -17,7 +17,7 @@ export const SuperscriptToolbarButton = () => {
   const $superscript = Superscript(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $superscript.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $superscript.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleSuperscript();

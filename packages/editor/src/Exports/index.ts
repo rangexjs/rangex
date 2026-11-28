@@ -1,6 +1,7 @@
 export type {
   BlockContentLineLocalName,
   EditorAPI,
+  FailedStoredSnapshotValidation,
   ScopedEditablePlaceholder,
   ScopedEditablePlaceholderCondition,
   ScopedEditablePlaceholderOptions,
@@ -45,14 +46,18 @@ export type {
 } from "#dom-attrs";
 export type {
   AdapterFactoryValue,
+  ContentNamespace,
   CreateEditorParams,
   CreateEditorResult,
+  LoadSnapshotResult,
+  OnContentChangeCallbackFn,
   PlaceholderComponentName,
   PlaceholderContext,
   PlaceholderLine,
   PlaceholderOwner,
   RangeXEditor,
   ResolvePlaceholderFn,
+  SnapshotNamespace,
 } from "#rangex-editor";
 export { createEditor } from "#rangex-editor";
 export type { SnapshotSchema } from "#snapshot";

@@ -17,7 +17,7 @@ export const StrikethroughToolbarButton = () => {
   const $strikethrough = Strikethrough(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $strikethrough.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $strikethrough.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleStrikethrough();

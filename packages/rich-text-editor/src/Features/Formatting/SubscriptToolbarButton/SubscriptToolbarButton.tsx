@@ -17,7 +17,7 @@ export const SubscriptToolbarButton = () => {
   const $subscript = Subscript(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $subscript.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $subscript.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleSubscript();

@@ -107,7 +107,7 @@ export const FindReplaceToolbarButton = () => {
     },
   );
 
-  const replaceDisabled = createMemo(() => replaceButtonDisabled() || !!$readOnly?.checked());
+  const replaceDisabled = createMemo(() => replaceButtonDisabled() || !!$readOnly?.isEnabled());
 
   const findInputAnchorName = "--find-input-anchor-name";
 

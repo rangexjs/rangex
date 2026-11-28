@@ -17,7 +17,7 @@ export const BoldToolbarButton = () => {
   const $bold = Bold(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $bold.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $bold.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleBold();

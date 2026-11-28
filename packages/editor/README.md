@@ -59,14 +59,33 @@ const unsubscribe = editor.undoRedo?.onCanStepBackUpdate((canStepBack) => {
 ## Save and restore
 
 ```ts
-const storedSnapshot = editor.snapshot.createStored(); // plain JSON, ready to store
+const storedSnapshot = editor.snapshot.create(); // plain JSON, ready to store
 
-createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters, styles });
+// Later, e.g. on the next page load
+const { storedSnapshotFailed } = createEditor({ licenseKey, storedSnapshot, snapshotSchema, adapters, styles });
 ```
 
-A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty and logs a warning. Saving then replaces the stored snapshot with the empty content.
+A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts empty, logs a warning, and `storedSnapshotFailed` holds the `reason`. Check it before saving, or saving replaces the stored snapshot with the empty content.
+
+To open another snapshot in a running editor, use `editor.snapshot.load(storedSnapshot)`. It replaces the content and clears the undo history. An invalid snapshot leaves the editor unchanged and returns the failure, `null` otherwise.
 
 Call `editor.destroy()` when you remove the editor.
+
+## Snapshot schema and XSS rules
+
+Define `snapshotSchema` in its own module and call `configureSanitizer` in that same module. Editors, views and `validateSnapshot` all need the schema (views its `limits`), so importing it sets your XSS rules before any of them runs, on the server and in the browser alike.
+
+```ts
+// snapshot-schema.ts
+import type { SnapshotSchema } from "@rangex/editor";
+import { configureSanitizer } from "@rangex/editor/snapshot";
+
+export const snapshotSchema: SnapshotSchema = { limits, root, components };
+
+configureSanitizer(...sanitizerPolicies); // your SanitizerPolicies, if any; the built-in XSS rules always apply
+```
+
+The rules are global: one call applies to every editor, view and validation. Call it even without policies of your own: an editor, view or validation that runs before it logs a warning and uses the built-in rules alone.
 
 ## Render without an editor
 

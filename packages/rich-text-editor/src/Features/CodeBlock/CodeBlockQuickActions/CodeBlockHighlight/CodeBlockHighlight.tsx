@@ -127,7 +127,7 @@ export const CodeBlockHighlight = (props: CodeBlockHighlightProps) => {
         command="toggle-popover"
         class="btn-menu-trigger flex items-center justify-center rounded p-1"
         aria-label="Code block options"
-        disabled={props.readOnly?.checked()}
+        disabled={props.readOnly?.isEnabled()}
       >
         <Icon name="DotsThreeHorizontal" class="size-4" />
       </button>

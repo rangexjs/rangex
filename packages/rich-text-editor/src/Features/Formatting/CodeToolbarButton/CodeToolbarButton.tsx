@@ -17,7 +17,7 @@ export const CodeToolbarButton = () => {
   const $code = Code(formatting);
   const $readOnly = ReadOnly(readOnly);
 
-  const disabled = createMemo(() => $code.disabled() || !!$readOnly?.checked());
+  const disabled = createMemo(() => $code.disabled() || !!$readOnly?.isEnabled());
 
   const onClick = () => {
     formatting.toggleCode();

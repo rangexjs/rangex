@@ -64,6 +64,22 @@ A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts e
 
 Call `richTextEditor.destroy()` when you remove the editor.
 
+## Snapshot schema and XSS rules
+
+Define `snapshotSchema` in its own module and call `configureSanitizer` in that same module. Editors, views and `validateSnapshot` all need the schema (views its `limits`), so importing it sets your XSS rules before any of them runs, on the server and in the browser alike.
+
+```ts
+// snapshot-schema.ts
+import type { SnapshotSchema } from "@rangex/rich-text-editor";
+import { configureSanitizer } from "@rangex/rich-text-editor/snapshot";
+
+export const snapshotSchema: SnapshotSchema = { limits, root, components };
+
+configureSanitizer(...sanitizerPolicies); // your SanitizerPolicies, if any; the built-in XSS rules always apply
+```
+
+The rules are global: one call applies to every editor, view and validation. Call it even without policies of your own: an editor, view or validation that runs before it logs a warning and uses the built-in rules alone.
+
 ## Display saved content
 
 `createRichTextHTMLView` turns a stored snapshot into an HTML string plus its styles, using the same styling as the editor.
