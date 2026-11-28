@@ -13,9 +13,11 @@ import type {
 } from "#dom-attrs";
 import type { FileId } from "#storage";
 
-import type { mediaTypes } from "./AdapterBus";
+import type { sourceTypes } from "./AdapterBus";
 
-export type MediaType = (typeof mediaTypes)[number];
+export type SourceType = (typeof sourceTypes)[number];
+
+export type MediaType = Exclude<SourceType, "embed">;
 
 /*
  * The attribute validators of each Adapter whose component has attributes, by Adapter name
@@ -33,15 +35,15 @@ export interface AttrValidatorsByAdapter {
 export type AttrValidatorsAdapterName = keyof AttrValidatorsByAdapter;
 
 /*
- * The resolved media, with every attribute of its component. An image, video or audio also carries its file's id in the
- * app's storage, or null when it isn't an uploaded file.
+ * The resolved source, with every attribute of its component. An image, video or audio also carries its file's id in
+ * the app's storage, or null when it isn't an uploaded file.
  */
-export type MediaResolveDetail =
+export type SourceResolveDetail =
   | { type: "image"; attrs: ImageAttrs; fileId: FileId }
   | { type: "video"; attrs: VideoAttrs; fileId: FileId }
   | { type: "audio"; attrs: AudioAttrs; fileId: FileId }
   | { type: "embed"; attrs: EmbedAttrs };
 
-export type OnMediaResolveCallbackFn = (params: MediaResolveDetail) => void;
+export type OnSourceResolveCallbackFn = (params: SourceResolveDetail) => void;
 
 export type OnSwapToSourcePlaceholderCallbackFn = () => void;

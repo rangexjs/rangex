@@ -2,8 +2,8 @@ import { createImage } from "../../_Utilities";
 import type { HandleImageInsertionParams } from "./HandleImageInsertion-types";
 
 /*
- * Inserts a real image block at the caret whenever media resolution reports a resolved image
- * source, ignoring resolutions for other media types.
+ * Inserts a real image block at the caret whenever source resolution reports a resolved image
+ * source, ignoring resolutions for other source types.
  */
 export const handleImageInsertion = ({
   configPort,
@@ -13,7 +13,7 @@ export const handleImageInsertion = ({
   const snapshotTimeline = editorAPI.getSnapshotTimeline();
   const selection = editorAPI.getEditorSelection();
 
-  const unsubscribe = configPort.onMediaResolve((params) => {
+  const unsubscribe = configPort.onSourceResolve((params) => {
     if (params.type !== "image") {
       return;
     }

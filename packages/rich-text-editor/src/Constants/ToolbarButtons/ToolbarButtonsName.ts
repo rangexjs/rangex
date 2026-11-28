@@ -14,7 +14,7 @@ export const toolbarButtonsName = {
   historyBack: "history-back",
   historyForward: "history-forward",
   indentation: "indentation",
-  media: "media",
+  sourcePlaceholder: "source-placeholder",
   readOnly: "read-only",
   italic: "italic",
   letterSpacing: "letter-spacing",

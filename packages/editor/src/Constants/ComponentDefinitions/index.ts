@@ -4,7 +4,7 @@ export * from "./BlockQuoteDefinition";
 export * from "./CodeBlockDefinition";
 export * from "./LinkDefinition";
 export * from "./ListDefinition";
-export * from "./MediaCaptionDefinition";
+export * from "./SourceCaptionDefinition";
 export * from "./MentionDefinition";
 export * from "./TableDefinition";
 export * from "./TemplateVariableDefinition";

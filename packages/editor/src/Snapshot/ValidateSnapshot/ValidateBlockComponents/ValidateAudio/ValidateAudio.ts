@@ -2,7 +2,7 @@ import { componentsName } from "#constants";
 import { audioAttrsShape, createAudioAttrValidators } from "#dom-attrs";
 import { audioStoragePattern } from "#storage";
 
-import { validateMediaComponent } from "../_Utilities";
+import { validateSourceComponent } from "../_Utilities";
 import type {
   CreateAudioValidatorParams,
   CreateAudioValidatorResult,
@@ -11,23 +11,23 @@ import type {
 } from "./ValidateAudio-types";
 
 /*
- * Validates an Audio as a media component (see validateMediaComponent), with `audio` as its media element.
+ * Validates an Audio as a source component (see validateSourceComponent), with `audio` as its source element.
  */
 const validateAudio = ({
   componentDraft,
   attrValidators,
 }: ValidateAudioParams): ValidateAudioResult => {
-  const audioFailed = validateMediaComponent({
+  const audioFailed = validateSourceComponent({
     componentDraft,
     name: componentsName.audio,
     customStorage: audioStoragePattern,
-    mediaLocalName: "audio",
+    sourceElementLocalName: "audio",
     lineAttrsShape: audioAttrsShape.line,
     lineAttrValidators: attrValidators.line,
     blockAttrsShape: audioAttrsShape.block,
     blockAttrValidators: attrValidators.block,
-    mediaAttrsShape: audioAttrsShape.audio,
-    mediaAttrValidators: attrValidators.audio,
+    sourceElementAttrsShape: audioAttrsShape.audio,
+    sourceElementAttrValidators: attrValidators.audio,
   });
 
   if (audioFailed) {

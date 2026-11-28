@@ -1,4 +1,4 @@
-export type { MediaResolveDetail } from "#adapters";
+export type { SourceResolveDetail } from "#adapters";
 export type {
   ResolveOption,
   SourcePlaceholderPublicPort,

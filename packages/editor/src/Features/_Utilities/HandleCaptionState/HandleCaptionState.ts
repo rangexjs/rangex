@@ -1,9 +1,9 @@
 import type { HandleCaptionStateParams } from "./HandleCaptionState-types";
 
 /*
- * Keeps the port's caption state in sync with the current media block and applies caption toggle
+ * Keeps the port's caption state in sync with the current source component and applies caption toggle
  * and position changes to its figure, registering a snapshot boundary after each change.
- * The figure/caption accessors are injected since their DOM shape varies by media type.
+ * The figure/caption accessors are injected since their DOM shape varies by source type.
  */
 export const handleCaptionState = ({
   port,

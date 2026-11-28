@@ -1,8 +1,8 @@
-import type { CreateAdapterParams, MediaResolveDetail, MediaType } from "../_Utilities";
+import type { CreateAdapterParams, SourceResolveDetail, SourceType } from "../_Utilities";
 
 export interface ResolveOption {
   element: HTMLDivElement;
-  detail: MediaResolveDetail;
+  detail: SourceResolveDetail;
 }
 
 export interface SourcePlaceholderState {
@@ -33,7 +33,7 @@ export interface SourcePlaceholderConfigPortProps {
   onSwap(callback: OnSwapCallbackFn): () => void;
   onResolve(callback: OnResolveCallbackFn): () => void;
 
-  emitMediaResolve(detail: MediaResolveDetail): void;
+  emitSourceResolve(detail: SourceResolveDetail): void;
 }
 
 export interface SourcePlaceholderConfigPort extends SourcePlaceholderConfigPortProps {}
@@ -42,7 +42,7 @@ export type RegisterSlottedElementCallbackFn = (container: HTMLDivElement) => ()
 
 export interface SourcePlaceholderPublicPortProps {
   readonly canInsert: boolean;
-  readonly supportedMediaTypes: MediaType[];
+  readonly supportedSourceTypes: SourceType[];
 
   registerSlottedElement(callback: RegisterSlottedElementCallbackFn): void;
 

@@ -1,17 +1,12 @@
 import type { BlockComponentDraft, StoredSnapshot } from "@rangex/core";
 
-import type { componentsName } from "#constants";
+import type { MediaType } from "#adapters";
 import type { AudioStorage, FileId, ImageStorage, VideoStorage } from "#storage";
-
-export type FileType =
-  | typeof componentsName.image
-  | typeof componentsName.video
-  | typeof componentsName.audio;
 
 export type FileStorage = ImageStorage | VideoStorage | AudioStorage;
 
 export interface FileSource {
-  type: FileType;
+  type: MediaType;
   src: string;
   fileId: FileId;
 }

@@ -30,7 +30,7 @@ const blockComponentItems: BlockComponentItems = {
   "block-quote": componentsName.blockQuote,
   "code-block": componentsName.codeBlock,
   table: componentsName.table,
-  media: componentsName.sourcePlaceholder,
+  "source-placeholder": componentsName.sourcePlaceholder,
   "accordion-item": componentsName.accordionItem,
   separator: componentsName.separator,
 };

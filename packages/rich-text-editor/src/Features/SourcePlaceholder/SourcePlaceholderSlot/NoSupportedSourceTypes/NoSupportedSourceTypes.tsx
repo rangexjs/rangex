@@ -1,0 +1,12 @@
+import { Icon } from "#ui";
+
+export const NoSupportedSourceTypes = () => (
+  <div class="flex flex-col items-center gap-1 rounded-lg border border-dashed border-neutral-300 p-4 text-center text-sm text-neutral-500 dark:border-neutral-700 dark:text-neutral-400">
+    <Icon name="WarningCircle" class="size-6" />
+    <span>No media or embeds are available</span>
+    <span class="text-xs">
+      This editor has no Image, Video, Audio, or Embed extension registered — add at least one to
+      the `extensions` array passed to createRichTextEditor to enable media or embed insertion.
+    </span>
+  </div>
+);

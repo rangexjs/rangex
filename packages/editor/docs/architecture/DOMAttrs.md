@@ -20,13 +20,13 @@ SourcePlaceholder's `resolve` (the rich-text-editor's `transformEmbedURL` settin
 share link to its embed URL, which repairs a stored snapshot. The dev view's `src/ExtensionSettings/Embed/` is an example
 (YouTube, Vimeo, Spotify, Loom, Dailymotion, CodePen).
 
-Media is inserted with every attribute of its component, as Link is: `sourcePlaceholder.resolve({ element, detail })` takes
-`{ type, attrs }` (`MediaResolveDetail`), with the media element's `src` as a URL: uploading a file and checking that
-the media loads are the consumer's, before they call `resolve`. An image, video or audio also takes `fileId`, the
+A source is inserted with every attribute of its component, as Link is: `sourcePlaceholder.resolve({ element, detail })` takes
+`{ type, attrs }` (`SourceResolveDetail`), with the source element's `src` as a URL: uploading a file and checking that
+^the source loads are the consumer's, before they call `resolve`. An image, video or audio also takes `fileId`, the
 uploaded file's id in the consumer's storage (null for media from a link), which the component's storage keeps and
 `getFileSources` returns with its `src`. SourcePlaceholder validates the attributes by the component's
 validators (`adapterBus.getAttrValidators(type)`), and only then replaces the placeholder: invalid attributes are
-ignored, so the consumer should check them first (`validateDOMAttrs` of the media's port) to report why. The
+ignored, so the consumer should check them first (`validateDOMAttrs` of the component's port) to report why. The
 component's `create*` takes the complete attributes, with no defaults of its own.
 
 ## Rules

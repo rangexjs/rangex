@@ -3,7 +3,7 @@ import { videoAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-  getMediaParts,
+  getSourceComponentParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
   handleCaptionPlaceholder,
@@ -84,12 +84,12 @@ export const configureVideo = ({ adapterBus, configPort, editorAPI }: ConfigureV
     componentAttrsShape: videoAttrsShape,
     componentAttrValidators: configPort.attrValidators,
     resolveElements: (video) => {
-      const { line, block, media } = getMediaParts({
+      const { line, block, sourceElement } = getSourceComponentParts({
         blockComponent: video,
-        mediaLocalName: "video",
+        sourceElementLocalName: "video",
       });
 
-      return { line, block, video: media };
+      return { line, block, video: sourceElement };
     },
   });
 

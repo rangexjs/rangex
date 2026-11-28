@@ -1,12 +1,10 @@
-import type { MediaType } from "@rangex/editor";
-
-export type ProbeableMediaType = "image" | "video" | "audio";
+import type { MediaType, SourceType } from "@rangex/editor";
 
 export interface ProbeMediaTypeParams {
   src: string;
-  supportedMediaTypes: MediaType[];
+  supportedSourceTypes: SourceType[];
   signal?: AbortSignal;
   timeoutMs?: number;
 }
 
-export type ProbeMediaTypeResult = Promise<ProbeableMediaType | null>;
+export type ProbeMediaTypeResult = Promise<MediaType | null>;

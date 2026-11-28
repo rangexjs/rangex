@@ -3,7 +3,7 @@ import { embedAttrsShape } from "#dom-attrs";
 import { createBlockComponentPlacement } from "#engine-links";
 
 import {
-  getMediaParts,
+  getSourceComponentParts,
   handleBlockAlignState,
   handleBlockResizeAppearance,
   handleCaptionPlaceholder,
@@ -84,12 +84,12 @@ export const configureEmbed = ({ adapterBus, configPort, editorAPI }: ConfigureE
     componentAttrsShape: embedAttrsShape,
     componentAttrValidators: configPort.attrValidators,
     resolveElements: (embed) => {
-      const { line, block, media } = getMediaParts({
+      const { line, block, sourceElement } = getSourceComponentParts({
         blockComponent: embed,
-        mediaLocalName: "iframe",
+        sourceElementLocalName: "iframe",
       });
 
-      return { line, block, iframe: media };
+      return { line, block, iframe: sourceElement };
     },
   });
 

@@ -1,10 +1,8 @@
-import type {
-  ProbeableMediaType,
-  ProbeMediaTypeParams,
-  ProbeMediaTypeResult,
-} from "./ProbeMediaType-types";
+import type { MediaType } from "@rangex/editor";
 
-type MediaElementType = Exclude<ProbeableMediaType, "image">;
+import type { ProbeMediaTypeParams, ProbeMediaTypeResult } from "./ProbeMediaType-types";
+
+type MediaElementType = Exclude<MediaType, "image">;
 
 const defaultTimeoutMs = 15_000;
 
@@ -88,9 +86,7 @@ const loadMediaElement = (
 /*
  * Resolves the first probe's type that isn't null, or null once every probe resolved null.
  */
-const findFirstType = (
-  probes: Promise<ProbeableMediaType | null>[],
-): Promise<ProbeableMediaType | null> =>
+const findFirstType = (probes: Promise<MediaType | null>[]): Promise<MediaType | null> =>
   new Promise((resolve) => {
     let pendingCount = probes.length;
 
@@ -122,28 +118,28 @@ const findFirstType = (
  */
 export const probeMediaType = async ({
   src,
-  supportedMediaTypes,
+  supportedSourceTypes,
   signal,
   timeoutMs = defaultTimeoutMs,
 }: ProbeMediaTypeParams): ProbeMediaTypeResult => {
   const settledController = new AbortController();
   const probeSignal = createProbeSignal([signal, settledController.signal], timeoutMs);
 
-  const probes: Promise<ProbeableMediaType | null>[] = [];
+  const probes: Promise<MediaType | null>[] = [];
 
-  if (supportedMediaTypes.includes("image")) {
+  if (supportedSourceTypes.includes("image")) {
     const imageProbe = loadImage(src, probeSignal).then((loaded) => (loaded ? "image" : null));
 
     probes.push(imageProbe);
   }
 
-  if (supportedMediaTypes.includes("video") || supportedMediaTypes.includes("audio")) {
+  if (supportedSourceTypes.includes("video") || supportedSourceTypes.includes("audio")) {
     const mediaElementProbe = loadMediaElement(src, probeSignal).then((type) => {
       if (type === null) {
         return null;
       }
 
-      return supportedMediaTypes.includes(type) ? type : null;
+      return supportedSourceTypes.includes(type) ? type : null;
     });
 
     probes.push(mediaElementProbe);

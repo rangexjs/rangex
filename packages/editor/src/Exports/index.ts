@@ -15,6 +15,7 @@ export type {
   ChangeDOMAttrsResult,
   InsertRootLinePosition,
   MediaType,
+  SourceType,
   OnDOMAttrsUpdateCallbackFn,
   ValidateDOMAttrsResult,
 } from "#adapters";

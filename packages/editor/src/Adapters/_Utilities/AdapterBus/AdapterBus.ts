@@ -5,12 +5,12 @@ import type { AdapterName } from "../Utilities-types";
 import type {
   AttrValidatorsAdapterName,
   AttrValidatorsByAdapter,
-  MediaResolveDetail,
-  OnMediaResolveCallbackFn,
+  SourceResolveDetail,
+  OnSourceResolveCallbackFn,
   OnSwapToSourcePlaceholderCallbackFn,
 } from "./AdapterBus-types";
 
-export const mediaTypes = ["audio", "embed", "image", "video"] satisfies AdapterName[];
+export const sourceTypes = ["audio", "embed", "image", "video"] satisfies AdapterName[];
 
 /**
  * Lets Adapters talk to each other and share what they provide (e.g. which Adapters the editor was built with), without
@@ -28,7 +28,7 @@ export class AdapterBus {
 
   #tableLimits: TableLimits | null = null;
 
-  #mediaResolveEmitter = createEmitter<OnMediaResolveCallbackFn>();
+  #sourceResolveEmitter = createEmitter<OnSourceResolveCallbackFn>();
   #swapToSourcePlaceholderEmitter = createEmitter<OnSwapToSourcePlaceholderCallbackFn>();
 
   registerAdapter(name: AdapterName) {
@@ -74,12 +74,12 @@ export class AdapterBus {
     return this.#tableLimits;
   }
 
-  onMediaResolve(callback: OnMediaResolveCallbackFn) {
-    return this.#mediaResolveEmitter.subscribe(callback);
+  onSourceResolve(callback: OnSourceResolveCallbackFn) {
+    return this.#sourceResolveEmitter.subscribe(callback);
   }
 
-  emitMediaResolve(params: MediaResolveDetail) {
-    this.#mediaResolveEmitter.emit(params);
+  emitSourceResolve(params: SourceResolveDetail) {
+    this.#sourceResolveEmitter.emit(params);
   }
 
   onSwapToSourcePlaceholder(callback: OnSwapToSourcePlaceholderCallbackFn) {

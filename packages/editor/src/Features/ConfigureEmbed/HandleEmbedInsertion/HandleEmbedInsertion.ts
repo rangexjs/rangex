@@ -2,8 +2,8 @@ import { createEmbed } from "../../_Utilities";
 import type { HandleEmbedInsertionParams } from "./HandleEmbedInsertion-types";
 
 /*
- * Inserts a real embed block at the caret whenever media resolution reports a resolved embed
- * source, ignoring resolutions for other media types.
+ * Inserts a real embed block at the caret whenever source resolution reports a resolved embed
+ * source, ignoring resolutions for other source types.
  */
 export const handleEmbedInsertion = ({
   configPort,
@@ -13,7 +13,7 @@ export const handleEmbedInsertion = ({
   const snapshotTimeline = editorAPI.getSnapshotTimeline();
   const selection = editorAPI.getEditorSelection();
 
-  const unsubscribe = configPort.onMediaResolve((params) => {
+  const unsubscribe = configPort.onSourceResolve((params) => {
     if (params.type !== "embed") {
       return;
     }

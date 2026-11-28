@@ -7,7 +7,7 @@ import { watchSourcePlaceholder } from "./WatchSourcePlaceholder";
 
 /*
  * Wires up the source placeholder placeholder component: toolbar button state, insertion, and
- * watching placed blocks to resolve their final media source. Returns a cleanup function.
+ * watching placed blocks to resolve their final source. Returns a cleanup function.
  */
 export const configureSourcePlaceholder = ({
   adapterBus,

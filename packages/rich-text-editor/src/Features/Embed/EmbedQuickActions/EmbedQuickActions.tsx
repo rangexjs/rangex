@@ -19,7 +19,7 @@ import {
   aspectRatioAttrName,
   BlockAlign,
   isAspectRatioValue,
-  MediaSource,
+  SourceUrl,
   OptionDropdown,
   type OptionDropdownOption,
 } from "../../_Utilities";
@@ -114,12 +114,12 @@ export const EmbedQuickActions = () => {
 
   let blockAlignPopover: HTMLDivElement | undefined;
   let optionsPopover: HTMLDivElement | undefined;
-  let mediaSourcePopover: HTMLDivElement | undefined;
+  let sourceUrlPopover: HTMLDivElement | undefined;
 
   const optionsPopoverId = createUniqueId();
 
   const closeNestedPopovers = () => {
-    const nestedPopovers = [blockAlignPopover, mediaSourcePopover, optionsPopover];
+    const nestedPopovers = [blockAlignPopover, sourceUrlPopover, optionsPopover];
 
     for (const nestedPopover of nestedPopovers) {
       if (!nestedPopover) {
@@ -168,11 +168,11 @@ export const EmbedQuickActions = () => {
           <Icon name="Swap" class="size-4" />
         </button>
 
-        <MediaSource
+        <SourceUrl
           src={$embed.domAttrs()?.iframe.src ?? null}
           label="Embed source"
           popoverRef={(el) => {
-            mediaSourcePopover = el;
+            sourceUrlPopover = el;
           }}
         />
 

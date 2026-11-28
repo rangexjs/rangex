@@ -11,7 +11,7 @@ export const SourcePlaceholder = (settings: SourcePlaceholderExtensionSettings):
     createAdapter: () => SourcePlaceholderFactory(settings),
     components: {
       toolbarButtons: {
-        [toolbarButtonsName.media]: SourcePlaceholderToolbarButton,
+        [toolbarButtonsName.sourcePlaceholder]: SourcePlaceholderToolbarButton,
       },
       floatingComponents: [],
     },
