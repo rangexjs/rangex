@@ -16,7 +16,7 @@ export const ReadOnlyToolbarButton = () => {
   const $readOnly = ReadOnly(readOnly);
 
   const onClick = () => {
-    readOnly.toggle();
+    readOnly.toggle({});
   };
 
   return (

@@ -50,8 +50,8 @@ export const createReadOnlyAdapter = (
       return checkedState.subscribe(callback);
     },
 
-    toggle() {
-      toggleEmitter.emit(checkedState.get());
+    toggle({ force }) {
+      toggleEmitter.emit({ checked: checkedState.get(), force });
     },
   } satisfies ReadOnlyPublicPortProps);
 

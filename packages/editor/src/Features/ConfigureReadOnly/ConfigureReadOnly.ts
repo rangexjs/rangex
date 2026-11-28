@@ -7,8 +7,8 @@ import type { ConfigureReadOnlyParams } from "./ConfigureReadOnly-types";
 export const configureReadOnly = ({ configPort, editorAPI }: ConfigureReadOnlyParams) => {
   configPort.updateState({ checked: !editorAPI.getIsTextAreaEditable() });
 
-  const unsubscribe = configPort.onToggle((checked) => {
-    const nextChecked = !checked;
+  const unsubscribe = configPort.onToggle(({ checked, force }) => {
+    const nextChecked = force ?? !checked;
 
     editorAPI.setIsTextAreaEditable(!nextChecked);
     configPort.updateState({ checked: nextChecked });
