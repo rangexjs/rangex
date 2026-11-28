@@ -16,12 +16,17 @@ export const configureSanitizer = (...sanitizerPolicies: SanitizerPolicy[]) => {
 };
 
 /*
- * Sets the basePolicy alone if configureSanitizer hasn't been called yet, so the Sanitizer never runs without rules.
+ * Sets the basePolicy alone, with a warning, if configureSanitizer hasn't been called yet, so the Sanitizer never runs
+ * without rules.
  */
 export const ensureSanitizerConfigured = () => {
   if (isSanitizerConfigured) {
     return;
   }
+
+  console.warn(
+    "configureSanitizer should be called before creating an editor or a view, or validating a snapshot. The basePolicy is applied regardless.",
+  );
 
   configureSanitizer();
 };

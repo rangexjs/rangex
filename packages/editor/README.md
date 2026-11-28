@@ -68,6 +68,22 @@ A snapshot that doesn't match `snapshotSchema` isn't loaded: the editor starts e
 
 Call `editor.destroy()` when you remove the editor.
 
+## Snapshot schema and XSS rules
+
+Define `snapshotSchema` in its own module and call `configureSanitizer` in that same module. Editors, views and `validateSnapshot` all need the schema (views its `limits`), so importing it sets your XSS rules before any of them runs, on the server and in the browser alike.
+
+```ts
+// snapshot-schema.ts
+import type { SnapshotSchema } from "@rangex/editor";
+import { configureSanitizer } from "@rangex/editor/snapshot";
+
+export const snapshotSchema: SnapshotSchema = { limits, root, components };
+
+configureSanitizer(...sanitizerPolicies); // your SanitizerPolicies, if any; the built-in XSS rules always apply
+```
+
+The rules are global: one call applies to every editor, view and validation. Call it even without policies of your own: an editor, view or validation that runs before it logs a warning and uses the built-in rules alone.
+
 ## Render without an editor
 
 `createHTMLView` turns a stored snapshot into an HTML string plus its styles, e.g. to display saved content read-only.
