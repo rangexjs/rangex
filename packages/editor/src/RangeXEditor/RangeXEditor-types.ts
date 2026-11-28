@@ -5,14 +5,14 @@ import type { SnapshotSchema } from "#snapshot";
 
 import type { AdapterFactoryValue } from "./AdapterFactories";
 import type { ResolvePlaceholderFn } from "./HandlePlaceholder";
-import type { Snapshot } from "./Namespaces";
+import type { SnapshotNamespace } from "./Namespaces";
 
 type OptionalPublicPorts = {
   [Key in keyof AdapterPublicPorts]+?: AdapterPublicPorts[Key];
 };
 
 export interface RangeXEditor extends OptionalPublicPorts {
-  readonly snapshot: Snapshot;
+  readonly snapshot: SnapshotNamespace;
   focus(): void;
   destroy(): void;
 }

@@ -1,4 +1,4 @@
-import { Snapshot } from "../Namespaces";
+import { createSnapshotNamespace } from "../Namespaces";
 import type { RangeXEditor } from "../RangeXEditor-types";
 import type { CreateRangeXEditorParams } from "./CreateRangeXEditor-types";
 
@@ -10,7 +10,7 @@ export const createRangeXEditor = ({
   editorAPI,
   cleanupList,
 }: CreateRangeXEditorParams): RangeXEditor => {
-  const snapshot = new Snapshot({ editorAPI });
+  const snapshot = createSnapshotNamespace({ editorAPI });
 
   const editor: RangeXEditor = {
     get snapshot() {

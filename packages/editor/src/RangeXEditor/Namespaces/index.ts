@@ -1,1 +1,1 @@
-export * from "./Snapshot";
+export * from "./SnapshotNamespace";
