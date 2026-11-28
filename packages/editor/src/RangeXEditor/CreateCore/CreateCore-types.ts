@@ -13,4 +13,5 @@ export interface CreateCoreParams {
   licenseKey: string;
   storedSnapshot: StoredSnapshot | undefined;
   snapshotSchema: SnapshotSchema;
+  styles: string;
 }

@@ -8,6 +8,7 @@ import { glyphFormatterInlineTagsOrder } from "#constants";
 import { ensureSanitizerConfigured } from "#sanitizer";
 import { validateSnapshot } from "#snapshot";
 
+import { buildEditorStyleText } from "../../Styles";
 import type {
   CreateCoreParams,
   ResolveStoredSnapshotParams,
@@ -52,7 +53,12 @@ const resolveStoredSnapshot = ({
   return validationResult.storedSnapshot;
 };
 
-export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: CreateCoreParams) => {
+export const createCore = ({
+  licenseKey,
+  storedSnapshot,
+  snapshotSchema,
+  styles,
+}: CreateCoreParams) => {
   ensureSanitizerConfigured();
 
   const resolvedStoredSnapshot = resolveStoredSnapshot({
@@ -88,6 +94,10 @@ export const createCore = ({ licenseKey, storedSnapshot, snapshotSchema }: Creat
   });
 
   editorAPI.host.classList.add("editor-host");
+
+  const editorStyleText = buildEditorStyleText(styles);
+
+  editorAPI.replaceCustomStyles(editorStyleText);
 
   return { editorAPI };
 };

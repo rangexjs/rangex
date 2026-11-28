@@ -1,7 +1,7 @@
 import { createUndoRedoAdapter, type UndoRedoSettings } from "#adapters/UndoRedo";
 import { configureUndoRedo } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const UndoRedo: AdapterFactoryFn<UndoRedoSettings> = (settings) => {
   return (options, { editor }) => {

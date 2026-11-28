@@ -1,7 +1,7 @@
 import { createMarkdownAdapter, type MarkdownSettings } from "#adapters/Markdown";
 import { configureMarkdown } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Markdown: AdapterFactoryFn<MarkdownSettings> = (settings) => {
   return (options, { editor }) => {

@@ -1,7 +1,7 @@
 import { createListAdapter, type ListSettings } from "#adapters/List";
 import { configureList } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const List: AdapterFactoryFn<ListSettings> = (settings) => {
   return (options, { editor }) => {

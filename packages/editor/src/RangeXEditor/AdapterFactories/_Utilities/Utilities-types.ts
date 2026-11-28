@@ -1,3 +1,8 @@
+import type { EditorAPI } from "@rangex/core";
+
+import type { AdapterOptions } from "#adapters";
+
+import type { RangeXEditor } from "../../RangeXEditor-types";
 import type { AccordionItem } from "../AccordionItem";
 import type { Audio } from "../Audio";
 import type { BlockQuote } from "../BlockQuote";
@@ -52,3 +57,24 @@ export type AdapterFactory =
   | typeof Video;
 
 export type AdapterFactoryValue = ReturnType<AdapterFactory>;
+
+export interface AdapterContext {
+  editor: RangeXEditor;
+}
+
+export interface ConfigureAdapterContext {
+  editorAPI: EditorAPI;
+}
+
+export type ConfigureAdapterResult = () => void;
+
+export interface RegisterAdapterResult {
+  configure(context: ConfigureAdapterContext): ConfigureAdapterResult;
+}
+
+export type RegisterAdapterFn = (
+  options: AdapterOptions,
+  context: AdapterContext,
+) => RegisterAdapterResult;
+
+export type AdapterFactoryFn<Settings extends object> = (settings: Settings) => RegisterAdapterFn;

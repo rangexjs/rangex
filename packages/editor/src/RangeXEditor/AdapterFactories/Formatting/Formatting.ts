@@ -1,7 +1,7 @@
 import { createFormattingAdapter, type FormattingSettings } from "#adapters/Formatting";
 import { configureFormatting } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const Formatting: AdapterFactoryFn<FormattingSettings> = (settings) => {
   return (options, { editor }) => {

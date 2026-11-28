@@ -1,7 +1,7 @@
 import { createFindReplaceAdapter, type FindReplaceSettings } from "#adapters/FindReplace";
 import { configureFindReplace } from "#features";
 
-import type { AdapterFactoryFn } from "../../RangeXEditor-types";
+import type { AdapterFactoryFn } from "../_Utilities";
 
 export const FindReplace: AdapterFactoryFn<FindReplaceSettings> = (settings) => {
   return (options, { editor }) => {
