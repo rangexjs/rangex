@@ -1,10 +1,22 @@
-import type { StoredSnapshot } from "@rangex/core";
+import type { FailedStoredSnapshotValidation, StoredSnapshot } from "@rangex/core";
 
-import type { SnapshotSchema, ValidateSnapshotResult } from "#snapshot";
+import type { SnapshotSchema } from "#snapshot";
 
 export interface ResolveStoredSnapshotParams {
   storedSnapshot: StoredSnapshot;
   snapshotSchema: SnapshotSchema;
 }
 
-export type ResolveStoredSnapshotResult = ValidateSnapshotResult;
+export interface ResolveStoredSnapshotSucceeded {
+  isValid: true;
+  storedSnapshot: StoredSnapshot;
+}
+
+export interface ResolveStoredSnapshotFailed {
+  isValid: false;
+  storedSnapshotFailed: FailedStoredSnapshotValidation;
+}
+
+export type ResolveStoredSnapshotResult =
+  | ResolveStoredSnapshotSucceeded
+  | ResolveStoredSnapshotFailed;

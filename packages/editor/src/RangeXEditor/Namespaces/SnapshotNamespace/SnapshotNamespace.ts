@@ -21,7 +21,7 @@ export const createSnapshotNamespace = ({
       const resolveResult = resolveStoredSnapshot({ storedSnapshot, snapshotSchema });
 
       if (!resolveResult.isValid) {
-        return resolveResult;
+        return resolveResult.storedSnapshotFailed;
       }
 
       const storedSnapshotFailed = editorAPI.loadStoredSnapshot({

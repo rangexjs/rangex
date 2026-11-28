@@ -1,11 +1,24 @@
-import { migrateStoredSnapshot } from "@rangex/core";
+import { type FailedStoredSnapshotValidation, migrateStoredSnapshot } from "@rangex/core";
 
 import { validateSnapshot } from "#snapshot";
 
 import type {
+  ResolveStoredSnapshotFailed,
   ResolveStoredSnapshotParams,
   ResolveStoredSnapshotResult,
 } from "./ResolveStoredSnapshot-types";
+
+// Keeps only the failure's own fields, without the isValid flag of the result it comes from
+const toResolveFailed = ({
+  sourceSnapshot,
+  failedSnapshot,
+  reason,
+}: FailedStoredSnapshotValidation): ResolveStoredSnapshotFailed => {
+  return {
+    isValid: false,
+    storedSnapshotFailed: { sourceSnapshot, failedSnapshot, reason },
+  };
+};
 
 /*
  * Migrates the given snapshot, then validates it by the SnapshotSchema. Resolves to the copy to load, or to the failure
@@ -23,7 +36,9 @@ export const resolveStoredSnapshot = ({
   if (!migrationResult.isValid) {
     console.warn("Snapshot migration failed.", migrationResult.reason);
 
-    return migrationResult;
+    const migrationFailed = toResolveFailed(migrationResult);
+
+    return migrationFailed;
   }
 
   const validationResult = validateSnapshot({
@@ -33,7 +48,11 @@ export const resolveStoredSnapshot = ({
 
   if (!validationResult.isValid) {
     console.warn("Snapshot validation failed.", validationResult.reason);
+
+    const validationFailed = toResolveFailed(validationResult);
+
+    return validationFailed;
   }
 
-  return validationResult;
+  return { isValid: true, storedSnapshot: validationResult.storedSnapshot };
 };

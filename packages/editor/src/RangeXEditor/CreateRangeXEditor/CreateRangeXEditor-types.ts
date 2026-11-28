@@ -7,3 +7,7 @@ export interface CreateRangeXEditorParams {
   snapshotSchema: SnapshotSchema;
   cleanupList: Set<() => void>;
 }
+
+export interface RangeXEditorInternals {
+  isDestroyed: boolean;
+}

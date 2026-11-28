@@ -29,7 +29,10 @@ const resolveInitialStoredSnapshot = ({
   const resolveResult = resolveStoredSnapshot({ storedSnapshot, snapshotSchema });
 
   if (!resolveResult.isValid) {
-    return { resolvedStoredSnapshot: null, resolvedStoredSnapshotFailed: resolveResult };
+    return {
+      resolvedStoredSnapshot: null,
+      resolvedStoredSnapshotFailed: resolveResult.storedSnapshotFailed,
+    };
   }
 
   return {

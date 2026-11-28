@@ -1,10 +1,11 @@
 import { createSnapshotNamespace } from "../Namespaces";
 import type { RangeXEditor } from "../RangeXEditor-types";
-import type { CreateRangeXEditorParams } from "./CreateRangeXEditor-types";
+import type { CreateRangeXEditorParams, RangeXEditorInternals } from "./CreateRangeXEditor-types";
 
 /*
  * Builds the RangeXEditor instance: its namespaces and lifecycle methods. Adapters add their public ports to it later.
- * destroy() runs every cleanup in the given list, including the ones added after this call.
+ * destroy() runs every cleanup in the given list, including the ones added after this call, then destroys the engine.
+ * Calling it again does nothing.
  */
 export const createRangeXEditor = ({
   editorAPI,
@@ -12,6 +13,10 @@ export const createRangeXEditor = ({
   cleanupList,
 }: CreateRangeXEditorParams): RangeXEditor => {
   const snapshot = createSnapshotNamespace({ editorAPI, snapshotSchema });
+
+  const internals: RangeXEditorInternals = {
+    isDestroyed: false,
+  };
 
   const editor: RangeXEditor = {
     get snapshot() {
@@ -23,9 +28,17 @@ export const createRangeXEditor = ({
     },
 
     destroy() {
+      if (internals.isDestroyed) {
+        return;
+      }
+
+      internals.isDestroyed = true;
+
       for (const cleanup of cleanupList) {
         cleanup();
       }
+
+      editorAPI.destroy();
     },
   };
 
