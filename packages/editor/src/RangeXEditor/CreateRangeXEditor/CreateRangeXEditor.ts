@@ -1,4 +1,8 @@
-import { createContentNamespace, createSnapshotNamespace } from "../Namespaces";
+import {
+  createContentNamespace,
+  createSelectionNamespace,
+  createSnapshotNamespace,
+} from "../Namespaces";
 import type { RangeXEditor } from "../RangeXEditor-types";
 import type { CreateRangeXEditorParams, RangeXEditorInternals } from "./CreateRangeXEditor-types";
 
@@ -14,6 +18,8 @@ export const createRangeXEditor = ({
 }: CreateRangeXEditorParams): RangeXEditor => {
   const content = createContentNamespace({ editorAPI });
 
+  const selection = createSelectionNamespace({ editorAPI });
+
   const snapshot = createSnapshotNamespace({ editorAPI, snapshotSchema });
 
   const internals: RangeXEditorInternals = {
@@ -25,12 +31,12 @@ export const createRangeXEditor = ({
       return content;
     },
 
-    get snapshot() {
-      return snapshot;
+    get selection() {
+      return selection;
     },
 
-    focus() {
-      editorAPI.focus();
+    get snapshot() {
+      return snapshot;
     },
 
     destroy() {

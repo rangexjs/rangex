@@ -12,7 +12,7 @@ export const EditorArea = (props: EditorAreaProps) => {
 
     event.preventDefault();
 
-    editor.focus();
+    editor.selection.focus({});
   };
 
   return (

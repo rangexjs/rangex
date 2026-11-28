@@ -5,7 +5,7 @@ import type { SnapshotSchema } from "#snapshot";
 
 import type { AdapterFactoryValue } from "./AdapterFactories";
 import type { ResolvePlaceholderFn } from "./HandlePlaceholder";
-import type { ContentNamespace, SnapshotNamespace } from "./Namespaces";
+import type { ContentNamespace, SelectionNamespace, SnapshotNamespace } from "./Namespaces";
 
 type OptionalPublicPorts = {
   [Key in keyof AdapterPublicPorts]+?: AdapterPublicPorts[Key];
@@ -13,8 +13,8 @@ type OptionalPublicPorts = {
 
 export interface RangeXEditor extends OptionalPublicPorts {
   readonly content: ContentNamespace;
+  readonly selection: SelectionNamespace;
   readonly snapshot: SnapshotNamespace;
-  focus(): void;
   destroy(): void;
 }
 
